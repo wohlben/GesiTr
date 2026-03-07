@@ -5,6 +5,7 @@ import { EquipmentListItem } from '$ui/compendium/equipment-list-item/equipment-
 import { SearchInput } from '$ui/inputs/search-input/search-input';
 import { FilterSelect } from '$ui/inputs/filter-select/filter-select';
 import { DataTable } from '$ui/data-table/data-table';
+import { Pagination } from '$ui/pagination/pagination';
 import { PageLayout } from '../../../layout/page-layout';
 import {
   EquipmentCategory,
@@ -18,7 +19,7 @@ import {
 
 @Component({
   selector: 'app-equipment-list',
-  imports: [SearchInput, FilterSelect, EquipmentListItem, DataTable, PageLayout],
+  imports: [SearchInput, FilterSelect, EquipmentListItem, DataTable, Pagination, PageLayout],
   template: `
     <app-page-layout
       header="Equipment"
@@ -36,19 +37,7 @@ import {
             <tr app-equipment-list-item [equipment]="item"></tr>
           }
         </app-data-table>
-        <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-          <p>{{ page.total === 0 ? 'No equipment found' : 'Showing ' + (page.offset + 1) + '–' + (page.offset + page.items.length) + ' of ' + page.total + ' items' }}</p>
-          <div class="flex gap-2">
-            <button
-              class="rounded border border-gray-300 px-3 py-1 disabled:opacity-50 dark:border-gray-600"
-              [disabled]="page.offset === 0"
-              (click)="prevPage()">Previous</button>
-            <button
-              class="rounded border border-gray-300 px-3 py-1 disabled:opacity-50 dark:border-gray-600"
-              [disabled]="page.offset + page.limit >= page.total"
-              (click)="nextPage()">Next</button>
-          </div>
-        </div>
+        <app-pagination [page]="page" [(offset)]="offset" emptyLabel="No equipment found" />
       }
     </app-page-layout>
   `,
@@ -60,10 +49,12 @@ export class EquipmentList {
   category = signal<EquipmentCategory | ''>('');
   offset = signal(0);
 
-  private resetOffset = effect(() => {
-    this.q(); this.category();
-    untracked(() => this.offset.set(0));
-  });
+  constructor() {
+    effect(() => {
+      this.q(); this.category();
+      untracked(() => this.offset.set(0));
+    });
+  }
 
   filters = computed(() => ({
     q: this.q() || undefined,
@@ -75,16 +66,6 @@ export class EquipmentList {
     queryKey: ['equipment', this.filters()],
     queryFn: () => this.api.fetchEquipment(this.filters()),
   }));
-
-  prevPage() {
-    const page = this.equipmentQuery.data();
-    if (page) this.offset.set(Math.max(0, page.offset - page.limit));
-  }
-
-  nextPage() {
-    const page = this.equipmentQuery.data();
-    if (page) this.offset.set(page.offset + page.limit);
-  }
 
   categoryOptions: EquipmentCategory[] = [
     EquipmentCategoryFreeWeights,

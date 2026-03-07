@@ -5,6 +5,7 @@ import { ExerciseListItem } from '$ui/compendium/exercise-list-item/exercise-lis
 import { SearchInput } from '$ui/inputs/search-input/search-input';
 import { FilterSelect } from '$ui/inputs/filter-select/filter-select';
 import { DataTable } from '$ui/data-table/data-table';
+import { Pagination } from '$ui/pagination/pagination';
 import { PageLayout } from '../../../layout/page-layout';
 import {
   ExerciseType,
@@ -55,7 +56,7 @@ import {
 
 @Component({
   selector: 'app-exercise-list',
-  imports: [SearchInput, FilterSelect, ExerciseListItem, DataTable, PageLayout],
+  imports: [SearchInput, FilterSelect, ExerciseListItem, DataTable, Pagination, PageLayout],
   template: `
     <app-page-layout
       header="Exercises"
@@ -76,19 +77,7 @@ import {
             <tr app-exercise-list-item [exercise]="ex"></tr>
           }
         </app-data-table>
-        <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-          <p>{{ page.total === 0 ? 'No exercises found' : 'Showing ' + (page.offset + 1) + '–' + (page.offset + page.items.length) + ' of ' + page.total + ' exercises' }}</p>
-          <div class="flex gap-2">
-            <button
-              class="rounded border border-gray-300 px-3 py-1 disabled:opacity-50 dark:border-gray-600"
-              [disabled]="page.offset === 0"
-              (click)="prevPage()">Previous</button>
-            <button
-              class="rounded border border-gray-300 px-3 py-1 disabled:opacity-50 dark:border-gray-600"
-              [disabled]="page.offset + page.limit >= page.total"
-              (click)="nextPage()">Next</button>
-          </div>
-        </div>
+        <app-pagination [page]="page" [(offset)]="offset" emptyLabel="No exercises found" />
       }
     </app-page-layout>
   `,
@@ -103,10 +92,12 @@ export class ExerciseList {
   muscle = signal<Muscle | ''>('');
   offset = signal(0);
 
-  private resetOffset = effect(() => {
-    this.q(); this.type(); this.difficulty(); this.force(); this.muscle();
-    untracked(() => this.offset.set(0));
-  });
+  constructor() {
+    effect(() => {
+      this.q(); this.type(); this.difficulty(); this.force(); this.muscle();
+      untracked(() => this.offset.set(0));
+    });
+  }
 
   filters = computed(() => ({
     q: this.q() || undefined,
@@ -121,16 +112,6 @@ export class ExerciseList {
     queryKey: ['exercises', this.filters()],
     queryFn: () => this.api.fetchExercises(this.filters()),
   }));
-
-  prevPage() {
-    const page = this.exercisesQuery.data();
-    if (page) this.offset.set(Math.max(0, page.offset - page.limit));
-  }
-
-  nextPage() {
-    const page = this.exercisesQuery.data();
-    if (page) this.offset.set(page.offset + page.limit);
-  }
 
   typeOptions: ExerciseType[] = [
     ExerciseTypeStrength,
