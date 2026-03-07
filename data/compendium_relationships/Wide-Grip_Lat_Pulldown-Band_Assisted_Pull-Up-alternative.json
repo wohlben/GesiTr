@@ -1,0 +1,10 @@
+{
+  "id": "Wide-Grip_Lat_Pulldown-Band_Assisted_Pull-Up-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Wide-Grip_Lat_Pulldown",
+  "toExerciseTemplateId": "Band_Assisted_Pull-Up"
+}

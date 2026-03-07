@@ -1,0 +1,10 @@
+{
+  "id": "Snatch_Deadlift-Clean_Deadlift-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Snatch_Deadlift",
+  "toExerciseTemplateId": "Clean_Deadlift"
+}

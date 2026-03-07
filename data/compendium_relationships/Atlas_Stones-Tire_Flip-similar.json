@@ -1,0 +1,10 @@
+{
+  "id": "Atlas_Stones-Tire_Flip-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761463810,
+  "fromExerciseTemplateId": "Atlas_Stones",
+  "toExerciseTemplateId": "Tire_Flip"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Push-Ups_With_Feet_On_An_Exercise_Ball-Suspended_Push-Up-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Push-Ups_With_Feet_On_An_Exercise_Ball",
+  "toExerciseTemplateId": "Suspended_Push-Up"
+}

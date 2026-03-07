@@ -1,0 +1,10 @@
+{
+  "id": "Arm_Circles-Side_Wrist_Pull-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.5,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Arm_Circles",
+  "toExerciseTemplateId": "Side_Wrist_Pull"
+}

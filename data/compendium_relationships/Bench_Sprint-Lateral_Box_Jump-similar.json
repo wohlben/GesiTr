@@ -1,0 +1,10 @@
+{
+  "id": "Bench_Sprint-Lateral_Box_Jump-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Bench_Sprint",
+  "toExerciseTemplateId": "Lateral_Box_Jump"
+}

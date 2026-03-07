@@ -1,0 +1,10 @@
+{
+  "id": "Box_Jump_Multiple_Response-Front_Box_Jump-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761477930,
+  "fromExerciseTemplateId": "Box_Jump_Multiple_Response",
+  "toExerciseTemplateId": "Front_Box_Jump"
+}

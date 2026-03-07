@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Incline_Pushdown-Straight-Arm_Dumbbell_Pullover-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Cable_Incline_Pushdown",
+  "toExerciseTemplateId": "Straight-Arm_Dumbbell_Pullover"
+}

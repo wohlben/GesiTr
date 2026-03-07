@@ -1,0 +1,10 @@
+{
+  "id": "On-Your-Back_Quad_Stretch-Intermediate_Hip_Flexor_and_Quad_Stretch-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "On-Your-Back_Quad_Stretch",
+  "toExerciseTemplateId": "Intermediate_Hip_Flexor_and_Quad_Stretch"
+}

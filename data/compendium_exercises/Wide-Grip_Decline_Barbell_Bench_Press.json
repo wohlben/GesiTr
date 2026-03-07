@@ -1,0 +1,56 @@
+{
+  "name": "Wide-Grip Decline Barbell Bench Press",
+  "slug": "wide-grip-decline-barbell-bench-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Decline bench press with wide grip, targeting lower chest with hands wide apart.",
+  "instructions": [
+    "Lie back on a decline bench with the feet securely locked at the front of the bench. Using a wide, pronated (palms forward) grip that is around 3 inches away from shoulder width (for each hand), lift the bar from the rack and hold it straight over you with your arms locked. The bar will be perpendicular to the torso and the floor. This will be your starting position.",
+    "As you breathe in, come down slowly until you feel the bar on your lower chest.",
+    "After a second pause, bring the bar back to the starting position as you breathe out and push the bar using your chest muscles. Lock your arms and squeeze your chest in the contracted position, hold for a second and then start coming down slowly again. Tip: It should take at least twice as long to go down than to come up.",
+    "Repeat the movement for the prescribed amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Wide-Grip_Decline_Barbell_Bench_Press/0.jpg",
+    "/img/exercises/Wide-Grip_Decline_Barbell_Bench_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "BB Bench Press",
+    "Bench Press",
+    "Decline BB Bench",
+    "Decline Bench Press",
+    "Flat Bench",
+    "Flat Bench Press",
+    "Lower Chest Press",
+    "Wide Grip Decline Barbell Bench Press",
+    "Wide-Grip Decline BB Bench Press",
+    "Wide-Grip Decline Bar Bench Press",
+    "Wide-Grip Decline Barbell Bench Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Wide-Grip_Decline_Barbell_Bench_Press",
+  "equipmentIds": [
+    "barbell",
+    "decline-bench"
+  ]
+}

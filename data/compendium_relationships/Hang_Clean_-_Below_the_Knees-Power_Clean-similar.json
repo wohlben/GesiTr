@@ -1,0 +1,10 @@
+{
+  "id": "Hang_Clean_-_Below_the_Knees-Power_Clean-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496140,
+  "fromExerciseTemplateId": "Hang_Clean_-_Below_the_Knees",
+  "toExerciseTemplateId": "Power_Clean"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Circus_Bell-One-Arm_Kettlebell_Push_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761481210,
+  "fromExerciseTemplateId": "Circus_Bell",
+  "toExerciseTemplateId": "One-Arm_Kettlebell_Push_Press"
+}

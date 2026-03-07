@@ -1,0 +1,10 @@
+{
+  "id": "Shoulder_Press_-_With_Bands-Machine_Shoulder_Military_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761545420,
+  "fromExerciseTemplateId": "Shoulder_Press_-_With_Bands",
+  "toExerciseTemplateId": "Machine_Shoulder_Military_Press"
+}

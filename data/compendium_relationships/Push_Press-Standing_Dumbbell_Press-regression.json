@@ -1,0 +1,10 @@
+{
+  "id": "Push_Press-Standing_Dumbbell_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Push_Press",
+  "toExerciseTemplateId": "Standing_Dumbbell_Press"
+}

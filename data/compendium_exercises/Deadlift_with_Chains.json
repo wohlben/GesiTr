@@ -1,0 +1,52 @@
+{
+  "name": "Deadlift with Chains",
+  "slug": "deadlift-with-chains",
+  "type": "STRENGTH",
+  "force": [
+    "PULL",
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "LOWER_BACK"
+  ],
+  "secondaryMuscles": [
+    "LATS",
+    "TRAPS",
+    "FOREARMS",
+    "QUADS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0.2,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Strength training exercise targeting primary muscle groups",
+  "instructions": [
+    "You can attach the chains to the sleeves of the bar, or just drape the middle over the bar so there is a greater weight increase as you lift.",
+    "Approach the bar so that it is centered over your feet. You feet should be about hip width apart. Bend at the hip to grip the bar at shoulder width, allowing your shoulder blades to protract. Typically, you would use an overhand grip or an over/under grip on heavier sets. With your feet, and your grip set, take a big breath and then lower your hips and bend the knees until your shins contact the bar.",
+    "Look forward with your head, keep your chest up and your back arched, and begin driving through the heels to move the weight upward. After the bar passes the knees, aggressively pull the bar back, pulling your shoulder blades together as you drive your hips forward into the bar.",
+    "Lower the bar by bending at the hips and guiding it to the floor."
+  ],
+  "images": [
+    "/img/exercises/Deadlift_with_Chains/0.jpg",
+    "/img/exercises/Deadlift_with_Chains/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Deadlift_with_Chains",
+  "equipmentIds": [
+    "barbell",
+    "chains"
+  ]
+}

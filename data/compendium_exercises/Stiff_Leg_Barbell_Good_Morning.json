@@ -1,0 +1,49 @@
+{
+  "name": "Stiff Leg Barbell Good Morning",
+  "slug": "stiff-leg-barbell-good-morning",
+  "type": "STRENGTH",
+  "force": [
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "HAMSTRINGS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "LOWER_BACK"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Good morning exercise with stiff legs and barbell on back, hinging at hips to target posterior chain.",
+  "instructions": [
+    "This exercise is best performed inside a squat rack for safety purposes. To begin, first set the bar on a rack that best matches your height. Once the correct height is chosen and the bar is loaded, step under the bar and place the back of your shoulders (slightly below the neck) across it.",
+    "Hold on to the bar using both arms at each side and lift it off the rack by first pushing with your legs and at the same time straightening your torso.",
+    "Step away from the rack and position your legs using a shoulder width medium stance. Keep your head up at all times as looking down will get you off balance and also maintain a straight back. This will be your starting position.",
+    "Keeping your legs stationary, move your torso forward by bending at the hips while inhaling. Lower your torso until it is parallel with the floor.",
+    "Begin to raise the bar as you exhale by elevating your torso back to the starting position.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Stiff_Leg_Barbell_Good_Morning/0.jpg",
+    "/img/exercises/Stiff_Leg_Barbell_Good_Morning/1.jpg"
+  ],
+  "alternativeNames": [
+    "Stiff Leg BB Good Morning",
+    "Stiff Leg Bar Good Morning",
+    "Stiff Leg Barbell Good Morning"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Stiff_Leg_Barbell_Good_Morning",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Arm_Circles-Side_Laterals_to_Front_Raise-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Arm_Circles",
+  "toExerciseTemplateId": "Side_Laterals_to_Front_Raise"
+}

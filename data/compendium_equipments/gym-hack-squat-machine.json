@@ -1,0 +1,8 @@
+{
+  "name": "gym-hack-squat-machine",
+  "displayName": "Hack Squat Machine",
+  "description": "An angled squat machine that supports the back during the movement.",
+  "category": "machines",
+  "imageUrl": null,
+  "templateId": "gym-hack-squat-machine"
+}

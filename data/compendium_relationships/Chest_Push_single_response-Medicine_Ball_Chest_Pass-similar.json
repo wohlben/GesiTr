@@ -1,0 +1,10 @@
+{
+  "id": "Chest_Push_single_response-Medicine_Ball_Chest_Pass-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729933200,
+  "fromExerciseTemplateId": "Chest_Push_single_response",
+  "toExerciseTemplateId": "Medicine_Ball_Chest_Pass"
+}

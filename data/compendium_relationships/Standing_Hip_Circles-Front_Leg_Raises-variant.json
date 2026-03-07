@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Hip_Circles-Front_Leg_Raises-variant",
+  "relationshipType": "variant",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Standing_Hip_Circles",
+  "toExerciseTemplateId": "Front_Leg_Raises"
+}

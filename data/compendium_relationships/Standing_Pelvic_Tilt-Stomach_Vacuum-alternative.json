@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Pelvic_Tilt-Stomach_Vacuum-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Pelvic_Tilt",
+  "toExerciseTemplateId": "Stomach_Vacuum"
+}

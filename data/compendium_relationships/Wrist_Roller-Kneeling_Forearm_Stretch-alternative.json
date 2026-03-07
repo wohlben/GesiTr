@@ -1,0 +1,10 @@
+{
+  "id": "Wrist_Roller-Kneeling_Forearm_Stretch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Wrist_Roller",
+  "toExerciseTemplateId": "Kneeling_Forearm_Stretch"
+}

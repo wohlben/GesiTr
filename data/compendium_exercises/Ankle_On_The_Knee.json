@@ -1,0 +1,42 @@
+{
+  "name": "Figure 4 Stretch",
+  "slug": "figure-4-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "HIP_FLEXORS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Figure-4 hip and glute stretch targeting piriformis and external rotators for improved hip mobility",
+  "instructions": [
+    "From a lying position, bend your knees and keep your feet on the floor.",
+    "Place your ankle of one foot on your opposite knee.",
+    "Grasp the thigh or knee of the bottom leg and pull both of your legs into the chest. Relax your neck and shoulders. Hold for 10-20 seconds and then switch sides."
+  ],
+  "images": [
+    "/img/exercises/Ankle_On_The_Knee/0.jpg",
+    "/img/exercises/Ankle_On_The_Knee/1.jpg"
+  ],
+  "alternativeNames": [
+    "Ankle On The Knee",
+    "Piriformis Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Ankle_On_The_Knee",
+  "equipmentIds": []
+}

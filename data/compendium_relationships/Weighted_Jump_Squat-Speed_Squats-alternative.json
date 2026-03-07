@@ -1,0 +1,10 @@
+{
+  "id": "Weighted_Jump_Squat-Speed_Squats-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Weighted_Jump_Squat",
+  "toExerciseTemplateId": "Speed_Squats"
+}

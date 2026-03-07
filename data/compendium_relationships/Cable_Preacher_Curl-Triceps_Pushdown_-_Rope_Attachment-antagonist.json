@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Preacher_Curl-Triceps_Pushdown_-_Rope_Attachment-antagonist",
+  "relationshipType": "antagonist",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479458,
+  "fromExerciseTemplateId": "Cable_Preacher_Curl",
+  "toExerciseTemplateId": "Triceps_Pushdown_-_Rope_Attachment"
+}

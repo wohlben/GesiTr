@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Step_Ups-One_Leg_Barbell_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Barbell_Step_Ups",
+  "toExerciseTemplateId": "One_Leg_Barbell_Squat"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Car_Drivers-Plate_Twist-alternative",
+  "relationshipType": "alternative",
+  "strength": null,
+  "description": "Both exercises involve rotational movement with a weight plate, but Car Drivers is performed standing with extended arms focusing on shoulders, while Plate Twist is performed seated focusing on core/obliques",
+  "createdBy": "system",
+  "createdAt": 1761024000,
+  "fromExerciseTemplateId": "Car_Drivers",
+  "toExerciseTemplateId": "Plate_Twist"
+}

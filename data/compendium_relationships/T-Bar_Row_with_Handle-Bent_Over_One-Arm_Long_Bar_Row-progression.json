@@ -1,0 +1,10 @@
+{
+  "id": "T-Bar_Row_with_Handle-Bent_Over_One-Arm_Long_Bar_Row-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761466991,
+  "fromExerciseTemplateId": "T-Bar_Row_with_Handle",
+  "toExerciseTemplateId": "Bent_Over_One-Arm_Long_Bar_Row"
+}

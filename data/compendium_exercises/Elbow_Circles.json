@@ -1,0 +1,39 @@
+{
+  "name": "Elbow Circles",
+  "slug": "elbow-circles",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Shoulder and elbow mobility exercise making circular motions to warm up and improve range of motion.",
+  "instructions": [
+    "Sit or stand with your feet slightly apart.",
+    "Place your hands on your shoulders with your elbows at shoulder level and pointing out.",
+    "Slowly make a circle with your elbows. Breathe out as you start the circle and breathe in as you complete the circle."
+  ],
+  "images": [
+    "/img/exercises/Elbow_Circles/0.jpg",
+    "/img/exercises/Elbow_Circles/1.jpg"
+  ],
+  "alternativeNames": [
+    "Elbow-Circles"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Elbow_Circles",
+  "equipmentIds": []
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Spell_Caster-Car_Drivers-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.5,
+  "description": "Both involve rotational movements with extended arms holding weight. Car Drivers focuses more on shoulder endurance while Spell Caster emphasizes core rotation.",
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Spell_Caster",
+  "toExerciseTemplateId": "Car_Drivers"
+}

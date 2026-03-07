@@ -1,0 +1,50 @@
+{
+  "name": "Cable Hammer Curls - Rope Attachment",
+  "slug": "cable-hammer-curls-rope-attachment",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "BICEPS"
+  ],
+  "secondaryMuscles": [
+    "FOREARMS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Cable hammer curls with rope attachment targeting biceps and forearms through neutral-grip elbow flexion under constant tension",
+  "instructions": [
+    "Attach a rope attachment to a low pulley and stand facing the machine about 12 inches away from it.",
+    "Grasp the rope with a neutral (palms-in) grip and stand straight up keeping the natural arch of the back and your torso stationary.",
+    "Put your elbows in by your side and keep them there stationary during the entire movement. Tip: Only the forearms should move; not your upper arms. This will be your starting position.",
+    "Using your biceps, pull your arms up as you exhale until your biceps touch your forearms. Tip: Remember to keep the elbows in and your upper arms stationary.",
+    "After a 1 second contraction where you squeeze your biceps, slowly start to bring the weight back to the original position.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Cable_Hammer_Curls_-_Rope_Attachment/0.jpg",
+    "/img/exercises/Cable_Hammer_Curls_-_Rope_Attachment/1.jpg"
+  ],
+  "alternativeNames": [
+    "Cable Hammer Curls   Rope Attachment",
+    "Cable Machine Hammer Curls - Rope Attachment",
+    "Dumbbell Hammer Curl",
+    "Hammer Curls - Rope Attachment",
+    "Neutral Grip Curl"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Cable_Hammer_Curls_-_Rope_Attachment",
+  "equipmentIds": [
+    "gym-cable-machine"
+  ]
+}

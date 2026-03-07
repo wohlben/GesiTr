@@ -1,0 +1,10 @@
+{
+  "id": "Band_Assisted_Pull-Up-Scapular_Pull-Up-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Band_Assisted_Pull-Up",
+  "toExerciseTemplateId": "Scapular_Pull-Up"
+}

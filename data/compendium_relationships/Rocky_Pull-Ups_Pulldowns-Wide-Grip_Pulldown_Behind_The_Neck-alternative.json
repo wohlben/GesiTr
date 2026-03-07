@@ -1,0 +1,10 @@
+{
+  "id": "Rocky_Pull-Ups_Pulldowns-Wide-Grip_Pulldown_Behind_The_Neck-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Rocky_Pull-Ups_Pulldowns",
+  "toExerciseTemplateId": "Wide-Grip_Pulldown_Behind_The_Neck"
+}

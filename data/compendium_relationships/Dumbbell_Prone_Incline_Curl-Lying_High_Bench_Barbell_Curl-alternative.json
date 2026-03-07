@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Prone_Incline_Curl-Lying_High_Bench_Barbell_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Prone_Incline_Curl",
+  "toExerciseTemplateId": "Lying_High_Bench_Barbell_Curl"
+}

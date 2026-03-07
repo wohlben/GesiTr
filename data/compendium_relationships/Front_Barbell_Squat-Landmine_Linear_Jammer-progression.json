@@ -1,0 +1,10 @@
+{
+  "id": "Front_Barbell_Squat-Landmine_Linear_Jammer-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Front_Barbell_Squat",
+  "toExerciseTemplateId": "Landmine_Linear_Jammer"
+}

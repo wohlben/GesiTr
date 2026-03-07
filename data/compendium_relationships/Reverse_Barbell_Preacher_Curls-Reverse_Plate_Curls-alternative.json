@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Barbell_Preacher_Curls-Reverse_Plate_Curls-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": "Weight plate version with unique grip demands and forearm emphasis",
+  "createdBy": "system",
+  "createdAt": 1761543970,
+  "fromExerciseTemplateId": "Reverse_Barbell_Preacher_Curls",
+  "toExerciseTemplateId": "Reverse_Plate_Curls"
+}

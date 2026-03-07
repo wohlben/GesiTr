@@ -1,0 +1,10 @@
+{
+  "id": "Band_Pull_Apart-Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Band_Pull_Apart",
+  "toExerciseTemplateId": "Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench"
+}

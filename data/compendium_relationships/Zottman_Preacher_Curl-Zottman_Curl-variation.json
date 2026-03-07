@@ -1,0 +1,10 @@
+{
+  "id": "Zottman_Preacher_Curl-Zottman_Curl-variation",
+  "relationshipType": "variation",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Zottman_Preacher_Curl",
+  "toExerciseTemplateId": "Zottman_Curl"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Medicine_Ball_Scoop_Throw-Backward_Medicine_Ball_Throw-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Medicine_Ball_Scoop_Throw",
+  "toExerciseTemplateId": "Backward_Medicine_Ball_Throw"
+}

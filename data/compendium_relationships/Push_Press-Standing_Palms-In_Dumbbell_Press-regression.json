@@ -1,0 +1,10 @@
+{
+  "id": "Push_Press-Standing_Palms-In_Dumbbell_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Push_Press",
+  "toExerciseTemplateId": "Standing_Palms-In_Dumbbell_Press"
+}

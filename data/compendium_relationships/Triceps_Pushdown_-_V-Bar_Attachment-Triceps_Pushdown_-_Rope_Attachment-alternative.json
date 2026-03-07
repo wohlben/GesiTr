@@ -1,0 +1,10 @@
+{
+  "id": "Triceps_Pushdown_-_V-Bar_Attachment-Triceps_Pushdown_-_Rope_Attachment-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Triceps_Pushdown_-_V-Bar_Attachment",
+  "toExerciseTemplateId": "Triceps_Pushdown_-_Rope_Attachment"
+}

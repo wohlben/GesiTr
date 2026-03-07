@@ -1,0 +1,50 @@
+{
+  "name": "Deadlift with Bands",
+  "slug": "deadlift-with-bands",
+  "type": "STRENGTH",
+  "force": [
+    "PULL",
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "LOWER_BACK"
+  ],
+  "secondaryMuscles": [
+    "LATS",
+    "TRAPS",
+    "FOREARMS",
+    "QUADS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0.2,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Strength training exercise targeting primary muscle groups",
+  "instructions": [
+    "To deadlift with short bands, simply loop them over the bar before you start, and step into them to set up. For long bands, they will need to be anchored to a secure base, such as heavy dumbbells or a rack.",
+    "With your feet, and your grip set, take a big breath and then lower your hips and bend the knees until your shins contact the bar. Look forward with your head, keep your chest up and your back arched, and begin driving through the heels to move the weight upward. After the bar passes the knees, aggressively pull the bar back, pulling your shoulder blades together as you drive your hips forward into the bar.",
+    "Lower the bar by bending at the hips and guiding it to the floor."
+  ],
+  "images": [
+    "/img/exercises/Deadlift_with_Bands/0.jpg",
+    "/img/exercises/Deadlift_with_Bands/1.jpg"
+  ],
+  "alternativeNames": [
+    "Deadlift with Resistance Bands"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Deadlift_with_Bands",
+  "equipmentIds": [
+    "barbell",
+    "resistance-band"
+  ]
+}

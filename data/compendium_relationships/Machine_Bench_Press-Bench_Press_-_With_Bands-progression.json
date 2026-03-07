@@ -1,0 +1,10 @@
+{
+  "id": "Machine_Bench_Press-Bench_Press_-_With_Bands-progression",
+  "relationshipType": "progression",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761472847,
+  "fromExerciseTemplateId": "Machine_Bench_Press",
+  "toExerciseTemplateId": "Bench_Press_-_With_Bands"
+}

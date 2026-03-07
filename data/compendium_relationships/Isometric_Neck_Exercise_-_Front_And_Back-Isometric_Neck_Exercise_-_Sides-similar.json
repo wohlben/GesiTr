@@ -1,0 +1,10 @@
+{
+  "id": "Isometric_Neck_Exercise_-_Front_And_Back-Isometric_Neck_Exercise_-_Sides-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Isometric_Neck_Exercise_-_Front_And_Back",
+  "toExerciseTemplateId": "Isometric_Neck_Exercise_-_Sides"
+}

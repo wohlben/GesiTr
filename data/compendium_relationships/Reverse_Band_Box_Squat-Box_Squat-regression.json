@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Band_Box_Squat-Box_Squat-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761511059,
+  "fromExerciseTemplateId": "Reverse_Band_Box_Squat",
+  "toExerciseTemplateId": "Box_Squat"
+}

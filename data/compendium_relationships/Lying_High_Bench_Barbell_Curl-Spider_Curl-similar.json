@@ -1,0 +1,10 @@
+{
+  "id": "Lying_High_Bench_Barbell_Curl-Spider_Curl-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Lying_High_Bench_Barbell_Curl",
+  "toExerciseTemplateId": "Spider_Curl"
+}

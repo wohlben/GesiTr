@@ -1,0 +1,10 @@
+{
+  "id": "Close-Grip_Barbell_Bench_Press-JM_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499467,
+  "fromExerciseTemplateId": "Close-Grip_Barbell_Bench_Press",
+  "toExerciseTemplateId": "JM_Press"
+}

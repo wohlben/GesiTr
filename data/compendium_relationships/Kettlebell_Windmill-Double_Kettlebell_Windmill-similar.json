@@ -1,0 +1,10 @@
+{
+  "id": "Kettlebell_Windmill-Double_Kettlebell_Windmill-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760887364,
+  "fromExerciseTemplateId": "Kettlebell_Windmill",
+  "toExerciseTemplateId": "Double_Kettlebell_Windmill"
+}

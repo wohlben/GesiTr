@@ -1,0 +1,10 @@
+{
+  "id": "Medicine_Ball_Full_Twist-Spell_Caster-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": "Both are standing rotational exercises targeting abs with similar twisting motions. Spell Caster can be performed solo with dumbbells.",
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Medicine_Ball_Full_Twist",
+  "toExerciseTemplateId": "Spell_Caster"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Bent_Over_One-Arm_Long_Bar_Row-Bent_Over_Two-Arm_Long_Bar_Row-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Bent_Over_One-Arm_Long_Bar_Row",
+  "toExerciseTemplateId": "Bent_Over_Two-Arm_Long_Bar_Row"
+}

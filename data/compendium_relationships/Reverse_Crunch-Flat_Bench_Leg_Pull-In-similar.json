@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Crunch-Flat_Bench_Leg_Pull-In-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Reverse_Crunch",
+  "toExerciseTemplateId": "Flat_Bench_Leg_Pull-In"
+}

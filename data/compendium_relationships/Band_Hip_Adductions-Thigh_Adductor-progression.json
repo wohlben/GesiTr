@@ -1,0 +1,10 @@
+{
+  "id": "Band_Hip_Adductions-Thigh_Adductor-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Band_Hip_Adductions",
+  "toExerciseTemplateId": "Thigh_Adductor"
+}

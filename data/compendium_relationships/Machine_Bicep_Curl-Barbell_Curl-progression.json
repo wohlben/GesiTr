@@ -1,0 +1,10 @@
+{
+  "id": "Machine_Bicep_Curl-Barbell_Curl-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Machine_Bicep_Curl",
+  "toExerciseTemplateId": "Barbell_Curl"
+}

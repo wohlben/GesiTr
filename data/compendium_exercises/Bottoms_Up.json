@@ -1,0 +1,42 @@
+{
+  "name": "Bottoms Up",
+  "slug": "bottoms-up",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [
+    "HIP_FLEXORS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Reverse crunch variation raising legs perpendicular and rotating pelvis to lift hips, targeting lower abs",
+  "instructions": [
+    "Begin by lying on your back on the ground. Your legs should be straight and your arms at your side. This will be your starting position.",
+    "To perform the movement, tuck the knees toward your chest by flexing the hips and knees. Following this, extend your legs directly above you so that they are perpendicular to the ground. Rotate and elevate your pelvis to raise your glutes from the floor.",
+    "After a brief pause, return to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Bottoms_Up/0.jpg",
+    "/img/exercises/Bottoms_Up/1.jpg"
+  ],
+  "alternativeNames": [
+    "Bottoms-Up"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Bottoms_Up",
+  "equipmentIds": []
+}

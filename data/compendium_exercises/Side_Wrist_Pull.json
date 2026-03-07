@@ -1,0 +1,41 @@
+{
+  "name": "Side Wrist Pull",
+  "slug": "side-wrist-pull",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "LATS",
+    "RHOMBOIDS"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS",
+    "SIDE_DELTS",
+    "REAR_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Cross-body stretch pulling arm across to stretch back and shoulder muscles.",
+  "instructions": [
+    "This stretch works best standing. Cross your left arm over the midline of your body and hold the left wrist in your right hand down at the level of your hips. Start the stretch with a bent left arm.",
+    "Slowly straighten, pull, and lift it up to shoulder height, as pictured. Feel this stretch originate in your back, not your shoulders, and don't pull too hard on the shoulders joint. Switch sides."
+  ],
+  "images": [
+    "/img/exercises/Side_Wrist_Pull/0.jpg",
+    "/img/exercises/Side_Wrist_Pull/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Side_Wrist_Pull",
+  "equipmentIds": []
+}

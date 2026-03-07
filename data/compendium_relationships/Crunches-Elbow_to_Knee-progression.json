@@ -1,0 +1,10 @@
+{
+  "id": "Crunches-Elbow_to_Knee-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Crunches",
+  "toExerciseTemplateId": "Elbow_to_Knee"
+}

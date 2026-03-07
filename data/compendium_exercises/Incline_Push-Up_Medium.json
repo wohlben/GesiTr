@@ -1,0 +1,48 @@
+{
+  "name": "Incline Push-Up Medium",
+  "slug": "incline-push-up-medium",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 1,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Incline push-up with medium hand width, balanced chest and triceps engagement.",
+  "instructions": [
+    "Stand facing a Smith machine bar or sturdy elevated platform at an appropriate height.",
+    "Place your hands on the bar, with your hands about shoulder width apart.",
+    "Position your feet back from the bar with arms and body straight. This will be your starting position.",
+    "Keeping your body straight, lower your chest to the bar by bending the arms.",
+    "Return to the starting position by extending the elbows, pressing yourself back up."
+  ],
+  "images": [
+    "/img/exercises/Incline_Push-Up_Medium/0.jpg",
+    "/img/exercises/Incline_Push-Up_Medium/1.jpg"
+  ],
+  "alternativeNames": [
+    "Incline Push Up Medium",
+    "Press Up",
+    "Push Up",
+    "Pushup",
+    "Pushups"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Incline_Push-Up_Medium",
+  "equipmentIds": []
+}

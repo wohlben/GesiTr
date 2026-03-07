@@ -1,0 +1,10 @@
+{
+  "id": "Sit_Squats-Bodyweight_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Sit_Squats",
+  "toExerciseTemplateId": "Bodyweight_Squat"
+}

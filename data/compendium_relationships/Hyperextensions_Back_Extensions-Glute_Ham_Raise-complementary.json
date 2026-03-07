@@ -1,0 +1,10 @@
+{
+  "id": "Hyperextensions_Back_Extensions-Glute_Ham_Raise-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498416,
+  "fromExerciseTemplateId": "Hyperextensions_Back_Extensions",
+  "toExerciseTemplateId": "Glute_Ham_Raise"
+}

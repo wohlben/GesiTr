@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Shoulder_Press-Standing_Palm-In_One-Arm_Dumbbell_Press-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Shoulder_Press",
+  "toExerciseTemplateId": "Standing_Palm-In_One-Arm_Dumbbell_Press"
+}

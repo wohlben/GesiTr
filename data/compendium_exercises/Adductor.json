@@ -1,0 +1,40 @@
+{
+  "name": "Adductor",
+  "slug": "adductor",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ADDUCTORS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Hip adduction exercise bringing legs together against resistance, targeting inner thigh muscles.",
+  "instructions": [
+    "Lie face down with one leg on a foam roll.",
+    "Rotate the leg so that the foam roll contacts against your inner thigh. Shift as much weight onto the foam roll as can be tolerated.",
+    "While trying to relax the muscles if the inner thigh, roll over the foam between your hip and knee, holding points of tension for 10-30 seconds. Repeat with the other leg."
+  ],
+  "images": [
+    "/img/exercises/Adductor/0.jpg",
+    "/img/exercises/Adductor/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Adductor",
+  "equipmentIds": [
+    "foam-roller"
+  ]
+}

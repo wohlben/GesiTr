@@ -1,0 +1,49 @@
+{
+  "name": "Lunge Pass Through",
+  "slug": "lunge-pass-through",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.4,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Dynamic lunge while passing medicine ball or weight through legs, combining lower body and coordination.",
+  "instructions": [
+    "Stand with your torso upright holding a kettlebell in your right hand. This will be your starting position.",
+    "Step forward with your left foot and lower your upper body down by flexing the hip and the knee, keeping the torso upright. Lower your back knee until it nearly touches the ground.",
+    "As you lunge, pass the kettlebell under your front leg to your opposite hand.",
+    "Pressing through the heel of your foot, return to the starting position.",
+    "Repeat the movement for the recommended amount of repetitions, alternating legs."
+  ],
+  "images": [
+    "/img/exercises/Lunge_Pass_Through/0.jpg",
+    "/img/exercises/Lunge_Pass_Through/1.jpg"
+  ],
+  "alternativeNames": [
+    "Forward Lunge",
+    "Walking Lunge"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Lunge_Pass_Through",
+  "equipmentIds": [
+    "kettlebell",
+    "medicine-ball"
+  ]
+}

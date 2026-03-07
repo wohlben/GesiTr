@@ -1,0 +1,10 @@
+{
+  "id": "Sit_Squats-Goblet_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Sit_Squats",
+  "toExerciseTemplateId": "Goblet_Squat"
+}

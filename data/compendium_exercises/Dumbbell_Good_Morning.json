@@ -1,0 +1,47 @@
+{
+  "name": "Dumbbell Good Morning",
+  "slug": "dumbbell-good-morning",
+  "type": "STRENGTH",
+  "force": [
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "HAMSTRINGS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "LOWER_BACK"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Hip hinge exercise with dumbbells held at shoulders, bending forward at hips to target posterior chain.",
+  "instructions": [
+    "Stand with feet shoulder-width apart, holding a dumbbell in each hand at shoulder height with palms facing in. Keep your back tight, shoulder blades pinched together, and your knees slightly bent.",
+    "Begin by bending at the hips, moving them back as you bend over to near parallel. Keep your back arched and your cervical spine in proper alignment. The dumbbells should remain at shoulder level throughout the movement.",
+    "Reverse the motion by extending through the hips with your glutes and hamstrings. Continue until you have returned to the starting position.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Dumbbell_Good_Morning/0.jpg",
+    "/img/exercises/Dumbbell_Good_Morning/1.jpg"
+  ],
+  "alternativeNames": [
+    "DB Good Morning",
+    "Dumbell Good Morning",
+    "Dumbbell Good-Morning"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1729872000,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Dumbbell_Good_Morning",
+  "equipmentIds": [
+    "2x dumbbell"
+  ]
+}

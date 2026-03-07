@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Dumbbell_Flyes-Lying_Crossover-variation",
+  "relationshipType": "variation",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Incline_Dumbbell_Flyes",
+  "toExerciseTemplateId": "Lying_Crossover"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Chair_Squat-Bodyweight_Squat-regression",
+  "relationshipType": "regression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761481210,
+  "fromExerciseTemplateId": "Chair_Squat",
+  "toExerciseTemplateId": "Bodyweight_Squat"
+}

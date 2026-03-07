@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Dumbbell_Flyes-Bodyweight_Flyes-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476339,
+  "fromExerciseTemplateId": "Incline_Dumbbell_Flyes",
+  "toExerciseTemplateId": "Bodyweight_Flyes"
+}

@@ -1,0 +1,43 @@
+{
+  "name": "Elliptical Trainer",
+  "slug": "elliptical-trainer",
+  "type": "CARDIO",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.3,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Low-impact cardio machine with elliptical motion, targeting legs while minimizing joint stress.",
+  "instructions": [
+    "To begin, step onto the elliptical and select the desired option from the menu. Most ellipticals have a manual setting, or you can select a program to run. Typically, you can enter your age and weight to estimate the amount of calories burned during exercise. Elevation can be adjusted to change the intensity of the workout.",
+    "The handles can be used to monitor your heart rate to help you stay at an appropriate intensity."
+  ],
+  "images": [
+    "/img/exercises/Elliptical_Trainer/0.jpg",
+    "/img/exercises/Elliptical_Trainer/1.jpg"
+  ],
+  "alternativeNames": [
+    "Elliptical-Trainer"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Elliptical_Trainer",
+  "equipmentIds": []
+}

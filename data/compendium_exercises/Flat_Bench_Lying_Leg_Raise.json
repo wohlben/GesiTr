@@ -1,0 +1,43 @@
+{
+  "name": "Flat Bench Lying Leg Raise",
+  "slug": "flat-bench-lying-leg-raise",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.7,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Strength training exercise targeting primary muscle groups",
+  "instructions": [
+    "Lie with your back flat on a bench and your legs extended in front of you off the end.",
+    "Place your hands either under your glutes with your palms down or by the sides holding on to the bench. This will be your starting position.",
+    "As you keep your legs extended, straight as possible with your knees slightly bent but locked raise your legs until they make a 90-degree angle with the floor. Exhale as you perform this portion of the movement and hold the contraction at the top for a second.",
+    "Now, as you inhale, slowly lower your legs back down to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Flat_Bench_Lying_Leg_Raise/0.jpg",
+    "/img/exercises/Flat_Bench_Lying_Leg_Raise/1.jpg"
+  ],
+  "alternativeNames": [
+    "Flat Bench Prone Leg Raise"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Flat_Bench_Lying_Leg_Raise",
+  "equipmentIds": [
+    "bench"
+  ]
+}

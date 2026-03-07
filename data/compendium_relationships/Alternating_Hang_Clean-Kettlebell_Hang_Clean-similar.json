@@ -1,0 +1,10 @@
+{
+  "id": "Alternating_Hang_Clean-Kettlebell_Hang_Clean-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Alternating_Hang_Clean",
+  "toExerciseTemplateId": "Kettlebell_Hang_Clean"
+}

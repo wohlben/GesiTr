@@ -1,0 +1,10 @@
+{
+  "id": "Pullups-Weighted_Pull_Ups-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Pullups",
+  "toExerciseTemplateId": "Weighted_Pull_Ups"
+}

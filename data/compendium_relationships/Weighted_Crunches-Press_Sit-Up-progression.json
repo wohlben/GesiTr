@@ -1,0 +1,10 @@
+{
+  "id": "Weighted_Crunches-Press_Sit-Up-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": "Press Sit-Up progresses from Weighted Crunches by adding full sit-up range of motion and overhead press, advancing from beginner weighted crunch to advanced compound movement",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Weighted_Crunches",
+  "toExerciseTemplateId": "Press_Sit-Up"
+}

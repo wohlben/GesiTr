@@ -1,0 +1,10 @@
+{
+  "id": "Smith_Machine_Stiff-Legged_Deadlift-Romanian_Deadlift_from_Deficit-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761547427,
+  "fromExerciseTemplateId": "Smith_Machine_Stiff-Legged_Deadlift",
+  "toExerciseTemplateId": "Romanian_Deadlift_from_Deficit"
+}

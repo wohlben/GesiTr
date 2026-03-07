@@ -1,0 +1,38 @@
+{
+  "name": "Standing Soleus And Achilles Stretch",
+  "slug": "standing-soleus-and-achilles-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "CALVES"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Standing stretch targeting soleus (deeper calf) and Achilles tendon with bent knee.",
+  "instructions": [
+    "Stand with your feet hip-distance apart, one foot slightly in front of the other.",
+    "Bend both knees, keeping your back heel on the floor. Switch sides."
+  ],
+  "images": [
+    "/img/exercises/Standing_Soleus_And_Achilles_Stretch/0.jpg",
+    "/img/exercises/Standing_Soleus_And_Achilles_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Seated Soleus And Achilles Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Standing_Soleus_And_Achilles_Stretch",
+  "equipmentIds": []
+}

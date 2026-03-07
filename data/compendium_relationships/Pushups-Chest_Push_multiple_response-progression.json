@@ -1,0 +1,10 @@
+{
+  "id": "Pushups-Chest_Push_multiple_response-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729933200,
+  "fromExerciseTemplateId": "Pushups",
+  "toExerciseTemplateId": "Chest_Push_multiple_response"
+}

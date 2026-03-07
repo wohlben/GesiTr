@@ -1,0 +1,10 @@
+{
+  "id": "Isometric_Wipers-Pushups-progression",
+  "relationshipType": "progression",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Isometric_Wipers",
+  "toExerciseTemplateId": "Pushups"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Arnold_Dumbbell_Press-Kettlebell_Arnold_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761463686,
+  "fromExerciseTemplateId": "Arnold_Dumbbell_Press",
+  "toExerciseTemplateId": "Kettlebell_Arnold_Press"
+}

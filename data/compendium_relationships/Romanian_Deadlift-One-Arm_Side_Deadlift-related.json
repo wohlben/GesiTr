@@ -1,0 +1,10 @@
+{
+  "id": "Romanian_Deadlift-One-Arm_Side_Deadlift-related",
+  "relationshipType": "related",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Romanian_Deadlift",
+  "toExerciseTemplateId": "One-Arm_Side_Deadlift"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Triceps_Pushdown_-_Rope_Attachment-Cable_One_Arm_Tricep_Extension-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Triceps_Pushdown_-_Rope_Attachment",
+  "toExerciseTemplateId": "Cable_One_Arm_Tricep_Extension"
+}

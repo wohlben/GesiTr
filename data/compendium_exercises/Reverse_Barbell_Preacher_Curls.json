@@ -1,0 +1,50 @@
+{
+  "name": "Reverse Barbell Preacher Curls",
+  "slug": "reverse-barbell-preacher-curls",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "BICEPS"
+  ],
+  "secondaryMuscles": [
+    "FOREARMS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Preacher curl with reverse grip barbell, isolating biceps and brachialis with overhand grip.",
+  "instructions": [
+    "Grab an EZ-bar using a shoulder width and palms down (pronated) grip.",
+    "Now place the upper part of both arms on top of the preacher bench and have your arms extended. This will be your starting position.",
+    "As you exhale, use the biceps to curl the weight up until your biceps are fully contracted and the barbell is at shoulder height. Squeeze the biceps hard for a second at the contracted position.",
+    "As you breathe in, slowly lower the barbell until your upper arms are extended and the biceps is fully stretched.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Reverse_Barbell_Preacher_Curls/0.jpg",
+    "/img/exercises/Reverse_Barbell_Preacher_Curls/1.jpg"
+  ],
+  "alternativeNames": [
+    "Reverse BB Preacher Curls",
+    "Reverse Bar Preacher Curls",
+    "Reverse Barbell Preacher Curls"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Reverse_Barbell_Preacher_Curls",
+  "equipmentIds": [
+    "barbell",
+    "ez-bar",
+    "gym-preacher-bench"
+  ]
+}

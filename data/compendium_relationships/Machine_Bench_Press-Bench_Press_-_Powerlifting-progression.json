@@ -1,0 +1,10 @@
+{
+  "id": "Machine_Bench_Press-Bench_Press_-_Powerlifting-progression",
+  "relationshipType": "progression",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Machine_Bench_Press",
+  "toExerciseTemplateId": "Bench_Press_-_Powerlifting"
+}

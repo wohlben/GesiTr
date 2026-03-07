@@ -1,0 +1,10 @@
+{
+  "id": "Hang_Clean-Hang_Clean_-_Below_the_Knees-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496140,
+  "fromExerciseTemplateId": "Hang_Clean",
+  "toExerciseTemplateId": "Hang_Clean_-_Below_the_Knees"
+}

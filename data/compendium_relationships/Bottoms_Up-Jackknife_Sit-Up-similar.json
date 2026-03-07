@@ -1,0 +1,10 @@
+{
+  "id": "Bottoms_Up-Jackknife_Sit-Up-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Bottoms_Up",
+  "toExerciseTemplateId": "Jackknife_Sit-Up"
+}

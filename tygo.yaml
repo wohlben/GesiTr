@@ -1,0 +1,13 @@
+packages:
+  - path: "gesitr/internal/compendium/models"
+    output_path: "web/src/app/generated/models.ts"
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+    exclude_files:
+      - "exercise_entity.go"
+      - "equipment_entity.go"
+      - "fulfillment_entity.go"
+      - "exercise_relationship_entity.go"
+      - "exercise_group_entity.go"
+      - "exercise_group_member_entity.go"

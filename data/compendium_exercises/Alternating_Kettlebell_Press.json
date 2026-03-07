@@ -1,0 +1,47 @@
+{
+  "name": "Alternating Kettlebell Press",
+  "slug": "alternating-kettlebell-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS",
+    "SIDE_DELTS"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS",
+    "TRAPS",
+    "ABS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Alternating overhead kettlebell press for unilateral shoulder strength and enhanced core stability",
+  "instructions": [
+    "Clean two kettlebells to your shoulders. Clean the kettlebells to your shoulders by extending through the legs and hips as you pull the kettlebells towards your shoulders. Rotate your wrists as you do so.",
+    "Press one directly overhead by extending through the elbow, turning it so the palm faces forward while holding the other kettlebell stationary .",
+    "Lower the pressed kettlebell to the starting position and immediately press with your other arm."
+  ],
+  "images": [
+    "/img/exercises/Alternating_Kettlebell_Press/0.jpg",
+    "/img/exercises/Alternating_Kettlebell_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "Alternate Kettlebell Press",
+    "Alternating KB Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Alternating_Kettlebell_Press",
+  "equipmentIds": [
+    "2x kettlebell"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "name": "One-Arm Kettlebell Row",
+  "slug": "one-arm-kettlebell-row",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "LATS"
+  ],
+  "secondaryMuscles": [
+    "BICEPS",
+    "RHOMBOIDS",
+    "REAR_DELTS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0.1,
+  "suggestedMeasurementParadigms": [
+    "DISTANCE_BASED",
+    "TIME_BASED",
+    "AMRAP"
+  ],
+  "description": "Bent-over row with single kettlebell, pulling to hip while maintaining stable hip hinge position.",
+  "instructions": [
+    "Place a kettlebell in front of your feet. Bend your knees slightly and then push your butt out as much as possible as you bend over to get in the starting position. Grab the kettlebell and pull it to your stomach, retracting your shoulder blade and flexing the elbow. Keep your back straight. Lower and repeat."
+  ],
+  "images": [
+    "/img/exercises/One-Arm_Kettlebell_Row/0.jpg",
+    "/img/exercises/One-Arm_Kettlebell_Row/1.jpg"
+  ],
+  "alternativeNames": [
+    "One Arm Kettlebell Row",
+    "One-Arm KB Row",
+    "Single Arm Kettlebell Row",
+    "Unilateral Kettlebell Row"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "One-Arm_Kettlebell_Row",
+  "equipmentIds": [
+    "kettlebell"
+  ]
+}

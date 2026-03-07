@@ -1,0 +1,10 @@
+{
+  "id": "Flutter_Kicks-Superman-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730080800,
+  "fromExerciseTemplateId": "Flutter_Kicks",
+  "toExerciseTemplateId": "Superman"
+}

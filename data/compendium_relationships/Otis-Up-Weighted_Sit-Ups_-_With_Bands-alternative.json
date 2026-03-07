@@ -1,0 +1,10 @@
+{
+  "id": "Otis-Up-Weighted_Sit-Ups_-_With_Bands-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": "Both are weighted sit-ups; band version uses resistance bands without overhead press component",
+  "createdBy": "system",
+  "createdAt": 1729980000,
+  "fromExerciseTemplateId": "Otis-Up",
+  "toExerciseTemplateId": "Weighted_Sit-Ups_-_With_Bands"
+}

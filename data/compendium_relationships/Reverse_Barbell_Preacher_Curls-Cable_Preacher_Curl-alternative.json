@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Barbell_Preacher_Curls-Cable_Preacher_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": "Cable version on preacher bench with supinated grip and constant tension",
+  "createdBy": "system",
+  "createdAt": 1761543970,
+  "fromExerciseTemplateId": "Reverse_Barbell_Preacher_Curls",
+  "toExerciseTemplateId": "Cable_Preacher_Curl"
+}

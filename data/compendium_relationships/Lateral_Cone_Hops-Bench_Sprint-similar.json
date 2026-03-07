@@ -1,0 +1,10 @@
+{
+  "id": "Lateral_Cone_Hops-Bench_Sprint-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Lateral_Cone_Hops",
+  "toExerciseTemplateId": "Bench_Sprint"
+}

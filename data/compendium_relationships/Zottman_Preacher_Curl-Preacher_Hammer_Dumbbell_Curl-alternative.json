@@ -1,0 +1,10 @@
+{
+  "id": "Zottman_Preacher_Curl-Preacher_Hammer_Dumbbell_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Zottman_Preacher_Curl",
+  "toExerciseTemplateId": "Preacher_Hammer_Dumbbell_Curl"
+}

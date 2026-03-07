@@ -1,0 +1,10 @@
+{
+  "id": "Catch_and_Overhead_Throw-Return_Push_from_Stance-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": "Both are partner medicine ball catching and throwing drills; overhead throw uses overhead motion from standing while return push uses chest pass from athletic stance with movement",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Catch_and_Overhead_Throw",
+  "toExerciseTemplateId": "Return_Push_from_Stance"
+}

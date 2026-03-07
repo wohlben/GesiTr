@@ -1,0 +1,10 @@
+{
+  "id": "Linear_Acceleration_Wall_Drill-Kneeling_Arm_Drill-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Linear_Acceleration_Wall_Drill",
+  "toExerciseTemplateId": "Kneeling_Arm_Drill"
+}

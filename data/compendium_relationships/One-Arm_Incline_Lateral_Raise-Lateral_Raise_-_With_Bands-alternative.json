@@ -1,0 +1,10 @@
+{
+  "id": "One-Arm_Incline_Lateral_Raise-Lateral_Raise_-_With_Bands-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "One-Arm_Incline_Lateral_Raise",
+  "toExerciseTemplateId": "Lateral_Raise_-_With_Bands"
+}

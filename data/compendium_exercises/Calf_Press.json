@@ -1,0 +1,45 @@
+{
+  "name": "Calf Press",
+  "slug": "calf-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CALVES"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Seated calf press machine extending ankles to target gastrocnemius through plantar flexion with machine resistance.",
+  "instructions": [
+    "Adjust the seat so that your legs are only slightly bent in the start position. The balls of your feet should be firmly on the platform.",
+    "Select an appropriate weight, and grasp the handles. This will be your starting position.",
+    "Straighten the legs by extending the knees, just barely lifting the weight from the stack. Your ankle should be fully flexed, toes pointing up. Execute the movement by pressing downward through the balls of your feet as far as possible.",
+    "After a brief pause, reverse the motion and repeat."
+  ],
+  "images": [
+    "/img/exercises/Calf_Press/0.jpg",
+    "/img/exercises/Calf_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "Calf-Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Calf_Press",
+  "equipmentIds": [
+    "gym-calf-raise-machine"
+  ]
+}

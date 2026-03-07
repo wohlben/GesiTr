@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Barbell_Curl-Close-Grip_EZ_Bar_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Reverse_Barbell_Curl",
+  "toExerciseTemplateId": "Close-Grip_EZ_Bar_Curl"
+}

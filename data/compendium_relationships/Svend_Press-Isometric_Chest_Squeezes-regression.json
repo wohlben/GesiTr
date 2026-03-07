@@ -1,0 +1,10 @@
+{
+  "id": "Svend_Press-Isometric_Chest_Squeezes-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": "Isometric Chest Squeezes isolates the squeezing component without dynamic pressing",
+  "createdBy": "system",
+  "createdAt": 1729954800,
+  "fromExerciseTemplateId": "Svend_Press",
+  "toExerciseTemplateId": "Isometric_Chest_Squeezes"
+}

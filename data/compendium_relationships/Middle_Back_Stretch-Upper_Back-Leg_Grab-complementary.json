@@ -1,0 +1,10 @@
+{
+  "id": "Middle_Back_Stretch-Upper_Back-Leg_Grab-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Middle_Back_Stretch",
+  "toExerciseTemplateId": "Upper_Back-Leg_Grab"
+}

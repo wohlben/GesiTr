@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Bench_Press_-_Medium_Grip-Clock_Push-Up-regression",
+  "relationshipType": "regression",
+  "strength": null,
+  "description": "Push-ups are a regression from bench press",
+  "createdBy": "seed",
+  "createdAt": 1760887433,
+  "fromExerciseTemplateId": "Barbell_Bench_Press_-_Medium_Grip",
+  "toExerciseTemplateId": "Clock_Push-Up"
+}

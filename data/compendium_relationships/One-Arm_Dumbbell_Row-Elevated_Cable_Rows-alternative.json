@@ -1,0 +1,10 @@
+{
+  "id": "One-Arm_Dumbbell_Row-Elevated_Cable_Rows-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": "Elevated Cable Rows is a cable machine alternative to One-Arm Dumbbell Row targeting similar muscles",
+  "createdBy": "system",
+  "createdAt": 1761412213,
+  "fromExerciseTemplateId": "One-Arm_Dumbbell_Row",
+  "toExerciseTemplateId": "Elevated_Cable_Rows"
+}

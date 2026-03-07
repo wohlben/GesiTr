@@ -1,0 +1,10 @@
+{
+  "id": "Sit-Up-Press_Sit-Up-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": "Press Sit-Up builds on basic Sit-Up by adding overhead barbell press and bench, progressing from bodyweight beginner to weighted advanced compound movement",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Sit-Up",
+  "toExerciseTemplateId": "Press_Sit-Up"
+}

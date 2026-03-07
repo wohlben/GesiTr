@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Hamstring-Hamstring_Stretch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Seated_Hamstring",
+  "toExerciseTemplateId": "Hamstring_Stretch"
+}

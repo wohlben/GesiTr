@@ -1,0 +1,8 @@
+{
+  "name": "gym-t-bar-row-machine",
+  "displayName": "T-Bar Row Machine",
+  "description": "A machine or setup for rowing exercises with a T-shaped bar.",
+  "category": "machines",
+  "imageUrl": null,
+  "templateId": "gym-t-bar-row-machine"
+}

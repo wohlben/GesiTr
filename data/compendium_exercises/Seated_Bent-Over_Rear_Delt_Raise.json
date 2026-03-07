@@ -1,0 +1,48 @@
+{
+  "name": "Seated Bent-Over Rear Delt Raise",
+  "slug": "seated-bent-over-rear-delt-raise",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "REAR_DELTS"
+  ],
+  "secondaryMuscles": [
+    "RHOMBOIDS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Seated bent-over rear delt raise, raising dumbbells out to sides to target posterior shoulders.",
+  "instructions": [
+    "Place a couple of dumbbells looking forward in front of a flat bench.",
+    "Sit on the end of the bench with your legs together and the dumbbells behind your calves.",
+    "Bend at the waist while keeping the back straight in order to pick up the dumbbells. The palms of your hands should be facing each other as you pick them. This will be your starting position.",
+    "Keeping your torso forward and stationary, and the arms slightly bent at the elbows, lift the dumbbells straight to the side until both arms are parallel to the floor. Exhale as you lift the weights. (Note: avoid swinging the torso or bringing the arms back as opposed to the side.)",
+    "After a one second contraction at the top, slowly lower the dumbbells back to the starting position.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Seated_Bent-Over_Rear_Delt_Raise/0.jpg",
+    "/img/exercises/Seated_Bent-Over_Rear_Delt_Raise/1.jpg"
+  ],
+  "alternativeNames": [
+    "Seated Bent Over Rear Delt Raise",
+    "Standing Bent-Over Rear Delt Raise"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Seated_Bent-Over_Rear_Delt_Raise",
+  "equipmentIds": [
+    "2x dumbbell"
+  ]
+}

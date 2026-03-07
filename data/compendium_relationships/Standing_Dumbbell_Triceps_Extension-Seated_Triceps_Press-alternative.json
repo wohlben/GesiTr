@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Dumbbell_Triceps_Extension-Seated_Triceps_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761545398,
+  "fromExerciseTemplateId": "Standing_Dumbbell_Triceps_Extension",
+  "toExerciseTemplateId": "Seated_Triceps_Press"
+}

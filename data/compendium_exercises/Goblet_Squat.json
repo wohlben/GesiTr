@@ -1,0 +1,48 @@
+{
+  "name": "Goblet Squat",
+  "slug": "goblet-squat",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.4,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Front squat holding single kettlebell or dumbbell at chest (goblet position), emphasizing upright torso and quad development.",
+  "instructions": [
+    "Stand holding a light kettlebell by the horns close to your chest. This will be your starting position.",
+    "Squat down between your legs until your hamstrings are on your calves. Keep your chest and head up and your back straight.",
+    "At the bottom position, pause and use your elbows to push your knees out. Return to the starting position, and repeat for 10-20 repetitions."
+  ],
+  "images": [
+    "/img/exercises/Goblet_Squat/0.jpg",
+    "/img/exercises/Goblet_Squat/1.jpg"
+  ],
+  "alternativeNames": [
+    "DB Goblet Squat",
+    "Dumbbell Goblet Squat",
+    "Goblet-Squat"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Goblet_Squat",
+  "equipmentIds": [
+    "dumbbell",
+    "kettlebell"
+  ]
+}

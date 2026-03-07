@@ -1,0 +1,49 @@
+{
+  "name": "Pallof Press With Rotation",
+  "slug": "pallof-press-with-rotation",
+  "type": "STRENGTH",
+  "force": [
+    "ROTATION"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [
+    "CHEST",
+    "FRONT_DELTS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Pallof press variation adding rotation, pressing cable out and rotating torso for dynamic core engagement.",
+  "instructions": [
+    "Connect a standard handle to a tower, and position the cable to shoulder height.",
+    "With your side to the cable, grab the handle with one hand and step away from the tower. You should be approximately arm's length away from the pulley, with the tension of the weight on the cable. Align outstretched arm with cable.",
+    "With your feet positioned hip-width apart, pull the cable into your chest and grab the handle with your other hand. Both hands should be on the handle at this time.",
+    "Facing forward, press the cable away from your chest. You core should be tight and engaged.",
+    "Keeping your hips straight, twist your torso away from the pulley until you get a full quarter rotation.",
+    "Maintain your rigid stance and straight arms. Return to the neutral position in a slow and controlled manner. Your arms should be extended in front of you.",
+    "With the side tension still engaging your core, bring your hands to your chest and immediately press outward to a fully extended position. This constitutes one rep.",
+    "Repeat to failure.",
+    "Then, reposition and repeat the same series of movements on the opposite side."
+  ],
+  "images": [
+    "/img/exercises/Pallof_Press_With_Rotation/0.jpg",
+    "/img/exercises/Pallof_Press_With_Rotation/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Pallof_Press_With_Rotation",
+  "equipmentIds": [
+    "gym-cable-machine"
+  ]
+}

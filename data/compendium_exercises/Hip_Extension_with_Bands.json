@@ -1,0 +1,45 @@
+{
+  "name": "Hip Extension with Bands",
+  "slug": "hip-extension-with-bands",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "HAMSTRINGS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Hip extension exercise with resistance band, pushing hips forward against band resistance.",
+  "instructions": [
+    "Secure one end of the band to the lower portion of a post and attach the other to one ankle.",
+    "Facing the attachment point of the band, hold on to the column to stabilize yourself.",
+    "Keeping your head and your chest up, move the resisted leg back as far as you can while keeping the knee straight.",
+    "Return the leg to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Hip_Extension_with_Bands/0.jpg",
+    "/img/exercises/Hip_Extension_with_Bands/1.jpg"
+  ],
+  "alternativeNames": [
+    "Hip Extension with Resistance Bands"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Hip_Extension_with_Bands",
+  "equipmentIds": [
+    "resistance-band"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "name": "Freehand Jump Squat",
+  "slug": "freehand-jump-squat",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.9,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Bodyweight jump squat from standing, explosive squat and jump for lower body power.",
+  "instructions": [
+    "Cross your arms over your chest.",
+    "With your head up and your back straight, position your feet at shoulder width.",
+    "Keeping your back straight and chest up, squat down as you inhale until your upper thighs are parallel, or lower, to the floor.",
+    "Now pressing mainly with the ball of your feet, jump straight up in the air as high as possible, using the thighs like springs. Exhale during this portion of the movement.",
+    "When you touch the floor again, immediately squat down and jump again.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Freehand_Jump_Squat/0.jpg",
+    "/img/exercises/Freehand_Jump_Squat/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Freehand_Jump_Squat",
+  "equipmentIds": []
+}

@@ -1,0 +1,49 @@
+{
+  "name": "Incline Push-Up",
+  "slug": "incline-push-up",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 1,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Push-up with hands elevated on bench or platform, easier variation reducing resistance.",
+  "instructions": [
+    "Stand facing bench or sturdy elevated platform. Place hands on edge of bench or platform, slightly wider than shoulder width.",
+    "Position forefoot back from bench or platform with arms and body straight. Arms should be perpendicular to body. Keeping body straight, lower chest to edge of box or platform by bending arms.",
+    "Push body up until arms are extended. Repeat."
+  ],
+  "images": [
+    "/img/exercises/Incline_Push-Up/0.jpg",
+    "/img/exercises/Incline_Push-Up/1.jpg"
+  ],
+  "alternativeNames": [
+    "Incline Push Up",
+    "Press Up",
+    "Push Up",
+    "Pushup",
+    "Pushups"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Incline_Push-Up",
+  "equipmentIds": []
+}

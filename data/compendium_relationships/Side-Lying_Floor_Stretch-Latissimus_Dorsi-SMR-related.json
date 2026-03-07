@@ -1,0 +1,10 @@
+{
+  "id": "Side-Lying_Floor_Stretch-Latissimus_Dorsi-SMR-related",
+  "relationshipType": "related",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Side-Lying_Floor_Stretch",
+  "toExerciseTemplateId": "Latissimus_Dorsi-SMR"
+}

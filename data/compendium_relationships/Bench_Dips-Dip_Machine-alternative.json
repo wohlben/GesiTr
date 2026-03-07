@@ -1,0 +1,10 @@
+{
+  "id": "Bench_Dips-Dip_Machine-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Bench_Dips",
+  "toExerciseTemplateId": "Dip_Machine"
+}

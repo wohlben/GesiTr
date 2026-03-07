@@ -1,0 +1,10 @@
+{
+  "id": "Isometric_Chest_Squeezes-Cable_Crossover-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": "Both involve bringing arms together in front of chest for pec contraction",
+  "createdBy": "system",
+  "createdAt": 1729954800,
+  "fromExerciseTemplateId": "Isometric_Chest_Squeezes",
+  "toExerciseTemplateId": "Cable_Crossover"
+}

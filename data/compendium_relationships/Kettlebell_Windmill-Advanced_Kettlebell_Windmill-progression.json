@@ -1,0 +1,10 @@
+{
+  "id": "Kettlebell_Windmill-Advanced_Kettlebell_Windmill-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760887364,
+  "fromExerciseTemplateId": "Kettlebell_Windmill",
+  "toExerciseTemplateId": "Advanced_Kettlebell_Windmill"
+}

@@ -1,0 +1,46 @@
+{
+  "name": "Kettlebell One-Legged Deadlift",
+  "slug": "kettlebell-one-legged-deadlift",
+  "type": "STRENGTH",
+  "force": [
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "HAMSTRINGS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "LOWER_BACK"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.2,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Single-leg Romanian deadlift with kettlebell, balancing on one leg while hinging at hip.",
+  "instructions": [
+    "Hold a kettlebell by the handle in one hand. Stand on one leg, on the same side that you hold the kettlebell.",
+    "Keeping that knee slightly bent, perform a stiff legged deadlift by bending at the hip, extending your free leg behind you for balance.",
+    "Continue lowering the kettlebell until you are parallel to the ground, and then return to the upright position."
+  ],
+  "images": [
+    "/img/exercises/Kettlebell_One-Legged_Deadlift/0.jpg",
+    "/img/exercises/Kettlebell_One-Legged_Deadlift/1.jpg"
+  ],
+  "alternativeNames": [
+    "KB One-Legged Deadlift",
+    "Kettlebell One Legged Deadlift",
+    "Kettlebell Single Legged Deadlift"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Kettlebell_One-Legged_Deadlift",
+  "equipmentIds": [
+    "kettlebell"
+  ]
+}

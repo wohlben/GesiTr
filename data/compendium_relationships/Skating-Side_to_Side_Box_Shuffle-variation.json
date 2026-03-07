@@ -1,0 +1,10 @@
+{
+  "id": "Skating-Side_to_Side_Box_Shuffle-variation",
+  "relationshipType": "variation",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Skating",
+  "toExerciseTemplateId": "Side_to_Side_Box_Shuffle"
+}

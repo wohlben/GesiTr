@@ -1,0 +1,10 @@
+{
+  "id": "Bench_Press_with_Chains-Barbell_Bench_Press_-_Medium_Grip-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Bench_Press_with_Chains",
+  "toExerciseTemplateId": "Barbell_Bench_Press_-_Medium_Grip"
+}

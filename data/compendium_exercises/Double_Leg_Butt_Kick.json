@@ -1,0 +1,45 @@
+{
+  "name": "Double Leg Butt Kick",
+  "slug": "double-leg-butt-kick",
+  "type": "CARDIO",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Plyometric jump tucking both heels to buttocks at peak, explosive leg power and coordination drill.",
+  "instructions": [
+    "Begin standing with your knees slightly bent.",
+    "Quickly squat a short distance, flexing the hips and knees, and immediately extend to jump for maximum vertical height.",
+    "As you go up, tuck your heels by flexing the knees, attempting to touch the buttocks.",
+    "Finish the motion by landing with the knees only partially bent, using your legs to absorb the impact."
+  ],
+  "images": [
+    "/img/exercises/Double_Leg_Butt_Kick/0.jpg",
+    "/img/exercises/Double_Leg_Butt_Kick/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Double_Leg_Butt_Kick",
+  "equipmentIds": []
+}

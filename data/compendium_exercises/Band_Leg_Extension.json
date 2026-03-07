@@ -1,0 +1,44 @@
+{
+  "name": "Band Leg Extension",
+  "slug": "band-leg-extension",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Leg extension using resistance band, extending leg against band resistance to isolate quadriceps.",
+  "instructions": [
+    "Attach a resistance band to a sturdy anchor point behind you at floor level.",
+    "Sit on a chair or bench and loop the band around one ankle. The band should be behind you, creating resistance when you extend your leg forward.",
+    "Position yourself so that your knee is at a 90-degree angle when starting. Hold onto the sides of the chair for stability. This will be your starting position.",
+    "Using your quadriceps, extend your leg forward until it is straight, exhaling as you perform this motion. Keep the rest of your body stationary.",
+    "Pause briefly at the fully extended position, squeezing your quadriceps.",
+    "Slowly return your leg to the starting position as you inhale, maintaining control against the band resistance.",
+    "Repeat for the recommended amount of repetitions, then switch legs."
+  ],
+  "images": [],
+  "alternativeNames": [
+    "Resistance Band Leg Extension",
+    "Banded Leg Extension"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "dev-user",
+  "createdAt": 1761415419,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Band_Leg_Extension",
+  "equipmentIds": [
+    "resistance-band"
+  ]
+}

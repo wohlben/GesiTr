@@ -1,0 +1,10 @@
+{
+  "id": "Alternate_Hammer_Curl-Hammer_Curls-similar",
+  "relationshipType": "similar",
+  "strength": 0.95,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Alternate_Hammer_Curl",
+  "toExerciseTemplateId": "Hammer_Curls"
+}

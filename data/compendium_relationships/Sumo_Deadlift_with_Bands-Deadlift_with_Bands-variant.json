@@ -1,0 +1,10 @@
+{
+  "id": "Sumo_Deadlift_with_Bands-Deadlift_with_Bands-variant",
+  "relationshipType": "variant",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Sumo_Deadlift_with_Bands",
+  "toExerciseTemplateId": "Deadlift_with_Bands"
+}

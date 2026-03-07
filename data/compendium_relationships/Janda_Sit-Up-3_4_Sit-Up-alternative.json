@@ -1,0 +1,10 @@
+{
+  "id": "Janda_Sit-Up-3_4_Sit-Up-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Janda_Sit-Up",
+  "toExerciseTemplateId": "3_4_Sit-Up"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Hyperextension-Flutter_Kicks-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730080800,
+  "fromExerciseTemplateId": "Reverse_Hyperextension",
+  "toExerciseTemplateId": "Flutter_Kicks"
+}

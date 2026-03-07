@@ -1,0 +1,10 @@
+{
+  "id": "Jefferson_Squats-Wide_Stance_Barbell_Squat-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499591,
+  "fromExerciseTemplateId": "Jefferson_Squats",
+  "toExerciseTemplateId": "Wide_Stance_Barbell_Squat"
+}

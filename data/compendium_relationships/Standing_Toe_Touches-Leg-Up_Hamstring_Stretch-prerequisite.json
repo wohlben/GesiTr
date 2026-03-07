@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Toe_Touches-Leg-Up_Hamstring_Stretch-prerequisite",
+  "relationshipType": "prerequisite",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Standing_Toe_Touches",
+  "toExerciseTemplateId": "Leg-Up_Hamstring_Stretch"
+}

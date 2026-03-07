@@ -1,0 +1,45 @@
+{
+  "name": "Stride Jump Crossover",
+  "slug": "stride-jump-crossover",
+  "type": "CARDIO",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Bounding stride jump crossing over midline, lateral component to forward bound.",
+  "instructions": [
+    "Stand to the side of a box with your inside foot on top of it, close to the edge.",
+    "Begin by swinging the arms upward as you push through the top leg, jumping upward as high as possible. Attempt to drive the opposite knee upward.",
+    "Land in the opposite position that you started, on the opposite side of the box. The foot that was initially on the box will now be on the ground, with the opposite foot now on the box.",
+    "Repeat the movement, crossing back over to the other side."
+  ],
+  "images": [
+    "/img/exercises/Stride_Jump_Crossover/0.jpg",
+    "/img/exercises/Stride_Jump_Crossover/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Stride_Jump_Crossover",
+  "equipmentIds": []
+}

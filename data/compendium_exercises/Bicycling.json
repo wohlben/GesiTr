@@ -1,0 +1,40 @@
+{
+  "name": "Bicycling",
+  "slug": "bicycling",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "BICEPS"
+  ],
+  "secondaryMuscles": [
+    "FOREARMS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Concentration curl isolating biceps with strict form and mind-muscle connection",
+  "instructions": [
+    "To begin, seat yourself on the bike and adjust the seat to your height."
+  ],
+  "images": [
+    "/img/exercises/Bicycling/0.jpg",
+    "/img/exercises/Bicycling/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Bicycling",
+  "equipmentIds": []
+}

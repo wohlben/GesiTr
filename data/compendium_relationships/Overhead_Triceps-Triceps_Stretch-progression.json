@@ -1,0 +1,10 @@
+{
+  "id": "Overhead_Triceps-Triceps_Stretch-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": "Overhead Triceps adds partner resistance and assistance to basic triceps stretch movement",
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Overhead_Triceps",
+  "toExerciseTemplateId": "Triceps_Stretch"
+}

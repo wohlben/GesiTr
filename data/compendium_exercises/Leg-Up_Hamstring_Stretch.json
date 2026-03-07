@@ -1,0 +1,44 @@
+{
+  "name": "Leg-Up Hamstring Stretch",
+  "slug": "leg-up-hamstring-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "HAMSTRINGS"
+  ],
+  "secondaryMuscles": [
+    "LOWER_BACK"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Hamstring stretch performed lying down with one leg raised up, often using a strap or band to assist.",
+  "instructions": [
+    "Lie flat on your back, bend one knee, and put that foot flat on the floor to stabilize your spine.",
+    "Extend the other leg in the air. If you're tight, you wont be able to straighten it. That's okay. Extend the knee so that the sole of the lifted foot faces the ceiling (or as close as you can get it).",
+    "Slowly straighten the legs as much as possible and then pull the leg toward your nose. Switch sides."
+  ],
+  "images": [
+    "/img/exercises/Leg-Up_Hamstring_Stretch/0.jpg",
+    "/img/exercises/Leg-Up_Hamstring_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Leg Up Hamstring Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Leg-Up_Hamstring_Stretch",
+  "equipmentIds": [
+    "resistance-band",
+    "suspension-trainer"
+  ]
+}

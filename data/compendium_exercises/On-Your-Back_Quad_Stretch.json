@@ -1,0 +1,42 @@
+{
+  "name": "On-Your-Back Quad Stretch",
+  "slug": "on-your-back-quad-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Quadriceps stretch performed lying on back, pulling knee toward chest while holding opposite leg extended.",
+  "instructions": [
+    "Lie on a flat bench or step, and hang one leg and arm over the side.",
+    "Bend the knee and hold the top of the foot. As you do this, be careful not to arch your lower back.",
+    "Pull the belly button to the spine to stay in neutral. Press your foot down and into your hand. To add the hip stretch, lift the hip of the leg you're holding up toward the ceiling.",
+    "Switch sides."
+  ],
+  "images": [
+    "/img/exercises/On-Your-Back_Quad_Stretch/0.jpg",
+    "/img/exercises/On-Your-Back_Quad_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "On Your Back Quad Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "On-Your-Back_Quad_Stretch",
+  "equipmentIds": [
+    "bench"
+  ]
+}

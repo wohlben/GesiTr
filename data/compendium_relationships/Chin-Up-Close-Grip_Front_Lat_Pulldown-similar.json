@@ -1,0 +1,10 @@
+{
+  "id": "Chin-Up-Close-Grip_Front_Lat_Pulldown-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729931400,
+  "fromExerciseTemplateId": "Chin-Up",
+  "toExerciseTemplateId": "Close-Grip_Front_Lat_Pulldown"
+}

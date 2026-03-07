@@ -1,0 +1,10 @@
+{
+  "id": "Front_Barbell_Squat-Barbell_Hack_Squat-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Front_Barbell_Squat",
+  "toExerciseTemplateId": "Barbell_Hack_Squat"
+}

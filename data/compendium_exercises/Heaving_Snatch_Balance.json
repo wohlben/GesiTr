@@ -1,0 +1,45 @@
+{
+  "name": "Heaving Snatch Balance",
+  "slug": "heaving-snatch-balance",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "QUADS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Olympic drill aggressively driving under bar in overhead squat catch, practicing explosive snatch receiving.",
+  "instructions": [
+    "This drill helps you learn the snatch. Begin by holding a light weight across the back of the shoulders. Your feet should be slightly wider than hip width apart with the feet turned out, the same position that you would perform a squat with.",
+    "Begin by dipping with the knees slightly, and popping back up to briefly unload the bar. Drive yourself underneath the bar, elevating it overhead as you descend into a full squat.",
+    "Return to a standing position."
+  ],
+  "images": [
+    "/img/exercises/Heaving_Snatch_Balance/0.jpg",
+    "/img/exercises/Heaving_Snatch_Balance/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Heaving_Snatch_Balance",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Guillotine_Bench_Press-Dumbbell_Bench_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Barbell_Guillotine_Bench_Press",
+  "toExerciseTemplateId": "Dumbbell_Bench_Press"
+}

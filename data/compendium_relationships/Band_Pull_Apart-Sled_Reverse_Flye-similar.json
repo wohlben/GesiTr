@@ -1,0 +1,10 @@
+{
+  "id": "Band_Pull_Apart-Sled_Reverse_Flye-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Band_Pull_Apart",
+  "toExerciseTemplateId": "Sled_Reverse_Flye"
+}

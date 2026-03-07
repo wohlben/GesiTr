@@ -1,0 +1,10 @@
+{
+  "id": "Bosu_Ball_Cable_Crunch_With_Side_Bends-Kneeling_Cable_Crunch_With_Alternating_Oblique_Twists-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Bosu_Ball_Cable_Crunch_With_Side_Bends",
+  "toExerciseTemplateId": "Kneeling_Cable_Crunch_With_Alternating_Oblique_Twists"
+}

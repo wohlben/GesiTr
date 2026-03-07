@@ -1,0 +1,10 @@
+{
+  "id": "Palms-Down_Wrist_Curl_Over_A_Bench-Palms-Up_Barbell_Wrist_Curl_Over_A_Bench-antagonist",
+  "relationshipType": "antagonist",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479701,
+  "fromExerciseTemplateId": "Palms-Down_Wrist_Curl_Over_A_Bench",
+  "toExerciseTemplateId": "Palms-Up_Barbell_Wrist_Curl_Over_A_Bench"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Standing_One-Arm_Cable_Curl-Standing_Biceps_Cable_Curl-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761548543,
+  "fromExerciseTemplateId": "Standing_One-Arm_Cable_Curl",
+  "toExerciseTemplateId": "Standing_Biceps_Cable_Curl"
+}

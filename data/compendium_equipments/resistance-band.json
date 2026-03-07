@@ -1,0 +1,8 @@
+{
+  "name": "resistance-band",
+  "displayName": "Resistance Band",
+  "description": "An elastic band providing variable resistance for strength and mobility work.",
+  "category": "accessories",
+  "imageUrl": null,
+  "templateId": "resistance-band"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Side_Jackknife-Air_Bike-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Side_Jackknife",
+  "toExerciseTemplateId": "Air_Bike"
+}

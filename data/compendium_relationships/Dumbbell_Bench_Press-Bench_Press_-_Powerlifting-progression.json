@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Bench_Press-Bench_Press_-_Powerlifting-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Bench_Press",
+  "toExerciseTemplateId": "Bench_Press_-_Powerlifting"
+}

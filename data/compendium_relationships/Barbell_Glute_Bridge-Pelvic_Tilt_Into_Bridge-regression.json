@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Glute_Bridge-Pelvic_Tilt_Into_Bridge-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Barbell_Glute_Bridge",
+  "toExerciseTemplateId": "Pelvic_Tilt_Into_Bridge"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Alternate_Hammer_Curl-Incline_Hammer_Curls-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Alternate_Hammer_Curl",
+  "toExerciseTemplateId": "Incline_Hammer_Curls"
+}

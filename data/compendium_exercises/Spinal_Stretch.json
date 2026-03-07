@@ -1,0 +1,40 @@
+{
+  "name": "Spinal Stretch",
+  "slug": "spinal-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "LOWER_BACK"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Spine flexibility stretch moving through flexion and extension to mobilize vertebrae.",
+  "instructions": [
+    "Sit in a chair so your back is straight and your feet planted on the floor.",
+    "Interlace your fingers behind your head, elbows out and your chin down.",
+    "Twist your upper body to one side about 3 times as far as you can. Then lean forward and twist your torso to reach your elbow to the floor on the inside of your knee.",
+    "Return to upright position and then repeat for your other side."
+  ],
+  "images": [
+    "/img/exercises/Spinal_Stretch/0.jpg",
+    "/img/exercises/Spinal_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Spinal-Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Spinal_Stretch",
+  "equipmentIds": []
+}

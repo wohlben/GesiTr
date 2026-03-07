@@ -1,0 +1,10 @@
+{
+  "id": "Romanian_Deadlift-Romanian_Deadlift_from_Deficit-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Romanian_Deadlift",
+  "toExerciseTemplateId": "Romanian_Deadlift_from_Deficit"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Plank-Pyramid-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Plank",
+  "toExerciseTemplateId": "Pyramid"
+}

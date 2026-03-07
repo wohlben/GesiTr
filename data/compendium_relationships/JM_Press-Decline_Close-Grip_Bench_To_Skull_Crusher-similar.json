@@ -1,0 +1,10 @@
+{
+  "id": "JM_Press-Decline_Close-Grip_Bench_To_Skull_Crusher-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499467,
+  "fromExerciseTemplateId": "JM_Press",
+  "toExerciseTemplateId": "Decline_Close-Grip_Bench_To_Skull_Crusher"
+}

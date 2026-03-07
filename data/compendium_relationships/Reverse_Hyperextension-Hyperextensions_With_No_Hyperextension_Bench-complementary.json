@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Hyperextension-Hyperextensions_With_No_Hyperextension_Bench-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Reverse_Hyperextension",
+  "toExerciseTemplateId": "Hyperextensions_With_No_Hyperextension_Bench"
+}

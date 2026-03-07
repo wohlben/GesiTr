@@ -1,0 +1,10 @@
+{
+  "id": "Jerk_Dip_Squat-Jerk_Balance-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499778,
+  "fromExerciseTemplateId": "Jerk_Dip_Squat",
+  "toExerciseTemplateId": "Jerk_Balance"
+}

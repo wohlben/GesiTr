@@ -1,0 +1,10 @@
+{
+  "id": "Smith_Machine_Upright_Row-Smith_Machine_One-Arm_Upright_Row-variation",
+  "relationshipType": "variation",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Smith_Machine_Upright_Row",
+  "toExerciseTemplateId": "Smith_Machine_One-Arm_Upright_Row"
+}

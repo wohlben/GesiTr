@@ -1,0 +1,10 @@
+{
+  "id": "Kneeling_Hip_Flexor-One_Half_Locust-alternative",
+  "relationshipType": "alternative",
+  "strength": null,
+  "description": "Both exercises stretch the hip flexors, with Kneeling Hip Flexor performed in a kneeling lunge position for easier accessibility and One Half Locust performed lying prone while holding the foot",
+  "createdBy": "system",
+  "createdAt": 1761024000,
+  "fromExerciseTemplateId": "Kneeling_Hip_Flexor",
+  "toExerciseTemplateId": "One_Half_Locust"
+}

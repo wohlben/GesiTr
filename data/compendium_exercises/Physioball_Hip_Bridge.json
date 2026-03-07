@@ -1,0 +1,42 @@
+{
+  "name": "Physioball Hip Bridge",
+  "slug": "physioball-hip-bridge",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "HAMSTRINGS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Hip bridge performed with upper back on physioball (exercise ball), raising hips to work glutes and hamstrings.",
+  "instructions": [
+    "Lay on a ball so that your upper back is on the ball with your hips unsupported. Both feet should be flat on the floor, hip width apart or wider. This will be your starting position.",
+    "Begin by extending the hips using your glutes and hamstrings, raising your hips upward as you bridge.",
+    "Pause at the top of the motion and return to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Physioball_Hip_Bridge/0.jpg",
+    "/img/exercises/Physioball_Hip_Bridge/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Physioball_Hip_Bridge",
+  "equipmentIds": [
+    "stability-ball"
+  ]
+}

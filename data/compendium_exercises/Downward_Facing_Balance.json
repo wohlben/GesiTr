@@ -1,0 +1,39 @@
+{
+  "name": "Downward Facing Balance",
+  "slug": "downward-facing-balance",
+  "type": "STRENGTH",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "GLUTES"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Strength training exercise targeting primary muscle groups",
+  "instructions": [
+    "Lie facedown on top of an exercise ball.",
+    "While resting on your stomach on the ball, walk your hands forward along the floor and lift your legs, extending your elbows and knees."
+  ],
+  "images": [
+    "/img/exercises/Downward_Facing_Balance/0.jpg",
+    "/img/exercises/Downward_Facing_Balance/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Downward_Facing_Balance",
+  "equipmentIds": [
+    "stability-ball"
+  ]
+}

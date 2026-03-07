@@ -1,0 +1,52 @@
+{
+  "name": "Hang Clean",
+  "slug": "hang-clean",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "TRAPS",
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "FRONT_DELTS",
+    "LOWER_BACK"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Olympic clean from hang position (above knees), explosive hip extension to rack bar on shoulders.",
+  "instructions": [
+    "Begin with a shoulder width, double overhand or hook grip, with the bar hanging at the mid thigh position. Your back should be straight and inclined slightly forward.",
+    "Begin by aggressively extending through the hips, knees and ankles, driving the weight upward. As you do so, shrug your shoulders towards your ears.",
+    "Immediately recover by driving through the heels, keeping the torso upright and elbows up. Continue until you have risen to a standing position."
+  ],
+  "images": [
+    "/img/exercises/Hang_Clean/0.jpg",
+    "/img/exercises/Hang_Clean/1.jpg"
+  ],
+  "alternativeNames": [
+    "Barbell Clean",
+    "Hang-Clean",
+    "Power Clean"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Hang_Clean",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

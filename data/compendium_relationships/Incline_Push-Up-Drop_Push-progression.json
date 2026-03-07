@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Push-Up-Drop_Push-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Incline_Push-Up",
+  "toExerciseTemplateId": "Drop_Push"
+}

@@ -1,0 +1,43 @@
+{
+  "name": "Balance Board",
+  "slug": "balance-board",
+  "type": "STRENGTH",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "CALVES"
+  ],
+  "secondaryMuscles": [
+    "ABS",
+    "QUADS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Balance and proprioception exercise using unstable surface to strengthen ankle stabilizers and improve coordination",
+  "instructions": [
+    "Place a balance board in front of you.",
+    "Stand up on it and try to balance yourself.",
+    "Hold the balance for as long as desired."
+  ],
+  "images": [
+    "/img/exercises/Balance_Board/0.jpg",
+    "/img/exercises/Balance_Board/1.jpg"
+  ],
+  "alternativeNames": [
+    "Balance-Board"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Balance_Board",
+  "equipmentIds": []
+}

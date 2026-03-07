@@ -1,0 +1,44 @@
+{
+  "name": "Suspended Reverse Crunch",
+  "slug": "suspended-reverse-crunch",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.9,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Reverse crunch using suspension trainer with feet in straps, pulling knees toward chest.",
+  "instructions": [
+    "Secure a set of suspension straps with the handles hanging about a foot off of the ground. Move yourself into a pushup plank position facing away from the rack.",
+    "Place your feet into the handles. You should maintain a straight posture, not allowing the hips to sag. This will be your starting position.",
+    "Begin the movement by flexing the knees and hips, drawing the knees to your torso. As you do so, anteriorly tilt your pelvis, allowing your spine to flex.",
+    "At the top of the controlled motion, return to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Suspended_Reverse_Crunch/0.jpg",
+    "/img/exercises/Suspended_Reverse_Crunch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Ab Crunch",
+    "Abdominal Crunch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Suspended_Reverse_Crunch",
+  "equipmentIds": [
+    "suspension-trainer"
+  ]
+}

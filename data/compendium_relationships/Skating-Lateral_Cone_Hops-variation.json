@@ -1,0 +1,10 @@
+{
+  "id": "Skating-Lateral_Cone_Hops-variation",
+  "relationshipType": "variation",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Skating",
+  "toExerciseTemplateId": "Lateral_Cone_Hops"
+}

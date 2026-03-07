@@ -1,0 +1,10 @@
+{
+  "id": "Arm_Circles-Band_Pull_Apart-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Arm_Circles",
+  "toExerciseTemplateId": "Band_Pull_Apart"
+}

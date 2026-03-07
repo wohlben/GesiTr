@@ -1,0 +1,10 @@
+{
+  "id": "Wide-Grip_Decline_Barbell_Bench_Press-Smith_Machine_Decline_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761551318,
+  "fromExerciseTemplateId": "Wide-Grip_Decline_Barbell_Bench_Press",
+  "toExerciseTemplateId": "Smith_Machine_Decline_Press"
+}

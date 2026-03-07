@@ -1,0 +1,10 @@
+{
+  "id": "Leverage_Chest_Press-Dumbbell_Bench_Press-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730051040,
+  "fromExerciseTemplateId": "Leverage_Chest_Press",
+  "toExerciseTemplateId": "Dumbbell_Bench_Press"
+}

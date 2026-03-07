@@ -1,0 +1,10 @@
+{
+  "id": "Resistance_Band_Squat-Banded_Barbell_Squat-related",
+  "relationshipType": "related",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Resistance_Band_Squat",
+  "toExerciseTemplateId": "Banded_Barbell_Squat"
+}

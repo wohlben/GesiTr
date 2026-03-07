@@ -1,0 +1,10 @@
+{
+  "id": "Calf-Machine_Shoulder_Shrug-Barbell_Shrug-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Calf-Machine_Shoulder_Shrug",
+  "toExerciseTemplateId": "Barbell_Shrug"
+}

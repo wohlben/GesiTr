@@ -1,0 +1,10 @@
+{
+  "id": "Bench_Dips-Tricep_Dumbbell_Kickback-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Bench_Dips",
+  "toExerciseTemplateId": "Tricep_Dumbbell_Kickback"
+}

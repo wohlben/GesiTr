@@ -1,0 +1,10 @@
+{
+  "id": "Front_Barbell_Squat-Frankenstein_Squat-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730009000,
+  "fromExerciseTemplateId": "Front_Barbell_Squat",
+  "toExerciseTemplateId": "Frankenstein_Squat"
+}

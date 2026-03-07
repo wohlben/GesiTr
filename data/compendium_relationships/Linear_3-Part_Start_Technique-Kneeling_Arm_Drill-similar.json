@@ -1,0 +1,10 @@
+{
+  "id": "Linear_3-Part_Start_Technique-Kneeling_Arm_Drill-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Linear_3-Part_Start_Technique",
+  "toExerciseTemplateId": "Kneeling_Arm_Drill"
+}

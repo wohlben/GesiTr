@@ -1,0 +1,10 @@
+{
+  "id": "Lunge_Pass_Through-Crossover_Reverse_Lunge-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Lunge_Pass_Through",
+  "toExerciseTemplateId": "Crossover_Reverse_Lunge"
+}

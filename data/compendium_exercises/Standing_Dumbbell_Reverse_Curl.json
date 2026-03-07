@@ -1,0 +1,46 @@
+{
+  "name": "Standing Dumbbell Reverse Curl",
+  "slug": "standing-dumbbell-reverse-curl",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "BICEPS"
+  ],
+  "secondaryMuscles": [
+    "FOREARMS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Standing reverse grip dumbbell curl with overhand grip, targeting biceps and forearms.",
+  "instructions": [
+    "To begin, stand straight with a dumbbell in each hand using a pronated grip (palms facing down). Your arms should be fully extended while your feet are shoulder width apart from each other. This is the starting position.",
+    "While holding the upper arms stationary, curl the weights while contracting the biceps as you breathe out. Only the forearms should move. Continue the movement until your biceps are fully contracted and the dumbbells are at shoulder level. Hold the contracted position for a second as you squeeze the muscle.",
+    "Slowly begin to bring the dumbbells back to starting position as your breathe in.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Standing_Dumbbell_Reverse_Curl/0.jpg",
+    "/img/exercises/Standing_Dumbbell_Reverse_Curl/1.jpg"
+  ],
+  "alternativeNames": [
+    "Standing DB Reverse Curl",
+    "Standing Dumbbell Reverse Curl"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Standing_Dumbbell_Reverse_Curl",
+  "equipmentIds": [
+    "2x dumbbell"
+  ]
+}

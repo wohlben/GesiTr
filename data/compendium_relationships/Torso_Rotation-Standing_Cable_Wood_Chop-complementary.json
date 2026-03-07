@@ -1,0 +1,10 @@
+{
+  "id": "Torso_Rotation-Standing_Cable_Wood_Chop-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Torso_Rotation",
+  "toExerciseTemplateId": "Standing_Cable_Wood_Chop"
+}

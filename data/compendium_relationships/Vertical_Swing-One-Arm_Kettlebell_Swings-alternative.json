@@ -1,0 +1,10 @@
+{
+  "id": "Vertical_Swing-One-Arm_Kettlebell_Swings-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Vertical_Swing",
+  "toExerciseTemplateId": "One-Arm_Kettlebell_Swings"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Flyes-Bodyweight_Flyes-regression",
+  "relationshipType": "regression",
+  "strength": 0.5,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476339,
+  "fromExerciseTemplateId": "Dumbbell_Flyes",
+  "toExerciseTemplateId": "Bodyweight_Flyes"
+}

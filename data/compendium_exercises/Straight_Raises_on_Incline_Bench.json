@@ -1,0 +1,42 @@
+{
+  "name": "Straight Raises on Incline Bench",
+  "slug": "straight-raises-on-incline-bench",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Front raise on incline bench with arms straight, isolating anterior deltoid from supported position.",
+  "instructions": [
+    "Place a bar on the ground behind the head of an incline bench.",
+    "Lay on the bench face down. With a pronated grip, pick the barbell up from the floor, keeping your arms straight. Allow the bar to hang straight down. This will be your starting position.",
+    "To begin, raise the barbell out in front of your head while keeping your arms extended.",
+    "Return to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Straight_Raises_on_Incline_Bench/0.jpg",
+    "/img/exercises/Straight_Raises_on_Incline_Bench/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Straight_Raises_on_Incline_Bench",
+  "equipmentIds": [
+    "barbell",
+    "incline-bench"
+  ]
+}

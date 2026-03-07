@@ -1,0 +1,10 @@
+{
+  "id": "Preacher_Curl-Reverse_Barbell_Preacher_Curls-variation",
+  "relationshipType": "variation",
+  "strength": 0.9,
+  "description": "Same preacher bench setup with supinated grip instead of pronated (reverse) grip",
+  "createdBy": "system",
+  "createdAt": 1761543970,
+  "fromExerciseTemplateId": "Preacher_Curl",
+  "toExerciseTemplateId": "Reverse_Barbell_Preacher_Curls"
+}

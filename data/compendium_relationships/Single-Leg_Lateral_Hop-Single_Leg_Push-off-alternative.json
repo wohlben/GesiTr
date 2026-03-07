@@ -1,0 +1,10 @@
+{
+  "id": "Single-Leg_Lateral_Hop-Single_Leg_Push-off-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Single-Leg_Lateral_Hop",
+  "toExerciseTemplateId": "Single_Leg_Push-off"
+}

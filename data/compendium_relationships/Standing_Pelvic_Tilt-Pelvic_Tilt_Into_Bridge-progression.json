@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Pelvic_Tilt-Pelvic_Tilt_Into_Bridge-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Pelvic_Tilt",
+  "toExerciseTemplateId": "Pelvic_Tilt_Into_Bridge"
+}

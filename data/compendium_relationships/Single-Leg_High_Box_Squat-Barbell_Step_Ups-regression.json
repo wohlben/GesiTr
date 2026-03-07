@@ -1,0 +1,10 @@
+{
+  "id": "Single-Leg_High_Box_Squat-Barbell_Step_Ups-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Single-Leg_High_Box_Squat",
+  "toExerciseTemplateId": "Barbell_Step_Ups"
+}

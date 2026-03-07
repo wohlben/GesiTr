@@ -1,0 +1,10 @@
+{
+  "id": "Behind_Head_Chest_Stretch-Seated_Front_Deltoid-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Behind_Head_Chest_Stretch",
+  "toExerciseTemplateId": "Seated_Front_Deltoid"
+}

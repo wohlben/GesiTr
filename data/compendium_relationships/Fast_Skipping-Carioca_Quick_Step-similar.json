@@ -1,0 +1,10 @@
+{
+  "id": "Fast_Skipping-Carioca_Quick_Step-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Fast_Skipping",
+  "toExerciseTemplateId": "Carioca_Quick_Step"
+}

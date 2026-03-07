@@ -1,0 +1,10 @@
+{
+  "id": "Smith_Machine_Hang_Power_Clean-Hang_Clean_-_Below_the_Knees-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Smith_Machine_Hang_Power_Clean",
+  "toExerciseTemplateId": "Hang_Clean_-_Below_the_Knees"
+}

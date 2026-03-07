@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Curl-Preacher_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Barbell_Curl",
+  "toExerciseTemplateId": "Preacher_Curl"
+}

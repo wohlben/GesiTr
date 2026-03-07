@@ -1,0 +1,10 @@
+{
+  "id": "Middle_Back_Stretch-Side_Wrist_Pull-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Middle_Back_Stretch",
+  "toExerciseTemplateId": "Side_Wrist_Pull"
+}

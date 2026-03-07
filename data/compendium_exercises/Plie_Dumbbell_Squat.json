@@ -1,0 +1,48 @@
+{
+  "name": "Plie Dumbbell Squat",
+  "slug": "plie-dumbbell-squat",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "ADDUCTORS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.4,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Wide-stance squat (plie position) holding dumbbell between legs, emphasizing inner thighs and glutes.",
+  "instructions": [
+    "Hold a dumbbell at the base with both hands and stand straight up. Move your legs so that they are wider than shoulder width apart from each other with your knees slightly bent.",
+    "Your toes should be facing out. Note: Your arms should be stationary while performing the exercise. This is the starting position.",
+    "Slowly bend the knees and lower your legs until your thighs are parallel to the floor. Make sure to inhale as this is the eccentric part of the exercise.",
+    "Press mainly with the heel of the foot to bring the body back to the starting position while exhaling.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Plie_Dumbbell_Squat/0.jpg",
+    "/img/exercises/Plie_Dumbbell_Squat/1.jpg"
+  ],
+  "alternativeNames": [
+    "Plie DB Squat",
+    "Plie Dumbell Squat"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Plie_Dumbbell_Squat",
+  "equipmentIds": [
+    "2x dumbbell"
+  ]
+}

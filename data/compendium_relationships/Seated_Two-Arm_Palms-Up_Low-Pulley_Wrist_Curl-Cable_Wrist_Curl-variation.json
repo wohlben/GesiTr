@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Two-Arm_Palms-Up_Low-Pulley_Wrist_Curl-Cable_Wrist_Curl-variation",
+  "relationshipType": "variation",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479701,
+  "fromExerciseTemplateId": "Seated_Two-Arm_Palms-Up_Low-Pulley_Wrist_Curl",
+  "toExerciseTemplateId": "Cable_Wrist_Curl"
+}

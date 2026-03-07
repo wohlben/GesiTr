@@ -1,0 +1,10 @@
+{
+  "id": "Hurdle_Hops-Lateral_Cone_Hops-variation",
+  "relationshipType": "variation",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Hurdle_Hops",
+  "toExerciseTemplateId": "Lateral_Cone_Hops"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Leg_Extensions-Single-Leg_Leg_Extension-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464349,
+  "fromExerciseTemplateId": "Leg_Extensions",
+  "toExerciseTemplateId": "Single-Leg_Leg_Extension"
+}

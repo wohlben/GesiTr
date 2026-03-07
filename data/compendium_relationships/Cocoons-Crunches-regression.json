@@ -1,0 +1,10 @@
+{
+  "id": "Cocoons-Crunches-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730009600,
+  "fromExerciseTemplateId": "Cocoons",
+  "toExerciseTemplateId": "Crunches"
+}

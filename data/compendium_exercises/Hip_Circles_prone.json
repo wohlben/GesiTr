@@ -1,0 +1,37 @@
+{
+  "name": "Hip Circles (prone)",
+  "slug": "hip-circles-prone",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "HIP_FLEXORS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Hip mobility exercise making circular motions with hips while in prone position.",
+  "instructions": [
+    "Position yourself on your hands and knees on the ground. Maintaining good posture, raise one bent knee off of the ground. This will be your starting position.",
+    "Keeping the knee in a bent position, rotate the femur in an arc, attempting to make a big circle with your knee.",
+    "Perform this slowly for a number of repetitions, and repeat on the other side."
+  ],
+  "images": [
+    "/img/exercises/Hip_Circles_prone/0.jpg",
+    "/img/exercises/Hip_Circles_prone/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Hip_Circles_prone",
+  "equipmentIds": []
+}

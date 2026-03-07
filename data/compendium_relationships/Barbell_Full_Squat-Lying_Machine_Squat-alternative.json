@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Full_Squat-Lying_Machine_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Barbell_Full_Squat",
+  "toExerciseTemplateId": "Lying_Machine_Squat"
+}

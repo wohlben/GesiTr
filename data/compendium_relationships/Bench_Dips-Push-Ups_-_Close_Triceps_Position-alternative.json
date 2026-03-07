@@ -1,0 +1,10 @@
+{
+  "id": "Bench_Dips-Push-Ups_-_Close_Triceps_Position-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Bench_Dips",
+  "toExerciseTemplateId": "Push-Ups_-_Close_Triceps_Position"
+}

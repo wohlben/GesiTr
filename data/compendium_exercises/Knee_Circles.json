@@ -1,0 +1,39 @@
+{
+  "name": "Knee Circles",
+  "slug": "knee-circles",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Knee mobility exercise making circular motions to warm up knee joints.",
+  "instructions": [
+    "Stand with your legs together and hands by your waist.",
+    "Now move your knees in a circular motion as you breathe normally.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Knee_Circles/0.jpg",
+    "/img/exercises/Knee_Circles/1.jpg"
+  ],
+  "alternativeNames": [
+    "Knee-Circles"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Knee_Circles",
+  "equipmentIds": []
+}

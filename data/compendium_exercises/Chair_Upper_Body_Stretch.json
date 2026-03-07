@@ -1,0 +1,41 @@
+{
+  "name": "Chair Upper Body Stretch",
+  "slug": "chair-upper-body-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "LATS",
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS",
+    "SIDE_DELTS",
+    "REAR_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Seated upper body stretch targeting the lats, chest, and shoulders through forward lean with arms extended",
+  "instructions": [
+    "Sit on the edge of a chair, gripping the back of it.",
+    "Straighten your arms, keeping your back straight, and pull your upper body forward so you feel a stretch. Hold for 20-30 seconds."
+  ],
+  "images": [
+    "/img/exercises/Chair_Upper_Body_Stretch/0.jpg",
+    "/img/exercises/Chair_Upper_Body_Stretch/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Chair_Upper_Body_Stretch",
+  "equipmentIds": []
+}

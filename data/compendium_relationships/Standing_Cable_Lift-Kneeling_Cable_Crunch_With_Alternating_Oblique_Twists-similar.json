@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Cable_Lift-Kneeling_Cable_Crunch_With_Alternating_Oblique_Twists-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730014800,
+  "fromExerciseTemplateId": "Standing_Cable_Lift",
+  "toExerciseTemplateId": "Kneeling_Cable_Crunch_With_Alternating_Oblique_Twists"
+}

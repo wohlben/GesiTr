@@ -1,0 +1,10 @@
+{
+  "id": "Good_Morning-Seated_Good_Mornings-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Good_Morning",
+  "toExerciseTemplateId": "Seated_Good_Mornings"
+}

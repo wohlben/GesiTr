@@ -1,0 +1,10 @@
+{
+  "id": "All_Fours_Quad_Stretch-Quad_Stretch-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "All_Fours_Quad_Stretch",
+  "toExerciseTemplateId": "Quad_Stretch"
+}

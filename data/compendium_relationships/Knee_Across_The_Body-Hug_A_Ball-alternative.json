@@ -1,0 +1,10 @@
+{
+  "id": "Knee_Across_The_Body-Hug_A_Ball-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498134,
+  "fromExerciseTemplateId": "Knee_Across_The_Body",
+  "toExerciseTemplateId": "Hug_A_Ball"
+}

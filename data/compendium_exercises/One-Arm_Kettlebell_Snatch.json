@@ -1,0 +1,52 @@
+{
+  "name": "One-Arm Kettlebell Snatch",
+  "slug": "one-arm-kettlebell-snatch",
+  "type": "STRENGTH",
+  "force": [
+    "PULL",
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "CALVES",
+    "GLUTES",
+    "HAMSTRINGS",
+    "LOWER_BACK",
+    "TRAPS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Single-arm kettlebell snatch from floor to overhead in one explosive movement using hip power.",
+  "instructions": [
+    "Place a kettlebell between your feet. Bend your knees and push your butt back to get in the proper starting position.",
+    "Look straight ahead and swing the kettlebell back between your legs.",
+    "Immediately reverse the direction and drive through with your hips and knees, accelerating the kettlebell upward. As the kettlebell rises to your shoulder rotate your hand and punch straight up, using momentum to receive the weight locked out overhead."
+  ],
+  "images": [
+    "/img/exercises/One-Arm_Kettlebell_Snatch/0.jpg",
+    "/img/exercises/One-Arm_Kettlebell_Snatch/1.jpg"
+  ],
+  "alternativeNames": [
+    "One Arm Kettlebell Snatch",
+    "One-Arm KB Snatch",
+    "Single Arm Kettlebell Snatch",
+    "Unilateral Kettlebell Snatch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "One-Arm_Kettlebell_Snatch",
+  "equipmentIds": [
+    "kettlebell"
+  ]
+}

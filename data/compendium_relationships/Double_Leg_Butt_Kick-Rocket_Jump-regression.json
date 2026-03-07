@@ -1,0 +1,10 @@
+{
+  "id": "Double_Leg_Butt_Kick-Rocket_Jump-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Double_Leg_Butt_Kick",
+  "toExerciseTemplateId": "Rocket_Jump"
+}

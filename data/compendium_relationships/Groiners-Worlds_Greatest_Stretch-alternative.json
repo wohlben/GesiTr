@@ -1,0 +1,10 @@
+{
+  "id": "Groiners-Worlds_Greatest_Stretch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496059,
+  "fromExerciseTemplateId": "Groiners",
+  "toExerciseTemplateId": "Worlds_Greatest_Stretch"
+}

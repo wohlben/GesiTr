@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Curls_Lying_Against_An_Incline-EZ-Bar_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Barbell_Curls_Lying_Against_An_Incline",
+  "toExerciseTemplateId": "EZ-Bar_Curl"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Kneeling_Arm_Drill-Carioca_Quick_Step-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Kneeling_Arm_Drill",
+  "toExerciseTemplateId": "Carioca_Quick_Step"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Shoulder_Stretch-Arm_Circles-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Shoulder_Stretch",
+  "toExerciseTemplateId": "Arm_Circles"
+}

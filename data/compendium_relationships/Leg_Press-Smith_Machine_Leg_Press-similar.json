@@ -1,0 +1,10 @@
+{
+  "id": "Leg_Press-Smith_Machine_Leg_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Leg_Press",
+  "toExerciseTemplateId": "Smith_Machine_Leg_Press"
+}

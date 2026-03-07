@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Guillotine_Bench_Press-Incline_Push-Up-regression",
+  "relationshipType": "regression",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Barbell_Guillotine_Bench_Press",
+  "toExerciseTemplateId": "Incline_Push-Up"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Decline_Push-Up-Handstand_Push-Ups-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Decline_Push-Up",
+  "toExerciseTemplateId": "Handstand_Push-Ups"
+}

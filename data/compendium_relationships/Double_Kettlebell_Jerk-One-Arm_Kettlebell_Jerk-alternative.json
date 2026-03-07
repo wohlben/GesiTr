@@ -1,0 +1,10 @@
+{
+  "id": "Double_Kettlebell_Jerk-One-Arm_Kettlebell_Jerk-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Double_Kettlebell_Jerk",
+  "toExerciseTemplateId": "One-Arm_Kettlebell_Jerk"
+}

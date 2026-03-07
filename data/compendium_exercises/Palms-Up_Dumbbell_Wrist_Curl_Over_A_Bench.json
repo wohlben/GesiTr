@@ -1,0 +1,48 @@
+{
+  "name": "Palms-Up Dumbbell Wrist Curl Over A Bench",
+  "slug": "palms-up-dumbbell-wrist-curl-over-a-bench",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "FOREARMS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Dumbbell wrist curl with palms up over bench, curling wrists to strengthen forearm flexors.",
+  "instructions": [
+    "Start out by placing two dumbbells on one side of a flat bench.",
+    "Kneel down on both of your knees so that your body is facing the flat bench.",
+    "Use your arms to grab both of the dumbbells with a supinated grip (palms up) and bring them up so that your forearms are resting against the flat bench. Your wrists should be hanging over the edge.",
+    "Start out by curling your wrist upwards and exhaling.",
+    "Slowly lower your wrists back down to the starting position while inhaling. Make sure to inhale during this part of the exercise.",
+    "Your forearms should be stationary as your wrist is the only movement needed to perform this exercise.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Palms-Up_Dumbbell_Wrist_Curl_Over_A_Bench/0.jpg",
+    "/img/exercises/Palms-Up_Dumbbell_Wrist_Curl_Over_A_Bench/1.jpg"
+  ],
+  "alternativeNames": [
+    "Palms Up Dumbbell Wrist Curl Over A Bench",
+    "Palms-Up DB Wrist Curl Over A Bench",
+    "Palms-Up Dumbell Wrist Curl Over A Bench"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Palms-Up_Dumbbell_Wrist_Curl_Over_A_Bench",
+  "equipmentIds": [
+    "2x dumbbell"
+  ]
+}

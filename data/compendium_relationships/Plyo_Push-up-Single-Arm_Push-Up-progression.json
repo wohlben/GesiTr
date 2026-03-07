@@ -1,0 +1,10 @@
+{
+  "id": "Plyo_Push-up-Single-Arm_Push-Up-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Plyo_Push-up",
+  "toExerciseTemplateId": "Single-Arm_Push-Up"
+}

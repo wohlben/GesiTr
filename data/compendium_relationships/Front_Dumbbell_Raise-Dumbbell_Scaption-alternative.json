@@ -1,0 +1,10 @@
+{
+  "id": "Front_Dumbbell_Raise-Dumbbell_Scaption-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Front_Dumbbell_Raise",
+  "toExerciseTemplateId": "Dumbbell_Scaption"
+}

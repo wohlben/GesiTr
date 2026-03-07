@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Deadlift-Deadlift_with_Chains-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Barbell_Deadlift",
+  "toExerciseTemplateId": "Deadlift_with_Chains"
+}

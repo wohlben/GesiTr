@@ -1,0 +1,10 @@
+{
+  "id": "Front_Box_Jump-Bench_Sprint-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Front_Box_Jump",
+  "toExerciseTemplateId": "Bench_Sprint"
+}

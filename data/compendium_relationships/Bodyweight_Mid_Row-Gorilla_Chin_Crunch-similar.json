@@ -1,0 +1,10 @@
+{
+  "id": "Bodyweight_Mid_Row-Gorilla_Chin_Crunch-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Bodyweight_Mid_Row",
+  "toExerciseTemplateId": "Gorilla_Chin_Crunch"
+}

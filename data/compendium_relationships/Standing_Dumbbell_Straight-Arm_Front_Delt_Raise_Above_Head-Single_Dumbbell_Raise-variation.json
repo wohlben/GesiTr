@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Dumbbell_Straight-Arm_Front_Delt_Raise_Above_Head-Single_Dumbbell_Raise-variation",
+  "relationshipType": "variation",
+  "strength": 0.7,
+  "description": "Shortened range of motion variation that stops at shoulder height rather than continuing overhead, providing isolated front deltoid work without overhead stability requirement.",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Dumbbell_Straight-Arm_Front_Delt_Raise_Above_Head",
+  "toExerciseTemplateId": "Single_Dumbbell_Raise"
+}

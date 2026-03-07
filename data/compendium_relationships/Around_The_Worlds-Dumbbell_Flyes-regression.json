@@ -1,0 +1,10 @@
+{
+  "id": "Around_The_Worlds-Dumbbell_Flyes-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Around_The_Worlds",
+  "toExerciseTemplateId": "Dumbbell_Flyes"
+}

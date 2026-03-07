@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Calf_Raises-Balance_Board-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464222,
+  "fromExerciseTemplateId": "Standing_Calf_Raises",
+  "toExerciseTemplateId": "Balance_Board"
+}

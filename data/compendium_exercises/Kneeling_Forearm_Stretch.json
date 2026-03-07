@@ -1,0 +1,36 @@
+{
+  "name": "Kneeling Forearm Stretch",
+  "slug": "kneeling-forearm-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "FOREARMS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Kneeling stretch extending wrists to stretch forearm flexors and wrist extensors.",
+  "instructions": [
+    "Start by kneeling on a mat with your palms flat and your fingers pointing back toward your knees.",
+    "Slowly lean back keeping your palms flat on the floor until you feel a stretch in your wrists and forearms. Hold for 20-30 seconds."
+  ],
+  "images": [
+    "/img/exercises/Kneeling_Forearm_Stretch/0.jpg",
+    "/img/exercises/Kneeling_Forearm_Stretch/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Kneeling_Forearm_Stretch",
+  "equipmentIds": []
+}

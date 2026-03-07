@@ -1,0 +1,10 @@
+{
+  "id": "Hip_Lift_with_Band-Butt_Lift_Bridge-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464685,
+  "fromExerciseTemplateId": "Hip_Lift_with_Band",
+  "toExerciseTemplateId": "Butt_Lift_Bridge"
+}

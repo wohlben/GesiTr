@@ -1,0 +1,10 @@
+{
+  "id": "Sled_Reverse_Flye-Cable_Rear_Delt_Fly-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Sled_Reverse_Flye",
+  "toExerciseTemplateId": "Cable_Rear_Delt_Fly"
+}

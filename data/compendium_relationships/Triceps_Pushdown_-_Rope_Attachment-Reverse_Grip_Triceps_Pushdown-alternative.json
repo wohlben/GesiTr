@@ -1,0 +1,10 @@
+{
+  "id": "Triceps_Pushdown_-_Rope_Attachment-Reverse_Grip_Triceps_Pushdown-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Triceps_Pushdown_-_Rope_Attachment",
+  "toExerciseTemplateId": "Reverse_Grip_Triceps_Pushdown"
+}

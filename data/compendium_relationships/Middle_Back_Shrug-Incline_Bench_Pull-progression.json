@@ -1,0 +1,10 @@
+{
+  "id": "Middle_Back_Shrug-Incline_Bench_Pull-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Middle_Back_Shrug",
+  "toExerciseTemplateId": "Incline_Bench_Pull"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Incline_Row-Seated_Cable_Rows-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Dumbbell_Incline_Row",
+  "toExerciseTemplateId": "Seated_Cable_Rows"
+}

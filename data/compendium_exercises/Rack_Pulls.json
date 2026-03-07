@@ -1,0 +1,50 @@
+{
+  "name": "Rack Pulls",
+  "slug": "rack-pulls",
+  "type": "STRENGTH",
+  "force": [
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "LOWER_BACK",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "HAMSTRINGS",
+    "TRAPS",
+    "FOREARMS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Partial deadlift pulling from elevated rack position, focusing on top portion of deadlift for overload.",
+  "instructions": [
+    "Set up in a power rack with the bar on the pins. The pins should be set to the desired point; just below the knees, just above, or in the mid thigh position. Position yourself against the bar in proper deadlifting position. Your feet should be under your hips, your grip shoulder width, back arched, and hips back to engage the hamstrings. Since the weight is typically heavy, you may use a mixed grip, a hook grip, or use straps to aid in holding the weight.",
+    "With your head looking forward, extend through the hips and knees, pulling the weight up and back until lockout. Be sure to pull your shoulders back as you complete the movement.",
+    "Return the weight to the pins and repeat."
+  ],
+  "images": [
+    "/img/exercises/Rack_Pulls/0.jpg",
+    "/img/exercises/Rack_Pulls/1.jpg"
+  ],
+  "alternativeNames": [
+    "Rack-Pulls"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Rack_Pulls",
+  "equipmentIds": [
+    "barbell",
+    "power-rack"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Russian_Twists-Pallof_Press_With_Rotation-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cable_Russian_Twists",
+  "toExerciseTemplateId": "Pallof_Press_With_Rotation"
+}

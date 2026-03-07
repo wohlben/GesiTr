@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Elevated_Quad_Stretch-Quad_Stretch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Elevated_Quad_Stretch",
+  "toExerciseTemplateId": "Quad_Stretch"
+}

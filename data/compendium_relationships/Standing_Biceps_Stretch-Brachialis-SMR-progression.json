@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Biceps_Stretch-Brachialis-SMR-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Standing_Biceps_Stretch",
+  "toExerciseTemplateId": "Brachialis-SMR"
+}

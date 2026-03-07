@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Low-Pulley_Deltoid_Raise-Bent_Over_Low-Pulley_Side_Lateral-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Standing_Low-Pulley_Deltoid_Raise",
+  "toExerciseTemplateId": "Bent_Over_Low-Pulley_Side_Lateral"
+}

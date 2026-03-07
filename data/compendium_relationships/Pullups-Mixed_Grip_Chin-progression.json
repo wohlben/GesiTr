@@ -1,0 +1,10 @@
+{
+  "id": "Pullups-Mixed_Grip_Chin-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Pullups",
+  "toExerciseTemplateId": "Mixed_Grip_Chin"
+}

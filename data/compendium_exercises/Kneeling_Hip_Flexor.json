@@ -1,0 +1,36 @@
+{
+  "name": "Kneeling Hip Flexor",
+  "slug": "kneeling-hip-flexor",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "HIP_FLEXORS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Kneeling hip flexor lunge stretch extending back leg to stretch front of hip and thigh.",
+  "instructions": [
+    "Kneel on a mat and bring your right knee up so the bottom of your foot is on the floor and extend your left leg out behind you so the top of your foot is on the floor.",
+    "Shift your weight forward until you feel a stretch in your hip. Hold for 15 seconds, then repeat for your other side."
+  ],
+  "images": [
+    "/img/exercises/Kneeling_Hip_Flexor/0.jpg",
+    "/img/exercises/Kneeling_Hip_Flexor/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Kneeling_Hip_Flexor",
+  "equipmentIds": []
+}

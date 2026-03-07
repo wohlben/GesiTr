@@ -1,0 +1,10 @@
+{
+  "id": "One-Arm_Kettlebell_Row-Alternating_Kettlebell_Row-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "One-Arm_Kettlebell_Row",
+  "toExerciseTemplateId": "Alternating_Kettlebell_Row"
+}

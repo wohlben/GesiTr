@@ -1,0 +1,10 @@
+{
+  "id": "Cocoons-Reverse_Crunch-similar",
+  "relationshipType": "similar",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730009600,
+  "fromExerciseTemplateId": "Cocoons",
+  "toExerciseTemplateId": "Reverse_Crunch"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Straight-Arm_Pulldown-Cable_Incline_Pushdown-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Straight-Arm_Pulldown",
+  "toExerciseTemplateId": "Cable_Incline_Pushdown"
+}

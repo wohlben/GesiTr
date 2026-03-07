@@ -1,0 +1,37 @@
+{
+  "name": "Standing Toe Touches",
+  "slug": "standing-toe-touches",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "HAMSTRINGS",
+    "LOWER_BACK"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Standing forward bend touching toes to stretch hamstrings and lower back.",
+  "instructions": [
+    "Stand with some space in front and behind you.",
+    "Bend at the waist, keeping your legs straight, until you can relax and let your upper body hang down in front of you. Let your arms and hands hang down naturally. Hold for 10 to 20 seconds."
+  ],
+  "images": [
+    "/img/exercises/Standing_Toe_Touches/0.jpg",
+    "/img/exercises/Standing_Toe_Touches/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Standing_Toe_Touches",
+  "equipmentIds": []
+}

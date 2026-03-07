@@ -1,0 +1,10 @@
+{
+  "id": "Cross-Body_Crunch-Crunches-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cross-Body_Crunch",
+  "toExerciseTemplateId": "Crunches"
+}

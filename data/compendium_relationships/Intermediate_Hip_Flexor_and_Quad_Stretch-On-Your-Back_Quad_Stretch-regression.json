@@ -1,0 +1,10 @@
+{
+  "id": "Intermediate_Hip_Flexor_and_Quad_Stretch-On-Your-Back_Quad_Stretch-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Intermediate_Hip_Flexor_and_Quad_Stretch",
+  "toExerciseTemplateId": "On-Your-Back_Quad_Stretch"
+}

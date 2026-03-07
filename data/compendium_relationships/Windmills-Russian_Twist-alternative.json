@@ -1,0 +1,10 @@
+{
+  "id": "Windmills-Russian_Twist-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Windmills",
+  "toExerciseTemplateId": "Russian_Twist"
+}

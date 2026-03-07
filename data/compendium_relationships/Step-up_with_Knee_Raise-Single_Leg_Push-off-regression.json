@@ -1,0 +1,10 @@
+{
+  "id": "Step-up_with_Knee_Raise-Single_Leg_Push-off-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Step-up_with_Knee_Raise",
+  "toExerciseTemplateId": "Single_Leg_Push-off"
+}

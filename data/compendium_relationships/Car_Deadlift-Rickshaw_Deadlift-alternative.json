@@ -1,0 +1,10 @@
+{
+  "id": "Car_Deadlift-Rickshaw_Deadlift-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Car_Deadlift",
+  "toExerciseTemplateId": "Rickshaw_Deadlift"
+}

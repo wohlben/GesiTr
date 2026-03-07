@@ -1,0 +1,10 @@
+{
+  "id": "EZ-Bar_Skullcrusher-Tate_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735689600,
+  "fromExerciseTemplateId": "EZ-Bar_Skullcrusher",
+  "toExerciseTemplateId": "Tate_Press"
+}

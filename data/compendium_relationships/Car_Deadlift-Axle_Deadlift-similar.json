@@ -1,0 +1,10 @@
+{
+  "id": "Car_Deadlift-Axle_Deadlift-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Car_Deadlift",
+  "toExerciseTemplateId": "Axle_Deadlift"
+}

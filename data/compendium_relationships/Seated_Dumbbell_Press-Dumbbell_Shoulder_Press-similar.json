@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Dumbbell_Press-Dumbbell_Shoulder_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.95,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Seated_Dumbbell_Press",
+  "toExerciseTemplateId": "Dumbbell_Shoulder_Press"
+}

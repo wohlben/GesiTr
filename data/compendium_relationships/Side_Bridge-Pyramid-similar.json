@@ -1,0 +1,10 @@
+{
+  "id": "Side_Bridge-Pyramid-similar",
+  "relationshipType": "similar",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Side_Bridge",
+  "toExerciseTemplateId": "Pyramid"
+}

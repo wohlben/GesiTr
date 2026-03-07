@@ -1,0 +1,10 @@
+{
+  "id": "Kettlebell_Dead_Clean-Dumbbell_Clean-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Kettlebell_Dead_Clean",
+  "toExerciseTemplateId": "Dumbbell_Clean"
+}

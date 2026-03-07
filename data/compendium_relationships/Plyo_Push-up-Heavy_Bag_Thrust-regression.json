@@ -1,0 +1,10 @@
+{
+  "id": "Plyo_Push-up-Heavy_Bag_Thrust-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729933200,
+  "fromExerciseTemplateId": "Plyo_Push-up",
+  "toExerciseTemplateId": "Heavy_Bag_Thrust"
+}

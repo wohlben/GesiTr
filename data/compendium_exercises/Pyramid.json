@@ -1,0 +1,42 @@
+{
+  "name": "Pyramid",
+  "slug": "pyramid",
+  "type": "STRENGTH",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS",
+    "REAR_DELTS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Stability ball balance hold with hips elevated on ball, hands and feet on floor, developing core stability and shoulder strength.",
+  "instructions": [
+    "Start off by rolling your torso forward onto the ball so your hips rest on top of the ball and become the highest point of your body.",
+    "Rest your hands and feet on the floor. Your arms and legs can be slightly bent or straight, depending on the size of the ball, your flexibility, and the length of your limbs. This also helps develop stabilizing strength in your torso and shoulders."
+  ],
+  "images": [
+    "/img/exercises/Pyramid/0.jpg",
+    "/img/exercises/Pyramid/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Pyramid",
+  "equipmentIds": [
+    "stability-ball"
+  ]
+}

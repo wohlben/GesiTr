@@ -1,0 +1,53 @@
+{
+  "name": "Standing Palm-In One-Arm Dumbbell Press",
+  "slug": "standing-palm-in-one-arm-dumbbell-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "SIDE_DELTS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Standing single-arm overhead dumbbell press with palm facing inward (neutral grip).",
+  "instructions": [
+    "Stand with your feet shoulder width apart. Hold a dumbbell in one hand at shoulder height using a neutral grip (palm facing inward). You may hold onto a stable surface with your other hand for balance if needed.",
+    "Your starting position has the dumbbell at shoulder height with your elbow bent at approximately 90 degrees and your forearm perpendicular to the floor. Maintain a neutral grip throughout the entire exercise.",
+    "While exhaling, press the dumbbell straight up overhead by extending your arm until it is fully extended.",
+    "Pause briefly at the top, then while inhaling, slowly lower the weight back down to shoulder height until your arm is at a 90 degree angle again.",
+    "Feel the contraction for a second and then repeat the pressing motion.",
+    "Complete the recommended amount of repetitions.",
+    "Switch arms and repeat the exercise."
+  ],
+  "images": [
+    "/img/exercises/Standing_Palm-In_One-Arm_Dumbbell_Press/0.jpg",
+    "/img/exercises/Standing_Palm-In_One-Arm_Dumbbell_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "Seated Palm-In One-Arm Dumbbell Press",
+    "Standing Palm In One Arm Dumbbell Press",
+    "Standing Palm-In One-Arm DB Press",
+    "Standing Palm-In One-Arm Dumbell Press",
+    "Standing Palm-In Single Arm Dumbbell Press",
+    "Standing Palm-In Unilateral Dumbbell Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Standing_Palm-In_One-Arm_Dumbbell_Press",
+  "equipmentIds": [
+    "dumbbell"
+  ]
+}

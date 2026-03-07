@@ -1,0 +1,10 @@
+{
+  "id": "Weighted_Squat-Resistance_Band_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Weighted_Squat",
+  "toExerciseTemplateId": "Resistance_Band_Squat"
+}

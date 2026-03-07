@@ -1,0 +1,10 @@
+{
+  "id": "Two-Arm_Kettlebell_Military_Press-Alternating_Kettlebell_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.83,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761461533,
+  "fromExerciseTemplateId": "Two-Arm_Kettlebell_Military_Press",
+  "toExerciseTemplateId": "Alternating_Kettlebell_Press"
+}

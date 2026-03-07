@@ -1,0 +1,10 @@
+{
+  "id": "Straight_Raises_on_Incline_Bench-Standing_Front_Barbell_Raise_Over_Head-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Straight_Raises_on_Incline_Bench",
+  "toExerciseTemplateId": "Standing_Front_Barbell_Raise_Over_Head"
+}

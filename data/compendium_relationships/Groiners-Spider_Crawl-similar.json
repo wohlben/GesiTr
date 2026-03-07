@@ -1,0 +1,10 @@
+{
+  "id": "Groiners-Spider_Crawl-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496059,
+  "fromExerciseTemplateId": "Groiners",
+  "toExerciseTemplateId": "Spider_Crawl"
+}

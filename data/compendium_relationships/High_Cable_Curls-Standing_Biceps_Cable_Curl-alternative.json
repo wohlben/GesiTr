@@ -1,0 +1,10 @@
+{
+  "id": "High_Cable_Curls-Standing_Biceps_Cable_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498077,
+  "fromExerciseTemplateId": "High_Cable_Curls",
+  "toExerciseTemplateId": "Standing_Biceps_Cable_Curl"
+}

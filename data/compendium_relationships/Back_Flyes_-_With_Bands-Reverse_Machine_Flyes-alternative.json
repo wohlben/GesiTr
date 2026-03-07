@@ -1,0 +1,10 @@
+{
+  "id": "Back_Flyes_-_With_Bands-Reverse_Machine_Flyes-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Back_Flyes_-_With_Bands",
+  "toExerciseTemplateId": "Reverse_Machine_Flyes"
+}

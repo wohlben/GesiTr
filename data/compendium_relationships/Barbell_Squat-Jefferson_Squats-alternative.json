@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Squat-Jefferson_Squats-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499591,
+  "fromExerciseTemplateId": "Barbell_Squat",
+  "toExerciseTemplateId": "Jefferson_Squats"
+}

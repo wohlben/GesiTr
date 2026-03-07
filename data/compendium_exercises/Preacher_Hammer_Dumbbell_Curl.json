@@ -1,0 +1,47 @@
+{
+  "name": "Preacher Hammer Dumbbell Curl",
+  "slug": "preacher-hammer-dumbbell-curl",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "BICEPS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Hammer grip dumbbell curl on preacher bench, targeting biceps and brachialis with neutral wrist position.",
+  "instructions": [
+    "Place the upper part of both arms on top of the preacher bench as you hold a dumbbell in each hand with the palms facing each other (neutral grip).",
+    "As you breathe in, slowly lower the dumbbells until your upper arm is extended and the biceps is fully stretched.",
+    "As you exhale, use the biceps to curl the weight up until your biceps is fully contracted and the dumbbells are at shoulder height.",
+    "Squeeze the biceps hard for a second at the contracted position and repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Preacher_Hammer_Dumbbell_Curl/0.jpg",
+    "/img/exercises/Preacher_Hammer_Dumbbell_Curl/1.jpg"
+  ],
+  "alternativeNames": [
+    "DB Curl",
+    "Dumbbell Bicep Curl",
+    "Preacher Hammer DB Curl",
+    "Preacher Hammer Dumbell Curl"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Preacher_Hammer_Dumbbell_Curl",
+  "equipmentIds": [
+    "2x dumbbell",
+    "gym-preacher-bench"
+  ]
+}

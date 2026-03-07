@@ -1,0 +1,10 @@
+{
+  "id": "Weighted_Pull_Ups-Mixed_Grip_Chin-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Weighted_Pull_Ups",
+  "toExerciseTemplateId": "Mixed_Grip_Chin"
+}

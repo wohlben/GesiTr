@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Dumbbell_Flyes-One-Arm_Flat_Bench_Dumbbell_Flye-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729973000,
+  "fromExerciseTemplateId": "Incline_Dumbbell_Flyes",
+  "toExerciseTemplateId": "One-Arm_Flat_Bench_Dumbbell_Flye"
+}

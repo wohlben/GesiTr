@@ -1,0 +1,47 @@
+{
+  "name": "Shotgun Row",
+  "slug": "shotgun-row",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "LATS"
+  ],
+  "secondaryMuscles": [
+    "BICEPS",
+    "RHOMBOIDS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.1,
+  "suggestedMeasurementParadigms": [
+    "DISTANCE_BASED",
+    "TIME_BASED",
+    "AMRAP"
+  ],
+  "description": "Single-arm cable row with parallel grip (shotgun position), pulling from low or mid position.",
+  "instructions": [
+    "Attach a single handle to a low cable.",
+    "After selecting the correct weight, stand a couple feet back with a wide-split stance. Your arm should be extended and your shoulder forward. This will be your starting position.",
+    "Perform the movement by retracting the shoulder and flexing the elbow. As you pull, supinate the wrist, turning the palm upward as you go.",
+    "After a brief pause, return to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Shotgun_Row/0.jpg",
+    "/img/exercises/Shotgun_Row/1.jpg"
+  ],
+  "alternativeNames": [
+    "Shotgun-Row"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Shotgun_Row",
+  "equipmentIds": [
+    "gym-cable-machine"
+  ]
+}

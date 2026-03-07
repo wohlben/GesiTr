@@ -1,0 +1,10 @@
+{
+  "id": "Alternating_Cable_Shoulder_Press-Cable_Shoulder_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Alternating_Cable_Shoulder_Press",
+  "toExerciseTemplateId": "Cable_Shoulder_Press"
+}

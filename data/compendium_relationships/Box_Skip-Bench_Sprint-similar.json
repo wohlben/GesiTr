@@ -1,0 +1,10 @@
+{
+  "id": "Box_Skip-Bench_Sprint-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Box_Skip",
+  "toExerciseTemplateId": "Bench_Sprint"
+}

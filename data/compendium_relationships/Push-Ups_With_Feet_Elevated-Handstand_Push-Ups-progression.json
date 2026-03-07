@@ -1,0 +1,10 @@
+{
+  "id": "Push-Ups_With_Feet_Elevated-Handstand_Push-Ups-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Push-Ups_With_Feet_Elevated",
+  "toExerciseTemplateId": "Handstand_Push-Ups"
+}

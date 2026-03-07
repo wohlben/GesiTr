@@ -1,0 +1,10 @@
+{
+  "id": "Drag_Curl-Barbell_Curl-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Drag_Curl",
+  "toExerciseTemplateId": "Barbell_Curl"
+}

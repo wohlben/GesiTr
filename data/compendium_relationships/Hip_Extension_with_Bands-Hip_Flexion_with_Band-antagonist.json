@@ -1,0 +1,10 @@
+{
+  "id": "Hip_Extension_with_Bands-Hip_Flexion_with_Band-antagonist",
+  "relationshipType": "antagonist",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Hip_Extension_with_Bands",
+  "toExerciseTemplateId": "Hip_Flexion_with_Band"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Rope_Rear-Delt_Rows-Cable_Judo_Flip-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cable_Rope_Rear-Delt_Rows",
+  "toExerciseTemplateId": "Cable_Judo_Flip"
+}

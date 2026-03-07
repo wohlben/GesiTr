@@ -1,0 +1,10 @@
+{
+  "id": "Pallof_Press-Pallof_Press_With_Rotation-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729940400,
+  "fromExerciseTemplateId": "Pallof_Press",
+  "toExerciseTemplateId": "Pallof_Press_With_Rotation"
+}

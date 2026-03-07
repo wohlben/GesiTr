@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Lunges-Smith_Single-Leg_Split_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.65,
+  "description": "Both are unilateral leg exercises targeting quads, glutes, and hamstrings, differing in equipment and movement pattern (dumbbell lunge vs Smith machine split squat)",
+  "createdBy": "system",
+  "createdAt": 1761547477,
+  "fromExerciseTemplateId": "Dumbbell_Lunges",
+  "toExerciseTemplateId": "Smith_Single-Leg_Split_Squat"
+}

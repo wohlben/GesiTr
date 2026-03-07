@@ -1,0 +1,48 @@
+{
+  "name": "Lying Crossover",
+  "slug": "lying-crossover",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Lying dumbbell fly with crossover at top, targeting chest with extended range through crossing motion.",
+  "instructions": [
+    "Lie down on a flat bench with a dumbbell in each hand resting on top of your thighs. The palms of your hands will be facing each other.",
+    "Using your thighs to help raise the dumbbells, lift them one at a time so you can hold them in front of you at shoulder width with palms facing each other. Raise the dumbbells up like you're pressing them, but stop and hold just before you lock out. This will be your starting position.",
+    "With a slight bend in your elbows to prevent stress at the biceps tendon, lower your arms out at both sides in a wide arc until you feel a stretch on your chest. Breathe in as you perform this portion of the movement.",
+    "Return your arms back to the starting position while squeezing your chest muscles and breathing out. As you reach the top, continue to bring the dumbbells across your body, crossing them over each other at the midline for maximum chest contraction.",
+    "Hold for a second at the contracted position with the crossover, then repeat the movement for the prescribed amount of repetitions, alternating which dumbbell crosses over the other."
+  ],
+  "images": [
+    "/img/exercises/Lying_Crossover/0.jpg",
+    "/img/exercises/Lying_Crossover/1.jpg"
+  ],
+  "alternativeNames": [
+    "Lying-Crossover",
+    "Prone Crossover"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Lying_Crossover",
+  "equipmentIds": [
+    "2x dumbbell",
+    "bench"
+  ]
+}

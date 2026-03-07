@@ -1,0 +1,10 @@
+{
+  "id": "Machine_Triceps_Extension-Dumbbell_One-Arm_Triceps_Extension-equipment_variation",
+  "relationshipType": "equipment_variation",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761509910,
+  "fromExerciseTemplateId": "Machine_Triceps_Extension",
+  "toExerciseTemplateId": "Dumbbell_One-Arm_Triceps_Extension"
+}

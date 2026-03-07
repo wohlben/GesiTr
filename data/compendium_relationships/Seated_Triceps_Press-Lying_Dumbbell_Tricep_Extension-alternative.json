@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Triceps_Press-Lying_Dumbbell_Tricep_Extension-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761545398,
+  "fromExerciseTemplateId": "Seated_Triceps_Press",
+  "toExerciseTemplateId": "Lying_Dumbbell_Tricep_Extension"
+}

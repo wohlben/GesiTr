@@ -1,0 +1,10 @@
+{
+  "id": "Goblet_Squat-Front_Barbell_Squat-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Goblet_Squat",
+  "toExerciseTemplateId": "Front_Barbell_Squat"
+}

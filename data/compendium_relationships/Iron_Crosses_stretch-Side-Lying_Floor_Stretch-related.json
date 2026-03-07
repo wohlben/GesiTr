@@ -1,0 +1,10 @@
+{
+  "id": "Iron_Crosses_stretch-Side-Lying_Floor_Stretch-related",
+  "relationshipType": "related",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Iron_Crosses_stretch",
+  "toExerciseTemplateId": "Side-Lying_Floor_Stretch"
+}

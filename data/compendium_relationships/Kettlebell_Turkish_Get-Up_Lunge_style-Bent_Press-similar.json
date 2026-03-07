@@ -1,0 +1,10 @@
+{
+  "id": "Kettlebell_Turkish_Get-Up_Lunge_style-Bent_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Kettlebell_Turkish_Get-Up_Lunge_style",
+  "toExerciseTemplateId": "Bent_Press"
+}

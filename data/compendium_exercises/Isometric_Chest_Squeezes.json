@@ -1,0 +1,40 @@
+{
+  "name": "Isometric Chest Squeezes",
+  "slug": "isometric-chest-squeezes",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Isometric chest exercise squeezing palms or plates together in front of chest, building chest tension.",
+  "instructions": [
+    "While either seating or standing, bend your arms at a 90-degree angle and place the palms of your hands together in front of your chest. Tip: Your hands should be open with the palms together and fingers facing forward (perpendicular to your torso).",
+    "Push both hands against each other as you contract your chest. Start with slow tension and increase slowly. Keep breathing normally as you execute this contraction.",
+    "Hold for the recommended number of seconds.",
+    "Now release the tension slowly.",
+    "Rest for the recommended amount of time and repeat."
+  ],
+  "images": [
+    "/img/exercises/Isometric_Chest_Squeezes/0.jpg",
+    "/img/exercises/Isometric_Chest_Squeezes/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Isometric_Chest_Squeezes",
+  "equipmentIds": []
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Speed_Squats-Barbell_Squat-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Speed_Squats",
+  "toExerciseTemplateId": "Barbell_Squat"
+}

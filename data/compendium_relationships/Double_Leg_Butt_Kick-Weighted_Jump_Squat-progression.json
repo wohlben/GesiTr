@@ -1,0 +1,10 @@
+{
+  "id": "Double_Leg_Butt_Kick-Weighted_Jump_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Double_Leg_Butt_Kick",
+  "toExerciseTemplateId": "Weighted_Jump_Squat"
+}

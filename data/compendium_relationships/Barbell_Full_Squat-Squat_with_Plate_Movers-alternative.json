@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Full_Squat-Squat_with_Plate_Movers-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Barbell_Full_Squat",
+  "toExerciseTemplateId": "Squat_with_Plate_Movers"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Ankle_On_The_Knee-Piriformis-SMR-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": "Both target piriformis muscle using figure-4 position; SMR version uses foam roller for myofascial release",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Ankle_On_The_Knee",
+  "toExerciseTemplateId": "Piriformis-SMR"
+}

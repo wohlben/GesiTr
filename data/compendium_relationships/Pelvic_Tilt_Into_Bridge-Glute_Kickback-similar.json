@@ -1,0 +1,10 @@
+{
+  "id": "Pelvic_Tilt_Into_Bridge-Glute_Kickback-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729954800,
+  "fromExerciseTemplateId": "Pelvic_Tilt_Into_Bridge",
+  "toExerciseTemplateId": "Glute_Kickback"
+}

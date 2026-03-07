@@ -1,0 +1,10 @@
+{
+  "id": "Leverage_Chest_Press-Barbell_Bench_Press_-_Medium_Grip-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730051040,
+  "fromExerciseTemplateId": "Leverage_Chest_Press",
+  "toExerciseTemplateId": "Barbell_Bench_Press_-_Medium_Grip"
+}

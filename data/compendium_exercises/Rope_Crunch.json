@@ -1,0 +1,45 @@
+{
+  "name": "Rope Crunch",
+  "slug": "rope-crunch",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.9,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Kneeling cable crunch using rope attachment, pulling down to flex spine and contract abdominals.",
+  "instructions": [
+    "Kneel 1-2 feet in front of a cable system with a rope attached.",
+    "After selecting an appropriate weight, grasp the rope with both hands reaching overhead. Your torso should be upright in the starting position.",
+    "To begin, flex at the spine, attempting to bring your rib cage to your legs as you pull the cable down.",
+    "Pause at the bottom of the motion, and then slowly return to the starting position.",
+    "These can be done with twists or to the side to hit the obliques."
+  ],
+  "images": [
+    "/img/exercises/Rope_Crunch/0.jpg",
+    "/img/exercises/Rope_Crunch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Ab Crunch",
+    "Abdominal Crunch",
+    "Rope-Crunch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Rope_Crunch",
+  "equipmentIds": [
+    "gym-cable-machine"
+  ]
+}

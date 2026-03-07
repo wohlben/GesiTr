@@ -1,0 +1,10 @@
+{
+  "id": "Side_Bridge-Side_Jackknife-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Side_Bridge",
+  "toExerciseTemplateId": "Side_Jackknife"
+}

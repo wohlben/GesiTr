@@ -1,0 +1,10 @@
+{
+  "id": "Bodyweight_Flyes-Incline_Push-Up_Wide-similar",
+  "relationshipType": "similar",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499120,
+  "fromExerciseTemplateId": "Bodyweight_Flyes",
+  "toExerciseTemplateId": "Incline_Push-Up_Wide"
+}

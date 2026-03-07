@@ -1,0 +1,10 @@
+{
+  "id": "Bent_Over_One-Arm_Long_Bar_Row-One-Arm_Long_Bar_Row-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761466991,
+  "fromExerciseTemplateId": "Bent_Over_One-Arm_Long_Bar_Row",
+  "toExerciseTemplateId": "One-Arm_Long_Bar_Row"
+}

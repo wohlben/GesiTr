@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Bench_Press_-_Medium_Grip-Bent_Over_Barbell_Row-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Barbell_Bench_Press_-_Medium_Grip",
+  "toExerciseTemplateId": "Bent_Over_Barbell_Row"
+}

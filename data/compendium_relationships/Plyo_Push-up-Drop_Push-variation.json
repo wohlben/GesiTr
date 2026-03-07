@@ -1,0 +1,10 @@
+{
+  "id": "Plyo_Push-up-Drop_Push-variation",
+  "relationshipType": "variation",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Plyo_Push-up",
+  "toExerciseTemplateId": "Drop_Push"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Weighted_Pull_Ups-Pullups-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Weighted_Pull_Ups",
+  "toExerciseTemplateId": "Pullups"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Dumbbell_Triceps_Extension-Machine_Triceps_Extension-equipment_variation",
+  "relationshipType": "equipment_variation",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761509910,
+  "fromExerciseTemplateId": "Standing_Dumbbell_Triceps_Extension",
+  "toExerciseTemplateId": "Machine_Triceps_Extension"
+}

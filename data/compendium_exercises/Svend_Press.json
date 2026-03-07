@@ -1,0 +1,48 @@
+{
+  "name": "Svend Press",
+  "slug": "svend-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Chest press squeezing plates together in front of chest, isometric and dynamic chest exercise.",
+  "instructions": [
+    "Begin in a standing position.",
+    "Press two lightweight plates together with your hands. Hold the plates together close to your chest to create an isometric contraction in your chest muscles. Your fingers should be pointed forward. This is your starting position.",
+    "Squeeze the plates between your palms and extend your arms directly out in front of you in a controlled motion.",
+    "Pause at the top of the motion, and then slowly return to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Svend_Press/0.jpg",
+    "/img/exercises/Svend_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "Svend-Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Svend_Press",
+  "equipmentIds": [
+    "weight-plate"
+  ]
+}

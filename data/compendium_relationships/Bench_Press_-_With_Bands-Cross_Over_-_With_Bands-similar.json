@@ -1,0 +1,10 @@
+{
+  "id": "Bench_Press_-_With_Bands-Cross_Over_-_With_Bands-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730025600,
+  "fromExerciseTemplateId": "Bench_Press_-_With_Bands",
+  "toExerciseTemplateId": "Cross_Over_-_With_Bands"
+}

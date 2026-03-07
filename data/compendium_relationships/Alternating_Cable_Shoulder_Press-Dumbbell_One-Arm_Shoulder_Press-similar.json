@@ -1,0 +1,10 @@
+{
+  "id": "Alternating_Cable_Shoulder_Press-Dumbbell_One-Arm_Shoulder_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Alternating_Cable_Shoulder_Press",
+  "toExerciseTemplateId": "Dumbbell_One-Arm_Shoulder_Press"
+}

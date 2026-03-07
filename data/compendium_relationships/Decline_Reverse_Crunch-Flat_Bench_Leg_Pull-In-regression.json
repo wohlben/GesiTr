@@ -1,0 +1,10 @@
+{
+  "id": "Decline_Reverse_Crunch-Flat_Bench_Leg_Pull-In-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Decline_Reverse_Crunch",
+  "toExerciseTemplateId": "Flat_Bench_Leg_Pull-In"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Alternating_Deltoid_Raise-Dumbbell_Scaption-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Alternating_Deltoid_Raise",
+  "toExerciseTemplateId": "Dumbbell_Scaption"
+}

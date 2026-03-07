@@ -1,0 +1,10 @@
+{
+  "id": "Box_Squat_with_Chains-Reverse_Band_Box_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761511059,
+  "fromExerciseTemplateId": "Box_Squat_with_Chains",
+  "toExerciseTemplateId": "Reverse_Band_Box_Squat"
+}

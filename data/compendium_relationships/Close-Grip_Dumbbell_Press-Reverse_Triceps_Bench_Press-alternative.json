@@ -1,0 +1,10 @@
+{
+  "id": "Close-Grip_Dumbbell_Press-Reverse_Triceps_Bench_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730001600,
+  "fromExerciseTemplateId": "Close-Grip_Dumbbell_Press",
+  "toExerciseTemplateId": "Reverse_Triceps_Bench_Press"
+}

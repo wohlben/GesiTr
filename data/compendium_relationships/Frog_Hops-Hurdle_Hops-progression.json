@@ -1,0 +1,10 @@
+{
+  "id": "Frog_Hops-Hurdle_Hops-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Frog_Hops",
+  "toExerciseTemplateId": "Hurdle_Hops"
+}

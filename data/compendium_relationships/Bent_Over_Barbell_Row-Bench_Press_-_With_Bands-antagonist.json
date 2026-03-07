@@ -1,0 +1,10 @@
+{
+  "id": "Bent_Over_Barbell_Row-Bench_Press_-_With_Bands-antagonist",
+  "relationshipType": "antagonist",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761472847,
+  "fromExerciseTemplateId": "Bent_Over_Barbell_Row",
+  "toExerciseTemplateId": "Bench_Press_-_With_Bands"
+}

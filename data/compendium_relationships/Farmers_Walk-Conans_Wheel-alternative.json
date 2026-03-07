@@ -1,0 +1,10 @@
+{
+  "id": "Farmers_Walk-Conans_Wheel-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729900800,
+  "fromExerciseTemplateId": "Farmers_Walk",
+  "toExerciseTemplateId": "Conans_Wheel"
+}

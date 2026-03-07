@@ -1,0 +1,10 @@
+{
+  "id": "Bear_Crawl_Sled_Drags-Sled_Overhead_Backward_Walk-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Bear_Crawl_Sled_Drags",
+  "toExerciseTemplateId": "Sled_Overhead_Backward_Walk"
+}

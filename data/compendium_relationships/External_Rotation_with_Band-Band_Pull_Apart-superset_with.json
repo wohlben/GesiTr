@@ -1,0 +1,10 @@
+{
+  "id": "External_Rotation_with_Band-Band_Pull_Apart-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "External_Rotation_with_Band",
+  "toExerciseTemplateId": "Band_Pull_Apart"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Bicycling_Stationary-Jogging_Treadmill-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476051,
+  "fromExerciseTemplateId": "Bicycling_Stationary",
+  "toExerciseTemplateId": "Jogging_Treadmill"
+}

@@ -1,0 +1,38 @@
+{
+  "name": "Posterior Tibialis Stretch",
+  "slug": "posterior-tibialis-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "CALVES"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Stretch targeting posterior tibialis muscle (inside lower leg and ankle), improving ankle mobility.",
+  "instructions": [
+    "In a seated position, loop a belt, rope, or band around one foot. This will be your starting position.",
+    "With the leg extended and the heel off of the ground, pull on the belt so that the foot is everted, with the outside of the foot being pulled towards you. Hold for 10-20 seconds, and then switch sides."
+  ],
+  "images": [
+    "/img/exercises/Posterior_Tibialis_Stretch/0.jpg",
+    "/img/exercises/Posterior_Tibialis_Stretch/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Posterior_Tibialis_Stretch",
+  "equipmentIds": [
+    "resistance-band"
+  ]
+}

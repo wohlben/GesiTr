@@ -1,0 +1,10 @@
+{
+  "id": "Inverted_Row-Body_Tricep_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Inverted_Row",
+  "toExerciseTemplateId": "Body_Tricep_Press"
+}

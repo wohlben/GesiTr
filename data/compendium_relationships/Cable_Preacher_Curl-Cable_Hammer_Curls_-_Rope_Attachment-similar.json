@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Preacher_Curl-Cable_Hammer_Curls_-_Rope_Attachment-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479458,
+  "fromExerciseTemplateId": "Cable_Preacher_Curl",
+  "toExerciseTemplateId": "Cable_Hammer_Curls_-_Rope_Attachment"
+}

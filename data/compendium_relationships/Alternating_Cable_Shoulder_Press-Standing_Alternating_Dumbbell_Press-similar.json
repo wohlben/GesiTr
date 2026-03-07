@@ -1,0 +1,10 @@
+{
+  "id": "Alternating_Cable_Shoulder_Press-Standing_Alternating_Dumbbell_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.95,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Alternating_Cable_Shoulder_Press",
+  "toExerciseTemplateId": "Standing_Alternating_Dumbbell_Press"
+}

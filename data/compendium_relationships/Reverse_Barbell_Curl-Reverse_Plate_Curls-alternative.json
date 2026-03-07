@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Barbell_Curl-Reverse_Plate_Curls-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Reverse_Barbell_Curl",
+  "toExerciseTemplateId": "Reverse_Plate_Curls"
+}

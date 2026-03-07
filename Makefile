@@ -1,7 +1,11 @@
-.PHONY: build build-web build-go dev-api dev-web docker clean dolt
+.PHONY: build build-web build-go dev-api dev-web docker clean dolt generate seed
 
-# Full production build: Angular → Go binary with embedded SPA
-build: build-web build-go
+# Generate TypeScript types from Go structs
+generate:
+	go run github.com/gzuidhof/tygo@latest generate
+
+# Full production build: generate types → Angular → Go binary with embedded SPA
+build: generate build-web build-go
 
 build-web:
 	cd web && npm install && npx ng build --configuration=production
@@ -13,7 +17,7 @@ build-go: build-web
 dev-api:
 	DEV=true go run .
 
-dev-web:
+dev-web: generate
 	cd web && npx ng serve
 
 dolt:
@@ -22,6 +26,11 @@ dolt:
 docker:
 	docker build -t gesitr .
 
+seed:
+	rm -f gesitr.db
+	go run ./cmd/seed
+
 clean:
 	rm -f gesitr gesitr.db
 	rm -rf web/dist
+	rm -f web/src/app/generated/models.ts

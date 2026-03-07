@@ -1,0 +1,10 @@
+{
+  "id": "Bench_Press_-_With_Bands-Machine_Bench_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761472847,
+  "fromExerciseTemplateId": "Bench_Press_-_With_Bands",
+  "toExerciseTemplateId": "Machine_Bench_Press"
+}

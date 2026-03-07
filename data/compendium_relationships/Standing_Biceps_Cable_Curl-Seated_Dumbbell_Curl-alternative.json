@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Biceps_Cable_Curl-Seated_Dumbbell_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Biceps_Cable_Curl",
+  "toExerciseTemplateId": "Seated_Dumbbell_Curl"
+}

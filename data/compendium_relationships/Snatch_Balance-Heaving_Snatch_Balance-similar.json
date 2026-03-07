@@ -1,0 +1,10 @@
+{
+  "id": "Snatch_Balance-Heaving_Snatch_Balance-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496435,
+  "fromExerciseTemplateId": "Snatch_Balance",
+  "toExerciseTemplateId": "Heaving_Snatch_Balance"
+}

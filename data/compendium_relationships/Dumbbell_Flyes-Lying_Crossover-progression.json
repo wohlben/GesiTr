@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Flyes-Lying_Crossover-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Flyes",
+  "toExerciseTemplateId": "Lying_Crossover"
+}

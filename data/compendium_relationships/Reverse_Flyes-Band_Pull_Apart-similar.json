@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Flyes-Band_Pull_Apart-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Reverse_Flyes",
+  "toExerciseTemplateId": "Band_Pull_Apart"
+}

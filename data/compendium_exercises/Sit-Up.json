@@ -1,0 +1,46 @@
+{
+  "name": "Sit-Up",
+  "slug": "sit-up",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [
+    "HIP_FLEXORS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.7,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Classic sit-up raising torso from lying to seated position, engaging core and hip flexors.",
+  "instructions": [
+    "Lie down on the floor placing your feet either under something that will not move or by having a partner hold them. Your legs should be bent at the knees.",
+    "Place your hands behind your head and lock them together by clasping your fingers. This is the starting position.",
+    "Elevate your upper body so that it creates an imaginary V-shape with your thighs. Breathe out when performing this part of the exercise.",
+    "Once you feel the contraction for a second, lower your upper body back down to the starting position while inhaling.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Sit-Up/0.jpg",
+    "/img/exercises/Sit-Up/1.jpg"
+  ],
+  "alternativeNames": [
+    "Crunch Sit-Up",
+    "Sit Up",
+    "Situp"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Sit-Up",
+  "equipmentIds": []
+}

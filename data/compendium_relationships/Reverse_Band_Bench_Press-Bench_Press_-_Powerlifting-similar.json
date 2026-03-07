@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Band_Bench_Press-Bench_Press_-_Powerlifting-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Reverse_Band_Bench_Press",
+  "toExerciseTemplateId": "Bench_Press_-_Powerlifting"
+}

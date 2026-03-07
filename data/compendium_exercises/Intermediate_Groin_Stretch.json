@@ -1,0 +1,39 @@
+{
+  "name": "Intermediate Groin Stretch",
+  "slug": "intermediate-groin-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "ADDUCTORS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Intermediate level groin stretch in lunge or butterfly position, stretching inner thigh adductors.",
+  "instructions": [
+    "Lie on your back with your legs extended. Loop a belt, rope, or band around one of your feet, and swing that leg as far to the side as you can. This will be your starting position.",
+    "Pull gently on the belt to create tension in your groin and hamstring muscles. Hold for 10-20 seconds, and repeat on the other side."
+  ],
+  "images": [
+    "/img/exercises/Intermediate_Groin_Stretch/0.jpg",
+    "/img/exercises/Intermediate_Groin_Stretch/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Intermediate_Groin_Stretch",
+  "equipmentIds": [
+    "gym-pec-deck-machine",
+    "resistance-band"
+  ]
+}

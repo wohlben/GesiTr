@@ -1,0 +1,10 @@
+{
+  "id": "Thigh_Adductor-Cable_Hip_Adduction-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Thigh_Adductor",
+  "toExerciseTemplateId": "Cable_Hip_Adduction"
+}

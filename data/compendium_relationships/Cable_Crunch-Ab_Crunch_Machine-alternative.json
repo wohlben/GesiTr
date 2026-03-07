@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Crunch-Ab_Crunch_Machine-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cable_Crunch",
+  "toExerciseTemplateId": "Ab_Crunch_Machine"
+}

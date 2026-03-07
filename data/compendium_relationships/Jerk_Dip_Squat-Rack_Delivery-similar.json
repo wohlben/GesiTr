@@ -1,0 +1,10 @@
+{
+  "id": "Jerk_Dip_Squat-Rack_Delivery-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Jerk_Dip_Squat",
+  "toExerciseTemplateId": "Rack_Delivery"
+}

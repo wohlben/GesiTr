@@ -1,0 +1,43 @@
+{
+  "name": "Machine Preacher Curls",
+  "slug": "machine-preacher-curls",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "BICEPS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Machine preacher curl with padded arm support, isolating biceps by preventing momentum and body swing.",
+  "instructions": [
+    "Sit down on the Preacher Curl Machine and select the weight.",
+    "Place the back of your upper arms (your triceps) on the preacher pad provided and grab the handles using an underhand grip (palms facing up). Tip: Make sure that when you place the arms on the pad you keep the elbows in. This will be your starting position.",
+    "Now lift the handles as you exhale and you contract the biceps. At the top of the position make sure that you hold the contraction for a second. Tip: Only the forearms should move. The upper arms should remain stationary and on the pad at all times.",
+    "Lower the handles slowly back to the starting position as you inhale.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Machine_Preacher_Curls/0.jpg",
+    "/img/exercises/Machine_Preacher_Curls/1.jpg"
+  ],
+  "alternativeNames": [
+    "Preacher Curls"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Machine_Preacher_Curls",
+  "equipmentIds": [
+    "gym-bicep-curl-machine"
+  ]
+}

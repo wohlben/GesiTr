@@ -1,0 +1,10 @@
+{
+  "id": "Return_Push_from_Stance-Medicine_Ball_Chest_Pass-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Return_Push_from_Stance",
+  "toExerciseTemplateId": "Medicine_Ball_Chest_Pass"
+}

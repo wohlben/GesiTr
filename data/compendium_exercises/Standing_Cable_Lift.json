@@ -1,0 +1,49 @@
+{
+  "name": "Standing Cable Lift",
+  "slug": "standing-cable-lift",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Standing cable exercise lifting from low to high position, engaging core and shoulders.",
+  "instructions": [
+    "Connect a standard handle on a tower, and move the cable to the lowest pulley position.",
+    "With your side to the cable, grab the handle with one hand and step away from the tower. You should be approximately arm's length away from the pulley, with the tension of the weight on the cable. Your outstretched arm should be aligned with the cable.",
+    "With your feet positioned shoulder width apart, squat down and grab the handle with both hands. Your arms should still be fully extended.",
+    "In one motion, pull the handle up and across your body until your arms are in a fully-extended position above your head.",
+    "Keep your back straight and your arms close to your body as you pivot your back foot and straighten your legs to get a full range of motion.",
+    "Retract your arms and then your body. Return to the neutral position in a slow and controlled manner.",
+    "Repeat to failure.",
+    "Then, reposition and repeat the same series of movements on the opposite side."
+  ],
+  "images": [
+    "/img/exercises/Standing_Cable_Lift/0.jpg",
+    "/img/exercises/Standing_Cable_Lift/1.jpg"
+  ],
+  "alternativeNames": [
+    "Standing Cable Machine Lift",
+    "Standing Lift"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Standing_Cable_Lift",
+  "equipmentIds": [
+    "gym-cable-machine"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "name": "Kneeling Squat",
+  "slug": "kneeling-squat",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "ABS",
+    "HAMSTRINGS",
+    "LOWER_BACK"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.4,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Barbell kneeling squat where you sit back until glutes touch calves, then return to upright kneeling position. Targets glutes and posterior chain.",
+  "instructions": [
+    "Set the bar to the proper height in a power rack. Kneel behind the bar; it may be beneficial to put a mat down to pad your knees. Slide under the bar, racking it across the back of your shoulders. Your shoulder blades should be retracted and the bar tight across your back. Unrack the weight.",
+    "With your head looking forward, sit back with your butt until you touch your calves.",
+    "Reverse the motion, returning the torso to an upright position."
+  ],
+  "images": [
+    "/img/exercises/Kneeling_Squat/0.jpg",
+    "/img/exercises/Kneeling_Squat/1.jpg"
+  ],
+  "alternativeNames": [
+    "Kneeling-Squat"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Kneeling_Squat",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Smith_Single-Leg_Split_Squat-Barbell_Lunge-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.65,
+  "description": "Both are unilateral leg exercises with barbell loading, differing in movement pattern (stationary split squat vs walking lunge)",
+  "createdBy": "system",
+  "createdAt": 1761547477,
+  "fromExerciseTemplateId": "Smith_Single-Leg_Split_Squat",
+  "toExerciseTemplateId": "Barbell_Lunge"
+}

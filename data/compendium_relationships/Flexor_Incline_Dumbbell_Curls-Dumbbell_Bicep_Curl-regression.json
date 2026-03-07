@@ -1,0 +1,10 @@
+{
+  "id": "Flexor_Incline_Dumbbell_Curls-Dumbbell_Bicep_Curl-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Flexor_Incline_Dumbbell_Curls",
+  "toExerciseTemplateId": "Dumbbell_Bicep_Curl"
+}

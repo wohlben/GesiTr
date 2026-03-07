@@ -1,0 +1,10 @@
+{
+  "id": "Finger_Curls-Seated_Dumbbell_Palms-Up_Wrist_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Finger_Curls",
+  "toExerciseTemplateId": "Seated_Dumbbell_Palms-Up_Wrist_Curl"
+}

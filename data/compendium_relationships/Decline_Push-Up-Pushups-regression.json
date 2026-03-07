@@ -1,0 +1,10 @@
+{
+  "id": "Decline_Push-Up-Pushups-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Decline_Push-Up",
+  "toExerciseTemplateId": "Pushups"
+}

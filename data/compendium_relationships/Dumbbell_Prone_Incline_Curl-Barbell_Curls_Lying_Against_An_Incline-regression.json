@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Prone_Incline_Curl-Barbell_Curls_Lying_Against_An_Incline-regression",
+  "relationshipType": "regression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Prone_Incline_Curl",
+  "toExerciseTemplateId": "Barbell_Curls_Lying_Against_An_Incline"
+}

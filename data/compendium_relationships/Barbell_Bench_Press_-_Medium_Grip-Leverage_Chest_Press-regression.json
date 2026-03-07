@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Bench_Press_-_Medium_Grip-Leverage_Chest_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730051040,
+  "fromExerciseTemplateId": "Barbell_Bench_Press_-_Medium_Grip",
+  "toExerciseTemplateId": "Leverage_Chest_Press"
+}

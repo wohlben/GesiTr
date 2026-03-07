@@ -1,0 +1,10 @@
+{
+  "id": "Kneeling_Arm_Drill-Wind_Sprints-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Kneeling_Arm_Drill",
+  "toExerciseTemplateId": "Wind_Sprints"
+}

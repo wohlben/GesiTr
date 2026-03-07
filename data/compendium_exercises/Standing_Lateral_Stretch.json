@@ -1,0 +1,40 @@
+{
+  "name": "Standing Lateral Stretch",
+  "slug": "standing-lateral-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Standing side bend stretch reaching overhead to stretch obliques and lateral core.",
+  "instructions": [
+    "Take a slightly wider than hip distance stance with your knees slightly bent.",
+    "Place your right hand on your right hip to support the spine.",
+    "Raise your left arm in a vertical line and place your left hand behind your head. Keep it there as you incline your torso to the right.",
+    "Keep your weight evenly distributed between both legs (don't lean into your left hip). Switch sides."
+  ],
+  "images": [
+    "/img/exercises/Standing_Lateral_Stretch/0.jpg",
+    "/img/exercises/Standing_Lateral_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Seated Lateral Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Standing_Lateral_Stretch",
+  "equipmentIds": []
+}

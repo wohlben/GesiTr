@@ -1,0 +1,10 @@
+{
+  "id": "Dead_Bug-Plank-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761483562,
+  "fromExerciseTemplateId": "Dead_Bug",
+  "toExerciseTemplateId": "Plank"
+}

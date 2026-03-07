@@ -1,0 +1,10 @@
+{
+  "id": "Leverage_Shrug-Shoulder_Raise-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Leverage_Shrug",
+  "toExerciseTemplateId": "Shoulder_Raise"
+}

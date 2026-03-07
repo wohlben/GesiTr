@@ -1,0 +1,40 @@
+{
+  "name": "Adductor/Groin",
+  "slug": "adductor-groin",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "ADDUCTORS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Adductor and groin stretch opening legs wide to stretch inner thigh muscles.",
+  "instructions": [
+    "Lie on your back with your feet raised towards the ceiling.",
+    "Have your partner hold your feet or ankles. Abduct your legs as far as you can. This will be your starting position.",
+    "Attempt to squeeze your legs together for 10 or more seconds, while your partner prevents you from doing so.",
+    "Now, relax the muscles in your legs as your partner pushes your feet apart, stretching as far as is comfortable for you. Be sure to let your partner know when the stretch is adequate to prevent overstretching or injury."
+  ],
+  "images": [
+    "/img/exercises/Adductor_Groin/0.jpg",
+    "/img/exercises/Adductor_Groin/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Adductor_Groin",
+  "equipmentIds": [
+    "partner"
+  ]
+}

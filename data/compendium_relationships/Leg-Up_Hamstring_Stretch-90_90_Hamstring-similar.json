@@ -1,0 +1,10 @@
+{
+  "id": "Leg-Up_Hamstring_Stretch-90_90_Hamstring-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Leg-Up_Hamstring_Stretch",
+  "toExerciseTemplateId": "90_90_Hamstring"
+}

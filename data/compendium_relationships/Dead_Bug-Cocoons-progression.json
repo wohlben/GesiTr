@@ -1,0 +1,10 @@
+{
+  "id": "Dead_Bug-Cocoons-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761483562,
+  "fromExerciseTemplateId": "Dead_Bug",
+  "toExerciseTemplateId": "Cocoons"
+}

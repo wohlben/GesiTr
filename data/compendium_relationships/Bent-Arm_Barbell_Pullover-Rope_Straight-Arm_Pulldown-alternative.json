@@ -1,0 +1,10 @@
+{
+  "id": "Bent-Arm_Barbell_Pullover-Rope_Straight-Arm_Pulldown-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Bent-Arm_Barbell_Pullover",
+  "toExerciseTemplateId": "Rope_Straight-Arm_Pulldown"
+}

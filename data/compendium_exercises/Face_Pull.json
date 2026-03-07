@@ -1,0 +1,44 @@
+{
+  "name": "Face Pull",
+  "slug": "face-pull",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "REAR_DELTS"
+  ],
+  "secondaryMuscles": [
+    "RHOMBOIDS",
+    "TRAPS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.1,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Cable exercise pulling rope towards face with external rotation, targeting rear delts and upper back",
+  "instructions": [
+    "Facing a high pulley with a rope or dual handles attached, pull the weight directly towards your face, separating your hands as you do so. Keep your upper arms parallel to the ground."
+  ],
+  "images": [
+    "/img/exercises/Face_Pull/0.jpg",
+    "/img/exercises/Face_Pull/1.jpg"
+  ],
+  "alternativeNames": [
+    "Cable Face Pull",
+    "Face Pulls",
+    "Face-Pull"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Face_Pull",
+  "equipmentIds": [
+    "gym-cable-machine"
+  ]
+}

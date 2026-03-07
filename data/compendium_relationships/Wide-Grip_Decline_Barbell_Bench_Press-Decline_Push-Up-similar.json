@@ -1,0 +1,10 @@
+{
+  "id": "Wide-Grip_Decline_Barbell_Bench_Press-Decline_Push-Up-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761551318,
+  "fromExerciseTemplateId": "Wide-Grip_Decline_Barbell_Bench_Press",
+  "toExerciseTemplateId": "Decline_Push-Up"
+}

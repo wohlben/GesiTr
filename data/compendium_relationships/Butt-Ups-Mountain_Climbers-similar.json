@@ -1,0 +1,10 @@
+{
+  "id": "Butt-Ups-Mountain_Climbers-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Butt-Ups",
+  "toExerciseTemplateId": "Mountain_Climbers"
+}

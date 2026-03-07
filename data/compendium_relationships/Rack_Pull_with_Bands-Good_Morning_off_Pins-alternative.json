@@ -1,0 +1,10 @@
+{
+  "id": "Rack_Pull_with_Bands-Good_Morning_off_Pins-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Rack_Pull_with_Bands",
+  "toExerciseTemplateId": "Good_Morning_off_Pins"
+}

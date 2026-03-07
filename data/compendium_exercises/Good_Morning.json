@@ -1,0 +1,44 @@
+{
+  "name": "Good Morning",
+  "slug": "good-morning",
+  "type": "STRENGTH",
+  "force": [
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "HAMSTRINGS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "LOWER_BACK"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Hip hinge exercise with barbell on back bending forward at hips, targeting posterior chain.",
+  "instructions": [
+    "Begin with a bar on a rack at shoulder height. Rack the bar across the rear of your shoulders as you would a power squat, not on top of your shoulders. Keep your back tight, shoulder blades pinched together, and your knees slightly bent. Step back from the rack.",
+    "Begin by bending at the hips, moving them back as you bend over to near parallel. Keep your back arched and your cervical spine in proper alignment.",
+    "Reverse the motion by extending through the hips with your glutes and hamstrings. Continue until you have returned to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Good_Morning/0.jpg",
+    "/img/exercises/Good_Morning/1.jpg"
+  ],
+  "alternativeNames": [
+    "Good-Morning"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Good_Morning",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Round_The_World_Shoulder_Stretch-Arm_Circles-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Round_The_World_Shoulder_Stretch",
+  "toExerciseTemplateId": "Arm_Circles"
+}

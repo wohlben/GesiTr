@@ -1,0 +1,10 @@
+{
+  "id": "Oblique_Crunches_-_On_The_Floor-Alternate_Heel_Touchers-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Oblique_Crunches_-_On_The_Floor",
+  "toExerciseTemplateId": "Alternate_Heel_Touchers"
+}

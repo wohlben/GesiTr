@@ -1,0 +1,43 @@
+{
+  "name": "Pelvic Tilt Into Bridge",
+  "slug": "pelvic-tilt-into-bridge",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "HAMSTRINGS",
+    "LOWER_BACK"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Exercise starting with pelvic tilt then raising hips into bridge position, activating glutes and core progressively.",
+  "instructions": [
+    "Lie down with your feet on the floor, heels directly under your knees.",
+    "Lift only your tailbone to the ceiling to stretch your lower back. (Don't lift the entire spine yet.) Pull in your stomach.",
+    "To go into a bridge, lift the entire spine except the neck."
+  ],
+  "images": [
+    "/img/exercises/Pelvic_Tilt_Into_Bridge/0.jpg",
+    "/img/exercises/Pelvic_Tilt_Into_Bridge/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Pelvic_Tilt_Into_Bridge",
+  "equipmentIds": []
+}

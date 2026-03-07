@@ -1,0 +1,10 @@
+{
+  "id": "Lateral_Bound-Hurdle_Hops-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Lateral_Bound",
+  "toExerciseTemplateId": "Hurdle_Hops"
+}

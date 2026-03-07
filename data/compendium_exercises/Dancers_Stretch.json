@@ -1,0 +1,42 @@
+{
+  "name": "Dancer's Stretch",
+  "slug": "dancer-s-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "LOWER_BACK"
+  ],
+  "secondaryMuscles": [
+    "OBLIQUES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Seated rotational stretch crossing legs and twisting torso, targeting lower back and obliques.",
+  "instructions": [
+    "Sit up on the floor.",
+    "Cross your right leg over your left, keeping the knee bent. Your left leg is straight and down on the floor.",
+    "Place your left arm on your right leg and your right hand on the floor.",
+    "Rotate your upper body to the right, and hold for 10-20 seconds. Switch sides."
+  ],
+  "images": [
+    "/img/exercises/Dancers_Stretch/0.jpg",
+    "/img/exercises/Dancers_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Dancer's-Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Dancers_Stretch",
+  "equipmentIds": []
+}

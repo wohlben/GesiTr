@@ -1,0 +1,48 @@
+{
+  "name": "Incline Dumbbell Flyes",
+  "slug": "incline-dumbbell-flyes",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Dumbbell fly on incline bench, opening arms wide to stretch and contract upper chest.",
+  "instructions": [
+    "Hold a dumbbell in each hand and lie on an incline bench that is set to an incline angle of no more than 30 degrees.",
+    "Extend your arms above you with a slight bend at the elbows. The palms of your hands should be facing each other (neutral grip). This will be your starting position.",
+    "As you breathe in, start to slowly lower the arms to the side in a wide arc while keeping the arms extended and maintaining the slight bend at the elbows. Tip: At the end of the movement the arms will be out to your sides with the palms facing up.",
+    "As you exhale, bring the dumbbells back up to the starting position by reversing the motion and squeezing your chest muscles. Tip: Keep in mind that the movement will only happen at the shoulder joint. There is no motion that happens at the elbow joint.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Incline_Dumbbell_Flyes/0.jpg",
+    "/img/exercises/Incline_Dumbbell_Flyes/1.jpg"
+  ],
+  "alternativeNames": [
+    "Incline DB Flyes",
+    "Incline Dumbell Flyes"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Incline_Dumbbell_Flyes",
+  "equipmentIds": [
+    "2x dumbbell",
+    "incline-bench"
+  ]
+}

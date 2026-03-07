@@ -1,0 +1,10 @@
+{
+  "id": "Dynamic_Back_Stretch-Overhead_Stretch-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Dynamic_Back_Stretch",
+  "toExerciseTemplateId": "Overhead_Stretch"
+}

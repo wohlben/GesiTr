@@ -1,0 +1,10 @@
+{
+  "id": "Kettlebell_Turkish_Get-Up_Squat_style-One-Arm_Kettlebell_Clean_and_Jerk-similar",
+  "relationshipType": "similar",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Kettlebell_Turkish_Get-Up_Squat_style",
+  "toExerciseTemplateId": "One-Arm_Kettlebell_Clean_and_Jerk"
+}

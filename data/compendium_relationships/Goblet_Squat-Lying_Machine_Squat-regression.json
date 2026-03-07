@@ -1,0 +1,10 @@
+{
+  "id": "Goblet_Squat-Lying_Machine_Squat-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": "Lying Machine Squat provides more support and stability with a guided machine path, making it easier than Goblet Squat which requires holding weight and maintaining balance. Both target the same primary muscles (quads, glutes, hamstrings).",
+  "createdBy": "system",
+  "createdAt": 1730014000,
+  "fromExerciseTemplateId": "Goblet_Squat",
+  "toExerciseTemplateId": "Lying_Machine_Squat"
+}

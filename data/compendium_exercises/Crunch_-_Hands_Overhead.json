@@ -1,0 +1,44 @@
+{
+  "name": "Crunch - Hands Overhead",
+  "slug": "crunch-hands-overhead",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.9,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Crunch variation with arms extended overhead to increase difficulty by adding arm weight to the movement",
+  "instructions": [
+    "Lie on the floor with your back flat and knees bent with around a 60-degree angle between the hamstrings and the calves.",
+    "Keep your feet flat on the floor and stretch your arms overhead with your palms crossed. This will be your starting position.",
+    "Curl your upper body forward and bring your shoulder blades just off the floor. At all times, keep your arms aligned with your head, neck and shoulder. Don't move them forward from that position. Exhale as you perform this portion of the movement and hold the contraction for a second.",
+    "Slowly lower down to the starting position as you inhale.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Crunch_-_Hands_Overhead/0.jpg",
+    "/img/exercises/Crunch_-_Hands_Overhead/1.jpg"
+  ],
+  "alternativeNames": [
+    "Ab Crunch",
+    "Abdominal Crunch",
+    "Crunch   Hands Overhead"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Crunch_-_Hands_Overhead",
+  "equipmentIds": []
+}

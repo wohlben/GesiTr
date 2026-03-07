@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Preacher_Curl-Machine_Preacher_Curls-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cable_Preacher_Curl",
+  "toExerciseTemplateId": "Machine_Preacher_Curls"
+}

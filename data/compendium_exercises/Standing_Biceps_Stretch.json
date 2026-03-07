@@ -1,0 +1,38 @@
+{
+  "name": "Standing Biceps Stretch",
+  "slug": "standing-biceps-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "BICEPS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Standing arm stretch extending arm behind to stretch biceps and anterior shoulder.",
+  "instructions": [
+    "Clasp your hands behind your back with your palms together, straighten arms and then rotate them so your palms face downward.",
+    "Raise your arms up and hold until you feel a stretch in your biceps."
+  ],
+  "images": [
+    "/img/exercises/Standing_Biceps_Stretch/0.jpg",
+    "/img/exercises/Standing_Biceps_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Seated Biceps Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Standing_Biceps_Stretch",
+  "equipmentIds": []
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Palms-Up_Barbell_Behind_The_Back_Wrist_Curl-Cable_Wrist_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479701,
+  "fromExerciseTemplateId": "Standing_Palms-Up_Barbell_Behind_The_Back_Wrist_Curl",
+  "toExerciseTemplateId": "Cable_Wrist_Curl"
+}

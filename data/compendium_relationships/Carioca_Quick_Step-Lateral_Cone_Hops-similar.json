@@ -1,0 +1,10 @@
+{
+  "id": "Carioca_Quick_Step-Lateral_Cone_Hops-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Carioca_Quick_Step",
+  "toExerciseTemplateId": "Lateral_Cone_Hops"
+}

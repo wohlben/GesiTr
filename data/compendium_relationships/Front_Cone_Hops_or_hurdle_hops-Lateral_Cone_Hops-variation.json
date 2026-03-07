@@ -1,0 +1,10 @@
+{
+  "id": "Front_Cone_Hops_or_hurdle_hops-Lateral_Cone_Hops-variation",
+  "relationshipType": "variation",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761495424,
+  "fromExerciseTemplateId": "Front_Cone_Hops_or_hurdle_hops",
+  "toExerciseTemplateId": "Lateral_Cone_Hops"
+}

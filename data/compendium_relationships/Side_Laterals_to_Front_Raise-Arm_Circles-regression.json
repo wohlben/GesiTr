@@ -1,0 +1,10 @@
+{
+  "id": "Side_Laterals_to_Front_Raise-Arm_Circles-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Side_Laterals_to_Front_Raise",
+  "toExerciseTemplateId": "Arm_Circles"
+}

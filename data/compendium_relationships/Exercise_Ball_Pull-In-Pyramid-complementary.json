@@ -1,0 +1,10 @@
+{
+  "id": "Exercise_Ball_Pull-In-Pyramid-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Exercise_Ball_Pull-In",
+  "toExerciseTemplateId": "Pyramid"
+}

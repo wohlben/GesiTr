@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Bicep_Curl-Alternate_Hammer_Curl-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Dumbbell_Bicep_Curl",
+  "toExerciseTemplateId": "Alternate_Hammer_Curl"
+}

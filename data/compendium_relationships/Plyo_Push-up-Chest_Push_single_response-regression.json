@@ -1,0 +1,10 @@
+{
+  "id": "Plyo_Push-up-Chest_Push_single_response-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729933200,
+  "fromExerciseTemplateId": "Plyo_Push-up",
+  "toExerciseTemplateId": "Chest_Push_single_response"
+}

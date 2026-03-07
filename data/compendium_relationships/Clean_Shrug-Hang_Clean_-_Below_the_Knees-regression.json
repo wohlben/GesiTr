@@ -1,0 +1,10 @@
+{
+  "id": "Clean_Shrug-Hang_Clean_-_Below_the_Knees-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496140,
+  "fromExerciseTemplateId": "Clean_Shrug",
+  "toExerciseTemplateId": "Hang_Clean_-_Below_the_Knees"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Bosu_Ball_Cable_Crunch_With_Side_Bends-Decline_Oblique_Crunch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Bosu_Ball_Cable_Crunch_With_Side_Bends",
+  "toExerciseTemplateId": "Decline_Oblique_Crunch"
+}

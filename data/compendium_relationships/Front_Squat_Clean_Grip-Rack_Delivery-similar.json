@@ -1,0 +1,10 @@
+{
+  "id": "Front_Squat_Clean_Grip-Rack_Delivery-similar",
+  "relationshipType": "similar",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Front_Squat_Clean_Grip",
+  "toExerciseTemplateId": "Rack_Delivery"
+}

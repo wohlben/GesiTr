@@ -1,0 +1,10 @@
+{
+  "id": "Jackknife_Sit-Up-Dead_Bug-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761483562,
+  "fromExerciseTemplateId": "Jackknife_Sit-Up",
+  "toExerciseTemplateId": "Dead_Bug"
+}

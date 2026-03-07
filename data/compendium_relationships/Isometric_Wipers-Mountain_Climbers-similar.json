@@ -1,0 +1,10 @@
+{
+  "id": "Isometric_Wipers-Mountain_Climbers-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Isometric_Wipers",
+  "toExerciseTemplateId": "Mountain_Climbers"
+}

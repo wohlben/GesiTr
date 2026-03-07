@@ -1,0 +1,50 @@
+{
+  "name": "Snatch Shrug",
+  "slug": "snatch-shrug",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "TRAPS"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Shrug with wide snatch grip, targeting traps while practicing snatch grip width.",
+  "instructions": [
+    "Begin with a wide grip, with the bar hanging at the mid thigh position. You can use a hook or overhand grip. Your back should be straight and inclined slightly forward.",
+    "Shrug your shoulders towards your ears. While this exercise can usually by loaded with heavier weight than a snatch, avoid overloading to the point that the execution slows down."
+  ],
+  "images": [
+    "/img/exercises/Snatch_Shrug/0.jpg",
+    "/img/exercises/Snatch_Shrug/1.jpg"
+  ],
+  "alternativeNames": [
+    "Barbell Shrug",
+    "Barbell Snatch",
+    "Power Snatch",
+    "Shoulder Shrug",
+    "Snatch-Shrug",
+    "Trap Shrug"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Snatch_Shrug",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

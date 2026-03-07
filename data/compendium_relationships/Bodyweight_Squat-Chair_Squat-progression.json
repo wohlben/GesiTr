@@ -1,0 +1,10 @@
+{
+  "id": "Bodyweight_Squat-Chair_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761481210,
+  "fromExerciseTemplateId": "Bodyweight_Squat",
+  "toExerciseTemplateId": "Chair_Squat"
+}

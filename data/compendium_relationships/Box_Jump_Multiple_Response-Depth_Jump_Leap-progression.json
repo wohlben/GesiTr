@@ -1,0 +1,10 @@
+{
+  "id": "Box_Jump_Multiple_Response-Depth_Jump_Leap-progression",
+  "relationshipType": "progression",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761477930,
+  "fromExerciseTemplateId": "Box_Jump_Multiple_Response",
+  "toExerciseTemplateId": "Depth_Jump_Leap"
+}

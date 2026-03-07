@@ -1,0 +1,10 @@
+{
+  "id": "Upper_Back-Leg_Grab-Seated_Floor_Hamstring_Stretch-regression",
+  "relationshipType": "regression",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Upper_Back-Leg_Grab",
+  "toExerciseTemplateId": "Seated_Floor_Hamstring_Stretch"
+}

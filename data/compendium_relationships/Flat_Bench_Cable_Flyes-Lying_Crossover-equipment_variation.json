@@ -1,0 +1,10 @@
+{
+  "id": "Flat_Bench_Cable_Flyes-Lying_Crossover-equipment_variation",
+  "relationshipType": "equipment_variation",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Flat_Bench_Cable_Flyes",
+  "toExerciseTemplateId": "Lying_Crossover"
+}

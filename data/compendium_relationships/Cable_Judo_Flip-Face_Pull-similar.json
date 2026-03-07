@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Judo_Flip-Face_Pull-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cable_Judo_Flip",
+  "toExerciseTemplateId": "Face_Pull"
+}

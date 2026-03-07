@@ -1,0 +1,10 @@
+{
+  "id": "Calf_Press-Standing_Dumbbell_Calf_Raise-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479684,
+  "fromExerciseTemplateId": "Calf_Press",
+  "toExerciseTemplateId": "Standing_Dumbbell_Calf_Raise"
+}

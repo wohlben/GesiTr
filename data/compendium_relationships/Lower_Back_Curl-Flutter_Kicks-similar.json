@@ -1,0 +1,10 @@
+{
+  "id": "Lower_Back_Curl-Flutter_Kicks-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730080800,
+  "fromExerciseTemplateId": "Lower_Back_Curl",
+  "toExerciseTemplateId": "Flutter_Kicks"
+}

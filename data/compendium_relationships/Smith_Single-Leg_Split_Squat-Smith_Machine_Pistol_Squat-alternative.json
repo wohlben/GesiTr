@@ -1,0 +1,10 @@
+{
+  "id": "Smith_Single-Leg_Split_Squat-Smith_Machine_Pistol_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": "Both are single-leg exercises using Smith machine for balance assistance, differing in movement pattern (split squat vs pistol squat)",
+  "createdBy": "system",
+  "createdAt": 1761547477,
+  "fromExerciseTemplateId": "Smith_Single-Leg_Split_Squat",
+  "toExerciseTemplateId": "Smith_Machine_Pistol_Squat"
+}

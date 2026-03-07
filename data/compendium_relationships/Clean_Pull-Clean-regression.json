@@ -1,0 +1,10 @@
+{
+  "id": "Clean_Pull-Clean-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Clean_Pull",
+  "toExerciseTemplateId": "Clean"
+}

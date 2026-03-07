@@ -1,0 +1,10 @@
+{
+  "id": "JM_Press-Lying_Triceps_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499467,
+  "fromExerciseTemplateId": "JM_Press",
+  "toExerciseTemplateId": "Lying_Triceps_Press"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Inverted_Row-Band_Assisted_Pull-Up-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Inverted_Row",
+  "toExerciseTemplateId": "Band_Assisted_Pull-Up"
+}

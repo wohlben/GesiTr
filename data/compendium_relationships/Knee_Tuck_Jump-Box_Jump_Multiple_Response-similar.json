@@ -1,0 +1,10 @@
+{
+  "id": "Knee_Tuck_Jump-Box_Jump_Multiple_Response-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761477930,
+  "fromExerciseTemplateId": "Knee_Tuck_Jump",
+  "toExerciseTemplateId": "Box_Jump_Multiple_Response"
+}

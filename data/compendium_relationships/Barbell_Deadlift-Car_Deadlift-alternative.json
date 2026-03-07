@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Deadlift-Car_Deadlift-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Barbell_Deadlift",
+  "toExerciseTemplateId": "Car_Deadlift"
+}

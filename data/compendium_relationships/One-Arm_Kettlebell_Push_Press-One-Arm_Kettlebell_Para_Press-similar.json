@@ -1,0 +1,10 @@
+{
+  "id": "One-Arm_Kettlebell_Push_Press-One-Arm_Kettlebell_Para_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729969200,
+  "fromExerciseTemplateId": "One-Arm_Kettlebell_Push_Press",
+  "toExerciseTemplateId": "One-Arm_Kettlebell_Para_Press"
+}

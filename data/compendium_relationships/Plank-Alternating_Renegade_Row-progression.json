@@ -1,0 +1,10 @@
+{
+  "id": "Plank-Alternating_Renegade_Row-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Plank",
+  "toExerciseTemplateId": "Alternating_Renegade_Row"
+}

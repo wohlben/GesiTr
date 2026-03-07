@@ -1,0 +1,10 @@
+{
+  "id": "Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench-Standing_One-Arm_Cable_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761548543,
+  "fromExerciseTemplateId": "Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench",
+  "toExerciseTemplateId": "Standing_One-Arm_Cable_Curl"
+}

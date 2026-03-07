@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Russian_Twists-Landmine_180s-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cable_Russian_Twists",
+  "toExerciseTemplateId": "Landmine_180s"
+}

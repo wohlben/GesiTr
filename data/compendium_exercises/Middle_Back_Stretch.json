@@ -1,0 +1,40 @@
+{
+  "name": "Middle Back Stretch",
+  "slug": "middle-back-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "RHOMBOIDS",
+    "LATS"
+  ],
+  "secondaryMuscles": [
+    "ABS",
+    "LOWER_BACK"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Rotational stretch for middle back, twisting at waist to stretch mid-back muscles and thoracic spine.",
+  "instructions": [
+    "Stand so your feet are shoulder width apart and your hands are on your hips.",
+    "Twist at your waist until you feel a stretch. Hold for 10 to 15 seconds, then twist to the other side."
+  ],
+  "images": [
+    "/img/exercises/Middle_Back_Stretch/0.jpg",
+    "/img/exercises/Middle_Back_Stretch/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Middle_Back_Stretch",
+  "equipmentIds": []
+}

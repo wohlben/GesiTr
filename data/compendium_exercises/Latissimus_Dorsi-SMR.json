@@ -1,0 +1,40 @@
+{
+  "name": "Latissimus Dorsi-SMR",
+  "slug": "latissimus-dorsi-smr",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "LATS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Self-myofascial release technique using foam roller to massage and release tension in the latissimus dorsi muscles.",
+  "instructions": [
+    "While lying on the floor, place a foam roll under your back and to one side, just behind your arm pit. This will be your starting position.",
+    "Keep the arm of the side being stretched behind and to the side of you as you shift your weight onto your lats, keeping your upper body off of the ground. Hold for 10-30 seconds, and switch sides."
+  ],
+  "images": [
+    "/img/exercises/Latissimus_Dorsi-SMR/0.jpg",
+    "/img/exercises/Latissimus_Dorsi-SMR/1.jpg"
+  ],
+  "alternativeNames": [
+    "Latissimus Dorsi SMR"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Latissimus_Dorsi-SMR",
+  "equipmentIds": [
+    "foam-roller"
+  ]
+}

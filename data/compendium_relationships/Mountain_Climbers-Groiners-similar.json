@@ -1,0 +1,10 @@
+{
+  "id": "Mountain_Climbers-Groiners-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496059,
+  "fromExerciseTemplateId": "Mountain_Climbers",
+  "toExerciseTemplateId": "Groiners"
+}

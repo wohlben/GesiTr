@@ -1,0 +1,10 @@
+{
+  "id": "Push_Press-Jerk_Dip_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499778,
+  "fromExerciseTemplateId": "Push_Press",
+  "toExerciseTemplateId": "Jerk_Dip_Squat"
+}

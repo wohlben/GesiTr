@@ -1,0 +1,10 @@
+{
+  "id": "Bodyweight_Flyes-Around_The_Worlds-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476339,
+  "fromExerciseTemplateId": "Bodyweight_Flyes",
+  "toExerciseTemplateId": "Around_The_Worlds"
+}

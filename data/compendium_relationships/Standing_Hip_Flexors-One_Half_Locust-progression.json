@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Hip_Flexors-One_Half_Locust-progression",
+  "relationshipType": "progression",
+  "strength": null,
+  "description": "Both exercises target hip flexor flexibility, with One Half Locust being a more advanced progression that adds the challenge of a prone position with foot holding and shoulder extension for a deeper stretch",
+  "createdBy": "system",
+  "createdAt": 1761024000,
+  "fromExerciseTemplateId": "Standing_Hip_Flexors",
+  "toExerciseTemplateId": "One_Half_Locust"
+}

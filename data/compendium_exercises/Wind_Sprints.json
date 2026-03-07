@@ -1,0 +1,45 @@
+{
+  "name": "Wind Sprints",
+  "slug": "wind-sprints",
+  "type": "CARDIO",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.9,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Short distance all-out sprints for speed, power, and anaerobic conditioning.",
+  "instructions": [
+    "Mark out a short distance, typically 40-100 yards. This will be your starting position.",
+    "Begin by accelerating as quickly as possible from a standing start, driving with the legs and pumping the arms.",
+    "Sprint at maximum effort for the entire distance, maintaining proper running form with high knees and explosive foot strikes.",
+    "Once you reach the end, walk back to recover, then repeat for the desired number of intervals."
+  ],
+  "images": [
+    "/img/exercises/Wind_Sprints/0.jpg",
+    "/img/exercises/Wind_Sprints/1.jpg"
+  ],
+  "alternativeNames": [
+    "Wind-Sprints"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Wind_Sprints",
+  "equipmentIds": []
+}

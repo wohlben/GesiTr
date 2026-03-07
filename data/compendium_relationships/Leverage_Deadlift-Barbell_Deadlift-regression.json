@@ -1,0 +1,10 @@
+{
+  "id": "Leverage_Deadlift-Barbell_Deadlift-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Leverage_Deadlift",
+  "toExerciseTemplateId": "Barbell_Deadlift"
+}

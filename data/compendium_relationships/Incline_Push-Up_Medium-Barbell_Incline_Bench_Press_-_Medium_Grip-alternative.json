@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Push-Up_Medium-Barbell_Incline_Bench_Press_-_Medium_Grip-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Incline_Push-Up_Medium",
+  "toExerciseTemplateId": "Barbell_Incline_Bench_Press_-_Medium_Grip"
+}

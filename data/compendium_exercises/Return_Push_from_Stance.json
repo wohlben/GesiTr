@@ -1,0 +1,46 @@
+{
+  "name": "Return Push from Stance",
+  "slug": "return-push-from-stance",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST",
+    "TRICEPS"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS",
+    "ABS",
+    "OBLIQUES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Athletic drill practicing catching and throwing a medicine ball from a 2 or 3 point stance, developing explosive power, hand-eye coordination, and agility.",
+  "instructions": [
+    "You will need a partner for this drill.",
+    "Begin in an athletic 2 or 3 point stance.",
+    "At the signal, move into a position to receive the pass from your partner.",
+    "Catch the medicine ball with both hands and immediately throw it back to your partner.",
+    "You can modify this drill by running different routes."
+  ],
+  "images": [
+    "/img/exercises/Return_Push_from_Stance/0.jpg",
+    "/img/exercises/Return_Push_from_Stance/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Return_Push_from_Stance",
+  "equipmentIds": [
+    "medicine-ball"
+  ]
+}

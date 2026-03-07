@@ -1,0 +1,10 @@
+{
+  "id": "Elbows_Back-Behind_Head_Chest_Stretch-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Elbows_Back",
+  "toExerciseTemplateId": "Behind_Head_Chest_Stretch"
+}

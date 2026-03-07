@@ -1,0 +1,10 @@
+{
+  "id": "Leg_Press-Lying_Machine_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": "Both are machine-based quad-dominant push exercises with back support. Leg Press uses a seated position while Lying Machine Squat uses a lying position, but both provide similar muscle activation with minimal stabilization demands.",
+  "createdBy": "system",
+  "createdAt": 1730014000,
+  "fromExerciseTemplateId": "Leg_Press",
+  "toExerciseTemplateId": "Lying_Machine_Squat"
+}

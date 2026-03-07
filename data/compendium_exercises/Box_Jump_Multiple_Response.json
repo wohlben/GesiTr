@@ -1,0 +1,50 @@
+{
+  "name": "Box Jump (Multiple Response)",
+  "slug": "box-jump-multiple-response",
+  "type": "CARDIO",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Plyometric box jump with continuous repetitions, jumping onto platform and immediately returning for next rep.",
+  "instructions": [
+    "Assume a relaxed stance facing the box or platform approximately an arm's length away. Arms should be down at the sides and legs slightly bent.",
+    "Using the arms to aid in the initial burst, jump upward and forward, landing with feet simultaneously on top of the box or platform.",
+    "Immediately drop or jump back down to the original starting place; then repeat the sequence."
+  ],
+  "images": [
+    "/img/exercises/Box_Jump_Multiple_Response/0.jpg",
+    "/img/exercises/Box_Jump_Multiple_Response/1.jpg"
+  ],
+  "alternativeNames": [
+    "Box Jumps",
+    "Jump Box",
+    "Plyo Box Jump"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Box_Jump_Multiple_Response",
+  "equipmentIds": [
+    "box"
+  ]
+}

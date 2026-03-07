@@ -1,0 +1,10 @@
+{
+  "id": "Inchworm-Suspended_Fallout-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": "Both involve extending body forward into plank position with core engagement; Inchworm is dynamic mobility while Fallout is static",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Inchworm",
+  "toExerciseTemplateId": "Suspended_Fallout"
+}

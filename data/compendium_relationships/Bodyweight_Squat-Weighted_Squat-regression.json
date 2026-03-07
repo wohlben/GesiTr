@@ -1,0 +1,10 @@
+{
+  "id": "Bodyweight_Squat-Weighted_Squat-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761551546,
+  "fromExerciseTemplateId": "Bodyweight_Squat",
+  "toExerciseTemplateId": "Weighted_Squat"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Front_Squat_Clean_Grip-Olympic_Squat-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Front_Squat_Clean_Grip",
+  "toExerciseTemplateId": "Olympic_Squat"
+}

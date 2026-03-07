@@ -1,0 +1,10 @@
+{
+  "id": "Lateral_Bound-Stride_Jump_Crossover-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Lateral_Bound",
+  "toExerciseTemplateId": "Stride_Jump_Crossover"
+}

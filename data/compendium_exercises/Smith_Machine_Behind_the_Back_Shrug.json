@@ -1,0 +1,46 @@
+{
+  "name": "Smith Machine Behind the Back Shrug",
+  "slug": "smith-machine-behind-the-back-shrug",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "TRAPS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Smith machine shrug with bar behind back, targeting traps from different angle.",
+  "instructions": [
+    "With the bar at thigh level, load an appropriate weight.",
+    "Stand with the bar behind you, taking a shoulder-width, pronated grip on the bar and unhook the weight. You should be standing up straight with your head and chest up and your arms extended. This will be your starting position.",
+    "Initiate the movement by shrugging your shoulders straight up. Do not flex the arms or wrist during the movement.",
+    "After a brief pause return the weight to the starting position.",
+    "Repeat for the desired number of repetitions before engaging the hooks to rack the weight."
+  ],
+  "images": [
+    "/img/exercises/Smith_Machine_Behind_the_Back_Shrug/0.jpg",
+    "/img/exercises/Smith_Machine_Behind_the_Back_Shrug/1.jpg"
+  ],
+  "alternativeNames": [
+    "Shoulder Shrug",
+    "Smith Behind the Back Shrug",
+    "Smith Machine Machine Behind the Back Shrug",
+    "Trap Shrug"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Smith_Machine_Behind_the_Back_Shrug",
+  "equipmentIds": [
+    "gym-smith-machine"
+  ]
+}

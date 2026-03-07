@@ -1,0 +1,10 @@
+{
+  "id": "Press_Sit-Up-Sit-Up-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": "Basic Sit-Up removes overhead press and weight, regressing from advanced compound Press Sit-Up to fundamental bodyweight core movement",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Press_Sit-Up",
+  "toExerciseTemplateId": "Sit-Up"
+}

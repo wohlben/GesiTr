@@ -1,0 +1,47 @@
+{
+  "name": "Calf-Machine Shoulder Shrug",
+  "slug": "calf-machine-shoulder-shrug",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "TRAPS"
+  ],
+  "secondaryMuscles": [
+    "FOREARMS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Shoulder shrug using calf machine for heavy trapezius loading with stable platform",
+  "instructions": [
+    "Position yourself on the calf machine so that the shoulder pads are above your shoulders. Your torso should be straight with the arms extended normally by your side. This will be your starting position.",
+    "Raise your shoulders up towards your ears as you exhale and hold the contraction for a full second.",
+    "Slowly return to the starting position as you inhale.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Calf-Machine_Shoulder_Shrug/0.jpg",
+    "/img/exercises/Calf-Machine_Shoulder_Shrug/1.jpg"
+  ],
+  "alternativeNames": [
+    "Calf Machine Shoulder Shrug",
+    "Calf-Shoulder Shrug",
+    "Shoulder Shrug",
+    "Trap Shrug"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Calf-Machine_Shoulder_Shrug",
+  "equipmentIds": [
+    "gym-calf-raise-machine"
+  ]
+}

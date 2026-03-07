@@ -1,0 +1,49 @@
+{
+  "name": "Bench Jump",
+  "slug": "bench-jump",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "CALVES"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Explosive box jump for plyometric power development and vertical leap improvement",
+  "instructions": [
+    "Begin with a box or bench 1-2 feet in front of you. Stand with your feet shoulder width apart. This will be your starting position.",
+    "Perform a short squat in preparation for the jump; swing your arms behind you.",
+    "Rebound out of this position, extending through the hips, knees, and ankles to jump as high as possible. Swing your arms forward and up.",
+    "Jump over the bench, landing with the knees bent, absorbing the impact through the legs.",
+    "Turn around and face the opposite direction, then jump back over the bench."
+  ],
+  "images": [
+    "/img/exercises/Bench_Jump/0.jpg",
+    "/img/exercises/Bench_Jump/1.jpg"
+  ],
+  "alternativeNames": [
+    "Bench-Jump"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Bench_Jump",
+  "equipmentIds": [
+    "box"
+  ]
+}

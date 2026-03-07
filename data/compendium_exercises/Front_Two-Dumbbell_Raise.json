@@ -1,0 +1,45 @@
+{
+  "name": "Front Two-Dumbbell Raise",
+  "slug": "front-two-dumbbell-raise",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Front raise with two dumbbells simultaneously, lifting both arms forward to shoulder height.",
+  "instructions": [
+    "Pick a couple of dumbbells and stand with a straight torso and the dumbbells on front of your thighs at arms length with the palms of the hand facing your thighs. This will be your starting position.",
+    "While maintaining the torso stationary (no swinging), lift the dumbbells to the front with a slight bend on the elbow and the palms of the hands always facing down. Continue to go up until you arms are slightly above parallel to the floor. Exhale as you execute this portion of the movement and pause for a second at the top.",
+    "As you inhale, lower the dumbbells back down slowly to the starting position.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Front_Two-Dumbbell_Raise/0.jpg",
+    "/img/exercises/Front_Two-Dumbbell_Raise/1.jpg"
+  ],
+  "alternativeNames": [
+    "Front Two Dumbbell Raise",
+    "Front Two-DB Raise",
+    "Front Two-Dumbell Raise"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Front_Two-Dumbbell_Raise",
+  "equipmentIds": [
+    "2x dumbbell"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "One-Arm_Kettlebell_Clean_and_Jerk-Vertical_Swing-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "One-Arm_Kettlebell_Clean_and_Jerk",
+  "toExerciseTemplateId": "Vertical_Swing"
+}

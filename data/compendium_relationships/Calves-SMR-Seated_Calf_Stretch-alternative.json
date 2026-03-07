@@ -1,0 +1,10 @@
+{
+  "id": "Calves-SMR-Seated_Calf_Stretch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Calves-SMR",
+  "toExerciseTemplateId": "Seated_Calf_Stretch"
+}

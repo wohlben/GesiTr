@@ -1,0 +1,10 @@
+{
+  "id": "Bent-Knee_Hip_Raise-Hip_Flexion_with_Band-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Bent-Knee_Hip_Raise",
+  "toExerciseTemplateId": "Hip_Flexion_with_Band"
+}

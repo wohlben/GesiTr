@@ -1,0 +1,41 @@
+{
+  "name": "Farmer's Walk",
+  "slug": "farmer-s-walk",
+  "type": "STRENGTH",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "FOREARMS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Loaded carry exercise walking with heavy weights in each hand, building grip strength, core stability, and full-body tension.",
+  "instructions": [
+    "There are various implements that can be used for the farmers walk. These can also be performed with heavy dumbbells or short bars if these implements aren't available. Begin by standing between the implements.",
+    "After gripping the handles, lift them up by driving through your heels, keeping your back straight and your head up.",
+    "Walk taking short, quick steps, and don't forget to breathe. Move for a given distance, typically 50-100 feet, as fast as possible."
+  ],
+  "images": [
+    "/img/exercises/Farmers_Walk/0.jpg",
+    "/img/exercises/Farmers_Walk/1.jpg"
+  ],
+  "alternativeNames": [
+    "Farmer's-Walk"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Farmers_Walk",
+  "equipmentIds": [
+    "2x dumbbell"
+  ]
+}

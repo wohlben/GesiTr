@@ -1,0 +1,10 @@
+{
+  "id": "Rack_Pull_with_Bands-Band_Good_Morning-regresses_to",
+  "relationshipType": "regresses_to",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Rack_Pull_with_Bands",
+  "toExerciseTemplateId": "Band_Good_Morning"
+}

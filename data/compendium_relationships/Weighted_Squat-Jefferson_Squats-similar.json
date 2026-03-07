@@ -1,0 +1,10 @@
+{
+  "id": "Weighted_Squat-Jefferson_Squats-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761551546,
+  "fromExerciseTemplateId": "Weighted_Squat",
+  "toExerciseTemplateId": "Jefferson_Squats"
+}

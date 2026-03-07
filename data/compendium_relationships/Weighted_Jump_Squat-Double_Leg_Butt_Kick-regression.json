@@ -1,0 +1,10 @@
+{
+  "id": "Weighted_Jump_Squat-Double_Leg_Butt_Kick-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Weighted_Jump_Squat",
+  "toExerciseTemplateId": "Double_Leg_Butt_Kick"
+}

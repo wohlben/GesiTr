@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Two-Arm_Overhead_Throw-Backward_Medicine_Ball_Throw-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Standing_Two-Arm_Overhead_Throw",
+  "toExerciseTemplateId": "Backward_Medicine_Ball_Throw"
+}

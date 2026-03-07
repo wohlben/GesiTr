@@ -1,0 +1,47 @@
+{
+  "name": "Kneeling Jump Squat",
+  "slug": "kneeling-jump-squat",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "CALVES",
+    "HAMSTRINGS",
+    "QUADS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Plyometric exercise starting from kneeling position, explosively jumping to standing with barbell. Develops lower body power.",
+  "instructions": [
+    "Begin kneeling on the floor with a barbell racked across the back of your shoulders, or you can use your body weight for this exercise. This can be done inside of a power rack to make unracking easier.",
+    "Sit back with your hips until your glutes touch your feet, keeping your head and chest up.",
+    "Explode up with your hips, generating enough power to land with your feet flat on the floor.",
+    "Continue with the squat by driving through your heels and extending the knees to come to a standing position."
+  ],
+  "images": [
+    "/img/exercises/Kneeling_Jump_Squat/0.jpg",
+    "/img/exercises/Kneeling_Jump_Squat/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Kneeling_Jump_Squat",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

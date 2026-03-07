@@ -1,0 +1,46 @@
+{
+  "name": "Smith Machine Calf Raise",
+  "slug": "smith-machine-calf-raise",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CALVES"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Standing calf raise on Smith machine, pressing up on toes with bar on back.",
+  "instructions": [
+    "Place a block or weight plate below the bar on the Smith machine. Set the bar to a position that best matches your height. Once the correct height is chosen and the bar is loaded, step onto the plates with the balls of your feet and place the bar on the back of your shoulders.",
+    "Take the bar with both hands facing forward. Rotate the bar to unrack it. This will be your starting position.",
+    "Raise your heels as high as possible by pushing off of the balls of your feet, flexing your calf at the top of the contraction. Your knees should remain extended. Hold the contracted position for a second before you start to go back down.",
+    "Return slowly to the starting position as you breathe in while lowering your heels.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Smith_Machine_Calf_Raise/0.jpg",
+    "/img/exercises/Smith_Machine_Calf_Raise/1.jpg"
+  ],
+  "alternativeNames": [
+    "Heel Raise",
+    "Smith Calf Raise",
+    "Smith Machine Machine Calf Raise",
+    "Standing Calf Raise"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Smith_Machine_Calf_Raise",
+  "equipmentIds": [
+    "gym-smith-machine"
+  ]
+}

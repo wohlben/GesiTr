@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Cable_Rows-Bent_Over_Two-Dumbbell_Row_With_Palms_In-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Seated_Cable_Rows",
+  "toExerciseTemplateId": "Bent_Over_Two-Dumbbell_Row_With_Palms_In"
+}

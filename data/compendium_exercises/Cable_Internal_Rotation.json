@@ -1,0 +1,47 @@
+{
+  "name": "Cable Internal Rotation",
+  "slug": "cable-internal-rotation",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Cable shoulder internal rotation targeting rotator cuff muscles, particularly subscapularis, for shoulder stability.",
+  "instructions": [
+    "Adjust the cable to the same height as your elbow. Stand with your right side to the cable a couple of feet away.",
+    "Grasp the handle with your right hand, and keep your elbow pressed firmly to your side. We recommend you hold a pad or foam roll in place with your elbow to keep it firmly in position.",
+    "With your upper arm in position, your elbow should be flexed to 90 degrees with your hand rotated out away from your torso. This will be your starting position.",
+    "Execute the movement by rotating your arm in a forehand motion across your body, keeping your elbow in place and maintaining the 90-degree angle.",
+    "Return slowly to the starting position.",
+    "Repeat for the recommended amount of repetitions and then switch to the other arm."
+  ],
+  "images": [
+    "/img/exercises/Cable_Internal_Rotation/0.jpg",
+    "/img/exercises/Cable_Internal_Rotation/1.jpg"
+  ],
+  "alternativeNames": [
+    "Cable Machine Internal Rotation",
+    "Internal Rotation"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Cable_Internal_Rotation",
+  "equipmentIds": [
+    "gym-cable-machine",
+    "resistance-band",
+    "foam-roller"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Thigh_Adductor-Band_Hip_Adductions-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Thigh_Adductor",
+  "toExerciseTemplateId": "Band_Hip_Adductions"
+}

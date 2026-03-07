@@ -1,0 +1,10 @@
+{
+  "id": "Clean_and_Jerk-Jerk_Dip_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499778,
+  "fromExerciseTemplateId": "Clean_and_Jerk",
+  "toExerciseTemplateId": "Jerk_Dip_Squat"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Lying_Rear_Lateral_Raise-Seated_Bent-Over_Rear_Delt_Raise-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761493205,
+  "fromExerciseTemplateId": "Dumbbell_Lying_Rear_Lateral_Raise",
+  "toExerciseTemplateId": "Seated_Bent-Over_Rear_Delt_Raise"
+}

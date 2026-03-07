@@ -1,0 +1,10 @@
+{
+  "id": "Forward_Drag_with_Press-Prowler_Sprint-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464001,
+  "fromExerciseTemplateId": "Forward_Drag_with_Press",
+  "toExerciseTemplateId": "Prowler_Sprint"
+}

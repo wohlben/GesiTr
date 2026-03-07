@@ -1,0 +1,39 @@
+{
+  "name": "Ankle Circles",
+  "slug": "ankle-circles",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "CALVES"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Dynamic ankle mobility exercise using circular motions to improve range of motion and joint flexibility",
+  "instructions": [
+    "Use a sturdy object like a squat rack to hold yourself.",
+    "Lift the right leg in the air (just around 2 inches from the floor) and perform a circular motion with the big toe. Pretend that you are drawing a big circle with it. Tip: One circle equals 1 repetition. Breathe normally as you perform the movement.",
+    "When you are done with the right foot, then repeat with the left leg."
+  ],
+  "images": [
+    "/img/exercises/Ankle_Circles/0.jpg",
+    "/img/exercises/Ankle_Circles/1.jpg"
+  ],
+  "alternativeNames": [
+    "Ankle-Circles"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Ankle_Circles",
+  "equipmentIds": []
+}

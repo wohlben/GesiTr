@@ -1,0 +1,45 @@
+{
+  "name": "Chest Push from 3 point stance",
+  "slug": "chest-push-from-3-point-stance",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS",
+    "FRONT_DELTS",
+    "QUADS",
+    "GLUTES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Explosive medicine ball chest pass from three-point athletic stance with step into throw, developing upper body power and lower body drive",
+  "instructions": [
+    "Begin in a three point stance, squatted down with your back flat and one hand on the ground. Place the medicine ball directly in front of you.",
+    "To begin, take your first step as you pull the ball to your chest, positioning both hands to prepare for the throw.",
+    "As you execute the second step, explosively release the ball forward as hard as possible."
+  ],
+  "images": [
+    "/img/exercises/Chest_Push_from_3_point_stance/0.jpg",
+    "/img/exercises/Chest_Push_from_3_point_stance/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Chest_Push_from_3_point_stance",
+  "equipmentIds": [
+    "medicine-ball"
+  ]
+}

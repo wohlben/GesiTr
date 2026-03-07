@@ -1,0 +1,10 @@
+{
+  "id": "Romanian_Deadlift-Kettlebell_One-Legged_Deadlift-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Romanian_Deadlift",
+  "toExerciseTemplateId": "Kettlebell_One-Legged_Deadlift"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Suspended_Fallout-Barbell_Rollout_from_Bench-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": "Both are advanced ab rollout exercises extending arms overhead; Suspended Fallout uses suspension trainer while Barbell Rollout from Bench uses elevated barbell",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Suspended_Fallout",
+  "toExerciseTemplateId": "Barbell_Rollout_from_Bench"
+}

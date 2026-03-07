@@ -1,0 +1,49 @@
+{
+  "name": "Alternate Leg Diagonal Bound",
+  "slug": "alternate-leg-diagonal-bound",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "HAMSTRINGS",
+    "CALVES",
+    "ADDUCTORS",
+    "ABS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Explosive plyometric bound covering diagonal distance to develop power, speed, and lower body strength",
+  "instructions": [
+    "Assume a comfortable stance with one foot slightly in front of the other.",
+    "Begin by pushing off with the front leg, driving the opposite knee forward and as high as possible before landing. Attempt to cover as much distance to each side with each bound.",
+    "It may help to use a line on the ground to guage distance from side to side.",
+    "Repeat the sequence with the other leg."
+  ],
+  "images": [
+    "/img/exercises/Alternate_Leg_Diagonal_Bound/0.jpg",
+    "/img/exercises/Alternate_Leg_Diagonal_Bound/1.jpg"
+  ],
+  "alternativeNames": [
+    "Alternating Leg Diagonal Bound"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Alternate_Leg_Diagonal_Bound",
+  "equipmentIds": []
+}

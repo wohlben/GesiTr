@@ -1,0 +1,44 @@
+{
+  "name": "Front Cone Hops (or hurdle hops)",
+  "slug": "front-cone-hops-or-hurdle-hops",
+  "type": "CARDIO",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Quick forward hops over cones or hurdles, plyometric drill for explosive power and coordination.",
+  "instructions": [
+    "Set up a row of cones or other small barriers, placing them a few feet apart.",
+    "Stand in front of the first cone with your feet shoulder width apart. This will be your starting position.",
+    "Begin by jumping with both feet over the first cone, swinging both arms as you jump.",
+    "Absorb the impact of landing by bending the knees, rebounding out of the first leap by jumping over the next cone.",
+    "Continue until you have jumped over all of the cones."
+  ],
+  "images": [
+    "/img/exercises/Front_Cone_Hops_or_hurdle_hops/0.jpg",
+    "/img/exercises/Front_Cone_Hops_or_hurdle_hops/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Front_Cone_Hops_or_hurdle_hops",
+  "equipmentIds": []
+}

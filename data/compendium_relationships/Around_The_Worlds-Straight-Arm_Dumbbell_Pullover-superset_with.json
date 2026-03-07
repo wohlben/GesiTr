@@ -1,0 +1,10 @@
+{
+  "id": "Around_The_Worlds-Straight-Arm_Dumbbell_Pullover-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Around_The_Worlds",
+  "toExerciseTemplateId": "Straight-Arm_Dumbbell_Pullover"
+}

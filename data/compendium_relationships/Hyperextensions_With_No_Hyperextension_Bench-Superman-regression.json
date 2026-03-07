@@ -1,0 +1,10 @@
+{
+  "id": "Hyperextensions_With_No_Hyperextension_Bench-Superman-regression",
+  "relationshipType": "regression",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Hyperextensions_With_No_Hyperextension_Bench",
+  "toExerciseTemplateId": "Superman"
+}

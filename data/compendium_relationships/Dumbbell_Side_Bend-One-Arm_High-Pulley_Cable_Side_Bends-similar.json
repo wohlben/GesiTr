@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Side_Bend-One-Arm_High-Pulley_Cable_Side_Bends-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Dumbbell_Side_Bend",
+  "toExerciseTemplateId": "One-Arm_High-Pulley_Cable_Side_Bends"
+}

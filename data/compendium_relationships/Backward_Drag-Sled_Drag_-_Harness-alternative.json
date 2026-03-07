@@ -1,0 +1,10 @@
+{
+  "id": "Backward_Drag-Sled_Drag_-_Harness-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464001,
+  "fromExerciseTemplateId": "Backward_Drag",
+  "toExerciseTemplateId": "Sled_Drag_-_Harness"
+}

@@ -1,0 +1,50 @@
+{
+  "name": "Lunge Sprint",
+  "slug": "lunge-sprint",
+  "type": "CARDIO",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.9,
+  "suggestedMeasurementParadigms": [
+    "DISTANCE_BASED",
+    "TIME_BASED",
+    "AMRAP"
+  ],
+  "description": "Explosive lunge transitioning into sprint, training acceleration from lunge position for athletic power.",
+  "instructions": [
+    "Adjust a bar in a Smith machine to an appropriate height. Position yourself under the bar, racking it across the back of your shoulders. Unrack the bar, and then split your feet, moving one foot forward and one foot back. This will be your starting position.",
+    "Lower your back knee nearly to the ground, flexing the knees and lowering your hips as you do so.",
+    "At the bottom of the descent, immediately reverse direction. Explosively drive through the heel of your front foot with light pressure from your back foot. Jump up and reverse the position of your legs.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Lunge_Sprint/0.jpg",
+    "/img/exercises/Lunge_Sprint/1.jpg"
+  ],
+  "alternativeNames": [
+    "Lunge-Sprint",
+    "Alternating Jump Lunge",
+    "Barbell Alternating Jump Lunge"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Lunge_Sprint",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

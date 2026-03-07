@@ -1,0 +1,10 @@
+{
+  "id": "Close-Grip_Dumbbell_Press-Incline_Push-Up_Reverse_Grip-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": "Both close-grip pressing exercises emphasizing triceps; push-up uses bodyweight while dumbbell press allows adjustable resistance",
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Close-Grip_Dumbbell_Press",
+  "toExerciseTemplateId": "Incline_Push-Up_Reverse_Grip"
+}

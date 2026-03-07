@@ -1,0 +1,10 @@
+{
+  "id": "Elbow_Circles-Shoulder_Circles-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Elbow_Circles",
+  "toExerciseTemplateId": "Shoulder_Circles"
+}

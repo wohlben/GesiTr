@@ -1,0 +1,10 @@
+{
+  "id": "Calf-Machine_Shoulder_Shrug-Cable_Shrugs-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Calf-Machine_Shoulder_Shrug",
+  "toExerciseTemplateId": "Cable_Shrugs"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Push-Up_Medium-Hammer_Grip_Incline_DB_Bench_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Incline_Push-Up_Medium",
+  "toExerciseTemplateId": "Hammer_Grip_Incline_DB_Bench_Press"
+}

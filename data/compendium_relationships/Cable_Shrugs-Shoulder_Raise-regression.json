@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Shrugs-Shoulder_Raise-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cable_Shrugs",
+  "toExerciseTemplateId": "Shoulder_Raise"
+}

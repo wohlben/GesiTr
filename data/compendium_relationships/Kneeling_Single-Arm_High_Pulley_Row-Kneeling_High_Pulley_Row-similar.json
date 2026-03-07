@@ -1,0 +1,10 @@
+{
+  "id": "Kneeling_Single-Arm_High_Pulley_Row-Kneeling_High_Pulley_Row-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": "Both are kneeling high pulley rows; bilateral version allows for heavier loads and symmetric development",
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Kneeling_Single-Arm_High_Pulley_Row",
+  "toExerciseTemplateId": "Kneeling_High_Pulley_Row"
+}

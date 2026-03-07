@@ -1,0 +1,10 @@
+{
+  "id": "Single_Leg_Glute_Bridge-Glute_Kickback-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729954800,
+  "fromExerciseTemplateId": "Single_Leg_Glute_Bridge",
+  "toExerciseTemplateId": "Glute_Kickback"
+}

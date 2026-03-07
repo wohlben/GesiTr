@@ -1,0 +1,10 @@
+{
+  "id": "One_Arm_Dumbbell_Preacher_Curl-Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761523200,
+  "fromExerciseTemplateId": "One_Arm_Dumbbell_Preacher_Curl",
+  "toExerciseTemplateId": "Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench"
+}

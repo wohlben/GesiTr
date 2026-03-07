@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Shoulder_Press-Alternating_Kettlebell_Press-progression",
+  "relationshipType": "progression",
+  "strength": 0.68,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761461533,
+  "fromExerciseTemplateId": "Dumbbell_Shoulder_Press",
+  "toExerciseTemplateId": "Alternating_Kettlebell_Press"
+}

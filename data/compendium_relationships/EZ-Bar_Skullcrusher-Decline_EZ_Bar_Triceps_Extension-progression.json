@@ -1,0 +1,10 @@
+{
+  "id": "EZ-Bar_Skullcrusher-Decline_EZ_Bar_Triceps_Extension-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "dev-user",
+  "createdAt": 1729932000,
+  "fromExerciseTemplateId": "EZ-Bar_Skullcrusher",
+  "toExerciseTemplateId": "Decline_EZ_Bar_Triceps_Extension"
+}

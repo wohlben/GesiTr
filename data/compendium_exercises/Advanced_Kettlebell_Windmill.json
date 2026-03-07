@@ -1,0 +1,46 @@
+{
+  "name": "Advanced Kettlebell Windmill",
+  "slug": "advanced-kettlebell-windmill",
+  "type": "STRENGTH",
+  "force": [
+    "ROTATION"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Advanced kettlebell windmill with overhead weight, bending sideways while maintaining overhead lockout for core and shoulder stability.",
+  "instructions": [
+    "Clean and press a kettlebell overhead with one arm.",
+    "Keeping the kettlebell locked out at all times, push your butt out in the direction of the locked out kettlebell. Keep the non-working arm behind your back and turn your feet out at a forty-five degree angle from the arm with the kettlebell.",
+    "Lower yourself as far as possible.",
+    "Pause for a second and reverse the motion back to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Advanced_Kettlebell_Windmill/0.jpg",
+    "/img/exercises/Advanced_Kettlebell_Windmill/1.jpg"
+  ],
+  "alternativeNames": [
+    "Advanced KB Windmill"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Advanced_Kettlebell_Windmill",
+  "equipmentIds": [
+    "kettlebell"
+  ]
+}

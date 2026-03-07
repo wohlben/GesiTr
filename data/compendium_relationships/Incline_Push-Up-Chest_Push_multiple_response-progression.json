@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Push-Up-Chest_Push_multiple_response-progression",
+  "relationshipType": "progression",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729933200,
+  "fromExerciseTemplateId": "Incline_Push-Up",
+  "toExerciseTemplateId": "Chest_Push_multiple_response"
+}

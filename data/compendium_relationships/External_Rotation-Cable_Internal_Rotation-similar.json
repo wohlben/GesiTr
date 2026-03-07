@@ -1,0 +1,10 @@
+{
+  "id": "External_Rotation-Cable_Internal_Rotation-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761478645,
+  "fromExerciseTemplateId": "External_Rotation",
+  "toExerciseTemplateId": "Cable_Internal_Rotation"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Close-Grip_EZ_Bar_Curl-Hammer_Curls-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Close-Grip_EZ_Bar_Curl",
+  "toExerciseTemplateId": "Hammer_Curls"
+}

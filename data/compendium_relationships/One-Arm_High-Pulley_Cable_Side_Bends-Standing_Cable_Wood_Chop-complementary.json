@@ -1,0 +1,10 @@
+{
+  "id": "One-Arm_High-Pulley_Cable_Side_Bends-Standing_Cable_Wood_Chop-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "One-Arm_High-Pulley_Cable_Side_Bends",
+  "toExerciseTemplateId": "Standing_Cable_Wood_Chop"
+}

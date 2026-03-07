@@ -1,0 +1,10 @@
+{
+  "id": "Wide-Grip_Decline_Barbell_Bench_Press-Leverage_Decline_Chest_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761551318,
+  "fromExerciseTemplateId": "Wide-Grip_Decline_Barbell_Bench_Press",
+  "toExerciseTemplateId": "Leverage_Decline_Chest_Press"
+}

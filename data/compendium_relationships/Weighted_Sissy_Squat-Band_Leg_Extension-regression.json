@@ -1,0 +1,10 @@
+{
+  "id": "Weighted_Sissy_Squat-Band_Leg_Extension-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464349,
+  "fromExerciseTemplateId": "Weighted_Sissy_Squat",
+  "toExerciseTemplateId": "Band_Leg_Extension"
+}

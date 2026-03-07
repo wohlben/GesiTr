@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Iron_Cross-Back_Flyes_-_With_Bands-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479173,
+  "fromExerciseTemplateId": "Cable_Iron_Cross",
+  "toExerciseTemplateId": "Back_Flyes_-_With_Bands"
+}

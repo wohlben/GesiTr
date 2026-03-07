@@ -1,0 +1,10 @@
+{
+  "id": "Hamstring-SMR-Calves-SMR-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Hamstring-SMR",
+  "toExerciseTemplateId": "Calves-SMR"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Calf_Raise-Calf_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479684,
+  "fromExerciseTemplateId": "Seated_Calf_Raise",
+  "toExerciseTemplateId": "Calf_Press"
+}

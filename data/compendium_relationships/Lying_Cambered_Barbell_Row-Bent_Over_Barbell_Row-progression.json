@@ -1,0 +1,10 @@
+{
+  "id": "Lying_Cambered_Barbell_Row-Bent_Over_Barbell_Row-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Lying_Cambered_Barbell_Row",
+  "toExerciseTemplateId": "Bent_Over_Barbell_Row"
+}

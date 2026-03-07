@@ -1,0 +1,37 @@
+{
+  "name": "Calf Stretch Elbows Against Wall",
+  "slug": "calf-stretch-elbows-against-wall",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "CALVES"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Standing calf stretch with deeper lean using forearms against wall for increased intensity.",
+  "instructions": [
+    "Stand facing a wall from a couple feet away.",
+    "Lean against the wall, placing your weight on your forearms.",
+    "Attempt to keep your heels on the ground. Hold for 10-20 seconds. You may move further or closer the wall, making it more or less difficult, respectively."
+  ],
+  "images": [
+    "/img/exercises/Calf_Stretch_Elbows_Against_Wall/0.jpg",
+    "/img/exercises/Calf_Stretch_Elbows_Against_Wall/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Calf_Stretch_Elbows_Against_Wall",
+  "equipmentIds": []
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Chair_Upper_Body_Stretch-Chair_Leg_Extended_Stretch-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Chair_Upper_Body_Stretch",
+  "toExerciseTemplateId": "Chair_Leg_Extended_Stretch"
+}

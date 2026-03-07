@@ -1,0 +1,10 @@
+{
+  "id": "Bicycling-Trail_Running_Walking-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476051,
+  "fromExerciseTemplateId": "Bicycling",
+  "toExerciseTemplateId": "Trail_Running_Walking"
+}

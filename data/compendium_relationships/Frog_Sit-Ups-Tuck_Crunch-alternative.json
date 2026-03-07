@@ -1,0 +1,10 @@
+{
+  "id": "Frog_Sit-Ups-Tuck_Crunch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761494891,
+  "fromExerciseTemplateId": "Frog_Sit-Ups",
+  "toExerciseTemplateId": "Tuck_Crunch"
+}

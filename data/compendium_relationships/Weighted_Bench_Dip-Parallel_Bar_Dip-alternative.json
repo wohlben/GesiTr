@@ -1,0 +1,10 @@
+{
+  "id": "Weighted_Bench_Dip-Parallel_Bar_Dip-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Weighted_Bench_Dip",
+  "toExerciseTemplateId": "Parallel_Bar_Dip"
+}

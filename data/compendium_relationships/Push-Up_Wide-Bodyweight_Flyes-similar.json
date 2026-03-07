@@ -1,0 +1,10 @@
+{
+  "id": "Push-Up_Wide-Bodyweight_Flyes-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476339,
+  "fromExerciseTemplateId": "Push-Up_Wide",
+  "toExerciseTemplateId": "Bodyweight_Flyes"
+}

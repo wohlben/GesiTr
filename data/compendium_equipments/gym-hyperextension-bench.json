@@ -1,0 +1,8 @@
+{
+  "name": "gym-hyperextension-bench",
+  "displayName": "Hyperextension Bench",
+  "description": "A bench angled for performing back extensions and hyperextensions.",
+  "category": "benches",
+  "imageUrl": null,
+  "templateId": "gym-hyperextension-bench"
+}

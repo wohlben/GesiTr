@@ -1,0 +1,10 @@
+{
+  "id": "Wrist_Rotations_with_Straight_Bar-Dumbbell_Lying_Pronation-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Wrist_Rotations_with_Straight_Bar",
+  "toExerciseTemplateId": "Dumbbell_Lying_Pronation"
+}

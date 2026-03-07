@@ -1,0 +1,40 @@
+{
+  "name": "Shoulder Stretch",
+  "slug": "shoulder-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS",
+    "SIDE_DELTS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Cross-body shoulder stretch targeting the deltoids by pulling arm across the chest.",
+  "instructions": [
+    "Reach your left arm across your body and hold it straight.",
+    "Use your right hand to gently pull your left arm closer to your chest, feeling the stretch in your left shoulder.",
+    "Hold for 15-30 seconds, then repeat with your right arm."
+  ],
+  "images": [
+    "/img/exercises/Shoulder_Stretch/0.jpg",
+    "/img/exercises/Shoulder_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Shoulder-Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Shoulder_Stretch",
+  "equipmentIds": []
+}

@@ -1,0 +1,50 @@
+{
+  "name": "Barbell Shoulder Press",
+  "slug": "barbell-shoulder-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS",
+    "SIDE_DELTS"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS",
+    "TRAPS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Overhead barbell press for comprehensive shoulder development with heavy loading capacity",
+  "instructions": [
+    "Sit on a bench with back support in a squat rack. Position a barbell at a height that is just above your head. Grab the barbell with a pronated grip (palms facing forward).",
+    "Once you pick up the barbell with the correct grip width, lift the bar up over your head by locking your arms. Hold at about shoulder level and slightly in front of your head. This is your starting position.",
+    "Lower the bar down to the shoulders slowly as you inhale.",
+    "Lift the bar back up to the starting position as you exhale.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Barbell_Shoulder_Press/0.jpg",
+    "/img/exercises/Barbell_Shoulder_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "BB Shoulder Press",
+    "Bar Shoulder Press",
+    "Barbell Shoulder Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Barbell_Shoulder_Press",
+  "equipmentIds": [
+    "barbell",
+    "bench"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "name": "Straight Bar Bench Mid Rows",
+  "slug": "straight-bar-bench-mid-rows",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "LATS"
+  ],
+  "secondaryMuscles": [
+    "BICEPS",
+    "RHOMBOIDS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.1,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Mid-level barbell row to bench height using straight bar, targeting mid-back.",
+  "instructions": [
+    "Place a loaded barbell on the end of a bench. Standing on the bench behind the bar, take a medium, pronated grip. Stand with your hips back and chest up, maintaining a neutral spine. This will be your starting position.",
+    "Row the bar to your torso by retracting the shoulder blades and flexing the elbows. Use a controlled movement with no jerking.",
+    "After a brief pause, slowly return the bar to the starting position, ensuring to go all the way down."
+  ],
+  "images": [
+    "/img/exercises/Straight_Bar_Bench_Mid_Rows/0.jpg",
+    "/img/exercises/Straight_Bar_Bench_Mid_Rows/1.jpg"
+  ],
+  "alternativeNames": [
+    "Straight Barbell Bench Mid Rows"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Straight_Bar_Bench_Mid_Rows",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

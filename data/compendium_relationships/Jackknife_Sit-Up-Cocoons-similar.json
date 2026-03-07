@@ -1,0 +1,10 @@
+{
+  "id": "Jackknife_Sit-Up-Cocoons-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730009600,
+  "fromExerciseTemplateId": "Jackknife_Sit-Up",
+  "toExerciseTemplateId": "Cocoons"
+}

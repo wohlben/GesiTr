@@ -1,0 +1,10 @@
+{
+  "id": "Band_Assisted_Pull-Up-Underhand_Cable_Pulldowns-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Band_Assisted_Pull-Up",
+  "toExerciseTemplateId": "Underhand_Cable_Pulldowns"
+}

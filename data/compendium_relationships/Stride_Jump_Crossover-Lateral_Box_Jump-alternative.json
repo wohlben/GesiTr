@@ -1,0 +1,10 @@
+{
+  "id": "Stride_Jump_Crossover-Lateral_Box_Jump-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Stride_Jump_Crossover",
+  "toExerciseTemplateId": "Lateral_Box_Jump"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Lunges-Barbell_Walking_Lunge-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Dumbbell_Lunges",
+  "toExerciseTemplateId": "Barbell_Walking_Lunge"
+}

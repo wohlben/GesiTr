@@ -1,0 +1,42 @@
+{
+  "name": "Reverse Crunch",
+  "slug": "reverse-crunch",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.9,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Lying crunch bringing knees toward chest while lifting hips, targeting lower abs.",
+  "instructions": [
+    "Lie down on the floor with your legs fully extended and arms to the side of your torso with the palms on the floor. Your arms should be stationary for the entire exercise.",
+    "Move your legs up so that your thighs are perpendicular to the floor and feet are together and parallel to the floor. This is the starting position.",
+    "While inhaling, move your legs towards the torso as you roll your pelvis backwards and you raise your hips off the floor. At the end of this movement your knees will be touching your chest.",
+    "Hold the contraction for a second and move your legs back to the starting position while exhaling.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Reverse_Crunch/0.jpg",
+    "/img/exercises/Reverse_Crunch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Reverse-Crunch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Reverse_Crunch",
+  "equipmentIds": []
+}

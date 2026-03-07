@@ -1,0 +1,10 @@
+{
+  "id": "Open_Palm_Kettlebell_Clean-One-Arm_Open_Palm_Kettlebell_Clean-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Open_Palm_Kettlebell_Clean",
+  "toExerciseTemplateId": "One-Arm_Open_Palm_Kettlebell_Clean"
+}

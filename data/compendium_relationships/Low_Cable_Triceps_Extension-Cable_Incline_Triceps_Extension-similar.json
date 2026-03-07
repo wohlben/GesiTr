@@ -1,0 +1,10 @@
+{
+  "id": "Low_Cable_Triceps_Extension-Cable_Incline_Triceps_Extension-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729893600,
+  "fromExerciseTemplateId": "Low_Cable_Triceps_Extension",
+  "toExerciseTemplateId": "Cable_Incline_Triceps_Extension"
+}

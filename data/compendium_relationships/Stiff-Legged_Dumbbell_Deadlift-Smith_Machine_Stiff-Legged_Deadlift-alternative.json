@@ -1,0 +1,10 @@
+{
+  "id": "Stiff-Legged_Dumbbell_Deadlift-Smith_Machine_Stiff-Legged_Deadlift-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761547427,
+  "fromExerciseTemplateId": "Stiff-Legged_Dumbbell_Deadlift",
+  "toExerciseTemplateId": "Smith_Machine_Stiff-Legged_Deadlift"
+}

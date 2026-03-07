@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Pelvic_Tilt-Plank-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.5,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Pelvic_Tilt",
+  "toExerciseTemplateId": "Plank"
+}

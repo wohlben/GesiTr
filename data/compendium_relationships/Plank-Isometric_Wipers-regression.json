@@ -1,0 +1,10 @@
+{
+  "id": "Plank-Isometric_Wipers-regression",
+  "relationshipType": "regression",
+  "strength": 0.55,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Plank",
+  "toExerciseTemplateId": "Isometric_Wipers"
+}

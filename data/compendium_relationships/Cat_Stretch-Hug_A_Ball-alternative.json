@@ -1,0 +1,10 @@
+{
+  "id": "Cat_Stretch-Hug_A_Ball-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498134,
+  "fromExerciseTemplateId": "Cat_Stretch",
+  "toExerciseTemplateId": "Hug_A_Ball"
+}

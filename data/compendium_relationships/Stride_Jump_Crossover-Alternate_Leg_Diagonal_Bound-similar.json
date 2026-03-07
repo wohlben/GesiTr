@@ -1,0 +1,10 @@
+{
+  "id": "Stride_Jump_Crossover-Alternate_Leg_Diagonal_Bound-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Stride_Jump_Crossover",
+  "toExerciseTemplateId": "Alternate_Leg_Diagonal_Bound"
+}

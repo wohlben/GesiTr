@@ -1,0 +1,10 @@
+{
+  "id": "Plank-Body-Up-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Plank",
+  "toExerciseTemplateId": "Body-Up"
+}

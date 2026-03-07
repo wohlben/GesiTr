@@ -1,0 +1,10 @@
+{
+  "id": "One_Arm_Chin-Up-Mixed_Grip_Chin-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "One_Arm_Chin-Up",
+  "toExerciseTemplateId": "Mixed_Grip_Chin"
+}

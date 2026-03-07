@@ -1,0 +1,10 @@
+{
+  "id": "Push_Up_to_Side_Plank-Isometric_Wipers-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Push_Up_to_Side_Plank",
+  "toExerciseTemplateId": "Isometric_Wipers"
+}

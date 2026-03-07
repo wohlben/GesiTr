@@ -1,0 +1,10 @@
+{
+  "id": "Axle_Deadlift-Barbell_Full_Squat-similar",
+  "relationshipType": "similar",
+  "strength": null,
+  "description": "Both are compound lower body movements",
+  "createdBy": "seed",
+  "createdAt": 1760887433,
+  "fromExerciseTemplateId": "Axle_Deadlift",
+  "toExerciseTemplateId": "Barbell_Full_Squat"
+}

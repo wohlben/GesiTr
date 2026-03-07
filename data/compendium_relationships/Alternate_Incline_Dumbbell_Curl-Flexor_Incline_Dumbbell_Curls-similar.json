@@ -1,0 +1,10 @@
+{
+  "id": "Alternate_Incline_Dumbbell_Curl-Flexor_Incline_Dumbbell_Curls-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Alternate_Incline_Dumbbell_Curl",
+  "toExerciseTemplateId": "Flexor_Incline_Dumbbell_Curls"
+}

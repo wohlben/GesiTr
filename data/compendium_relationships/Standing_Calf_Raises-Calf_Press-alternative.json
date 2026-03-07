@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Calf_Raises-Calf_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479684,
+  "fromExerciseTemplateId": "Standing_Calf_Raises",
+  "toExerciseTemplateId": "Calf_Press"
+}

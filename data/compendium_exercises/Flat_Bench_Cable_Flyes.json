@@ -1,0 +1,48 @@
+{
+  "name": "Flat Bench Cable Flyes",
+  "slug": "flat-bench-cable-flyes",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Cable fly on flat bench, bringing handles together in wide arc to stretch and contract chest muscles.",
+  "instructions": [
+    "Position a flat bench between two low pulleys so that when you are laying on it, your chest will be lined up with the cable pulleys.",
+    "Lay flat on the bench and keep your feet on the ground.",
+    "Have someone hand you the handles on each hand. You will grab each single handle attachment with a palms up grip.",
+    "Extend your arms by your side with a slight bend on your elbows. Tip: You will keep this bend constant through the whole movement. Your arms should be parallel to the floor. This is your starting position.",
+    "Now start lifting the arms in a semi-circle motion directly in front of you by pulling the cables together until both hands meet at the top of the movement. Squeeze your chest as you perform this motion and breathe out during this movement. Also, hold the contraction for a second at the top. Tip: When performed correctly, at the top position of this movement, your arms should be perpendicular to your torso and the floor touching above your chest.",
+    "Slowly come back to the starting position.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Flat_Bench_Cable_Flyes/0.jpg",
+    "/img/exercises/Flat_Bench_Cable_Flyes/1.jpg"
+  ],
+  "alternativeNames": [
+    "Flat Bench Cable Machine Flyes",
+    "Flat Bench Flyes"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Flat_Bench_Cable_Flyes",
+  "equipmentIds": [
+    "gym-cable-machine"
+  ]
+}

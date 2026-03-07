@@ -1,0 +1,10 @@
+{
+  "id": "Machine_Triceps_Extension-Cable_One_Arm_Tricep_Extension-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761509910,
+  "fromExerciseTemplateId": "Machine_Triceps_Extension",
+  "toExerciseTemplateId": "Cable_One_Arm_Tricep_Extension"
+}

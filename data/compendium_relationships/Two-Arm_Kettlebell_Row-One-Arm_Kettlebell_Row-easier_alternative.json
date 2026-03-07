@@ -1,0 +1,10 @@
+{
+  "id": "Two-Arm_Kettlebell_Row-One-Arm_Kettlebell_Row-easier_alternative",
+  "relationshipType": "easier_alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Two-Arm_Kettlebell_Row",
+  "toExerciseTemplateId": "One-Arm_Kettlebell_Row"
+}

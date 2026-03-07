@@ -1,0 +1,10 @@
+{
+  "id": "Moving_Claw_Series-Kneeling_Arm_Drill-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Moving_Claw_Series",
+  "toExerciseTemplateId": "Kneeling_Arm_Drill"
+}

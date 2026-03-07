@@ -1,0 +1,10 @@
+{
+  "id": "Body-Up-Pushups-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Body-Up",
+  "toExerciseTemplateId": "Pushups"
+}

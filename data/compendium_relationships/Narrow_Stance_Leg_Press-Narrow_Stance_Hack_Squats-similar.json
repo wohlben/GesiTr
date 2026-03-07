@@ -1,0 +1,10 @@
+{
+  "id": "Narrow_Stance_Leg_Press-Narrow_Stance_Hack_Squats-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729976400,
+  "fromExerciseTemplateId": "Narrow_Stance_Leg_Press",
+  "toExerciseTemplateId": "Narrow_Stance_Hack_Squats"
+}

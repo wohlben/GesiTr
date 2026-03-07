@@ -1,0 +1,43 @@
+{
+  "name": "High Cable Curls",
+  "slug": "high-cable-curls",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "BICEPS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Bicep curl using high cable pulley, curling with arms elevated at shoulder height.",
+  "instructions": [
+    "Stand between a couple of high pulleys and grab a handle in each hand. Position your upper arms in a way that they are parallel to the floor with the palms of your hands facing you. This will be your starting position.",
+    "Curl the handles towards you until they are next to your ears. Make sure that as you do so you flex your biceps and exhale. The upper arms should remain stationary and only the forearms should move. Hold for a second in the contracted position as you squeeze the biceps.",
+    "Slowly bring back the arms to the starting position.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/High_Cable_Curls/0.jpg",
+    "/img/exercises/High_Cable_Curls/1.jpg"
+  ],
+  "alternativeNames": [
+    "High Cable Machine Curls",
+    "High Curls"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "High_Cable_Curls",
+  "equipmentIds": [
+    "gym-cable-machine"
+  ]
+}

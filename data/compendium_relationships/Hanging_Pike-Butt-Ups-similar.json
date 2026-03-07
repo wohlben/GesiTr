@@ -1,0 +1,10 @@
+{
+  "id": "Hanging_Pike-Butt-Ups-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Hanging_Pike",
+  "toExerciseTemplateId": "Butt-Ups"
+}

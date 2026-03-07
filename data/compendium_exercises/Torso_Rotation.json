@@ -1,0 +1,41 @@
+{
+  "name": "Torso Rotation",
+  "slug": "torso-rotation",
+  "type": "STRENGTH",
+  "force": [
+    "ROTATION"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Standing trunk rotation exercise holding exercise ball with extended arms, twisting torso side to side to target obliques and core rotation.",
+  "instructions": [
+    "Stand upright holding an exercise ball with both hands. Extend your arms so the ball is straight out in front of you. This will be your starting position.",
+    "Rotate your torso to one side, keeping your eyes on the ball as you move. Now, rotate back to the opposite direction. Repeat for 10-20 repetitions."
+  ],
+  "images": [
+    "/img/exercises/Torso_Rotation/0.jpg",
+    "/img/exercises/Torso_Rotation/1.jpg"
+  ],
+  "alternativeNames": [
+    "Torso-Rotation"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Torso_Rotation",
+  "equipmentIds": [
+    "stability-ball"
+  ]
+}

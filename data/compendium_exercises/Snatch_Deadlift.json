@@ -1,0 +1,47 @@
+{
+  "name": "Snatch Deadlift",
+  "slug": "snatch-deadlift",
+  "type": "STRENGTH",
+  "force": [
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "HAMSTRINGS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "LOWER_BACK",
+    "TRAPS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0.2,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Deadlift component of snatch, pulling with wide grip and full hip extension preparing for overhead catch.",
+  "instructions": [
+    "The snatch deadlift strengthens the first pull of the snatch. Begin with a wide snatch grip with the barbell placed on the platform. The feet should be directly under the hips, with the feet turned out. Squat down to the bar, keeping the back in absolute extension with the head facing forward.",
+    "Initiate the movement by driving through the heels, raising the hips. The back angle should remain the same until the bar passes the knees.",
+    "At that point, drive your hips through the bar as you lay back. Return the bar to the platform by reversing the motion."
+  ],
+  "images": [
+    "/img/exercises/Snatch_Deadlift/0.jpg",
+    "/img/exercises/Snatch_Deadlift/1.jpg"
+  ],
+  "alternativeNames": [
+    "Barbell Snatch",
+    "Power Snatch",
+    "Snatch-Deadlift"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Snatch_Deadlift",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

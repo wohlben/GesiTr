@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Russian_Twists-Barbell_Side_Bend-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cable_Russian_Twists",
+  "toExerciseTemplateId": "Barbell_Side_Bend"
+}

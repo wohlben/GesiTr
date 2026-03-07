@@ -1,0 +1,10 @@
+{
+  "id": "One-Arm_Open_Palm_Kettlebell_Clean-Two-Arm_Kettlebell_Clean-bilateral_unilateral",
+  "relationshipType": "bilateral_unilateral",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "One-Arm_Open_Palm_Kettlebell_Clean",
+  "toExerciseTemplateId": "Two-Arm_Kettlebell_Clean"
+}

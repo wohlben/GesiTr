@@ -1,0 +1,10 @@
+{
+  "id": "One_Knee_To_Chest-Hug_A_Ball-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498134,
+  "fromExerciseTemplateId": "One_Knee_To_Chest",
+  "toExerciseTemplateId": "Hug_A_Ball"
+}

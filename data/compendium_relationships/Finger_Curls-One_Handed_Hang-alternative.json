@@ -1,0 +1,10 @@
+{
+  "id": "Finger_Curls-One_Handed_Hang-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Finger_Curls",
+  "toExerciseTemplateId": "One_Handed_Hang"
+}

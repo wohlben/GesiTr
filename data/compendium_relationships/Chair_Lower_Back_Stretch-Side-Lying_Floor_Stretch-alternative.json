@@ -1,0 +1,10 @@
+{
+  "id": "Chair_Lower_Back_Stretch-Side-Lying_Floor_Stretch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Chair_Lower_Back_Stretch",
+  "toExerciseTemplateId": "Side-Lying_Floor_Stretch"
+}

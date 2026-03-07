@@ -1,0 +1,10 @@
+{
+  "id": "Leverage_Decline_Chest_Press-Decline_Barbell_Bench_Press-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730051040,
+  "fromExerciseTemplateId": "Leverage_Decline_Chest_Press",
+  "toExerciseTemplateId": "Decline_Barbell_Bench_Press"
+}

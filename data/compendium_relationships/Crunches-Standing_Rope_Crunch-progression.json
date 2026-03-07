@@ -1,0 +1,10 @@
+{
+  "id": "Crunches-Standing_Rope_Crunch-progression",
+  "relationshipType": "progression",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Crunches",
+  "toExerciseTemplateId": "Standing_Rope_Crunch"
+}

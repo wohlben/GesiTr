@@ -1,0 +1,10 @@
+{
+  "id": "Iron_Cross-Crucifix-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Iron_Cross",
+  "toExerciseTemplateId": "Crucifix"
+}

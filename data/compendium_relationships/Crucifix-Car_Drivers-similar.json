@@ -1,0 +1,10 @@
+{
+  "id": "Crucifix-Car_Drivers-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Crucifix",
+  "toExerciseTemplateId": "Car_Drivers"
+}

@@ -1,0 +1,44 @@
+{
+  "name": "Elevated Back Lunge",
+  "slug": "elevated-back-lunge",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.9,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Strength training exercise targeting primary muscle groups",
+  "instructions": [
+    "Position a bar onto a rack at shoulder height loaded to an appropriate weight. Place a short, raised platform behind you.",
+    "Rack the bar onto your upper back, keeping your back arched and tight. Step onto your raised platform with both feet. This will be your starting position.",
+    "Begin by stepping backwards with one leg. Descend by flexing your hips and knees until your knee touches the floor.",
+    "Pause, and extend through the hips and knees to rise up, returning all the way to the starting position before alternating."
+  ],
+  "images": [
+    "/img/exercises/Elevated_Back_Lunge/0.jpg",
+    "/img/exercises/Elevated_Back_Lunge/1.jpg"
+  ],
+  "alternativeNames": [
+    "Forward Lunge",
+    "Walking Lunge"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Elevated_Back_Lunge",
+  "equipmentIds": []
+}

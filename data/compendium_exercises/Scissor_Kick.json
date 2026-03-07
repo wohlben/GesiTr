@@ -1,0 +1,44 @@
+{
+  "name": "Scissor Kick",
+  "slug": "scissor-kick",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [
+    "HIP_FLEXORS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Core exercise lying down alternating legs in scissor motion, engaging lower abs and hip flexors.",
+  "instructions": [
+    "To begin, lie down with your back pressed against the floor or on an exercise mat (optional). Your arms should be fully extended to the sides with your palms facing down. Note: The arms should be stationary the entire time.",
+    "With a slight bend at the knees, lift your legs up so that your heels are about 6 inches off the ground. This is the starting position.",
+    "Now lift your left leg up to about a 45 degree angle while your right leg is lowered until the heel is about 2-3 inches from the ground.",
+    "Switch movements by raising your right leg up and lowering your left leg. Remember to breathe while performing this exercise.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Scissor_Kick/0.jpg",
+    "/img/exercises/Scissor_Kick/1.jpg"
+  ],
+  "alternativeNames": [
+    "Scissor-Kick"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Scissor_Kick",
+  "equipmentIds": []
+}

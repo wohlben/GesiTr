@@ -1,0 +1,10 @@
+{
+  "id": "Smith_Machine_Leg_Press-Barbell_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Smith_Machine_Leg_Press",
+  "toExerciseTemplateId": "Barbell_Squat"
+}

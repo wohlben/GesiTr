@@ -1,0 +1,10 @@
+{
+  "id": "Ab_Crunch_Machine-Standing_Rope_Crunch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Ab_Crunch_Machine",
+  "toExerciseTemplateId": "Standing_Rope_Crunch"
+}

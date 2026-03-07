@@ -1,0 +1,10 @@
+{
+  "id": "Otis-Up-Press_Sit-Up-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": "Both exercises combine sit-up movement with overhead press; Press Sit-Up uses barbell and bench for more advanced variation",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Otis-Up",
+  "toExerciseTemplateId": "Press_Sit-Up"
+}

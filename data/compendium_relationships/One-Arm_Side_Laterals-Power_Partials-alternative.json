@@ -1,0 +1,10 @@
+{
+  "id": "One-Arm_Side_Laterals-Power_Partials-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "One-Arm_Side_Laterals",
+  "toExerciseTemplateId": "Power_Partials"
+}

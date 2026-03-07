@@ -1,0 +1,10 @@
+{
+  "id": "Rocking_Standing_Calf_Raise-Standing_Calf_Raises-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Rocking_Standing_Calf_Raise",
+  "toExerciseTemplateId": "Standing_Calf_Raises"
+}

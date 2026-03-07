@@ -1,0 +1,10 @@
+{
+  "id": "Pelvic_Tilt_Into_Bridge-Standing_Pelvic_Tilt-regression",
+  "relationshipType": "regression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Pelvic_Tilt_Into_Bridge",
+  "toExerciseTemplateId": "Standing_Pelvic_Tilt"
+}

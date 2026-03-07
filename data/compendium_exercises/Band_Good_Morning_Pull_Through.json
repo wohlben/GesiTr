@@ -1,0 +1,46 @@
+{
+  "name": "Band Good Morning (Pull Through)",
+  "slug": "band-good-morning-pull-through",
+  "type": "STRENGTH",
+  "force": [
+    "HINGE",
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "HAMSTRINGS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "LOWER_BACK"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Hip-dominant pull-through variation focusing on glute and hamstring activation through horizontal hip extension",
+  "instructions": [
+    "Loop the band around a post. Standing a little ways away, loop the opposite end around the neck. Your hands can help hold the band in position.",
+    "Begin by bending at the hips, getting your butt back as far as possible. Keep your back flat and bend forward to about 90 degrees. Your knees should be only slightly bent.",
+    "Return to the starting position be driving through with the hips to come back to a standing position."
+  ],
+  "images": [
+    "/img/exercises/Band_Good_Morning_Pull_Through/0.jpg",
+    "/img/exercises/Band_Good_Morning_Pull_Through/1.jpg"
+  ],
+  "alternativeNames": [
+    "Resistance Band Good Morning (Pull Through)"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Band_Good_Morning_Pull_Through",
+  "equipmentIds": [
+    "resistance-band"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Weighted_Bench_Dip-Push-Ups_-_Close_Triceps_Position-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Weighted_Bench_Dip",
+  "toExerciseTemplateId": "Push-Ups_-_Close_Triceps_Position"
+}

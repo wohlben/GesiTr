@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Push-Up-Bodyweight_Flyes-progression",
+  "relationshipType": "progression",
+  "strength": 0.55,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476339,
+  "fromExerciseTemplateId": "Incline_Push-Up",
+  "toExerciseTemplateId": "Bodyweight_Flyes"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Lying_Rear_Delt_Raise-Dumbbell_Lying_Rear_Lateral_Raise-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761493205,
+  "fromExerciseTemplateId": "Lying_Rear_Delt_Raise",
+  "toExerciseTemplateId": "Dumbbell_Lying_Rear_Lateral_Raise"
+}

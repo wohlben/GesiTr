@@ -1,0 +1,10 @@
+{
+  "id": "Knee_Tuck_Jump-Bench_Jump-progression",
+  "relationshipType": "progression",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Knee_Tuck_Jump",
+  "toExerciseTemplateId": "Bench_Jump"
+}

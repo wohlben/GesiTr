@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Lying_One-Arm_Rear_Lateral_Raise-Dumbbell_Lying_Rear_Lateral_Raise-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761493205,
+  "fromExerciseTemplateId": "Dumbbell_Lying_One-Arm_Rear_Lateral_Raise",
+  "toExerciseTemplateId": "Dumbbell_Lying_Rear_Lateral_Raise"
+}

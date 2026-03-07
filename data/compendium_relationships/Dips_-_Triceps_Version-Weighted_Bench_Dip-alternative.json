@@ -1,0 +1,10 @@
+{
+  "id": "Dips_-_Triceps_Version-Weighted_Bench_Dip-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dips_-_Triceps_Version",
+  "toExerciseTemplateId": "Weighted_Bench_Dip"
+}

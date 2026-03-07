@@ -1,0 +1,10 @@
+{
+  "id": "London_Bridges-Inverted_Row-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "London_Bridges",
+  "toExerciseTemplateId": "Inverted_Row"
+}

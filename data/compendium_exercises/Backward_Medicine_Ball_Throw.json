@@ -1,0 +1,49 @@
+{
+  "name": "Backward Medicine Ball Throw",
+  "slug": "backward-medicine-ball-throw",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS",
+    "ABS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "QUADS",
+    "HAMSTRINGS",
+    "LOWER_BACK"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Explosive plyometric overhead medicine ball throw backward developing full-body power through triple extension",
+  "instructions": [
+    "This exercise is best done with a partner. If you lack a partner, the ball can be thrown and retrieved or thrown against a wall.",
+    "Begin standing a few meters in front of your partner, both facing the same direction. Begin holding the ball between your legs.",
+    "Squat down and then forcefully reverse direction, coming to full extension and you toss the ball over your head to your partner.",
+    "Your partner can then roll the ball back to you. Repeat for the desired number of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Backward_Medicine_Ball_Throw/0.jpg",
+    "/img/exercises/Backward_Medicine_Ball_Throw/1.jpg"
+  ],
+  "alternativeNames": [
+    "Backward Med Ball Throw"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Backward_Medicine_Ball_Throw",
+  "equipmentIds": [
+    "medicine-ball"
+  ]
+}

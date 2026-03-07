@@ -1,0 +1,10 @@
+{
+  "id": "Kneeling_Squat-Barbell_Glute_Bridge-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Kneeling_Squat",
+  "toExerciseTemplateId": "Barbell_Glute_Bridge"
+}

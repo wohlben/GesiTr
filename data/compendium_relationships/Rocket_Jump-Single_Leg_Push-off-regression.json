@@ -1,0 +1,10 @@
+{
+  "id": "Rocket_Jump-Single_Leg_Push-off-regression",
+  "relationshipType": "regression",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Rocket_Jump",
+  "toExerciseTemplateId": "Single_Leg_Push-off"
+}

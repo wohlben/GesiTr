@@ -1,0 +1,10 @@
+{
+  "id": "Lying_Glute-Ankle_On_The_Knee-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": "Both are supine glute stretches targeting similar muscle groups; Figure 4 can be performed solo",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Lying_Glute",
+  "toExerciseTemplateId": "Ankle_On_The_Knee"
+}

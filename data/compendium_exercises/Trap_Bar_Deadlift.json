@@ -1,0 +1,49 @@
+{
+  "name": "Trap Bar Deadlift",
+  "slug": "trap-bar-deadlift",
+  "type": "STRENGTH",
+  "force": [
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "LOWER_BACK",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "HAMSTRINGS",
+    "TRAPS",
+    "FOREARMS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.2,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Deadlift using trap bar (hex bar), more upright pulling position reducing lower back stress.",
+  "instructions": [
+    "For this exercise load a trap bar, also known as a hex bar, to an appropriate weight resting on the ground. Stand in the center of the apparatus and grasp both handles.",
+    "Lower your hips, look forward with your head and keep your chest up.",
+    "Begin the movement by driving through the heels and extend your hips and knees. Avoid rounding your back at all times.",
+    "At the completion of the movement, lower the weight back to the ground under control."
+  ],
+  "images": [
+    "/img/exercises/Trap_Bar_Deadlift/0.jpg",
+    "/img/exercises/Trap_Bar_Deadlift/1.jpg"
+  ],
+  "alternativeNames": [
+    "Hex Bar Deadlift",
+    "Trap Barbell Deadlift"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Trap_Bar_Deadlift",
+  "equipmentIds": [
+    "trap-bar"
+  ]
+}

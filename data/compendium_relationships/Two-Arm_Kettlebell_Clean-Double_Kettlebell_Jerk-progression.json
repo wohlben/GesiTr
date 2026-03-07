@@ -1,0 +1,10 @@
+{
+  "id": "Two-Arm_Kettlebell_Clean-Double_Kettlebell_Jerk-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Two-Arm_Kettlebell_Clean",
+  "toExerciseTemplateId": "Double_Kettlebell_Jerk"
+}

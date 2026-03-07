@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Full_Squat-Olympic_Squat-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Barbell_Full_Squat",
+  "toExerciseTemplateId": "Olympic_Squat"
+}

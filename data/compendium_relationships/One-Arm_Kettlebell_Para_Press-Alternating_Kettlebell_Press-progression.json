@@ -1,0 +1,10 @@
+{
+  "id": "One-Arm_Kettlebell_Para_Press-Alternating_Kettlebell_Press-progression",
+  "relationshipType": "progression",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729969200,
+  "fromExerciseTemplateId": "One-Arm_Kettlebell_Para_Press",
+  "toExerciseTemplateId": "Alternating_Kettlebell_Press"
+}

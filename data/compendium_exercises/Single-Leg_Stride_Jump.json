@@ -1,0 +1,46 @@
+{
+  "name": "Single-Leg Stride Jump",
+  "slug": "single-leg-stride-jump",
+  "type": "CARDIO",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Single-leg bounding stride jump, explosive forward jump on one leg for power development.",
+  "instructions": [
+    "Stand to the side of a box with your inside foot on top of it, close to the edge.",
+    "Begin by swinging the arms upward as you push through the top leg, jumping upward as high as possible. Attempt to drive the opposite knee upward.",
+    "Land in the same position that you started, using your inside leg to decelerate the impact."
+  ],
+  "images": [
+    "/img/exercises/Single-Leg_Stride_Jump/0.jpg",
+    "/img/exercises/Single-Leg_Stride_Jump/1.jpg"
+  ],
+  "alternativeNames": [
+    "Single Leg Stride Jump"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Single-Leg_Stride_Jump",
+  "equipmentIds": []
+}

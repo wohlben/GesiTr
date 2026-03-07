@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Crunch-Cable_Reverse_Crunch-variation",
+  "relationshipType": "variation",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479425,
+  "fromExerciseTemplateId": "Reverse_Crunch",
+  "toExerciseTemplateId": "Cable_Reverse_Crunch"
+}

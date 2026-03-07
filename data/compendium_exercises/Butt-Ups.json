@@ -1,0 +1,44 @@
+{
+  "name": "Butt-Ups",
+  "slug": "butt-ups",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [
+    "HIP_FLEXORS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Supine hip raise lifting pelvis toward ceiling to emphasize lower abs and core strength",
+  "instructions": [
+    "Begin a pushup position but with your elbows on the ground and resting on your forearms. Your arms should be bent at a 90 degree angle.",
+    "Arch your back slightly out rather than keeping your back completely straight.",
+    "Raise your glutes toward the ceiling, squeezing your abs tightly to close the distance between your ribcage and hips. The end result will be that you'll end up in a high bridge position. Exhale as you perform this portion of the movement.",
+    "Lower back down slowly to your starting position as you breathe in. Tip: Don't let your back sag downwards.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Butt-Ups/0.jpg",
+    "/img/exercises/Butt-Ups/1.jpg"
+  ],
+  "alternativeNames": [
+    "Butt Ups"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Butt-Ups",
+  "equipmentIds": []
+}

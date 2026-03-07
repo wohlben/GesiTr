@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Shrug-Cable_Shrugs-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Barbell_Shrug",
+  "toExerciseTemplateId": "Cable_Shrugs"
+}

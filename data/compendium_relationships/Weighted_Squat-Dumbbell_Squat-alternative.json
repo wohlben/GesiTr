@@ -1,0 +1,10 @@
+{
+  "id": "Weighted_Squat-Dumbbell_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761551546,
+  "fromExerciseTemplateId": "Weighted_Squat",
+  "toExerciseTemplateId": "Dumbbell_Squat"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Sit-Up-Frog_Sit-Ups-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761494891,
+  "fromExerciseTemplateId": "Sit-Up",
+  "toExerciseTemplateId": "Frog_Sit-Ups"
+}

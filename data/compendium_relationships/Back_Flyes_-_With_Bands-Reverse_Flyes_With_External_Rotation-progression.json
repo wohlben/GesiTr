@@ -1,0 +1,10 @@
+{
+  "id": "Back_Flyes_-_With_Bands-Reverse_Flyes_With_External_Rotation-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Back_Flyes_-_With_Bands",
+  "toExerciseTemplateId": "Reverse_Flyes_With_External_Rotation"
+}

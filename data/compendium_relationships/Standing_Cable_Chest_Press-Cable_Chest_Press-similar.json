@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Cable_Chest_Press-Cable_Chest_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761478645,
+  "fromExerciseTemplateId": "Standing_Cable_Chest_Press",
+  "toExerciseTemplateId": "Cable_Chest_Press"
+}

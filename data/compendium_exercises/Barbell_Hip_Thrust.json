@@ -1,0 +1,47 @@
+{
+  "name": "Barbell Hip Thrust",
+  "slug": "barbell-hip-thrust",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "HAMSTRINGS",
+    "LOWER_BACK",
+    "ABS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Elevated hip thrust maximizing glute activation through full hip extension under heavy barbell loading",
+  "instructions": [
+    "Begin seated on the ground with a bench directly behind you. Have a loaded barbell over your legs. Using a fat bar or having a pad on the bar can greatly reduce the discomfort caused by this exercise.",
+    "Roll the bar so that it is directly above your hips, and lean back against the bench so that your shoulder blades are near the top of it.",
+    "Begin the movement by driving through your feet, extending your hips vertically through the bar. Your weight should be supported by your shoulder blades and your feet. Extend as far as possible, then reverse the motion to return to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Barbell_Hip_Thrust/0.jpg",
+    "/img/exercises/Barbell_Hip_Thrust/1.jpg"
+  ],
+  "alternativeNames": [
+    "BB Hip Thrust",
+    "Bar Hip Thrust",
+    "Barbell Hip Thrust"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Barbell_Hip_Thrust",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

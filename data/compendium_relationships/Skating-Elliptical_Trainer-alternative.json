@@ -1,0 +1,10 @@
+{
+  "id": "Skating-Elliptical_Trainer-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Skating",
+  "toExerciseTemplateId": "Elliptical_Trainer"
+}

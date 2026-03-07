@@ -1,0 +1,10 @@
+{
+  "id": "Plank-Butt-Ups-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Plank",
+  "toExerciseTemplateId": "Butt-Ups"
+}

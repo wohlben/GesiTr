@@ -1,0 +1,10 @@
+{
+  "id": "Calves-SMR-Standing_Calf_Raises-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Calves-SMR",
+  "toExerciseTemplateId": "Standing_Calf_Raises"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Jackknife_Sit-Up-Side_Jackknife-related",
+  "relationshipType": "related",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Jackknife_Sit-Up",
+  "toExerciseTemplateId": "Side_Jackknife"
+}

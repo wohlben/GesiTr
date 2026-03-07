@@ -1,0 +1,10 @@
+{
+  "id": "Landmine_Linear_Jammer-Kettlebell_Thruster-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Landmine_Linear_Jammer",
+  "toExerciseTemplateId": "Kettlebell_Thruster"
+}

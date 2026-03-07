@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Bicep_Curl-Flexor_Incline_Dumbbell_Curls-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Dumbbell_Bicep_Curl",
+  "toExerciseTemplateId": "Flexor_Incline_Dumbbell_Curls"
+}

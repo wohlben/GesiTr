@@ -1,0 +1,10 @@
+{
+  "id": "Speed_Squats-Box_Squat-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Speed_Squats",
+  "toExerciseTemplateId": "Box_Squat"
+}

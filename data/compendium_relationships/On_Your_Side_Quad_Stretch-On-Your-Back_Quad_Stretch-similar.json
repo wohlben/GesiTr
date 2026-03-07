@@ -1,0 +1,10 @@
+{
+  "id": "On_Your_Side_Quad_Stretch-On-Your-Back_Quad_Stretch-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "On_Your_Side_Quad_Stretch",
+  "toExerciseTemplateId": "On-Your-Back_Quad_Stretch"
+}

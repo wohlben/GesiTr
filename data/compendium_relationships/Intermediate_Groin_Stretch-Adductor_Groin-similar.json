@@ -1,0 +1,10 @@
+{
+  "id": "Intermediate_Groin_Stretch-Adductor_Groin-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Intermediate_Groin_Stretch",
+  "toExerciseTemplateId": "Adductor_Groin"
+}

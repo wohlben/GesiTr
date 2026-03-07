@@ -1,0 +1,10 @@
+{
+  "id": "Close-Grip_Barbell_Bench_Press-Barbell_Curl-antagonist",
+  "relationshipType": "antagonist",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Close-Grip_Barbell_Bench_Press",
+  "toExerciseTemplateId": "Barbell_Curl"
+}

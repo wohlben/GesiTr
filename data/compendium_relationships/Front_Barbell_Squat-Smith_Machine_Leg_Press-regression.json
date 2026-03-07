@@ -1,0 +1,10 @@
+{
+  "id": "Front_Barbell_Squat-Smith_Machine_Leg_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Front_Barbell_Squat",
+  "toExerciseTemplateId": "Smith_Machine_Leg_Press"
+}

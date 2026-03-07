@@ -1,0 +1,10 @@
+{
+  "id": "Leverage_Incline_Chest_Press-Incline_Dumbbell_Press-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730051040,
+  "fromExerciseTemplateId": "Leverage_Incline_Chest_Press",
+  "toExerciseTemplateId": "Incline_Dumbbell_Press"
+}

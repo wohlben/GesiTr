@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Deadlift-Hyperextensions_Back_Extensions-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498416,
+  "fromExerciseTemplateId": "Barbell_Deadlift",
+  "toExerciseTemplateId": "Hyperextensions_Back_Extensions"
+}

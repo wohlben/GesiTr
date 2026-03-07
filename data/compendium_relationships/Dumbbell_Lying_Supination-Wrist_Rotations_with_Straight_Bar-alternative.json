@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Lying_Supination-Wrist_Rotations_with_Straight_Bar-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761551538,
+  "fromExerciseTemplateId": "Dumbbell_Lying_Supination",
+  "toExerciseTemplateId": "Wrist_Rotations_with_Straight_Bar"
+}

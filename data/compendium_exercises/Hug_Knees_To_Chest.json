@@ -1,0 +1,38 @@
+{
+  "name": "Hug Knees To Chest",
+  "slug": "hug-knees-to-chest",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "LOWER_BACK",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Lying stretch pulling both knees to chest, decompressing spine and stretching lower back and glutes.",
+  "instructions": [
+    "Lie down on your back and pull both knees up to your chest.",
+    "Hold your arms under the knees, not over (that would put to much pressure on your knee joints).",
+    "Slowly pull the knees toward your shoulders. This also stretches your buttocks muscles."
+  ],
+  "images": [
+    "/img/exercises/Hug_Knees_To_Chest/0.jpg",
+    "/img/exercises/Hug_Knees_To_Chest/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Hug_Knees_To_Chest",
+  "equipmentIds": []
+}

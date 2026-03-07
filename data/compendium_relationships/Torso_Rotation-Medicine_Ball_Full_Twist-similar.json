@@ -1,0 +1,10 @@
+{
+  "id": "Torso_Rotation-Medicine_Ball_Full_Twist-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Torso_Rotation",
+  "toExerciseTemplateId": "Medicine_Ball_Full_Twist"
+}

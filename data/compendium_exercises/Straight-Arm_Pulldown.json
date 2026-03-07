@@ -1,0 +1,43 @@
+{
+  "name": "Straight-Arm Pulldown",
+  "slug": "straight-arm-pulldown",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "LATS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.1,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Cable or machine lat pulldown keeping arms straight, isolating lats without bicep involvement.",
+  "instructions": [
+    "You will start by grabbing the wide bar from the top pulley of a pulldown machine and using a wider than shoulder-width pronated (palms down) grip. Step backwards two feet or so.",
+    "Bend your torso forward at the waist by around 30-degrees with your arms fully extended in front of you and a slight bend at the elbows. If your arms are not fully extended then you need to step a bit more backwards until they are. Once your arms are fully extended and your torso is slightly bent at the waist, tighten the lats and then you are ready to begin.",
+    "While keeping the arms straight, pull the bar down by contracting the lats until your hands are next to the side of the thighs. Breathe out as you perform this step.",
+    "While keeping the arms straight, go back to the starting position while breathing in.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Straight-Arm_Pulldown/0.jpg",
+    "/img/exercises/Straight-Arm_Pulldown/1.jpg"
+  ],
+  "alternativeNames": [
+    "Straight Arm Pulldown"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Straight-Arm_Pulldown",
+  "equipmentIds": [
+    "gym-cable-machine"
+  ]
+}

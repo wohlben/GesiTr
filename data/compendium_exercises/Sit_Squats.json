@@ -1,0 +1,45 @@
+{
+  "name": "Sit Squats",
+  "slug": "sit-squats",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.9,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Partial squat movement stopping above parallel, teaching proper squat mechanics and hip hinge pattern.",
+  "instructions": [
+    "Stand with your feet shoulder width apart. This will be your starting position.",
+    "Begin the movement by flexing your knees and hips, sitting back with your hips.",
+    "Continue until you have squatted a portion of the way down, but are above parallel, and quickly reverse the motion until you return to the starting position. Repeat for 5-10 repetitions."
+  ],
+  "images": [
+    "/img/exercises/Sit_Squats/0.jpg",
+    "/img/exercises/Sit_Squats/1.jpg"
+  ],
+  "alternativeNames": [
+    "Sit-Squats"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Sit_Squats",
+  "equipmentIds": []
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Pallof_Press-Stomach_Vacuum-preparation",
+  "relationshipType": "preparation",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Pallof_Press",
+  "toExerciseTemplateId": "Stomach_Vacuum"
+}

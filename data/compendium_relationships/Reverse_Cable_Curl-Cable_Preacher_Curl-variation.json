@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Cable_Curl-Cable_Preacher_Curl-variation",
+  "relationshipType": "variation",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761543931,
+  "fromExerciseTemplateId": "Reverse_Cable_Curl",
+  "toExerciseTemplateId": "Cable_Preacher_Curl"
+}

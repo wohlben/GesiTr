@@ -1,0 +1,10 @@
+{
+  "id": "Bodyweight_Walking_Lunge-Barbell_Walking_Lunge-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Bodyweight_Walking_Lunge",
+  "toExerciseTemplateId": "Barbell_Walking_Lunge"
+}

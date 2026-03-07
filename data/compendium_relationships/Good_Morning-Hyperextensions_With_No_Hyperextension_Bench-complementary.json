@@ -1,0 +1,10 @@
+{
+  "id": "Good_Morning-Hyperextensions_With_No_Hyperextension_Bench-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.5,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Good_Morning",
+  "toExerciseTemplateId": "Hyperextensions_With_No_Hyperextension_Bench"
+}

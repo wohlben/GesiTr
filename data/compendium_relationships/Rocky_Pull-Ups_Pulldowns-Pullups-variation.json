@@ -1,0 +1,10 @@
+{
+  "id": "Rocky_Pull-Ups_Pulldowns-Pullups-variation",
+  "relationshipType": "variation",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Rocky_Pull-Ups_Pulldowns",
+  "toExerciseTemplateId": "Pullups"
+}

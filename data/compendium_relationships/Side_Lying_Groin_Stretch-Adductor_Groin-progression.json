@@ -1,0 +1,10 @@
+{
+  "id": "Side_Lying_Groin_Stretch-Adductor_Groin-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Side_Lying_Groin_Stretch",
+  "toExerciseTemplateId": "Adductor_Groin"
+}

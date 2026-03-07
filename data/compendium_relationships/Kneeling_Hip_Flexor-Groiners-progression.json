@@ -1,0 +1,10 @@
+{
+  "id": "Kneeling_Hip_Flexor-Groiners-progression",
+  "relationshipType": "progression",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496059,
+  "fromExerciseTemplateId": "Kneeling_Hip_Flexor",
+  "toExerciseTemplateId": "Groiners"
+}

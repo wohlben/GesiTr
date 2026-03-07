@@ -1,0 +1,44 @@
+{
+  "name": "Rickshaw Carry",
+  "slug": "rickshaw-carry",
+  "type": "STRENGTH",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "TRAPS",
+    "FOREARMS"
+  ],
+  "secondaryMuscles": [
+    "ABS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Farmer's carry using rickshaw (trap bar with high handles), walking with heavy weight for grip and core.",
+  "instructions": [
+    "Position the frame at the starting point, and load with the appropriate weight. Standing in the center of the frame, begin by gripping the handles and driving through your heels to lift the frame. Ensure your chest and head are up and your back is straight.",
+    "Immediately begin walking briskly with quick, controlled steps. Keep your chest up and head forward, and make sure you continue breathing. Bring the frame to the ground after you have reached the end point."
+  ],
+  "images": [
+    "/img/exercises/Rickshaw_Carry/0.jpg",
+    "/img/exercises/Rickshaw_Carry/1.jpg"
+  ],
+  "alternativeNames": [
+    "Rickshaw-Carry"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Rickshaw_Carry",
+  "equipmentIds": [
+    "trap-bar"
+  ]
+}

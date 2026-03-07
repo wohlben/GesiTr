@@ -1,0 +1,10 @@
+{
+  "id": "Lying_Machine_Squat-Barbell_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": "Barbell Squat is a more advanced free weight variation requiring full-body stabilization, core strength, and balance compared to the machine-supported Lying Machine Squat. Both target quads, glutes, and hamstrings, making Barbell Squat a natural progression as strength and technique improve.",
+  "createdBy": "system",
+  "createdAt": 1730014000,
+  "fromExerciseTemplateId": "Lying_Machine_Squat",
+  "toExerciseTemplateId": "Barbell_Squat"
+}

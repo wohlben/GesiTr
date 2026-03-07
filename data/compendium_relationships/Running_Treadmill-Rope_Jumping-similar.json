@@ -1,0 +1,10 @@
+{
+  "id": "Running_Treadmill-Rope_Jumping-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Running_Treadmill",
+  "toExerciseTemplateId": "Rope_Jumping"
+}

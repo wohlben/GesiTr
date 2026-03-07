@@ -1,0 +1,10 @@
+{
+  "id": "Round_The_World_Shoulder_Stretch-Chest_And_Front_Of_Shoulder_Stretch-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730040000,
+  "fromExerciseTemplateId": "Round_The_World_Shoulder_Stretch",
+  "toExerciseTemplateId": "Chest_And_Front_Of_Shoulder_Stretch"
+}

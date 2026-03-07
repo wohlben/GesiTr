@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Hip_Circles-Knee_Circles-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Hip_Circles",
+  "toExerciseTemplateId": "Knee_Circles"
+}

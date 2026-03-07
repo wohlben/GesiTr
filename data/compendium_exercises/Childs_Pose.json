@@ -1,0 +1,42 @@
+{
+  "name": "Child's Pose",
+  "slug": "child-s-pose",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "LOWER_BACK"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "LATS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Yoga pose extending arms forward while sitting on heels to stretch back and shoulders",
+  "instructions": [
+    "Get on your hands and knees, walk your hands in front of you.",
+    "Lower your buttocks down to sit on your heels. Let your arms drag along the floor as you sit back to stretch your entire spine.",
+    "Once you settle onto your heels, bring your hands next to your feet and relax. \"breathe\" into your back. Rest your forehead on the floor. Avoid this position if you have knee problems."
+  ],
+  "images": [
+    "/img/exercises/Childs_Pose/0.jpg",
+    "/img/exercises/Childs_Pose/1.jpg"
+  ],
+  "alternativeNames": [
+    "Child's-Pose"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Childs_Pose",
+  "equipmentIds": []
+}

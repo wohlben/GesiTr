@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Bent-Over_Rear_Delt_Raise-Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench-regression",
+  "relationshipType": "regression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Seated_Bent-Over_Rear_Delt_Raise",
+  "toExerciseTemplateId": "Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench"
+}

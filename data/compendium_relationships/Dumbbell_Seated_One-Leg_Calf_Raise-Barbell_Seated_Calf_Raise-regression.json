@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Seated_One-Leg_Calf_Raise-Barbell_Seated_Calf_Raise-regression",
+  "relationshipType": "regression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Dumbbell_Seated_One-Leg_Calf_Raise",
+  "toExerciseTemplateId": "Barbell_Seated_Calf_Raise"
+}

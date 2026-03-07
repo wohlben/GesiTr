@@ -1,0 +1,44 @@
+{
+  "name": "Finger Curls",
+  "slug": "finger-curls",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "FOREARMS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Seated barbell finger curl with palms up, building forearm flexors and finger flexion strength by rolling the bar down to fingertips and curling it back up.",
+  "instructions": [
+    "Hold a barbell with both hands and your palms facing up; hands spaced about shoulder width.",
+    "Sit down on a flat bench. Place your feet flat on the floor, at a distance that is slightly wider than shoulder width apart.",
+    "Lean forward and place your forearms on top of your upper thighs with your palms up. Your wrists should be hanging over your knees. This will be your starting position.",
+    "Lower the bar as far as possible by extending the fingers. Allowing the bar to roll down the hands, catch the bar with the final joint in the fingers.",
+    "Now curl bar up as high as possible by closing your hands while exhaling. Hold the contraction at the top."
+  ],
+  "images": [
+    "/img/exercises/Finger_Curls/0.jpg",
+    "/img/exercises/Finger_Curls/1.jpg"
+  ],
+  "alternativeNames": [
+    "Finger-Curls"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Finger_Curls",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

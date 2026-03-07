@@ -1,0 +1,10 @@
+{
+  "id": "Palms-Up_Dumbbell_Wrist_Curl_Over_A_Bench-Finger_Curls-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Palms-Up_Dumbbell_Wrist_Curl_Over_A_Bench",
+  "toExerciseTemplateId": "Finger_Curls"
+}

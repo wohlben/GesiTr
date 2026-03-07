@@ -1,0 +1,10 @@
+{
+  "id": "Olympic_Squat-Overhead_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Olympic_Squat",
+  "toExerciseTemplateId": "Overhead_Squat"
+}

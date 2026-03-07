@@ -1,0 +1,43 @@
+{
+  "name": "Seated Calf Stretch",
+  "slug": "seated-calf-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "CALVES"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Seated stretch pulling toes toward body to stretch calf muscles and Achilles tendon.",
+  "instructions": [
+    "Sit up straight on an exercise mat.",
+    "Bend one knee and put that foot on the floor to stabilize the torso.",
+    "Straighten your other leg and flex your ankle.",
+    "Using a band, towel, or your hand if you can reach, pull the toes toward you. Hold for 10 to 20 seconds, then switch sides."
+  ],
+  "images": [
+    "/img/exercises/Seated_Calf_Stretch/0.jpg",
+    "/img/exercises/Seated_Calf_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Standing Calf Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Seated_Calf_Stretch",
+  "equipmentIds": [
+    "resistance-band",
+    "mat"
+  ]
+}

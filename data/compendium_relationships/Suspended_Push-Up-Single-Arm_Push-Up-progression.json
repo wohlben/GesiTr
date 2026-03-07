@@ -1,0 +1,10 @@
+{
+  "id": "Suspended_Push-Up-Single-Arm_Push-Up-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Suspended_Push-Up",
+  "toExerciseTemplateId": "Single-Arm_Push-Up"
+}

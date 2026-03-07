@@ -1,0 +1,45 @@
+{
+  "name": "Dumbbell Side Bend",
+  "slug": "dumbbell-side-bend",
+  "type": "STRENGTH",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "OBLIQUES"
+  ],
+  "secondaryMuscles": [
+    "ABS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Lateral flexion with dumbbell targeting obliques and improving lateral core strength.",
+  "instructions": [
+    "Stand up straight while holding a dumbbell on the left hand (palms facing the torso) as you have the right hand holding your waist. Your feet should be placed at shoulder width. This will be your starting position.",
+    "While keeping your back straight and your head up, bend only at the waist to the right as far as possible. Breathe in as you bend to the side. Then hold for a second and come back up to the starting position as you exhale. Tip: Keep the rest of the body stationary.",
+    "Now repeat the movement but bending to the left instead. Hold for a second and come back to the starting position.",
+    "Repeat for the recommended amount of repetitions and then change hands."
+  ],
+  "images": [
+    "/img/exercises/Dumbbell_Side_Bend/0.jpg",
+    "/img/exercises/Dumbbell_Side_Bend/1.jpg"
+  ],
+  "alternativeNames": [
+    "DB Side Bend",
+    "Dumbell Side Bend"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Dumbbell_Side_Bend",
+  "equipmentIds": [
+    "2x dumbbell"
+  ]
+}

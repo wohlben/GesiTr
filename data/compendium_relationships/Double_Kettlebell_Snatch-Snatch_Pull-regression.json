@@ -1,0 +1,10 @@
+{
+  "id": "Double_Kettlebell_Snatch-Snatch_Pull-regression",
+  "relationshipType": "regression",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Double_Kettlebell_Snatch",
+  "toExerciseTemplateId": "Snatch_Pull"
+}

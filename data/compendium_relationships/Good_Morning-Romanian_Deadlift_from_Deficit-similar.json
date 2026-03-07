@@ -1,0 +1,10 @@
+{
+  "id": "Good_Morning-Romanian_Deadlift_from_Deficit-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Good_Morning",
+  "toExerciseTemplateId": "Romanian_Deadlift_from_Deficit"
+}

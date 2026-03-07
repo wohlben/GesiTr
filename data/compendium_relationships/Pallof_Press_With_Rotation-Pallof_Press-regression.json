@@ -1,0 +1,10 @@
+{
+  "id": "Pallof_Press_With_Rotation-Pallof_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729940400,
+  "fromExerciseTemplateId": "Pallof_Press_With_Rotation",
+  "toExerciseTemplateId": "Pallof_Press"
+}

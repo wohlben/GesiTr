@@ -1,0 +1,10 @@
+{
+  "id": "90_90_Hamstring-Seated_Floor_Hamstring_Stretch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "90_90_Hamstring",
+  "toExerciseTemplateId": "Seated_Floor_Hamstring_Stretch"
+}

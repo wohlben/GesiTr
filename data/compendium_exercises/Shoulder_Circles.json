@@ -1,0 +1,40 @@
+{
+  "name": "Shoulder Circles",
+  "slug": "shoulder-circles",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS",
+    "SIDE_DELTS",
+    "REAR_DELTS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Shoulder mobility exercise making circular motions with arms to warm up and stretch all deltoid heads.",
+  "instructions": [
+    "With shoulders relaxed and arms resting loosely at your sides (or in your lap if you're seated), gently roll your shoulders forward, up, back, and down.",
+    "Reverse direction. You can do this exercise alternating shoulders or both at the same time."
+  ],
+  "images": [
+    "/img/exercises/Shoulder_Circles/0.jpg",
+    "/img/exercises/Shoulder_Circles/1.jpg"
+  ],
+  "alternativeNames": [
+    "Shoulder-Circles"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Shoulder_Circles",
+  "equipmentIds": []
+}

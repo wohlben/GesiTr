@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Glute_Bridge-Butt_Lift_Bridge-regression",
+  "relationshipType": "regression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464685,
+  "fromExerciseTemplateId": "Barbell_Glute_Bridge",
+  "toExerciseTemplateId": "Butt_Lift_Bridge"
+}

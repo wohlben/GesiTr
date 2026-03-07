@@ -1,0 +1,10 @@
+{
+  "id": "Smith_Machine_Behind_the_Back_Shrug-Smith_Machine_Upright_Row-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Smith_Machine_Behind_the_Back_Shrug",
+  "toExerciseTemplateId": "Smith_Machine_Upright_Row"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Power_Clean_from_Blocks-Power_Clean-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761511266,
+  "fromExerciseTemplateId": "Power_Clean_from_Blocks",
+  "toExerciseTemplateId": "Power_Clean"
+}

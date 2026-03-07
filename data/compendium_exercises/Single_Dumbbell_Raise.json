@@ -1,0 +1,43 @@
+{
+  "name": "Single Dumbbell Raise",
+  "slug": "single-dumbbell-raise",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Front raise with single dumbbell held with both hands or one hand, isolating anterior deltoid.",
+  "instructions": [
+    "With a wide stance, hold a dumbell with both hands, grasping the head of the dumbbell instead of the handle. Your arms should be extended and hanging at the waist. This will be your starting position.",
+    "Raise the weight until it is above shoulder level, keeping your arms extended. Your torso and hips should remain stationary throughout the movement.",
+    "Return to the starting position and repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Single_Dumbbell_Raise/0.jpg",
+    "/img/exercises/Single_Dumbbell_Raise/1.jpg"
+  ],
+  "alternativeNames": [
+    "Single DB Raise",
+    "Single Dumbell Raise"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Single_Dumbbell_Raise",
+  "equipmentIds": [
+    "dumbbell"
+  ]
+}

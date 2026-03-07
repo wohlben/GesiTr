@@ -1,0 +1,10 @@
+{
+  "id": "Ball_Leg_Curl-Leg_Lift-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Ball_Leg_Curl",
+  "toExerciseTemplateId": "Leg_Lift"
+}

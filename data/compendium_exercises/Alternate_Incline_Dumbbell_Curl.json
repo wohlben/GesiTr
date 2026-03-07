@@ -1,0 +1,51 @@
+{
+  "name": "Alternate Incline Dumbbell Curl",
+  "slug": "alternate-incline-dumbbell-curl",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "BICEPS"
+  ],
+  "secondaryMuscles": [
+    "FOREARMS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Incline alternating dumbbell curls emphasizing biceps long head through increased stretch and range of motion",
+  "instructions": [
+    "Sit down on an incline bench with a dumbbell in each hand being held at arms length. Tip: Keep the elbows close to the torso.This will be your starting position.",
+    "While holding the upper arm stationary, curl the right weight forward while contracting the biceps as you breathe out. As you do so, rotate the hand so that the palm is facing up. Continue the movement until your biceps is fully contracted and the dumbbells are at shoulder level. Hold the contracted position for a second as you squeeze the biceps. Tip: Only the forearms should move.",
+    "Slowly begin to bring the dumbbell back to starting position as your breathe in.",
+    "Repeat the movement with the left hand. This equals one repetition.",
+    "Continue alternating in this manner for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Alternate_Incline_Dumbbell_Curl/0.jpg",
+    "/img/exercises/Alternate_Incline_Dumbbell_Curl/1.jpg"
+  ],
+  "alternativeNames": [
+    "Alternate Incline DB Curl",
+    "Alternate Incline Dumbell Curl",
+    "Alternating Incline Dumbbell Curl",
+    "DB Curl",
+    "Dumbbell Bicep Curl"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Alternate_Incline_Dumbbell_Curl",
+  "equipmentIds": [
+    "2x dumbbell",
+    "incline-bench"
+  ]
+}

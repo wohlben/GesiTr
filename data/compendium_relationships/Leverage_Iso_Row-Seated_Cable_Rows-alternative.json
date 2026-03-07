@@ -1,0 +1,10 @@
+{
+  "id": "Leverage_Iso_Row-Seated_Cable_Rows-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729900800,
+  "fromExerciseTemplateId": "Leverage_Iso_Row",
+  "toExerciseTemplateId": "Seated_Cable_Rows"
+}

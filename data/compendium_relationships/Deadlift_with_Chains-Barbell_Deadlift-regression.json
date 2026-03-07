@@ -1,0 +1,10 @@
+{
+  "id": "Deadlift_with_Chains-Barbell_Deadlift-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Deadlift_with_Chains",
+  "toExerciseTemplateId": "Barbell_Deadlift"
+}

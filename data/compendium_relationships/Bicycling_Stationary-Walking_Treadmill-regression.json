@@ -1,0 +1,10 @@
+{
+  "id": "Bicycling_Stationary-Walking_Treadmill-regression",
+  "relationshipType": "regression",
+  "strength": 0.55,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476051,
+  "fromExerciseTemplateId": "Bicycling_Stationary",
+  "toExerciseTemplateId": "Walking_Treadmill"
+}

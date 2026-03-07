@@ -1,0 +1,10 @@
+{
+  "id": "Ankle_Circles-Anterior_Tibialis-SMR-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Ankle_Circles",
+  "toExerciseTemplateId": "Anterior_Tibialis-SMR"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Close-Grip_Dumbbell_Press-Tate_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735689600,
+  "fromExerciseTemplateId": "Close-Grip_Dumbbell_Press",
+  "toExerciseTemplateId": "Tate_Press"
+}

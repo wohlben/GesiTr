@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Alternate_Bicep_Curl-Concentration_Curls-progression",
+  "relationshipType": "progression",
+  "strength": 0.65,
+  "description": "Progression from alternating bicep curl to isolated single-arm concentration curl with greater focus on form and stability",
+  "createdBy": "system",
+  "createdAt": 1729933200,
+  "fromExerciseTemplateId": "Dumbbell_Alternate_Bicep_Curl",
+  "toExerciseTemplateId": "Concentration_Curls"
+}

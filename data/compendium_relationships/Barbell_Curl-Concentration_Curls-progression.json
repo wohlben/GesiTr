@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Curl-Concentration_Curls-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Barbell_Curl",
+  "toExerciseTemplateId": "Concentration_Curls"
+}

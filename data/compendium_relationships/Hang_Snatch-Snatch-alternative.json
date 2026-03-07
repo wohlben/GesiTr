@@ -1,0 +1,10 @@
+{
+  "id": "Hang_Snatch-Snatch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761481995,
+  "fromExerciseTemplateId": "Hang_Snatch",
+  "toExerciseTemplateId": "Snatch"
+}

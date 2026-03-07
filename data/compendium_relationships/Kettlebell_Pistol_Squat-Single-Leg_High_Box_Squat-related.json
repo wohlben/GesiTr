@@ -1,0 +1,10 @@
+{
+  "id": "Kettlebell_Pistol_Squat-Single-Leg_High_Box_Squat-related",
+  "relationshipType": "related",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Kettlebell_Pistol_Squat",
+  "toExerciseTemplateId": "Single-Leg_High_Box_Squat"
+}

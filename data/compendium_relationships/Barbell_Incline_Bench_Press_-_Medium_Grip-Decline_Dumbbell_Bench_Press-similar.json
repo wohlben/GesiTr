@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Incline_Bench_Press_-_Medium_Grip-Decline_Dumbbell_Bench_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761483992,
+  "fromExerciseTemplateId": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+  "toExerciseTemplateId": "Decline_Dumbbell_Bench_Press"
+}

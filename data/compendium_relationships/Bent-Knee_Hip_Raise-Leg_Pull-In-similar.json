@@ -1,0 +1,10 @@
+{
+  "id": "Bent-Knee_Hip_Raise-Leg_Pull-In-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": "Same lower ab pull-in movement with slight variation in starting position",
+  "createdBy": "system",
+  "createdAt": 1761509905,
+  "fromExerciseTemplateId": "Bent-Knee_Hip_Raise",
+  "toExerciseTemplateId": "Leg_Pull-In"
+}

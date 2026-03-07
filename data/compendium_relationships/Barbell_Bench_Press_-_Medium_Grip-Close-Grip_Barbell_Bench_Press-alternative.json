@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Bench_Press_-_Medium_Grip-Close-Grip_Barbell_Bench_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Barbell_Bench_Press_-_Medium_Grip",
+  "toExerciseTemplateId": "Close-Grip_Barbell_Bench_Press"
+}

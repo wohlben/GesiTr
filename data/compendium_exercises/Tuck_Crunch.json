@@ -1,0 +1,45 @@
+{
+  "name": "Tuck Crunch",
+  "slug": "tuck-crunch",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.9,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Crunch bringing knees and chest together simultaneously in tucked position, targeting full core.",
+  "instructions": [
+    "To begin, lie down on the floor or an exercise mat with your back pressed against the floor. Your arms should be lying across your sides with the palms facing down.",
+    "Your legs should be crossed by wrapping one ankle around the other. Slowly elevate your legs up in the air until your thighs are perpendicular to the floor with a slight bend at the knees. Note: Your knees and toes should be parallel to the floor as opposed to the thighs.",
+    "Move your arms from the floor and cross them so they are resting on your chest. This is the starting position.",
+    "While keeping your lower back pressed against the floor, slowly lift your torso. Remember to exhale while perform this part of the exercise.",
+    "Slowly begin to lower your torso back down to the starting position while inhaling.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Tuck_Crunch/0.jpg",
+    "/img/exercises/Tuck_Crunch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Ab Crunch",
+    "Abdominal Crunch",
+    "Tuck-Crunch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Tuck_Crunch",
+  "equipmentIds": []
+}

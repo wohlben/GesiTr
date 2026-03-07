@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Cable_Wood_Chop-Pallof_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729940400,
+  "fromExerciseTemplateId": "Standing_Cable_Wood_Chop",
+  "toExerciseTemplateId": "Pallof_Press"
+}

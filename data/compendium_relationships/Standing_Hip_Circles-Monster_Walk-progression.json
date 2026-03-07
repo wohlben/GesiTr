@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Hip_Circles-Monster_Walk-progression",
+  "relationshipType": "progression",
+  "strength": 0.65,
+  "description": "Hip circles prepare hip mobility before Monster Walk strengthens hip abductors with resistance",
+  "createdBy": "system",
+  "createdAt": 1730053200,
+  "fromExerciseTemplateId": "Standing_Hip_Circles",
+  "toExerciseTemplateId": "Monster_Walk"
+}

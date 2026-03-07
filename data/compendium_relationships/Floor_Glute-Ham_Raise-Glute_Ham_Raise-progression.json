@@ -1,0 +1,10 @@
+{
+  "id": "Floor_Glute-Ham_Raise-Glute_Ham_Raise-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Floor_Glute-Ham_Raise",
+  "toExerciseTemplateId": "Glute_Ham_Raise"
+}

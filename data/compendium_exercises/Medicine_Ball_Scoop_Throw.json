@@ -1,0 +1,45 @@
+{
+  "name": "Medicine Ball Scoop Throw",
+  "slug": "medicine-ball-scoop-throw",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "QUADS",
+    "GLUTES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Medicine ball scoop throw combining squat and overhead throw in scooping motion for full-body power.",
+  "instructions": [
+    "Assume a semisquat stance with a medicine ball in your hands. Your arms should hang so the ball is near your feet.",
+    "Begin by thrusting the hips forward as you extend through the legs, jumping up.",
+    "As you do, swing your arms up and over your head, keeping them extended, releasing the ball at the peak of your movement. The goal is to throw the ball the greatest distance behind you."
+  ],
+  "images": [
+    "/img/exercises/Medicine_Ball_Scoop_Throw/0.jpg",
+    "/img/exercises/Medicine_Ball_Scoop_Throw/1.jpg"
+  ],
+  "alternativeNames": [
+    "Med Ball Scoop Throw"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Medicine_Ball_Scoop_Throw",
+  "equipmentIds": [
+    "medicine-ball"
+  ]
+}

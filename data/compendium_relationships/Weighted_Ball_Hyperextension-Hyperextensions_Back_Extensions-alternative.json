@@ -1,0 +1,10 @@
+{
+  "id": "Weighted_Ball_Hyperextension-Hyperextensions_Back_Extensions-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498416,
+  "fromExerciseTemplateId": "Weighted_Ball_Hyperextension",
+  "toExerciseTemplateId": "Hyperextensions_Back_Extensions"
+}

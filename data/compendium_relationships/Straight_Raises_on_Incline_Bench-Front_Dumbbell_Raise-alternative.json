@@ -1,0 +1,10 @@
+{
+  "id": "Straight_Raises_on_Incline_Bench-Front_Dumbbell_Raise-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Straight_Raises_on_Incline_Bench",
+  "toExerciseTemplateId": "Front_Dumbbell_Raise"
+}

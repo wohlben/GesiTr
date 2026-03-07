@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Bench_Press-Leverage_Chest_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730051040,
+  "fromExerciseTemplateId": "Dumbbell_Bench_Press",
+  "toExerciseTemplateId": "Leverage_Chest_Press"
+}

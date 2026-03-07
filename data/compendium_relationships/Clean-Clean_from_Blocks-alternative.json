@@ -1,0 +1,10 @@
+{
+  "id": "Clean-Clean_from_Blocks-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Clean",
+  "toExerciseTemplateId": "Clean_from_Blocks"
+}

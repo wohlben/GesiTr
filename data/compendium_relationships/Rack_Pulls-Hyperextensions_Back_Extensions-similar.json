@@ -1,0 +1,10 @@
+{
+  "id": "Rack_Pulls-Hyperextensions_Back_Extensions-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498416,
+  "fromExerciseTemplateId": "Rack_Pulls",
+  "toExerciseTemplateId": "Hyperextensions_Back_Extensions"
+}

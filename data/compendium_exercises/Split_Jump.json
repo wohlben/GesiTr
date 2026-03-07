@@ -1,0 +1,48 @@
+{
+  "name": "Split Jump",
+  "slug": "split-jump",
+  "type": "CARDIO",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Jumping lunge switching legs mid-air to land in opposite lunge position, plyometric exercise.",
+  "instructions": [
+    "Assume a lunge stance position with one foot forward with the knee bent, and the rear knee nearly touching the ground.",
+    "Ensure that the front knee is over the midline of the foot.",
+    "Extending through both legs, jump as high as possible, swinging your arms to gain lift.",
+    "As you jump, bring your feet together, and move them back to their initial positions as you land.",
+    "Absorb the impact by reverting back to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Split_Jump/0.jpg",
+    "/img/exercises/Split_Jump/1.jpg"
+  ],
+  "alternativeNames": [
+    "Split-Jump"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Split_Jump",
+  "equipmentIds": []
+}

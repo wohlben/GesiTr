@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Flyes-Dumbbell_Lying_Rear_Lateral_Raise-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761493205,
+  "fromExerciseTemplateId": "Reverse_Flyes",
+  "toExerciseTemplateId": "Dumbbell_Lying_Rear_Lateral_Raise"
+}

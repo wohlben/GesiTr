@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Barbell_Curl-Reverse_Cable_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761543931,
+  "fromExerciseTemplateId": "Reverse_Barbell_Curl",
+  "toExerciseTemplateId": "Reverse_Cable_Curl"
+}

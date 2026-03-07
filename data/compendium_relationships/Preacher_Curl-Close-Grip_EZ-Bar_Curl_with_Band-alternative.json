@@ -1,0 +1,10 @@
+{
+  "id": "Preacher_Curl-Close-Grip_EZ-Bar_Curl_with_Band-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.88,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Preacher_Curl",
+  "toExerciseTemplateId": "Close-Grip_EZ-Bar_Curl_with_Band"
+}

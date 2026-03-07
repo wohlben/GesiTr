@@ -1,0 +1,10 @@
+{
+  "id": "Hack_Squat-Smith_Machine_Leg_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Hack_Squat",
+  "toExerciseTemplateId": "Smith_Machine_Leg_Press"
+}

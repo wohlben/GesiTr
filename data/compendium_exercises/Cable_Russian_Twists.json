@@ -1,0 +1,47 @@
+{
+  "name": "Cable Russian Twists",
+  "slug": "cable-russian-twists",
+  "type": "STRENGTH",
+  "force": [
+    "ROTATION"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Cable twist with rotation targeting obliques through transverse plane movement for core strength",
+  "instructions": [
+    "Connect a standard handle attachment, and position the cable to a middle pulley position.",
+    "Lie on a stability ball perpendicular to the cable and grab the handle with one hand. You should be approximately arm's length away from the pulley, with the tension of the weight on the cable.",
+    "Grab the handle with both hands and fully extend your arms above your chest. You hands should be directly in-line with the pulley. If not, adjust the pulley up or down until they are.",
+    "Keep your hips elevated and abs engaged. Rotate your torso away from the pulley for a full-quarter rotation. Your body should be flat from head to knees.",
+    "Pause for a moment and in a slow and controlled manner reset to the starting position. You should still have side tension on the cable in the resting position.",
+    "Repeat the same movement to failure.",
+    "Then, reposition and repeat the same series of movements on the opposite side."
+  ],
+  "images": [
+    "/img/exercises/Cable_Russian_Twists/0.jpg",
+    "/img/exercises/Cable_Russian_Twists/1.jpg"
+  ],
+  "alternativeNames": [
+    "Cable Machine Russian Twists",
+    "Stability Ball Cable Russian Twists"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Cable_Russian_Twists",
+  "equipmentIds": [
+    "gym-cable-machine",
+    "stability-ball"
+  ]
+}

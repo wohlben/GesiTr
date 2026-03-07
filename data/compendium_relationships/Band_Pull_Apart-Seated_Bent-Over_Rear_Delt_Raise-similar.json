@@ -1,0 +1,10 @@
+{
+  "id": "Band_Pull_Apart-Seated_Bent-Over_Rear_Delt_Raise-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Band_Pull_Apart",
+  "toExerciseTemplateId": "Seated_Bent-Over_Rear_Delt_Raise"
+}

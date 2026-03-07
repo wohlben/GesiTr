@@ -1,0 +1,10 @@
+{
+  "id": "Axle_Deadlift-Romanian_Deadlift-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Axle_Deadlift",
+  "toExerciseTemplateId": "Romanian_Deadlift"
+}

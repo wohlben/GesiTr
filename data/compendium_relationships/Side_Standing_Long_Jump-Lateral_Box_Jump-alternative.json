@@ -1,0 +1,10 @@
+{
+  "id": "Side_Standing_Long_Jump-Lateral_Box_Jump-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Side_Standing_Long_Jump",
+  "toExerciseTemplateId": "Lateral_Box_Jump"
+}

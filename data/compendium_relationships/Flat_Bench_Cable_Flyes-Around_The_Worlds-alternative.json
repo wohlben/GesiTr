@@ -1,0 +1,10 @@
+{
+  "id": "Flat_Bench_Cable_Flyes-Around_The_Worlds-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Flat_Bench_Cable_Flyes",
+  "toExerciseTemplateId": "Around_The_Worlds"
+}

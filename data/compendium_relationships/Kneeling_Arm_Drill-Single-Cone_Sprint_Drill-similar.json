@@ -1,0 +1,10 @@
+{
+  "id": "Kneeling_Arm_Drill-Single-Cone_Sprint_Drill-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Kneeling_Arm_Drill",
+  "toExerciseTemplateId": "Single-Cone_Sprint_Drill"
+}

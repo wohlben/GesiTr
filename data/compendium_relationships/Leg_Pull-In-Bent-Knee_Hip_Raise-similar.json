@@ -1,0 +1,10 @@
+{
+  "id": "Leg_Pull-In-Bent-Knee_Hip_Raise-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": "Nearly identical movement pattern pulling knees to chest from floor position",
+  "createdBy": "system",
+  "createdAt": 1761509905,
+  "fromExerciseTemplateId": "Leg_Pull-In",
+  "toExerciseTemplateId": "Bent-Knee_Hip_Raise"
+}

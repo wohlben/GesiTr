@@ -1,0 +1,10 @@
+{
+  "id": "Pullups-V-Bar_Pullup-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Pullups",
+  "toExerciseTemplateId": "V-Bar_Pullup"
+}

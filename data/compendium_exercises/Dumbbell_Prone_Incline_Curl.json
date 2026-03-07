@@ -1,0 +1,48 @@
+{
+  "name": "Dumbbell Prone Incline Curl",
+  "slug": "dumbbell-prone-incline-curl",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "BICEPS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Strength training exercise targeting primary muscle groups",
+  "instructions": [
+    "Grab a dumbbell on each hand and lie face down on an incline bench with your shoulders near top of the incline. Your knees can rest on the seat or your legs can be straddled to the sides (my preferred way).",
+    "Let your arms extend and hang naturally in front of you so that they are perpendicular to the floor.",
+    "Now keep your elbows in by your side and face the palms forward. This will be your starting position.",
+    "Raise the dumbbells by contracting the biceps until your arms are fully flexed. Exhale as you perform this portion of the movement and ensure that only the forearms move. The upper arms should remain stationary at all times.",
+    "Lower the dumbbells until your arms are fully extended.",
+    "Repeat for the recommended amount of times."
+  ],
+  "images": [
+    "/img/exercises/Dumbbell_Prone_Incline_Curl/0.jpg",
+    "/img/exercises/Dumbbell_Prone_Incline_Curl/1.jpg"
+  ],
+  "alternativeNames": [
+    "DB Prone Incline Curl",
+    "Dumbbell Lying Incline Curl",
+    "Dumbell Prone Incline Curl"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Dumbbell_Prone_Incline_Curl",
+  "equipmentIds": [
+    "2x dumbbell",
+    "incline-bench"
+  ]
+}

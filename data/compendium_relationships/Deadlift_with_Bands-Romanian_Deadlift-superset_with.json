@@ -1,0 +1,10 @@
+{
+  "id": "Deadlift_with_Bands-Romanian_Deadlift-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Deadlift_with_Bands",
+  "toExerciseTemplateId": "Romanian_Deadlift"
+}

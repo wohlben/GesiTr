@@ -1,0 +1,43 @@
+{
+  "name": "Chair Leg Extended Stretch",
+  "slug": "chair-leg-extended-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "QUADS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "HAMSTRINGS",
+    "CALVES",
+    "ABS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Seated leg mobility and flexibility exercise targeting quadriceps, hip flexors, and glutes through controlled leg extension and lateral movement",
+  "instructions": [
+    "Sit upright in a chair and grip the seat on the sides.",
+    "Raise one leg, extending the knee, flexing the ankle as you do so.",
+    "Slowly move that leg outward as far as you can, and then back to the center and down.",
+    "Repeat for your other leg."
+  ],
+  "images": [
+    "/img/exercises/Chair_Leg_Extended_Stretch/0.jpg",
+    "/img/exercises/Chair_Leg_Extended_Stretch/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Chair_Leg_Extended_Stretch",
+  "equipmentIds": []
+}

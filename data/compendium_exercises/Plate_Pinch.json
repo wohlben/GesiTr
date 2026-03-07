@@ -1,0 +1,44 @@
+{
+  "name": "Plate Pinch",
+  "slug": "plate-pinch",
+  "type": "STRENGTH",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "FOREARMS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Grip exercise pinching weight plates together with fingers, building pinch grip strength.",
+  "instructions": [
+    "Grab two wide-rimmed plates and put them together with the smooth sides facing outward",
+    "Use your fingers to grip the outside part of the plate and your thumb for the other side thus holding both plates together. This is the starting position.",
+    "Squeeze the plate with your fingers and thumb. Hold this position for as long as you can.",
+    "Repeat for the recommended amount of sets prescribed in your program.",
+    "Switch arms and repeat the movements."
+  ],
+  "images": [
+    "/img/exercises/Plate_Pinch/0.jpg",
+    "/img/exercises/Plate_Pinch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Plate-Pinch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Plate_Pinch",
+  "equipmentIds": [
+    "weight-plate"
+  ]
+}

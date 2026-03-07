@@ -1,0 +1,39 @@
+{
+  "name": "Chest And Front Of Shoulder Stretch",
+  "slug": "chest-and-front-of-shoulder-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Standing chest and shoulder stretch using bodybar or broomstick to open anterior chest and deltoids",
+  "instructions": [
+    "Start off by standing with your legs together, holding a bodybar or a broomstick.",
+    "Take a slightly wider than shoulder width grip on the pole and hold it in front of you with your palms facing down.",
+    "Carefully lift the pole up and behind your head."
+  ],
+  "images": [
+    "/img/exercises/Chest_And_Front_Of_Shoulder_Stretch/0.jpg",
+    "/img/exercises/Chest_And_Front_Of_Shoulder_Stretch/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Chest_And_Front_Of_Shoulder_Stretch",
+  "equipmentIds": []
+}

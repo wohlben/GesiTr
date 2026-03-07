@@ -1,0 +1,10 @@
+{
+  "id": "Wide_Stance_Stiff_Legs-Stiff-Legged_Dumbbell_Deadlift-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Wide_Stance_Stiff_Legs",
+  "toExerciseTemplateId": "Stiff-Legged_Dumbbell_Deadlift"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Frog_Sit-Ups-3_4_Sit-Up-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761494891,
+  "fromExerciseTemplateId": "Frog_Sit-Ups",
+  "toExerciseTemplateId": "3_4_Sit-Up"
+}

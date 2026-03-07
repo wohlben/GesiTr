@@ -1,0 +1,10 @@
+{
+  "id": "Chair_Squat-Sit_Squats-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Chair_Squat",
+  "toExerciseTemplateId": "Sit_Squats"
+}

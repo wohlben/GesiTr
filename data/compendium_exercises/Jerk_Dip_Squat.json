@@ -1,0 +1,39 @@
+{
+  "name": "Jerk Dip Squat",
+  "slug": "jerk-dip-squat",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.4,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Dip squat component of jerk, practicing downward dip before driving barbell overhead.",
+  "instructions": [
+    "This movement strengthens the dip portion of the jerk. Begin with the bar racked in the jerk position, with the shoulders forward to create a shelf and the bar lightly contacting the throat. The feet should be directly under the hips, with the feet turned out as is comfortable.",
+    "Keeping the torso vertical, dip by flexing the knees, allowing them to travel forward and without moving the hips to the rear. The dip should not be excessive. Return the weight to the starting position by driving forcefully though the feet."
+  ],
+  "images": [
+    "/img/exercises/Jerk_Dip_Squat/0.jpg",
+    "/img/exercises/Jerk_Dip_Squat/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Jerk_Dip_Squat",
+  "equipmentIds": [
+    "barbell",
+    "dip-bars"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Ab_Crunch_Machine-Crunches-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Ab_Crunch_Machine",
+  "toExerciseTemplateId": "Crunches"
+}

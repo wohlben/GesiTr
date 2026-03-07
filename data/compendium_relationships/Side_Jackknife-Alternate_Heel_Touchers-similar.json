@@ -1,0 +1,10 @@
+{
+  "id": "Side_Jackknife-Alternate_Heel_Touchers-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Side_Jackknife",
+  "toExerciseTemplateId": "Alternate_Heel_Touchers"
+}

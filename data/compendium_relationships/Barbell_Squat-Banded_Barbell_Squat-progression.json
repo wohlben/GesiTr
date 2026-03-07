@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Squat-Banded_Barbell_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Barbell_Squat",
+  "toExerciseTemplateId": "Banded_Barbell_Squat"
+}

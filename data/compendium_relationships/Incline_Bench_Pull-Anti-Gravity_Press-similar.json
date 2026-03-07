@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Bench_Pull-Anti-Gravity_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761463553,
+  "fromExerciseTemplateId": "Incline_Bench_Pull",
+  "toExerciseTemplateId": "Anti-Gravity_Press"
+}

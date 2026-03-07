@@ -1,0 +1,10 @@
+{
+  "id": "Decline_Barbell_Bench_Press-Leverage_Decline_Chest_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730051040,
+  "fromExerciseTemplateId": "Decline_Barbell_Bench_Press",
+  "toExerciseTemplateId": "Leverage_Decline_Chest_Press"
+}

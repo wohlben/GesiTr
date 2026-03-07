@@ -1,0 +1,10 @@
+{
+  "id": "Standing_One-Arm_Cable_Curl-High_Cable_Curls-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761548543,
+  "fromExerciseTemplateId": "Standing_One-Arm_Cable_Curl",
+  "toExerciseTemplateId": "High_Cable_Curls"
+}

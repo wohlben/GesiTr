@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Incline_Triceps_Extension-Triceps_Overhead_Extension_with_Rope-variation",
+  "relationshipType": "variation",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cable_Incline_Triceps_Extension",
+  "toExerciseTemplateId": "Triceps_Overhead_Extension_with_Rope"
+}

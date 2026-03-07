@@ -1,0 +1,38 @@
+{
+  "name": "Standing Pelvic Tilt",
+  "slug": "standing-pelvic-tilt",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Core exercise tilting pelvis forward and back while standing, engaging lower abs and glutes.",
+  "instructions": [
+    "Start off with your feet hip-distance apart.",
+    "Bend your knees slightly to keep them soft and springy.",
+    "You may want to move your pelvis forward and backward and back few times before holding the tailbone forward in this stretch."
+  ],
+  "images": [
+    "/img/exercises/Standing_Pelvic_Tilt/0.jpg",
+    "/img/exercises/Standing_Pelvic_Tilt/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Standing_Pelvic_Tilt",
+  "equipmentIds": []
+}

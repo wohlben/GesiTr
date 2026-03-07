@@ -1,0 +1,10 @@
+{
+  "id": "Bent_Over_One-Arm_Long_Bar_Row-One-Arm_Kettlebell_Row-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Bent_Over_One-Arm_Long_Bar_Row",
+  "toExerciseTemplateId": "One-Arm_Kettlebell_Row"
+}

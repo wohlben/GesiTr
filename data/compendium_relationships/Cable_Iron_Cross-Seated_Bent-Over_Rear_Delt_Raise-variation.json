@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Iron_Cross-Seated_Bent-Over_Rear_Delt_Raise-variation",
+  "relationshipType": "variation",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479173,
+  "fromExerciseTemplateId": "Cable_Iron_Cross",
+  "toExerciseTemplateId": "Seated_Bent-Over_Rear_Delt_Raise"
+}

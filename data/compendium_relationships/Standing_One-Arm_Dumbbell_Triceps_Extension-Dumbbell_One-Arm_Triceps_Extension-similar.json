@@ -1,0 +1,10 @@
+{
+  "id": "Standing_One-Arm_Dumbbell_Triceps_Extension-Dumbbell_One-Arm_Triceps_Extension-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Standing_One-Arm_Dumbbell_Triceps_Extension",
+  "toExerciseTemplateId": "Dumbbell_One-Arm_Triceps_Extension"
+}

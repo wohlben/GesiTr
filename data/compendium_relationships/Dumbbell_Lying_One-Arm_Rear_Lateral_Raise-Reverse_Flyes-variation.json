@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Lying_One-Arm_Rear_Lateral_Raise-Reverse_Flyes-variation",
+  "relationshipType": "variation",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Dumbbell_Lying_One-Arm_Rear_Lateral_Raise",
+  "toExerciseTemplateId": "Reverse_Flyes"
+}

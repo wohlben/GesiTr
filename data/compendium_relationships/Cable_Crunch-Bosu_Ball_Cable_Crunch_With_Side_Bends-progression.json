@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Crunch-Bosu_Ball_Cable_Crunch_With_Side_Bends-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Cable_Crunch",
+  "toExerciseTemplateId": "Bosu_Ball_Cable_Crunch_With_Side_Bends"
+}

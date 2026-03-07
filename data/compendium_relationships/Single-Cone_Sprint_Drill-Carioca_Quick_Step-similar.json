@@ -1,0 +1,10 @@
+{
+  "id": "Single-Cone_Sprint_Drill-Carioca_Quick_Step-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Single-Cone_Sprint_Drill",
+  "toExerciseTemplateId": "Carioca_Quick_Step"
+}

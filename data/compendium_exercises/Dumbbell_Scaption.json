@@ -1,0 +1,43 @@
+{
+  "name": "Dumbbell Scaption",
+  "slug": "dumbbell-scaption",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Strength training exercise targeting primary muscle groups",
+  "instructions": [
+    "This corrective exercise strengthens the muscles that stabilize your shoulder blade. Hold a light weight in each hand, hanging at your sides. Your thumbs should pointing up.",
+    "Begin the movement raising your arms out in front of you, about 30 degrees off center. Your arms should be fully extended as you perform the movement.",
+    "Continue until your arms are parallel to the ground, and then return to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Dumbbell_Scaption/0.jpg",
+    "/img/exercises/Dumbbell_Scaption/1.jpg"
+  ],
+  "alternativeNames": [
+    "DB Scaption",
+    "Dumbbell-Scaption",
+    "Dumbell Scaption"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Dumbbell_Scaption",
+  "equipmentIds": [
+    "2x dumbbell"
+  ]
+}

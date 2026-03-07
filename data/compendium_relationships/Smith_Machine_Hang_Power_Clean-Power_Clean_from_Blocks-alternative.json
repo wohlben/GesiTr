@@ -1,0 +1,10 @@
+{
+  "id": "Smith_Machine_Hang_Power_Clean-Power_Clean_from_Blocks-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Smith_Machine_Hang_Power_Clean",
+  "toExerciseTemplateId": "Power_Clean_from_Blocks"
+}

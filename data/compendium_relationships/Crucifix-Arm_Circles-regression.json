@@ -1,0 +1,10 @@
+{
+  "id": "Crucifix-Arm_Circles-regression",
+  "relationshipType": "regression",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Crucifix",
+  "toExerciseTemplateId": "Arm_Circles"
+}

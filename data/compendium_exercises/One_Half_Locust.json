@@ -1,0 +1,42 @@
+{
+  "name": "One Half Locust",
+  "slug": "one-half-locust",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "HIP_FLEXORS"
+  ],
+  "secondaryMuscles": [
+    "QUADS",
+    "CHEST",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Yoga pose lying facedown, lifting one leg and opposite shoulder off ground while holding foot, stretching hip flexors and chest.",
+  "instructions": [
+    "Lie facedown on the floor.",
+    "Put your left hand under your left hipbone to pad your hip and pubic bone.",
+    "Bend your right knee so you can hold the foot in your right hand.",
+    "Lift the foot in the air and simultaneously lift your shoulders off the floor. This also stretches the right hip flexor and the chest and shoulders. Switch sides. If it doesn't bother your back, you can try it with both arms and legs at the same time."
+  ],
+  "images": [
+    "/img/exercises/One_Half_Locust/0.jpg",
+    "/img/exercises/One_Half_Locust/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "One_Half_Locust",
+  "equipmentIds": []
+}

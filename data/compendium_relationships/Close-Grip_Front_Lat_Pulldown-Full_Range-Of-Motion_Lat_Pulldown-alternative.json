@@ -1,0 +1,10 @@
+{
+  "id": "Close-Grip_Front_Lat_Pulldown-Full_Range-Of-Motion_Lat_Pulldown-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729931400,
+  "fromExerciseTemplateId": "Close-Grip_Front_Lat_Pulldown",
+  "toExerciseTemplateId": "Full_Range-Of-Motion_Lat_Pulldown"
+}

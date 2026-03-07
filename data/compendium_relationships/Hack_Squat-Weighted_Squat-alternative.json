@@ -1,0 +1,10 @@
+{
+  "id": "Hack_Squat-Weighted_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761551546,
+  "fromExerciseTemplateId": "Hack_Squat",
+  "toExerciseTemplateId": "Weighted_Squat"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Machine_Bench_Press-Leverage_Chest_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.95,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730051040,
+  "fromExerciseTemplateId": "Machine_Bench_Press",
+  "toExerciseTemplateId": "Leverage_Chest_Press"
+}

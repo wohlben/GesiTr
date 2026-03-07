@@ -1,0 +1,10 @@
+{
+  "id": "Chest_And_Front_Of_Shoulder_Stretch-Behind_Head_Chest_Stretch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730040000,
+  "fromExerciseTemplateId": "Chest_And_Front_Of_Shoulder_Stretch",
+  "toExerciseTemplateId": "Behind_Head_Chest_Stretch"
+}

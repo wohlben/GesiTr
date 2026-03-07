@@ -1,0 +1,10 @@
+{
+  "id": "Chin-Up-Kipping_Muscle_Up-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761508980,
+  "fromExerciseTemplateId": "Chin-Up",
+  "toExerciseTemplateId": "Kipping_Muscle_Up"
+}

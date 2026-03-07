@@ -1,0 +1,10 @@
+{
+  "id": "Leg_Press-Narrow_Stance_Leg_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Leg_Press",
+  "toExerciseTemplateId": "Narrow_Stance_Leg_Press"
+}

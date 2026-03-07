@@ -1,0 +1,10 @@
+{
+  "id": "One-Arm_Kettlebell_Para_Press-Dumbbell_One-Arm_Shoulder_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729969200,
+  "fromExerciseTemplateId": "One-Arm_Kettlebell_Para_Press",
+  "toExerciseTemplateId": "Dumbbell_One-Arm_Shoulder_Press"
+}

@@ -1,0 +1,48 @@
+{
+  "name": "Weighted Sit-Ups - With Bands",
+  "slug": "weighted-sit-ups-with-bands",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Sit-up with resistance band attached providing additional resistance throughout movement.",
+  "instructions": [
+    "Start out by strapping the bands around the base of the decline bench. Place the handles towards the inside of the decline bench so that when lying down, you can reach for both of them.",
+    "Position your legs through the decline machine until they are secured. Now reach for the exercise bands with both hands. Use a pronated (palms forward) grip to grasp the handles. Position them near your collar bone and rotate your wrist to a neutral grip (palms facing the torso). Note: Your arms should remain stationary throughout the exercise. This is the starting position.",
+    "Move your torso upward until your upper body is perpendicular to the floor while exhaling. Hold the contraction for a second and lower your upper body back down to the starting position while inhaling.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Weighted_Sit-Ups_-_With_Bands/0.jpg",
+    "/img/exercises/Weighted_Sit-Ups_-_With_Bands/1.jpg"
+  ],
+  "alternativeNames": [
+    "Crunch Sit-Up",
+    "Sit Up",
+    "Situp",
+    "Weighted Sit Ups   With Bands",
+    "Weighted Sit-Ups - With Resistance Bands"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Weighted_Sit-Ups_-_With_Bands",
+  "equipmentIds": [
+    "resistance-band",
+    "decline-bench"
+  ]
+}

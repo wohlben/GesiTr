@@ -1,0 +1,10 @@
+{
+  "id": "Clean_Pull-Clean_Shrug-accessory",
+  "relationshipType": "accessory",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761481995,
+  "fromExerciseTemplateId": "Clean_Pull",
+  "toExerciseTemplateId": "Clean_Shrug"
+}

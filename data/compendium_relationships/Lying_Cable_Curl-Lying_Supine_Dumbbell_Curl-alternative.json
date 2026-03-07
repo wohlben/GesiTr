@@ -1,0 +1,10 @@
+{
+  "id": "Lying_Cable_Curl-Lying_Supine_Dumbbell_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498077,
+  "fromExerciseTemplateId": "Lying_Cable_Curl",
+  "toExerciseTemplateId": "Lying_Supine_Dumbbell_Curl"
+}

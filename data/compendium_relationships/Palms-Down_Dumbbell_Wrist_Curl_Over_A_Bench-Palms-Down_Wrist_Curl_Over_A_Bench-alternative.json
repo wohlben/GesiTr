@@ -1,0 +1,10 @@
+{
+  "id": "Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench-Palms-Down_Wrist_Curl_Over_A_Bench-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479701,
+  "fromExerciseTemplateId": "Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench",
+  "toExerciseTemplateId": "Palms-Down_Wrist_Curl_Over_A_Bench"
+}

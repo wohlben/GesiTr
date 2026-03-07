@@ -1,0 +1,10 @@
+{
+  "id": "3_4_Sit-Up-Sit-Up-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "3_4_Sit-Up",
+  "toExerciseTemplateId": "Sit-Up"
+}

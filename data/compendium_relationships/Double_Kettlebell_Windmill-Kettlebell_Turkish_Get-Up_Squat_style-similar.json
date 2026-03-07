@@ -1,0 +1,10 @@
+{
+  "id": "Double_Kettlebell_Windmill-Kettlebell_Turkish_Get-Up_Squat_style-similar",
+  "relationshipType": "similar",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Double_Kettlebell_Windmill",
+  "toExerciseTemplateId": "Kettlebell_Turkish_Get-Up_Squat_style"
+}

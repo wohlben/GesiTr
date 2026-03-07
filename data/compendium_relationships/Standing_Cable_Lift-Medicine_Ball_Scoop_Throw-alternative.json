@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Cable_Lift-Medicine_Ball_Scoop_Throw-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730014800,
+  "fromExerciseTemplateId": "Standing_Cable_Lift",
+  "toExerciseTemplateId": "Medicine_Ball_Scoop_Throw"
+}

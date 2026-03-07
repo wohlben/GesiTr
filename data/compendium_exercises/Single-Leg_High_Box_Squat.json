@@ -1,0 +1,46 @@
+{
+  "name": "Single-Leg High Box Squat",
+  "slug": "single-leg-high-box-squat",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Single-leg step-up onto high box with band assistance for balance, unilateral leg exercise building strength and stability.",
+  "instructions": [
+    "Position a box in a rack. Secure a band or rope in place above the box.",
+    "Standing in front of it, step onto the box to a full standing position, letting your other leg remain unsupported. Hold onto the band for balance",
+    ". Continue stepping up and down on the same leg before switching to the opposite side."
+  ],
+  "images": [
+    "/img/exercises/Single-Leg_High_Box_Squat/0.jpg",
+    "/img/exercises/Single-Leg_High_Box_Squat/1.jpg"
+  ],
+  "alternativeNames": [
+    "Single Leg High Box Squat"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Single-Leg_High_Box_Squat",
+  "equipmentIds": [
+    "resistance-band",
+    "box"
+  ]
+}

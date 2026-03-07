@@ -1,0 +1,10 @@
+{
+  "id": "Kneeling_Forearm_Stretch-Wrist_Circles-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Kneeling_Forearm_Stretch",
+  "toExerciseTemplateId": "Wrist_Circles"
+}

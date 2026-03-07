@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Biceps-Seated_Front_Deltoid-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Seated_Biceps",
+  "toExerciseTemplateId": "Seated_Front_Deltoid"
+}

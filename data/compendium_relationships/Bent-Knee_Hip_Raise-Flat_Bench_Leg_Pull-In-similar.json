@@ -1,0 +1,10 @@
+{
+  "id": "Bent-Knee_Hip_Raise-Flat_Bench_Leg_Pull-In-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Bent-Knee_Hip_Raise",
+  "toExerciseTemplateId": "Flat_Bench_Leg_Pull-In"
+}

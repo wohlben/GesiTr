@@ -1,0 +1,10 @@
+{
+  "id": "Butterfly-Cable_Crossover-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761478260,
+  "fromExerciseTemplateId": "Butterfly",
+  "toExerciseTemplateId": "Cable_Crossover"
+}

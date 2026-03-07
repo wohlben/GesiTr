@@ -1,0 +1,10 @@
+{
+  "id": "Pullups-Close-Grip_Front_Lat_Pulldown-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729931400,
+  "fromExerciseTemplateId": "Pullups",
+  "toExerciseTemplateId": "Close-Grip_Front_Lat_Pulldown"
+}

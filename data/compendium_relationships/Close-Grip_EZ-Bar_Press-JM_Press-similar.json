@@ -1,0 +1,10 @@
+{
+  "id": "Close-Grip_EZ-Bar_Press-JM_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499467,
+  "fromExerciseTemplateId": "Close-Grip_EZ-Bar_Press",
+  "toExerciseTemplateId": "JM_Press"
+}

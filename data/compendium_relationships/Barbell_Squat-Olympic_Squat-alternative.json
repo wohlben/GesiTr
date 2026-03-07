@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Squat-Olympic_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Barbell_Squat",
+  "toExerciseTemplateId": "Olympic_Squat"
+}

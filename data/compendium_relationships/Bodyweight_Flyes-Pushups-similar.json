@@ -1,0 +1,10 @@
+{
+  "id": "Bodyweight_Flyes-Pushups-similar",
+  "relationshipType": "similar",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476339,
+  "fromExerciseTemplateId": "Bodyweight_Flyes",
+  "toExerciseTemplateId": "Pushups"
+}

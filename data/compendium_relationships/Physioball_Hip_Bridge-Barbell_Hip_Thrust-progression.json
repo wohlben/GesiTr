@@ -1,0 +1,10 @@
+{
+  "id": "Physioball_Hip_Bridge-Barbell_Hip_Thrust-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464685,
+  "fromExerciseTemplateId": "Physioball_Hip_Bridge",
+  "toExerciseTemplateId": "Barbell_Hip_Thrust"
+}

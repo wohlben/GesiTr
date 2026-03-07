@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Triceps_Bench_Press-Barbell_Curl-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730001600,
+  "fromExerciseTemplateId": "Reverse_Triceps_Bench_Press",
+  "toExerciseTemplateId": "Barbell_Curl"
+}

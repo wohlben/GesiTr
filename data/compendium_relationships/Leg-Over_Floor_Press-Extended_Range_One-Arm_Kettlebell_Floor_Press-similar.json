@@ -1,0 +1,10 @@
+{
+  "id": "Leg-Over_Floor_Press-Extended_Range_One-Arm_Kettlebell_Floor_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Leg-Over_Floor_Press",
+  "toExerciseTemplateId": "Extended_Range_One-Arm_Kettlebell_Floor_Press"
+}

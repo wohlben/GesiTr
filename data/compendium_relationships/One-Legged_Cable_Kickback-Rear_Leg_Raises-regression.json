@@ -1,0 +1,10 @@
+{
+  "id": "One-Legged_Cable_Kickback-Rear_Leg_Raises-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "One-Legged_Cable_Kickback",
+  "toExerciseTemplateId": "Rear_Leg_Raises"
+}

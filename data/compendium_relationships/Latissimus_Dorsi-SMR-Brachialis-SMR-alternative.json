@@ -1,0 +1,10 @@
+{
+  "id": "Latissimus_Dorsi-SMR-Brachialis-SMR-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Latissimus_Dorsi-SMR",
+  "toExerciseTemplateId": "Brachialis-SMR"
+}

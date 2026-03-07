@@ -1,0 +1,10 @@
+{
+  "id": "Around_The_Worlds-Lying_Crossover-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Around_The_Worlds",
+  "toExerciseTemplateId": "Lying_Crossover"
+}

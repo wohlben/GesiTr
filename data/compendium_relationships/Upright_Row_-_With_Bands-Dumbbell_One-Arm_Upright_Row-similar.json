@@ -1,0 +1,10 @@
+{
+  "id": "Upright_Row_-_With_Bands-Dumbbell_One-Arm_Upright_Row-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Upright_Row_-_With_Bands",
+  "toExerciseTemplateId": "Dumbbell_One-Arm_Upright_Row"
+}

@@ -1,0 +1,40 @@
+{
+  "name": "Brachialis-SMR",
+  "slug": "brachialis-smr",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "BICEPS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Self-myofascial release targeting brachialis muscle using foam roller to reduce arm tightness",
+  "instructions": [
+    "Lie on your side, with your upper arm against the foam roller. The upper arm should be more or less aligned with your body, with the outside of the bicep pressed against the foam roller.",
+    "Raise your hips off of the floor, supporting your weight on your arm and on your feet. Hold for 10-30 seconds, and then switch sides."
+  ],
+  "images": [
+    "/img/exercises/Brachialis-SMR/0.jpg",
+    "/img/exercises/Brachialis-SMR/1.jpg"
+  ],
+  "alternativeNames": [
+    "Brachialis SMR"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Brachialis-SMR",
+  "equipmentIds": [
+    "foam-roller"
+  ]
+}

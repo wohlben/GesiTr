@@ -1,0 +1,47 @@
+{
+  "name": "Rickshaw Deadlift",
+  "slug": "rickshaw-deadlift",
+  "type": "STRENGTH",
+  "force": [
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "LOWER_BACK",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "HAMSTRINGS",
+    "TRAPS",
+    "FOREARMS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.2,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Deadlift using rickshaw/trap bar with elevated handles, more upright pulling position.",
+  "instructions": [
+    "Load the frame with the desired weight. Center yourself between the handles. You feet should be about hip width apart. Bend at the hips to grip the handles, allowing your shoulder blades to protract.",
+    "With your feet and your grip set, take a big breath and then lower your hips and flex the knees. Look forward with your head, keep your chest up and your back arched, and begin driving through the heels to move the weight upward. As the weight comes up, pull your shoulder blades together as you drive your hips forward.",
+    "Lower the weight by bending at the hips and guiding it to the ground."
+  ],
+  "images": [
+    "/img/exercises/Rickshaw_Deadlift/0.jpg",
+    "/img/exercises/Rickshaw_Deadlift/1.jpg"
+  ],
+  "alternativeNames": [
+    "Rickshaw-Deadlift"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Rickshaw_Deadlift",
+  "equipmentIds": [
+    "trap-bar"
+  ]
+}

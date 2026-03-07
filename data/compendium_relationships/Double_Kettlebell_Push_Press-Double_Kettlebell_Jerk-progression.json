@@ -1,0 +1,10 @@
+{
+  "id": "Double_Kettlebell_Push_Press-Double_Kettlebell_Jerk-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Double_Kettlebell_Push_Press",
+  "toExerciseTemplateId": "Double_Kettlebell_Jerk"
+}

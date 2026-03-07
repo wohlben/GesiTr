@@ -1,0 +1,39 @@
+{
+  "name": "Elbows Back",
+  "slug": "elbows-back",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Strength training exercise targeting primary muscle groups",
+  "instructions": [
+    "Stand up straight.",
+    "Place both hands on your lower back, fingers pointing downward and elbows out.",
+    "Then gently pull your elbows back aiming to touch them together."
+  ],
+  "images": [
+    "/img/exercises/Elbows_Back/0.jpg",
+    "/img/exercises/Elbows_Back/1.jpg"
+  ],
+  "alternativeNames": [
+    "Elbows-Back"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Elbows_Back",
+  "equipmentIds": []
+}

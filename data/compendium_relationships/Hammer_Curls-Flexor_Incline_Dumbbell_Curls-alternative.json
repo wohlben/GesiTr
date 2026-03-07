@@ -1,0 +1,10 @@
+{
+  "id": "Hammer_Curls-Flexor_Incline_Dumbbell_Curls-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Hammer_Curls",
+  "toExerciseTemplateId": "Flexor_Incline_Dumbbell_Curls"
+}

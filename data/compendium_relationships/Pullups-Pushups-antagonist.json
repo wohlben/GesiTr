@@ -1,0 +1,10 @@
+{
+  "id": "Pullups-Pushups-antagonist",
+  "relationshipType": "antagonist",
+  "strength": 0.95,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Pullups",
+  "toExerciseTemplateId": "Pushups"
+}

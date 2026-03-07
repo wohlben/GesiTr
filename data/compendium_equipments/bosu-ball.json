@@ -1,0 +1,8 @@
+{
+  "name": "bosu-ball",
+  "displayName": "BOSU Ball",
+  "description": "A half-sphere balance trainer with a platform on one side.",
+  "category": "functional",
+  "imageUrl": null,
+  "templateId": "bosu-ball"
+}

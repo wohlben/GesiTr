@@ -1,0 +1,10 @@
+{
+  "id": "Forward_Drag_with_Press-Sled_Drag_-_Harness-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464001,
+  "fromExerciseTemplateId": "Forward_Drag_with_Press",
+  "toExerciseTemplateId": "Sled_Drag_-_Harness"
+}

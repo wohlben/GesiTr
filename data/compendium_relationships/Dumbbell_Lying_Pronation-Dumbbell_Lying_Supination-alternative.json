@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Lying_Pronation-Dumbbell_Lying_Supination-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Lying_Pronation",
+  "toExerciseTemplateId": "Dumbbell_Lying_Supination"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Trap_Bar_Deadlift-Car_Deadlift-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Trap_Bar_Deadlift",
+  "toExerciseTemplateId": "Car_Deadlift"
+}

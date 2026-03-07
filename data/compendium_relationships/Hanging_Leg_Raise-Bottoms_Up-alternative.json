@@ -1,0 +1,10 @@
+{
+  "id": "Hanging_Leg_Raise-Bottoms_Up-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Hanging_Leg_Raise",
+  "toExerciseTemplateId": "Bottoms_Up"
+}

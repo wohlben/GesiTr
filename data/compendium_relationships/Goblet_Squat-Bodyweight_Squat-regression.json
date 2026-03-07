@@ -1,0 +1,10 @@
+{
+  "id": "Goblet_Squat-Bodyweight_Squat-regression",
+  "relationshipType": "regression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Goblet_Squat",
+  "toExerciseTemplateId": "Bodyweight_Squat"
+}

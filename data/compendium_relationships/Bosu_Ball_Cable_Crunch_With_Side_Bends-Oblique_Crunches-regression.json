@@ -1,0 +1,10 @@
+{
+  "id": "Bosu_Ball_Cable_Crunch_With_Side_Bends-Oblique_Crunches-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Bosu_Ball_Cable_Crunch_With_Side_Bends",
+  "toExerciseTemplateId": "Oblique_Crunches"
+}

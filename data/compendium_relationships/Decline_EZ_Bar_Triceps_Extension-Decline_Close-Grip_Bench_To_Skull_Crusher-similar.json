@@ -1,0 +1,10 @@
+{
+  "id": "Decline_EZ_Bar_Triceps_Extension-Decline_Close-Grip_Bench_To_Skull_Crusher-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "dev-user",
+  "createdAt": 1729932000,
+  "fromExerciseTemplateId": "Decline_EZ_Bar_Triceps_Extension",
+  "toExerciseTemplateId": "Decline_Close-Grip_Bench_To_Skull_Crusher"
+}

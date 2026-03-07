@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Front_Deltoid-Overhead_Lat-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Seated_Front_Deltoid",
+  "toExerciseTemplateId": "Overhead_Lat"
+}

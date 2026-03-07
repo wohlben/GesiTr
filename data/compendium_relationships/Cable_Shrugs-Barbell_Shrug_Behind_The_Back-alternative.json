@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Shrugs-Barbell_Shrug_Behind_The_Back-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Cable_Shrugs",
+  "toExerciseTemplateId": "Barbell_Shrug_Behind_The_Back"
+}

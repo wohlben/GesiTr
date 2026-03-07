@@ -1,0 +1,10 @@
+{
+  "id": "Skating-Carioca_Quick_Step-variation",
+  "relationshipType": "variation",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Skating",
+  "toExerciseTemplateId": "Carioca_Quick_Step"
+}

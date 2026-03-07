@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Incline_Triceps_Extension-Lying_Dumbbell_Tricep_Extension-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cable_Incline_Triceps_Extension",
+  "toExerciseTemplateId": "Lying_Dumbbell_Tricep_Extension"
+}

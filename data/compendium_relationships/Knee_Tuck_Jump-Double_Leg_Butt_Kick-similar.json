@@ -1,0 +1,10 @@
+{
+  "id": "Knee_Tuck_Jump-Double_Leg_Butt_Kick-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Knee_Tuck_Jump",
+  "toExerciseTemplateId": "Double_Leg_Butt_Kick"
+}

@@ -1,0 +1,48 @@
+{
+  "name": "Bodyweight Walking Lunge",
+  "slug": "bodyweight-walking-lunge",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.9,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Dynamic bodyweight walking lunge developing unilateral leg strength and coordination",
+  "instructions": [
+    "Begin standing with your feet shoulder width apart and your hands on your hips.",
+    "Step forward with one leg, flexing the knees to drop your hips. Descend until your rear knee nearly touches the ground. Your posture should remain upright, and your front knee should stay above the front foot.",
+    "Drive through the heel of your lead foot and extend both knees to raise yourself back up.",
+    "Step forward with your rear foot, repeating the lunge on the opposite leg."
+  ],
+  "images": [
+    "/img/exercises/Bodyweight_Walking_Lunge/0.jpg",
+    "/img/exercises/Bodyweight_Walking_Lunge/1.jpg"
+  ],
+  "alternativeNames": [
+    "Forward Lunge",
+    "Walking Lunge"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Bodyweight_Walking_Lunge",
+  "equipmentIds": []
+}

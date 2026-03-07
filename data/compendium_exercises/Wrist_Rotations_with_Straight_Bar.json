@@ -1,0 +1,42 @@
+{
+  "name": "Wrist Rotations with Straight Bar",
+  "slug": "wrist-rotations-with-straight-bar",
+  "type": "STRENGTH",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "FOREARMS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Wrist strengthening rotating bar with weight attached, improving wrist and forearm strength.",
+  "instructions": [
+    "Hold a barbell with both hands and your palms facing down; hands spaced about shoulder width. This will be your starting position.",
+    "Alternating between each of your hands, perform the movement by extending the wrist as though you were rolling up a newspaper. Continue alternating back and forth until failure.",
+    "Reverse the motion by flexing the wrist, rolling the opposite direction. Continue the alternating motion until failure."
+  ],
+  "images": [
+    "/img/exercises/Wrist_Rotations_with_Straight_Bar/0.jpg",
+    "/img/exercises/Wrist_Rotations_with_Straight_Bar/1.jpg"
+  ],
+  "alternativeNames": [
+    "Wrist Rotations with Straight Barbell"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Wrist_Rotations_with_Straight_Bar",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

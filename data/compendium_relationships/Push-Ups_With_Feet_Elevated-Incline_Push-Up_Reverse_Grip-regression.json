@@ -1,0 +1,10 @@
+{
+  "id": "Push-Ups_With_Feet_Elevated-Incline_Push-Up_Reverse_Grip-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": "Regress from feet elevated to hands elevated to significantly reduce upper body loading",
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Push-Ups_With_Feet_Elevated",
+  "toExerciseTemplateId": "Incline_Push-Up_Reverse_Grip"
+}

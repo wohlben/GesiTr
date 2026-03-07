@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Bench_Pull-Lying_Cambered_Barbell_Row-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Incline_Bench_Pull",
+  "toExerciseTemplateId": "Lying_Cambered_Barbell_Row"
+}

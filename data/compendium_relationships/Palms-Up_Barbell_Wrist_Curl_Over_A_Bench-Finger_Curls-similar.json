@@ -1,0 +1,10 @@
+{
+  "id": "Palms-Up_Barbell_Wrist_Curl_Over_A_Bench-Finger_Curls-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Palms-Up_Barbell_Wrist_Curl_Over_A_Bench",
+  "toExerciseTemplateId": "Finger_Curls"
+}

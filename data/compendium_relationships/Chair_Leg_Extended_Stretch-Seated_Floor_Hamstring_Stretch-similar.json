@@ -1,0 +1,10 @@
+{
+  "id": "Chair_Leg_Extended_Stretch-Seated_Floor_Hamstring_Stretch-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Chair_Leg_Extended_Stretch",
+  "toExerciseTemplateId": "Seated_Floor_Hamstring_Stretch"
+}

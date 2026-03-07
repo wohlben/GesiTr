@@ -1,0 +1,10 @@
+{
+  "id": "Leg_Lift-Lying_Leg_Curls-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Leg_Lift",
+  "toExerciseTemplateId": "Lying_Leg_Curls"
+}

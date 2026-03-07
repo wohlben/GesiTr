@@ -1,0 +1,10 @@
+{
+  "id": "Single_Leg_Push-off-Rocket_Jump-progression",
+  "relationshipType": "progression",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Single_Leg_Push-off",
+  "toExerciseTemplateId": "Rocket_Jump"
+}

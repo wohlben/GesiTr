@@ -1,0 +1,10 @@
+{
+  "id": "Push-Ups_With_Feet_Elevated-Suspended_Push-Up-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Push-Ups_With_Feet_Elevated",
+  "toExerciseTemplateId": "Suspended_Push-Up"
+}

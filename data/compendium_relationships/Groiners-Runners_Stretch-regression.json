@@ -1,0 +1,10 @@
+{
+  "id": "Groiners-Runners_Stretch-regression",
+  "relationshipType": "regression",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496059,
+  "fromExerciseTemplateId": "Groiners",
+  "toExerciseTemplateId": "Runners_Stretch"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Dancers_Stretch-Spinal_Stretch-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Dancers_Stretch",
+  "toExerciseTemplateId": "Spinal_Stretch"
+}

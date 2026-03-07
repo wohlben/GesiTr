@@ -1,0 +1,52 @@
+{
+  "name": "Log Lift",
+  "slug": "log-lift",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "ABS",
+    "CHEST",
+    "GLUTES",
+    "HAMSTRINGS",
+    "LOWER_BACK",
+    "RHOMBOIDS",
+    "QUADS",
+    "TRAPS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Strongman exercise cleaning and pressing a log from ground to overhead using push press technique.",
+  "instructions": [
+    "Begin standing with the log in front of you. Grasp the handles, and begin to clean the log. As you are bent over to start the clean, attempt to get the log as high as possible, pulling it into your chest. Extend through the hips and knees to bring it up to complete the clean.",
+    "Push your head back and look up, creating a shelf on your chest to rest the log. Begin the press by dipping, flexing slightly through the knees and reversing the motion. This push press will generate momentum to start the log moving vertically. Continue by extending through the elbows to press the log above your head. There are no strict rules on form, so use whatever techniques you are most efficient with. As the log is pressed, ensure that you push your head through on each repetition, looking forward.",
+    "Repeat as many times as possible. Attempt to control the descent of the log as it is returned to the ground."
+  ],
+  "images": [
+    "/img/exercises/Log_Lift/0.jpg",
+    "/img/exercises/Log_Lift/1.jpg"
+  ],
+  "alternativeNames": [
+    "Log-Lift"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Log_Lift",
+  "equipmentIds": []
+}

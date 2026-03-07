@@ -1,0 +1,10 @@
+{
+  "id": "Pushups-Drop_Push-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Pushups",
+  "toExerciseTemplateId": "Drop_Push"
+}

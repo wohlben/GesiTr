@@ -1,0 +1,10 @@
+{
+  "id": "Overhead_Triceps-Tricep_Side_Stretch-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": "Tricep Side Stretch is simpler self-assisted version; Overhead Triceps is advanced partner-assisted PNF stretch",
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Overhead_Triceps",
+  "toExerciseTemplateId": "Tricep_Side_Stretch"
+}

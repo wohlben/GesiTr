@@ -1,0 +1,10 @@
+{
+  "id": "Shoulder_Raise-Dumbbell_Shrug-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Shoulder_Raise",
+  "toExerciseTemplateId": "Dumbbell_Shrug"
+}

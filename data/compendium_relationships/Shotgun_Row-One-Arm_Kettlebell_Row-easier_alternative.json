@@ -1,0 +1,10 @@
+{
+  "id": "Shotgun_Row-One-Arm_Kettlebell_Row-easier_alternative",
+  "relationshipType": "easier_alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Shotgun_Row",
+  "toExerciseTemplateId": "One-Arm_Kettlebell_Row"
+}

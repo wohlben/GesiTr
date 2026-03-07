@@ -1,0 +1,37 @@
+{
+  "name": "Calf Stretch Hands Against Wall",
+  "slug": "calf-stretch-hands-against-wall",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "CALVES"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Standing calf stretch using wall support with hands to target gastrocnemius and soleus muscles.",
+  "instructions": [
+    "Stand facing a wall from several feet away. Stagger your stance, placing one foot forward.",
+    "Lean forward and rest your hands on the wall, keeping your heel, hip and head in a straight line.",
+    "Attempt to keep your heel on the ground. Hold for 10-20 seconds and then switch sides."
+  ],
+  "images": [
+    "/img/exercises/Calf_Stretch_Hands_Against_Wall/0.jpg",
+    "/img/exercises/Calf_Stretch_Hands_Against_Wall/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Calf_Stretch_Hands_Against_Wall",
+  "equipmentIds": []
+}

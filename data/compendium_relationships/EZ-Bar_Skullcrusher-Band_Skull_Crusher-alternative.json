@@ -1,0 +1,10 @@
+{
+  "id": "EZ-Bar_Skullcrusher-Band_Skull_Crusher-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "EZ-Bar_Skullcrusher",
+  "toExerciseTemplateId": "Band_Skull_Crusher"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Alternating_Floor_Press-Extended_Range_One-Arm_Kettlebell_Floor_Press-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Alternating_Floor_Press",
+  "toExerciseTemplateId": "Extended_Range_One-Arm_Kettlebell_Floor_Press"
+}

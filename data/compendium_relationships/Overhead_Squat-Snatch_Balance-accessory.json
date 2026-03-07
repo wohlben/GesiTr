@@ -1,0 +1,10 @@
+{
+  "id": "Overhead_Squat-Snatch_Balance-accessory",
+  "relationshipType": "accessory",
+  "strength": 0.9,
+  "description": "The Snatch Balance is an excellent accessory drill for developing the speed and confidence to drop into the overhead squat position.",
+  "createdBy": "system",
+  "createdAt": 1761518400,
+  "fromExerciseTemplateId": "Overhead_Squat",
+  "toExerciseTemplateId": "Snatch_Balance"
+}

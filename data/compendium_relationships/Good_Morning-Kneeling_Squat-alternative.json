@@ -1,0 +1,10 @@
+{
+  "id": "Good_Morning-Kneeling_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Good_Morning",
+  "toExerciseTemplateId": "Kneeling_Squat"
+}

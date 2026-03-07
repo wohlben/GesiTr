@@ -1,0 +1,10 @@
+{
+  "id": "Childs_Pose-Upward_Stretch-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.5,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Childs_Pose",
+  "toExerciseTemplateId": "Upward_Stretch"
+}

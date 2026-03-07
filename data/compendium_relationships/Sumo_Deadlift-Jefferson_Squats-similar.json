@@ -1,0 +1,10 @@
+{
+  "id": "Sumo_Deadlift-Jefferson_Squats-similar",
+  "relationshipType": "similar",
+  "strength": 0.5,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499591,
+  "fromExerciseTemplateId": "Sumo_Deadlift",
+  "toExerciseTemplateId": "Jefferson_Squats"
+}

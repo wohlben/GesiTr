@@ -1,0 +1,10 @@
+{
+  "id": "Wide_Stance_Barbell_Squat-Plie_Dumbbell_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Wide_Stance_Barbell_Squat",
+  "toExerciseTemplateId": "Plie_Dumbbell_Squat"
+}

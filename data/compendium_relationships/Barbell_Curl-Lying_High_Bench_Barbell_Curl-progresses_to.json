@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Curl-Lying_High_Bench_Barbell_Curl-progresses_to",
+  "relationshipType": "progresses_to",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Barbell_Curl",
+  "toExerciseTemplateId": "Lying_High_Bench_Barbell_Curl"
+}

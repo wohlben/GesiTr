@@ -1,0 +1,10 @@
+{
+  "id": "Clean_from_Blocks-Rack_Delivery-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Clean_from_Blocks",
+  "toExerciseTemplateId": "Rack_Delivery"
+}

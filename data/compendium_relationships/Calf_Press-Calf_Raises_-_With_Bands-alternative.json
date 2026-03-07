@@ -1,0 +1,10 @@
+{
+  "id": "Calf_Press-Calf_Raises_-_With_Bands-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761412753,
+  "fromExerciseTemplateId": "Calf_Press",
+  "toExerciseTemplateId": "Calf_Raises_-_With_Bands"
+}

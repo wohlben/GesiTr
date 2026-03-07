@@ -1,0 +1,10 @@
+{
+  "id": "Carioca_Quick_Step-Lateral_Bound-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Carioca_Quick_Step",
+  "toExerciseTemplateId": "Lateral_Bound"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Dumbbell_Curl-Dumbbell_Alternate_Bicep_Curl-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Seated_Dumbbell_Curl",
+  "toExerciseTemplateId": "Dumbbell_Alternate_Bicep_Curl"
+}

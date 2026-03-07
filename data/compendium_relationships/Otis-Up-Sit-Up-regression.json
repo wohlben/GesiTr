@@ -1,0 +1,10 @@
+{
+  "id": "Otis-Up-Sit-Up-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": "Otis-Up adds weight and overhead press component to basic sit-up movement",
+  "createdBy": "system",
+  "createdAt": 1729980000,
+  "fromExerciseTemplateId": "Otis-Up",
+  "toExerciseTemplateId": "Sit-Up"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Alternating_Kettlebell_Press-One-Arm_Kettlebell_Para_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729969200,
+  "fromExerciseTemplateId": "Alternating_Kettlebell_Press",
+  "toExerciseTemplateId": "One-Arm_Kettlebell_Para_Press"
+}

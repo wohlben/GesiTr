@@ -1,0 +1,48 @@
+{
+  "name": "Push Up to Side Plank",
+  "slug": "push-up-to-side-plank",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH",
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "CHEST",
+    "ABS"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 1,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Push-up rotating into side plank at top, alternating sides to engage chest, core, and shoulders.",
+  "instructions": [
+    "Get into pushup position on the toes with your hands just outside of shoulder width.",
+    "Perform a pushup by allowing the elbows to flex. As you descend, keep your body straight.",
+    "Do one pushup and as you come up, shift your weight on the left side of the body, twist to the side while bringing the right arm up towards the ceiling in a side plank.",
+    "Lower the arm back to the floor for another pushup and then twist to the other side.",
+    "Repeat the series, alternating each side, for 10 or more reps."
+  ],
+  "images": [
+    "/img/exercises/Push_Up_to_Side_Plank/0.jpg",
+    "/img/exercises/Push_Up_to_Side_Plank/1.jpg"
+  ],
+  "alternativeNames": [
+    "Push-Up to Side Plank",
+    "T Push-Up"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Push_Up_to_Side_Plank",
+  "equipmentIds": []
+}

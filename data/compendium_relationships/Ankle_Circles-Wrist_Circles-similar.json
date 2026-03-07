@@ -1,0 +1,10 @@
+{
+  "id": "Ankle_Circles-Wrist_Circles-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Ankle_Circles",
+  "toExerciseTemplateId": "Wrist_Circles"
+}

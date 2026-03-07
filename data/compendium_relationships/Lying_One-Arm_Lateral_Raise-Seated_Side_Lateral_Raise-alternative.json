@@ -1,0 +1,10 @@
+{
+  "id": "Lying_One-Arm_Lateral_Raise-Seated_Side_Lateral_Raise-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Lying_One-Arm_Lateral_Raise",
+  "toExerciseTemplateId": "Seated_Side_Lateral_Raise"
+}

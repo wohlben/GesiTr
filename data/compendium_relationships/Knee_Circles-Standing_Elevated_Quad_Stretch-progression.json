@@ -1,0 +1,10 @@
+{
+  "id": "Knee_Circles-Standing_Elevated_Quad_Stretch-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Knee_Circles",
+  "toExerciseTemplateId": "Standing_Elevated_Quad_Stretch"
+}

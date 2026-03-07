@@ -1,0 +1,10 @@
+{
+  "id": "Weighted_Squat-Plie_Dumbbell_Squat-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761551546,
+  "fromExerciseTemplateId": "Weighted_Squat",
+  "toExerciseTemplateId": "Plie_Dumbbell_Squat"
+}

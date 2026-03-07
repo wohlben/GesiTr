@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Dumbbell_Press-Incline_Push-Up_Medium-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Incline_Dumbbell_Press",
+  "toExerciseTemplateId": "Incline_Push-Up_Medium"
+}

@@ -1,0 +1,36 @@
+{
+  "name": "Side Jackknife",
+  "slug": "side-jackknife",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Side crunch lying on side bringing elbow toward hip, targeting obliques.",
+  "instructions": [],
+  "images": [
+    "/img/exercises/Side_Jackknife/0.jpg",
+    "/img/exercises/Side_Jackknife/1.jpg"
+  ],
+  "alternativeNames": [
+    "Side-Jackknife"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Side_Jackknife",
+  "equipmentIds": []
+}

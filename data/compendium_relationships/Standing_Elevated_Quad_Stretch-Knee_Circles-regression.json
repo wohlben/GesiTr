@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Elevated_Quad_Stretch-Knee_Circles-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Elevated_Quad_Stretch",
+  "toExerciseTemplateId": "Knee_Circles"
+}

@@ -1,0 +1,45 @@
+{
+  "name": "Oblique Crunches - On The Floor",
+  "slug": "oblique-crunches-on-the-floor",
+  "type": "STRENGTH",
+  "force": [
+    "PULL",
+    "ROTATION"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.9,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Floor-based oblique crunches touching elbow to opposite knee, emphasizing rotational core strength.",
+  "instructions": [
+    "Start out by lying on your right side with your legs lying on top of each other. Make sure your knees are bent a little bit.",
+    "Place your left hand behind your head.",
+    "Once you are in this set position, begin by moving your left elbow up as you would perform a normal crunch except this time the main emphasis is on your obliques.",
+    "Crunch as high as you can, hold the contraction for a second and then slowly drop back down into the starting position.",
+    "Remember to breathe in during the eccentric (lowering) part of the exercise and to breathe out during the concentric (elevation) part of the exercise."
+  ],
+  "images": [
+    "/img/exercises/Oblique_Crunches_-_On_The_Floor/0.jpg",
+    "/img/exercises/Oblique_Crunches_-_On_The_Floor/1.jpg"
+  ],
+  "alternativeNames": [
+    "Ab Crunch",
+    "Abdominal Crunch",
+    "Oblique Crunches   On The Floor"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Oblique_Crunches_-_On_The_Floor",
+  "equipmentIds": []
+}

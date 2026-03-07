@@ -1,0 +1,55 @@
+{
+  "name": "Close-Grip Barbell Bench Press",
+  "slug": "close-grip-barbell-bench-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "TRICEPS"
+  ],
+  "secondaryMuscles": [
+    "CHEST",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Narrow-grip barbell bench press emphasizing triceps through reduced hand spacing",
+  "instructions": [
+    "Lie back on a flat bench. Using a close grip (around shoulder width), lift the bar from the rack and hold it straight over you with your arms locked. This will be your starting position.",
+    "As you breathe in, come down slowly until you feel the bar on your middle chest. Tip: Make sure that - as opposed to a regular bench press - you keep the elbows close to the torso at all times in order to maximize triceps involvement.",
+    "After a second pause, bring the bar back to the starting position as you breathe out and push the bar using your triceps muscles. Lock your arms in the contracted position, hold for a second and then start coming down slowly again. Tip: It should take at least twice as long to go down than to come up.",
+    "Repeat the movement for the prescribed amount of repetitions.",
+    "When you are done, place the bar back in the rack."
+  ],
+  "images": [
+    "/img/exercises/Close-Grip_Barbell_Bench_Press/0.jpg",
+    "/img/exercises/Close-Grip_Barbell_Bench_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "BB Bench Press",
+    "Bench Press",
+    "Close Grip Barbell Bench Press",
+    "Close-Grip BB Bench Press",
+    "Close-Grip Bar Bench Press",
+    "Close-Grip Barbell Bench Press",
+    "Flat Bench",
+    "Flat Bench Press",
+    "Narrow Grip Barbell Bench Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Close-Grip_Barbell_Bench_Press",
+  "equipmentIds": [
+    "barbell",
+    "bench"
+  ]
+}

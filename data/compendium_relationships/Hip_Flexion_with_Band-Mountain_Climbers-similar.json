@@ -1,0 +1,10 @@
+{
+  "id": "Hip_Flexion_with_Band-Mountain_Climbers-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Hip_Flexion_with_Band",
+  "toExerciseTemplateId": "Mountain_Climbers"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Push-Up_Wide-Incline_Push-Up_Wide-regression",
+  "relationshipType": "regression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499120,
+  "fromExerciseTemplateId": "Push-Up_Wide",
+  "toExerciseTemplateId": "Incline_Push-Up_Wide"
+}

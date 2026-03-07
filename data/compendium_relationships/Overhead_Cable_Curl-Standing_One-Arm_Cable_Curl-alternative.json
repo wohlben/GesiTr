@@ -1,0 +1,10 @@
+{
+  "id": "Overhead_Cable_Curl-Standing_One-Arm_Cable_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761548543,
+  "fromExerciseTemplateId": "Overhead_Cable_Curl",
+  "toExerciseTemplateId": "Standing_One-Arm_Cable_Curl"
+}

@@ -1,0 +1,51 @@
+{
+  "name": "Cross Over - With Bands",
+  "slug": "cross-over-with-bands",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS",
+    "SIDE_DELTS",
+    "REAR_DELTS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Band chest fly bringing arms across chest to target pectorals with constant tension",
+  "instructions": [
+    "Secure an exercise band around a stationary post.",
+    "While facing away from the post, grab the handles on both ends of the band and step forward enough to create tension on the band.",
+    "Raise your arms to the sides, parallel to the floor, perpendicular to your torso (your torso and the arms should resemble the letter \"T\") and with the palms facing forward. Have them extended with a slight bend at the elbows. This will be your starting position.",
+    "While keeping your arms straight, bring them across your chest in a semicircular motion to the front as you exhale and flex your pecs. Hold the contraction for a second.",
+    "Slowly return to the starting position as you inhale.",
+    "Perform for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Cross_Over_-_With_Bands/0.jpg",
+    "/img/exercises/Cross_Over_-_With_Bands/1.jpg"
+  ],
+  "alternativeNames": [
+    "Cross Over   With Bands",
+    "Cross Over - With Resistance Bands"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Cross_Over_-_With_Bands",
+  "equipmentIds": [
+    "resistance-band"
+  ]
+}

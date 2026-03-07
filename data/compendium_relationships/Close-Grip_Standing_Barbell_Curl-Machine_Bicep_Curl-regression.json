@@ -1,0 +1,10 @@
+{
+  "id": "Close-Grip_Standing_Barbell_Curl-Machine_Bicep_Curl-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729931400,
+  "fromExerciseTemplateId": "Close-Grip_Standing_Barbell_Curl",
+  "toExerciseTemplateId": "Machine_Bicep_Curl"
+}

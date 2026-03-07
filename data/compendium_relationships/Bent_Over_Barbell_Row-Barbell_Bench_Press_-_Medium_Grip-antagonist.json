@@ -1,0 +1,10 @@
+{
+  "id": "Bent_Over_Barbell_Row-Barbell_Bench_Press_-_Medium_Grip-antagonist",
+  "relationshipType": "antagonist",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Bent_Over_Barbell_Row",
+  "toExerciseTemplateId": "Barbell_Bench_Press_-_Medium_Grip"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Lateral_Bound-Barbell_Side_Split_Squat-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Lateral_Bound",
+  "toExerciseTemplateId": "Barbell_Side_Split_Squat"
+}

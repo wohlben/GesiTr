@@ -1,0 +1,10 @@
+{
+  "id": "Band_Assisted_Pull-Up-Full_Range-Of-Motion_Lat_Pulldown-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729931400,
+  "fromExerciseTemplateId": "Band_Assisted_Pull-Up",
+  "toExerciseTemplateId": "Full_Range-Of-Motion_Lat_Pulldown"
+}

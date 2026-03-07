@@ -1,0 +1,10 @@
+{
+  "id": "Split_Jerk-Jerk_Balance-accessory",
+  "relationshipType": "accessory",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761510000,
+  "fromExerciseTemplateId": "Split_Jerk",
+  "toExerciseTemplateId": "Jerk_Balance"
+}

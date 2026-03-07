@@ -1,0 +1,10 @@
+{
+  "id": "Sit_Squats-Box_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Sit_Squats",
+  "toExerciseTemplateId": "Box_Squat"
+}

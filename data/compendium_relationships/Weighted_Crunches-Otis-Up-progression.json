@@ -1,0 +1,10 @@
+{
+  "id": "Weighted_Crunches-Otis-Up-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": "Progress from weighted crunch to full sit-up range of motion with overhead press",
+  "createdBy": "system",
+  "createdAt": 1729980000,
+  "fromExerciseTemplateId": "Weighted_Crunches",
+  "toExerciseTemplateId": "Otis-Up"
+}

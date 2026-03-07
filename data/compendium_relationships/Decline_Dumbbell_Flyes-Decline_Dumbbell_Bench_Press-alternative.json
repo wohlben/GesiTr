@@ -1,0 +1,10 @@
+{
+  "id": "Decline_Dumbbell_Flyes-Decline_Dumbbell_Bench_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761483992,
+  "fromExerciseTemplateId": "Decline_Dumbbell_Flyes",
+  "toExerciseTemplateId": "Decline_Dumbbell_Bench_Press"
+}

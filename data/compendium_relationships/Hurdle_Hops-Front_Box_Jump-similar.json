@@ -1,0 +1,10 @@
+{
+  "id": "Hurdle_Hops-Front_Box_Jump-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Hurdle_Hops",
+  "toExerciseTemplateId": "Front_Box_Jump"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Ab_Roller-Barbell_Ab_Rollout_-_On_Knees-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Ab_Roller",
+  "toExerciseTemplateId": "Barbell_Ab_Rollout_-_On_Knees"
+}

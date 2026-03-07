@@ -1,0 +1,10 @@
+{
+  "id": "Calves-SMR-Anterior_Tibialis-SMR-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Calves-SMR",
+  "toExerciseTemplateId": "Anterior_Tibialis-SMR"
+}

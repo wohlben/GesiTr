@@ -1,0 +1,10 @@
+{
+  "id": "Hammer_Grip_Incline_DB_Bench_Press-Incline_Dumbbell_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496103,
+  "fromExerciseTemplateId": "Hammer_Grip_Incline_DB_Bench_Press",
+  "toExerciseTemplateId": "Incline_Dumbbell_Press"
+}

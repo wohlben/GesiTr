@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Step_Ups-Single-Leg_High_Box_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Step_Ups",
+  "toExerciseTemplateId": "Single-Leg_High_Box_Squat"
+}

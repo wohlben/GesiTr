@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Preacher_Curl-One_Arm_Dumbbell_Preacher_Curl-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479458,
+  "fromExerciseTemplateId": "Cable_Preacher_Curl",
+  "toExerciseTemplateId": "One_Arm_Dumbbell_Preacher_Curl"
+}

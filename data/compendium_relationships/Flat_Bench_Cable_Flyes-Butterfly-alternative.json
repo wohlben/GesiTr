@@ -1,0 +1,10 @@
+{
+  "id": "Flat_Bench_Cable_Flyes-Butterfly-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761478260,
+  "fromExerciseTemplateId": "Flat_Bench_Cable_Flyes",
+  "toExerciseTemplateId": "Butterfly"
+}

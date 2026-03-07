@@ -1,0 +1,10 @@
+{
+  "id": "Sled_Push-Backward_Drag-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464001,
+  "fromExerciseTemplateId": "Sled_Push",
+  "toExerciseTemplateId": "Backward_Drag"
+}

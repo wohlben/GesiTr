@@ -1,0 +1,10 @@
+{
+  "id": "Frog_Sit-Ups-Sit-Up-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761494891,
+  "fromExerciseTemplateId": "Frog_Sit-Ups",
+  "toExerciseTemplateId": "Sit-Up"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "adjustable-bench",
+  "displayName": "Adjustable Bench",
+  "description": "A versatile bench that can be adjusted to flat, incline, or decline positions for various exercises.",
+  "category": "benches",
+  "imageUrl": null,
+  "templateId": "adjustable-bench"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Judo_Flip-Seated_Bent-Over_Rear_Delt_Raise-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cable_Judo_Flip",
+  "toExerciseTemplateId": "Seated_Bent-Over_Rear_Delt_Raise"
+}

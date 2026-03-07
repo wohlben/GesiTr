@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Deadlifts-Barbell_Deadlift-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Cable_Deadlifts",
+  "toExerciseTemplateId": "Barbell_Deadlift"
+}

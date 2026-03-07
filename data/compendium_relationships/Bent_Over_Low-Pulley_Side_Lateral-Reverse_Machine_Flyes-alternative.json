@@ -1,0 +1,10 @@
+{
+  "id": "Bent_Over_Low-Pulley_Side_Lateral-Reverse_Machine_Flyes-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Bent_Over_Low-Pulley_Side_Lateral",
+  "toExerciseTemplateId": "Reverse_Machine_Flyes"
+}

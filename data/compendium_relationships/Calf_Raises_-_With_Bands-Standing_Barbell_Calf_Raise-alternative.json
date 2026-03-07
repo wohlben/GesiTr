@@ -1,0 +1,10 @@
+{
+  "id": "Calf_Raises_-_With_Bands-Standing_Barbell_Calf_Raise-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761412753,
+  "fromExerciseTemplateId": "Calf_Raises_-_With_Bands",
+  "toExerciseTemplateId": "Standing_Barbell_Calf_Raise"
+}

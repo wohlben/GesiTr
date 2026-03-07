@@ -1,0 +1,10 @@
+{
+  "id": "Kettlebell_Sumo_High_Pull-Double_Kettlebell_Snatch-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Kettlebell_Sumo_High_Pull",
+  "toExerciseTemplateId": "Double_Kettlebell_Snatch"
+}

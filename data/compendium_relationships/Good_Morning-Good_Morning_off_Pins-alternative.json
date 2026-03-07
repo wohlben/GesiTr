@@ -1,0 +1,10 @@
+{
+  "id": "Good_Morning-Good_Morning_off_Pins-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Good_Morning",
+  "toExerciseTemplateId": "Good_Morning_off_Pins"
+}

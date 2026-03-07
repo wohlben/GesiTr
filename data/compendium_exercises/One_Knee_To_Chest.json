@@ -1,0 +1,39 @@
+{
+  "name": "One Knee To Chest",
+  "slug": "one-knee-to-chest",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "LOWER_BACK",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Stretch pulling one knee to chest while lying or standing, targeting lower back and glutes.",
+  "instructions": [
+    "Start off by lying on the floor.",
+    "Extend one leg straight and pull the other knee to your chest. Hold under the knee joint to protect the kneecap.",
+    "Gently tug that knee toward your nose.",
+    "Switch sides. This stretches the buttocks and lower back of the bent leg and the hip flexor of the straight leg."
+  ],
+  "images": [
+    "/img/exercises/One_Knee_To_Chest/0.jpg",
+    "/img/exercises/One_Knee_To_Chest/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "One_Knee_To_Chest",
+  "equipmentIds": []
+}

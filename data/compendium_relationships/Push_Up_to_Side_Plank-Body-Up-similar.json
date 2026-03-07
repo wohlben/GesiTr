@@ -1,0 +1,10 @@
+{
+  "id": "Push_Up_to_Side_Plank-Body-Up-similar",
+  "relationshipType": "similar",
+  "strength": 0.82,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Push_Up_to_Side_Plank",
+  "toExerciseTemplateId": "Body-Up"
+}

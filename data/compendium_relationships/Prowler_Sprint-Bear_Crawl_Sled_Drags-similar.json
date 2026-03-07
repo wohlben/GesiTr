@@ -1,0 +1,10 @@
+{
+  "id": "Prowler_Sprint-Bear_Crawl_Sled_Drags-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Prowler_Sprint",
+  "toExerciseTemplateId": "Bear_Crawl_Sled_Drags"
+}

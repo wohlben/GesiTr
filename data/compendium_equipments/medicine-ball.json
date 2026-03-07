@@ -1,0 +1,8 @@
+{
+  "name": "medicine-ball",
+  "displayName": "Medicine Ball",
+  "description": "A weighted ball used for throwing, catching, and core exercises.",
+  "category": "functional",
+  "imageUrl": null,
+  "templateId": "medicine-ball"
+}

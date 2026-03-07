@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Flyes-Middle_Back_Shrug-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Reverse_Flyes",
+  "toExerciseTemplateId": "Middle_Back_Shrug"
+}

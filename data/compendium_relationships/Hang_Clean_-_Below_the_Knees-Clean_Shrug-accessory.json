@@ -1,0 +1,10 @@
+{
+  "id": "Hang_Clean_-_Below_the_Knees-Clean_Shrug-accessory",
+  "relationshipType": "accessory",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496140,
+  "fromExerciseTemplateId": "Hang_Clean_-_Below_the_Knees",
+  "toExerciseTemplateId": "Clean_Shrug"
+}

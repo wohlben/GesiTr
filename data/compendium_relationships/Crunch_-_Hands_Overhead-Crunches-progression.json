@@ -1,0 +1,10 @@
+{
+  "id": "Crunch_-_Hands_Overhead-Crunches-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Crunch_-_Hands_Overhead",
+  "toExerciseTemplateId": "Crunches"
+}

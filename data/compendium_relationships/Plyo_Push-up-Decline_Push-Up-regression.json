@@ -1,0 +1,10 @@
+{
+  "id": "Plyo_Push-up-Decline_Push-Up-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Plyo_Push-up",
+  "toExerciseTemplateId": "Decline_Push-Up"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Crunch-Standing_Rope_Crunch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Cable_Crunch",
+  "toExerciseTemplateId": "Standing_Rope_Crunch"
+}

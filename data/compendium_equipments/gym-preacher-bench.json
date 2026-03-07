@@ -1,0 +1,8 @@
+{
+  "name": "gym-preacher-bench",
+  "displayName": "Preacher Bench",
+  "description": "An angled bench that supports the arms during bicep curls, preventing momentum.",
+  "category": "benches",
+  "imageUrl": null,
+  "templateId": "gym-preacher-bench"
+}

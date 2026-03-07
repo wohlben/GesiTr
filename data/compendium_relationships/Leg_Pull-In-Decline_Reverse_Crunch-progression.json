@@ -1,0 +1,10 @@
+{
+  "id": "Leg_Pull-In-Decline_Reverse_Crunch-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": "Decline angle increases resistance and difficulty for lower abs",
+  "createdBy": "system",
+  "createdAt": 1761509905,
+  "fromExerciseTemplateId": "Leg_Pull-In",
+  "toExerciseTemplateId": "Decline_Reverse_Crunch"
+}

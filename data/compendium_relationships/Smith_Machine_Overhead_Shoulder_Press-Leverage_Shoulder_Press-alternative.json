@@ -1,0 +1,10 @@
+{
+  "id": "Smith_Machine_Overhead_Shoulder_Press-Leverage_Shoulder_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Smith_Machine_Overhead_Shoulder_Press",
+  "toExerciseTemplateId": "Leverage_Shoulder_Press"
+}

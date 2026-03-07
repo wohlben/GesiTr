@@ -1,0 +1,10 @@
+{
+  "id": "Pushups-Cable_Chest_Press-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761478645,
+  "fromExerciseTemplateId": "Pushups",
+  "toExerciseTemplateId": "Cable_Chest_Press"
+}

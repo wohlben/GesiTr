@@ -1,0 +1,10 @@
+{
+  "id": "Band_Good_Morning-Band_Good_Morning_Pull_Through-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Band_Good_Morning",
+  "toExerciseTemplateId": "Band_Good_Morning_Pull_Through"
+}

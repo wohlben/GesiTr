@@ -1,0 +1,45 @@
+{
+  "name": "Smith Machine Hip Raise",
+  "slug": "smith-machine-hip-raise",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "HAMSTRINGS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Hip thrust or bridge on Smith machine with bar across hips, targeting glutes with heavy load.",
+  "instructions": [
+    "Position a bench in the rack and load the bar to an appropriate weight. Lie down on the bench, placing the bottom of your feet against the bar. Unlock the bar and extend your legs. You may need to use your hands to assist you. For added stability grasp the sides of the Smith Machine. This will be your starting position.",
+    "Initiate the movement by rotating your pelvis, flexing your spine to raise your hips off of the bench. Maintain a slight bend in the knees throughout the motion.",
+    "After a brief pause, return the hips to the bench.",
+    "Repeat for the desired number of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Smith_Machine_Hip_Raise/0.jpg",
+    "/img/exercises/Smith_Machine_Hip_Raise/1.jpg"
+  ],
+  "alternativeNames": [
+    "Smith Hip Raise",
+    "Smith Machine Machine Hip Raise"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Smith_Machine_Hip_Raise",
+  "equipmentIds": [
+    "gym-smith-machine"
+  ]
+}

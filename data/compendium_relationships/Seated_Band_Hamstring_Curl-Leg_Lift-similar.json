@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Band_Hamstring_Curl-Leg_Lift-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Seated_Band_Hamstring_Curl",
+  "toExerciseTemplateId": "Leg_Lift"
+}

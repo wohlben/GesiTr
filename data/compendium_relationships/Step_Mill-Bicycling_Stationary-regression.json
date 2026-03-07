@@ -1,0 +1,10 @@
+{
+  "id": "Step_Mill-Bicycling_Stationary-regression",
+  "relationshipType": "regression",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476051,
+  "fromExerciseTemplateId": "Step_Mill",
+  "toExerciseTemplateId": "Bicycling_Stationary"
+}

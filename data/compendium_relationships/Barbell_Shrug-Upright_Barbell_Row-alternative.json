@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Shrug-Upright_Barbell_Row-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Barbell_Shrug",
+  "toExerciseTemplateId": "Upright_Barbell_Row"
+}

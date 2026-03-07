@@ -1,0 +1,42 @@
+{
+  "name": "Arm Circles",
+  "slug": "arm-circles",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS",
+    "SIDE_DELTS"
+  ],
+  "secondaryMuscles": [
+    "TRAPS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Dynamic shoulder mobility warmup using circular arm motions to increase blood flow and flexibility",
+  "instructions": [
+    "Stand up and extend your arms straight out by the sides. The arms should be parallel to the floor and perpendicular (90-degree angle) to your torso. This will be your starting position.",
+    "Slowly start to make circles of about 1 foot in diameter with each outstretched arm. Breathe normally as you perform the movement.",
+    "Continue the circular motion of the outstretched arms for about ten seconds. Then reverse the movement, going the opposite direction."
+  ],
+  "images": [
+    "/img/exercises/Arm_Circles/0.jpg",
+    "/img/exercises/Arm_Circles/1.jpg"
+  ],
+  "alternativeNames": [
+    "Arm-Circles"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Arm_Circles",
+  "equipmentIds": []
+}

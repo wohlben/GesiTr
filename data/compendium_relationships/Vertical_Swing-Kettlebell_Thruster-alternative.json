@@ -1,0 +1,10 @@
+{
+  "id": "Vertical_Swing-Kettlebell_Thruster-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Vertical_Swing",
+  "toExerciseTemplateId": "Kettlebell_Thruster"
+}

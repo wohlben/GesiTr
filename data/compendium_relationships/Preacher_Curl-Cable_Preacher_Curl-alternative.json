@@ -1,0 +1,10 @@
+{
+  "id": "Preacher_Curl-Cable_Preacher_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479458,
+  "fromExerciseTemplateId": "Preacher_Curl",
+  "toExerciseTemplateId": "Cable_Preacher_Curl"
+}

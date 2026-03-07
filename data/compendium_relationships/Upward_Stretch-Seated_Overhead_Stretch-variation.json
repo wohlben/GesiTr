@@ -1,0 +1,10 @@
+{
+  "id": "Upward_Stretch-Seated_Overhead_Stretch-variation",
+  "relationshipType": "variation",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Upward_Stretch",
+  "toExerciseTemplateId": "Seated_Overhead_Stretch"
+}

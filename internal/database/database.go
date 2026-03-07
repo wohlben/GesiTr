@@ -9,10 +9,14 @@ import (
 
 var DB *gorm.DB
 
-func Init() {
+func InitDB(path string) error {
 	var err error
-	DB, err = gorm.Open(sqlite.Open("gesitr.db"), &gorm.Config{})
-	if err != nil {
+	DB, err = gorm.Open(sqlite.Open(path), &gorm.Config{})
+	return err
+}
+
+func Init() {
+	if err := InitDB("gesitr.db"); err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
 }

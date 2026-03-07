@@ -1,0 +1,10 @@
+{
+  "id": "Snatch_Balance-Power_Snatch-accessory",
+  "relationshipType": "accessory",
+  "strength": 0.9,
+  "description": "Snatch Balance is a key accessory drill for the Power Snatch, teaching the athlete to aggressively pull under the bar and receive it in a stable overhead position.",
+  "createdBy": "system",
+  "createdAt": 1761518400,
+  "fromExerciseTemplateId": "Snatch_Balance",
+  "toExerciseTemplateId": "Power_Snatch"
+}

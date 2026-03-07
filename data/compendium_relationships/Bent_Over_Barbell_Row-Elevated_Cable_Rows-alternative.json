@@ -1,0 +1,10 @@
+{
+  "id": "Bent_Over_Barbell_Row-Elevated_Cable_Rows-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Bent_Over_Barbell_Row",
+  "toExerciseTemplateId": "Elevated_Cable_Rows"
+}

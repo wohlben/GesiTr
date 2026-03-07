@@ -1,0 +1,10 @@
+{
+  "id": "Lying_Bent_Leg_Groin-Seated_Biceps-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Lying_Bent_Leg_Groin",
+  "toExerciseTemplateId": "Seated_Biceps"
+}

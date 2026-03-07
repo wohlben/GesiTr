@@ -1,0 +1,10 @@
+{
+  "id": "Arnold_Dumbbell_Press-Standing_Dumbbell_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Arnold_Dumbbell_Press",
+  "toExerciseTemplateId": "Standing_Dumbbell_Press"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Squat-Speed_Squats-accessory",
+  "relationshipType": "accessory",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Barbell_Squat",
+  "toExerciseTemplateId": "Speed_Squats"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Hang_Snatch-Power_Snatch-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761481995,
+  "fromExerciseTemplateId": "Hang_Snatch",
+  "toExerciseTemplateId": "Power_Snatch"
+}

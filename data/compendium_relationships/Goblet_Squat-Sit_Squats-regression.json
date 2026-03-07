@@ -1,0 +1,10 @@
+{
+  "id": "Goblet_Squat-Sit_Squats-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Goblet_Squat",
+  "toExerciseTemplateId": "Sit_Squats"
+}

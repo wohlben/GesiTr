@@ -1,0 +1,10 @@
+{
+  "id": "Chest_Push_with_Run_Release-Medicine_Ball_Chest_Pass-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729933200,
+  "fromExerciseTemplateId": "Chest_Push_with_Run_Release",
+  "toExerciseTemplateId": "Medicine_Ball_Chest_Pass"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Palms-In_Dumbbell_Press-Push_Press-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Palms-In_Dumbbell_Press",
+  "toExerciseTemplateId": "Push_Press"
+}

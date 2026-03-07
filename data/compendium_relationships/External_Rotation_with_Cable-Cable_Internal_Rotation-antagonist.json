@@ -1,0 +1,10 @@
+{
+  "id": "External_Rotation_with_Cable-Cable_Internal_Rotation-antagonist",
+  "relationshipType": "antagonist",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761478645,
+  "fromExerciseTemplateId": "External_Rotation_with_Cable",
+  "toExerciseTemplateId": "Cable_Internal_Rotation"
+}

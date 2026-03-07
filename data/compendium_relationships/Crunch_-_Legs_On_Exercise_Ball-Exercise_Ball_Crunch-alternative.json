@@ -1,0 +1,10 @@
+{
+  "id": "Crunch_-_Legs_On_Exercise_Ball-Exercise_Ball_Crunch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730027200,
+  "fromExerciseTemplateId": "Crunch_-_Legs_On_Exercise_Ball",
+  "toExerciseTemplateId": "Exercise_Ball_Crunch"
+}

@@ -1,0 +1,39 @@
+{
+  "name": "Upward Stretch",
+  "slug": "upward-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "LATS",
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Overhead reach stretch extending arms upward to stretch shoulders, lats, and spine.",
+  "instructions": [
+    "Extend both hands straight above your head, palms touching.",
+    "Slowly push your hands up and back, keeping your back straight."
+  ],
+  "images": [
+    "/img/exercises/Upward_Stretch/0.jpg",
+    "/img/exercises/Upward_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Upward-Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Upward_Stretch",
+  "equipmentIds": []
+}

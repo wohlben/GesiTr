@@ -1,0 +1,41 @@
+{
+  "name": "Overhead Stretch",
+  "slug": "overhead-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS",
+    "LATS"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Overhead shoulder and lat stretch reaching arms overhead to stretch shoulders and upper back.",
+  "instructions": [
+    "Standing straight up, lace your fingers together and open your palms to the ceiling. Keep your shoulders down as you extend your arms up.",
+    "To create a full torso stretch, pull your tailbone down and stabilize your torso as you do this. Stretch the muscles on both the front and the back of the torso."
+  ],
+  "images": [
+    "/img/exercises/Overhead_Stretch/0.jpg",
+    "/img/exercises/Overhead_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Overhead-Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Overhead_Stretch",
+  "equipmentIds": []
+}

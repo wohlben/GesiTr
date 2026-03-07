@@ -1,0 +1,10 @@
+{
+  "id": "Clean_Pull-Smith_Machine_Hang_Power_Clean-accessory",
+  "relationshipType": "accessory",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Clean_Pull",
+  "toExerciseTemplateId": "Smith_Machine_Hang_Power_Clean"
+}

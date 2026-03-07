@@ -1,0 +1,10 @@
+{
+  "id": "Alternating_Renegade_Row-Plank-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Alternating_Renegade_Row",
+  "toExerciseTemplateId": "Plank"
+}

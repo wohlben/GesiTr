@@ -1,0 +1,10 @@
+{
+  "id": "Monster_Walk-Hip_Extension_with_Bands-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.65,
+  "description": "Both use resistance bands for glutes but target different movement patterns (abduction vs extension)",
+  "createdBy": "system",
+  "createdAt": 1730053200,
+  "fromExerciseTemplateId": "Monster_Walk",
+  "toExerciseTemplateId": "Hip_Extension_with_Bands"
+}

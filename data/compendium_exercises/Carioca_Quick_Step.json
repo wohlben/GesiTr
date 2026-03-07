@@ -1,0 +1,42 @@
+{
+  "name": "Carioca Quick Step",
+  "slug": "carioca-quick-step",
+  "type": "CARDIO",
+  "force": [],
+  "primaryMuscles": [
+    "GLUTES",
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "HAMSTRINGS",
+    "ADDUCTORS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 1,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "DISTANCE_BASED",
+    "REP_BASED"
+  ],
+  "description": "Lateral agility drill combining crossover stepping with high knee drives to improve footwork, coordination, and cardiovascular endurance",
+  "instructions": [
+    "Begin with your feet a few inches apart and your left arm up in a relaxed, athletic position.",
+    "With your right foot, quick step behind and pull the knee up.",
+    "Fire your arms back up when you pull the right knee, being sure that your knee goes straight up and down. Avoid turning your feet as you move and continue to look forward as you move to the side."
+  ],
+  "images": [
+    "/img/exercises/Carioca_Quick_Step/0.jpg",
+    "/img/exercises/Carioca_Quick_Step/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Carioca_Quick_Step",
+  "equipmentIds": []
+}

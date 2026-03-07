@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Band_Power_Squat-Banded_Barbell_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Reverse_Band_Power_Squat",
+  "toExerciseTemplateId": "Banded_Barbell_Squat"
+}

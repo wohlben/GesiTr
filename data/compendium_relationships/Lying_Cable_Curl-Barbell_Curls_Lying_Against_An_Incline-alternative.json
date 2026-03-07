@@ -1,0 +1,10 @@
+{
+  "id": "Lying_Cable_Curl-Barbell_Curls_Lying_Against_An_Incline-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498077,
+  "fromExerciseTemplateId": "Lying_Cable_Curl",
+  "toExerciseTemplateId": "Barbell_Curls_Lying_Against_An_Incline"
+}

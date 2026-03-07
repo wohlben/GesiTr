@@ -1,0 +1,10 @@
+{
+  "id": "Side_Neck_Stretch-Chin_To_Chest_Stretch-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Side_Neck_Stretch",
+  "toExerciseTemplateId": "Chin_To_Chest_Stretch"
+}

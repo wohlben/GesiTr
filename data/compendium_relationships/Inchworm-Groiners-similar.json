@@ -1,0 +1,10 @@
+{
+  "id": "Inchworm-Groiners-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496059,
+  "fromExerciseTemplateId": "Inchworm",
+  "toExerciseTemplateId": "Groiners"
+}

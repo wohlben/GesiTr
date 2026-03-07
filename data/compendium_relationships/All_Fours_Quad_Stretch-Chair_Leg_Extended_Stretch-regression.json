@@ -1,0 +1,10 @@
+{
+  "id": "All_Fours_Quad_Stretch-Chair_Leg_Extended_Stretch-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "All_Fours_Quad_Stretch",
+  "toExerciseTemplateId": "Chair_Leg_Extended_Stretch"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Cable_Curl-Reverse_Barbell_Preacher_Curls-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": "Barbell version on preacher bench for better stability and isolation",
+  "createdBy": "system",
+  "createdAt": 1761543970,
+  "fromExerciseTemplateId": "Reverse_Cable_Curl",
+  "toExerciseTemplateId": "Reverse_Barbell_Preacher_Curls"
+}

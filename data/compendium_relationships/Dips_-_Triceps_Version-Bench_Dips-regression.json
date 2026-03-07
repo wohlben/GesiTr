@@ -1,0 +1,10 @@
+{
+  "id": "Dips_-_Triceps_Version-Bench_Dips-regression",
+  "relationshipType": "regression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Dips_-_Triceps_Version",
+  "toExerciseTemplateId": "Bench_Dips"
+}

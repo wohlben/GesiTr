@@ -1,0 +1,46 @@
+{
+  "name": "One-Arm Kettlebell Para Press",
+  "slug": "one-arm-kettlebell-para-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Overhead kettlebell press variation with slight forward angle, combining shoulder press with core stability.",
+  "instructions": [
+    "Clean a kettlebell to your shoulder. Clean the kettlebell to your shoulder by extending through the legs and hips as you pull the kettlebell towards your shoulder. Rotate your wrist as you do so, so that the palm faces forward. This will be your starting position.",
+    "Hold the kettlebell with the elbow out to the side, and press it up and out until it is locked out overhead.",
+    "Lower the kettlebell back to your shoulder under control and repeat. Make sure to contract your lat, butt, and stomach forcefully for added stability and strength."
+  ],
+  "images": [
+    "/img/exercises/One-Arm_Kettlebell_Para_Press/0.jpg",
+    "/img/exercises/One-Arm_Kettlebell_Para_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "One Arm Kettlebell Para Press",
+    "One-Arm KB Para Press",
+    "Single Arm Kettlebell Para Press",
+    "Unilateral Kettlebell Para Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "One-Arm_Kettlebell_Para_Press",
+  "equipmentIds": [
+    "kettlebell"
+  ]
+}

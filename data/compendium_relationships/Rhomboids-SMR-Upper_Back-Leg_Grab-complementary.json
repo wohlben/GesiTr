@@ -1,0 +1,10 @@
+{
+  "id": "Rhomboids-SMR-Upper_Back-Leg_Grab-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Rhomboids-SMR",
+  "toExerciseTemplateId": "Upper_Back-Leg_Grab"
+}

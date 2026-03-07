@@ -1,0 +1,10 @@
+{
+  "id": "Chest_Push_from_3_point_stance-Heavy_Bag_Thrust-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729933200,
+  "fromExerciseTemplateId": "Chest_Push_from_3_point_stance",
+  "toExerciseTemplateId": "Heavy_Bag_Thrust"
+}

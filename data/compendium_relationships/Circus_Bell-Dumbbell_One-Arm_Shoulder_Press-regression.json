@@ -1,0 +1,10 @@
+{
+  "id": "Circus_Bell-Dumbbell_One-Arm_Shoulder_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761481210,
+  "fromExerciseTemplateId": "Circus_Bell",
+  "toExerciseTemplateId": "Dumbbell_One-Arm_Shoulder_Press"
+}

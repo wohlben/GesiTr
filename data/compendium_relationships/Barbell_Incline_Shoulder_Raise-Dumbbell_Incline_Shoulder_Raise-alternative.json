@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Incline_Shoulder_Raise-Dumbbell_Incline_Shoulder_Raise-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Barbell_Incline_Shoulder_Raise",
+  "toExerciseTemplateId": "Dumbbell_Incline_Shoulder_Raise"
+}

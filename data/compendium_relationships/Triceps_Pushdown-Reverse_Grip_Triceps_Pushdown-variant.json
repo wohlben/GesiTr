@@ -1,0 +1,10 @@
+{
+  "id": "Triceps_Pushdown-Reverse_Grip_Triceps_Pushdown-variant",
+  "relationshipType": "variant",
+  "strength": 0.95,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Triceps_Pushdown",
+  "toExerciseTemplateId": "Reverse_Grip_Triceps_Pushdown"
+}

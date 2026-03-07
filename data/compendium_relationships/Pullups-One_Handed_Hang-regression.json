@@ -1,0 +1,10 @@
+{
+  "id": "Pullups-One_Handed_Hang-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Pullups",
+  "toExerciseTemplateId": "One_Handed_Hang"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "One-Legged_Cable_Kickback-Kettlebell_One-Legged_Deadlift-similar",
+  "relationshipType": "similar",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "One-Legged_Cable_Kickback",
+  "toExerciseTemplateId": "Kettlebell_One-Legged_Deadlift"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Fast_Skipping-Bench_Sprint-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Fast_Skipping",
+  "toExerciseTemplateId": "Bench_Sprint"
+}

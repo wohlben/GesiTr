@@ -1,0 +1,10 @@
+{
+  "id": "Leverage_Chest_Press-Smith_Machine_Bench_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730051040,
+  "fromExerciseTemplateId": "Leverage_Chest_Press",
+  "toExerciseTemplateId": "Smith_Machine_Bench_Press"
+}

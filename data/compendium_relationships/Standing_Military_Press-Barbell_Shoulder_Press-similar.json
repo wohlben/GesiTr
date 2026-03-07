@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Military_Press-Barbell_Shoulder_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Standing_Military_Press",
+  "toExerciseTemplateId": "Barbell_Shoulder_Press"
+}

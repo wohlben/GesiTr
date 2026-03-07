@@ -1,0 +1,10 @@
+{
+  "id": "Inverted_Row-Bodyweight_Mid_Row-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Inverted_Row",
+  "toExerciseTemplateId": "Bodyweight_Mid_Row"
+}

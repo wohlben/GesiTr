@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Cable_Flye-Butterfly-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761478260,
+  "fromExerciseTemplateId": "Incline_Cable_Flye",
+  "toExerciseTemplateId": "Butterfly"
+}

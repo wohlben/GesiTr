@@ -1,0 +1,10 @@
+{
+  "id": "One-Arm_Dumbbell_Row-Bent_Over_Two-Dumbbell_Row_With_Palms_In-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "One-Arm_Dumbbell_Row",
+  "toExerciseTemplateId": "Bent_Over_Two-Dumbbell_Row_With_Palms_In"
+}

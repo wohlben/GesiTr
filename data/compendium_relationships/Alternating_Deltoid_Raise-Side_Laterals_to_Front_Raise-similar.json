@@ -1,0 +1,10 @@
+{
+  "id": "Alternating_Deltoid_Raise-Side_Laterals_to_Front_Raise-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761461723,
+  "fromExerciseTemplateId": "Alternating_Deltoid_Raise",
+  "toExerciseTemplateId": "Side_Laterals_to_Front_Raise"
+}

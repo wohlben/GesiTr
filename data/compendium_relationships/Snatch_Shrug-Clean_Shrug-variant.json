@@ -1,0 +1,10 @@
+{
+  "id": "Snatch_Shrug-Clean_Shrug-variant",
+  "relationshipType": "variant",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761481995,
+  "fromExerciseTemplateId": "Snatch_Shrug",
+  "toExerciseTemplateId": "Clean_Shrug"
+}

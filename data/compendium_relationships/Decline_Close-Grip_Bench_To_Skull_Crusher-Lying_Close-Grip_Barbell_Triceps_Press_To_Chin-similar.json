@@ -1,0 +1,10 @@
+{
+  "id": "Decline_Close-Grip_Bench_To_Skull_Crusher-Lying_Close-Grip_Barbell_Triceps_Press_To_Chin-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Decline_Close-Grip_Bench_To_Skull_Crusher",
+  "toExerciseTemplateId": "Lying_Close-Grip_Barbell_Triceps_Press_To_Chin"
+}

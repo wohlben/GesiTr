@@ -1,0 +1,10 @@
+{
+  "id": "Bench_Press_-_Powerlifting-Floor_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Bench_Press_-_Powerlifting",
+  "toExerciseTemplateId": "Floor_Press"
+}

@@ -1,0 +1,44 @@
+{
+  "name": "Seated Band Hamstring Curl",
+  "slug": "seated-band-hamstring-curl",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "HAMSTRINGS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Seated hamstring curl using resistance band, flexing knees against band resistance.",
+  "instructions": [
+    "Secure a band close to the ground and place a bench a couple feet away from it.",
+    "Seat yourself on the bench and secure the band behind your ankles, beginning with your legs straight. This will be your starting position.",
+    "Flex the knees, bringing your feet towards the bench. You may need to lean back slightly to keep your feet from striking the floor.",
+    "Pause at the completion of the movement, and then slowly return to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Seated_Band_Hamstring_Curl/0.jpg",
+    "/img/exercises/Seated_Band_Hamstring_Curl/1.jpg"
+  ],
+  "alternativeNames": [
+    "Seated Resistance Band Hamstring Curl",
+    "Standing Band Hamstring Curl"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Seated_Band_Hamstring_Curl",
+  "equipmentIds": [
+    "resistance-band"
+  ]
+}

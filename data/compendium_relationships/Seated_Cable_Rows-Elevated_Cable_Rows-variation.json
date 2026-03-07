@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Cable_Rows-Elevated_Cable_Rows-variation",
+  "relationshipType": "variation",
+  "strength": 0.95,
+  "description": "Seated Cable Rows is a variation of Elevated Cable Rows with a standard seat position",
+  "createdBy": "system",
+  "createdAt": 1761412213,
+  "fromExerciseTemplateId": "Seated_Cable_Rows",
+  "toExerciseTemplateId": "Elevated_Cable_Rows"
+}

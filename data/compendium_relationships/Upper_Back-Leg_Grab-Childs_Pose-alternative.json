@@ -1,0 +1,10 @@
+{
+  "id": "Upper_Back-Leg_Grab-Childs_Pose-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Upper_Back-Leg_Grab",
+  "toExerciseTemplateId": "Childs_Pose"
+}

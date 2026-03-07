@@ -1,0 +1,10 @@
+{
+  "id": "Extended_Range_One-Arm_Kettlebell_Floor_Press-One-Arm_Kettlebell_Floor_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Extended_Range_One-Arm_Kettlebell_Floor_Press",
+  "toExerciseTemplateId": "One-Arm_Kettlebell_Floor_Press"
+}

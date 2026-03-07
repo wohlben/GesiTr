@@ -1,0 +1,10 @@
+{
+  "id": "Alternate_Leg_Diagonal_Bound-Single_Leg_Push-off-related",
+  "relationshipType": "related",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Alternate_Leg_Diagonal_Bound",
+  "toExerciseTemplateId": "Single_Leg_Push-off"
+}

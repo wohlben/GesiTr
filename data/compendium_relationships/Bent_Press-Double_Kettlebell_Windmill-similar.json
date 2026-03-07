@@ -1,0 +1,10 @@
+{
+  "id": "Bent_Press-Double_Kettlebell_Windmill-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Bent_Press",
+  "toExerciseTemplateId": "Double_Kettlebell_Windmill"
+}

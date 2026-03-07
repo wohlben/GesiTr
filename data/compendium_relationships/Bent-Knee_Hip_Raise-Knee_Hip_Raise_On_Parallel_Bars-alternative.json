@@ -1,0 +1,10 @@
+{
+  "id": "Bent-Knee_Hip_Raise-Knee_Hip_Raise_On_Parallel_Bars-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.88,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Bent-Knee_Hip_Raise",
+  "toExerciseTemplateId": "Knee_Hip_Raise_On_Parallel_Bars"
+}

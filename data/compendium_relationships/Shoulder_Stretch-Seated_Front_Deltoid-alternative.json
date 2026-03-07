@@ -1,0 +1,10 @@
+{
+  "id": "Shoulder_Stretch-Seated_Front_Deltoid-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Shoulder_Stretch",
+  "toExerciseTemplateId": "Seated_Front_Deltoid"
+}

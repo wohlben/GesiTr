@@ -1,0 +1,10 @@
+{
+  "id": "Preacher_Curl-Drag_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Preacher_Curl",
+  "toExerciseTemplateId": "Drag_Curl"
+}

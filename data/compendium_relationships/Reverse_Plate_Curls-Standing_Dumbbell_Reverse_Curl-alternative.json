@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Plate_Curls-Standing_Dumbbell_Reverse_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Reverse_Plate_Curls",
+  "toExerciseTemplateId": "Standing_Dumbbell_Reverse_Curl"
+}

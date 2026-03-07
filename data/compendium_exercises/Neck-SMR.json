@@ -1,0 +1,40 @@
+{
+  "name": "Neck-SMR",
+  "slug": "neck-smr",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "NECK"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Self-myofascial release using foam roller or massage tool to release neck muscle tension.",
+  "instructions": [
+    "Using a muscle roller or a rolling pin, place the roller behind your head and against your neck. Make sure that you do not place the roller directly against the spine, but turned slightly so that the roller is pressed against the muscles to either side of the spine. This will be your starting position.",
+    "Starting at the top of your neck, slowly roll down the muscles of your neck, pausing at points of tension for 10-30 seconds."
+  ],
+  "images": [
+    "/img/exercises/Neck-SMR/0.jpg",
+    "/img/exercises/Neck-SMR/1.jpg"
+  ],
+  "alternativeNames": [
+    "Neck SMR"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Neck-SMR",
+  "equipmentIds": [
+    "foam-roller"
+  ]
+}

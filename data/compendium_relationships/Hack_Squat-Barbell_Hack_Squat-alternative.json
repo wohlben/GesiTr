@@ -1,0 +1,10 @@
+{
+  "id": "Hack_Squat-Barbell_Hack_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Hack_Squat",
+  "toExerciseTemplateId": "Barbell_Hack_Squat"
+}

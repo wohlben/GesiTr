@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Dumbbell_Press-Standing_Dumbbell_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Seated_Dumbbell_Press",
+  "toExerciseTemplateId": "Standing_Dumbbell_Press"
+}

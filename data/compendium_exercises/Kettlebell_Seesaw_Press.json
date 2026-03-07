@@ -1,0 +1,44 @@
+{
+  "name": "Kettlebell Seesaw Press",
+  "slug": "kettlebell-seesaw-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "SIDE_DELTS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Alternating kettlebell press with seesaw motion, pressing one up as other comes down.",
+  "instructions": [
+    "Clean two kettlebells to your shoulders.",
+    "Press one kettlebell.",
+    "Lower the kettlebell and immediately press the other kettlebell. Make sure to do the same amount of reps on both sides."
+  ],
+  "images": [
+    "/img/exercises/Kettlebell_Seesaw_Press/0.jpg",
+    "/img/exercises/Kettlebell_Seesaw_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "KB Seesaw Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Kettlebell_Seesaw_Press",
+  "equipmentIds": [
+    "2x kettlebell"
+  ]
+}

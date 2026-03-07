@@ -1,0 +1,10 @@
+{
+  "id": "Decline_Barbell_Bench_Press-Wide-Grip_Decline_Barbell_Bench_Press-variation",
+  "relationshipType": "variation",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761551318,
+  "fromExerciseTemplateId": "Decline_Barbell_Bench_Press",
+  "toExerciseTemplateId": "Wide-Grip_Decline_Barbell_Bench_Press"
+}

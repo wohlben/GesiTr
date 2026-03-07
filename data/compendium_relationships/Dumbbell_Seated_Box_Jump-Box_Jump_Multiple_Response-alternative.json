@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Seated_Box_Jump-Box_Jump_Multiple_Response-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Seated_Box_Jump",
+  "toExerciseTemplateId": "Box_Jump_Multiple_Response"
+}

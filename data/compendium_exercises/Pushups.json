@@ -1,0 +1,44 @@
+{
+  "name": "Pushups",
+  "slug": "pushups",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 1,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Standard bodyweight push-up, fundamental pressing exercise for chest, triceps, and shoulders.",
+  "instructions": [
+    "Lie on the floor face down and place your hands about 36 inches apart while holding your torso up at arms length.",
+    "Next, lower yourself downward until your chest almost touches the floor as you inhale.",
+    "Now breathe out and press your upper body back up to the starting position while squeezing your chest.",
+    "After a brief pause at the top contracted position, you can begin to lower yourself downward again for as many repetitions as needed."
+  ],
+  "images": [
+    "/img/exercises/Pushups/0.jpg",
+    "/img/exercises/Pushups/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Pushups",
+  "equipmentIds": []
+}

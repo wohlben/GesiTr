@@ -1,0 +1,10 @@
+{
+  "id": "Spell_Caster-Standing_Cable_Wood_Chop-progression",
+  "relationshipType": "progression",
+  "strength": 0.6,
+  "description": "Both are standing rotational core exercises. Wood Chop adds diagonal pulling pattern and cable resistance for more controlled movement.",
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Spell_Caster",
+  "toExerciseTemplateId": "Standing_Cable_Wood_Chop"
+}

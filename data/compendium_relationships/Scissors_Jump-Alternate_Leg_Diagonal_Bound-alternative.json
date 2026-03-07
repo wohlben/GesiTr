@@ -1,0 +1,10 @@
+{
+  "id": "Scissors_Jump-Alternate_Leg_Diagonal_Bound-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.83,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761461533,
+  "fromExerciseTemplateId": "Scissors_Jump",
+  "toExerciseTemplateId": "Alternate_Leg_Diagonal_Bound"
+}

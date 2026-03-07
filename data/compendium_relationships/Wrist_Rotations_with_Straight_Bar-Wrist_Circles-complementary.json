@@ -1,0 +1,10 @@
+{
+  "id": "Wrist_Rotations_with_Straight_Bar-Wrist_Circles-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761551538,
+  "fromExerciseTemplateId": "Wrist_Rotations_with_Straight_Bar",
+  "toExerciseTemplateId": "Wrist_Circles"
+}

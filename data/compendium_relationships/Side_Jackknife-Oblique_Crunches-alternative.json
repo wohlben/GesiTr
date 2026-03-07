@@ -1,0 +1,10 @@
+{
+  "id": "Side_Jackknife-Oblique_Crunches-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Side_Jackknife",
+  "toExerciseTemplateId": "Oblique_Crunches"
+}

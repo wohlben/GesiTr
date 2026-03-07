@@ -1,0 +1,46 @@
+{
+  "name": "Push Press",
+  "slug": "push-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "QUADS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Standing overhead press using leg drive to push barbell from shoulders overhead, combining lower and upper body.",
+  "instructions": [
+    "Begin with the barbell racked on the front of your shoulders, feet at hip width, torso upright. The bar should rest on the front deltoids with hands just outside the shoulders.",
+    "Initiate the movement with a dip by flexing the knees slightly, keeping the torso vertical and without moving the hips backward. The dip should be quick and controlled, going down only a few inches.",
+    "Immediately reverse direction and drive powerfully through the heels, extending the knees and hips explosively to create upward momentum on the bar.",
+    "As the bar rises from the shoulders, press it overhead using the arms, driving the bar to full lockout with arms fully extended.",
+    "Lower the bar back to the front rack position with control and repeat."
+  ],
+  "images": [
+    "/img/exercises/Push_Press/0.jpg",
+    "/img/exercises/Push_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "Push-Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Push_Press",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

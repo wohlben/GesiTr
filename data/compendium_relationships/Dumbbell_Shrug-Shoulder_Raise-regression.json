@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Shrug-Shoulder_Raise-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Shrug",
+  "toExerciseTemplateId": "Shoulder_Raise"
+}

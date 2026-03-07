@@ -1,0 +1,10 @@
+{
+  "id": "On-Your-Back_Quad_Stretch-All_Fours_Quad_Stretch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "On-Your-Back_Quad_Stretch",
+  "toExerciseTemplateId": "All_Fours_Quad_Stretch"
+}

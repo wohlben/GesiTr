@@ -1,0 +1,10 @@
+{
+  "id": "Lunge_Sprint-Split_Squats-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Lunge_Sprint",
+  "toExerciseTemplateId": "Split_Squats"
+}

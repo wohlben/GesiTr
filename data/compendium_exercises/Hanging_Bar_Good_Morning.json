@@ -1,0 +1,48 @@
+{
+  "name": "Hanging Bar Good Morning",
+  "slug": "hanging-bar-good-morning",
+  "type": "STRENGTH",
+  "force": [
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "HAMSTRINGS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "LOWER_BACK"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Good morning holding barbell while hanging from bar, unique hanging position adding decompression element.",
+  "instructions": [
+    "Begin with a bar on a rack at about the same height as your stomach. Suspend the bar using chains or suspension straps.",
+    "Bend over underneath the bar and rack the bar across the rear of your shoulders as you would a power squat, not on top of your traps. At the proper height, you should be near parallel to the floor when bent over. Keep your back tight, shoulder blades pinched together, and your knees slightly bent. Keep your back arched and your cervical spine in proper alignment.",
+    "Begin the motion by extending through the hips with your glutes and hamstrings, and you are standing with the weight.",
+    "Slowly lower the weight back to the starting position, where it is supported by the chains."
+  ],
+  "images": [
+    "/img/exercises/Hanging_Bar_Good_Morning/0.jpg",
+    "/img/exercises/Hanging_Bar_Good_Morning/1.jpg"
+  ],
+  "alternativeNames": [
+    "Hanging Barbell Good Morning"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Hanging_Bar_Good_Morning",
+  "equipmentIds": [
+    "barbell",
+    "suspension-trainer",
+    "chains"
+  ]
+}

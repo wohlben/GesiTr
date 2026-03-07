@@ -1,0 +1,10 @@
+{
+  "id": "Flutter_Kicks-Reverse_Hyperextension-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730080800,
+  "fromExerciseTemplateId": "Flutter_Kicks",
+  "toExerciseTemplateId": "Reverse_Hyperextension"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Catch_and_Overhead_Throw-Medicine_Ball_Chest_Pass-alternative",
+  "relationshipType": "alternative",
+  "strength": null,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Catch_and_Overhead_Throw",
+  "toExerciseTemplateId": "Medicine_Ball_Chest_Pass"
+}

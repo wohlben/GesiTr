@@ -1,0 +1,10 @@
+{
+  "id": "Scissor_Kick-Dead_Bug-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761483562,
+  "fromExerciseTemplateId": "Scissor_Kick",
+  "toExerciseTemplateId": "Dead_Bug"
+}

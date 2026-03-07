@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Squat-Barbell_Full_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Dumbbell_Squat",
+  "toExerciseTemplateId": "Barbell_Full_Squat"
+}

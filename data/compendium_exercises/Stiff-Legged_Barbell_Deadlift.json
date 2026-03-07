@@ -1,0 +1,52 @@
+{
+  "name": "Stiff-Legged Barbell Deadlift",
+  "slug": "stiff-legged-barbell-deadlift",
+  "type": "STRENGTH",
+  "force": [
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "HAMSTRINGS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "LOWER_BACK"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.2,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Stiff-legged deadlift with barbell keeping legs mostly straight, emphasizing hamstring stretch and hip hinge.",
+  "instructions": [
+    "Grasp a bar using an overhand grip (palms facing down). You may need some wrist wraps if using a significant amount of weight.",
+    "Stand with your torso straight and your legs spaced using a shoulder width or narrower stance. The knees should be slightly bent. This is your starting position.",
+    "Keeping the knees stationary, lower the barbell to over the top of your feet by bending at the hips while keeping your back straight. Keep moving forward as if you were going to pick something from the floor until you feel a stretch on the hamstrings. Inhale as you perform this movement.",
+    "Start bringing your torso up straight again by extending your hips until you are back at the starting position. Exhale as you perform this movement.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Stiff-Legged_Barbell_Deadlift/0.jpg",
+    "/img/exercises/Stiff-Legged_Barbell_Deadlift/1.jpg"
+  ],
+  "alternativeNames": [
+    "BB Deadlift",
+    "Conventional Deadlift",
+    "Deadlift",
+    "Stiff Legged Barbell Deadlift",
+    "Stiff-Legged BB Deadlift",
+    "Stiff-Legged Bar Deadlift",
+    "Stiff-Legged Barbell Deadlift"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Stiff-Legged_Barbell_Deadlift",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

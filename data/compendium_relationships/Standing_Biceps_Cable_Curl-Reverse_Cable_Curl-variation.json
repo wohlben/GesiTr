@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Biceps_Cable_Curl-Reverse_Cable_Curl-variation",
+  "relationshipType": "variation",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761543931,
+  "fromExerciseTemplateId": "Standing_Biceps_Cable_Curl",
+  "toExerciseTemplateId": "Reverse_Cable_Curl"
+}

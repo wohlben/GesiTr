@@ -1,0 +1,10 @@
+{
+  "id": "Bodyweight_Mid_Row-Chin-Up-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Bodyweight_Mid_Row",
+  "toExerciseTemplateId": "Chin-Up"
+}

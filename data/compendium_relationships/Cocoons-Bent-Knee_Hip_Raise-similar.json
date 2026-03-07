@@ -1,0 +1,10 @@
+{
+  "id": "Cocoons-Bent-Knee_Hip_Raise-similar",
+  "relationshipType": "similar",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730009600,
+  "fromExerciseTemplateId": "Cocoons",
+  "toExerciseTemplateId": "Bent-Knee_Hip_Raise"
+}

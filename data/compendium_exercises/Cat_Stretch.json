@@ -1,0 +1,42 @@
+{
+  "name": "Cat Stretch",
+  "slug": "cat-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "RHOMBOIDS",
+    "LOWER_BACK"
+  ],
+  "secondaryMuscles": [
+    "ABS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Spinal flexion stretch performed on hands and knees, rounding the spine to stretch back muscles",
+  "instructions": [
+    "Position yourself on the floor on your hands and knees.",
+    "Pull your belly in and round your spine, lower back, shoulders, and neck, letting your head drop.",
+    "Hold for 15 seconds."
+  ],
+  "images": [
+    "/img/exercises/Cat_Stretch/0.jpg",
+    "/img/exercises/Cat_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Cat-Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Cat_Stretch",
+  "equipmentIds": []
+}

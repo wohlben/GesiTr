@@ -1,0 +1,10 @@
+{
+  "id": "Backward_Medicine_Ball_Throw-Chest_Push_with_Run_Release-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729933200,
+  "fromExerciseTemplateId": "Backward_Medicine_Ball_Throw",
+  "toExerciseTemplateId": "Chest_Push_with_Run_Release"
+}

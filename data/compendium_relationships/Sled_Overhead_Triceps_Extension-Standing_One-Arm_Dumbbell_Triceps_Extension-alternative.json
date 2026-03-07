@@ -1,0 +1,10 @@
+{
+  "id": "Sled_Overhead_Triceps_Extension-Standing_One-Arm_Dumbbell_Triceps_Extension-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Sled_Overhead_Triceps_Extension",
+  "toExerciseTemplateId": "Standing_One-Arm_Dumbbell_Triceps_Extension"
+}

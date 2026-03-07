@@ -1,0 +1,10 @@
+{
+  "id": "Straight_Bar_Bench_Mid_Rows-Lying_T-Bar_Row-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": "Both supported rowing movements isolating back muscles; T-bar machine provides more stability than standing on bench with free barbell",
+  "createdBy": "system",
+  "createdAt": 1730012400,
+  "fromExerciseTemplateId": "Straight_Bar_Bench_Mid_Rows",
+  "toExerciseTemplateId": "Lying_T-Bar_Row"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Bent-Arm_Barbell_Pullover-Bent-Arm_Dumbbell_Pullover-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Bent-Arm_Barbell_Pullover",
+  "toExerciseTemplateId": "Bent-Arm_Dumbbell_Pullover"
+}

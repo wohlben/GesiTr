@@ -1,0 +1,49 @@
+{
+  "name": "Dumbbell One-Arm Upright Row",
+  "slug": "dumbbell-one-arm-upright-row",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "TRAPS"
+  ],
+  "secondaryMuscles": [
+    "SIDE_DELTS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0.1,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Single-arm upright row with dumbbell, pulling to chin height to target traps and shoulders unilaterally.",
+  "instructions": [
+    "Grab a dumbbell and stand up straight with your arm extended in front of you with a slight bend at the elbows and your back straight. This will be your starting position. Tip: The dumbbell should be resting on top of your thigh with the palm of your hands facing your thighs.",
+    "The other hand can be kept fully extended to the side, by the waist or grabbing a fixed surface for stability.",
+    "Use your side shoulders to lift the dumbbell as you exhale. The dumbbell should be close to the body as you move it up. Continue to lift it until the dumbbell is nearly in line with your chin. Tip: Your elbows should drive the motion. As you lift the dumbbell, your elbow should always be higher than your forearm. Also, keep your torso stationary and pause for a second at the top of the movement.",
+    "Lower the dumbbell back down slowly to the starting position. Inhale as you perform this portion of the movement.",
+    "Repeat for the recommended amount of repetitions and switch arms."
+  ],
+  "images": [
+    "/img/exercises/Dumbbell_One-Arm_Upright_Row/0.jpg",
+    "/img/exercises/Dumbbell_One-Arm_Upright_Row/1.jpg"
+  ],
+  "alternativeNames": [
+    "DB One-Arm Upright Row",
+    "Dumbbell One Arm Upright Row",
+    "Dumbbell Single Arm Upright Row",
+    "Dumbbell Unilateral Upright Row",
+    "Dumbell One-Arm Upright Row"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Dumbbell_One-Arm_Upright_Row",
+  "equipmentIds": [
+    "dumbbell"
+  ]
+}

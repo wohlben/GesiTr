@@ -1,0 +1,10 @@
+{
+  "id": "Chin_To_Chest_Stretch-Neck-SMR-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Chin_To_Chest_Stretch",
+  "toExerciseTemplateId": "Neck-SMR"
+}

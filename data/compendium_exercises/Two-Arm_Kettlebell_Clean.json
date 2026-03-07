@@ -1,0 +1,51 @@
+{
+  "name": "Two-Arm Kettlebell Clean",
+  "slug": "two-arm-kettlebell-clean",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "HAMSTRINGS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "LOWER_BACK",
+    "FRONT_DELTS",
+    "TRAPS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Double kettlebell clean from floor to shoulders using both hands, building explosive pulling power.",
+  "instructions": [
+    "Place two kettlebells between your feet. To get in the starting position, push your butt back and look straight ahead.",
+    "Clean the kettlebells to your shoulders by extending through the legs and hips as you raise the kettlebells towards your shoulders. Rotate your wrists as you do so.",
+    "Lower the kettlebells back to the starting position and repeat."
+  ],
+  "images": [
+    "/img/exercises/Two-Arm_Kettlebell_Clean/0.jpg",
+    "/img/exercises/Two-Arm_Kettlebell_Clean/1.jpg"
+  ],
+  "alternativeNames": [
+    "Barbell Clean",
+    "Bilateral Kettlebell Clean",
+    "Both Arms Kettlebell Clean",
+    "Power Clean",
+    "Two Arm Kettlebell Clean",
+    "Two-Arm KB Clean"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Two-Arm_Kettlebell_Clean",
+  "equipmentIds": [
+    "2x kettlebell"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Scissor_Kick-Windmills-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Scissor_Kick",
+  "toExerciseTemplateId": "Windmills"
+}

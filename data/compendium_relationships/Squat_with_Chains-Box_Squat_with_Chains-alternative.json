@@ -1,0 +1,10 @@
+{
+  "id": "Squat_with_Chains-Box_Squat_with_Chains-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Squat_with_Chains",
+  "toExerciseTemplateId": "Box_Squat_with_Chains"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Tate_Press-JM_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499467,
+  "fromExerciseTemplateId": "Tate_Press",
+  "toExerciseTemplateId": "JM_Press"
+}

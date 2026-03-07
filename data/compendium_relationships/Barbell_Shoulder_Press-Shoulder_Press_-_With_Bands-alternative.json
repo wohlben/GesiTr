@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Shoulder_Press-Shoulder_Press_-_With_Bands-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761545420,
+  "fromExerciseTemplateId": "Barbell_Shoulder_Press",
+  "toExerciseTemplateId": "Shoulder_Press_-_With_Bands"
+}

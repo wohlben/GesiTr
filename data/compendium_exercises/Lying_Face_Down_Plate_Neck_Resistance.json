@@ -1,0 +1,43 @@
+{
+  "name": "Lying Face Down Plate Neck Resistance",
+  "slug": "lying-face-down-plate-neck-resistance",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "NECK"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Neck resistance exercise lying face down with plate on back of head, strengthening neck extensors.",
+  "instructions": [
+    "Lie face down with your whole body straight on a flat bench while holding a weight plate behind your head. Tip: You will need to position yourself so that your shoulders are slightly above the end of a flat bench in order for the upper chest, neck and face to be off the bench. This will be your starting position.",
+    "While keeping the plate secure on the back of your head slowly lower your head (as in saying \"yes\") as you breathe in.",
+    "Raise your head back up to the starting position in a semi-circular motion as you breathe out. Hold the contraction for a second.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Lying_Face_Down_Plate_Neck_Resistance/0.jpg",
+    "/img/exercises/Lying_Face_Down_Plate_Neck_Resistance/1.jpg"
+  ],
+  "alternativeNames": [
+    "Prone Face Down Plate Neck Resistance"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Lying_Face_Down_Plate_Neck_Resistance",
+  "equipmentIds": [
+    "weight-plate"
+  ]
+}

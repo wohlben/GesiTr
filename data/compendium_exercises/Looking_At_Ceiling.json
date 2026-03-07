@@ -1,0 +1,38 @@
+{
+  "name": "Looking At Ceiling",
+  "slug": "looking-at-ceiling",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "HIP_FLEXORS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Kneeling stretch arching back and looking at ceiling, holding heels to stretch quadriceps and hip flexors.",
+  "instructions": [
+    "Kneel on the floor, holding your heels with both hands.",
+    "Lift your buttocks up and forward while bringing your head back to look up at the ceiling, to give an arch in your back."
+  ],
+  "images": [
+    "/img/exercises/Looking_At_Ceiling/0.jpg",
+    "/img/exercises/Looking_At_Ceiling/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Looking_At_Ceiling",
+  "equipmentIds": []
+}

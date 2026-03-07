@@ -1,0 +1,10 @@
+{
+  "id": "Russian_Twist-Cable_Russian_Twists-variation",
+  "relationshipType": "variation",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Russian_Twist",
+  "toExerciseTemplateId": "Cable_Russian_Twists"
+}

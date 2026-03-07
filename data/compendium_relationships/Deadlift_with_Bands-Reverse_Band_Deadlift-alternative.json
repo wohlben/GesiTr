@@ -1,0 +1,10 @@
+{
+  "id": "Deadlift_with_Bands-Reverse_Band_Deadlift-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Deadlift_with_Bands",
+  "toExerciseTemplateId": "Reverse_Band_Deadlift"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Drag_Curl-Close-Grip_Standing_Barbell_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.88,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Drag_Curl",
+  "toExerciseTemplateId": "Close-Grip_Standing_Barbell_Curl"
+}

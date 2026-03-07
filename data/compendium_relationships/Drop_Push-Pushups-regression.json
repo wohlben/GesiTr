@@ -1,0 +1,10 @@
+{
+  "id": "Drop_Push-Pushups-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Drop_Push",
+  "toExerciseTemplateId": "Pushups"
+}

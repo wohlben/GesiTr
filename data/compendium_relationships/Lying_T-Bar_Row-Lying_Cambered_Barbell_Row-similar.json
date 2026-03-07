@@ -1,0 +1,10 @@
+{
+  "id": "Lying_T-Bar_Row-Lying_Cambered_Barbell_Row-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Lying_T-Bar_Row",
+  "toExerciseTemplateId": "Lying_Cambered_Barbell_Row"
+}

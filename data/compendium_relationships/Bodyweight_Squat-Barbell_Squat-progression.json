@@ -1,0 +1,10 @@
+{
+  "id": "Bodyweight_Squat-Barbell_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.95,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Bodyweight_Squat",
+  "toExerciseTemplateId": "Barbell_Squat"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Alternate_Heel_Touchers-Barbell_Side_Bend-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Alternate_Heel_Touchers",
+  "toExerciseTemplateId": "Barbell_Side_Bend"
+}

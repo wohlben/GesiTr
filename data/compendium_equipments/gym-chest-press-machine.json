@@ -1,0 +1,8 @@
+{
+  "name": "gym-chest-press-machine",
+  "displayName": "Chest Press Machine",
+  "description": "A machine that simulates the bench press movement in a fixed path.",
+  "category": "machines",
+  "imageUrl": null,
+  "templateId": "gym-chest-press-machine"
+}

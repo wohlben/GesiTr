@@ -1,0 +1,10 @@
+{
+  "id": "Dynamic_Back_Stretch-Elbow_Circles-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Dynamic_Back_Stretch",
+  "toExerciseTemplateId": "Elbow_Circles"
+}

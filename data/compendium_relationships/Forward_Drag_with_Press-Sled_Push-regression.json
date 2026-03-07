@@ -1,0 +1,10 @@
+{
+  "id": "Forward_Drag_with_Press-Sled_Push-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464001,
+  "fromExerciseTemplateId": "Forward_Drag_with_Press",
+  "toExerciseTemplateId": "Sled_Push"
+}

@@ -1,0 +1,39 @@
+{
+  "name": "The Straddle",
+  "slug": "the-straddle",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "ADDUCTORS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Seated wide-leg straddle stretch reaching forward, stretching inner thighs and hamstrings.",
+  "instructions": [
+    "Begin in a seated, upright position. Start by extending your legs in front of you in a V.",
+    "With your hands on the floor, lean forward as far as possible. Hold for 10 to 20 seconds."
+  ],
+  "images": [
+    "/img/exercises/The_Straddle/0.jpg",
+    "/img/exercises/The_Straddle/1.jpg"
+  ],
+  "alternativeNames": [
+    "Straddle",
+    "The-Straddle"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "The_Straddle",
+  "equipmentIds": []
+}

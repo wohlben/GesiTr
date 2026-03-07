@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Step_Ups-Barbell_Step_Ups-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Dumbbell_Step_Ups",
+  "toExerciseTemplateId": "Barbell_Step_Ups"
+}

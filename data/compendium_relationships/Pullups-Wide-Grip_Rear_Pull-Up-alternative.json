@@ -1,0 +1,10 @@
+{
+  "id": "Pullups-Wide-Grip_Rear_Pull-Up-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Pullups",
+  "toExerciseTemplateId": "Wide-Grip_Rear_Pull-Up"
+}

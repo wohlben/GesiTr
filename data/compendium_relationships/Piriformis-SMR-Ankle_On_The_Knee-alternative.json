@@ -1,0 +1,10 @@
+{
+  "id": "Piriformis-SMR-Ankle_On_The_Knee-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": "Both target piriformis muscle using figure-4 position; stretch version provides traditional static stretching",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Piriformis-SMR",
+  "toExerciseTemplateId": "Ankle_On_The_Knee"
+}

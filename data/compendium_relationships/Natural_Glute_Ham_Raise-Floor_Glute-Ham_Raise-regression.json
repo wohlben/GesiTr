@@ -1,0 +1,10 @@
+{
+  "id": "Natural_Glute_Ham_Raise-Floor_Glute-Ham_Raise-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Natural_Glute_Ham_Raise",
+  "toExerciseTemplateId": "Floor_Glute-Ham_Raise"
+}

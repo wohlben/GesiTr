@@ -1,0 +1,10 @@
+{
+  "id": "High_Cable_Curls-Barbell_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498077,
+  "fromExerciseTemplateId": "High_Cable_Curls",
+  "toExerciseTemplateId": "Barbell_Curl"
+}

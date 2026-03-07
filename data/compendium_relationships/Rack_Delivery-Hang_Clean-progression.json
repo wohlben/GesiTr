@@ -1,0 +1,10 @@
+{
+  "id": "Rack_Delivery-Hang_Clean-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Rack_Delivery",
+  "toExerciseTemplateId": "Hang_Clean"
+}

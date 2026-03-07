@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Military_Press-Shoulder_Press_-_With_Bands-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761545420,
+  "fromExerciseTemplateId": "Standing_Military_Press",
+  "toExerciseTemplateId": "Shoulder_Press_-_With_Bands"
+}

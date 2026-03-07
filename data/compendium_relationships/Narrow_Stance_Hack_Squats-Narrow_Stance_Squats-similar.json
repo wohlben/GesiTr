@@ -1,0 +1,10 @@
+{
+  "id": "Narrow_Stance_Hack_Squats-Narrow_Stance_Squats-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729976400,
+  "fromExerciseTemplateId": "Narrow_Stance_Hack_Squats",
+  "toExerciseTemplateId": "Narrow_Stance_Squats"
+}

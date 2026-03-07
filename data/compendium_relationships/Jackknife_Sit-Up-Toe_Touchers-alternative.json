@@ -1,0 +1,10 @@
+{
+  "id": "Jackknife_Sit-Up-Toe_Touchers-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Jackknife_Sit-Up",
+  "toExerciseTemplateId": "Toe_Touchers"
+}

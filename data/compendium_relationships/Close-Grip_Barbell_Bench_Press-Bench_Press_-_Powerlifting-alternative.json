@@ -1,0 +1,10 @@
+{
+  "id": "Close-Grip_Barbell_Bench_Press-Bench_Press_-_Powerlifting-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Close-Grip_Barbell_Bench_Press",
+  "toExerciseTemplateId": "Bench_Press_-_Powerlifting"
+}

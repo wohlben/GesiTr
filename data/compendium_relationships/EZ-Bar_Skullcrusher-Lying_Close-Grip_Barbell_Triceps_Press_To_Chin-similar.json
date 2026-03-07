@@ -1,0 +1,10 @@
+{
+  "id": "EZ-Bar_Skullcrusher-Lying_Close-Grip_Barbell_Triceps_Press_To_Chin-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "EZ-Bar_Skullcrusher",
+  "toExerciseTemplateId": "Lying_Close-Grip_Barbell_Triceps_Press_To_Chin"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Wide-Grip_Rear_Pull-Up-Band_Assisted_Pull-Up-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Wide-Grip_Rear_Pull-Up",
+  "toExerciseTemplateId": "Band_Assisted_Pull-Up"
+}

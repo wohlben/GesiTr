@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Hammer_Curls-Alternate_Incline_Dumbbell_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Incline_Hammer_Curls",
+  "toExerciseTemplateId": "Alternate_Incline_Dumbbell_Curl"
+}

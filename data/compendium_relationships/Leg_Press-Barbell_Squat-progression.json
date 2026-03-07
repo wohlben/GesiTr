@@ -1,0 +1,10 @@
+{
+  "id": "Leg_Press-Barbell_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Leg_Press",
+  "toExerciseTemplateId": "Barbell_Squat"
+}

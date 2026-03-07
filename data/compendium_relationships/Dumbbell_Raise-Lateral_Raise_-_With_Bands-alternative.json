@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Raise-Lateral_Raise_-_With_Bands-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Dumbbell_Raise",
+  "toExerciseTemplateId": "Lateral_Raise_-_With_Bands"
+}

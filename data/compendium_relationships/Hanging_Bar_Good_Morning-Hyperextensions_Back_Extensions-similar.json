@@ -1,0 +1,10 @@
+{
+  "id": "Hanging_Bar_Good_Morning-Hyperextensions_Back_Extensions-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498416,
+  "fromExerciseTemplateId": "Hanging_Bar_Good_Morning",
+  "toExerciseTemplateId": "Hyperextensions_Back_Extensions"
+}

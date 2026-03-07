@@ -1,0 +1,10 @@
+{
+  "id": "Side_Lateral_Raise-One-Arm_Incline_Lateral_Raise-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Side_Lateral_Raise",
+  "toExerciseTemplateId": "One-Arm_Incline_Lateral_Raise"
+}

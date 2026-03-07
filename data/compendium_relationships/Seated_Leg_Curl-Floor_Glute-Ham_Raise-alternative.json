@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Leg_Curl-Floor_Glute-Ham_Raise-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Seated_Leg_Curl",
+  "toExerciseTemplateId": "Floor_Glute-Ham_Raise"
+}

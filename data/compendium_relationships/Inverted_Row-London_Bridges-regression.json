@@ -1,0 +1,10 @@
+{
+  "id": "Inverted_Row-London_Bridges-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Inverted_Row",
+  "toExerciseTemplateId": "London_Bridges"
+}

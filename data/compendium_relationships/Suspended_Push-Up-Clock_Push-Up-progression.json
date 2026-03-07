@@ -1,0 +1,10 @@
+{
+  "id": "Suspended_Push-Up-Clock_Push-Up-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Suspended_Push-Up",
+  "toExerciseTemplateId": "Clock_Push-Up"
+}

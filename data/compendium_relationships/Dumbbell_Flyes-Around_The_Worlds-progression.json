@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Flyes-Around_The_Worlds-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Flyes",
+  "toExerciseTemplateId": "Around_The_Worlds"
+}

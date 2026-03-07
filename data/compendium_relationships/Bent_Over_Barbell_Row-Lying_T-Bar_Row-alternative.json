@@ -1,0 +1,10 @@
+{
+  "id": "Bent_Over_Barbell_Row-Lying_T-Bar_Row-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Bent_Over_Barbell_Row",
+  "toExerciseTemplateId": "Lying_T-Bar_Row"
+}

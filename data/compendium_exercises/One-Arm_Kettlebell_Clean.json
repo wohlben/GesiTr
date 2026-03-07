@@ -1,0 +1,51 @@
+{
+  "name": "One-Arm Kettlebell Clean",
+  "slug": "one-arm-kettlebell-clean",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "HAMSTRINGS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "LOWER_BACK",
+    "FRONT_DELTS",
+    "TRAPS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Single-arm kettlebell clean from floor to shoulder, using hip drive and wrist rotation to rack weight.",
+  "instructions": [
+    "Place a kettlebell between your feet. As you bend down to grab the kettlebell, push your butt back and keep your eyes looking forward.",
+    "Clean the kettlebell to your shoulders by extending through the legs and hips as you raise the kettlebell towards your shoulder. The wrist should rotate as you do so.",
+    "Return the weight to the starting position."
+  ],
+  "images": [
+    "/img/exercises/One-Arm_Kettlebell_Clean/0.jpg",
+    "/img/exercises/One-Arm_Kettlebell_Clean/1.jpg"
+  ],
+  "alternativeNames": [
+    "Barbell Clean",
+    "One Arm Kettlebell Clean",
+    "One-Arm KB Clean",
+    "Power Clean",
+    "Single Arm Kettlebell Clean",
+    "Unilateral Kettlebell Clean"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "One-Arm_Kettlebell_Clean",
+  "equipmentIds": [
+    "kettlebell"
+  ]
+}

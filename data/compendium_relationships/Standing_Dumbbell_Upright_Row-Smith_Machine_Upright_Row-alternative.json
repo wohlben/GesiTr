@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Dumbbell_Upright_Row-Smith_Machine_Upright_Row-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Dumbbell_Upright_Row",
+  "toExerciseTemplateId": "Smith_Machine_Upright_Row"
+}

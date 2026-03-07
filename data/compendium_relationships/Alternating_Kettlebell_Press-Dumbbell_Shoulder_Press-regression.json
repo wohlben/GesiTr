@@ -1,0 +1,10 @@
+{
+  "id": "Alternating_Kettlebell_Press-Dumbbell_Shoulder_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.68,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761461533,
+  "fromExerciseTemplateId": "Alternating_Kettlebell_Press",
+  "toExerciseTemplateId": "Dumbbell_Shoulder_Press"
+}

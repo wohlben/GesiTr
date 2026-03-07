@@ -1,0 +1,10 @@
+{
+  "id": "Atlas_Stones-Keg_Load-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761463810,
+  "fromExerciseTemplateId": "Atlas_Stones",
+  "toExerciseTemplateId": "Keg_Load"
+}

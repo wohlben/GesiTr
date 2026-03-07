@@ -1,0 +1,10 @@
+{
+  "id": "Bodyweight_Flyes-Decline_Push-Up-progression",
+  "relationshipType": "progression",
+  "strength": 0.55,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476339,
+  "fromExerciseTemplateId": "Bodyweight_Flyes",
+  "toExerciseTemplateId": "Decline_Push-Up"
+}

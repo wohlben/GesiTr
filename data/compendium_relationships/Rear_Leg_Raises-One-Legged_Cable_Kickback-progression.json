@@ -1,0 +1,10 @@
+{
+  "id": "Rear_Leg_Raises-One-Legged_Cable_Kickback-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Rear_Leg_Raises",
+  "toExerciseTemplateId": "One-Legged_Cable_Kickback"
+}

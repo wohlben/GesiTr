@@ -1,0 +1,10 @@
+{
+  "id": "Band_Leg_Extension-Leg_Extensions-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464349,
+  "fromExerciseTemplateId": "Band_Leg_Extension",
+  "toExerciseTemplateId": "Leg_Extensions"
+}

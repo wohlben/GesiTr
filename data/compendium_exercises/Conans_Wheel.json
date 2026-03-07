@@ -1,0 +1,51 @@
+{
+  "name": "Conan's Wheel",
+  "slug": "conan-s-wheel",
+  "type": "STRONGMAN",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "TRAPS",
+    "ABS",
+    "OBLIQUES",
+    "FOREARMS"
+  ],
+  "secondaryMuscles": [
+    "QUADS",
+    "GLUTES",
+    "FRONT_DELTS",
+    "SIDE_DELTS",
+    "REAR_DELTS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "TIME",
+    "DISTANCE",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Strongman event where you carry a heavy radial implement in a zurcher hold while walking in circles, testing grip, core stability, and mental toughness",
+  "instructions": [
+    "With the weight loaded, take a zurcher hold on the end of the implement. Place the bar in the crook of the elbow and hold onto your wrist. Try to keep the weight off of the forearms.",
+    "Begin by lifting the weight from the ground. Keep a tight, upright posture as you being to walk, taking short, fast steps. Look up and away as you turn in a circle. Do not hold your breath during the event. Continue walking until you complete one or more complete turns."
+  ],
+  "images": [
+    "/img/exercises/Conans_Wheel/0.jpg",
+    "/img/exercises/Conans_Wheel/1.jpg"
+  ],
+  "alternativeNames": [
+    "Conan's-Wheel"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Conans_Wheel",
+  "equipmentIds": [
+    "OTHER"
+  ]
+}

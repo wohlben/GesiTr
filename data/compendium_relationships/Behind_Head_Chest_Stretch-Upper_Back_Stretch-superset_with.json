@@ -1,0 +1,10 @@
+{
+  "id": "Behind_Head_Chest_Stretch-Upper_Back_Stretch-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Behind_Head_Chest_Stretch",
+  "toExerciseTemplateId": "Upper_Back_Stretch"
+}

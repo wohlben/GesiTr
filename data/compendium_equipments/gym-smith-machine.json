@@ -1,0 +1,8 @@
+{
+  "name": "gym-smith-machine",
+  "displayName": "Smith Machine",
+  "description": "A barbell fixed within steel rails for vertical or near-vertical movement.",
+  "category": "machines",
+  "imageUrl": null,
+  "templateId": "gym-smith-machine"
+}

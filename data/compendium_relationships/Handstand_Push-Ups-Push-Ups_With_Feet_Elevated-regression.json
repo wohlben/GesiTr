@@ -1,0 +1,10 @@
+{
+  "id": "Handstand_Push-Ups-Push-Ups_With_Feet_Elevated-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Handstand_Push-Ups",
+  "toExerciseTemplateId": "Push-Ups_With_Feet_Elevated"
+}

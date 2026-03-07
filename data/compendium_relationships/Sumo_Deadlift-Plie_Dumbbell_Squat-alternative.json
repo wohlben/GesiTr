@@ -1,0 +1,10 @@
+{
+  "id": "Sumo_Deadlift-Plie_Dumbbell_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.5,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Sumo_Deadlift",
+  "toExerciseTemplateId": "Plie_Dumbbell_Squat"
+}

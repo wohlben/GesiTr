@@ -1,0 +1,10 @@
+{
+  "id": "Hang_Clean-Power_Clean_from_Blocks-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761511266,
+  "fromExerciseTemplateId": "Hang_Clean",
+  "toExerciseTemplateId": "Power_Clean_from_Blocks"
+}

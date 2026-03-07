@@ -1,0 +1,10 @@
+{
+  "id": "Single_Leg_Push-off-Lateral_Box_Jump-related",
+  "relationshipType": "related",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Single_Leg_Push-off",
+  "toExerciseTemplateId": "Lateral_Box_Jump"
+}

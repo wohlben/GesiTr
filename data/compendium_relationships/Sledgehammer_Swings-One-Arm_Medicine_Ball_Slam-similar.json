@@ -1,0 +1,10 @@
+{
+  "id": "Sledgehammer_Swings-One-Arm_Medicine_Ball_Slam-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761510517,
+  "fromExerciseTemplateId": "Sledgehammer_Swings",
+  "toExerciseTemplateId": "One-Arm_Medicine_Ball_Slam"
+}

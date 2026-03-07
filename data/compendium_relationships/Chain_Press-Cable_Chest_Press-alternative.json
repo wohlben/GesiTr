@@ -1,0 +1,10 @@
+{
+  "id": "Chain_Press-Cable_Chest_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Chain_Press",
+  "toExerciseTemplateId": "Cable_Chest_Press"
+}

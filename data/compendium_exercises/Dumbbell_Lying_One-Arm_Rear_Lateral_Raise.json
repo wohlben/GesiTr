@@ -1,0 +1,54 @@
+{
+  "name": "Dumbbell Lying One-Arm Rear Lateral Raise",
+  "slug": "dumbbell-lying-one-arm-rear-lateral-raise",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "REAR_DELTS"
+  ],
+  "secondaryMuscles": [
+    "RHOMBOIDS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Strength training exercise targeting primary muscle groups",
+  "instructions": [
+    "While holding a dumbbell in one hand, lay with your chest down on a slightly inclined (around 15 degrees when measured from the floor) adjustable bench. The other hand can be used to hold to the leg of the bench for stability.",
+    "Position the palm of the hand that is holding the dumbbell in a neutral manner (palms facing your torso) as you keep the arm extended with the elbow slightly bent. This will be your starting position.",
+    "Now raise the arm with the dumbbell to the side until your elbow is at shoulder height and your arm is roughly parallel to the floor as you exhale. Tip: Maintain your arm perpendicular to the torso while keeping your arm extended throughout the movement. Also, keep the contraction at the top for a second.",
+    "Slowly lower the dumbbell to the starting position as you inhale.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Dumbbell_Lying_One-Arm_Rear_Lateral_Raise/0.jpg",
+    "/img/exercises/Dumbbell_Lying_One-Arm_Rear_Lateral_Raise/1.jpg"
+  ],
+  "alternativeNames": [
+    "DB Lying One-Arm Rear Lateral Raise",
+    "Dumbbell Lateral Raise",
+    "Dumbbell Lying One Arm Rear Lateral Raise",
+    "Dumbbell Lying Single Arm Rear Lateral Raise",
+    "Dumbbell Lying Unilateral Rear Lateral Raise",
+    "Dumbbell Prone One-Arm Rear Lateral Raise",
+    "Dumbell Lying One-Arm Rear Lateral Raise",
+    "Side Lateral Raise",
+    "Side Raise"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Dumbbell_Lying_One-Arm_Rear_Lateral_Raise",
+  "equipmentIds": [
+    "dumbbell"
+  ]
+}

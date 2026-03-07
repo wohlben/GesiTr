@@ -1,0 +1,46 @@
+{
+  "name": "Rocket Jump",
+  "slug": "rocket-jump",
+  "type": "CARDIO",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Explosive vertical jump reaching maximum height, plyometric exercise for power development.",
+  "instructions": [
+    "Begin in a relaxed stance with your feet shoulder width apart and hold your arms close to the body.",
+    "To initiate the move, squat down halfway and explode back up as high as possible.",
+    "Fully extend your entire body, reaching overhead as far as possible. As you land, absorb your impact through the legs."
+  ],
+  "images": [
+    "/img/exercises/Rocket_Jump/0.jpg",
+    "/img/exercises/Rocket_Jump/1.jpg"
+  ],
+  "alternativeNames": [
+    "Rocket-Jump"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Rocket_Jump",
+  "equipmentIds": []
+}

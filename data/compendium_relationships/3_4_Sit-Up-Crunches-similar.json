@@ -1,0 +1,10 @@
+{
+  "id": "3_4_Sit-Up-Crunches-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "3_4_Sit-Up",
+  "toExerciseTemplateId": "Crunches"
+}

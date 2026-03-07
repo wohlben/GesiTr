@@ -1,0 +1,10 @@
+{
+  "id": "Kettlebell_Arnold_Press-Kettlebell_Seated_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Kettlebell_Arnold_Press",
+  "toExerciseTemplateId": "Kettlebell_Seated_Press"
+}

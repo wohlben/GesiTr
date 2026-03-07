@@ -1,0 +1,10 @@
+{
+  "id": "Preacher_Curl-Close-Grip_Standing_Barbell_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729931400,
+  "fromExerciseTemplateId": "Preacher_Curl",
+  "toExerciseTemplateId": "Close-Grip_Standing_Barbell_Curl"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Rear_Leg_Raises-Barbell_Hip_Thrust-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Rear_Leg_Raises",
+  "toExerciseTemplateId": "Barbell_Hip_Thrust"
+}

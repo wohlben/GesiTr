@@ -1,0 +1,10 @@
+{
+  "id": "Side_Wrist_Pull-Shoulder_Stretch-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Side_Wrist_Pull",
+  "toExerciseTemplateId": "Shoulder_Stretch"
+}

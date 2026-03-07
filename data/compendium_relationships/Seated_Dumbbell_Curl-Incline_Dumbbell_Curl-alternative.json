@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Dumbbell_Curl-Incline_Dumbbell_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Seated_Dumbbell_Curl",
+  "toExerciseTemplateId": "Incline_Dumbbell_Curl"
+}

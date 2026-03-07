@@ -1,0 +1,47 @@
+{
+  "name": "Alternating Deltoid Raise",
+  "slug": "alternating-deltoid-raise",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS",
+    "SIDE_DELTS"
+  ],
+  "secondaryMuscles": [
+    "TRAPS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Isolation exercise alternating front and lateral raises to comprehensively target all three deltoid heads",
+  "instructions": [
+    "In a standing position, hold a pair of dumbbells at your side.",
+    "Keeping your elbows slightly bent, raise the weights directly in front of you to shoulder height, avoiding any swinging or cheating.",
+    "Return the weights to your side.",
+    "On the next repetition, raise the weights laterally, raising them out to your side to about shoulder height.",
+    "Return the weights to the starting position and continue alternating to the front and side."
+  ],
+  "images": [
+    "/img/exercises/Alternating_Deltoid_Raise/0.jpg",
+    "/img/exercises/Alternating_Deltoid_Raise/1.jpg"
+  ],
+  "alternativeNames": [
+    "Alternate Deltoid Raise"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Alternating_Deltoid_Raise",
+  "equipmentIds": [
+    "2x dumbbell"
+  ]
+}

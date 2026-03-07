@@ -1,0 +1,10 @@
+{
+  "id": "Good_Morning_off_Pins-Hyperextensions_Back_Extensions-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498416,
+  "fromExerciseTemplateId": "Good_Morning_off_Pins",
+  "toExerciseTemplateId": "Hyperextensions_Back_Extensions"
+}

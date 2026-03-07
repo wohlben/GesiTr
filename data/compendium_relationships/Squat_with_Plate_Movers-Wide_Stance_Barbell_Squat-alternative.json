@@ -1,0 +1,10 @@
+{
+  "id": "Squat_with_Plate_Movers-Wide_Stance_Barbell_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Squat_with_Plate_Movers",
+  "toExerciseTemplateId": "Wide_Stance_Barbell_Squat"
+}

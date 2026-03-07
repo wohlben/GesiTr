@@ -1,0 +1,10 @@
+{
+  "id": "Single-Leg_Hop_Progression-Single_Leg_Push-off-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Single-Leg_Hop_Progression",
+  "toExerciseTemplateId": "Single_Leg_Push-off"
+}

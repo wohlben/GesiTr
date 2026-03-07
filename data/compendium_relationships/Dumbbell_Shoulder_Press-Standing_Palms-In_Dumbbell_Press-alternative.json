@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Shoulder_Press-Standing_Palms-In_Dumbbell_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Shoulder_Press",
+  "toExerciseTemplateId": "Standing_Palms-In_Dumbbell_Press"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Isometric_Wipers-Clock_Push-Up-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Isometric_Wipers",
+  "toExerciseTemplateId": "Clock_Push-Up"
+}

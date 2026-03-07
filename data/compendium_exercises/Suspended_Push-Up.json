@@ -1,0 +1,51 @@
+{
+  "name": "Suspended Push-Up",
+  "slug": "suspended-push-up",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS",
+    "FRONT_DELTS",
+    "ABS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 1,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Push-up with hands in suspension trainer straps, adding instability for core engagement.",
+  "instructions": [
+    "Anchor your suspension straps securely to the top of a rack or other object.",
+    "Leaning into the straps, take a handle in each hand and move into a push-up plank position. You should be as close to parallel to the ground as you can manage with your arms fully extended, maintaining good posture.",
+    "Maintaining a straight, rigid torso, descend slowly by allowing the elbows to flex.",
+    "Continue until your elbows break 90 degrees, pausing before you extend to return to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Suspended_Push-Up/0.jpg",
+    "/img/exercises/Suspended_Push-Up/1.jpg"
+  ],
+  "alternativeNames": [
+    "Press Up",
+    "Push Up",
+    "Pushup",
+    "Pushups",
+    "Suspended Push Up"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Suspended_Push-Up",
+  "equipmentIds": [
+    "suspension-trainer"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Close-Grip_EZ_Bar_Curl-EZ-Bar_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.95,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Close-Grip_EZ_Bar_Curl",
+  "toExerciseTemplateId": "EZ-Bar_Curl"
+}

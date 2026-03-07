@@ -1,0 +1,10 @@
+{
+  "id": "Goblet_Squat-Resistance_Band_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Goblet_Squat",
+  "toExerciseTemplateId": "Resistance_Band_Squat"
+}

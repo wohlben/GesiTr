@@ -1,0 +1,10 @@
+{
+  "id": "Ab_Roller-Butt-Ups-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Ab_Roller",
+  "toExerciseTemplateId": "Butt-Ups"
+}

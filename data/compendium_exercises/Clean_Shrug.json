@@ -1,0 +1,51 @@
+{
+  "name": "Clean Shrug",
+  "slug": "clean-shrug",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "TRAPS"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS",
+    "FOREARMS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Clean-grip shrug at top of pull emphasizing trap development for Olympic lifting",
+  "instructions": [
+    "Begin with a shoulder width, double overhand or hook grip, with the bar hanging at the mid thigh position. Your back should be straight and inclined slightly forward.",
+    "Shrug your shoulders towards your ears. While this exercise can usually by loaded with heavier weight than a clean, avoid overloading to the point that the execution slows down."
+  ],
+  "images": [
+    "/img/exercises/Clean_Shrug/0.jpg",
+    "/img/exercises/Clean_Shrug/1.jpg"
+  ],
+  "alternativeNames": [
+    "Barbell Clean",
+    "Barbell Shrug",
+    "Clean-Shrug",
+    "Power Clean",
+    "Shoulder Shrug",
+    "Trap Shrug"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Clean_Shrug",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

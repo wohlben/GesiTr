@@ -1,0 +1,10 @@
+{
+  "id": "Behind_Head_Chest_Stretch-One_Arm_Against_Wall-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Behind_Head_Chest_Stretch",
+  "toExerciseTemplateId": "One_Arm_Against_Wall"
+}

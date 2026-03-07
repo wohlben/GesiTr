@@ -1,0 +1,10 @@
+{
+  "id": "Iron_Crosses_stretch-Behind_Head_Chest_Stretch-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Iron_Crosses_stretch",
+  "toExerciseTemplateId": "Behind_Head_Chest_Stretch"
+}

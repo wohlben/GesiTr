@@ -1,0 +1,10 @@
+{
+  "id": "Ring_Dips-Weighted_Bench_Dip-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Ring_Dips",
+  "toExerciseTemplateId": "Weighted_Bench_Dip"
+}

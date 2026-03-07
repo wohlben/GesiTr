@@ -1,0 +1,8 @@
+{
+  "name": "gym-ghd-machine",
+  "displayName": "GHD Machine",
+  "description": "Glute Ham Developer - a bench for posterior chain exercises and sit-ups.",
+  "category": "machines",
+  "imageUrl": null,
+  "templateId": "gym-ghd-machine"
+}

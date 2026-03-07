@@ -1,0 +1,49 @@
+{
+  "name": "Landmine Linear Jammer",
+  "slug": "landmine-linear-jammer",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "ABS",
+    "CALVES",
+    "CHEST",
+    "HAMSTRINGS",
+    "QUADS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Explosive full-body landmine press combining squat and overhead press in one powerful movement.",
+  "instructions": [
+    "Position a bar into landmine or, lacking one, securely anchor it in a corner. Load the bar to an appropriate weight and position the handle attachment on the bar.",
+    "Raise the bar from the floor, taking the handles to your shoulders. This will be your starting position.",
+    "In an athletic stance, squat by flexing your hips and setting your hips back, keeping your arms flexed.",
+    "Reverse the motion by powerfully extending through the hips, knees, and ankles, while also extending the elbows to straighten the arms. This movement should be done explosively, coming out of the squat to full extension as powerfully as possible.",
+    "Return to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Landmine_Linear_Jammer/0.jpg",
+    "/img/exercises/Landmine_Linear_Jammer/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Landmine_Linear_Jammer",
+  "equipmentIds": [
+    "landmine"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Crunch-Bent-Knee_Hip_Raise-similar",
+  "relationshipType": "similar",
+  "strength": 0.98,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Reverse_Crunch",
+  "toExerciseTemplateId": "Bent-Knee_Hip_Raise"
+}

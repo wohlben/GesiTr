@@ -1,0 +1,45 @@
+{
+  "name": "Linear Depth Jump",
+  "slug": "linear-depth-jump",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "CALVES",
+    "GLUTES",
+    "HAMSTRINGS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Plyometric drill dropping from one box and immediately jumping onto another platform, training explosive power and reactive strength.",
+  "instructions": [
+    "You will need two boxes or benches spaced a few feet away from each other. Begin by standing on one box facing towards the other platform.",
+    "To initiate the movement, gently drop down to the ground between your platforms, allowing the knees and hips to flex.",
+    "Reverse the motion by exploding, extending through the hips, knees, and ankles to jump onto the other platform.",
+    "Land softly, asborbing the impact through the legs."
+  ],
+  "images": [
+    "/img/exercises/Linear_Depth_Jump/0.jpg",
+    "/img/exercises/Linear_Depth_Jump/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Linear_Depth_Jump",
+  "equipmentIds": []
+}

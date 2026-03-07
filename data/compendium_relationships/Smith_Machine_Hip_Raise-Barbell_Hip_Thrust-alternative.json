@@ -1,0 +1,10 @@
+{
+  "id": "Smith_Machine_Hip_Raise-Barbell_Hip_Thrust-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464685,
+  "fromExerciseTemplateId": "Smith_Machine_Hip_Raise",
+  "toExerciseTemplateId": "Barbell_Hip_Thrust"
+}

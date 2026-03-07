@@ -1,0 +1,10 @@
+{
+  "id": "Lying_High_Bench_Barbell_Curl-Preacher_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Lying_High_Bench_Barbell_Curl",
+  "toExerciseTemplateId": "Preacher_Curl"
+}

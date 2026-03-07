@@ -1,0 +1,10 @@
+{
+  "id": "Stiff-Legged_Barbell_Deadlift-Stiff_Leg_Barbell_Good_Morning-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Stiff-Legged_Barbell_Deadlift",
+  "toExerciseTemplateId": "Stiff_Leg_Barbell_Good_Morning"
+}

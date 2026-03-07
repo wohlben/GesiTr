@@ -1,0 +1,10 @@
+{
+  "id": "Alternate_Hammer_Curl-Cable_Hammer_Curls_-_Rope_Attachment-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Alternate_Hammer_Curl",
+  "toExerciseTemplateId": "Cable_Hammer_Curls_-_Rope_Attachment"
+}

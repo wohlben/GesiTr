@@ -1,0 +1,10 @@
+{
+  "id": "Jackknife_Sit-Up-Press_Sit-Up-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": "Both are compound sit-up variations. Jackknife brings legs and torso together (bodyweight, beginner), while Press Sit-Up adds overhead press with barbell (advanced)",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Jackknife_Sit-Up",
+  "toExerciseTemplateId": "Press_Sit-Up"
+}

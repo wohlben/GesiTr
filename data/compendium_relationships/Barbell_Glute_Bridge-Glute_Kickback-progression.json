@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Glute_Bridge-Glute_Kickback-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729954800,
+  "fromExerciseTemplateId": "Barbell_Glute_Bridge",
+  "toExerciseTemplateId": "Glute_Kickback"
+}

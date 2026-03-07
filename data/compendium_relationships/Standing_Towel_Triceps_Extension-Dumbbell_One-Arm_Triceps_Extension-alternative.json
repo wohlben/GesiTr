@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Towel_Triceps_Extension-Dumbbell_One-Arm_Triceps_Extension-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730012400,
+  "fromExerciseTemplateId": "Standing_Towel_Triceps_Extension",
+  "toExerciseTemplateId": "Dumbbell_One-Arm_Triceps_Extension"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Alternating_Kettlebell_Row-Bent_Over_Two-Dumbbell_Row_With_Palms_In-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Alternating_Kettlebell_Row",
+  "toExerciseTemplateId": "Bent_Over_Two-Dumbbell_Row_With_Palms_In"
+}

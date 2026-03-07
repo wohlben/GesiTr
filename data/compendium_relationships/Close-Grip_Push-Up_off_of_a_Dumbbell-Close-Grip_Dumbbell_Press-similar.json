@@ -1,0 +1,10 @@
+{
+  "id": "Close-Grip_Push-Up_off_of_a_Dumbbell-Close-Grip_Dumbbell_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729940400,
+  "fromExerciseTemplateId": "Close-Grip_Push-Up_off_of_a_Dumbbell",
+  "toExerciseTemplateId": "Close-Grip_Dumbbell_Press"
+}

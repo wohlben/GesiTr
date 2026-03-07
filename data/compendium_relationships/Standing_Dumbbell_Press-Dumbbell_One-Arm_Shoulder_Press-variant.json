@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Dumbbell_Press-Dumbbell_One-Arm_Shoulder_Press-variant",
+  "relationshipType": "variant",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Standing_Dumbbell_Press",
+  "toExerciseTemplateId": "Dumbbell_One-Arm_Shoulder_Press"
+}

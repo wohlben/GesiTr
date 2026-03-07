@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Cable_Wood_Chop-Cable_Judo_Flip-similar",
+  "relationshipType": "similar",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Cable_Wood_Chop",
+  "toExerciseTemplateId": "Cable_Judo_Flip"
+}

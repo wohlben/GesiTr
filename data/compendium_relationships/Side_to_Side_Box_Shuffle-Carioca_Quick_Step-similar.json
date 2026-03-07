@@ -1,0 +1,10 @@
+{
+  "id": "Side_to_Side_Box_Shuffle-Carioca_Quick_Step-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Side_to_Side_Box_Shuffle",
+  "toExerciseTemplateId": "Carioca_Quick_Step"
+}

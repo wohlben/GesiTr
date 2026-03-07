@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Cable_Lift-Cable_Russian_Twists-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730014800,
+  "fromExerciseTemplateId": "Standing_Cable_Lift",
+  "toExerciseTemplateId": "Cable_Russian_Twists"
+}

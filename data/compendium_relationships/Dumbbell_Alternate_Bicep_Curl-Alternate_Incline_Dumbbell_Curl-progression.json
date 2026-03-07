@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Alternate_Bicep_Curl-Alternate_Incline_Dumbbell_Curl-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Alternate_Bicep_Curl",
+  "toExerciseTemplateId": "Alternate_Incline_Dumbbell_Curl"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Dead_Bug-Jackknife_Sit-Up-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761483562,
+  "fromExerciseTemplateId": "Dead_Bug",
+  "toExerciseTemplateId": "Jackknife_Sit-Up"
+}

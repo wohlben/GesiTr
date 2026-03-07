@@ -1,0 +1,10 @@
+{
+  "id": "Toe_Touchers-Cocoons-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Toe_Touchers",
+  "toExerciseTemplateId": "Cocoons"
+}

@@ -1,0 +1,45 @@
+{
+  "name": "Linear 3-Part Start Technique",
+  "slug": "linear-3-part-start-technique",
+  "type": "CARDIO",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "CALVES",
+    "HAMSTRINGS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Sprint starting technique drill focusing on acceleration mechanics from starting position in three phases.",
+  "instructions": [
+    "This drill helps you accelerate as quickly as possible into a sprint from a dead stop. It helps to use a line to start from. Begin with two feet on the line. Place your left foot with the toe next to your right ankle. Place your right foot 4-6 inches behind the left.",
+    "Place your right hand onto the line, and thing bring your nose close to your left knee.",
+    "Squat down as you lean foward, your head being lower than your hips and your weight loaded onto the left leg. This will be your starting position.",
+    "Take your left hand up so that it is parallel to the ground, pointing behind you, and explode out when ready."
+  ],
+  "images": [
+    "/img/exercises/Linear_3-Part_Start_Technique/0.jpg",
+    "/img/exercises/Linear_3-Part_Start_Technique/1.jpg"
+  ],
+  "alternativeNames": [
+    "Linear 3 Part Start Technique"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Linear_3-Part_Start_Technique",
+  "equipmentIds": []
+}

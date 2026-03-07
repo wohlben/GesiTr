@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Plate_Curls-Reverse_Cable_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Reverse_Plate_Curls",
+  "toExerciseTemplateId": "Reverse_Cable_Curl"
+}

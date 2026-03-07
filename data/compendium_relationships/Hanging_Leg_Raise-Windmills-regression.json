@@ -1,0 +1,10 @@
+{
+  "id": "Hanging_Leg_Raise-Windmills-regression",
+  "relationshipType": "regression",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Hanging_Leg_Raise",
+  "toExerciseTemplateId": "Windmills"
+}

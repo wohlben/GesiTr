@@ -1,0 +1,10 @@
+{
+  "id": "Box_Jump_Multiple_Response-Bench_Jump-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761477930,
+  "fromExerciseTemplateId": "Box_Jump_Multiple_Response",
+  "toExerciseTemplateId": "Bench_Jump"
+}

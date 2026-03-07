@@ -1,0 +1,10 @@
+{
+  "id": "Bent-Knee_Hip_Raise-Decline_Reverse_Crunch-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Bent-Knee_Hip_Raise",
+  "toExerciseTemplateId": "Decline_Reverse_Crunch"
+}

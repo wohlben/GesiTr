@@ -1,0 +1,48 @@
+{
+  "name": "Seated Dumbbell Inner Biceps Curl",
+  "slug": "seated-dumbbell-inner-biceps-curl",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "BICEPS"
+  ],
+  "secondaryMuscles": [
+    "FOREARMS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Seated inner bicep curl with dumbbells angled inward, targeting inner/short head of biceps.",
+  "instructions": [
+    "Sit on the end of a flat bench with a dumbbell in each hand being held at arms length. The elbows should be close to the torso.",
+    "Rotate the palms of the hands so that they are facing inward in a neutral position. This will be your starting position.",
+    "While holding the upper arms stationary, curl the dumbbells out and up, turning the palms out as you lift and keeping your forearms in line with your outer deltoids. Tips:",
+    "Only the forearms should move. Continue the movement until your biceps are fully contracted and the dumbbells are at shoulder level. Hold the contracted position for a second as you squeeze the biceps.",
+    "Slowly begin to bring the dumbbells back to the starting position as your breathe in. Remember to rotate your arms as you lower the dumbbells so that you can switch back to a neutral grip.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Seated_Dumbbell_Inner_Biceps_Curl/0.jpg",
+    "/img/exercises/Seated_Dumbbell_Inner_Biceps_Curl/1.jpg"
+  ],
+  "alternativeNames": [
+    "Seated DB Inner Biceps Curl",
+    "Seated Dumbell Inner Biceps Curl"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Seated_Dumbbell_Inner_Biceps_Curl",
+  "equipmentIds": [
+    "2x dumbbell"
+  ]
+}

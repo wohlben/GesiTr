@@ -1,0 +1,10 @@
+{
+  "id": "Chest_And_Front_Of_Shoulder_Stretch-Chest_Stretch_on_Stability_Ball-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730040000,
+  "fromExerciseTemplateId": "Chest_And_Front_Of_Shoulder_Stretch",
+  "toExerciseTemplateId": "Chest_Stretch_on_Stability_Ball"
+}

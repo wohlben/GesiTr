@@ -1,0 +1,10 @@
+{
+  "id": "Zottman_Preacher_Curl-Two-Arm_Dumbbell_Preacher_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Zottman_Preacher_Curl",
+  "toExerciseTemplateId": "Two-Arm_Dumbbell_Preacher_Curl"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Knee_Tuck_Jump-Hurdle_Hops-similar",
+  "relationshipType": "similar",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Knee_Tuck_Jump",
+  "toExerciseTemplateId": "Hurdle_Hops"
+}

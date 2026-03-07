@@ -1,0 +1,10 @@
+{
+  "id": "All_Fours_Quad_Stretch-Standing_Elevated_Quad_Stretch-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "All_Fours_Quad_Stretch",
+  "toExerciseTemplateId": "Standing_Elevated_Quad_Stretch"
+}

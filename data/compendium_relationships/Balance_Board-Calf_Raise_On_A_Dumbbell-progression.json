@@ -1,0 +1,10 @@
+{
+  "id": "Balance_Board-Calf_Raise_On_A_Dumbbell-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464222,
+  "fromExerciseTemplateId": "Balance_Board",
+  "toExerciseTemplateId": "Calf_Raise_On_A_Dumbbell"
+}

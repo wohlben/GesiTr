@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Palms-Down_Barbell_Wrist_Curl-Seated_One-Arm_Dumbbell_Palms-Down_Wrist_Curl-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479701,
+  "fromExerciseTemplateId": "Seated_Palms-Down_Barbell_Wrist_Curl",
+  "toExerciseTemplateId": "Seated_One-Arm_Dumbbell_Palms-Down_Wrist_Curl"
+}

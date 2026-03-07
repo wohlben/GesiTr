@@ -1,0 +1,10 @@
+{
+  "id": "Single-Arm_Linear_Jammer-Landmine_Linear_Jammer-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Single-Arm_Linear_Jammer",
+  "toExerciseTemplateId": "Landmine_Linear_Jammer"
+}

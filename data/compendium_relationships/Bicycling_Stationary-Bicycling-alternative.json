@@ -1,0 +1,10 @@
+{
+  "id": "Bicycling_Stationary-Bicycling-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476051,
+  "fromExerciseTemplateId": "Bicycling_Stationary",
+  "toExerciseTemplateId": "Bicycling"
+}

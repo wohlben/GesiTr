@@ -1,0 +1,10 @@
+{
+  "id": "Decline_Dumbbell_Bench_Press-Decline_Push-Up-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761483992,
+  "fromExerciseTemplateId": "Decline_Dumbbell_Bench_Press",
+  "toExerciseTemplateId": "Decline_Push-Up"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Side_Hop-Sprint-Carioca_Quick_Step-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Side_Hop-Sprint",
+  "toExerciseTemplateId": "Carioca_Quick_Step"
+}

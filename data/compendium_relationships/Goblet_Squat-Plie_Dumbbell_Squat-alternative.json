@@ -1,0 +1,10 @@
+{
+  "id": "Goblet_Squat-Plie_Dumbbell_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Goblet_Squat",
+  "toExerciseTemplateId": "Plie_Dumbbell_Squat"
+}

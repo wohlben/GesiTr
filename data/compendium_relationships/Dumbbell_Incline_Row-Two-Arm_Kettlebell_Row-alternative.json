@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Incline_Row-Two-Arm_Kettlebell_Row-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Dumbbell_Incline_Row",
+  "toExerciseTemplateId": "Two-Arm_Kettlebell_Row"
+}

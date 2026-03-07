@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Barbell_Press_Behind_Neck-Push_Press_-_Behind_the_Neck-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Barbell_Press_Behind_Neck",
+  "toExerciseTemplateId": "Push_Press_-_Behind_the_Neck"
+}

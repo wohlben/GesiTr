@@ -1,0 +1,10 @@
+{
+  "id": "Side_Lateral_Raise-Power_Partials-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Side_Lateral_Raise",
+  "toExerciseTemplateId": "Power_Partials"
+}

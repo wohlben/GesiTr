@@ -1,0 +1,10 @@
+{
+  "id": "Lying_Hamstring-Seated_Hamstring-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Lying_Hamstring",
+  "toExerciseTemplateId": "Seated_Hamstring"
+}

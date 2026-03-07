@@ -1,0 +1,10 @@
+{
+  "id": "Zercher_Squats-Jefferson_Squats-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499591,
+  "fromExerciseTemplateId": "Zercher_Squats",
+  "toExerciseTemplateId": "Jefferson_Squats"
+}

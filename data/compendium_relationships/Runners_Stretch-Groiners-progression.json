@@ -1,0 +1,10 @@
+{
+  "id": "Runners_Stretch-Groiners-progression",
+  "relationshipType": "progression",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496059,
+  "fromExerciseTemplateId": "Runners_Stretch",
+  "toExerciseTemplateId": "Groiners"
+}

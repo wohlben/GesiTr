@@ -1,0 +1,45 @@
+{
+  "name": "Lying Triceps Press",
+  "slug": "lying-triceps-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "TRICEPS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Lying overhead triceps press, extending elbows to press weight away while lying on bench.",
+  "instructions": [
+    "Lie on a flat bench with either an e-z bar (my preference) or a straight bar placed on the floor behind your head and your feet on the floor.",
+    "Grab the bar behind you, using a medium overhand (pronated) grip, and raise the bar in front of you at arms length. Tip: The arms should be perpendicular to the torso and the floor. The elbows should be tucked in. This is the starting position.",
+    "As you breathe in, slowly lower the weight until the bar lightly touches your forehead while keeping the upper arms and elbows stationary.",
+    "At that point, use the triceps to bring the weight back up to the starting position as you breathe out.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Lying_Triceps_Press/0.jpg",
+    "/img/exercises/Lying_Triceps_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "Prone Triceps Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Lying_Triceps_Press",
+  "equipmentIds": [
+    "ez-bar",
+    "bench"
+  ]
+}

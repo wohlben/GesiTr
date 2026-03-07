@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Seated_Crunch-Bosu_Ball_Cable_Crunch_With_Side_Bends-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.82,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Cable_Seated_Crunch",
+  "toExerciseTemplateId": "Bosu_Ball_Cable_Crunch_With_Side_Bends"
+}

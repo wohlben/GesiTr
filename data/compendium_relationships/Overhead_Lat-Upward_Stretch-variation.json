@@ -1,0 +1,10 @@
+{
+  "id": "Overhead_Lat-Upward_Stretch-variation",
+  "relationshipType": "variation",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Overhead_Lat",
+  "toExerciseTemplateId": "Upward_Stretch"
+}

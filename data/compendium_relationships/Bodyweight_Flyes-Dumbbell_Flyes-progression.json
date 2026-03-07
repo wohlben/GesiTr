@@ -1,0 +1,10 @@
+{
+  "id": "Bodyweight_Flyes-Dumbbell_Flyes-progression",
+  "relationshipType": "progression",
+  "strength": 0.5,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476339,
+  "fromExerciseTemplateId": "Bodyweight_Flyes",
+  "toExerciseTemplateId": "Dumbbell_Flyes"
+}

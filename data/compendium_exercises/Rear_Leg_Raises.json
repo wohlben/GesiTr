@@ -1,0 +1,43 @@
+{
+  "name": "Rear Leg Raises",
+  "slug": "rear-leg-raises",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "HAMSTRINGS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Quadruped hip extension performed on hands and knees, extending one leg up and behind to target glutes and hamstrings.",
+  "instructions": [
+    "Place yourself on your hands and knees on an exercise mat. Your head should be looking forward and the bend of the knees should create a 90-degree angle between the hamstrings and the calves. This will be your starting position.",
+    "Keeping the knee bent at 90 degrees, extend your hip to lift one leg up and behind you until your thigh is parallel to the floor. Squeeze your glutes at the top of the movement. Repeat for 5-10 repetitions, and then switch sides."
+  ],
+  "images": [
+    "/img/exercises/Rear_Leg_Raises/0.jpg",
+    "/img/exercises/Rear_Leg_Raises/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Rear_Leg_Raises",
+  "equipmentIds": [
+    "mat"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Cable_Wood_Chop-Standing_Cable_Lift-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730014800,
+  "fromExerciseTemplateId": "Standing_Cable_Wood_Chop",
+  "toExerciseTemplateId": "Standing_Cable_Lift"
+}

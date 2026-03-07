@@ -1,0 +1,10 @@
+{
+  "id": "Bent_Press-Kettlebell_Turkish_Get-Up_Squat_style-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Bent_Press",
+  "toExerciseTemplateId": "Kettlebell_Turkish_Get-Up_Squat_style"
+}

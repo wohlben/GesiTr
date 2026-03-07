@@ -1,0 +1,10 @@
+{
+  "id": "Double_Leg_Butt_Kick-Single_Leg_Butt_Kick-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Double_Leg_Butt_Kick",
+  "toExerciseTemplateId": "Single_Leg_Butt_Kick"
+}

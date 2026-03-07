@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Crossover-Cable_Iron_Cross-antagonist",
+  "relationshipType": "antagonist",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479173,
+  "fromExerciseTemplateId": "Cable_Crossover",
+  "toExerciseTemplateId": "Cable_Iron_Cross"
+}

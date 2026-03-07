@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Bench_Press_with_Neutral_Grip-Hammer_Grip_Incline_DB_Bench_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496103,
+  "fromExerciseTemplateId": "Dumbbell_Bench_Press_with_Neutral_Grip",
+  "toExerciseTemplateId": "Hammer_Grip_Incline_DB_Bench_Press"
+}

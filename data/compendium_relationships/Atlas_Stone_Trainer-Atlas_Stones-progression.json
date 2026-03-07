@@ -1,0 +1,10 @@
+{
+  "id": "Atlas_Stone_Trainer-Atlas_Stones-progression",
+  "relationshipType": "progression",
+  "strength": 0.95,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761463810,
+  "fromExerciseTemplateId": "Atlas_Stone_Trainer",
+  "toExerciseTemplateId": "Atlas_Stones"
+}

@@ -1,0 +1,40 @@
+{
+  "name": "Piriformis-SMR",
+  "slug": "piriformis-smr",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "GLUTES"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Self-myofascial release using foam roller on piriformis muscle (deep glute), relieving hip and sciatic tension.",
+  "instructions": [
+    "Sit with your buttocks on top of a foam roll. Bend your knees, and then cross one leg so that the ankle is over the knee. This will be your starting position.",
+    "Shift your weight to the side of the crossed leg, rolling over the buttocks until you feel tension in your upper glute. You may assist the stretch by using one hand to pull the bent knee towards your chest. Hold this position for 10-30 seconds, and then switch sides."
+  ],
+  "images": [
+    "/img/exercises/Piriformis-SMR/0.jpg",
+    "/img/exercises/Piriformis-SMR/1.jpg"
+  ],
+  "alternativeNames": [
+    "Piriformis SMR"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Piriformis-SMR",
+  "equipmentIds": [
+    "foam-roller"
+  ]
+}

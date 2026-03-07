@@ -1,0 +1,40 @@
+{
+  "name": "Peroneals Stretch",
+  "slug": "peroneals-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "CALVES"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Stretch targeting peroneal muscles on outside of lower leg and ankle mobility.",
+  "instructions": [
+    "In a seated position, loop a belt, rope, or band around one foot. This will be your starting position.",
+    "With the leg extended and the heel off of the ground, pull on the belt so that the foot is inverted, with the inside of the foot being pulled towards you. Hold for 10-20 seconds, and then switch sides."
+  ],
+  "images": [
+    "/img/exercises/Peroneals_Stretch/0.jpg",
+    "/img/exercises/Peroneals_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Peroneals-Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Peroneals_Stretch",
+  "equipmentIds": [
+    "resistance-band"
+  ]
+}

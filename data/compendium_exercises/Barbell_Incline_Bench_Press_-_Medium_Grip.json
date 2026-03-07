@@ -1,0 +1,50 @@
+{
+  "name": "Barbell Incline Bench Press - Medium Grip",
+  "slug": "barbell-incline-bench-press-medium-grip",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Incline barbell press emphasizing upper chest clavicular fibers with medium grip width",
+  "instructions": [
+    "Lie back on an incline bench. Using a medium-width grip (a grip that creates a 90-degree angle in the middle of the movement between the forearms and the upper arms), lift the bar from the rack and hold it straight over you with your arms locked. This will be your starting position.",
+    "As you breathe in, come down slowly until you feel the bar on you upper chest.",
+    "After a second pause, bring the bar back to the starting position as you breathe out and push the bar using your chest muscles. Lock your arms in the contracted position, squeeze your chest, hold for a second and then start coming down slowly again. Tip: it should take at least twice as long to go down than to come up.",
+    "Repeat the movement for the prescribed amount of repetitions.",
+    "When you are done, place the bar back in the rack."
+  ],
+  "images": [
+    "/img/exercises/Barbell_Incline_Bench_Press_-_Medium_Grip/0.jpg",
+    "/img/exercises/Barbell_Incline_Bench_Press_-_Medium_Grip/1.jpg"
+  ],
+  "alternativeNames": [
+    "BB Incline Bench Press - Medium Grip",
+    "Bar Incline Bench Press - Medium Grip",
+    "Barbell Incline Bench Press   Medium Grip",
+    "Barbell Incline Bench Press - Medium Grip"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+  "equipmentIds": [
+    "barbell",
+    "incline-bench"
+  ]
+}

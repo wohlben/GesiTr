@@ -1,0 +1,10 @@
+{
+  "id": "Romanian_Deadlift-Barbell_Glute_Bridge-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Romanian_Deadlift",
+  "toExerciseTemplateId": "Barbell_Glute_Bridge"
+}

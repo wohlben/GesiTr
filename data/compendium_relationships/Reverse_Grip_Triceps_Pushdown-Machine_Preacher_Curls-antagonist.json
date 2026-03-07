@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Grip_Triceps_Pushdown-Machine_Preacher_Curls-antagonist",
+  "relationshipType": "antagonist",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Reverse_Grip_Triceps_Pushdown",
+  "toExerciseTemplateId": "Machine_Preacher_Curls"
+}

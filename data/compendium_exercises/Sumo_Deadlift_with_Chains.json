@@ -1,0 +1,53 @@
+{
+  "name": "Sumo Deadlift with Chains",
+  "slug": "sumo-deadlift-with-chains",
+  "type": "STRENGTH",
+  "force": [
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS"
+  ],
+  "secondaryMuscles": [
+    "LOWER_BACK",
+    "TRAPS",
+    "ADDUCTORS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.2,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Sumo deadlift with chains hanging from bar for variable resistance.",
+  "instructions": [
+    "You can attach the chains to the sleeves of the bar, or just drape the middle over the bar so there is a greater weight increase as you lift. Attempt to keep the ends of the chains away from the plates so you don't hit them when you lower the weight.",
+    "Begin with a bar loaded on the ground. Approach the bar so that the bar intersects the middle of the feet. The feet should be set very wide, near the collars. Bend at the hips to grip the bar. The arms should be directly below the shoulders, inside the legs, and you can use a pronated grip, a mixed grip, or hook grip. Relax the shoulders, which in effect lengthens your arms.",
+    "Take a breath, and then lower your hips, looking forward with your head with your chest up. Drive through the floor, spreading your feet apart, with your weight on the back half of your feet. Extend through the hips and knees.",
+    "As the bar passes through the knees, lean back and drive the hips into the bar, pulling your shoulder blades together.",
+    "Return the weight to the ground by bending at the hips and controlling the weight on the way down."
+  ],
+  "images": [
+    "/img/exercises/Sumo_Deadlift_with_Chains/0.jpg",
+    "/img/exercises/Sumo_Deadlift_with_Chains/1.jpg"
+  ],
+  "alternativeNames": [
+    "Sumo DL",
+    "Wide Stance Deadlift"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Sumo_Deadlift_with_Chains",
+  "equipmentIds": [
+    "barbell",
+    "chains"
+  ]
+}

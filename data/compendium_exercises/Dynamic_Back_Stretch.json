@@ -1,0 +1,37 @@
+{
+  "name": "Dynamic Back Stretch",
+  "slug": "dynamic-back-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS",
+    "LATS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Dynamic shoulder and upper back warmup using forward arm swings to increase range of motion and flexibility",
+  "instructions": [
+    "Stand with your feet shoulder width apart. This will be your starting position.",
+    "Keeping your arms straight, swing them straight up in front of you 5-10 times, increasing the range of motion each time until your arms are above your head."
+  ],
+  "images": [
+    "/img/exercises/Dynamic_Back_Stretch/0.jpg",
+    "/img/exercises/Dynamic_Back_Stretch/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Dynamic_Back_Stretch",
+  "equipmentIds": []
+}

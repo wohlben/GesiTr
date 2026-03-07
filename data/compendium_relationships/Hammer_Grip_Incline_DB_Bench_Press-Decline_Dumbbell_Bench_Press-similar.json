@@ -1,0 +1,10 @@
+{
+  "id": "Hammer_Grip_Incline_DB_Bench_Press-Decline_Dumbbell_Bench_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496103,
+  "fromExerciseTemplateId": "Hammer_Grip_Incline_DB_Bench_Press",
+  "toExerciseTemplateId": "Decline_Dumbbell_Bench_Press"
+}

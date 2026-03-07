@@ -1,0 +1,45 @@
+{
+  "name": "EZ-Bar Skullcrusher",
+  "slug": "ez-bar-skullcrusher",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "TRICEPS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Lying triceps extension with EZ bar, lowering bar to forehead with elbows stationary for isolated triceps work",
+  "instructions": [
+    "Using a close grip, lift the EZ bar and hold it with your elbows in as you lie on the bench. Your arms should be perpendicular to the floor. This will be your starting position.",
+    "Keeping the upper arms stationary, lower the bar by allowing the elbows to flex. Inhale as you perform this portion of the movement. Pause once the bar is directly above the forehead.",
+    "Lift the bar back to the starting position by extending the elbow and exhaling.",
+    "Repeat."
+  ],
+  "images": [
+    "/img/exercises/EZ-Bar_Skullcrusher/0.jpg",
+    "/img/exercises/EZ-Bar_Skullcrusher/1.jpg"
+  ],
+  "alternativeNames": [
+    "EZ Bar Skullcrusher",
+    "EZ-Barbell Skullcrusher"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "EZ-Bar_Skullcrusher",
+  "equipmentIds": [
+    "ez-bar",
+    "bench"
+  ]
+}

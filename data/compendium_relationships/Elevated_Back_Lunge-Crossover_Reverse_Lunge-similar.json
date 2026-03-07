@@ -1,0 +1,10 @@
+{
+  "id": "Elevated_Back_Lunge-Crossover_Reverse_Lunge-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Elevated_Back_Lunge",
+  "toExerciseTemplateId": "Crossover_Reverse_Lunge"
+}

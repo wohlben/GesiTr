@@ -1,0 +1,10 @@
+{
+  "id": "Shoulder_Stretch-Overhead_Stretch-related",
+  "relationshipType": "related",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Shoulder_Stretch",
+  "toExerciseTemplateId": "Overhead_Stretch"
+}

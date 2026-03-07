@@ -1,0 +1,10 @@
+{
+  "id": "Crunches-Crunch_-_Hands_Overhead-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Crunches",
+  "toExerciseTemplateId": "Crunch_-_Hands_Overhead"
+}

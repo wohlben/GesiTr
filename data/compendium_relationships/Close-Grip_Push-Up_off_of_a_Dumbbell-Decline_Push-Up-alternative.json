@@ -1,0 +1,10 @@
+{
+  "id": "Close-Grip_Push-Up_off_of_a_Dumbbell-Decline_Push-Up-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729940400,
+  "fromExerciseTemplateId": "Close-Grip_Push-Up_off_of_a_Dumbbell",
+  "toExerciseTemplateId": "Decline_Push-Up"
+}

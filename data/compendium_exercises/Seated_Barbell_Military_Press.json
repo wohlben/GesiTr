@@ -1,0 +1,49 @@
+{
+  "name": "Seated Barbell Military Press",
+  "slug": "seated-barbell-military-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "SIDE_DELTS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Seated overhead barbell press (military press), pressing barbell from shoulders overhead while seated.",
+  "instructions": [
+    "Sit on a Military Press Bench with a bar behind your head and either have a spotter give you the bar (better on the rotator cuff this way) or pick it up yourself carefully with a pronated grip (palms facing forward). Tip: Your grip should be wider than shoulder width and it should create a 90-degree angle between the forearm and the upper arm as the barbell goes down.",
+    "Once you pick up the barbell with the correct grip length, lift the bar up over your head by locking your arms. Hold at about shoulder level and slightly in front of your head. This is your starting position.",
+    "Lower the bar down to the collarbone slowly as you inhale.",
+    "Lift the bar back up to the starting position as you exhale.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Seated_Barbell_Military_Press/0.jpg",
+    "/img/exercises/Seated_Barbell_Military_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "Seated BB Military Press",
+    "Seated Bar Military Press",
+    "Seated Barbell Shoulder Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Seated_Barbell_Military_Press",
+  "equipmentIds": [
+    "barbell",
+    "bench"
+  ]
+}

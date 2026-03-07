@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Clean-Clean_and_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Clean",
+  "toExerciseTemplateId": "Clean_and_Press"
+}

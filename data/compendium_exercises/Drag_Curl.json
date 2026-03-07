@@ -1,0 +1,45 @@
+{
+  "name": "Drag Curl",
+  "slug": "drag-curl",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "BICEPS"
+  ],
+  "secondaryMuscles": [
+    "FOREARMS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Barbell curl variation where the bar is dragged up the torso with elbows moving back, targeting biceps through a unique movement path that reduces shoulder involvement.",
+  "instructions": [
+    "Grab a barbell with a supinated grip (palms facing forward) and get your elbows close to your torso and back. This will be your starting position.",
+    "As you exhale, curl the bar up while keeping the elbows to the back as you \"Drag\" the bar up by keeping it in contact with your torso. Tip: As you can see, you will not be keeping the elbows pinned to your sides, but instead you will be bringing them back. Also, do not lift your shoulders.",
+    "Slowly go back to the starting position as you keep the bar in contact with the torso at all times.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Drag_Curl/0.jpg",
+    "/img/exercises/Drag_Curl/1.jpg"
+  ],
+  "alternativeNames": [
+    "Drag-Curl"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Drag_Curl",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

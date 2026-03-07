@@ -1,0 +1,10 @@
+{
+  "id": "Wide_Stance_Stiff_Legs-Stiff_Leg_Barbell_Good_Morning-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Wide_Stance_Stiff_Legs",
+  "toExerciseTemplateId": "Stiff_Leg_Barbell_Good_Morning"
+}

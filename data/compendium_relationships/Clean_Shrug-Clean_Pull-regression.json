@@ -1,0 +1,10 @@
+{
+  "id": "Clean_Shrug-Clean_Pull-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761481995,
+  "fromExerciseTemplateId": "Clean_Shrug",
+  "toExerciseTemplateId": "Clean_Pull"
+}

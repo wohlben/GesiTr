@@ -1,0 +1,10 @@
+{
+  "id": "Landmine_180s-Standing_Cable_Lift-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Landmine_180s",
+  "toExerciseTemplateId": "Standing_Cable_Lift"
+}

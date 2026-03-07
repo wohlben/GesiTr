@@ -1,0 +1,40 @@
+{
+  "name": "Side-Lying Floor Stretch",
+  "slug": "side-lying-floor-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "LATS",
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Side-lying stretch reaching overhead to stretch lats and obliques.",
+  "instructions": [
+    "First lie on your left side, bending your left knee in front of you to stabilize your torso (use your abdominal muscles as well to hold you upright).",
+    "Straighten your right leg and rest the right foot on the floor behind your left. Straighten your right arm over your head and gently pull on your right wrist to stretch the entire right side of the body. Switch sides."
+  ],
+  "images": [
+    "/img/exercises/Side-Lying_Floor_Stretch/0.jpg",
+    "/img/exercises/Side-Lying_Floor_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Side Lying Floor Stretch",
+    "Side-Prone Floor Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Side-Lying_Floor_Stretch",
+  "equipmentIds": []
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Squat_To_A_Bench-Box_Squat_with_Chains-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Barbell_Squat_To_A_Bench",
+  "toExerciseTemplateId": "Box_Squat_with_Chains"
+}

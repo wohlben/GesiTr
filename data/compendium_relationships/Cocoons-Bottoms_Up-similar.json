@@ -1,0 +1,10 @@
+{
+  "id": "Cocoons-Bottoms_Up-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730009600,
+  "fromExerciseTemplateId": "Cocoons",
+  "toExerciseTemplateId": "Bottoms_Up"
+}

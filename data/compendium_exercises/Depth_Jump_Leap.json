@@ -1,0 +1,41 @@
+{
+  "name": "Depth Jump Leap",
+  "slug": "depth-jump-leap",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Strength training exercise targeting primary muscle groups",
+  "instructions": [
+    "For this drill you will need two boxes or benches, one 12 to 16 inches high and the other 22 to 26 inches high.",
+    "Stand on one of the two boxes with arms at the sides; feet should be together and slightly off the edge as in the depth jump. Place the other box approximately two or three feet in front of and facing the performer.",
+    "Begin by dropping off the initial box, landing and simultaneously taking off with both feet.",
+    "Rebound by driving upward and outward as intensely as possible, using the arms and full extension of the body to jump onto the higher box. Again, allow the legs to absorb the impact."
+  ],
+  "images": [
+    "/img/exercises/Depth_Jump_Leap/0.jpg",
+    "/img/exercises/Depth_Jump_Leap/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Depth_Jump_Leap",
+  "equipmentIds": []
+}

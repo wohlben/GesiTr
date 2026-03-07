@@ -1,0 +1,51 @@
+{
+  "name": "Double Kettlebell Snatch",
+  "slug": "double-kettlebell-snatch",
+  "type": "STRENGTH",
+  "force": [
+    "PULL",
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "CALVES",
+    "GLUTES",
+    "HAMSTRINGS",
+    "LOWER_BACK",
+    "TRAPS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Strength training exercise targeting primary muscle groups",
+  "instructions": [
+    "Place two kettlebells behind your feet. Bend your knees and sit back to pick up the kettlebells.",
+    "Swing the kettlebells between your legs forcefully and reverse the direction.",
+    "Drive through with your hips and lock the ketttlebells overhead in one uninterrupted motion."
+  ],
+  "images": [
+    "/img/exercises/Double_Kettlebell_Snatch/0.jpg",
+    "/img/exercises/Double_Kettlebell_Snatch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Barbell Snatch",
+    "Double KB Snatch",
+    "Power Snatch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Double_Kettlebell_Snatch",
+  "equipmentIds": [
+    "2x kettlebell"
+  ]
+}

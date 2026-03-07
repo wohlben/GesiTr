@@ -1,0 +1,10 @@
+{
+  "id": "Side_Lateral_Raise-Dumbbell_Scaption-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Side_Lateral_Raise",
+  "toExerciseTemplateId": "Dumbbell_Scaption"
+}

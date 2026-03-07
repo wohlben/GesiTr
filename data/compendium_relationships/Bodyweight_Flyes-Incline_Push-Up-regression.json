@@ -1,0 +1,10 @@
+{
+  "id": "Bodyweight_Flyes-Incline_Push-Up-regression",
+  "relationshipType": "regression",
+  "strength": 0.55,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476339,
+  "fromExerciseTemplateId": "Bodyweight_Flyes",
+  "toExerciseTemplateId": "Incline_Push-Up"
+}

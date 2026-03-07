@@ -1,0 +1,10 @@
+{
+  "id": "Push_Press-Push_Press_-_Behind_the_Neck-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Push_Press",
+  "toExerciseTemplateId": "Push_Press_-_Behind_the_Neck"
+}

@@ -1,0 +1,49 @@
+{
+  "name": "Hammer Grip Incline DB Bench Press",
+  "slug": "hammer-grip-incline-db-bench-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Incline dumbbell bench press with neutral hammer grip, targeting upper chest with wrist-friendly grip.",
+  "instructions": [
+    "Lie back on an incline bench with a dumbbell on each hand on top of your thighs. The palms of your hand will be facing each other.",
+    "By using your thighs to help you get the dumbbells up, clean the dumbbells one arm at a time so that you can hold them at shoulder width.",
+    "Once at shoulder width, keep the palms of your hands with a neutral grip (palms facing each other). Keep your elbows flared out with the upper arms in line with the shoulders (perpendicular to the torso) and the elbows bent creating a 90-degree angle between the upper arm and the forearm. This will be your starting position.",
+    "Now bring down the weights slowly to your side as you breathe in. Keep full control of the dumbbells at all times.",
+    "As you breathe out, push the dumbbells up using your pectoral muscles. Lock your arms in the contracted position, hold for a second and then start coming down slowly. Tip: It should take at least twice as long to go down than to come up.",
+    "Repeat the movement for the prescribed amount of repetitions.",
+    "When you are done, place the dumbbells back in your thighs and then on the floor. This is the safest manner to dispose of the dumbbells."
+  ],
+  "images": [
+    "/img/exercises/Hammer_Grip_Incline_DB_Bench_Press/0.jpg",
+    "/img/exercises/Hammer_Grip_Incline_DB_Bench_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "Hammer Grip Incline Dumbbell Bench Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Hammer_Grip_Incline_DB_Bench_Press",
+  "equipmentIds": [
+    "dumbbell",
+    "incline-bench"
+  ]
+}

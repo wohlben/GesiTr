@@ -1,0 +1,46 @@
+{
+  "name": "Extended Range One-Arm Kettlebell Floor Press",
+  "slug": "extended-range-one-arm-kettlebell-floor-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Strength training exercise targeting primary muscle groups",
+  "instructions": [
+    "Lie on the floor and position a kettlebell for one arm to press. The kettlebell should be held by the handle. The leg on the same side that you are pressing should be bent, with the knee crossing over the midline of the body.",
+    "Press the kettlebell by extending the elbow and adducting the arm, pressing it above your body. Return to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Extended_Range_One-Arm_Kettlebell_Floor_Press/0.jpg",
+    "/img/exercises/Extended_Range_One-Arm_Kettlebell_Floor_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "Extended Range One Arm Kettlebell Floor Press",
+    "Extended Range One-Arm KB Floor Press",
+    "Extended Range Single Arm Kettlebell Floor Press",
+    "Extended Range Unilateral Kettlebell Floor Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Extended_Range_One-Arm_Kettlebell_Floor_Press",
+  "equipmentIds": [
+    "kettlebell"
+  ]
+}

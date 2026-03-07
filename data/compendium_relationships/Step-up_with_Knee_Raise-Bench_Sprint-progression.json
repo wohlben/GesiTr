@@ -1,0 +1,10 @@
+{
+  "id": "Step-up_with_Knee_Raise-Bench_Sprint-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Step-up_with_Knee_Raise",
+  "toExerciseTemplateId": "Bench_Sprint"
+}

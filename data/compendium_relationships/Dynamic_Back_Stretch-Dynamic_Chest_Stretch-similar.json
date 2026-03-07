@@ -1,0 +1,10 @@
+{
+  "id": "Dynamic_Back_Stretch-Dynamic_Chest_Stretch-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Dynamic_Back_Stretch",
+  "toExerciseTemplateId": "Dynamic_Chest_Stretch"
+}

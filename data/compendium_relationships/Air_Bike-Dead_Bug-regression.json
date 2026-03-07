@@ -1,0 +1,10 @@
+{
+  "id": "Air_Bike-Dead_Bug-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761483562,
+  "fromExerciseTemplateId": "Air_Bike",
+  "toExerciseTemplateId": "Dead_Bug"
+}

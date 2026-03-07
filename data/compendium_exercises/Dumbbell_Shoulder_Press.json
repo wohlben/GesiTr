@@ -1,0 +1,49 @@
+{
+  "name": "Dumbbell Shoulder Press",
+  "slug": "dumbbell-shoulder-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "SIDE_DELTS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Seated overhead dumbbell shoulder press, pressing dumbbells from shoulders overhead while seated.",
+  "instructions": [
+    "While holding a dumbbell in each hand, sit on a military press bench or utility bench that has back support. Place the dumbbells upright on top of your thighs.",
+    "Now raise the dumbbells to shoulder height one at a time using your thighs to help propel them up into position.",
+    "Make sure to rotate your wrists so that the palms of your hands are facing forward. This is your starting position.",
+    "Now, exhale and push the dumbbells upward until they touch at the top.",
+    "Then, after a brief pause at the top contracted position, slowly lower the weights back down to the starting position while inhaling.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Dumbbell_Shoulder_Press/0.jpg",
+    "/img/exercises/Dumbbell_Shoulder_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "DB Shoulder Press",
+    "Dumbell Shoulder Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Dumbbell_Shoulder_Press",
+  "equipmentIds": [
+    "2x dumbbell",
+    "bench"
+  ]
+}

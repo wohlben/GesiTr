@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Biceps_Stretch-Seated_Biceps-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Biceps_Stretch",
+  "toExerciseTemplateId": "Seated_Biceps"
+}

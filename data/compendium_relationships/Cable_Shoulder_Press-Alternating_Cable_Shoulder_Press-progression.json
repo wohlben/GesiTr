@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Shoulder_Press-Alternating_Cable_Shoulder_Press-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cable_Shoulder_Press",
+  "toExerciseTemplateId": "Alternating_Cable_Shoulder_Press"
+}

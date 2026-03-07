@@ -1,0 +1,45 @@
+{
+  "name": "Spell Caster",
+  "slug": "spell-caster",
+  "type": "STRENGTH",
+  "force": [
+    "ROTATION"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Rotational exercise holding weight and making circular casting motion, targeting core rotation.",
+  "instructions": [
+    "Hold a dumbbell in each hand with a pronated grip. Your feet should be wide with your hips and knees extended. This will be your starting position.",
+    "Begin the movement by pulling both of the dumbbells to one side next to your hip, rotating your torso.",
+    "Keeping your arms straight and the dumbbells parallel to the ground, rotate your torso to swing the weights to your opposite side.",
+    "Continue alternating, rotating from one side to the other until the set is complete."
+  ],
+  "images": [
+    "/img/exercises/Spell_Caster/0.jpg",
+    "/img/exercises/Spell_Caster/1.jpg"
+  ],
+  "alternativeNames": [
+    "Spell-Caster"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Spell_Caster",
+  "equipmentIds": [
+    "2x dumbbell"
+  ]
+}

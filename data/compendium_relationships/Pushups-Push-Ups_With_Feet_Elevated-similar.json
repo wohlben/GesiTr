@@ -1,0 +1,10 @@
+{
+  "id": "Pushups-Push-Ups_With_Feet_Elevated-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Pushups",
+  "toExerciseTemplateId": "Push-Ups_With_Feet_Elevated"
+}

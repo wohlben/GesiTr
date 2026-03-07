@@ -1,0 +1,10 @@
+{
+  "id": "Full_Range-Of-Motion_Lat_Pulldown-Pullups-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729931400,
+  "fromExerciseTemplateId": "Full_Range-Of-Motion_Lat_Pulldown",
+  "toExerciseTemplateId": "Pullups"
+}

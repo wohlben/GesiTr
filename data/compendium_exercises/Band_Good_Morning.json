@@ -1,0 +1,46 @@
+{
+  "name": "Band Good Morning",
+  "slug": "band-good-morning",
+  "type": "STRENGTH",
+  "force": [
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "HAMSTRINGS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "LOWER_BACK",
+    "ABS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Hip hinge movement with resistance band to strengthen posterior chain and improve deadlift mechanics",
+  "instructions": [
+    "Using a 41 inch band, stand on one end, spreading your feet a small amount. Bend at the hips to loop the end of the band behind your neck. This will be your starting position.",
+    "Keeping your legs straight, extend through the hips to come to a near vertical position.",
+    "Ensure that you do not round your back as you go down back to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Band_Good_Morning/0.jpg",
+    "/img/exercises/Band_Good_Morning/1.jpg"
+  ],
+  "alternativeNames": [
+    "Resistance Band Good Morning"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Band_Good_Morning",
+  "equipmentIds": [
+    "resistance-band"
+  ]
+}

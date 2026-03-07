@@ -1,0 +1,10 @@
+{
+  "id": "Chin-Up-Band_Assisted_Pull-Up-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Chin-Up",
+  "toExerciseTemplateId": "Band_Assisted_Pull-Up"
+}

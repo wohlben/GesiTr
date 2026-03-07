@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Raise-One-Arm_Side_Laterals-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Dumbbell_Raise",
+  "toExerciseTemplateId": "One-Arm_Side_Laterals"
+}

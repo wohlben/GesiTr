@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Palm-In_One-Arm_Dumbbell_Press-Dumbbell_Shoulder_Press-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Palm-In_One-Arm_Dumbbell_Press",
+  "toExerciseTemplateId": "Dumbbell_Shoulder_Press"
+}

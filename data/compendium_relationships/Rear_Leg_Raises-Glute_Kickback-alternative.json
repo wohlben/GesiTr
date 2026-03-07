@@ -1,0 +1,10 @@
+{
+  "id": "Rear_Leg_Raises-Glute_Kickback-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Rear_Leg_Raises",
+  "toExerciseTemplateId": "Glute_Kickback"
+}

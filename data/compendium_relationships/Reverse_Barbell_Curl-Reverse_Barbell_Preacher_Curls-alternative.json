@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Barbell_Curl-Reverse_Barbell_Preacher_Curls-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": "Preacher bench version for better isolation and reduced momentum",
+  "createdBy": "system",
+  "createdAt": 1761543970,
+  "fromExerciseTemplateId": "Reverse_Barbell_Curl",
+  "toExerciseTemplateId": "Reverse_Barbell_Preacher_Curls"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Bench_Press_-_With_Bands-Reverse_Band_Bench_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761472847,
+  "fromExerciseTemplateId": "Bench_Press_-_With_Bands",
+  "toExerciseTemplateId": "Reverse_Band_Bench_Press"
+}

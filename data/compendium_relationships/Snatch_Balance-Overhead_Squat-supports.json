@@ -1,0 +1,10 @@
+{
+  "id": "Snatch_Balance-Overhead_Squat-supports",
+  "relationshipType": "supports",
+  "strength": 0.9,
+  "description": "Snatch Balance helps develop the overhead squat position and teaches you to drop under the bar quickly while maintaining balance and stability in the catch position.",
+  "createdBy": "system",
+  "createdAt": 1761518400,
+  "fromExerciseTemplateId": "Snatch_Balance",
+  "toExerciseTemplateId": "Overhead_Squat"
+}

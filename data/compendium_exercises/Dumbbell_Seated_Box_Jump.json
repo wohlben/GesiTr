@@ -1,0 +1,55 @@
+{
+  "name": "Dumbbell Seated Box Jump",
+  "slug": "dumbbell-seated-box-jump",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Strength training exercise targeting primary muscle groups",
+  "instructions": [
+    "Position a box a couple feet to the side of a bench. Hold a dumbbell to your chest with both hands and seat yourself on the bench facing the box. This will be your starting position.",
+    "Plant your feet firmly on the ground as you lean forward, extending through the hips and knees to jump up and forward.",
+    "Land on the box with both feet, absorbing the impact by allowing the hips and knees to bend.",
+    "Step down and return to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Dumbbell_Seated_Box_Jump/0.jpg",
+    "/img/exercises/Dumbbell_Seated_Box_Jump/1.jpg"
+  ],
+  "alternativeNames": [
+    "Box Jumps",
+    "DB Seated Box Jump",
+    "Dumbbell Standing Box Jump",
+    "Dumbell Seated Box Jump",
+    "Jump Box",
+    "Plyo Box Jump"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Dumbbell_Seated_Box_Jump",
+  "equipmentIds": [
+    "2x dumbbell",
+    "box"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Biceps_Stretch-Brachialis-SMR-similar",
+  "relationshipType": "similar",
+  "strength": 0.88,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Standing_Biceps_Stretch",
+  "toExerciseTemplateId": "Brachialis-SMR"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Palm-In_One-Arm_Dumbbell_Press-Alternating_Kettlebell_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Palm-In_One-Arm_Dumbbell_Press",
+  "toExerciseTemplateId": "Alternating_Kettlebell_Press"
+}

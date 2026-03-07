@@ -1,0 +1,40 @@
+{
+  "name": "Rhomboids-SMR",
+  "slug": "rhomboids-smr",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "RHOMBOIDS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Self-myofascial release using foam roller on rhomboid muscles between shoulder blades.",
+  "instructions": [
+    "Lay down with your back on the floor. Place a foam roll underneath your upper back, and cross your arms in front of you, protracting your shoulders. This will be your starting position.",
+    "Raise your hips off of the ground, placing your weight onto the foam roll. Shift your weight to one side at a time, rolling over your middle and upper back. Pause at points of tension for 10-30 seconds."
+  ],
+  "images": [
+    "/img/exercises/Rhomboids-SMR/0.jpg",
+    "/img/exercises/Rhomboids-SMR/1.jpg"
+  ],
+  "alternativeNames": [
+    "Rhomboids SMR"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Rhomboids-SMR",
+  "equipmentIds": [
+    "foam-roller"
+  ]
+}

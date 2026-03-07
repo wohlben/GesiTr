@@ -1,0 +1,45 @@
+{
+  "name": "Single-Leg Leg Extension",
+  "slug": "single-leg-leg-extension",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Leg extension performed with one leg at a time, isolating single quadriceps.",
+  "instructions": [
+    "Seat yourself in the machine and adjust it so that you are positioned properly. The pad should be against the lower part of the shin but not in contact with the ankle. Adjust the seat so that the pivot point is in line with your knee. Select a weight appropriate for your abilities.",
+    "Maintaining good posture, fully extend one leg, pausing at the top of the motion.",
+    "Return to the starting position without letting the weight stop, keeping tension on the muscle.",
+    "Repeat for the desired number of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Single-Leg_Leg_Extension/0.jpg",
+    "/img/exercises/Single-Leg_Leg_Extension/1.jpg"
+  ],
+  "alternativeNames": [
+    "Knee Extension",
+    "Quad Extension",
+    "Single Leg Leg Extension"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Single-Leg_Leg_Extension",
+  "equipmentIds": []
+}

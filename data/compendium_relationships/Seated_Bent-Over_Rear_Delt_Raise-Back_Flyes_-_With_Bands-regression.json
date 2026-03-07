@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Bent-Over_Rear_Delt_Raise-Back_Flyes_-_With_Bands-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Seated_Bent-Over_Rear_Delt_Raise",
+  "toExerciseTemplateId": "Back_Flyes_-_With_Bands"
+}

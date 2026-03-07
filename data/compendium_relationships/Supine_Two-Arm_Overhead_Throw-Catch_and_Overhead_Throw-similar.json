@@ -1,0 +1,10 @@
+{
+  "id": "Supine_Two-Arm_Overhead_Throw-Catch_and_Overhead_Throw-similar",
+  "relationshipType": "similar",
+  "strength": null,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Supine_Two-Arm_Overhead_Throw",
+  "toExerciseTemplateId": "Catch_and_Overhead_Throw"
+}

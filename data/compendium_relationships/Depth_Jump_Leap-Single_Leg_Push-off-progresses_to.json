@@ -1,0 +1,10 @@
+{
+  "id": "Depth_Jump_Leap-Single_Leg_Push-off-progresses_to",
+  "relationshipType": "progresses_to",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Depth_Jump_Leap",
+  "toExerciseTemplateId": "Single_Leg_Push-off"
+}

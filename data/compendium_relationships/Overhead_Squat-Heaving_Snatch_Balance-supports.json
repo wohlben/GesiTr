@@ -1,0 +1,10 @@
+{
+  "id": "Overhead_Squat-Heaving_Snatch_Balance-supports",
+  "relationshipType": "supports",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496481,
+  "fromExerciseTemplateId": "Overhead_Squat",
+  "toExerciseTemplateId": "Heaving_Snatch_Balance"
+}

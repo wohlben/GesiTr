@@ -1,0 +1,49 @@
+{
+  "name": "Pallof Press",
+  "slug": "pallof-press",
+  "type": "STRENGTH",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [
+    "CHEST",
+    "FRONT_DELTS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Anti-rotation core exercise pressing cable away from chest while resisting rotational force, targeting deep core stability.",
+  "instructions": [
+    "Connect a standard handle to a tower, and—if possible—position the cable to shoulder height. If not, a low pulley will suffice.",
+    "With your side to the cable, grab the handle with both hands and step away from the tower. You should be approximately arm's length away from the pulley, with the tension of the weight on the cable.",
+    "With your feet positioned hip-width apart and knees slightly bent, hold the cable to the middle of your chest. This will be your starting position.",
+    "Press the cable away from your chest, fully extending both arms. You core should be tight and engaged.",
+    "Hold the repetition for several seconds before returning to the starting position.",
+    "At the conclusion of the set, repeat facing the other direction."
+  ],
+  "images": [
+    "/img/exercises/Pallof_Press/0.jpg",
+    "/img/exercises/Pallof_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "Pallof-Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Pallof_Press",
+  "equipmentIds": [
+    "gym-cable-machine"
+  ]
+}

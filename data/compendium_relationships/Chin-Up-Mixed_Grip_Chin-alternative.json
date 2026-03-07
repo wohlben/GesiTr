@@ -1,0 +1,10 @@
+{
+  "id": "Chin-Up-Mixed_Grip_Chin-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Chin-Up",
+  "toExerciseTemplateId": "Mixed_Grip_Chin"
+}

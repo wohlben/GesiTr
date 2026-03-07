@@ -1,0 +1,10 @@
+{
+  "id": "Lateral_Box_Jump-Front_Cone_Hops_or_hurdle_hops-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761495424,
+  "fromExerciseTemplateId": "Lateral_Box_Jump",
+  "toExerciseTemplateId": "Front_Cone_Hops_or_hurdle_hops"
+}

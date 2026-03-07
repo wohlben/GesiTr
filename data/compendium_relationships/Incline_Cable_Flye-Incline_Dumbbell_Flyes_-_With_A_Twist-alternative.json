@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Cable_Flye-Incline_Dumbbell_Flyes_-_With_A_Twist-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499179,
+  "fromExerciseTemplateId": "Incline_Cable_Flye",
+  "toExerciseTemplateId": "Incline_Dumbbell_Flyes_-_With_A_Twist"
+}

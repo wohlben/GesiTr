@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Squat_To_A_Bench-Dumbbell_Squat_To_A_Bench-regression",
+  "relationshipType": "regression",
+  "strength": 0.92,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Barbell_Squat_To_A_Bench",
+  "toExerciseTemplateId": "Dumbbell_Squat_To_A_Bench"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Side_Lateral_Raise-Barbell_Shoulder_Press-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Side_Lateral_Raise",
+  "toExerciseTemplateId": "Barbell_Shoulder_Press"
+}

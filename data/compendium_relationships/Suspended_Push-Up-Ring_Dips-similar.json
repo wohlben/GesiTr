@@ -1,0 +1,10 @@
+{
+  "id": "Suspended_Push-Up-Ring_Dips-similar",
+  "relationshipType": "similar",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Suspended_Push-Up",
+  "toExerciseTemplateId": "Ring_Dips"
+}

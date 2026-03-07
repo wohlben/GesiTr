@@ -1,0 +1,49 @@
+{
+  "name": "Standing Palms-In Dumbbell Press",
+  "slug": "standing-palms-in-dumbbell-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "SIDE_DELTS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Standing overhead dumbbell press with palms facing each other (neutral/hammer grip).",
+  "instructions": [
+    "Stand with your feet shoulder width apart. Hold a dumbbell in each hand at shoulder height with your palms facing each other (neutral grip) and elbows bent at 90 degrees. Your forearms should be perpendicular to the floor. This is your starting position.",
+    "Maintaining a neutral grip throughout, press the dumbbells overhead until your arms are fully extended while exhaling.",
+    "Pause briefly at the top, then slowly lower the dumbbells back to the starting position at shoulder height while inhaling.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Standing_Palms-In_Dumbbell_Press/0.jpg",
+    "/img/exercises/Standing_Palms-In_Dumbbell_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "Standing Palms In Dumbbell Press",
+    "Standing Palms-In DB Press",
+    "Standing Palms-In Dumbell Press",
+    "Standing Neutral Grip Dumbbell Press",
+    "Standing Hammer Grip Dumbbell Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Standing_Palms-In_Dumbbell_Press",
+  "equipmentIds": [
+    "2x dumbbell"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "name": "Lateral Bound",
+  "slug": "lateral-bound",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "CALVES",
+    "HAMSTRINGS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Plyometric lateral jump from one leg to the other, covering horizontal distance. Develops lateral power and athleticism.",
+  "instructions": [
+    "Assume a half squat position facing 90 degrees from your direction of travel. This will be your starting position.",
+    "Allow your lead leg to do a countermovement inward as you shift your weight to the outside leg.",
+    "Immediately push off and extend, attempting to bound to the side as far as possible.",
+    "Upon landing, immediately push off in the opposite direction, returning to your original start position.",
+    "Continue back and forth for several repetitions."
+  ],
+  "images": [
+    "/img/exercises/Lateral_Bound/0.jpg",
+    "/img/exercises/Lateral_Bound/1.jpg"
+  ],
+  "alternativeNames": [
+    "Lateral-Bound"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Lateral_Bound",
+  "equipmentIds": []
+}

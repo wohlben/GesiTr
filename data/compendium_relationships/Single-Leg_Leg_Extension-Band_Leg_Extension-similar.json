@@ -1,0 +1,10 @@
+{
+  "id": "Single-Leg_Leg_Extension-Band_Leg_Extension-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464349,
+  "fromExerciseTemplateId": "Single-Leg_Leg_Extension",
+  "toExerciseTemplateId": "Band_Leg_Extension"
+}

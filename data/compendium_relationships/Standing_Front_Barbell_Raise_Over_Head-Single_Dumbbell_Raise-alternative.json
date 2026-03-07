@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Front_Barbell_Raise_Over_Head-Single_Dumbbell_Raise-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": "Both are standing front raise exercises targeting anterior deltoids, differing in equipment (barbell vs dumbbell) and range of motion (overhead vs shoulder height).",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Standing_Front_Barbell_Raise_Over_Head",
+  "toExerciseTemplateId": "Single_Dumbbell_Raise"
+}

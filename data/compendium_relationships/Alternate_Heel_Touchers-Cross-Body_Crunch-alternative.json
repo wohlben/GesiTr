@@ -1,0 +1,10 @@
+{
+  "id": "Alternate_Heel_Touchers-Cross-Body_Crunch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Alternate_Heel_Touchers",
+  "toExerciseTemplateId": "Cross-Body_Crunch"
+}

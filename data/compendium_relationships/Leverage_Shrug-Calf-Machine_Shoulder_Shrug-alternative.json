@@ -1,0 +1,10 @@
+{
+  "id": "Leverage_Shrug-Calf-Machine_Shoulder_Shrug-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Leverage_Shrug",
+  "toExerciseTemplateId": "Calf-Machine_Shoulder_Shrug"
+}

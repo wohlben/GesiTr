@@ -1,0 +1,10 @@
+{
+  "id": "Parallel_Bar_Dip-Bench_Dips-regression",
+  "relationshipType": "regression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Parallel_Bar_Dip",
+  "toExerciseTemplateId": "Bench_Dips"
+}

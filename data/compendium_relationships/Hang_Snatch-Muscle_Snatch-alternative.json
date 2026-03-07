@@ -1,0 +1,10 @@
+{
+  "id": "Hang_Snatch-Muscle_Snatch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761481995,
+  "fromExerciseTemplateId": "Hang_Snatch",
+  "toExerciseTemplateId": "Muscle_Snatch"
+}

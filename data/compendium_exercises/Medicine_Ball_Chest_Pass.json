@@ -1,0 +1,47 @@
+{
+  "name": "Medicine Ball Chest Pass",
+  "slug": "medicine-ball-chest-pass",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "FRONT_DELTS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Explosive medicine ball throw to partner or wall, extending arms to pass ball from chest.",
+  "instructions": [
+    "You will need a partner for this exercise. Lacking one, this movement can be performed against a wall.",
+    "Begin facing your partner holding the medicine ball at your torso with both hands.",
+    "Pull the ball to your chest, and reverse the motion by extending through the elbows. For sports applications, you can take a step as you throw.",
+    "Your partner should catch the ball, and throw it back to you.",
+    "Receive the throw with both hands at chest height."
+  ],
+  "images": [
+    "/img/exercises/Medicine_Ball_Chest_Pass/0.jpg",
+    "/img/exercises/Medicine_Ball_Chest_Pass/1.jpg"
+  ],
+  "alternativeNames": [
+    "Med Ball Chest Pass"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Medicine_Ball_Chest_Pass",
+  "equipmentIds": [
+    "medicine-ball"
+  ]
+}

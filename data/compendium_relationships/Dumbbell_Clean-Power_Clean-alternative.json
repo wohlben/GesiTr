@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Clean-Power_Clean-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Clean",
+  "toExerciseTemplateId": "Power_Clean"
+}

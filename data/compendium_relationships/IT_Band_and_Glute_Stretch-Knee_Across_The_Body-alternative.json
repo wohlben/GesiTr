@@ -1,0 +1,10 @@
+{
+  "id": "IT_Band_and_Glute_Stretch-Knee_Across_The_Body-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": "Both are supine stretches crossing leg across body to target glutes and IT band; IT Band version uses extended leg with band resistance while Knee Across uses bent knee without equipment",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "IT_Band_and_Glute_Stretch",
+  "toExerciseTemplateId": "Knee_Across_The_Body"
+}

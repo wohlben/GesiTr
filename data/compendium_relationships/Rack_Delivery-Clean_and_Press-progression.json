@@ -1,0 +1,10 @@
+{
+  "id": "Rack_Delivery-Clean_and_Press-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Rack_Delivery",
+  "toExerciseTemplateId": "Clean_and_Press"
+}

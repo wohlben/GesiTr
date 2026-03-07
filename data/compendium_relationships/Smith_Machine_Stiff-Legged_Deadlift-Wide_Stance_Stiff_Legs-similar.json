@@ -1,0 +1,10 @@
+{
+  "id": "Smith_Machine_Stiff-Legged_Deadlift-Wide_Stance_Stiff_Legs-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761547427,
+  "fromExerciseTemplateId": "Smith_Machine_Stiff-Legged_Deadlift",
+  "toExerciseTemplateId": "Wide_Stance_Stiff_Legs"
+}

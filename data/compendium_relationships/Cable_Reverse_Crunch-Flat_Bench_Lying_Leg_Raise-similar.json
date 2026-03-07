@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Reverse_Crunch-Flat_Bench_Lying_Leg_Raise-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479425,
+  "fromExerciseTemplateId": "Cable_Reverse_Crunch",
+  "toExerciseTemplateId": "Flat_Bench_Lying_Leg_Raise"
+}

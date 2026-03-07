@@ -1,0 +1,10 @@
+{
+  "id": "Wide-Grip_Lat_Pulldown-Rocky_Pull-Ups_Pulldowns-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Wide-Grip_Lat_Pulldown",
+  "toExerciseTemplateId": "Rocky_Pull-Ups_Pulldowns"
+}

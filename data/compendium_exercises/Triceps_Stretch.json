@@ -1,0 +1,37 @@
+{
+  "name": "Triceps Stretch",
+  "slug": "triceps-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "TRICEPS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Overhead triceps stretch pulling elbow behind head to stretch back of upper arm.",
+  "instructions": [
+    "Reach your hand behind your head, grasp your elbow and gently pull. Hold for 10 to 20 seconds, then switch sides."
+  ],
+  "images": [
+    "/img/exercises/Triceps_Stretch/0.jpg",
+    "/img/exercises/Triceps_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Triceps-Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Triceps_Stretch",
+  "equipmentIds": []
+}

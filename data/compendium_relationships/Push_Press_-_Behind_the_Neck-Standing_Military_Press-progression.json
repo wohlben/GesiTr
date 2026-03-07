@@ -1,0 +1,10 @@
+{
+  "id": "Push_Press_-_Behind_the_Neck-Standing_Military_Press-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Push_Press_-_Behind_the_Neck",
+  "toExerciseTemplateId": "Standing_Military_Press"
+}

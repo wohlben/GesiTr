@@ -1,0 +1,10 @@
+{
+  "id": "Kettlebell_Turkish_Get-Up_Squat_style-Kettlebell_Turkish_Get-Up_Lunge_style-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Kettlebell_Turkish_Get-Up_Squat_style",
+  "toExerciseTemplateId": "Kettlebell_Turkish_Get-Up_Lunge_style"
+}

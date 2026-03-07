@@ -1,0 +1,10 @@
+{
+  "id": "Oblique_Crunches-Bosu_Ball_Cable_Crunch_With_Side_Bends-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Oblique_Crunches",
+  "toExerciseTemplateId": "Bosu_Ball_Cable_Crunch_With_Side_Bends"
+}

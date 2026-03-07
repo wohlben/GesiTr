@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Palm-Up_Barbell_Wrist_Curl-Finger_Curls-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Seated_Palm-Up_Barbell_Wrist_Curl",
+  "toExerciseTemplateId": "Finger_Curls"
+}

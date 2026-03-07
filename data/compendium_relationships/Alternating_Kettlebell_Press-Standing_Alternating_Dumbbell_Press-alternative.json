@@ -1,0 +1,10 @@
+{
+  "id": "Alternating_Kettlebell_Press-Standing_Alternating_Dumbbell_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.92,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761461533,
+  "fromExerciseTemplateId": "Alternating_Kettlebell_Press",
+  "toExerciseTemplateId": "Standing_Alternating_Dumbbell_Press"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Triceps_Pushdown_-_Rope_Attachment-High_Cable_Curls-antagonist",
+  "relationshipType": "antagonist",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498077,
+  "fromExerciseTemplateId": "Triceps_Pushdown_-_Rope_Attachment",
+  "toExerciseTemplateId": "High_Cable_Curls"
+}

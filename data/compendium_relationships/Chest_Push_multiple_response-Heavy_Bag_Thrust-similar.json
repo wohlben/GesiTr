@@ -1,0 +1,10 @@
+{
+  "id": "Chest_Push_multiple_response-Heavy_Bag_Thrust-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729933200,
+  "fromExerciseTemplateId": "Chest_Push_multiple_response",
+  "toExerciseTemplateId": "Heavy_Bag_Thrust"
+}

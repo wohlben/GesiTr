@@ -1,0 +1,10 @@
+{
+  "id": "Rowing_Stationary-Bicycling_Stationary-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476051,
+  "fromExerciseTemplateId": "Rowing_Stationary",
+  "toExerciseTemplateId": "Bicycling_Stationary"
+}

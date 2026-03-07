@@ -1,0 +1,10 @@
+{
+  "id": "Rocket_Jump-Box_Jump_Multiple_Response-progression",
+  "relationshipType": "progression",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761477930,
+  "fromExerciseTemplateId": "Rocket_Jump",
+  "toExerciseTemplateId": "Box_Jump_Multiple_Response"
+}

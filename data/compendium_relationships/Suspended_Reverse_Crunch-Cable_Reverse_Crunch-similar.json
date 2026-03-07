@@ -1,0 +1,10 @@
+{
+  "id": "Suspended_Reverse_Crunch-Cable_Reverse_Crunch-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761479425,
+  "fromExerciseTemplateId": "Suspended_Reverse_Crunch",
+  "toExerciseTemplateId": "Cable_Reverse_Crunch"
+}

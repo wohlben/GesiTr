@@ -1,0 +1,10 @@
+{
+  "id": "IT_Band_and_Glute_Stretch-Iliotibial_Tract-SMR-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.85,
+  "description": "Both target IT band tissue; IT Band Stretch uses supine band-assisted stretching while Iliotibial Tract SMR uses side-lying foam rolling for myofascial release",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "IT_Band_and_Glute_Stretch",
+  "toExerciseTemplateId": "Iliotibial_Tract-SMR"
+}

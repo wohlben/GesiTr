@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Rope_Crunch-Crunches-similar",
+  "relationshipType": "similar",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730016000,
+  "fromExerciseTemplateId": "Standing_Rope_Crunch",
+  "toExerciseTemplateId": "Crunches"
+}

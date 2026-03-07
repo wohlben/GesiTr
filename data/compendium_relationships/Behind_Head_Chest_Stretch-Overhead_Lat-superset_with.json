@@ -1,0 +1,10 @@
+{
+  "id": "Behind_Head_Chest_Stretch-Overhead_Lat-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Behind_Head_Chest_Stretch",
+  "toExerciseTemplateId": "Overhead_Lat"
+}

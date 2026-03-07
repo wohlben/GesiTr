@@ -1,0 +1,10 @@
+{
+  "id": "Narrow_Stance_Hack_Squats-Barbell_Hack_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729976400,
+  "fromExerciseTemplateId": "Narrow_Stance_Hack_Squats",
+  "toExerciseTemplateId": "Barbell_Hack_Squat"
+}

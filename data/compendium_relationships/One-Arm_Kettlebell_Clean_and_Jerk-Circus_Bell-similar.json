@@ -1,0 +1,10 @@
+{
+  "id": "One-Arm_Kettlebell_Clean_and_Jerk-Circus_Bell-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761481210,
+  "fromExerciseTemplateId": "One-Arm_Kettlebell_Clean_and_Jerk",
+  "toExerciseTemplateId": "Circus_Bell"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Tricep_Side_Stretch-Overhead_Stretch-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.7,
+  "description": "Overhead Stretch includes triceps as secondary muscle with overhead arm position",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Tricep_Side_Stretch",
+  "toExerciseTemplateId": "Overhead_Stretch"
+}

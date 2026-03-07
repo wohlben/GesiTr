@@ -1,0 +1,10 @@
+{
+  "id": "Supine_Chest_Throw-Chest_Push_multiple_response-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729933200,
+  "fromExerciseTemplateId": "Supine_Chest_Throw",
+  "toExerciseTemplateId": "Chest_Push_multiple_response"
+}

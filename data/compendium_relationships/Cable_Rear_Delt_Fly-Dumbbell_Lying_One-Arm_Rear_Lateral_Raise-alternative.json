@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Rear_Delt_Fly-Dumbbell_Lying_One-Arm_Rear_Lateral_Raise-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Cable_Rear_Delt_Fly",
+  "toExerciseTemplateId": "Dumbbell_Lying_One-Arm_Rear_Lateral_Raise"
+}

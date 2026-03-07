@@ -1,0 +1,54 @@
+{
+  "name": "One-Arm Kettlebell Clean and Jerk",
+  "slug": "one-arm-kettlebell-clean-and-jerk",
+  "type": "STRENGTH",
+  "force": [
+    "PULL",
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "HAMSTRINGS",
+    "GLUTES",
+    "LOWER_BACK",
+    "TRAPS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Single-arm kettlebell clean followed by overhead jerk, combining pull and press in one fluid motion.",
+  "instructions": [
+    "Hold a kettlebell by the handle.",
+    "Clean the kettlebell to your shoulder by extending through the legs and hips as you pull the kettlebell towards your shoulder. Rotate your wrist as you do so, so that the palm faces forward.",
+    "Dip your body by bending the knees, keeping your torso upright.",
+    "Immediately reverse direction, driving through the heels, in essence jumping to create momentum. As you do so, press the kettlebell overhead to lockout by extending the arms, using your body's momentum to move the weight.",
+    "Receive the weight overhead by returning to a squat position underneath the weight.",
+    "Keeping the weight overhead, return to a standing position. Lower the weight to the floor to perform the next repetition."
+  ],
+  "images": [
+    "/img/exercises/One-Arm_Kettlebell_Clean_and_Jerk/0.jpg",
+    "/img/exercises/One-Arm_Kettlebell_Clean_and_Jerk/1.jpg"
+  ],
+  "alternativeNames": [
+    "One Arm Kettlebell Clean and Jerk",
+    "One-Arm KB Clean and Jerk",
+    "Single Arm Kettlebell Clean and Jerk",
+    "Unilateral Kettlebell Clean and Jerk"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "One-Arm_Kettlebell_Clean_and_Jerk",
+  "equipmentIds": [
+    "kettlebell"
+  ]
+}

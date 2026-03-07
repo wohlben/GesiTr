@@ -1,0 +1,10 @@
+{
+  "id": "Snatch-Snatch_Balance-supports",
+  "relationshipType": "supports",
+  "strength": 0.9,
+  "description": "The Snatch Balance specifically trains the catch phase of the Snatch, teaching the athlete to rapidly drop under the bar into a full overhead squat position.",
+  "createdBy": "system",
+  "createdAt": 1761518400,
+  "fromExerciseTemplateId": "Snatch",
+  "toExerciseTemplateId": "Snatch_Balance"
+}

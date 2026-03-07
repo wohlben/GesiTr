@@ -1,0 +1,10 @@
+{
+  "id": "Kettlebell_Figure_8-Kettlebell_Pass_Between_The_Legs-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761499772,
+  "fromExerciseTemplateId": "Kettlebell_Figure_8",
+  "toExerciseTemplateId": "Kettlebell_Pass_Between_The_Legs"
+}

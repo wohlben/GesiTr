@@ -1,0 +1,49 @@
+{
+  "name": "Muscle Snatch",
+  "slug": "muscle-snatch",
+  "type": "STRENGTH",
+  "force": [
+    "PULL",
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "TRAPS",
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "QUADS",
+    "GLUTES",
+    "HAMSTRINGS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Olympic lift variation snatching barbell overhead using muscle power without dropping into squat.",
+  "instructions": [
+    "Begin with a loaded barbell held at the mid thigh position with a wide grip. The feet should be directly below the hips, with the feet turned out as needed. Lower the hips, with the chest up and the head looking forward. The shoulders should be just in front of the bar. This will be the starting position.",
+    "Begin the pull by driving through the front of the heels, raising the bar. Transition into the second pull by extending through the hips knees and ankles, driving the bar up as quickly as possible. The bar should be close to the body.",
+    "Continue raising the bar to the overhead position, without rebending the knees."
+  ],
+  "images": [
+    "/img/exercises/Muscle_Snatch/0.jpg",
+    "/img/exercises/Muscle_Snatch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Barbell Snatch",
+    "Muscle-Snatch",
+    "Power Snatch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Muscle_Snatch",
+  "equipmentIds": [
+    "barbell"
+  ]
+}

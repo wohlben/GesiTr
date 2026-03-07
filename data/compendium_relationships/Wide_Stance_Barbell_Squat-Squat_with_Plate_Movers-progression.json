@@ -1,0 +1,10 @@
+{
+  "id": "Wide_Stance_Barbell_Squat-Squat_with_Plate_Movers-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Wide_Stance_Barbell_Squat",
+  "toExerciseTemplateId": "Squat_with_Plate_Movers"
+}

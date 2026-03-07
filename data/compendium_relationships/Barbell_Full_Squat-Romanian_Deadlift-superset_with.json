@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Full_Squat-Romanian_Deadlift-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Barbell_Full_Squat",
+  "toExerciseTemplateId": "Romanian_Deadlift"
+}

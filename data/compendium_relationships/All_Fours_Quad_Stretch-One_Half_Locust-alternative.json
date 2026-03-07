@@ -1,0 +1,10 @@
+{
+  "id": "All_Fours_Quad_Stretch-One_Half_Locust-alternative",
+  "relationshipType": "alternative",
+  "strength": null,
+  "description": "Both exercises stretch the quadriceps and hip flexors while holding the foot, with One Half Locust performed lying prone and All Fours Quad Stretch performed on hands and knees for easier balance",
+  "createdBy": "system",
+  "createdAt": 1761024000,
+  "fromExerciseTemplateId": "All_Fours_Quad_Stretch",
+  "toExerciseTemplateId": "One_Half_Locust"
+}

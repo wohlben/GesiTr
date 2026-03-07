@@ -1,0 +1,45 @@
+{
+  "name": "Kneeling High Pulley Row",
+  "slug": "kneeling-high-pulley-row",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "LATS"
+  ],
+  "secondaryMuscles": [
+    "BICEPS",
+    "RHOMBOIDS",
+    "REAR_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.1,
+  "suggestedMeasurementParadigms": [
+    "DISTANCE_BASED",
+    "TIME_BASED",
+    "AMRAP"
+  ],
+  "description": "Kneeling cable row using high pulley, pulling from high angle while kneeling.",
+  "instructions": [
+    "Select the appropriate weight using a pulley that is above your head. Attach a rope to the cable and kneel a couple of feet away, holding the rope out in front of you with both arms extended. This will be your starting position.",
+    "Initiate the movement by flexing the elbows and fully retracting your shoulders, pulling the rope toward your upper chest with your elbows out.",
+    "After pausing briefly, slowly return to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Kneeling_High_Pulley_Row/0.jpg",
+    "/img/exercises/Kneeling_High_Pulley_Row/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Kneeling_High_Pulley_Row",
+  "equipmentIds": [
+    "gym-cable-machine"
+  ]
+}

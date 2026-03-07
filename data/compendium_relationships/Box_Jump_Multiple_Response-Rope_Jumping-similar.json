@@ -1,0 +1,10 @@
+{
+  "id": "Box_Jump_Multiple_Response-Rope_Jumping-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Box_Jump_Multiple_Response",
+  "toExerciseTemplateId": "Rope_Jumping"
+}

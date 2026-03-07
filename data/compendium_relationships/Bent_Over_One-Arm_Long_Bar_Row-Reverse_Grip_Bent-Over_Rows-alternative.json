@@ -1,0 +1,10 @@
+{
+  "id": "Bent_Over_One-Arm_Long_Bar_Row-Reverse_Grip_Bent-Over_Rows-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761466991,
+  "fromExerciseTemplateId": "Bent_Over_One-Arm_Long_Bar_Row",
+  "toExerciseTemplateId": "Reverse_Grip_Bent-Over_Rows"
+}

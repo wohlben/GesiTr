@@ -1,0 +1,10 @@
+{
+  "id": "V-Bar_Pullup-Rocky_Pull-Ups_Pulldowns-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "V-Bar_Pullup",
+  "toExerciseTemplateId": "Rocky_Pull-Ups_Pulldowns"
+}

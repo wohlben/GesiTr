@@ -1,0 +1,10 @@
+{
+  "id": "Bodyweight_Mid_Row-Gironda_Sternum_Chins-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Bodyweight_Mid_Row",
+  "toExerciseTemplateId": "Gironda_Sternum_Chins"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Plate_Curls-Reverse_Barbell_Preacher_Curls-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Reverse_Plate_Curls",
+  "toExerciseTemplateId": "Reverse_Barbell_Preacher_Curls"
+}

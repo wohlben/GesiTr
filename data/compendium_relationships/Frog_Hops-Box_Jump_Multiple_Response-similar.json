@@ -1,0 +1,10 @@
+{
+  "id": "Frog_Hops-Box_Jump_Multiple_Response-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761477930,
+  "fromExerciseTemplateId": "Frog_Hops",
+  "toExerciseTemplateId": "Box_Jump_Multiple_Response"
+}

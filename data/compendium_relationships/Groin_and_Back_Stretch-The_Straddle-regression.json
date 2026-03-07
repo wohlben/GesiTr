@@ -1,0 +1,10 @@
+{
+  "id": "Groin_and_Back_Stretch-The_Straddle-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": "The Straddle is a simpler seated adductor stretch in V-position, making it an easier regression from the butterfly position.",
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Groin_and_Back_Stretch",
+  "toExerciseTemplateId": "The_Straddle"
+}

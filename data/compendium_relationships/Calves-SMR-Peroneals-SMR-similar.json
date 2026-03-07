@@ -1,0 +1,10 @@
+{
+  "id": "Calves-SMR-Peroneals-SMR-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Calves-SMR",
+  "toExerciseTemplateId": "Peroneals-SMR"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Ankle_Circles-Seated_Calf_Stretch-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Ankle_Circles",
+  "toExerciseTemplateId": "Seated_Calf_Stretch"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Smith_Machine_Hang_Power_Clean-Clean_Shrug-accessory",
+  "relationshipType": "accessory",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Smith_Machine_Hang_Power_Clean",
+  "toExerciseTemplateId": "Clean_Shrug"
+}

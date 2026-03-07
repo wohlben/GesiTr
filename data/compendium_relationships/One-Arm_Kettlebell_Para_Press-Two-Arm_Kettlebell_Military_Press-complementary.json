@@ -1,0 +1,10 @@
+{
+  "id": "One-Arm_Kettlebell_Para_Press-Two-Arm_Kettlebell_Military_Press-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729969200,
+  "fromExerciseTemplateId": "One-Arm_Kettlebell_Para_Press",
+  "toExerciseTemplateId": "Two-Arm_Kettlebell_Military_Press"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Farmers_Walk-One_Handed_Hang-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Farmers_Walk",
+  "toExerciseTemplateId": "One_Handed_Hang"
+}

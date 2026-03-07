@@ -1,0 +1,10 @@
+{
+  "id": "Single_Leg_Glute_Bridge-Kettlebell_One-Legged_Deadlift-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Single_Leg_Glute_Bridge",
+  "toExerciseTemplateId": "Kettlebell_One-Legged_Deadlift"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Dumbbell_Squat-Resistance_Band_Squat-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Dumbbell_Squat",
+  "toExerciseTemplateId": "Resistance_Band_Squat"
+}

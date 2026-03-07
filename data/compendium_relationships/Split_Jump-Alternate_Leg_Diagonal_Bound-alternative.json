@@ -1,0 +1,10 @@
+{
+  "id": "Split_Jump-Alternate_Leg_Diagonal_Bound-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.82,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761461533,
+  "fromExerciseTemplateId": "Split_Jump",
+  "toExerciseTemplateId": "Alternate_Leg_Diagonal_Bound"
+}

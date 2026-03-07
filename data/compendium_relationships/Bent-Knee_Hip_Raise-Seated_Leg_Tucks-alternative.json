@@ -1,0 +1,10 @@
+{
+  "id": "Bent-Knee_Hip_Raise-Seated_Leg_Tucks-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Bent-Knee_Hip_Raise",
+  "toExerciseTemplateId": "Seated_Leg_Tucks"
+}

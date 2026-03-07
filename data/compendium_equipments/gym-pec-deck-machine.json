@@ -1,0 +1,8 @@
+{
+  "name": "gym-pec-deck-machine",
+  "displayName": "Pec Deck Machine",
+  "description": "A machine designed to isolate the chest muscles through a fly motion.",
+  "category": "machines",
+  "imageUrl": null,
+  "templateId": "gym-pec-deck-machine"
+}

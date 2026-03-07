@@ -1,0 +1,10 @@
+{
+  "id": "Single-Arm_Cable_Crossover-One-Arm_Flat_Bench_Dumbbell_Flye-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761512062,
+  "fromExerciseTemplateId": "Single-Arm_Cable_Crossover",
+  "toExerciseTemplateId": "One-Arm_Flat_Bench_Dumbbell_Flye"
+}

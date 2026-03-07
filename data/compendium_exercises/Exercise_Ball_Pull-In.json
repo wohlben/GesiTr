@@ -1,0 +1,48 @@
+{
+  "name": "Exercise Ball Pull-In",
+  "slug": "exercise-ball-pull-in",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "Plank position knee tuck on stability ball, engaging core through dynamic leg movement.",
+  "instructions": [
+    "Place an exercise ball nearby and lay on the floor in front of it with your hands on the floor shoulder width apart in a push-up position.",
+    "Now place your lower shins on top of an exercise ball. Tip: At this point your legs should be fully extended with the shins on top of the ball and the upper body should be in a push-up type of position being supported by your two extended arms in front of you. This will be your starting position.",
+    "While keeping your back completely straight and the upper body stationary, pull your knees in towards your chest as you exhale, allowing the ball to roll forward under your ankles. Squeeze your abs and hold that position for a second.",
+    "Now slowly straighten your legs, rolling the ball back to the starting position as you inhale.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Exercise_Ball_Pull-In/0.jpg",
+    "/img/exercises/Exercise_Ball_Pull-In/1.jpg"
+  ],
+  "alternativeNames": [
+    "Exercise Ball Pull In",
+    "Gym Ball Pull-In",
+    "Physio Ball Pull-In",
+    "Stability Ball Pull-In",
+    "Swiss Ball Pull-In"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Exercise_Ball_Pull-In",
+  "equipmentIds": [
+    "stability-ball"
+  ]
+}

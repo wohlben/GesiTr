@@ -1,0 +1,10 @@
+{
+  "id": "Side_Lying_Groin_Stretch-Lying_Bent_Leg_Groin-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": "Both target adductors but Lying Bent Leg Groin is more advanced with partner-assisted PNF technique in butterfly position, while Side Lying Groin Stretch is a simpler solo stretch in side-lying position.",
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Side_Lying_Groin_Stretch",
+  "toExerciseTemplateId": "Lying_Bent_Leg_Groin"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Butt_Lift_Bridge-Single_Leg_Glute_Bridge-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464685,
+  "fromExerciseTemplateId": "Butt_Lift_Bridge",
+  "toExerciseTemplateId": "Single_Leg_Glute_Bridge"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Cross-Body_Crunch-Windmills-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cross-Body_Crunch",
+  "toExerciseTemplateId": "Windmills"
+}

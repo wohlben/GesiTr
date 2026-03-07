@@ -1,0 +1,10 @@
+{
+  "id": "Single_Leg_Push-off-Barbell_Step_Ups-related",
+  "relationshipType": "related",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Single_Leg_Push-off",
+  "toExerciseTemplateId": "Barbell_Step_Ups"
+}

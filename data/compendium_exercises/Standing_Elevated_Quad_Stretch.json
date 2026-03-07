@@ -1,0 +1,39 @@
+{
+  "name": "Standing Elevated Quad Stretch",
+  "slug": "standing-elevated-quad-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Standing quad stretch with rear foot elevated on bench or box, increased stretch on hip flexors and quads.",
+  "instructions": [
+    "Start by standing with your back about two to three feet away from a bench or step.",
+    "Lift one leg behind you and rest your foot on the step,either on your instep or the ball of your foot, whichever you find most comfortable.",
+    "Keep your supporting knee slightly bent and avoid letting that knee extend out beyond your toes. Switch sides."
+  ],
+  "images": [
+    "/img/exercises/Standing_Elevated_Quad_Stretch/0.jpg",
+    "/img/exercises/Standing_Elevated_Quad_Stretch/1.jpg"
+  ],
+  "alternativeNames": [
+    "Seated Elevated Quad Stretch"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Standing_Elevated_Quad_Stretch",
+  "equipmentIds": []
+}

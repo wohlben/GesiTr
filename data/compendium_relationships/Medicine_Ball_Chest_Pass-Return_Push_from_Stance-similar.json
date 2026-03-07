@@ -1,0 +1,10 @@
+{
+  "id": "Medicine_Ball_Chest_Pass-Return_Push_from_Stance-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": "Athletic variation adding stance positioning and movement patterns to basic chest pass",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Medicine_Ball_Chest_Pass",
+  "toExerciseTemplateId": "Return_Push_from_Stance"
+}

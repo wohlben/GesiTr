@@ -1,0 +1,10 @@
+{
+  "id": "Clean_Deadlift-Clean-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Clean_Deadlift",
+  "toExerciseTemplateId": "Clean"
+}

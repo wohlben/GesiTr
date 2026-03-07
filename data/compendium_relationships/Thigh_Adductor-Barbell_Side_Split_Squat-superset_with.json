@@ -1,0 +1,10 @@
+{
+  "id": "Thigh_Adductor-Barbell_Side_Split_Squat-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Thigh_Adductor",
+  "toExerciseTemplateId": "Barbell_Side_Split_Squat"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Extended_Range_One-Arm_Kettlebell_Floor_Press-One_Arm_Dumbbell_Bench_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Extended_Range_One-Arm_Kettlebell_Floor_Press",
+  "toExerciseTemplateId": "One_Arm_Dumbbell_Bench_Press"
+}

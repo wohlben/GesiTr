@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Band_Power_Squat-Barbell_Squat-related",
+  "relationshipType": "related",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Reverse_Band_Power_Squat",
+  "toExerciseTemplateId": "Barbell_Squat"
+}

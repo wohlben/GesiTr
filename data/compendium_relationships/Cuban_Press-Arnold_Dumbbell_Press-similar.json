@@ -1,0 +1,10 @@
+{
+  "id": "Cuban_Press-Arnold_Dumbbell_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761463686,
+  "fromExerciseTemplateId": "Cuban_Press",
+  "toExerciseTemplateId": "Arnold_Dumbbell_Press"
+}

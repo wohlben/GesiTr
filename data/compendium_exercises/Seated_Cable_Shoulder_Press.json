@@ -1,0 +1,47 @@
+{
+  "name": "Seated Cable Shoulder Press",
+  "slug": "seated-cable-shoulder-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS"
+  ],
+  "secondaryMuscles": [
+    "SIDE_DELTS",
+    "TRICEPS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Seated overhead press using cable machine, providing constant tension throughout movement.",
+  "instructions": [
+    "Adjust the weight to an appropriate amount and be seated, grasping the handles. Your upper arms should be about 90 degrees to the body, with your head and chest up. The elbows should also be bent to about 90 degrees. This will be your starting position.",
+    "Begin by extending through the elbow, pressing the handles together above your head.",
+    "After pausing at the top, return the handles to the starting position. Ensure that you maintain tension on the cables.",
+    "You can also execute this movement with your back off the pad and alternate hands."
+  ],
+  "images": [
+    "/img/exercises/Seated_Cable_Shoulder_Press/0.jpg",
+    "/img/exercises/Seated_Cable_Shoulder_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "Seated Cable Machine Shoulder Press",
+    "Seated Shoulder Press",
+    "Standing Cable Shoulder Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Seated_Cable_Shoulder_Press",
+  "equipmentIds": [
+    "gym-cable-machine"
+  ]
+}

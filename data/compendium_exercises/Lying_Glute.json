@@ -1,0 +1,43 @@
+{
+  "name": "Lying Glute",
+  "slug": "lying-glute",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "GLUTES"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Glute stretch performed lying down, pulling knee toward chest to stretch hip and glute muscles.",
+  "instructions": [
+    "Lie on your back with your partner kneeling beside you.",
+    "Flex the hip of one leg, raising it off of the floor. Rotate the leg so the foot is over the opposite hip, the lower leg perpendicular to your body. Your partner should hold the knee and ankle in place. This will be your starting position.",
+    "Attempt to push your leg towards your partner, who should be preventing any actual movement of the leg.",
+    "After 10-20 seconds, completely relax as your partner gently pushes the ankle and knee towards your chest. Be sure to inform your helper when the stretch is adequate to prevent injury or overstretching."
+  ],
+  "images": [
+    "/img/exercises/Lying_Glute/0.jpg",
+    "/img/exercises/Lying_Glute/1.jpg"
+  ],
+  "alternativeNames": [
+    "Lying-Glute",
+    "Prone Glute"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Lying_Glute",
+  "equipmentIds": [
+    "partner"
+  ]
+}

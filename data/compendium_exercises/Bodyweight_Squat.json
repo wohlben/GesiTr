@@ -1,0 +1,42 @@
+{
+  "name": "Bodyweight Squat",
+  "slug": "bodyweight-squat",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 1,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Foundational bodyweight squat movement for lower body strength and mobility without equipment",
+  "instructions": [
+    "Stand with your feet shoulder width apart. You can place your hands behind your head. This will be your starting position.",
+    "Begin the movement by flexing your knees and hips, sitting back with your hips.",
+    "Continue down to full depth if you are able,and quickly reverse the motion until you return to the starting position. As you squat, keep your head and chest up and push your knees out."
+  ],
+  "images": [
+    "/img/exercises/Bodyweight_Squat/0.jpg",
+    "/img/exercises/Bodyweight_Squat/1.jpg"
+  ],
+  "alternativeNames": [
+    "Bodyweight-Squat"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Bodyweight_Squat",
+  "equipmentIds": []
+}

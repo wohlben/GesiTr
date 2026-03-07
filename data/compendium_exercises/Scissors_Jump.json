@@ -1,0 +1,47 @@
+{
+  "name": "Scissors Jump",
+  "slug": "scissors-jump",
+  "type": "CARDIO",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Jumping lunge alternating legs mid-air in scissor motion, explosive plyometric leg exercise.",
+  "instructions": [
+    "Assume a lunge stance position with one foot forward with the knee bent, and the rear knee nearly touching the ground.",
+    "Ensure that the front knee is over the midline of the foot. Extending through both legs, jump as high as possible, swinging your arms to gain lift.",
+    "As you jump as high as you can, switch the position of your legs, moving your front leg to the back and the rear leg to the front.",
+    "As you land, absorb the impact through the legs by adopting the lunge position, and repeat."
+  ],
+  "images": [
+    "/img/exercises/Scissors_Jump/0.jpg",
+    "/img/exercises/Scissors_Jump/1.jpg"
+  ],
+  "alternativeNames": [
+    "Scissors-Jump"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Scissors_Jump",
+  "equipmentIds": []
+}

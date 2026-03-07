@@ -1,0 +1,10 @@
+{
+  "id": "Kneeling_Forearm_Stretch-Finger_Curls-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Kneeling_Forearm_Stretch",
+  "toExerciseTemplateId": "Finger_Curls"
+}

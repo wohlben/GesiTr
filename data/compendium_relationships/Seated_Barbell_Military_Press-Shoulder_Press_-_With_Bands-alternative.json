@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Barbell_Military_Press-Shoulder_Press_-_With_Bands-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761545420,
+  "fromExerciseTemplateId": "Seated_Barbell_Military_Press",
+  "toExerciseTemplateId": "Shoulder_Press_-_With_Bands"
+}

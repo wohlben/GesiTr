@@ -1,0 +1,10 @@
+{
+  "id": "JM_Press-Lying_Close-Grip_Barbell_Triceps_Press_To_Chin-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "JM_Press",
+  "toExerciseTemplateId": "Lying_Close-Grip_Barbell_Triceps_Press_To_Chin"
+}

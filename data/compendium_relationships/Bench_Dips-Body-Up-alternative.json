@@ -1,0 +1,10 @@
+{
+  "id": "Bench_Dips-Body-Up-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Bench_Dips",
+  "toExerciseTemplateId": "Body-Up"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Goblet_Squat-Barbell_Squat-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Goblet_Squat",
+  "toExerciseTemplateId": "Barbell_Squat"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Mixed_Grip_Chin-Chin-Up-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Mixed_Grip_Chin",
+  "toExerciseTemplateId": "Chin-Up"
+}

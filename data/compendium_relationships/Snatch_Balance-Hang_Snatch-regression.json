@@ -1,0 +1,10 @@
+{
+  "id": "Snatch_Balance-Hang_Snatch-regression",
+  "relationshipType": "regression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761481995,
+  "fromExerciseTemplateId": "Snatch_Balance",
+  "toExerciseTemplateId": "Hang_Snatch"
+}

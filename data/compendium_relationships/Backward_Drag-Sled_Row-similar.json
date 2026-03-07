@@ -1,0 +1,10 @@
+{
+  "id": "Backward_Drag-Sled_Row-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464001,
+  "fromExerciseTemplateId": "Backward_Drag",
+  "toExerciseTemplateId": "Sled_Row"
+}

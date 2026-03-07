@@ -1,0 +1,10 @@
+{
+  "id": "Elbow_to_Knee-Crunches-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Elbow_to_Knee",
+  "toExerciseTemplateId": "Crunches"
+}

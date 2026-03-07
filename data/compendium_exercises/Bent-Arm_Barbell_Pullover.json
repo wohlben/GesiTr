@@ -1,0 +1,51 @@
+{
+  "name": "Bent-Arm Barbell Pullover",
+  "slug": "bent-arm-barbell-pullover",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "LATS",
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.1,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Bent-arm pullover with barbell targeting lats and chest through overhead arc movement",
+  "instructions": [
+    "Lie on a flat bench with a barbell using a shoulder grip width.",
+    "Hold the bar straight over your chest with a bend in your arms. This will be your starting position.",
+    "While keeping your arms in the bent arm position, lower the weight slowly in an arc behind your head while breathing in until you feel a stretch on the chest.",
+    "At that point, bring the barbell back to the starting position using the arc through which the weight was lowered and exhale as you perform this movement.",
+    "Hold the weight on the initial position for a second and repeat the motion for the prescribed number of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Bent-Arm_Barbell_Pullover/0.jpg",
+    "/img/exercises/Bent-Arm_Barbell_Pullover/1.jpg"
+  ],
+  "alternativeNames": [
+    "Bent Arm Barbell Pullover",
+    "Bent-Arm BB Pullover",
+    "Bent-Arm Bar Pullover",
+    "Bent-Arm Barbell Pullover"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Bent-Arm_Barbell_Pullover",
+  "equipmentIds": [
+    "barbell",
+    "bench"
+  ]
+}

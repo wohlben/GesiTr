@@ -1,0 +1,10 @@
+{
+  "id": "Power_Jerk-Double_Kettlebell_Jerk-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Power_Jerk",
+  "toExerciseTemplateId": "Double_Kettlebell_Jerk"
+}

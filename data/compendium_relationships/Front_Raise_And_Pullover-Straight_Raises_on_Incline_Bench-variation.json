@@ -1,0 +1,10 @@
+{
+  "id": "Front_Raise_And_Pullover-Straight_Raises_on_Incline_Bench-variation",
+  "relationshipType": "variation",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Front_Raise_And_Pullover",
+  "toExerciseTemplateId": "Straight_Raises_on_Incline_Bench"
+}

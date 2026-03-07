@@ -1,0 +1,10 @@
+{
+  "id": "Drop_Push-Plyo_Kettlebell_Pushups-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Drop_Push",
+  "toExerciseTemplateId": "Plyo_Kettlebell_Pushups"
+}

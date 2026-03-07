@@ -1,0 +1,10 @@
+{
+  "id": "Chair_Leg_Extended_Stretch-On-Your-Back_Quad_Stretch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Chair_Leg_Extended_Stretch",
+  "toExerciseTemplateId": "On-Your-Back_Quad_Stretch"
+}

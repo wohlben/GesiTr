@@ -1,0 +1,8 @@
+{
+  "name": "dumbbell",
+  "displayName": "Dumbbell",
+  "description": "A short bar with fixed or adjustable weight on each end, used for single-arm exercises.",
+  "category": "free_weights",
+  "imageUrl": null,
+  "templateId": "dumbbell"
+}

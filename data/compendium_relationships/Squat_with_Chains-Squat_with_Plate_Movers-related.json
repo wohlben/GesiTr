@@ -1,0 +1,10 @@
+{
+  "id": "Squat_with_Chains-Squat_with_Plate_Movers-related",
+  "relationshipType": "related",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Squat_with_Chains",
+  "toExerciseTemplateId": "Squat_with_Plate_Movers"
+}

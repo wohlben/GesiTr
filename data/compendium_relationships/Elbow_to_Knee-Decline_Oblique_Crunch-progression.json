@@ -1,0 +1,10 @@
+{
+  "id": "Elbow_to_Knee-Decline_Oblique_Crunch-progression",
+  "relationshipType": "progression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Elbow_to_Knee",
+  "toExerciseTemplateId": "Decline_Oblique_Crunch"
+}

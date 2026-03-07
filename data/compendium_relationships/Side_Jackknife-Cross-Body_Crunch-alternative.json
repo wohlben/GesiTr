@@ -1,0 +1,10 @@
+{
+  "id": "Side_Jackknife-Cross-Body_Crunch-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Side_Jackknife",
+  "toExerciseTemplateId": "Cross-Body_Crunch"
+}

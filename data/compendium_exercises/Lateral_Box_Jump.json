@@ -1,0 +1,52 @@
+{
+  "name": "Lateral Box Jump",
+  "slug": "lateral-box-jump",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS",
+    "GLUTES"
+  ],
+  "secondaryMuscles": [
+    "CALVES",
+    "HAMSTRINGS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.8,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "AMRAP",
+    "EMOM",
+    "ROUNDS_FOR_TIME"
+  ],
+  "description": "Lateral jump onto and off a box, training side-to-side explosive power and coordination.",
+  "instructions": [
+    "Assume a comfortable standing position, with a short box positioned next to you. This will be your starting position.",
+    "Quickly dip into a quarter squat to initiate the stretch reflex, and immediately reverse direction to jump up and to the side.",
+    "Bring your knees high enough to ensure your feet have good clearance over the box.",
+    "Land on the center of the box, using your legs to absorb the impact.",
+    "Carefully jump down to the other side of the box, and continue going back and forth for several repetitions."
+  ],
+  "images": [
+    "/img/exercises/Lateral_Box_Jump/0.jpg",
+    "/img/exercises/Lateral_Box_Jump/1.jpg"
+  ],
+  "alternativeNames": [
+    "Box Jumps",
+    "Jump Box",
+    "Plyo Box Jump"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Lateral_Box_Jump",
+  "equipmentIds": [
+    "box"
+  ]
+}

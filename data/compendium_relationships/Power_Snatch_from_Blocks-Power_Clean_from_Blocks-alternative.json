@@ -1,0 +1,10 @@
+{
+  "id": "Power_Snatch_from_Blocks-Power_Clean_from_Blocks-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761511266,
+  "fromExerciseTemplateId": "Power_Snatch_from_Blocks",
+  "toExerciseTemplateId": "Power_Clean_from_Blocks"
+}

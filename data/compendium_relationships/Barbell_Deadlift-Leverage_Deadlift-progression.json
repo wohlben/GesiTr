@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Deadlift-Leverage_Deadlift-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Barbell_Deadlift",
+  "toExerciseTemplateId": "Leverage_Deadlift"
+}

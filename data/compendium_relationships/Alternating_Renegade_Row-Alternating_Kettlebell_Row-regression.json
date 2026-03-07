@@ -1,0 +1,10 @@
+{
+  "id": "Alternating_Renegade_Row-Alternating_Kettlebell_Row-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Alternating_Renegade_Row",
+  "toExerciseTemplateId": "Alternating_Kettlebell_Row"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Clean_from_Blocks-Hang_Clean_-_Below_the_Knees-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496140,
+  "fromExerciseTemplateId": "Clean_from_Blocks",
+  "toExerciseTemplateId": "Hang_Clean_-_Below_the_Knees"
+}

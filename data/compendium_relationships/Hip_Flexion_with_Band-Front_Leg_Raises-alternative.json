@@ -1,0 +1,10 @@
+{
+  "id": "Hip_Flexion_with_Band-Front_Leg_Raises-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Hip_Flexion_with_Band",
+  "toExerciseTemplateId": "Front_Leg_Raises"
+}

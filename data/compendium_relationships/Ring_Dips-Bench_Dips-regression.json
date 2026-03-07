@@ -1,0 +1,10 @@
+{
+  "id": "Ring_Dips-Bench_Dips-regression",
+  "relationshipType": "regression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Ring_Dips",
+  "toExerciseTemplateId": "Bench_Dips"
+}

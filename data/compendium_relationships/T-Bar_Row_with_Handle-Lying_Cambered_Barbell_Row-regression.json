@@ -1,0 +1,10 @@
+{
+  "id": "T-Bar_Row_with_Handle-Lying_Cambered_Barbell_Row-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "T-Bar_Row_with_Handle",
+  "toExerciseTemplateId": "Lying_Cambered_Barbell_Row"
+}

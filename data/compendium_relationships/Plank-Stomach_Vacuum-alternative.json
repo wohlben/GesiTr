@@ -1,0 +1,10 @@
+{
+  "id": "Plank-Stomach_Vacuum-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Plank",
+  "toExerciseTemplateId": "Stomach_Vacuum"
+}

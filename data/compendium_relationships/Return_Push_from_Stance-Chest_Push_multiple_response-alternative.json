@@ -1,0 +1,10 @@
+{
+  "id": "Return_Push_from_Stance-Chest_Push_multiple_response-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.65,
+  "description": "Both are medicine ball catching and throwing drills; return push done from athletic stance with partner while chest push multiple response done from kneeling with wall or partner",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Return_Push_from_Stance",
+  "toExerciseTemplateId": "Chest_Push_multiple_response"
+}

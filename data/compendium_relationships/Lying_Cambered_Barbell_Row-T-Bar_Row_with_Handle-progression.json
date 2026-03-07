@@ -1,0 +1,10 @@
+{
+  "id": "Lying_Cambered_Barbell_Row-T-Bar_Row_with_Handle-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Lying_Cambered_Barbell_Row",
+  "toExerciseTemplateId": "T-Bar_Row_with_Handle"
+}

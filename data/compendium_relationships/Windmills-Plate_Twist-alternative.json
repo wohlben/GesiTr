@@ -1,0 +1,10 @@
+{
+  "id": "Windmills-Plate_Twist-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Windmills",
+  "toExerciseTemplateId": "Plate_Twist"
+}

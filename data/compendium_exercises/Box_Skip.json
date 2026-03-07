@@ -1,0 +1,49 @@
+{
+  "name": "Box Skip",
+  "slug": "box-skip",
+  "type": "CARDIO",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "CALVES"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.9,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED",
+    "DISTANCE_BASED",
+    "TIME_BASED"
+  ],
+  "description": "Plyometric box drill using skipping motion to develop explosive power, coordination, and single-leg strength",
+  "instructions": [
+    "You will need several boxes lined up about 8 feet apart.",
+    "Begin facing the first box with one leg slightly behind the other.",
+    "Drive off the back leg, attempting to gain as much height with the hips as possible.",
+    "Immediately upon landing on the box, drive the other leg forward and upward to gain height and distance, leaping from the box. Land between the first two boxes with the same leg that landed on the first box.",
+    "Then, step to the next box and repeat."
+  ],
+  "images": [
+    "/img/exercises/Box_Skip/0.jpg",
+    "/img/exercises/Box_Skip/1.jpg"
+  ],
+  "alternativeNames": [
+    "Box-Skip"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Box_Skip",
+  "equipmentIds": [
+    "plyometric-box"
+  ]
+}

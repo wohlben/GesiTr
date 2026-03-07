@@ -1,0 +1,46 @@
+{
+  "name": "Dumbbell Shrug",
+  "slug": "dumbbell-shrug",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "TRAPS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Strength training exercise targeting primary muscle groups",
+  "instructions": [
+    "Stand erect with a dumbbell on each hand (palms facing your torso), arms extended on the sides.",
+    "Lift the dumbbells by elevating the shoulders as high as possible while you exhale. Hold the contraction at the top for a second. Tip: The arms should remain extended at all times. Refrain from using the biceps to help lift the dumbbells. Only the shoulders should be moving up and down.",
+    "Lower the dumbbells back to the original position.",
+    "Repeat for the recommended amount of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Dumbbell_Shrug/0.jpg",
+    "/img/exercises/Dumbbell_Shrug/1.jpg"
+  ],
+  "alternativeNames": [
+    "DB Shrug",
+    "Dumbbell-Shrug",
+    "Dumbell Shrug",
+    "Shoulder Shrug",
+    "Trap Shrug"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Dumbbell_Shrug",
+  "equipmentIds": [
+    "2x dumbbell"
+  ]
+}

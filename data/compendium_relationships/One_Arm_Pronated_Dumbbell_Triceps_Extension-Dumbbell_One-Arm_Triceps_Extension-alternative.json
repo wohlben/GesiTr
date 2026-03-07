@@ -1,0 +1,10 @@
+{
+  "id": "One_Arm_Pronated_Dumbbell_Triceps_Extension-Dumbbell_One-Arm_Triceps_Extension-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "One_Arm_Pronated_Dumbbell_Triceps_Extension",
+  "toExerciseTemplateId": "Dumbbell_One-Arm_Triceps_Extension"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Crunch_-_Hands_Overhead-Crunch_-_Legs_On_Exercise_Ball-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730027200,
+  "fromExerciseTemplateId": "Crunch_-_Hands_Overhead",
+  "toExerciseTemplateId": "Crunch_-_Legs_On_Exercise_Ball"
+}

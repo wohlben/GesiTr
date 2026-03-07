@@ -1,0 +1,10 @@
+{
+  "id": "Olympic_Squat-Goblet_Squat-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760883050,
+  "fromExerciseTemplateId": "Olympic_Squat",
+  "toExerciseTemplateId": "Goblet_Squat"
+}

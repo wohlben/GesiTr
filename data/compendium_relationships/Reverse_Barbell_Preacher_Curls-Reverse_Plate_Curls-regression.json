@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Barbell_Preacher_Curls-Reverse_Plate_Curls-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Reverse_Barbell_Preacher_Curls",
+  "toExerciseTemplateId": "Reverse_Plate_Curls"
+}

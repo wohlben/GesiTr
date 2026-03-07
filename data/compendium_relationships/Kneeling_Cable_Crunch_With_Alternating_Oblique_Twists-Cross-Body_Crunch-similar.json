@@ -1,0 +1,10 @@
+{
+  "id": "Kneeling_Cable_Crunch_With_Alternating_Oblique_Twists-Cross-Body_Crunch-similar",
+  "relationshipType": "similar",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Kneeling_Cable_Crunch_With_Alternating_Oblique_Twists",
+  "toExerciseTemplateId": "Cross-Body_Crunch"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Romanian_Deadlift_from_Deficit-Romanian_Deadlift-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Romanian_Deadlift_from_Deficit",
+  "toExerciseTemplateId": "Romanian_Deadlift"
+}

@@ -1,0 +1,35 @@
+{
+  "name": "Tricep Side Stretch",
+  "slug": "tricep-side-stretch",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "TRICEPS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Cross-body triceps stretch pulling arm across body and over shoulder to stretch back of arm.",
+  "instructions": [
+    "Bring right arm across your body and over your left shoulder, holding your elbow with your left hand, until you feel a stretch in your tricep. Then repeat for your other arm."
+  ],
+  "images": [
+    "/img/exercises/Tricep_Side_Stretch/0.jpg",
+    "/img/exercises/Tricep_Side_Stretch/1.jpg"
+  ],
+  "alternativeNames": [],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Tricep_Side_Stretch",
+  "equipmentIds": []
+}

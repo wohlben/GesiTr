@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Side_Split_Squat-Barbell_Squat-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Barbell_Side_Split_Squat",
+  "toExerciseTemplateId": "Barbell_Squat"
+}

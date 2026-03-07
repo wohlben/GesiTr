@@ -1,0 +1,10 @@
+{
+  "id": "Plate_Twist-Cable_Russian_Twists-similar",
+  "relationshipType": "similar",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Plate_Twist",
+  "toExerciseTemplateId": "Cable_Russian_Twists"
+}

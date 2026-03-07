@@ -1,0 +1,51 @@
+{
+  "name": "One-Arm Kettlebell Swings",
+  "slug": "one-arm-kettlebell-swings",
+  "type": "STRENGTH",
+  "force": [
+    "HINGE"
+  ],
+  "primaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS"
+  ],
+  "secondaryMuscles": [
+    "LOWER_BACK",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Single-arm kettlebell swing using hip hinge to explosively drive kettlebell forward to shoulder height.",
+  "instructions": [
+    "Place a kettlebell between your feet. Stand with your feet shoulder width apart, back straight, and shoulders back.",
+    "Squat down and grasp the kettlebell with one hand, keeping your arm extended. This will be your starting position.",
+    "Begin by swinging the kettlebell back between your legs, hinging at the hips and keeping your back straight.",
+    "Immediately reverse direction by explosively driving through your hips and knees, swinging the kettlebell forward to shoulder height with your arm extended.",
+    "Allow the kettlebell to swing back down between your legs as you hinge at the hips again. Maintain control throughout the movement.",
+    "Continue swinging for the desired number of repetitions, then switch arms."
+  ],
+  "images": [
+    "/img/exercises/One-Arm_Kettlebell_Swings/0.jpg",
+    "/img/exercises/One-Arm_Kettlebell_Swings/1.jpg"
+  ],
+  "alternativeNames": [
+    "One Arm Kettlebell Swings",
+    "One-Arm KB Swings",
+    "Single Arm Kettlebell Swings",
+    "Unilateral Kettlebell Swings"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "One-Arm_Kettlebell_Swings",
+  "equipmentIds": [
+    "kettlebell"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Hyperextensions_Back_Extensions-Romanian_Deadlift-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498416,
+  "fromExerciseTemplateId": "Hyperextensions_Back_Extensions",
+  "toExerciseTemplateId": "Romanian_Deadlift"
+}

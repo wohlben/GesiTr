@@ -1,0 +1,10 @@
+{
+  "id": "Windmills-Oblique_Crunches-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Windmills",
+  "toExerciseTemplateId": "Oblique_Crunches"
+}

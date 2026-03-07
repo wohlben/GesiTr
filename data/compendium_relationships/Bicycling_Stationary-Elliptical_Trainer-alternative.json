@@ -1,0 +1,10 @@
+{
+  "id": "Bicycling_Stationary-Elliptical_Trainer-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761476051,
+  "fromExerciseTemplateId": "Bicycling_Stationary",
+  "toExerciseTemplateId": "Elliptical_Trainer"
+}

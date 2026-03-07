@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Incline_Bench_Press_-_Medium_Grip-Hammer_Grip_Incline_DB_Bench_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761496103,
+  "fromExerciseTemplateId": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+  "toExerciseTemplateId": "Hammer_Grip_Incline_DB_Bench_Press"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "One-Arm_Kettlebell_Clean-One-Arm_Open_Palm_Kettlebell_Clean-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "One-Arm_Kettlebell_Clean",
+  "toExerciseTemplateId": "One-Arm_Open_Palm_Kettlebell_Clean"
+}

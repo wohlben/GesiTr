@@ -1,0 +1,48 @@
+{
+  "name": "Front Squats With Two Kettlebells",
+  "slug": "front-squats-with-two-kettlebells",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "ABS"
+  ],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.4,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED"
+  ],
+  "description": "Front squat holding two kettlebells in rack position on shoulders, challenging stability and front-loaded strength.",
+  "instructions": [
+    "Clean two kettlebells to your shoulders. Clean the kettlebells to your shoulders by extending through the legs and hips as you pull the kettlebells towards your shoulders. Rotate your wrists as you do so.",
+    "Looking straight ahead at all times, squat as low as you can and pause at the bottom. As you squat down, push your knees out. You should squat between your legs, keeping an upright torso, with your head and chest up.",
+    "Rise back up by driving through your heels and repeat."
+  ],
+  "images": [
+    "/img/exercises/Front_Squats_With_Two_Kettlebells/0.jpg",
+    "/img/exercises/Front_Squats_With_Two_Kettlebells/1.jpg"
+  ],
+  "alternativeNames": [
+    "Front Squats With Two KBs",
+    "Double Kettlebell Front Squat",
+    "Two Kettlebell Front Squat"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Front_Squats_With_Two_Kettlebells",
+  "equipmentIds": [
+    "2x kettlebell"
+  ]
+}

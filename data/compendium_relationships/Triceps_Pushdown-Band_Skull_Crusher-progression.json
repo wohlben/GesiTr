@@ -1,0 +1,10 @@
+{
+  "id": "Triceps_Pushdown-Band_Skull_Crusher-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Triceps_Pushdown",
+  "toExerciseTemplateId": "Band_Skull_Crusher"
+}

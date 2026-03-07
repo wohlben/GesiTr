@@ -1,0 +1,46 @@
+{
+  "name": "Kettlebell Windmill",
+  "slug": "kettlebell-windmill",
+  "type": "STRENGTH",
+  "force": [
+    "ROTATION"
+  ],
+  "primaryMuscles": [
+    "ABS"
+  ],
+  "secondaryMuscles": [
+    "GLUTES",
+    "HAMSTRINGS",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "advanced",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Kettlebell windmill bending sideways with weight overhead, targeting obliques and shoulder stability.",
+  "instructions": [
+    "Place a kettlebell in front of your lead foot and clean and press it overhead with your opposite arm. Clean the kettlebell to your shoulder by extending through the legs and hips as you pull the kettlebell towards your shoulders. Rotate your wrist as you do so, so that the palm faces forward. Press it overhead by extending the elbow.",
+    "Keeping the kettlebell locked out at all times, push your butt out in the direction of the locked out kettlebell. Turn your feet out at a forty-five degree angle from the arm with the locked out kettlebell. Bending at the hip to one side, sticking your butt out, slowly lean until you can touch the floor with your free hand. Keep your eyes on the kettlebell that you hold over your head at all times.",
+    "Pause for a second after reaching the ground and reverse the motion back to the starting position."
+  ],
+  "images": [
+    "/img/exercises/Kettlebell_Windmill/0.jpg",
+    "/img/exercises/Kettlebell_Windmill/1.jpg"
+  ],
+  "alternativeNames": [
+    "KB Windmill",
+    "Kettlebell-Windmill"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Kettlebell_Windmill",
+  "equipmentIds": [
+    "kettlebell"
+  ]
+}

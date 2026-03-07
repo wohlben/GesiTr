@@ -1,0 +1,10 @@
+{
+  "id": "Box_Squat-Barbell_Squat_To_A_Bench-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.88,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Box_Squat",
+  "toExerciseTemplateId": "Barbell_Squat_To_A_Bench"
+}

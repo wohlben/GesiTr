@@ -1,0 +1,10 @@
+{
+  "id": "Mixed_Grip_Chin-Gironda_Sternum_Chins-similar",
+  "relationshipType": "similar",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Mixed_Grip_Chin",
+  "toExerciseTemplateId": "Gironda_Sternum_Chins"
+}

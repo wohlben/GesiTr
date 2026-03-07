@@ -1,0 +1,10 @@
+{
+  "id": "Two-Arm_Kettlebell_Clean-Double_Kettlebell_Snatch-progression",
+  "relationshipType": "progression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Two-Arm_Kettlebell_Clean",
+  "toExerciseTemplateId": "Double_Kettlebell_Snatch"
+}

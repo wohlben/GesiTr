@@ -1,0 +1,40 @@
+{
+  "name": "Quadriceps-SMR",
+  "slug": "quadriceps-smr",
+  "type": "STRETCHING",
+  "force": [
+    "STATIC"
+  ],
+  "primaryMuscles": [
+    "QUADS"
+  ],
+  "secondaryMuscles": [],
+  "technicalDifficulty": "intermediate",
+  "bodyWeightScaling": 0.5,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED"
+  ],
+  "description": "Self-myofascial release using foam roller on quadriceps, releasing tension in front thigh muscles.",
+  "instructions": [
+    "Lay facedown on the floor with your weight supported by your hands or forearms. Place a foam roll underneath one leg on the quadriceps, and keep the foot off of the ground. Make sure to relax the leg as much as possible. This will be your starting position.",
+    "Shifting as much weight onto the leg to be stretched as is tolerable, roll over the foam from above the knee to below the hip, holding points of tension for 10-30 seconds. Switch sides."
+  ],
+  "images": [
+    "/img/exercises/Quadriceps-SMR/0.jpg",
+    "/img/exercises/Quadriceps-SMR/1.jpg"
+  ],
+  "alternativeNames": [
+    "Quadriceps SMR"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Quadriceps-SMR",
+  "equipmentIds": [
+    "foam-roller"
+  ]
+}

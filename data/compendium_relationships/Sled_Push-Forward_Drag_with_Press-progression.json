@@ -1,0 +1,10 @@
+{
+  "id": "Sled_Push-Forward_Drag_with_Press-progression",
+  "relationshipType": "progression",
+  "strength": 0.8,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464001,
+  "fromExerciseTemplateId": "Sled_Push",
+  "toExerciseTemplateId": "Forward_Drag_with_Press"
+}

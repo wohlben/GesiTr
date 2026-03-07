@@ -1,0 +1,10 @@
+{
+  "id": "Elbow_to_Knee-Side_Jackknife-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Elbow_to_Knee",
+  "toExerciseTemplateId": "Side_Jackknife"
+}

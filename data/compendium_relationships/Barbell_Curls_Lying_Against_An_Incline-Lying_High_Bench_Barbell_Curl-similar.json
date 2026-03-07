@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Curls_Lying_Against_An_Incline-Lying_High_Bench_Barbell_Curl-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Barbell_Curls_Lying_Against_An_Incline",
+  "toExerciseTemplateId": "Lying_High_Bench_Barbell_Curl"
+}

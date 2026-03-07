@@ -1,0 +1,10 @@
+{
+  "id": "Barbell_Step_Ups-Step-up_with_Knee_Raise-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Barbell_Step_Ups",
+  "toExerciseTemplateId": "Step-up_with_Knee_Raise"
+}

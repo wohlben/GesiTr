@@ -1,0 +1,10 @@
+{
+  "id": "Alternating_Cable_Shoulder_Press-Cable_Shoulder_Press-similar",
+  "relationshipType": "similar",
+  "strength": 0.95,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Alternating_Cable_Shoulder_Press",
+  "toExerciseTemplateId": "Cable_Shoulder_Press"
+}

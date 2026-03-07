@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Band_Sumo_Deadlift-Sumo_Deadlift-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730000000,
+  "fromExerciseTemplateId": "Reverse_Band_Sumo_Deadlift",
+  "toExerciseTemplateId": "Sumo_Deadlift"
+}

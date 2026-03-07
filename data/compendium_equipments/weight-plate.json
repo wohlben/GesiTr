@@ -1,0 +1,8 @@
+{
+  "name": "weight-plate",
+  "displayName": "Weight Plate",
+  "description": "Flat, weighted discs that can be loaded onto barbells or used independently.",
+  "category": "free_weights",
+  "imageUrl": null,
+  "templateId": "weight-plate"
+}

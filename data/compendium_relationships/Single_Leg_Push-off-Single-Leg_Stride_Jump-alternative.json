@@ -1,0 +1,10 @@
+{
+  "id": "Single_Leg_Push-off-Single-Leg_Stride_Jump-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Single_Leg_Push-off",
+  "toExerciseTemplateId": "Single-Leg_Stride_Jump"
+}

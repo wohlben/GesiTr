@@ -1,0 +1,10 @@
+{
+  "id": "Seated_Hamstring_and_Calf_Stretch-Calves-SMR-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.65,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Seated_Hamstring_and_Calf_Stretch",
+  "toExerciseTemplateId": "Calves-SMR"
+}

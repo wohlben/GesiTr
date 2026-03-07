@@ -1,0 +1,10 @@
+{
+  "id": "Cable_Russian_Twists-Standing_Cable_Wood_Chop-similar",
+  "relationshipType": "similar",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Cable_Russian_Twists",
+  "toExerciseTemplateId": "Standing_Cable_Wood_Chop"
+}

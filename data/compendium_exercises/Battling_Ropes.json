@@ -1,0 +1,51 @@
+{
+  "name": "Battling Ropes",
+  "slug": "battling-ropes",
+  "type": "CARDIO",
+  "force": [
+    "PUSH",
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "FRONT_DELTS",
+    "ABS"
+  ],
+  "secondaryMuscles": [
+    "LATS",
+    "BICEPS",
+    "FOREARMS",
+    "OBLIQUES"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0.3,
+  "suggestedMeasurementParadigms": [
+    "TIME_BASED",
+    "REP_BASED",
+    "AMRAP"
+  ],
+  "description": "High-intensity rope waves combining cardio and strength for full-body conditioning and power",
+  "instructions": [
+    "For this exercise you will need a heavy rope anchored at its center 15-20 feet away. Standing in front of the rope, take an end in each hand with your arms extended at your side. This will be your starting position.",
+    "Initiate the movement by rapidly raising one arm to shoulder level as quickly as you can.",
+    "As you let that arm drop to the starting position, raise the opposite side.",
+    "Continue alternating your left and right arms, whipping the ropes up and down as fast as you can."
+  ],
+  "images": [
+    "/img/exercises/Battling_Ropes/0.jpg",
+    "/img/exercises/Battling_Ropes/1.jpg"
+  ],
+  "alternativeNames": [
+    "Battling-Ropes"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Battling_Ropes",
+  "equipmentIds": [
+    "gym-battle-ropes"
+  ]
+}

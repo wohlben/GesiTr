@@ -1,0 +1,10 @@
+{
+  "id": "Rhomboids-SMR-Brachialis-SMR-superset_with",
+  "relationshipType": "superset_with",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Rhomboids-SMR",
+  "toExerciseTemplateId": "Brachialis-SMR"
+}

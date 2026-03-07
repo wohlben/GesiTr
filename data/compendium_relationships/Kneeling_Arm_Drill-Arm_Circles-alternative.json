@@ -1,0 +1,10 @@
+{
+  "id": "Kneeling_Arm_Drill-Arm_Circles-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.6,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Kneeling_Arm_Drill",
+  "toExerciseTemplateId": "Arm_Circles"
+}

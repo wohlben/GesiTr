@@ -1,0 +1,10 @@
+{
+  "id": "Standing_Dumbbell_Press-Barbell_Shoulder_Press-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Standing_Dumbbell_Press",
+  "toExerciseTemplateId": "Barbell_Shoulder_Press"
+}

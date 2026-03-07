@@ -1,0 +1,10 @@
+{
+  "id": "Double_Kettlebell_Snatch-Vertical_Swing-regression",
+  "relationshipType": "regression",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Double_Kettlebell_Snatch",
+  "toExerciseTemplateId": "Vertical_Swing"
+}

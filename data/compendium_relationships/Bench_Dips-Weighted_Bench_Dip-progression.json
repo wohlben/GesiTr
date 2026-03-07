@@ -1,0 +1,10 @@
+{
+  "id": "Bench_Dips-Weighted_Bench_Dip-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "fromExerciseTemplateId": "Bench_Dips",
+  "toExerciseTemplateId": "Weighted_Bench_Dip"
+}

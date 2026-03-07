@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Hammer_Curls-Cable_Hammer_Curls_-_Rope_Attachment-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Incline_Hammer_Curls",
+  "toExerciseTemplateId": "Cable_Hammer_Curls_-_Rope_Attachment"
+}

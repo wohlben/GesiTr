@@ -1,0 +1,10 @@
+{
+  "id": "Incline_Push-Up_Reverse_Grip-Push-Ups_With_Feet_Elevated-progression",
+  "relationshipType": "progression",
+  "strength": 0.7,
+  "description": "Progress from hands elevated to feet elevated for significantly increased upper body loading",
+  "createdBy": "system",
+  "createdAt": 1729929600,
+  "fromExerciseTemplateId": "Incline_Push-Up_Reverse_Grip",
+  "toExerciseTemplateId": "Push-Ups_With_Feet_Elevated"
+}

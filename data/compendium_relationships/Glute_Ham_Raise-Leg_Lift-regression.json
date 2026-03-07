@@ -1,0 +1,10 @@
+{
+  "id": "Glute_Ham_Raise-Leg_Lift-regression",
+  "relationshipType": "regression",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Glute_Ham_Raise",
+  "toExerciseTemplateId": "Leg_Lift"
+}

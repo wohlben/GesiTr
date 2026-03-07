@@ -1,0 +1,10 @@
+{
+  "id": "Suspended_Fallout-Suspended_Reverse_Crunch-complementary",
+  "relationshipType": "complementary",
+  "strength": 0.75,
+  "description": "Both use suspension trainer for core work; Fallout is anti-extension while Reverse Crunch involves spinal flexion",
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Suspended_Fallout",
+  "toExerciseTemplateId": "Suspended_Reverse_Crunch"
+}

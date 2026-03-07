@@ -1,0 +1,10 @@
+{
+  "id": "Front_Leg_Raises-Side_Leg_Raises-similar",
+  "relationshipType": "similar",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1730073600,
+  "fromExerciseTemplateId": "Front_Leg_Raises",
+  "toExerciseTemplateId": "Side_Leg_Raises"
+}

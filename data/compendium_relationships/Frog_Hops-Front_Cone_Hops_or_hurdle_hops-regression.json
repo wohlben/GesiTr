@@ -1,0 +1,10 @@
+{
+  "id": "Frog_Hops-Front_Cone_Hops_or_hurdle_hops-regression",
+  "relationshipType": "regression",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761495424,
+  "fromExerciseTemplateId": "Frog_Hops",
+  "toExerciseTemplateId": "Front_Cone_Hops_or_hurdle_hops"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "Bench_Jump-Linear_Depth_Jump-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.7,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1735243200,
+  "fromExerciseTemplateId": "Bench_Jump",
+  "toExerciseTemplateId": "Linear_Depth_Jump"
+}

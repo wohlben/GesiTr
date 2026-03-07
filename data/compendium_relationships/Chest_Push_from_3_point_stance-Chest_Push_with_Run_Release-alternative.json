@@ -1,0 +1,10 @@
+{
+  "id": "Chest_Push_from_3_point_stance-Chest_Push_with_Run_Release-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.85,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1729933200,
+  "fromExerciseTemplateId": "Chest_Push_from_3_point_stance",
+  "toExerciseTemplateId": "Chest_Push_with_Run_Release"
+}

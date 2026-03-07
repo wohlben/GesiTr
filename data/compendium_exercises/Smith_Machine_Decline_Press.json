@@ -1,0 +1,48 @@
+{
+  "name": "Smith Machine Decline Press",
+  "slug": "smith-machine-decline-press",
+  "type": "STRENGTH",
+  "force": [
+    "PUSH"
+  ],
+  "primaryMuscles": [
+    "CHEST"
+  ],
+  "secondaryMuscles": [
+    "TRICEPS",
+    "FRONT_DELTS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Decline bench press on Smith machine, targeting lower chest with head lower than hips.",
+  "instructions": [
+    "Position a decline bench in the rack so that the bar will be above your chest. Load an appropriate weight and take your place on the bench.",
+    "Rotate the bar to unhook it from the rack and fully extend your arms. Your back should be slightly arched and your shoulder blades retracted. This will be your starting position.",
+    "Begin the movement by flexing your arms, lowering the bar to your chest.",
+    "Pause briefly, and then extend your arms to push the weight back to the starting position.",
+    "After completing the desired number of repetitions, rotate the bar to rack the weight."
+  ],
+  "images": [
+    "/img/exercises/Smith_Machine_Decline_Press/0.jpg",
+    "/img/exercises/Smith_Machine_Decline_Press/1.jpg"
+  ],
+  "alternativeNames": [
+    "Smith Decline Press",
+    "Smith Machine Machine Decline Press"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Smith_Machine_Decline_Press",
+  "equipmentIds": [
+    "gym-smith-machine",
+    "decline-bench"
+  ]
+}

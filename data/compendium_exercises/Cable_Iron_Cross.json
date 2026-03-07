@@ -1,0 +1,47 @@
+{
+  "name": "Cable Iron Cross",
+  "slug": "cable-iron-cross",
+  "type": "STRENGTH",
+  "force": [
+    "PULL"
+  ],
+  "primaryMuscles": [
+    "REAR_DELTS"
+  ],
+  "secondaryMuscles": [
+    "RHOMBOIDS",
+    "TRAPS"
+  ],
+  "technicalDifficulty": "beginner",
+  "bodyWeightScaling": 0,
+  "suggestedMeasurementParadigms": [
+    "REP_BASED"
+  ],
+  "description": "Standing cable rear delt fly with arms extended in T position, pulling from high pulleys to target posterior shoulders",
+  "instructions": [
+    "Begin by moving the pulleys to the high position, select the resistance to be used, and take a handle in each hand.",
+    "Stand directly between both pulleys with your arms extended out to your sides. Your head and chest should be up while your arms form a \"T\". This will be your starting position.",
+    "Keeping the elbows extended, pull your arms straight to your sides.",
+    "Return your arms back to the starting position after a pause at the peak contraction.",
+    "Continue the movement for the prescribed number of repetitions."
+  ],
+  "images": [
+    "/img/exercises/Cable_Iron_Cross/0.jpg",
+    "/img/exercises/Cable_Iron_Cross/1.jpg"
+  ],
+  "alternativeNames": [
+    "Cable Machine Iron Cross",
+    "Iron Cross"
+  ],
+  "authorName": null,
+  "authorUrl": null,
+  "createdBy": "system",
+  "createdAt": 1760873666,
+  "updatedAt": null,
+  "version": 0,
+  "parentExerciseId": null,
+  "templateId": "Cable_Iron_Cross",
+  "equipmentIds": [
+    "gym-cable-machine"
+  ]
+}

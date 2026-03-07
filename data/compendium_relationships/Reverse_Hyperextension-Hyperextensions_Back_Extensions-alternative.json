@@ -1,0 +1,10 @@
+{
+  "id": "Reverse_Hyperextension-Hyperextensions_Back_Extensions-alternative",
+  "relationshipType": "alternative",
+  "strength": 0.75,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761498416,
+  "fromExerciseTemplateId": "Reverse_Hyperextension",
+  "toExerciseTemplateId": "Hyperextensions_Back_Extensions"
+}

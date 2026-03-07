@@ -1,0 +1,10 @@
+{
+  "id": "Butt_Lift_Bridge-Barbell_Glute_Bridge-progression",
+  "relationshipType": "progression",
+  "strength": 0.9,
+  "description": null,
+  "createdBy": "system",
+  "createdAt": 1761464685,
+  "fromExerciseTemplateId": "Butt_Lift_Bridge",
+  "toExerciseTemplateId": "Barbell_Glute_Bridge"
+}
