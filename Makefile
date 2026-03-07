@@ -1,4 +1,4 @@
-.PHONY: build build-web build-go dev-api dev-web docker clean dolt generate seed test test-go test-web test-e2e
+.PHONY: build build-web build-go dev-api dev-web docker clean dolt generate seed test test-go test-web test-e2e update-screenshots update-screenshots-web update-screenshots-e2e
 
 # Generate TypeScript types from Go structs
 generate:
@@ -34,6 +34,17 @@ test-web:
 
 test-e2e:
 	cd web && npx ng e2e
+
+# Update screenshot baselines
+update-screenshots: update-screenshots-web update-screenshots-e2e
+
+update-screenshots-web:
+	find web/src/app -path '*__screenshots__*' -name '*.png' -delete
+	cd web && npx ng test --include="src/app/**/*.screenshot.spec.ts" --browsers=chromium --headless || true
+	cd web && npx ng test --include="src/app/**/*.screenshot.spec.ts" --browsers=chromium --headless
+
+update-screenshots-e2e:
+	cd web && npx ng e2e --update-snapshots
 
 docker:
 	docker build -t gesitr .
