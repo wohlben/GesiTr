@@ -31,6 +31,14 @@ func setupTestDB(t *testing.T) {
 		&models.UserExerciseEntity{},
 		&models.UserEquipmentEntity{},
 		&models.UserExerciseSchemeEntity{},
+		&models.WorkoutEntity{},
+		&models.WorkoutSectionEntity{},
+		&models.WorkoutSectionExerciseEntity{},
+		&models.WorkoutLogEntity{},
+		&models.WorkoutLogSectionEntity{},
+		&models.WorkoutLogExerciseEntity{},
+		&models.WorkoutLogExerciseSetEntity{},
+		&models.UserRecordEntity{},
 	)
 	database.DB = db
 }
@@ -57,6 +65,53 @@ func newRouter() *gin.Engine {
 	schemes.GET("/:id", GetUserExerciseScheme)
 	schemes.PUT("/:id", UpdateUserExerciseScheme)
 	schemes.DELETE("/:id", DeleteUserExerciseScheme)
+
+	workouts := api.Group("/workouts")
+	workouts.GET("", ListWorkouts)
+	workouts.POST("", CreateWorkout)
+	workouts.GET("/:id", GetWorkout)
+	workouts.PUT("/:id", UpdateWorkout)
+	workouts.DELETE("/:id", DeleteWorkout)
+
+	sections := api.Group("/workout-sections")
+	sections.GET("", ListWorkoutSections)
+	sections.POST("", CreateWorkoutSection)
+	sections.GET("/:id", GetWorkoutSection)
+	sections.DELETE("/:id", DeleteWorkoutSection)
+
+	sectionExercises := api.Group("/workout-section-exercises")
+	sectionExercises.GET("", ListWorkoutSectionExercises)
+	sectionExercises.POST("", CreateWorkoutSectionExercise)
+	sectionExercises.DELETE("/:id", DeleteWorkoutSectionExercise)
+
+	workoutLogs := api.Group("/workout-logs")
+	workoutLogs.GET("", ListWorkoutLogs)
+	workoutLogs.POST("", CreateWorkoutLog)
+	workoutLogs.GET("/:id", GetWorkoutLog)
+	workoutLogs.PUT("/:id", UpdateWorkoutLog)
+	workoutLogs.DELETE("/:id", DeleteWorkoutLog)
+
+	logSections := api.Group("/workout-log-sections")
+	logSections.GET("", ListWorkoutLogSections)
+	logSections.POST("", CreateWorkoutLogSection)
+	logSections.GET("/:id", GetWorkoutLogSection)
+	logSections.DELETE("/:id", DeleteWorkoutLogSection)
+
+	logExercises := api.Group("/workout-log-exercises")
+	logExercises.GET("", ListWorkoutLogExercises)
+	logExercises.POST("", CreateWorkoutLogExercise)
+	logExercises.PUT("/:id", UpdateWorkoutLogExercise)
+	logExercises.DELETE("/:id", DeleteWorkoutLogExercise)
+
+	logExerciseSets := api.Group("/workout-log-exercise-sets")
+	logExerciseSets.GET("", ListWorkoutLogExerciseSets)
+	logExerciseSets.POST("", CreateWorkoutLogExerciseSet)
+	logExerciseSets.PUT("/:id", UpdateWorkoutLogExerciseSet)
+	logExerciseSets.DELETE("/:id", DeleteWorkoutLogExerciseSet)
+
+	records := api.Group("/records")
+	records.GET("", ListUserRecords)
+	records.GET("/:id", GetUserRecord)
 
 	return r
 }
