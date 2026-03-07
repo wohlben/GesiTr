@@ -17,8 +17,10 @@ func TestListEquipment(t *testing.T) {
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d", w.Code)
 		}
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Equipment
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 0 {
 			t.Errorf("expected 0, got %d", len(result))
 		}
@@ -36,8 +38,10 @@ func TestListEquipment(t *testing.T) {
 
 	t.Run("list all", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/equipment", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Equipment
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 2 {
 			t.Errorf("expected 2, got %d", len(result))
 		}
@@ -45,8 +49,10 @@ func TestListEquipment(t *testing.T) {
 
 	t.Run("filter by q name", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/equipment?q=bar", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Equipment
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 1 || result[0].Name != "barbell" {
 			t.Errorf("q filter: got %d results", len(result))
 		}
@@ -54,8 +60,10 @@ func TestListEquipment(t *testing.T) {
 
 	t.Run("filter by q displayName", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/equipment?q=Flat", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Equipment
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 1 || result[0].Name != "bench" {
 			t.Errorf("q displayName filter: got %d results", len(result))
 		}
@@ -63,8 +71,10 @@ func TestListEquipment(t *testing.T) {
 
 	t.Run("filter by category", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/equipment?category=benches", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Equipment
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 1 || result[0].Name != "bench" {
 			t.Errorf("category filter: got %d results", len(result))
 		}

@@ -110,6 +110,13 @@ func doRaw(r *gin.Engine, method, path, body string) *httptest.ResponseRecorder 
 	return w
 }
 
+type paginatedJSON struct {
+	Items  json.RawMessage `json:"items"`
+	Total  int             `json:"total"`
+	Limit  int             `json:"limit"`
+	Offset int             `json:"offset"`
+}
+
 func closeDB(t *testing.T) {
 	t.Helper()
 	sqlDB, err := database.DB.DB()

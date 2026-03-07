@@ -17,8 +17,15 @@ func ListExerciseGroups(c *gin.Context) {
 		db = db.Where("name LIKE ?", pattern)
 	}
 
+	var total int64
+	if err := db.Count(&total).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	p := parsePagination(c)
 	var entities []models.ExerciseGroupEntity
-	if err := db.Find(&entities).Error; err != nil {
+	if err := applyPagination(db, p).Find(&entities).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -27,7 +34,12 @@ func ListExerciseGroups(c *gin.Context) {
 	for i := range entities {
 		dtos[i] = entities[i].ToDTO()
 	}
-	c.JSON(http.StatusOK, dtos)
+	c.JSON(http.StatusOK, gin.H{
+		"items":  dtos,
+		"total":  total,
+		"limit":  p.Limit,
+		"offset": p.Offset,
+	})
 }
 
 func CreateExerciseGroup(c *gin.Context) {

@@ -36,10 +36,15 @@ func TestListExercises(t *testing.T) {
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d", w.Code)
 		}
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Exercise
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 0 {
 			t.Errorf("expected 0, got %d", len(result))
+		}
+		if page.Total != 0 {
+			t.Errorf("expected total 0, got %d", page.Total)
 		}
 	})
 
@@ -58,17 +63,24 @@ func TestListExercises(t *testing.T) {
 
 	t.Run("list all", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/exercises", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Exercise
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 2 {
 			t.Errorf("expected 2, got %d", len(result))
+		}
+		if page.Total != 2 {
+			t.Errorf("expected total 2, got %d", page.Total)
 		}
 	})
 
 	t.Run("filter by q (name)", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/exercises?q=Bench", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Exercise
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 1 {
 			t.Errorf("expected 1, got %d", len(result))
 		}
@@ -76,8 +88,10 @@ func TestListExercises(t *testing.T) {
 
 	t.Run("filter by q (alt name)", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/exercises?q=Alt+Name", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Exercise
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 1 {
 			t.Errorf("expected 1, got %d", len(result))
 		}
@@ -85,8 +99,10 @@ func TestListExercises(t *testing.T) {
 
 	t.Run("filter by type", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/exercises?type=CARDIO", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Exercise
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 1 || result[0].Name != "Running" {
 			t.Errorf("type filter: got %d results", len(result))
 		}
@@ -94,8 +110,10 @@ func TestListExercises(t *testing.T) {
 
 	t.Run("filter by difficulty", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/exercises?difficulty=beginner", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Exercise
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 1 || result[0].Name != "Bench Press" {
 			t.Errorf("difficulty filter: got %d results", len(result))
 		}
@@ -103,8 +121,10 @@ func TestListExercises(t *testing.T) {
 
 	t.Run("filter by force", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/exercises?force=PUSH", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Exercise
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 1 || result[0].Name != "Bench Press" {
 			t.Errorf("force filter: got %d results", len(result))
 		}
@@ -112,8 +132,10 @@ func TestListExercises(t *testing.T) {
 
 	t.Run("filter by muscle", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/exercises?muscle=CALVES", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Exercise
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 1 || result[0].Name != "Running" {
 			t.Errorf("muscle filter: got %d results", len(result))
 		}
@@ -121,10 +143,43 @@ func TestListExercises(t *testing.T) {
 
 	t.Run("filter by primaryMuscle", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/exercises?primaryMuscle=CHEST", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Exercise
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 1 || result[0].Name != "Bench Press" {
 			t.Errorf("primaryMuscle filter: got %d results", len(result))
+		}
+	})
+
+	t.Run("pagination limit", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/exercises?limit=1", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
+		var result []models.Exercise
+		json.Unmarshal(page.Items, &result)
+		if len(result) != 1 {
+			t.Errorf("expected 1 item, got %d", len(result))
+		}
+		if page.Total != 2 {
+			t.Errorf("expected total 2, got %d", page.Total)
+		}
+		if page.Limit != 1 {
+			t.Errorf("expected limit 1, got %d", page.Limit)
+		}
+	})
+
+	t.Run("pagination offset", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/exercises?limit=1&offset=1", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
+		var result []models.Exercise
+		json.Unmarshal(page.Items, &result)
+		if len(result) != 1 {
+			t.Errorf("expected 1 item, got %d", len(result))
+		}
+		if page.Offset != 1 {
+			t.Errorf("expected offset 1, got %d", page.Offset)
 		}
 	})
 

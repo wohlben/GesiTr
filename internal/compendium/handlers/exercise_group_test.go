@@ -28,8 +28,10 @@ func TestListExerciseGroups(t *testing.T) {
 
 	t.Run("all", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/exercise-groups", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.ExerciseGroup
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 2 {
 			t.Errorf("expected 2, got %d", len(result))
 		}
@@ -37,8 +39,10 @@ func TestListExerciseGroups(t *testing.T) {
 
 	t.Run("filter q", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/exercise-groups?q=Push", nil)
+		var page paginatedJSON
+		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.ExerciseGroup
-		json.Unmarshal(w.Body.Bytes(), &result)
+		json.Unmarshal(page.Items, &result)
 		if len(result) != 1 || result[0].Name != "Push Day" {
 			t.Errorf("q filter: got %d results", len(result))
 		}

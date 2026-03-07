@@ -47,8 +47,15 @@ func ListExercises(c *gin.Context) {
 		db = db.Where("exercises.id IN (SELECT exercise_id FROM exercise_muscles WHERE muscle = ? AND is_primary = true)", v)
 	}
 
+	var total int64
+	if err := db.Count(&total).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	p := parsePagination(c)
 	var entities []models.ExerciseEntity
-	if err := preloadExercise(db).Find(&entities).Error; err != nil {
+	if err := preloadExercise(applyPagination(db, p)).Find(&entities).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -57,7 +64,12 @@ func ListExercises(c *gin.Context) {
 	for i := range entities {
 		dtos[i] = entities[i].ToDTO()
 	}
-	c.JSON(http.StatusOK, dtos)
+	c.JSON(http.StatusOK, gin.H{
+		"items":  dtos,
+		"total":  total,
+		"limit":  p.Limit,
+		"offset": p.Offset,
+	})
 }
 
 func CreateExercise(c *gin.Context) {
