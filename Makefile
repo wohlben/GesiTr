@@ -1,4 +1,4 @@
-.PHONY: build build-web build-go dev-api dev-web docker clean dolt generate seed
+.PHONY: build build-web build-go dev-api dev-web docker clean dolt generate seed test test-go test-web test-e2e
 
 # Generate TypeScript types from Go structs
 generate:
@@ -22,6 +22,18 @@ dev-web: generate
 
 dolt:
 	dolt sql-server --host 127.0.0.1 --port 3307 --data-dir .beads/dolt
+
+# Run all tests
+test: test-go test-web test-e2e
+
+test-go:
+	go test ./...
+
+test-web:
+	cd web && npx ng test
+
+test-e2e:
+	cd web && npx ng e2e
 
 docker:
 	docker build -t gesitr .
