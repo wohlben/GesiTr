@@ -12,7 +12,7 @@ class TestPage {}
 
 describe('MainLayout screenshots', () => {
   afterEach(() => {
-    document.documentElement.style.colorScheme = '';
+    document.documentElement.classList.remove('dark');
   });
 
   const providers = [
@@ -29,7 +29,7 @@ describe('MainLayout screenshots', () => {
   });
 
   it('dark', async () => {
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.classList.add('dark');
     const { fixture } = await render(MainLayout, { providers });
     await fixture.whenStable();
     const locator = page.elementLocator(fixture.nativeElement);

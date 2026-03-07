@@ -28,7 +28,7 @@ const exercise: Exercise = {
 
 describe('ExerciseListItem screenshots', () => {
   afterEach(() => {
-    document.documentElement.style.colorScheme = '';
+    document.documentElement.classList.remove('dark');
   });
 
   const template = `
@@ -47,7 +47,7 @@ describe('ExerciseListItem screenshots', () => {
   });
 
   it('dark', async () => {
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.classList.add('dark');
     const { fixture } = await render(template, {
       imports: [DataTable, ExerciseListItem],
       componentProperties: { exercise },

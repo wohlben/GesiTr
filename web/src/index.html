@@ -9,6 +9,14 @@
     <link rel="manifest" href="manifest.webmanifest" />
   </head>
   <body>
+    <script>
+      (function () {
+        var mq = window.matchMedia('(prefers-color-scheme: dark)');
+        function apply(dark) { document.documentElement.classList.toggle('dark', dark); }
+        apply(mq.matches);
+        mq.addEventListener('change', function (e) { apply(e.matches); });
+      })();
+    </script>
     <app-root></app-root>
     <noscript>Please enable JavaScript to continue using this application.</noscript>
   </body>

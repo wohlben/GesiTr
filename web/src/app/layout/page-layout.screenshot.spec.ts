@@ -5,14 +5,14 @@ import { DataTable } from '$ui/data-table/data-table';
 
 describe('PageLayout screenshots', () => {
   afterEach(() => {
-    document.documentElement.style.colorScheme = '';
+    document.documentElement.classList.remove('dark');
   });
 
   it('with content - light', async () => {
     const template = `
       <app-page-layout header="Equipment">
         <div filters class="flex flex-wrap gap-3">
-          <input type="text" placeholder="Search..." class="rounded-md border border-gray-300 px-3 py-1.5 text-sm" />
+          <input type="text" placeholder="Search..." class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
         </div>
         <app-data-table [columns]="['Name', 'Category']">
           <tr>
@@ -29,11 +29,11 @@ describe('PageLayout screenshots', () => {
   });
 
   it('with content - dark', async () => {
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.classList.add('dark');
     const template = `
       <app-page-layout header="Equipment">
         <div filters class="flex flex-wrap gap-3">
-          <input type="text" placeholder="Search..." class="rounded-md border border-gray-300 px-3 py-1.5 text-sm" />
+          <input type="text" placeholder="Search..." class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
         </div>
         <app-data-table [columns]="['Name', 'Category']">
           <tr>
@@ -53,7 +53,7 @@ describe('PageLayout screenshots', () => {
     const template = `
       <app-page-layout header="Equipment" [isPending]="true">
         <div filters class="flex flex-wrap gap-3">
-          <input type="text" placeholder="Search..." class="rounded-md border border-gray-300 px-3 py-1.5 text-sm" />
+          <input type="text" placeholder="Search..." class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
         </div>
       </app-page-layout>
     `;
@@ -63,11 +63,11 @@ describe('PageLayout screenshots', () => {
   });
 
   it('pending - dark', async () => {
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.classList.add('dark');
     const template = `
       <app-page-layout header="Equipment" [isPending]="true">
         <div filters class="flex flex-wrap gap-3">
-          <input type="text" placeholder="Search..." class="rounded-md border border-gray-300 px-3 py-1.5 text-sm" />
+          <input type="text" placeholder="Search..." class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
         </div>
       </app-page-layout>
     `;
@@ -80,7 +80,7 @@ describe('PageLayout screenshots', () => {
     const template = `
       <app-page-layout header="Equipment" errorMessage="Failed to load equipment.">
         <div filters class="flex flex-wrap gap-3">
-          <input type="text" placeholder="Search..." class="rounded-md border border-gray-300 px-3 py-1.5 text-sm" />
+          <input type="text" placeholder="Search..." class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
         </div>
       </app-page-layout>
     `;
@@ -90,11 +90,11 @@ describe('PageLayout screenshots', () => {
   });
 
   it('error - dark', async () => {
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.classList.add('dark');
     const template = `
       <app-page-layout header="Equipment" errorMessage="Failed to load equipment.">
         <div filters class="flex flex-wrap gap-3">
-          <input type="text" placeholder="Search..." class="rounded-md border border-gray-300 px-3 py-1.5 text-sm" />
+          <input type="text" placeholder="Search..." class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
         </div>
       </app-page-layout>
     `;

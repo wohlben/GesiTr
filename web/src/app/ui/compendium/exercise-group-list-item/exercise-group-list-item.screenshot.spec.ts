@@ -16,7 +16,7 @@ const group: ExerciseGroup = {
 
 describe('ExerciseGroupListItem screenshots', () => {
   afterEach(() => {
-    document.documentElement.style.colorScheme = '';
+    document.documentElement.classList.remove('dark');
   });
 
   const template = `
@@ -35,7 +35,7 @@ describe('ExerciseGroupListItem screenshots', () => {
   });
 
   it('dark', async () => {
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.classList.add('dark');
     const { fixture } = await render(template, {
       imports: [DataTable, ExerciseGroupListItem],
       componentProperties: { group },

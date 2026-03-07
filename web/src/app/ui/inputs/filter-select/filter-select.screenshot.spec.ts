@@ -4,7 +4,7 @@ import { FilterSelect } from './filter-select';
 
 describe('FilterSelect screenshots', () => {
   afterEach(() => {
-    document.documentElement.style.colorScheme = '';
+    document.documentElement.classList.remove('dark');
   });
 
   it('default - light', async () => {
@@ -24,17 +24,16 @@ describe('FilterSelect screenshots', () => {
   });
 
   it('default - dark', async () => {
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.classList.add('dark');
     const { fixture } = await render(FilterSelect, {
       inputs: { allLabel: 'All types', options: ['STRENGTH', 'CARDIO', 'STRETCHING'] },
     });
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('dark');
-    document.documentElement.style.colorScheme = '';
   });
 
   it('with selection - dark', async () => {
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.classList.add('dark');
     const { fixture } = await render(FilterSelect, {
       inputs: { allLabel: 'All types', options: ['STRENGTH', 'CARDIO', 'STRETCHING'], value: 'STRENGTH' },
     });

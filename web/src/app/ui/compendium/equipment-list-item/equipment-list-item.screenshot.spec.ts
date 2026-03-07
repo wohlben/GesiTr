@@ -19,7 +19,7 @@ const equipment: Equipment = {
 
 describe('EquipmentListItem screenshots', () => {
   afterEach(() => {
-    document.documentElement.style.colorScheme = '';
+    document.documentElement.classList.remove('dark');
   });
 
   const template = `
@@ -38,7 +38,7 @@ describe('EquipmentListItem screenshots', () => {
   });
 
   it('dark', async () => {
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.classList.add('dark');
     const { fixture } = await render(template, {
       imports: [DataTable, EquipmentListItem],
       componentProperties: { equipment },

@@ -4,7 +4,7 @@ import { ErrorMessage } from './error-message';
 
 describe('ErrorMessage screenshots', () => {
   afterEach(() => {
-    document.documentElement.style.colorScheme = '';
+    document.documentElement.classList.remove('dark');
   });
 
   it('light', async () => {
@@ -16,7 +16,7 @@ describe('ErrorMessage screenshots', () => {
   });
 
   it('dark', async () => {
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.classList.add('dark');
     const { fixture } = await render(ErrorMessage, {
       inputs: { message: 'Failed to load exercises. Please try again.' },
     });

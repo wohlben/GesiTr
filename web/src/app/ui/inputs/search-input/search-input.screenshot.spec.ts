@@ -4,7 +4,7 @@ import { SearchInput } from './search-input';
 
 describe('SearchInput screenshots', () => {
   afterEach(() => {
-    document.documentElement.style.colorScheme = '';
+    document.documentElement.classList.remove('dark');
   });
 
   it('default - light', async () => {
@@ -24,17 +24,16 @@ describe('SearchInput screenshots', () => {
   });
 
   it('default - dark', async () => {
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.classList.add('dark');
     const { fixture } = await render(SearchInput, {
       inputs: { placeholder: 'Search exercises...' },
     });
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('dark');
-    document.documentElement.style.colorScheme = '';
   });
 
   it('with value - dark', async () => {
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.classList.add('dark');
     const { fixture } = await render(SearchInput, {
       inputs: { placeholder: 'Search exercises...', value: 'bench press' },
     });

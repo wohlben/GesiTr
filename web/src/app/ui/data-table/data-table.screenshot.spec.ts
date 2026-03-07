@@ -4,7 +4,7 @@ import { DataTable } from './data-table';
 
 describe('DataTable screenshots', () => {
   afterEach(() => {
-    document.documentElement.style.colorScheme = '';
+    document.documentElement.classList.remove('dark');
   });
 
   const template = `
@@ -29,7 +29,7 @@ describe('DataTable screenshots', () => {
   });
 
   it('dark', async () => {
-    document.documentElement.style.colorScheme = 'dark';
+    document.documentElement.classList.add('dark');
     const { fixture } = await render(template, { imports: [DataTable] });
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('dark');
