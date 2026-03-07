@@ -1,11 +1,11 @@
-import { Component, inject, signal, computed, effect, untracked } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { ExerciseListItem } from '$ui/compendium/exercise-list-item/exercise-list-item';
 import { SearchInput } from '$ui/inputs/search-input/search-input';
 import { FilterSelect } from '$ui/inputs/filter-select/filter-select';
 import { DataTable } from '$ui/data-table/data-table';
-import { Pagination } from '$ui/pagination/pagination';
+import { Pagination, injectOffset } from '$ui/pagination/pagination';
 import { PageLayout } from '../../../layout/page-layout';
 import {
   ExerciseType,
@@ -77,7 +77,7 @@ import {
             <tr app-exercise-list-item [exercise]="ex"></tr>
           }
         </app-data-table>
-        <app-pagination [page]="page" [(offset)]="offset" emptyLabel="No exercises found" />
+        <app-pagination [page]="page" emptyLabel="No exercises found" />
       }
     </app-page-layout>
   `,
@@ -90,14 +90,7 @@ export class ExerciseList {
   difficulty = signal<TechnicalDifficulty | ''>('');
   force = signal<Force | ''>('');
   muscle = signal<Muscle | ''>('');
-  offset = signal(0);
-
-  constructor() {
-    effect(() => {
-      this.q(); this.type(); this.difficulty(); this.force(); this.muscle();
-      untracked(() => this.offset.set(0));
-    });
-  }
+  offset = injectOffset();
 
   filters = computed(() => ({
     q: this.q() || undefined,

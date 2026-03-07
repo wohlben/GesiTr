@@ -1,11 +1,11 @@
-import { Component, inject, signal, computed, effect, untracked } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { EquipmentListItem } from '$ui/compendium/equipment-list-item/equipment-list-item';
 import { SearchInput } from '$ui/inputs/search-input/search-input';
 import { FilterSelect } from '$ui/inputs/filter-select/filter-select';
 import { DataTable } from '$ui/data-table/data-table';
-import { Pagination } from '$ui/pagination/pagination';
+import { Pagination, injectOffset } from '$ui/pagination/pagination';
 import { PageLayout } from '../../../layout/page-layout';
 import {
   EquipmentCategory,
@@ -37,7 +37,7 @@ import {
             <tr app-equipment-list-item [equipment]="item"></tr>
           }
         </app-data-table>
-        <app-pagination [page]="page" [(offset)]="offset" emptyLabel="No equipment found" />
+        <app-pagination [page]="page" emptyLabel="No equipment found" />
       }
     </app-page-layout>
   `,
@@ -47,14 +47,7 @@ export class EquipmentList {
 
   q = signal('');
   category = signal<EquipmentCategory | ''>('');
-  offset = signal(0);
-
-  constructor() {
-    effect(() => {
-      this.q(); this.category();
-      untracked(() => this.offset.set(0));
-    });
-  }
+  offset = injectOffset();
 
   filters = computed(() => ({
     q: this.q() || undefined,

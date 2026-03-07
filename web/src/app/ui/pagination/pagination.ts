@@ -1,5 +1,20 @@
-import { Component, computed, input, model } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 import { PaginatedResponse } from '$core/api-clients/paginated-response';
+
+export function injectOffset(): () => number {
+  const route = inject(ActivatedRoute);
+  const offset$ = route.queryParamMap.pipe(
+    map(params => {
+      const v = params.get('offset');
+      return v ? Math.max(0, parseInt(v, 10) || 0) : 0;
+    }),
+  );
+  const sig = toSignal(offset$, { initialValue: 0 });
+  return sig;
+}
 
 @Component({
   selector: 'app-pagination',
@@ -24,8 +39,10 @@ import { PaginatedResponse } from '$core/api-clients/paginated-response';
   `,
 })
 export class Pagination {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
   page = input.required<PaginatedResponse<unknown>>();
-  offset = model(0);
   emptyLabel = input('No results found');
 
   totalPages = computed(() => {
@@ -41,11 +58,20 @@ export class Pagination {
 
   prev() {
     const p = this.page();
-    this.offset.set(Math.max(0, p.offset - p.limit));
+    const newOffset = Math.max(0, p.offset - p.limit);
+    this.navigate(newOffset);
   }
 
   next() {
     const p = this.page();
-    this.offset.set(p.offset + p.limit);
+    this.navigate(p.offset + p.limit);
+  }
+
+  private navigate(offset: number) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { offset: offset || null },
+      queryParamsHandling: 'merge',
+    });
   }
 }
