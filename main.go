@@ -10,6 +10,8 @@ import (
 	"gesitr/internal/database"
 	"gesitr/internal/compendium/handlers"
 	"gesitr/internal/compendium/models"
+	userhandlers "gesitr/internal/user/handlers"
+	usermodels "gesitr/internal/user/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -32,6 +34,9 @@ func autoMigrate() {
 		&models.ExerciseRelationshipEntity{},
 		&models.ExerciseGroupEntity{},
 		&models.ExerciseGroupMemberEntity{},
+		&usermodels.UserExerciseEntity{},
+		&usermodels.UserEquipmentEntity{},
+		&usermodels.UserExerciseSchemeEntity{},
 	)
 }
 
@@ -83,6 +88,33 @@ func setupRoutes(r *gin.Engine) {
 		exerciseGroupMembers.GET("", handlers.ListExerciseGroupMembers)
 		exerciseGroupMembers.POST("", handlers.CreateExerciseGroupMember)
 		exerciseGroupMembers.DELETE("/:id", handlers.DeleteExerciseGroupMember)
+	}
+
+	user := api.Group("/user")
+
+	userExercises := user.Group("/exercises")
+	{
+		userExercises.GET("", userhandlers.ListUserExercises)
+		userExercises.POST("", userhandlers.CreateUserExercise)
+		userExercises.GET("/:id", userhandlers.GetUserExercise)
+		userExercises.DELETE("/:id", userhandlers.DeleteUserExercise)
+	}
+
+	userEquipment := user.Group("/equipment")
+	{
+		userEquipment.GET("", userhandlers.ListUserEquipment)
+		userEquipment.POST("", userhandlers.CreateUserEquipment)
+		userEquipment.GET("/:id", userhandlers.GetUserEquipment)
+		userEquipment.DELETE("/:id", userhandlers.DeleteUserEquipment)
+	}
+
+	userExerciseSchemes := user.Group("/exercise-schemes")
+	{
+		userExerciseSchemes.GET("", userhandlers.ListUserExerciseSchemes)
+		userExerciseSchemes.POST("", userhandlers.CreateUserExerciseScheme)
+		userExerciseSchemes.GET("/:id", userhandlers.GetUserExerciseScheme)
+		userExerciseSchemes.PUT("/:id", userhandlers.UpdateUserExerciseScheme)
+		userExerciseSchemes.DELETE("/:id", userhandlers.DeleteUserExerciseScheme)
 	}
 }
 
