@@ -1,4 +1,4 @@
-.PHONY: build build-web build-go dev-api dev-web docker clean
+.PHONY: build build-web build-go dev-api dev-web docker clean dolt
 
 # Full production build: Angular → Go binary with embedded SPA
 build: build-web build-go
@@ -15,6 +15,9 @@ dev-api:
 
 dev-web:
 	cd web && npx ng serve
+
+dolt:
+	dolt sql-server --host 127.0.0.1 --port 3307 --data-dir .beads/dolt
 
 docker:
 	docker build -t gesitr .
