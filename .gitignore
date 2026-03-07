@@ -1,0 +1,16 @@
+# Binary
+gesitr
+
+# Database
+*.db
+
+# Angular build output (embedded at compile time)
+web/dist/*
+!web/dist/.gitkeep
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
