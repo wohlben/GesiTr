@@ -12,6 +12,9 @@ web/dist/*
 .idea/
 .vscode/
 
+# Claude Code
+.claude/
+
 # OS
 .DS_Store
 
