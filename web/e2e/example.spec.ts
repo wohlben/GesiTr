@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test';
 
-test('has title', async ({ page }) => {
+test('navigates to exercises list', async ({ page }) => {
   await page.goto('/');
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Web/);
+  // Should redirect to /compendium/exercises
+  await expect(page).toHaveURL(/\/compendium\/exercises/);
+  await expect(page.locator('h1')).toHaveText('Exercises');
 });
