@@ -8,6 +8,13 @@ export const routes: Routes = [
     component: MainLayout,
     children: [
       {
+        path: 'exercises/:id/:slug/history',
+        loadComponent: () =>
+          import('$features/compendium/exercise-history/exercise-history').then(
+            (m) => m.ExerciseHistory,
+          ),
+      },
+      {
         path: 'exercises/:id/:slug/edit',
         loadComponent: () =>
           import('$features/compendium/exercise-edit/exercise-edit').then((m) => m.ExerciseEdit),
@@ -23,6 +30,13 @@ export const routes: Routes = [
         path: 'exercises',
         loadComponent: () =>
           import('$features/compendium/exercise-list/exercise-list').then((m) => m.ExerciseList),
+      },
+      {
+        path: 'equipment/:id/:slug/history',
+        loadComponent: () =>
+          import('$features/compendium/equipment-history/equipment-history').then(
+            (m) => m.EquipmentHistory,
+          ),
       },
       {
         path: 'equipment/:id/:slug/edit',

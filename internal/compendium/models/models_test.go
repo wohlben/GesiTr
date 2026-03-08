@@ -13,16 +13,6 @@ func TestEquipmentEntityTableName(t *testing.T) {
 	}
 }
 
-func TestEquipmentEntityBeforeUpdate(t *testing.T) {
-	e := &EquipmentEntity{Version: 5}
-	if err := e.BeforeUpdate(nil); err != nil {
-		t.Fatal(err)
-	}
-	if e.Version != 6 {
-		t.Errorf("Version = %d, want 6", e.Version)
-	}
-}
-
 func TestEquipmentEntityToDTO(t *testing.T) {
 	now := time.Now()
 	imgUrl := "http://example.com/img.png"
@@ -254,16 +244,6 @@ func TestExerciseGroupMemberFromDTO(t *testing.T) {
 func TestExerciseEntityTableName(t *testing.T) {
 	if got := (ExerciseEntity{}).TableName(); got != "exercises" {
 		t.Errorf("TableName() = %q, want %q", got, "exercises")
-	}
-}
-
-func TestExerciseEntityBeforeUpdate(t *testing.T) {
-	e := &ExerciseEntity{Version: 0}
-	if err := e.BeforeUpdate(nil); err != nil {
-		t.Fatal(err)
-	}
-	if e.Version != 1 {
-		t.Errorf("Version = %d, want 1", e.Version)
 	}
 }
 

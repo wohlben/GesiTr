@@ -2,11 +2,13 @@ package handlers
 
 import (
 	"net/http"
+	"time"
 
 	"gesitr/internal/compendium/models"
 	"gesitr/internal/database"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func ListEquipment(c *gin.Context) {
@@ -57,7 +59,16 @@ func CreateEquipment(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusCreated, entity.ToDTO())
+
+	resultDTO := entity.ToDTO()
+	database.DB.Create(&models.EquipmentHistoryEntity{
+		EquipmentID: entity.ID,
+		Version:     resultDTO.Version,
+		Snapshot:    models.SnapshotJSON(resultDTO),
+		ChangedAt:   time.Now(),
+		ChangedBy:   resultDTO.CreatedBy,
+	})
+	c.JSON(http.StatusCreated, resultDTO)
 }
 
 func GetEquipment(c *gin.Context) {
@@ -82,15 +93,56 @@ func UpdateEquipment(c *gin.Context) {
 		return
 	}
 
+	oldDTO := existing.ToDTO()
+
+	if !models.EquipmentChanged(oldDTO, dto) {
+		c.JSON(http.StatusOK, oldDTO)
+		return
+	}
+
 	entity := models.EquipmentFromDTO(dto)
 	entity.ID = existing.ID
-	entity.Version = existing.Version
+	entity.Version = existing.Version + 1
 
-	if err := database.DB.Save(&entity).Error; err != nil {
+	err := database.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Save(&entity).Error; err != nil {
+			return err
+		}
+		resultDTO := entity.ToDTO()
+		return tx.Create(&models.EquipmentHistoryEntity{
+			EquipmentID: entity.ID,
+			Version:     resultDTO.Version,
+			Snapshot:    models.SnapshotJSON(resultDTO),
+			ChangedAt:   time.Now(),
+			ChangedBy:   resultDTO.CreatedBy,
+		}).Error
+	})
+
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, entity.ToDTO())
+}
+
+func ListEquipmentVersions(c *gin.Context) {
+	var entity models.EquipmentEntity
+	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Equipment not found"})
+		return
+	}
+
+	var history []models.EquipmentHistoryEntity
+	if err := database.DB.Where("equipment_id = ?", entity.ID).Order("version ASC").Find(&history).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	entries := make([]models.VersionEntry, len(history))
+	for i := range history {
+		entries[i] = history[i].ToVersionEntry()
+	}
+	c.JSON(http.StatusOK, entries)
 }
 
 func DeleteEquipment(c *gin.Context) {

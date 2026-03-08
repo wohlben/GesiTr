@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"time"
 
 	"gesitr/internal/compendium/models"
 	"gesitr/internal/database"
@@ -90,7 +91,16 @@ func CreateExercise(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusCreated, entity.ToDTO())
+
+	resultDTO := entity.ToDTO()
+	database.DB.Create(&models.ExerciseHistoryEntity{
+		ExerciseID: entity.ID,
+		Version:    resultDTO.Version,
+		Snapshot:   models.SnapshotJSON(resultDTO),
+		ChangedAt:  time.Now(),
+		ChangedBy:  resultDTO.CreatedBy,
+	})
+	c.JSON(http.StatusCreated, resultDTO)
 }
 
 func GetExercise(c *gin.Context) {
@@ -104,7 +114,7 @@ func GetExercise(c *gin.Context) {
 
 func UpdateExercise(c *gin.Context) {
 	var existing models.ExerciseEntity
-	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
+	if err := preloadExercise(database.DB).First(&existing, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
 		return
 	}
@@ -115,9 +125,17 @@ func UpdateExercise(c *gin.Context) {
 		return
 	}
 
+	oldDTO := existing.ToDTO()
+
+	// If nothing changed, return the existing entity without bumping version
+	if !models.ExerciseChanged(oldDTO, dto) {
+		c.JSON(http.StatusOK, oldDTO)
+		return
+	}
+
 	entity := models.ExerciseFromDTO(dto)
 	entity.ID = existing.ID
-	entity.Version = existing.Version
+	entity.Version = existing.Version + 1
 
 	// Stash child records and clear from entity so Save doesn't try to upsert them
 	forces := entity.Forces
@@ -159,7 +177,7 @@ func UpdateExercise(c *gin.Context) {
 			return err
 		}
 
-		// Save entity (triggers BeforeUpdate for version increment)
+		// Save entity
 		if err := tx.Save(&entity).Error; err != nil {
 			return err
 		}
@@ -208,6 +226,26 @@ func UpdateExercise(c *gin.Context) {
 			}
 		}
 
+		// Reconstruct entity for snapshot
+		entity.Forces = forces
+		entity.Muscles = muscles
+		entity.Paradigms = paradigms
+		entity.Instructions = instructions
+		entity.Images = images
+		entity.AlternativeNames = altNames
+		entity.Equipment = equipment
+
+		resultDTO := entity.ToDTO()
+		if err := tx.Create(&models.ExerciseHistoryEntity{
+			ExerciseID: entity.ID,
+			Version:    resultDTO.Version,
+			Snapshot:   models.SnapshotJSON(resultDTO),
+			ChangedAt:  time.Now(),
+			ChangedBy:  resultDTO.CreatedBy,
+		}).Error; err != nil {
+			return err
+		}
+
 		return nil
 	})
 
@@ -222,6 +260,26 @@ func UpdateExercise(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, entity.ToDTO())
+}
+
+func ListExerciseVersions(c *gin.Context) {
+	var entity models.ExerciseEntity
+	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
+		return
+	}
+
+	var history []models.ExerciseHistoryEntity
+	if err := database.DB.Where("exercise_id = ?", entity.ID).Order("version ASC").Find(&history).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	entries := make([]models.VersionEntry, len(history))
+	for i := range history {
+		entries[i] = history[i].ToVersionEntry()
+	}
+	c.JSON(http.StatusOK, entries)
 }
 
 func DeleteExercise(c *gin.Context) {

@@ -35,6 +35,8 @@ func autoMigrate() {
 		&models.ExerciseRelationshipEntity{},
 		&models.ExerciseGroupEntity{},
 		&models.ExerciseGroupMemberEntity{},
+		&models.ExerciseHistoryEntity{},
+		&models.EquipmentHistoryEntity{},
 		&usermodels.UserExerciseEntity{},
 		&usermodels.UserEquipmentEntity{},
 		&usermodels.UserExerciseSchemeEntity{},
@@ -60,6 +62,7 @@ func setupRoutes(r *gin.Engine) {
 		exercises.GET("/:id", handlers.GetExercise)
 		exercises.PUT("/:id", handlers.UpdateExercise)
 		exercises.DELETE("/:id", handlers.DeleteExercise)
+		exercises.GET("/:id/versions", handlers.ListExerciseVersions)
 	}
 
 	equipment := api.Group("/equipment")
@@ -69,6 +72,7 @@ func setupRoutes(r *gin.Engine) {
 		equipment.GET("/:id", handlers.GetEquipment)
 		equipment.PUT("/:id", handlers.UpdateEquipment)
 		equipment.DELETE("/:id", handlers.DeleteEquipment)
+		equipment.GET("/:id/versions", handlers.ListEquipmentVersions)
 	}
 
 	fulfillments := api.Group("/fulfillments")

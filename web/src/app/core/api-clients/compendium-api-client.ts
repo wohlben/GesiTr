@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Exercise, Equipment, ExerciseGroup } from '$generated/models';
 import { PaginatedResponse } from './paginated-response';
+import { VersionEntry } from './version-entry';
 
 function buildParams(filters: Record<string, string | number | undefined>): HttpParams {
   let params = new HttpParams();
@@ -68,5 +69,15 @@ export class CompendiumApiClient {
 
   updateExerciseGroup(id: number, data: Partial<ExerciseGroup>): Promise<ExerciseGroup> {
     return firstValueFrom(this.http.put<ExerciseGroup>(`/api/exercise-groups/${id}`, data));
+  }
+
+  fetchExerciseVersions(id: number): Promise<VersionEntry<Exercise>[]> {
+    return firstValueFrom(this.http.get<VersionEntry<Exercise>[]>(`/api/exercises/${id}/versions`));
+  }
+
+  fetchEquipmentVersions(id: number): Promise<VersionEntry<Equipment>[]> {
+    return firstValueFrom(
+      this.http.get<VersionEntry<Equipment>[]>(`/api/equipment/${id}/versions`),
+    );
   }
 }

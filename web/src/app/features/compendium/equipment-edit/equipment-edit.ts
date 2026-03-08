@@ -2,12 +2,7 @@ import { Component, inject, computed, effect } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import {
-  injectQuery,
-  injectMutation,
-  injectQueryClient,
-  QueryClient,
-} from '@tanstack/angular-query-experimental';
+import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { equipmentKeys } from '$core/query-keys';
 import { PageLayout } from '../../../layout/page-layout';

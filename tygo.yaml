@@ -11,3 +11,4 @@ packages:
       - "exercise_relationship_entity.go"
       - "exercise_group_entity.go"
       - "exercise_group_member_entity.go"
+      - "history.go"

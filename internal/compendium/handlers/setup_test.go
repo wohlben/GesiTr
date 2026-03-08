@@ -41,6 +41,8 @@ func setupTestDB(t *testing.T) {
 		&models.ExerciseRelationshipEntity{},
 		&models.ExerciseGroupEntity{},
 		&models.ExerciseGroupMemberEntity{},
+		&models.ExerciseHistoryEntity{},
+		&models.EquipmentHistoryEntity{},
 	)
 	database.DB = db
 }
@@ -55,6 +57,7 @@ func newRouter() *gin.Engine {
 	exercises.GET("/:id", GetExercise)
 	exercises.PUT("/:id", UpdateExercise)
 	exercises.DELETE("/:id", DeleteExercise)
+	exercises.GET("/:id/versions", ListExerciseVersions)
 
 	equipment := api.Group("/equipment")
 	equipment.GET("", ListEquipment)
@@ -62,6 +65,7 @@ func newRouter() *gin.Engine {
 	equipment.GET("/:id", GetEquipment)
 	equipment.PUT("/:id", UpdateEquipment)
 	equipment.DELETE("/:id", DeleteEquipment)
+	equipment.GET("/:id/versions", ListEquipmentVersions)
 
 	fulfillments := api.Group("/fulfillments")
 	fulfillments.GET("", ListFulfillments)

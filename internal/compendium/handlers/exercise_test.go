@@ -335,6 +335,89 @@ func TestUpdateExercise(t *testing.T) {
 		}
 	})
 
+	t.Run("no version bump when unchanged", func(t *testing.T) {
+		// Re-PUT the same data that's currently in the DB (from the "success" test above)
+		same := map[string]any{
+			"name": "Overhead Press", "slug": "ohp", "type": "STRENGTH",
+			"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
+			"description": "updated", "createdBy": "system", "version": 0,
+			"force": []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
+			"secondaryMuscles":              []string{"TRICEPS", "CHEST"},
+			"suggestedMeasurementParadigms": []string{"REP_BASED", "AMRAP"},
+			"instructions":                  []string{"New step 1"},
+			"images":                        []string{"/img/new.jpg"},
+			"alternativeNames":              []string{"Press", "Military Press"},
+			"equipmentIds":                  []string{"barbell"},
+		}
+		w := doJSON(r, "PUT", "/api/exercises/1", same)
+		if w.Code != http.StatusOK {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var result models.Exercise
+		json.Unmarshal(w.Body.Bytes(), &result)
+		if result.Version != 1 {
+			t.Errorf("Version = %d, want 1 (should not have bumped)", result.Version)
+		}
+	})
+
+	t.Run("no extra history on unchanged update", func(t *testing.T) {
+		var count int64
+		database.DB.Model(&models.ExerciseHistoryEntity{}).Where("exercise_id = ?", 1).Count(&count)
+		// version 0 (create) + version 1 (first update) = 2 records; no-op update above should not add more
+		if count != 2 {
+			t.Errorf("expected 2 history records, got %d", count)
+		}
+	})
+
+	t.Run("successive updates accumulate history", func(t *testing.T) {
+		// Second real update → version 2
+		w := doJSON(r, "PUT", "/api/exercises/1", map[string]any{
+			"name": "OHP v2", "slug": "ohp", "type": "STRENGTH",
+			"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
+			"description": "v2", "createdBy": "system", "version": 0,
+			"force": []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
+		})
+		if w.Code != http.StatusOK {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var result models.Exercise
+		json.Unmarshal(w.Body.Bytes(), &result)
+		if result.Version != 2 {
+			t.Errorf("Version = %d, want 2", result.Version)
+		}
+
+		var count int64
+		database.DB.Model(&models.ExerciseHistoryEntity{}).Where("exercise_id = ?", 1).Count(&count)
+		if count != 3 {
+			t.Errorf("expected 3 history records (v0, v1, v2), got %d", count)
+		}
+	})
+
+	t.Run("history insert error rolls back", func(t *testing.T) {
+		callbackName := "test:fail_history_insert"
+		database.DB.Callback().Create().Before("gorm:create").Register(callbackName, func(tx *gorm.DB) {
+			if tx.Statement.Table == "exercise_history" {
+				_ = tx.AddError(fmt.Errorf("injected history error"))
+			}
+		})
+		w := doJSON(r, "PUT", "/api/exercises/1", map[string]any{
+			"name": "OHP v3 fail", "slug": "ohp", "type": "STRENGTH",
+			"technicalDifficulty": "advanced", "bodyWeightScaling": 0.0,
+			"description": "v3 fail", "createdBy": "system",
+			"force": []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
+		})
+		if w.Code != http.StatusInternalServerError {
+			t.Errorf("expected 500 for history insert error, got %d", w.Code)
+		}
+		// Version should NOT have bumped since the whole transaction rolled back
+		var entity models.ExerciseEntity
+		database.DB.First(&entity, 1)
+		if entity.Version != 2 {
+			t.Errorf("Version = %d after rolled-back tx, want 2", entity.Version)
+		}
+		database.DB.Callback().Create().Remove(callbackName)
+	})
+
 	t.Run("not found", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/exercises/999", newExercisePayload("X", "x"))
 		if w.Code != http.StatusNotFound {
@@ -360,27 +443,33 @@ func TestUpdateExercise(t *testing.T) {
 		}
 	})
 
-	// Test transaction delete errors by dropping child tables one at a time
+	// Test transaction delete errors by injecting errors via callbacks
 	deleteTargets := []struct {
-		model any
+		table string
 		name  string
 	}{
-		{&models.ExerciseForce{}, "forces"},
-		{&models.ExerciseMuscle{}, "muscles"},
-		{&models.ExerciseMeasurementParadigm{}, "paradigms"},
-		{&models.ExerciseInstruction{}, "instructions"},
-		{&models.ExerciseImage{}, "images"},
-		{&models.ExerciseAlternativeName{}, "alt_names"},
-		{&models.ExerciseEquipment{}, "equipment"},
+		{"exercise_forces", "forces"},
+		{"exercise_muscles", "muscles"},
+		{"exercise_measurement_paradigms", "paradigms"},
+		{"exercise_instructions", "instructions"},
+		{"exercise_images", "images"},
+		{"exercise_alternative_names", "alt_names"},
+		{"exercise_equipments", "equipment"},
 	}
 	for _, target := range deleteTargets {
 		t.Run("tx delete error "+target.name, func(t *testing.T) {
-			database.DB.Migrator().DropTable(target.model)
+			callbackName := "test:fail_del_" + target.name
+			targetTable := target.table
+			database.DB.Callback().Delete().Before("gorm:delete").Register(callbackName, func(tx *gorm.DB) {
+				if tx.Statement.Table == targetTable {
+					_ = tx.AddError(fmt.Errorf("injected delete error"))
+				}
+			})
 			w := doJSON(r, "PUT", "/api/exercises/1", newExercisePayload("U", "ohp"))
 			if w.Code != http.StatusInternalServerError {
 				t.Errorf("expected 500, got %d", w.Code)
 			}
-			database.DB.AutoMigrate(target.model)
+			database.DB.Callback().Delete().Remove(callbackName)
 		})
 	}
 
@@ -414,16 +503,15 @@ func TestUpdateExercise(t *testing.T) {
 		})
 	}
 
-	// Test reload error after successful transaction - drop exercises table
-	// after the transaction succeeds by using a callback on query (reload phase)
+	// Test reload error after successful transaction by injecting query errors
+	// after the initial preloaded load (1 First + 7 preloads = 8 queries).
+	// Reload queries start at query 9+.
 	t.Run("reload error after update", func(t *testing.T) {
 		callbackName := "test:fail_reload_update"
 		queryCount := 0
 		database.DB.Callback().Query().Before("gorm:query").Register(callbackName, func(tx *gorm.DB) {
 			queryCount++
-			// First query: lookup existing exercise. Second+ queries: reload after tx.
-			// Fail on query 2+ to break the reload.
-			if queryCount >= 2 {
+			if queryCount >= 9 {
 				_ = tx.AddError(fmt.Errorf("injected reload error"))
 			}
 		})
@@ -437,6 +525,87 @@ func TestUpdateExercise(t *testing.T) {
 	t.Run("db error first lookup", func(t *testing.T) {
 		closeDB(t)
 		w := doJSON(r, "PUT", "/api/exercises/1", newExercisePayload("X", "x"))
+		if w.Code != http.StatusNotFound {
+			t.Errorf("expected 404 (db closed), got %d", w.Code)
+		}
+	})
+}
+
+func TestListExerciseVersions(t *testing.T) {
+	setupTestDB(t)
+	r := newRouter()
+
+	// Create exercise (v0) and update it twice (v1, v2)
+	doJSON(r, "POST", "/api/exercises", newExercisePayload("Press", "press"))
+	doJSON(r, "PUT", "/api/exercises/1", map[string]any{
+		"name": "Press v1", "slug": "press", "type": "STRENGTH",
+		"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
+		"description": "v1", "createdBy": "system",
+		"force": []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
+	})
+	doJSON(r, "PUT", "/api/exercises/1", map[string]any{
+		"name": "Press v2", "slug": "press", "type": "STRENGTH",
+		"technicalDifficulty": "advanced", "bodyWeightScaling": 0.0,
+		"description": "v2", "createdBy": "system",
+		"force": []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
+	})
+
+	t.Run("returns all versions ordered", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/exercises/1/versions", nil)
+		if w.Code != http.StatusOK {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var entries []models.VersionEntry
+		json.Unmarshal(w.Body.Bytes(), &entries)
+		if len(entries) != 3 {
+			t.Fatalf("expected 3 versions, got %d", len(entries))
+		}
+		if entries[0].Version != 0 || entries[1].Version != 1 || entries[2].Version != 2 {
+			t.Errorf("versions = %d, %d, %d", entries[0].Version, entries[1].Version, entries[2].Version)
+		}
+		for i, e := range entries {
+			if e.ChangedBy != "system" {
+				t.Errorf("entries[%d].ChangedBy = %q", i, e.ChangedBy)
+			}
+			if e.ChangedAt.IsZero() {
+				t.Errorf("entries[%d].ChangedAt is zero", i)
+			}
+		}
+	})
+
+	t.Run("snapshot contains correct data", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/exercises/1/versions", nil)
+		var entries []models.VersionEntry
+		json.Unmarshal(w.Body.Bytes(), &entries)
+
+		// Check v0 snapshot
+		var v0 models.Exercise
+		json.Unmarshal(entries[0].Snapshot, &v0)
+		if v0.Name != "Press" {
+			t.Errorf("v0 name = %q, want Press", v0.Name)
+		}
+
+		// Check v2 snapshot
+		var v2 models.Exercise
+		json.Unmarshal(entries[2].Snapshot, &v2)
+		if v2.Name != "Press v2" {
+			t.Errorf("v2 name = %q, want Press v2", v2.Name)
+		}
+		if v2.TechnicalDifficulty != "advanced" {
+			t.Errorf("v2 difficulty = %q, want advanced", v2.TechnicalDifficulty)
+		}
+	})
+
+	t.Run("not found", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/exercises/999/versions", nil)
+		if w.Code != http.StatusNotFound {
+			t.Errorf("expected 404, got %d", w.Code)
+		}
+	})
+
+	t.Run("db error", func(t *testing.T) {
+		closeDB(t)
+		w := doJSON(r, "GET", "/api/exercises/1/versions", nil)
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404 (db closed), got %d", w.Code)
 		}

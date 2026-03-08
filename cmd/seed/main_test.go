@@ -34,6 +34,8 @@ func setupSeedTestDB(t *testing.T) {
 		&models.ExerciseRelationshipEntity{},
 		&models.ExerciseGroupEntity{},
 		&models.ExerciseGroupMemberEntity{},
+		&models.ExerciseHistoryEntity{},
+		&models.EquipmentHistoryEntity{},
 	)
 	database.DB = db
 }
@@ -112,6 +114,14 @@ func TestMainFunction(t *testing.T) {
 
 	if eqCount != 1 || fCount != 1 || exCount != 1 || relCount != 1 || gCount != 1 || mCount != 1 {
 		t.Errorf("counts: eq=%d f=%d ex=%d rel=%d g=%d m=%d", eqCount, fCount, exCount, relCount, gCount, mCount)
+	}
+
+	// Verify history entries were created
+	var eqHistCount, exHistCount int64
+	database.DB.Model(&models.ExerciseHistoryEntity{}).Count(&exHistCount)
+	database.DB.Model(&models.EquipmentHistoryEntity{}).Count(&eqHistCount)
+	if exHistCount != 1 || eqHistCount != 1 {
+		t.Errorf("history counts: exerciseHistory=%d equipmentHistory=%d", exHistCount, eqHistCount)
 	}
 }
 
@@ -206,6 +216,12 @@ func TestSeedEquipment(t *testing.T) {
 		database.DB.Where("template_id = ?", "barbell").First(&eq)
 		if eq.Name != "barbell" || eq.Category != "free_weights" || eq.CreatedBy != "system" {
 			t.Errorf("field mismatch: %+v", eq)
+		}
+
+		var histCount int64
+		database.DB.Model(&models.EquipmentHistoryEntity{}).Count(&histCount)
+		if histCount != 2 {
+			t.Errorf("expected 2 equipment history entries, got %d", histCount)
 		}
 	})
 
@@ -355,6 +371,12 @@ func TestSeedExercises(t *testing.T) {
 		if fc != 1 || mc != 2 || pc != 1 || ic != 2 || imgc != 1 || alc != 1 || eqc != 1 {
 			t.Errorf("child counts: forces=%d muscles=%d paradigms=%d instr=%d img=%d alt=%d eq=%d",
 				fc, mc, pc, ic, imgc, alc, eqc)
+		}
+
+		var histCount int64
+		database.DB.Model(&models.ExerciseHistoryEntity{}).Where("exercise_id = ?", ex.ID).Count(&histCount)
+		if histCount != 1 {
+			t.Errorf("expected 1 exercise history entry, got %d", histCount)
 		}
 	})
 

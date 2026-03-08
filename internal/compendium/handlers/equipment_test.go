@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"gesitr/internal/compendium/models"
+	"gesitr/internal/database"
 )
 
 func TestListEquipment(t *testing.T) {
@@ -183,6 +184,49 @@ func TestUpdateEquipment(t *testing.T) {
 		}
 	})
 
+	t.Run("no version bump when unchanged", func(t *testing.T) {
+		w := doJSON(r, "PUT", "/api/equipment/1", map[string]any{
+			"name": "resistance-band", "displayName": "Resistance Band", "description": "elastic",
+			"category": "accessories", "templateId": "band", "createdBy": "system",
+		})
+		if w.Code != http.StatusOK {
+			t.Fatalf("status = %d", w.Code)
+		}
+		var result models.Equipment
+		json.Unmarshal(w.Body.Bytes(), &result)
+		if result.Version != 1 {
+			t.Errorf("Version = %d, want 1 (should not have bumped)", result.Version)
+		}
+	})
+
+	t.Run("no extra history on unchanged update", func(t *testing.T) {
+		var count int64
+		database.DB.Model(&models.EquipmentHistoryEntity{}).Where("equipment_id = ?", 1).Count(&count)
+		if count != 2 {
+			t.Errorf("expected 2 history records (no extra from no-op), got %d", count)
+		}
+	})
+
+	t.Run("successive updates accumulate history", func(t *testing.T) {
+		w := doJSON(r, "PUT", "/api/equipment/1", map[string]any{
+			"name": "super-band", "displayName": "Super Band", "description": "v2",
+			"category": "accessories", "templateId": "band", "createdBy": "system",
+		})
+		if w.Code != http.StatusOK {
+			t.Fatalf("status = %d", w.Code)
+		}
+		var result models.Equipment
+		json.Unmarshal(w.Body.Bytes(), &result)
+		if result.Version != 2 {
+			t.Errorf("Version = %d, want 2", result.Version)
+		}
+		var count int64
+		database.DB.Model(&models.EquipmentHistoryEntity{}).Where("equipment_id = ?", 1).Count(&count)
+		if count != 3 {
+			t.Errorf("expected 3 history records (v0, v1, v2), got %d", count)
+		}
+	})
+
 	t.Run("not found", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/equipment/999", map[string]any{
 			"name": "x", "displayName": "X", "description": "",
@@ -222,6 +266,69 @@ func TestUpdateEquipment(t *testing.T) {
 			"name": "x", "displayName": "X", "description": "",
 			"category": "other", "templateId": "x", "createdBy": "s",
 		})
+		if w.Code != http.StatusNotFound {
+			t.Errorf("expected 404 (db closed), got %d", w.Code)
+		}
+	})
+}
+
+func TestListEquipmentVersions(t *testing.T) {
+	setupTestDB(t)
+	r := newRouter()
+
+	// Create equipment (v0) and update it (v1)
+	doJSON(r, "POST", "/api/equipment", map[string]any{
+		"name": "plate", "displayName": "Plate", "description": "A weight plate",
+		"category": "free_weights", "templateId": "plate", "createdBy": "system",
+	})
+	doJSON(r, "PUT", "/api/equipment/1", map[string]any{
+		"name": "bumper-plate", "displayName": "Bumper Plate", "description": "Rubber coated",
+		"category": "free_weights", "templateId": "plate", "createdBy": "system",
+	})
+
+	t.Run("returns all versions ordered", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/equipment/1/versions", nil)
+		if w.Code != http.StatusOK {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var entries []models.VersionEntry
+		json.Unmarshal(w.Body.Bytes(), &entries)
+		if len(entries) != 2 {
+			t.Fatalf("expected 2 versions, got %d", len(entries))
+		}
+		if entries[0].Version != 0 || entries[1].Version != 1 {
+			t.Errorf("versions = %d, %d", entries[0].Version, entries[1].Version)
+		}
+	})
+
+	t.Run("snapshot contains correct data", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/equipment/1/versions", nil)
+		var entries []models.VersionEntry
+		json.Unmarshal(w.Body.Bytes(), &entries)
+
+		var v0 models.Equipment
+		json.Unmarshal(entries[0].Snapshot, &v0)
+		if v0.Name != "plate" || v0.DisplayName != "Plate" {
+			t.Errorf("v0 snapshot: name=%q displayName=%q", v0.Name, v0.DisplayName)
+		}
+
+		var v1 models.Equipment
+		json.Unmarshal(entries[1].Snapshot, &v1)
+		if v1.Name != "bumper-plate" || v1.Description != "Rubber coated" {
+			t.Errorf("v1 snapshot: name=%q desc=%q", v1.Name, v1.Description)
+		}
+	})
+
+	t.Run("not found", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/equipment/999/versions", nil)
+		if w.Code != http.StatusNotFound {
+			t.Errorf("expected 404, got %d", w.Code)
+		}
+	})
+
+	t.Run("db error", func(t *testing.T) {
+		closeDB(t)
+		w := doJSON(r, "GET", "/api/equipment/1/versions", nil)
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404 (db closed), got %d", w.Code)
 		}

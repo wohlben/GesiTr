@@ -15,12 +15,20 @@ import { PageLayout } from '../../../layout/page-layout';
       [isPending]="equipmentQuery.isPending()"
       [errorMessage]="equipmentQuery.isError() ? equipmentQuery.error().message : undefined"
     >
-      <a
-        actions
-        routerLink="./edit"
-        class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        >Edit</a
-      >
+      <div actions class="flex gap-2">
+        @if (hasHistory()) {
+          <a
+            routerLink="./history"
+            class="rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
+            >History</a
+          >
+        }
+        <a
+          routerLink="./edit"
+          class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >Edit</a
+        >
+      </div>
       @if (equipmentQuery.data(); as equipment) {
         <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
@@ -51,4 +59,12 @@ export class EquipmentDetail {
     queryFn: () => this.api.fetchEquipmentItem(this.id()),
     enabled: !!this.id(),
   }));
+
+  versionsQuery = injectQuery(() => ({
+    queryKey: equipmentKeys.versions(this.id()),
+    queryFn: () => this.api.fetchEquipmentVersions(this.id()),
+    enabled: !!this.id(),
+  }));
+
+  hasHistory = computed(() => (this.versionsQuery.data()?.length ?? 0) > 1);
 }

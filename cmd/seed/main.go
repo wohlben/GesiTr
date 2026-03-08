@@ -28,6 +28,8 @@ func main() {
 		&models.ExerciseRelationshipEntity{},
 		&models.ExerciseGroupEntity{},
 		&models.ExerciseGroupMemberEntity{},
+		&models.ExerciseHistoryEntity{},
+		&models.EquipmentHistoryEntity{},
 	)
 
 	steps := []struct {
@@ -109,6 +111,22 @@ func seedEquipment() error {
 	if err := database.DB.CreateInBatches(entities, 100).Error; err != nil {
 		return fmt.Errorf("insert equipment: %w", err)
 	}
+
+	var history []models.EquipmentHistoryEntity
+	for i := range entities {
+		dto := entities[i].ToDTO()
+		history = append(history, models.EquipmentHistoryEntity{
+			EquipmentID: entities[i].ID,
+			Version:     0,
+			Snapshot:    models.SnapshotJSON(dto),
+			ChangedAt:   entities[i].CreatedAt,
+			ChangedBy:   entities[i].CreatedBy,
+		})
+	}
+	if err := database.DB.CreateInBatches(history, 100).Error; err != nil {
+		return fmt.Errorf("insert equipment history: %w", err)
+	}
+
 	log.Printf("Equipment: %d", len(entities))
 	return nil
 }
@@ -237,6 +255,22 @@ func seedExercises() error {
 	if err := database.DB.CreateInBatches(entities, 100).Error; err != nil {
 		return fmt.Errorf("insert exercises: %w", err)
 	}
+
+	var history []models.ExerciseHistoryEntity
+	for i := range entities {
+		dto := entities[i].ToDTO()
+		history = append(history, models.ExerciseHistoryEntity{
+			ExerciseID: entities[i].ID,
+			Version:    0,
+			Snapshot:   models.SnapshotJSON(dto),
+			ChangedAt:  entities[i].CreatedAt,
+			ChangedBy:  entities[i].CreatedBy,
+		})
+	}
+	if err := database.DB.CreateInBatches(history, 100).Error; err != nil {
+		return fmt.Errorf("insert exercise history: %w", err)
+	}
+
 	log.Printf("Exercises: %d", len(entities))
 	return nil
 }

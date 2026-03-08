@@ -1,7 +1,5 @@
 package models
 
-import "gorm.io/gorm"
-
 // ExerciseEntity is the GORM entity for the exercises table
 type ExerciseEntity struct {
 	BaseModel
@@ -28,11 +26,6 @@ type ExerciseEntity struct {
 }
 
 func (ExerciseEntity) TableName() string { return "exercises" }
-
-func (e *ExerciseEntity) BeforeUpdate(tx *gorm.DB) error {
-	e.Version++
-	return nil
-}
 
 // Child tables
 

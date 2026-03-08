@@ -1,7 +1,5 @@
 package models
 
-import "gorm.io/gorm"
-
 type EquipmentEntity struct {
 	BaseModel
 	Name        string `gorm:"not null"`
@@ -15,11 +13,6 @@ type EquipmentEntity struct {
 }
 
 func (EquipmentEntity) TableName() string { return "equipment" }
-
-func (e *EquipmentEntity) BeforeUpdate(tx *gorm.DB) error {
-	e.Version++
-	return nil
-}
 
 type ExerciseEquipment struct {
 	ExerciseID          uint   `gorm:"primaryKey"`
