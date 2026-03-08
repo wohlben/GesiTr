@@ -28,6 +28,16 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+
+    /* Block service workers to avoid redirect loops with SPA fallback servers */
+    serviceWorkers: 'block',
+  },
+
+  expect: {
+    toHaveScreenshot: {
+      /* Allow small pixel differences from cross-platform subpixel rendering */
+      maxDiffPixelRatio: 0.05,
+    },
   },
 
   /* Configure projects for major browsers */
