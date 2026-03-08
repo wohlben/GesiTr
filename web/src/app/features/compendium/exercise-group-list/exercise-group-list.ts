@@ -1,27 +1,24 @@
-import { Component, inject, signal, computed } from '@angular/core';
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import { Component, inject, computed } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { ExerciseGroupListItem } from '$ui/compendium/exercise-group-list-item/exercise-group-list-item';
-import { SearchInput } from '$ui/inputs/search-input/search-input';
-import { DataTable } from '$ui/data-table/data-table';
-import { Pagination, injectOffset } from '$ui/pagination/pagination';
+import { DataTable, DataTableColumn } from '$ui/data-table/data-table';
+import { Pagination } from '$ui/pagination/pagination';
 import { PageLayout } from '../../../layout/page-layout';
 
 @Component({
   selector: 'app-exercise-group-list',
-  imports: [SearchInput, ExerciseGroupListItem, DataTable, Pagination, PageLayout],
+  imports: [ExerciseGroupListItem, DataTable, Pagination, PageLayout],
   template: `
     <app-page-layout
       header="Exercise Groups"
       [isPending]="groupsQuery.isPending()"
       [errorMessage]="groupsQuery.isError() ? groupsQuery.error().message : undefined">
 
-      <div filters class="flex flex-wrap gap-3">
-        <app-search-input placeholder="Search exercise groups..." [(value)]="q" />
-      </div>
-
       @if (groupsQuery.data(); as page) {
-        <app-data-table [columns]="['Name', 'Description']">
+        <app-data-table [columns]="groupColumns" [stale]="groupsQuery.isPlaceholderData()">
           @for (group of page.items; track group.id) {
             <tr app-exercise-group-list-item [group]="group"></tr>
           }
@@ -33,17 +30,28 @@ import { PageLayout } from '../../../layout/page-layout';
 })
 export class ExerciseGroupList {
   private api = inject(CompendiumApiClient);
+  private queryParams = toSignal(inject(ActivatedRoute).queryParamMap);
 
-  q = signal('');
-  offset = injectOffset();
-
-  filters = computed(() => ({
-    q: this.q() || undefined,
-    offset: this.offset() || undefined,
-  }));
+  filters = computed(() => {
+    const params: Record<string, string> = {};
+    const qp = this.queryParams();
+    if (qp) {
+      for (const key of qp.keys) {
+        const val = qp.get(key);
+        if (val) params[key] = val;
+      }
+    }
+    return params;
+  });
 
   groupsQuery = injectQuery(() => ({
     queryKey: ['exercise-groups', this.filters()],
     queryFn: () => this.api.fetchExerciseGroups(this.filters()),
+    placeholderData: keepPreviousData,
   }));
+
+  groupColumns: DataTableColumn[] = [
+    { label: 'Name', searchParam: 'q' },
+    { label: 'Description' },
+  ];
 }

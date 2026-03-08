@@ -1,14 +1,21 @@
 import { render } from '@testing-library/angular';
 import { page } from 'vitest/browser';
-import { DataTable } from './data-table';
+import { provideRouter } from '@angular/router';
+import { DataTable, DataTableColumn } from './data-table';
 
 describe('DataTable screenshots', () => {
   afterEach(() => {
     document.documentElement.classList.remove('dark');
   });
 
+  const columns: DataTableColumn[] = [
+    { label: 'Name', searchParam: 'q' },
+    { label: 'Category', filterParam: 'category', options: ['free_weights', 'machines', 'accessories'] },
+    { label: 'Description' },
+  ];
+
   const template = `
-    <app-data-table [columns]="['Name', 'Category', 'Description']">
+    <app-data-table [columns]="columns" [stale]="stale">
       <tr>
         <td class="whitespace-nowrap px-4 py-2 text-sm font-medium text-gray-900 dark:text-gray-100">Barbell</td>
         <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">free_weights</td>
@@ -22,16 +29,50 @@ describe('DataTable screenshots', () => {
     </app-data-table>
   `;
 
+  const renderOpts = (stale = false) => ({
+    imports: [DataTable],
+    providers: [provideRouter([])],
+    componentProperties: { columns, stale },
+  });
+
   it('light', async () => {
-    const { fixture } = await render(template, { imports: [DataTable] });
+    const { fixture } = await render(template, renderOpts());
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('light');
   });
 
   it('dark', async () => {
     document.documentElement.classList.add('dark');
-    const { fixture } = await render(template, { imports: [DataTable] });
+    const { fixture } = await render(template, renderOpts());
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('dark');
+  });
+
+  it('filter dropdown open - light', async () => {
+    const { fixture } = await render(template, renderOpts());
+    await page.getByRole('button', { name: /category/i }).click();
+    const locator = page.elementLocator(fixture.nativeElement);
+    await expect(locator).toMatchScreenshot('dropdown-light');
+  });
+
+  it('filter dropdown open - dark', async () => {
+    document.documentElement.classList.add('dark');
+    const { fixture } = await render(template, renderOpts());
+    await page.getByRole('button', { name: /category/i }).click();
+    const locator = page.elementLocator(fixture.nativeElement);
+    await expect(locator).toMatchScreenshot('dropdown-dark');
+  });
+
+  it('stale - light', async () => {
+    const { fixture } = await render(template, renderOpts(true));
+    const locator = page.elementLocator(fixture.nativeElement);
+    await expect(locator).toMatchScreenshot('stale-light');
+  });
+
+  it('stale - dark', async () => {
+    document.documentElement.classList.add('dark');
+    const { fixture } = await render(template, renderOpts(true));
+    const locator = page.elementLocator(fixture.nativeElement);
+    await expect(locator).toMatchScreenshot('stale-dark');
   });
 });

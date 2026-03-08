@@ -1,20 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
 import { PaginatedResponse } from '$core/api-clients/paginated-response';
-
-export function injectOffset(): () => number {
-  const route = inject(ActivatedRoute);
-  const offset$ = route.queryParamMap.pipe(
-    map(params => {
-      const v = params.get('offset');
-      return v ? Math.max(0, parseInt(v, 10) || 0) : 0;
-    }),
-  );
-  const sig = toSignal(offset$, { initialValue: 0 });
-  return sig;
-}
 
 @Component({
   selector: 'app-pagination',

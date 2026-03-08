@@ -1,14 +1,13 @@
-import { Component, inject, signal, computed } from '@angular/core';
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import { Component, inject, computed } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { ExerciseListItem } from '$ui/compendium/exercise-list-item/exercise-list-item';
-import { SearchInput } from '$ui/inputs/search-input/search-input';
-import { FilterSelect } from '$ui/inputs/filter-select/filter-select';
-import { DataTable } from '$ui/data-table/data-table';
-import { Pagination, injectOffset } from '$ui/pagination/pagination';
+import { DataTable, DataTableColumn } from '$ui/data-table/data-table';
+import { Pagination } from '$ui/pagination/pagination';
 import { PageLayout } from '../../../layout/page-layout';
 import {
-  ExerciseType,
   ExerciseTypeStrength,
   ExerciseTypeCardio,
   ExerciseTypeStretching,
@@ -16,19 +15,16 @@ import {
   ExerciseTypeStrongman,
   ExerciseTypeOlympicWeightlifting,
   ExerciseTypePowerlifting,
-  TechnicalDifficulty,
   DifficultyBeginner,
   DifficultyIntermediate,
   DifficultyAdvanced,
   DifficultyExpert,
-  Force,
   ForcePull,
   ForcePush,
   ForceStatic,
   ForceDynamic,
   ForceHinge,
   ForceRotation,
-  Muscle,
   MuscleAbs,
   MuscleAbductors,
   MuscleAdductors,
@@ -56,23 +52,15 @@ import {
 
 @Component({
   selector: 'app-exercise-list',
-  imports: [SearchInput, FilterSelect, ExerciseListItem, DataTable, Pagination, PageLayout],
+  imports: [ExerciseListItem, DataTable, Pagination, PageLayout],
   template: `
     <app-page-layout
       header="Exercises"
       [isPending]="exercisesQuery.isPending()"
       [errorMessage]="exercisesQuery.isError() ? exercisesQuery.error().message : undefined">
 
-      <div filters class="flex flex-wrap gap-3">
-        <app-search-input placeholder="Search exercises..." [(value)]="q" />
-        <app-filter-select allLabel="All types" [options]="typeOptions" [(value)]="type" />
-        <app-filter-select allLabel="All difficulties" [options]="difficultyOptions" [(value)]="difficulty" />
-        <app-filter-select allLabel="All forces" [options]="forceOptions" [(value)]="force" />
-        <app-filter-select allLabel="All muscles" [options]="muscleOptions" [(value)]="muscle" />
-      </div>
-
       @if (exercisesQuery.data(); as page) {
-        <app-data-table [columns]="['Name', 'Type', 'Difficulty', 'Force', 'Primary muscles']">
+        <app-data-table [columns]="exerciseColumns" [stale]="exercisesQuery.isPlaceholderData()">
           @for (ex of page.items; track ex.id) {
             <tr app-exercise-list-item [exercise]="ex"></tr>
           }
@@ -84,77 +72,79 @@ import {
 })
 export class ExerciseList {
   private api = inject(CompendiumApiClient);
+  private queryParams = toSignal(inject(ActivatedRoute).queryParamMap);
 
-  q = signal('');
-  type = signal<ExerciseType | ''>('');
-  difficulty = signal<TechnicalDifficulty | ''>('');
-  force = signal<Force | ''>('');
-  muscle = signal<Muscle | ''>('');
-  offset = injectOffset();
-
-  filters = computed(() => ({
-    q: this.q() || undefined,
-    type: this.type() || undefined,
-    difficulty: this.difficulty() || undefined,
-    force: this.force() || undefined,
-    muscle: this.muscle() || undefined,
-    offset: this.offset() || undefined,
-  }));
+  filters = computed(() => {
+    const params: Record<string, string> = {};
+    const qp = this.queryParams();
+    if (qp) {
+      for (const key of qp.keys) {
+        const val = qp.get(key);
+        if (val) params[key] = val;
+      }
+    }
+    return params;
+  });
 
   exercisesQuery = injectQuery(() => ({
     queryKey: ['exercises', this.filters()],
     queryFn: () => this.api.fetchExercises(this.filters()),
+    placeholderData: keepPreviousData,
   }));
 
-  typeOptions: ExerciseType[] = [
-    ExerciseTypeStrength,
-    ExerciseTypeCardio,
-    ExerciseTypeStretching,
-    ExerciseTypePlyometric,
-    ExerciseTypeStrongman,
-    ExerciseTypeOlympicWeightlifting,
-    ExerciseTypePowerlifting,
-  ];
-
-  difficultyOptions: TechnicalDifficulty[] = [
-    DifficultyBeginner,
-    DifficultyIntermediate,
-    DifficultyAdvanced,
-    DifficultyExpert,
-  ];
-
-  forceOptions: Force[] = [
-    ForcePull,
-    ForcePush,
-    ForceStatic,
-    ForceDynamic,
-    ForceHinge,
-    ForceRotation,
-  ];
-
-  muscleOptions: Muscle[] = [
-    MuscleAbs,
-    MuscleAbductors,
-    MuscleAdductors,
-    MuscleBiceps,
-    MuscleCalves,
-    MuscleChest,
-    MuscleForearms,
-    MuscleGlutes,
-    MuscleHamstrings,
-    MuscleHipFlexors,
-    MuscleLats,
-    MuscleLowerBack,
-    MuscleMiddleBack,
-    MuscleNeck,
-    MuscleObliques,
-    MuscleQuads,
-    MuscleShoulders,
-    MuscleTraps,
-    MuscleTriceps,
-    MuscleFrontDelts,
-    MuscleRearDelts,
-    MuscleRhomboids,
-    MuscleSideDelts,
+  exerciseColumns: DataTableColumn[] = [
+    { label: 'Name', searchParam: 'q' },
+    {
+      label: 'Type',
+      filterParam: 'type',
+      options: [
+        ExerciseTypeStrength,
+        ExerciseTypeCardio,
+        ExerciseTypeStretching,
+        ExerciseTypePlyometric,
+        ExerciseTypeStrongman,
+        ExerciseTypeOlympicWeightlifting,
+        ExerciseTypePowerlifting,
+      ],
+    },
+    {
+      label: 'Difficulty',
+      filterParam: 'difficulty',
+      options: [DifficultyBeginner, DifficultyIntermediate, DifficultyAdvanced, DifficultyExpert],
+    },
+    {
+      label: 'Force',
+      filterParam: 'force',
+      options: [ForcePull, ForcePush, ForceStatic, ForceDynamic, ForceHinge, ForceRotation],
+    },
+    {
+      label: 'Primary muscles',
+      filterParam: 'muscle',
+      options: [
+        MuscleAbs,
+        MuscleAbductors,
+        MuscleAdductors,
+        MuscleBiceps,
+        MuscleCalves,
+        MuscleChest,
+        MuscleForearms,
+        MuscleGlutes,
+        MuscleHamstrings,
+        MuscleHipFlexors,
+        MuscleLats,
+        MuscleLowerBack,
+        MuscleMiddleBack,
+        MuscleNeck,
+        MuscleObliques,
+        MuscleQuads,
+        MuscleShoulders,
+        MuscleTraps,
+        MuscleTriceps,
+        MuscleFrontDelts,
+        MuscleRearDelts,
+        MuscleRhomboids,
+        MuscleSideDelts,
+      ],
+    },
   ];
 }
