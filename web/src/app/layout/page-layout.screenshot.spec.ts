@@ -89,6 +89,41 @@ describe('PageLayout screenshots', () => {
     await expect(locator).toMatchScreenshot('error-light');
   });
 
+  it('with actions - light', async () => {
+    const template = `
+      <app-page-layout header="Exercise Detail">
+        <button actions class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">Edit</button>
+        <app-data-table [columns]="['Name', 'Category']">
+          <tr>
+            <td class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-gray-100">Barbell Curl</td>
+            <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">strength</td>
+          </tr>
+        </app-data-table>
+      </app-page-layout>
+    `;
+    const { fixture } = await render(template, { imports: [PageLayout, DataTable] });
+    const locator = page.elementLocator(fixture.nativeElement);
+    await expect(locator).toMatchScreenshot('actions-light');
+  });
+
+  it('with actions - dark', async () => {
+    document.documentElement.classList.add('dark');
+    const template = `
+      <app-page-layout header="Exercise Detail">
+        <button actions class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">Edit</button>
+        <app-data-table [columns]="['Name', 'Category']">
+          <tr>
+            <td class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-gray-100">Barbell Curl</td>
+            <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">strength</td>
+          </tr>
+        </app-data-table>
+      </app-page-layout>
+    `;
+    const { fixture } = await render(template, { imports: [PageLayout, DataTable] });
+    const locator = page.elementLocator(fixture.nativeElement);
+    await expect(locator).toMatchScreenshot('actions-dark');
+  });
+
   it('error - dark', async () => {
     document.documentElement.classList.add('dark');
     const template = `
