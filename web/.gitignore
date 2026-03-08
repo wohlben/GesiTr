@@ -29,6 +29,9 @@ yarn-error.log
 !.vscode/mcp.json
 .history/*
 
+# Bundle analysis
+bundle-analysis.html
+
 # Miscellaneous
 /.angular/cache
 .sass-cache/
