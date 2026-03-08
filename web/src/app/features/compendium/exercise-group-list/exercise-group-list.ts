@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
+import { exerciseGroupKeys } from '$core/query-keys';
 import { ExerciseGroupListItem } from '$ui/compendium/exercise-group-list-item/exercise-group-list-item';
 import { DataTable, DataTableColumn } from '$ui/data-table/data-table';
 import { Pagination } from '$ui/pagination/pagination';
@@ -50,7 +51,7 @@ export class ExerciseGroupList {
   });
 
   groupsQuery = injectQuery(() => ({
-    queryKey: ['exercise-groups', this.filters()],
+    queryKey: exerciseGroupKeys.list(this.filters()),
     queryFn: () => this.api.fetchExerciseGroups(this.filters()),
     placeholderData: keepPreviousData,
   }));

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
+import { equipmentKeys } from '$core/query-keys';
 import { EquipmentListItem } from '$ui/compendium/equipment-list-item/equipment-list-item';
 import { DataTable, DataTableColumn } from '$ui/data-table/data-table';
 import { Pagination } from '$ui/pagination/pagination';
@@ -58,7 +59,7 @@ export class EquipmentList {
   });
 
   equipmentQuery = injectQuery(() => ({
-    queryKey: ['equipment', this.filters()],
+    queryKey: equipmentKeys.list(this.filters()),
     queryFn: () => this.api.fetchEquipment(this.filters()),
     placeholderData: keepPreviousData,
   }));

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
+import { exerciseKeys } from '$core/query-keys';
 import { ExerciseListItem } from '$ui/compendium/exercise-list-item/exercise-list-item';
 import { DataTable, DataTableColumn } from '$ui/data-table/data-table';
 import { Pagination } from '$ui/pagination/pagination';
@@ -85,7 +86,7 @@ export class ExerciseList {
   });
 
   exercisesQuery = injectQuery(() => ({
-    queryKey: ['exercises', this.filters()],
+    queryKey: exerciseKeys.list(this.filters()),
     queryFn: () => this.api.fetchExercises(this.filters()),
     placeholderData: keepPreviousData,
   }));

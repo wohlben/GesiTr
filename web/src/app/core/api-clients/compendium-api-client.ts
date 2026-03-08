@@ -57,4 +57,16 @@ export class CompendiumApiClient {
   fetchExerciseGroup(id: number): Promise<ExerciseGroup> {
     return firstValueFrom(this.http.get<ExerciseGroup>(`/api/exercise-groups/${id}`));
   }
+
+  updateExercise(id: number, data: Partial<Exercise>): Promise<Exercise> {
+    return firstValueFrom(this.http.put<Exercise>(`/api/exercises/${id}`, data));
+  }
+
+  updateEquipment(id: number, data: Partial<Equipment>): Promise<Equipment> {
+    return firstValueFrom(this.http.put<Equipment>(`/api/equipment/${id}`, data));
+  }
+
+  updateExerciseGroup(id: number, data: Partial<ExerciseGroup>): Promise<ExerciseGroup> {
+    return firstValueFrom(this.http.put<ExerciseGroup>(`/api/exercise-groups/${id}`, data));
+  }
 }

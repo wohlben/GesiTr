@@ -69,6 +69,7 @@ func TestSetupRoutes(t *testing.T) {
 		"GET /api/exercise-groups":               false,
 		"POST /api/exercise-groups":              false,
 		"GET /api/exercise-groups/:id":           false,
+		"PUT /api/exercise-groups/:id":           false,
 		"DELETE /api/exercise-groups/:id":        false,
 		"GET /api/exercise-group-members":        false,
 		"POST /api/exercise-group-members":       false,

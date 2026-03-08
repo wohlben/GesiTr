@@ -1,13 +1,14 @@
 import { Component, inject, computed } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
+import { exerciseGroupKeys } from '$core/query-keys';
 import { PageLayout } from '../../../layout/page-layout';
 
 @Component({
   selector: 'app-exercise-group-detail',
-  imports: [PageLayout],
+  imports: [PageLayout, RouterLink],
   template: `
     <app-page-layout
       [header]="groupQuery.data()?.name ?? 'Exercise Group'"
@@ -15,6 +16,9 @@ import { PageLayout } from '../../../layout/page-layout';
       [errorMessage]="groupQuery.isError() ? groupQuery.error().message : undefined"
     >
       @if (groupQuery.data(); as group) {
+        <div class="mb-4">
+          <a routerLink="./edit" class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">Edit</a>
+        </div>
         <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div class="sm:col-span-2">
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Description</dt>
@@ -36,7 +40,7 @@ export class ExerciseGroupDetail {
   private id = computed(() => Number(this.params()?.get('id')));
 
   groupQuery = injectQuery(() => ({
-    queryKey: ['exercise-group', this.id()],
+    queryKey: exerciseGroupKeys.detail(this.id()),
     queryFn: () => this.api.fetchExerciseGroup(this.id()),
     enabled: !!this.id(),
   }));

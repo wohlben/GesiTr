@@ -88,6 +88,7 @@ func setupRoutes(r *gin.Engine) {
 		exerciseGroups.GET("", handlers.ListExerciseGroups)
 		exerciseGroups.POST("", handlers.CreateExerciseGroup)
 		exerciseGroups.GET("/:id", handlers.GetExerciseGroup)
+		exerciseGroups.PUT("/:id", handlers.UpdateExerciseGroup)
 		exerciseGroups.DELETE("/:id", handlers.DeleteExerciseGroup)
 	}
 

@@ -8,6 +8,13 @@ export const routes: Routes = [
     component: MainLayout,
     children: [
       {
+        path: 'exercises/:id/:slug/edit',
+        loadComponent: () =>
+          import('$features/compendium/exercise-edit/exercise-edit').then(
+            (m) => m.ExerciseEdit,
+          ),
+      },
+      {
         path: 'exercises/:id/:slug',
         loadComponent: () =>
           import('$features/compendium/exercise-detail/exercise-detail').then(
@@ -22,6 +29,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'equipment/:id/:slug/edit',
+        loadComponent: () =>
+          import('$features/compendium/equipment-edit/equipment-edit').then(
+            (m) => m.EquipmentEdit,
+          ),
+      },
+      {
         path: 'equipment/:id/:slug',
         loadComponent: () =>
           import('$features/compendium/equipment-detail/equipment-detail').then(
@@ -33,6 +47,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('$features/compendium/equipment-list/equipment-list').then(
             (m) => m.EquipmentList,
+          ),
+      },
+      {
+        path: 'exercise-groups/:id/:slug/edit',
+        loadComponent: () =>
+          import('$features/compendium/exercise-group-edit/exercise-group-edit').then(
+            (m) => m.ExerciseGroupEdit,
           ),
       },
       {

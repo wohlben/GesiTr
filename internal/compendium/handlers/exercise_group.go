@@ -66,6 +66,29 @@ func GetExerciseGroup(c *gin.Context) {
 	c.JSON(http.StatusOK, entity.ToDTO())
 }
 
+func UpdateExerciseGroup(c *gin.Context) {
+	var existing models.ExerciseGroupEntity
+	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "ExerciseGroup not found"})
+		return
+	}
+
+	var dto models.ExerciseGroup
+	if err := c.ShouldBindJSON(&dto); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	entity := models.ExerciseGroupFromDTO(dto)
+	entity.ID = existing.ID
+
+	if err := database.DB.Save(&entity).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, entity.ToDTO())
+}
+
 func DeleteExerciseGroup(c *gin.Context) {
 	if err := database.DB.Delete(&models.ExerciseGroupEntity{}, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "ExerciseGroup not found"})
