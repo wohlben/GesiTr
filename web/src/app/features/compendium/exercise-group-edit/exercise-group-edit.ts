@@ -9,6 +9,7 @@ import {
 } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { exerciseGroupKeys } from '$core/query-keys';
+import { SlugifyPipe } from '$ui/pipes/slugify';
 import { PageLayout } from '../../../layout/page-layout';
 
 @Component({
@@ -16,11 +17,13 @@ import { PageLayout } from '../../../layout/page-layout';
   imports: [PageLayout, ReactiveFormsModule, RouterLink],
   template: `
     <app-page-layout
-      header="Edit Exercise Group"
-      [isPending]="groupQuery.isPending()"
-      [errorMessage]="groupQuery.isError() ? groupQuery.error().message : undefined"
+      [header]="isCreateMode() ? 'New Exercise Group' : 'Edit Exercise Group'"
+      [isPending]="!isCreateMode() && groupQuery.isPending()"
+      [errorMessage]="
+        !isCreateMode() && groupQuery.isError() ? groupQuery.error().message : undefined
+      "
     >
-      @if (groupQuery.data(); as group) {
+      @if (isCreateMode() || groupQuery.data()) {
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
           <div>
             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
@@ -50,13 +53,13 @@ import { PageLayout } from '../../../layout/page-layout';
           <div class="flex gap-2">
             <button
               type="submit"
-              [disabled]="form.invalid || mutation.isPending()"
+              [disabled]="form.invalid || mutation.isPending() || createMutation.isPending()"
               class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
             >
               Save
             </button>
             <a
-              [routerLink]="['..']"
+              [routerLink]="isCreateMode() ? ['/compendium/exercise-groups'] : ['..']"
               class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               Cancel
@@ -72,9 +75,11 @@ export class ExerciseGroupEdit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private queryClient = injectQueryClient();
+  private slugify = new SlugifyPipe();
   private params = toSignal(this.route.paramMap);
 
   private id = computed(() => Number(this.params()?.get('id')));
+  isCreateMode = computed(() => !this.params()?.get('id'));
 
   form = new FormGroup({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -84,7 +89,7 @@ export class ExerciseGroupEdit {
   groupQuery = injectQuery(() => ({
     queryKey: exerciseGroupKeys.detail(this.id()),
     queryFn: () => this.api.fetchExerciseGroup(this.id()),
-    enabled: !!this.id(),
+    enabled: !!this.id() && !this.isCreateMode(),
   }));
 
   mutation = injectMutation(() => ({
@@ -93,6 +98,19 @@ export class ExerciseGroupEdit {
     onSuccess: () => {
       this.queryClient.invalidateQueries({ queryKey: exerciseGroupKeys.all() });
       this.router.navigate(['..'], { relativeTo: this.route });
+    },
+  }));
+
+  createMutation = injectMutation(() => ({
+    mutationFn: (data: Parameters<typeof this.api.createExerciseGroup>[0]) =>
+      this.api.createExerciseGroup(data),
+    onSuccess: (result) => {
+      this.queryClient.invalidateQueries({ queryKey: exerciseGroupKeys.all() });
+      this.router.navigate([
+        '/compendium/exercise-groups',
+        result.id,
+        this.slugify.transform(result.name),
+      ]);
     },
   }));
 
@@ -111,11 +129,17 @@ export class ExerciseGroupEdit {
   onSubmit() {
     if (this.form.valid) {
       const val = this.form.getRawValue();
-      this.mutation.mutate({
-        ...this.groupQuery.data()!,
+      const payload = {
+        ...(this.isCreateMode() ? {} : this.groupQuery.data()!),
         name: val.name,
+
         description: val.description || undefined,
-      });
+      };
+      if (this.isCreateMode()) {
+        this.createMutation.mutate(payload);
+      } else {
+        this.mutation.mutate(payload);
+      }
     }
   }
 }

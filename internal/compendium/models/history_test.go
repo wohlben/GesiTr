@@ -213,11 +213,10 @@ func TestExerciseChangedOptionalFields(t *testing.T) {
 	})
 
 	t.Run("templateId changed", func(t *testing.T) {
-		tid := "tmpl-1"
 		other := base
-		other.TemplateID = &tid
+		other.TemplateID = "tmpl-1"
 		if !ExerciseChanged(base, other) {
-			t.Error("expected change when templateId added")
+			t.Error("expected change when templateId changed")
 		}
 	})
 

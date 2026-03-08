@@ -24,6 +24,7 @@ const exercise: Exercise = {
   alternativeNames: [],
   createdBy: 'admin',
   version: 1,
+  templateId: 'bench-press',
   equipmentIds: [],
 };
 

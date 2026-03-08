@@ -7,6 +7,7 @@ import (
 	"gesitr/internal/database"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func ListExerciseGroups(c *gin.Context) {
@@ -47,6 +48,10 @@ func CreateExerciseGroup(c *gin.Context) {
 	if err := c.ShouldBindJSON(&dto); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+
+	if dto.TemplateID == "" {
+		dto.TemplateID = uuid.New().String()
 	}
 
 	entity := models.ExerciseGroupFromDTO(dto)

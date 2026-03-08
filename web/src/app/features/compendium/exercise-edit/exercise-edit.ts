@@ -9,6 +9,7 @@ import {
 } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { exerciseKeys } from '$core/query-keys';
+import { SlugifyPipe } from '$ui/pipes/slugify';
 import { PageLayout } from '../../../layout/page-layout';
 import {
   ExerciseType,
@@ -120,11 +121,13 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
   imports: [PageLayout, ReactiveFormsModule, RouterLink],
   template: `
     <app-page-layout
-      header="Edit Exercise"
-      [isPending]="exerciseQuery.isPending()"
-      [errorMessage]="exerciseQuery.isError() ? exerciseQuery.error().message : undefined"
+      [header]="isCreateMode() ? 'New Exercise' : 'Edit Exercise'"
+      [isPending]="!isCreateMode() && exerciseQuery.isPending()"
+      [errorMessage]="
+        !isCreateMode() && exerciseQuery.isError() ? exerciseQuery.error().message : undefined
+      "
     >
-      @if (exerciseQuery.data(); as exercise) {
+      @if (isCreateMode() || exerciseQuery.data()) {
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
           <div>
             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
@@ -429,13 +432,13 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
           <div class="flex gap-2">
             <button
               type="submit"
-              [disabled]="form.invalid || mutation.isPending()"
+              [disabled]="form.invalid || mutation.isPending() || createMutation.isPending()"
               class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
             >
               Save
             </button>
             <a
-              [routerLink]="['..']"
+              [routerLink]="isCreateMode() ? ['/compendium/exercises'] : ['..']"
               class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               Cancel
@@ -451,9 +454,11 @@ export class ExerciseEdit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private queryClient = injectQueryClient();
+  private slugify = new SlugifyPipe();
   private params = toSignal(this.route.paramMap);
 
   private id = computed(() => Number(this.params()?.get('id')));
+  isCreateMode = computed(() => !this.params()?.get('id'));
 
   exerciseTypes = EXERCISE_TYPES;
   difficulties = DIFFICULTIES;
@@ -494,7 +499,7 @@ export class ExerciseEdit {
   exerciseQuery = injectQuery(() => ({
     queryKey: exerciseKeys.detail(this.id()),
     queryFn: () => this.api.fetchExercise(this.id()),
-    enabled: !!this.id(),
+    enabled: !!this.id() && !this.isCreateMode(),
   }));
 
   mutation = injectMutation(() => ({
@@ -503,6 +508,19 @@ export class ExerciseEdit {
     onSuccess: () => {
       this.queryClient.invalidateQueries({ queryKey: exerciseKeys.all() });
       this.router.navigate(['..'], { relativeTo: this.route });
+    },
+  }));
+
+  createMutation = injectMutation(() => ({
+    mutationFn: (data: Parameters<typeof this.api.createExercise>[0]) =>
+      this.api.createExercise(data),
+    onSuccess: (result) => {
+      this.queryClient.invalidateQueries({ queryKey: exerciseKeys.all() });
+      this.router.navigate([
+        '/compendium/exercises',
+        result.id,
+        this.slugify.transform(result.name),
+      ]);
     },
   }));
 
@@ -568,8 +586,8 @@ export class ExerciseEdit {
   onSubmit() {
     if (this.form.valid) {
       const val = this.form.getRawValue();
-      this.mutation.mutate({
-        ...this.exerciseQuery.data()!,
+      const payload = {
+        ...(this.isCreateMode() ? {} : this.exerciseQuery.data()!),
         name: val.name,
         description: val.description,
         type: val.type,
@@ -585,7 +603,12 @@ export class ExerciseEdit {
         images: val.images,
         alternativeNames: val.alternativeNames,
         equipmentIds: val.equipmentIds,
-      });
+      };
+      if (this.isCreateMode()) {
+        this.createMutation.mutate(payload);
+      } else {
+        this.mutation.mutate(payload);
+      }
     }
   }
 }

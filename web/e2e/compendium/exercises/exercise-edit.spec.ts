@@ -37,7 +37,9 @@ test.describe('/compendium/exercises/:id/:slug/edit', () => {
 
     // Submit and wait for the PUT to complete, then navigation to detail page
     await Promise.all([
-      page.waitForResponse((r) => r.url().includes('/api/exercises/') && r.request().method() === 'PUT'),
+      page.waitForResponse(
+        (r) => r.url().includes('/api/exercises/') && r.request().method() === 'PUT',
+      ),
       page.locator('button[type="submit"]').click(),
     ]);
     await page.waitForURL(/\/compendium\/exercises\/1\//);
@@ -54,7 +56,9 @@ test.describe('/compendium/exercises/:id/:slug/edit', () => {
     await page.locator('#name').clear();
     await page.locator('#name').fill(originalName);
     await Promise.all([
-      page.waitForResponse((r) => r.url().includes('/api/exercises/') && r.request().method() === 'PUT'),
+      page.waitForResponse(
+        (r) => r.url().includes('/api/exercises/') && r.request().method() === 'PUT',
+      ),
       page.locator('button[type="submit"]').click(),
     ]);
     await page.waitForURL(/\/compendium\/exercises\/1\//);

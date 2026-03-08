@@ -134,7 +134,7 @@ export interface Exercise extends BaseModel {
   createdBy: string;
   version: number /* int */;
   parentExerciseId?: number /* uint */;
-  templateId?: string;
+  templateId: string;
   equipmentIds: string[];
 }
 

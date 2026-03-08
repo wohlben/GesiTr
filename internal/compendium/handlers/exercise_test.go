@@ -12,9 +12,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func newExercisePayload(name, slug string) map[string]any {
+func newExercisePayload(name, templateID string) map[string]any {
 	return map[string]any{
-		"name": name, "slug": slug, "type": "STRENGTH",
+		"name": name, "templateId": templateID, "type": "STRENGTH",
 		"technicalDifficulty": "beginner", "bodyWeightScaling": 0.5,
 		"description": "test", "createdBy": "system", "version": 0,
 		"force": []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
@@ -52,7 +52,7 @@ func TestListExercises(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", newExercisePayload("Bench Press", "bench-press"))
 
 	cardio := map[string]any{
-		"name": "Running", "slug": "running", "type": "CARDIO",
+		"name": "Running", "templateId": "running", "type": "CARDIO",
 		"technicalDifficulty": "intermediate", "bodyWeightScaling": 1.0,
 		"description": "run", "createdBy": "system", "version": 0,
 		"force": []string{"DYNAMIC"}, "primaryMuscles": []string{"QUADS"},
@@ -229,6 +229,55 @@ func TestCreateExercise(t *testing.T) {
 		}
 	})
 
+	t.Run("auto-generates slug from name", func(t *testing.T) {
+		w := doJSON(r, "POST", "/api/exercises", newExercisePayload("Bench Press", "bench-press"))
+		if w.Code != http.StatusCreated {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var result models.Exercise
+		json.Unmarshal(w.Body.Bytes(), &result)
+		if result.Slug != "bench-press" {
+			t.Errorf("Slug = %q, want %q", result.Slug, "bench-press")
+		}
+	})
+
+	t.Run("auto-generates slug when not provided", func(t *testing.T) {
+		payload := map[string]any{
+			"name": "Overhead Press", "templateId": "overhead-press", "type": "STRENGTH",
+			"technicalDifficulty": "beginner", "bodyWeightScaling": 0.0,
+			"description": "test", "createdBy": "system",
+		}
+		w := doJSON(r, "POST", "/api/exercises", payload)
+		if w.Code != http.StatusCreated {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var result models.Exercise
+		json.Unmarshal(w.Body.Bytes(), &result)
+		if result.Slug != "overhead-press" {
+			t.Errorf("Slug = %q, want %q", result.Slug, "overhead-press")
+		}
+	})
+
+	t.Run("defaults templateId to UUID when not provided", func(t *testing.T) {
+		payload := map[string]any{
+			"name": "No Template", "type": "STRENGTH",
+			"technicalDifficulty": "beginner", "bodyWeightScaling": 0.0,
+			"description": "test", "createdBy": "system",
+		}
+		w := doJSON(r, "POST", "/api/exercises", payload)
+		if w.Code != http.StatusCreated {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var result models.Exercise
+		json.Unmarshal(w.Body.Bytes(), &result)
+		if result.TemplateID == "" {
+			t.Error("expected auto-generated templateId, got empty string")
+		}
+		if len(result.TemplateID) != 36 {
+			t.Errorf("expected UUID-length templateId, got %q (len %d)", result.TemplateID, len(result.TemplateID))
+		}
+	})
+
 	t.Run("bad json", func(t *testing.T) {
 		w := doRaw(r, "POST", "/api/exercises", "{invalid")
 		if w.Code != http.StatusBadRequest {
@@ -298,7 +347,7 @@ func TestUpdateExercise(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		updated := map[string]any{
-			"name": "Overhead Press", "slug": "ohp", "type": "STRENGTH",
+			"name": "Overhead Press", "templateId": "ohp", "type": "STRENGTH",
 			"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
 			"description": "updated", "createdBy": "system", "version": 0,
 			"force": []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
@@ -338,7 +387,7 @@ func TestUpdateExercise(t *testing.T) {
 	t.Run("no version bump when unchanged", func(t *testing.T) {
 		// Re-PUT the same data that's currently in the DB (from the "success" test above)
 		same := map[string]any{
-			"name": "Overhead Press", "slug": "ohp", "type": "STRENGTH",
+			"name": "Overhead Press", "templateId": "ohp", "type": "STRENGTH",
 			"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
 			"description": "updated", "createdBy": "system", "version": 0,
 			"force": []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
@@ -372,7 +421,7 @@ func TestUpdateExercise(t *testing.T) {
 	t.Run("successive updates accumulate history", func(t *testing.T) {
 		// Second real update → version 2
 		w := doJSON(r, "PUT", "/api/exercises/1", map[string]any{
-			"name": "OHP v2", "slug": "ohp", "type": "STRENGTH",
+			"name": "OHP v2", "templateId": "ohp", "type": "STRENGTH",
 			"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
 			"description": "v2", "createdBy": "system", "version": 0,
 			"force": []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
@@ -401,7 +450,7 @@ func TestUpdateExercise(t *testing.T) {
 			}
 		})
 		w := doJSON(r, "PUT", "/api/exercises/1", map[string]any{
-			"name": "OHP v3 fail", "slug": "ohp", "type": "STRENGTH",
+			"name": "OHP v3 fail", "templateId": "ohp", "type": "STRENGTH",
 			"technicalDifficulty": "advanced", "bodyWeightScaling": 0.0,
 			"description": "v3 fail", "createdBy": "system",
 			"force": []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
@@ -432,14 +481,14 @@ func TestUpdateExercise(t *testing.T) {
 		}
 	})
 
-	t.Run("db error on update (slug conflict)", func(t *testing.T) {
+	t.Run("db error on update (templateId conflict)", func(t *testing.T) {
 		// Create a second exercise
 		doJSON(r, "POST", "/api/exercises", newExercisePayload("Other", "other"))
-		// Try to update it with the slug of the first exercise
+		// Try to update it with the templateId of the first exercise
 		conflict := newExercisePayload("Conflict", "ohp")
 		w := doJSON(r, "PUT", "/api/exercises/2", conflict)
 		if w.Code != http.StatusInternalServerError {
-			t.Errorf("expected 500 for slug conflict, got %d", w.Code)
+			t.Errorf("expected 500 for templateId conflict, got %d", w.Code)
 		}
 	})
 
@@ -538,13 +587,13 @@ func TestListExerciseVersions(t *testing.T) {
 	// Create exercise (v0) and update it twice (v1, v2)
 	doJSON(r, "POST", "/api/exercises", newExercisePayload("Press", "press"))
 	doJSON(r, "PUT", "/api/exercises/1", map[string]any{
-		"name": "Press v1", "slug": "press", "type": "STRENGTH",
+		"name": "Press v1", "templateId": "press", "type": "STRENGTH",
 		"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
 		"description": "v1", "createdBy": "system",
 		"force": []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
 	})
 	doJSON(r, "PUT", "/api/exercises/1", map[string]any{
-		"name": "Press v2", "slug": "press", "type": "STRENGTH",
+		"name": "Press v2", "templateId": "press", "type": "STRENGTH",
 		"technicalDifficulty": "advanced", "bodyWeightScaling": 0.0,
 		"description": "v2", "createdBy": "system",
 		"force": []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},

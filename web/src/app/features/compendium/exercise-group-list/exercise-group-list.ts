@@ -1,5 +1,5 @@
 import { Component, inject, computed } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
@@ -11,13 +11,19 @@ import { PageLayout } from '../../../layout/page-layout';
 
 @Component({
   selector: 'app-exercise-group-list',
-  imports: [ExerciseGroupListItem, DataTable, Pagination, PageLayout],
+  imports: [ExerciseGroupListItem, DataTable, Pagination, PageLayout, RouterLink],
   template: `
     <app-page-layout
       header="Exercise Groups"
       [isPending]="groupsQuery.isPending()"
       [errorMessage]="groupsQuery.isError() ? groupsQuery.error().message : undefined"
     >
+      <a
+        actions
+        routerLink="./new"
+        class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        >New</a
+      >
       @if (groupsQuery.data(); as page) {
         <app-data-table
           [columns]="groupColumns"

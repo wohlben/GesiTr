@@ -80,4 +80,28 @@ export class CompendiumApiClient {
       this.http.get<VersionEntry<Equipment>[]>(`/api/equipment/${id}/versions`),
     );
   }
+
+  deleteExercise(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/exercises/${id}`));
+  }
+
+  deleteEquipment(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/equipment/${id}`));
+  }
+
+  deleteExerciseGroup(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/exercise-groups/${id}`));
+  }
+
+  createExercise(data: Partial<Exercise>): Promise<Exercise> {
+    return firstValueFrom(this.http.post<Exercise>('/api/exercises', data));
+  }
+
+  createEquipment(data: Partial<Equipment>): Promise<Equipment> {
+    return firstValueFrom(this.http.post<Equipment>('/api/equipment', data));
+  }
+
+  createExerciseGroup(data: Partial<ExerciseGroup>): Promise<ExerciseGroup> {
+    return firstValueFrom(this.http.post<ExerciseGroup>('/api/exercise-groups', data));
+  }
 }

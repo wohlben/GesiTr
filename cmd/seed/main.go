@@ -204,6 +204,10 @@ func seedExercises() error {
 		if err := json.Unmarshal(data, &j); err != nil {
 			return fmt.Errorf("parse exercise JSON: %w", err)
 		}
+		templateID := ""
+		if j.TemplateID != nil {
+			templateID = *j.TemplateID
+		}
 		e := models.ExerciseEntity{
 			Name:                j.Name,
 			Slug:                j.Slug,
@@ -216,7 +220,7 @@ func seedExercises() error {
 			CreatedBy:           j.CreatedBy,
 			Version:             j.Version,
 			ParentExerciseID:    j.ParentExerciseID,
-			TemplateID:          j.TemplateID,
+			TemplateID:          templateID,
 		}
 		e.CreatedAt = unixToTime(j.CreatedAt)
 		if j.UpdatedAt != nil {

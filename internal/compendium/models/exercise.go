@@ -21,6 +21,6 @@ type Exercise struct {
 	CreatedBy                     string                `json:"createdBy"`
 	Version                       int                   `json:"version"`
 	ParentExerciseID              *uint                 `json:"parentExerciseId"`
-	TemplateID                    *string               `json:"templateId"`
+	TemplateID                    string                `json:"templateId"`
 	EquipmentIDs                  []string              `json:"equipmentIds" gorm:"-"`
 }

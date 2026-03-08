@@ -248,7 +248,6 @@ func TestExerciseEntityTableName(t *testing.T) {
 }
 
 func TestExerciseEntityToDTOFull(t *testing.T) {
-	tid := "test-exercise"
 	authorName := "author"
 	authorUrl := "http://author.com"
 	parentID := uint(99)
@@ -265,7 +264,7 @@ func TestExerciseEntityToDTOFull(t *testing.T) {
 		CreatedBy:           "system",
 		Version:             3,
 		ParentExerciseID:    &parentID,
-		TemplateID:          &tid,
+		TemplateID:          "test-exercise",
 		Forces:              []ExerciseForce{{ExerciseID: 1, Force: ForcePush}},
 		Muscles: []ExerciseMuscle{
 			{ExerciseID: 1, Muscle: MuscleChest, IsPrimary: true},
@@ -289,7 +288,7 @@ func TestExerciseEntityToDTOFull(t *testing.T) {
 	if *dto.AuthorName != "author" || *dto.AuthorUrl != "http://author.com" {
 		t.Error("author mismatch")
 	}
-	if dto.Version != 3 || *dto.ParentExerciseID != 99 || *dto.TemplateID != "test-exercise" {
+	if dto.Version != 3 || *dto.ParentExerciseID != 99 || dto.TemplateID != "test-exercise" {
 		t.Error("version/parent/template mismatch")
 	}
 	if len(dto.Force) != 1 || dto.Force[0] != ForcePush {
@@ -336,7 +335,6 @@ func TestExerciseEntityToDTOEmpty(t *testing.T) {
 }
 
 func TestExerciseFromDTOFull(t *testing.T) {
-	tid := "tid"
 	dto := Exercise{
 		BaseModel:                     BaseModel{ID: 1},
 		Name:                          "Squat",
@@ -353,7 +351,7 @@ func TestExerciseFromDTOFull(t *testing.T) {
 		Images:                        []string{"/img/a.jpg", "/img/b.jpg"},
 		AlternativeNames:              []string{"Back Squat"},
 		CreatedBy:                     "system",
-		TemplateID:                    &tid,
+		TemplateID:                    "tid",
 		EquipmentIDs:                  []string{"barbell", "rack"},
 	}
 

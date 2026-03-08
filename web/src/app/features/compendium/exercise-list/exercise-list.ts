@@ -1,5 +1,5 @@
 import { Component, inject, computed } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
@@ -46,13 +46,19 @@ import {
 
 @Component({
   selector: 'app-exercise-list',
-  imports: [ExerciseListItem, DataTable, Pagination, PageLayout],
+  imports: [ExerciseListItem, DataTable, Pagination, PageLayout, RouterLink],
   template: `
     <app-page-layout
       header="Exercises"
       [isPending]="exercisesQuery.isPending()"
       [errorMessage]="exercisesQuery.isError() ? exercisesQuery.error().message : undefined"
     >
+      <a
+        actions
+        routerLink="./new"
+        class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        >New</a
+      >
       @if (exercisesQuery.data(); as page) {
         <app-data-table
           [columns]="exerciseColumns"

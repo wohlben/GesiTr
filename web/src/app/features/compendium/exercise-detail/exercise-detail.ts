@@ -1,14 +1,19 @@
-import { Component, inject, computed } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Component, inject, computed, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import {
+  injectQuery,
+  injectMutation,
+  injectQueryClient,
+} from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { exerciseKeys } from '$core/query-keys';
 import { PageLayout } from '../../../layout/page-layout';
+import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-exercise-detail',
-  imports: [PageLayout, RouterLink],
+  imports: [PageLayout, RouterLink, ConfirmDialog],
   template: `
     <app-page-layout
       [header]="exerciseQuery.data()?.name ?? 'Exercise'"
@@ -28,7 +33,22 @@ import { PageLayout } from '../../../layout/page-layout';
           class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
           >Edit</a
         >
+        <button
+          type="button"
+          (click)="showDeleteDialog.set(true)"
+          class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+        >
+          Delete
+        </button>
       </div>
+      <app-confirm-dialog
+        [open]="showDeleteDialog()"
+        title="Delete Exercise"
+        [message]="deleteMessage()"
+        [isPending]="deleteMutation.isPending()"
+        (confirmed)="deleteMutation.mutate()"
+        (cancelled)="showDeleteDialog.set(false)"
+      />
       @if (exerciseQuery.data(); as exercise) {
         <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
@@ -64,9 +84,16 @@ import { PageLayout } from '../../../layout/page-layout';
 })
 export class ExerciseDetail {
   private api = inject(CompendiumApiClient);
+  private router = inject(Router);
+  private queryClient = injectQueryClient();
   private params = toSignal(inject(ActivatedRoute).paramMap);
 
   private id = computed(() => Number(this.params()?.get('id')));
+
+  showDeleteDialog = signal(false);
+  deleteMessage = computed(
+    () => `Are you sure you want to delete '${this.exerciseQuery.data()?.name ?? ''}'?`,
+  );
 
   exerciseQuery = injectQuery(() => ({
     queryKey: exerciseKeys.detail(this.id()),
@@ -81,4 +108,12 @@ export class ExerciseDetail {
   }));
 
   hasHistory = computed(() => (this.versionsQuery.data()?.length ?? 0) > 1);
+
+  deleteMutation = injectMutation(() => ({
+    mutationFn: () => this.api.deleteExercise(this.id()),
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: exerciseKeys.all() });
+      this.router.navigate(['/compendium/exercises']);
+    },
+  }));
 }

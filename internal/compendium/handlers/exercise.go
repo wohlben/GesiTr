@@ -6,8 +6,10 @@ import (
 
 	"gesitr/internal/compendium/models"
 	"gesitr/internal/database"
+	"gesitr/internal/slug"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -78,6 +80,16 @@ func CreateExercise(c *gin.Context) {
 	if err := c.ShouldBindJSON(&dto); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+
+	// Auto-generate slug from name if not provided
+	if dto.Slug == "" {
+		dto.Slug = slug.Generate(dto.Name)
+	}
+
+	// Default templateId to a UUID if not provided
+	if dto.TemplateID == "" {
+		dto.TemplateID = uuid.New().String()
 	}
 
 	entity := models.ExerciseFromDTO(dto)

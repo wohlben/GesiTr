@@ -14,7 +14,7 @@ type ExerciseEntity struct {
 	CreatedBy           string `gorm:"not null"`
 	Version             int    `gorm:"not null;default:0"`
 	ParentExerciseID    *uint
-	TemplateID          *string
+	TemplateID          string `gorm:"not null;uniqueIndex"`
 
 	Forces           []ExerciseForce               `gorm:"foreignKey:ExerciseID"`
 	Muscles          []ExerciseMuscle              `gorm:"foreignKey:ExerciseID"`
