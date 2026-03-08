@@ -3,10 +3,7 @@
   "version": 1,
   "cli": {
     "packageManager": "npm",
-    "schematicCollections": [
-      "@schematics/angular",
-      "playwright-ng-schematics"
-    ],
+    "schematicCollections": ["angular-eslint", "@schematics/angular", "playwright-ng-schematics"],
     "analytics": false
   },
   "newProjectRoot": "projects",
@@ -100,6 +97,12 @@
             "production": {
               "devServerTarget": "web:serve:production"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
