@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 
+	"gesitr/internal/auth"
 	"gesitr/internal/compendium/handlers"
 	"gesitr/internal/compendium/models"
 	"gesitr/internal/database"
@@ -50,6 +51,7 @@ func autoMigrate() {
 
 func setupRoutes(r *gin.Engine) {
 	api := r.Group("/api")
+	api.Use(auth.UserID())
 
 	exercises := api.Group("/exercises")
 	{

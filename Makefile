@@ -18,7 +18,7 @@ dev:
 	$(MAKE) -j2 dev-api dev-web
 
 dev-api:
-	DEV=true go run .
+	DEV=true AUTH_FALLBACK_USER=anon go run .
 
 dev-web: generate
 	cd web && npx ng serve
