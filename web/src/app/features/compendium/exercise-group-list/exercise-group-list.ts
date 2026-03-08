@@ -18,7 +18,12 @@ import { PageLayout } from '../../../layout/page-layout';
       [errorMessage]="groupsQuery.isError() ? groupsQuery.error().message : undefined"
     >
       @if (groupsQuery.data(); as page) {
-        <app-data-table [columns]="groupColumns" [stale]="groupsQuery.isPlaceholderData()">
+        <app-data-table
+          [columns]="groupColumns"
+          [stale]="groupsQuery.isPlaceholderData()"
+          [initialHiddenColumns]="savedHiddenColumns"
+          (hiddenColumnsChange)="onHiddenColumnsChange($event)"
+        >
           @for (group of page.items; track group.id) {
             <tr app-exercise-group-list-item [group]="group"></tr>
           }
@@ -50,5 +55,28 @@ export class ExerciseGroupList {
     placeholderData: keepPreviousData,
   }));
 
-  groupColumns: DataTableColumn[] = [{ label: 'Name', searchParam: 'q' }, { label: 'Description' }];
+  private static readonly STORAGE_KEY = 'dt-columns-exercise-groups';
+
+  savedHiddenColumns = ExerciseGroupList.loadHiddenColumns();
+
+  onHiddenColumnsChange(labels: string[]) {
+    localStorage.setItem(ExerciseGroupList.STORAGE_KEY, JSON.stringify(labels));
+  }
+
+  private static loadHiddenColumns(): string[] | undefined {
+    try {
+      const stored = localStorage.getItem(ExerciseGroupList.STORAGE_KEY);
+      return stored ? JSON.parse(stored) : undefined;
+    } catch {
+      return undefined;
+    }
+  }
+
+  groupColumns: DataTableColumn[] = [
+    { label: 'Name', searchParam: 'q' },
+    { label: 'Description' },
+    { label: 'Created by', defaultHidden: true },
+    { label: 'Created at', defaultHidden: true },
+    { label: 'Updated at', defaultHidden: true },
+  ];
 }

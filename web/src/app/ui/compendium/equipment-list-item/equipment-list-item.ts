@@ -13,6 +13,21 @@ import { Equipment } from '$generated/models';
     <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
       {{ equipment().description }}
     </td>
+    <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
+      {{ equipment().name }}
+    </td>
+    <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
+      {{ equipment().version }}
+    </td>
+    <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
+      {{ equipment().createdBy }}
+    </td>
+    <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
+      {{ equipment().createdAt }}
+    </td>
+    <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
+      {{ equipment().updatedAt }}
+    </td>
   `,
 })
 export class EquipmentListItem {

@@ -79,4 +79,19 @@ describe('DataTable screenshots', () => {
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('stale-dark');
   });
+
+  it('column settings modal - light', async () => {
+    await render(template, renderOpts());
+    await page.getByRole('button', { name: /column settings/i }).click();
+    const locator = page.elementLocator(document.body);
+    await expect(locator).toMatchScreenshot('column-settings-light');
+  });
+
+  it('column settings modal - dark', async () => {
+    document.documentElement.classList.add('dark');
+    await render(template, renderOpts());
+    await page.getByRole('button', { name: /column settings/i }).click();
+    const locator = page.elementLocator(document.body);
+    await expect(locator).toMatchScreenshot('column-settings-dark');
+  });
 });

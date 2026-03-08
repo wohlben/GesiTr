@@ -3,13 +3,10 @@ package models
 type ExerciseType string
 
 const (
-	ExerciseTypeStrength             ExerciseType = "STRENGTH"
-	ExerciseTypeCardio               ExerciseType = "CARDIO"
-	ExerciseTypeStretching           ExerciseType = "STRETCHING"
-	ExerciseTypePlyometric           ExerciseType = "PLYOMETRIC"
-	ExerciseTypeStrongman            ExerciseType = "STRONGMAN"
-	ExerciseTypeOlympicWeightlifting ExerciseType = "OLYMPIC_WEIGHTLIFTING"
-	ExerciseTypePowerlifting         ExerciseType = "POWERLIFTING"
+	ExerciseTypeStrength   ExerciseType = "STRENGTH"
+	ExerciseTypeCardio     ExerciseType = "CARDIO"
+	ExerciseTypeStretching ExerciseType = "STRETCHING"
+	ExerciseTypeStrongman  ExerciseType = "STRONGMAN"
 )
 
 type Force string
@@ -27,7 +24,6 @@ type Muscle string
 
 const (
 	MuscleAbs        Muscle = "ABS"
-	MuscleAbductors  Muscle = "ABDUCTORS"
 	MuscleAdductors  Muscle = "ADDUCTORS"
 	MuscleBiceps     Muscle = "BICEPS"
 	MuscleCalves     Muscle = "CALVES"
@@ -38,11 +34,9 @@ const (
 	MuscleHipFlexors Muscle = "HIP_FLEXORS"
 	MuscleLats       Muscle = "LATS"
 	MuscleLowerBack  Muscle = "LOWER_BACK"
-	MuscleMiddleBack Muscle = "MIDDLE_BACK"
 	MuscleNeck       Muscle = "NECK"
 	MuscleObliques   Muscle = "OBLIQUES"
 	MuscleQuads      Muscle = "QUADS"
-	MuscleShoulders  Muscle = "SHOULDERS"
 	MuscleTraps      Muscle = "TRAPS"
 	MuscleTriceps    Muscle = "TRICEPS"
 	MuscleFrontDelts Muscle = "FRONT_DELTS"
@@ -57,7 +51,6 @@ const (
 	DifficultyBeginner     TechnicalDifficulty = "beginner"
 	DifficultyIntermediate TechnicalDifficulty = "intermediate"
 	DifficultyAdvanced     TechnicalDifficulty = "advanced"
-	DifficultyExpert       TechnicalDifficulty = "expert"
 )
 
 type MeasurementParadigm string

@@ -1,11 +1,15 @@
 import {
   Component,
+  DestroyRef,
   ElementRef,
   HostListener,
   Injector,
   afterNextRender,
+  computed,
+  effect,
   inject,
   input,
+  output,
   signal,
   viewChild,
 } from '@angular/core';
@@ -20,6 +24,8 @@ export interface DataTableColumn {
   options?: string[];
   filterParam?: string;
   searchParam?: string;
+  hideable?: boolean;
+  defaultHidden?: boolean;
 }
 
 @Component({
@@ -27,6 +33,7 @@ export interface DataTableColumn {
   imports: [FormsModule, NgClass],
   template: `
     <div
+      [id]="tableId"
       class="rounded-lg border border-gray-200 dark:border-gray-800"
       [class.overflow-x-auto]="!activeFilter()"
       [class.overflow-visible]="!!activeFilter()"
@@ -151,6 +158,24 @@ export interface DataTableColumn {
                 }
               </th>
             }
+            @if (hideableColumns().length > 0) {
+              <th class="w-8 bg-gray-50 px-2 py-2 dark:bg-gray-900">
+                <button
+                  type="button"
+                  (click)="showColumnSettings.set(true); $event.stopPropagation()"
+                  class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                  aria-label="Column settings"
+                >
+                  <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      fill-rule="evenodd"
+                      d="M8.34 1.804A1 1 0 0 1 9.32 1h1.36a1 1 0 0 1 .98.804l.295 1.473c.497.144.971.342 1.416.587l1.25-.834a1 1 0 0 1 1.262.125l.962.962a1 1 0 0 1 .125 1.262l-.834 1.25c.245.445.443.919.587 1.416l1.473.294a1 1 0 0 1 .804.98v1.361a1 1 0 0 1-.804.98l-1.473.295a6.95 6.95 0 0 1-.587 1.416l.834 1.25a1 1 0 0 1-.125 1.262l-.962.962a1 1 0 0 1-1.262.125l-1.25-.834a6.953 6.953 0 0 1-1.416.587l-.294 1.473a1 1 0 0 1-.98.804H9.32a1 1 0 0 1-.98-.804l-.295-1.473a6.957 6.957 0 0 1-1.416-.587l-1.25.834a1 1 0 0 1-1.262-.125l-.962-.962a1 1 0 0 1-.125-1.262l.834-1.25a6.957 6.957 0 0 1-.587-1.416l-1.473-.294A1 1 0 0 1 1 10.68V9.32a1 1 0 0 1 .804-.98l1.473-.295c.144-.497.342-.971.587-1.416l-.834-1.25a1 1 0 0 1 .125-1.262l.962-.962A1 1 0 0 1 5.38 3.03l1.25.834a6.957 6.957 0 0 1 1.416-.587l.294-1.473ZM13 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </th>
+            }
           </tr>
         </thead>
         <tbody
@@ -161,20 +186,89 @@ export interface DataTableColumn {
         </tbody>
       </table>
     </div>
+    @if (showColumnSettings()) {
+      <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+      <div
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+        (click)="showColumnSettings.set(false)"
+      >
+        <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+        <div
+          class="min-w-48 rounded-lg bg-white p-4 shadow-xl dark:bg-gray-800"
+          (click)="$event.stopPropagation()"
+          role="dialog"
+          aria-label="Column visibility settings"
+        >
+          <div class="mb-3 flex items-center justify-between gap-4">
+            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100">Columns</h3>
+            <button
+              type="button"
+              (click)="showColumnSettings.set(false)"
+              class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+              aria-label="Close"
+            >
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z"
+                />
+              </svg>
+            </button>
+          </div>
+          @for (col of hideableColumns(); track col.label) {
+            <label class="flex items-center gap-2 py-1 text-sm text-gray-700 dark:text-gray-300">
+              <input
+                type="checkbox"
+                [checked]="!hiddenColumns().has(col.label)"
+                (change)="toggleColumn(col.label)"
+                class="rounded"
+              />
+              {{ col.label }}
+            </label>
+          }
+        </div>
+      </div>
+    }
   `,
 })
 export class DataTable {
   private injector = inject(Injector);
+  private destroyRef = inject(DestroyRef);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private queryParams = toSignal(this.route.queryParamMap);
 
   columns = input.required<DataTableColumn[]>();
   stale = input(false);
+  initialHiddenColumns = input<string[]>();
+
+  hiddenColumnsChange = output<string[]>();
+
   activeFilter = signal<string | null>(null);
   searchTerm = signal('');
+  hiddenColumns = signal<Set<string>>(new Set());
+  showColumnSettings = signal(false);
 
   filterInput = viewChild<ElementRef<HTMLInputElement>>('filterInput');
+
+  tableId = 'dt-' + Math.random().toString(36).slice(2, 9);
+  private styleEl: HTMLStyleElement | null = null;
+
+  hideableColumns = computed(() => this.columns().filter((col) => col.hideable !== false));
+
+  columnHideStyles = computed(() => {
+    const hidden = this.hiddenColumns();
+    if (hidden.size === 0) return '';
+    const rules: string[] = [];
+    this.columns().forEach((col, i) => {
+      if (hidden.has(col.label)) {
+        const nth = i + 1;
+        rules.push(
+          `#${this.tableId} th:nth-child(${nth}), #${this.tableId} td:nth-child(${nth}) { display: none; }`,
+        );
+      }
+    });
+    return rules.join('\n');
+  });
 
   private search$ = new Subject<{ param: string; value: string }>();
 
@@ -187,6 +281,47 @@ export class DataTable {
         replaceUrl: true,
       });
     });
+
+    // Keep style element in sync with column hide rules
+    effect(() => {
+      const styles = this.columnHideStyles();
+      if (this.styleEl) {
+        this.styleEl.textContent = styles;
+      }
+    });
+
+    afterNextRender(
+      () => {
+        // Create style element for column hiding CSS
+        this.styleEl = document.createElement('style');
+        this.styleEl.textContent = this.columnHideStyles();
+        document.head.appendChild(this.styleEl);
+        this.destroyRef.onDestroy(() => this.styleEl?.remove());
+
+        // Seed hidden columns from input or defaultHidden
+        const initial = this.initialHiddenColumns();
+        if (initial !== undefined) {
+          this.hiddenColumns.set(new Set(initial));
+        } else {
+          const defaults = this.columns()
+            .filter((col) => col.defaultHidden)
+            .map((col) => col.label);
+          if (defaults.length > 0) {
+            this.hiddenColumns.set(new Set(defaults));
+          }
+        }
+      },
+      { injector: this.injector },
+    );
+  }
+
+  toggleColumn(label: string) {
+    this.hiddenColumns.update((set) => {
+      const next = new Set(set);
+      next.has(label) ? next.delete(label) : next.add(label);
+      return next;
+    });
+    this.hiddenColumnsChange.emit([...this.hiddenColumns()]);
   }
 
   getParamValue(param: string): string {
@@ -223,6 +358,13 @@ export class DataTable {
     const term = this.searchTerm().toLowerCase();
     if (!term) return col.options ?? [];
     return (col.options ?? []).filter((o) => o.toLowerCase().includes(term));
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscapeKey() {
+    if (this.showColumnSettings()) {
+      this.showColumnSettings.set(false);
+    }
   }
 
   @HostListener('document:click')

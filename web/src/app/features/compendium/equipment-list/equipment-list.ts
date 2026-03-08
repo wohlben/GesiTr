@@ -26,7 +26,12 @@ import {
       [errorMessage]="equipmentQuery.isError() ? equipmentQuery.error().message : undefined"
     >
       @if (equipmentQuery.data(); as page) {
-        <app-data-table [columns]="equipmentColumns" [stale]="equipmentQuery.isPlaceholderData()">
+        <app-data-table
+          [columns]="equipmentColumns"
+          [stale]="equipmentQuery.isPlaceholderData()"
+          [initialHiddenColumns]="savedHiddenColumns"
+          (hiddenColumnsChange)="onHiddenColumnsChange($event)"
+        >
           @for (item of page.items; track item.id) {
             <tr app-equipment-list-item [equipment]="item"></tr>
           }
@@ -58,6 +63,23 @@ export class EquipmentList {
     placeholderData: keepPreviousData,
   }));
 
+  private static readonly STORAGE_KEY = 'dt-columns-equipment';
+
+  savedHiddenColumns = EquipmentList.loadHiddenColumns();
+
+  onHiddenColumnsChange(labels: string[]) {
+    localStorage.setItem(EquipmentList.STORAGE_KEY, JSON.stringify(labels));
+  }
+
+  private static loadHiddenColumns(): string[] | undefined {
+    try {
+      const stored = localStorage.getItem(EquipmentList.STORAGE_KEY);
+      return stored ? JSON.parse(stored) : undefined;
+    } catch {
+      return undefined;
+    }
+  }
+
   equipmentColumns: DataTableColumn[] = [
     { label: 'Name', searchParam: 'q' },
     {
@@ -73,5 +95,10 @@ export class EquipmentList {
       ],
     },
     { label: 'Description' },
+    { label: 'Internal name', defaultHidden: true },
+    { label: 'Version', defaultHidden: true },
+    { label: 'Created by', defaultHidden: true },
+    { label: 'Created at', defaultHidden: true },
+    { label: 'Updated at', defaultHidden: true },
   ];
 }

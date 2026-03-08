@@ -11,14 +11,10 @@ import {
   ExerciseTypeStrength,
   ExerciseTypeCardio,
   ExerciseTypeStretching,
-  ExerciseTypePlyometric,
   ExerciseTypeStrongman,
-  ExerciseTypeOlympicWeightlifting,
-  ExerciseTypePowerlifting,
   DifficultyBeginner,
   DifficultyIntermediate,
   DifficultyAdvanced,
-  DifficultyExpert,
   ForcePull,
   ForcePush,
   ForceStatic,
@@ -26,7 +22,6 @@ import {
   ForceHinge,
   ForceRotation,
   MuscleAbs,
-  MuscleAbductors,
   MuscleAdductors,
   MuscleBiceps,
   MuscleCalves,
@@ -37,11 +32,9 @@ import {
   MuscleHipFlexors,
   MuscleLats,
   MuscleLowerBack,
-  MuscleMiddleBack,
   MuscleNeck,
   MuscleObliques,
   MuscleQuads,
-  MuscleShoulders,
   MuscleTraps,
   MuscleTriceps,
   MuscleFrontDelts,
@@ -60,7 +53,12 @@ import {
       [errorMessage]="exercisesQuery.isError() ? exercisesQuery.error().message : undefined"
     >
       @if (exercisesQuery.data(); as page) {
-        <app-data-table [columns]="exerciseColumns" [stale]="exercisesQuery.isPlaceholderData()">
+        <app-data-table
+          [columns]="exerciseColumns"
+          [stale]="exercisesQuery.isPlaceholderData()"
+          [initialHiddenColumns]="savedHiddenColumns"
+          (hiddenColumnsChange)="onHiddenColumnsChange($event)"
+        >
           @for (ex of page.items; track ex.id) {
             <tr app-exercise-list-item [exercise]="ex"></tr>
           }
@@ -92,6 +90,23 @@ export class ExerciseList {
     placeholderData: keepPreviousData,
   }));
 
+  private static readonly STORAGE_KEY = 'dt-columns-exercises';
+
+  savedHiddenColumns = ExerciseList.loadHiddenColumns();
+
+  onHiddenColumnsChange(labels: string[]) {
+    localStorage.setItem(ExerciseList.STORAGE_KEY, JSON.stringify(labels));
+  }
+
+  private static loadHiddenColumns(): string[] | undefined {
+    try {
+      const stored = localStorage.getItem(ExerciseList.STORAGE_KEY);
+      return stored ? JSON.parse(stored) : undefined;
+    } catch {
+      return undefined;
+    }
+  }
+
   exerciseColumns: DataTableColumn[] = [
     { label: 'Name', searchParam: 'q' },
     {
@@ -101,16 +116,13 @@ export class ExerciseList {
         ExerciseTypeStrength,
         ExerciseTypeCardio,
         ExerciseTypeStretching,
-        ExerciseTypePlyometric,
         ExerciseTypeStrongman,
-        ExerciseTypeOlympicWeightlifting,
-        ExerciseTypePowerlifting,
       ],
     },
     {
       label: 'Difficulty',
       filterParam: 'difficulty',
-      options: [DifficultyBeginner, DifficultyIntermediate, DifficultyAdvanced, DifficultyExpert],
+      options: [DifficultyBeginner, DifficultyIntermediate, DifficultyAdvanced],
     },
     {
       label: 'Force',
@@ -122,7 +134,6 @@ export class ExerciseList {
       filterParam: 'muscle',
       options: [
         MuscleAbs,
-        MuscleAbductors,
         MuscleAdductors,
         MuscleBiceps,
         MuscleCalves,
@@ -133,11 +144,9 @@ export class ExerciseList {
         MuscleHipFlexors,
         MuscleLats,
         MuscleLowerBack,
-        MuscleMiddleBack,
         MuscleNeck,
         MuscleObliques,
         MuscleQuads,
-        MuscleShoulders,
         MuscleTraps,
         MuscleTriceps,
         MuscleFrontDelts,
@@ -146,5 +155,16 @@ export class ExerciseList {
         MuscleSideDelts,
       ],
     },
+    { label: 'Secondary muscles', defaultHidden: true },
+    { label: 'Slug', defaultHidden: true },
+    { label: 'Body weight scaling', defaultHidden: true },
+    { label: 'Measurement paradigms', defaultHidden: true },
+    { label: 'Description', defaultHidden: true },
+    { label: 'Alternative names', defaultHidden: true },
+    { label: 'Author', defaultHidden: true },
+    { label: 'Version', defaultHidden: true },
+    { label: 'Created by', defaultHidden: true },
+    { label: 'Created at', defaultHidden: true },
+    { label: 'Updated at', defaultHidden: true },
   ];
 }

@@ -1,8 +1,5 @@
 import { Routes } from '@angular/router';
 import { MainLayout } from './layout/main-layout';
-import { ExerciseList } from '$features/compendium/exercise-list/exercise-list';
-import { EquipmentList } from '$features/compendium/equipment-list/equipment-list';
-import { ExerciseGroupList } from '$features/compendium/exercise-group-list/exercise-group-list';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/compendium/exercises', pathMatch: 'full' },
@@ -10,9 +7,27 @@ export const routes: Routes = [
     path: 'compendium',
     component: MainLayout,
     children: [
-      { path: 'exercises', component: ExerciseList },
-      { path: 'equipment', component: EquipmentList },
-      { path: 'exercise-groups', component: ExerciseGroupList },
+      {
+        path: 'exercises',
+        loadComponent: () =>
+          import('$features/compendium/exercise-list/exercise-list').then(
+            (m) => m.ExerciseList,
+          ),
+      },
+      {
+        path: 'equipment',
+        loadComponent: () =>
+          import('$features/compendium/equipment-list/equipment-list').then(
+            (m) => m.EquipmentList,
+          ),
+      },
+      {
+        path: 'exercise-groups',
+        loadComponent: () =>
+          import('$features/compendium/exercise-group-list/exercise-group-list').then(
+            (m) => m.ExerciseGroupList,
+          ),
+      },
     ],
   },
 ];
