@@ -45,4 +45,16 @@ export class CompendiumApiClient {
       }),
     );
   }
+
+  fetchExercise(id: number): Promise<Exercise> {
+    return firstValueFrom(this.http.get<Exercise>(`/api/exercises/${id}`));
+  }
+
+  fetchEquipmentItem(id: number): Promise<Equipment> {
+    return firstValueFrom(this.http.get<Equipment>(`/api/equipment/${id}`));
+  }
+
+  fetchExerciseGroup(id: number): Promise<ExerciseGroup> {
+    return firstValueFrom(this.http.get<ExerciseGroup>(`/api/exercise-groups/${id}`));
+  }
 }
