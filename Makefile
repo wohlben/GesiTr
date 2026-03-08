@@ -1,4 +1,4 @@
-.PHONY: build build-web build-go dev dev-api dev-web docker clean dolt generate seed test test-go test-web test-e2e update-screenshots update-screenshots-web update-screenshots-e2e
+.PHONY: build build-web build-go dev dev-api dev-web docker clean dolt generate seed test test-go test-web test-web-unit test-web-screenshot test-e2e update-screenshots update-screenshots-web update-screenshots-e2e
 
 # Generate TypeScript types from Go structs
 generate:
@@ -32,8 +32,13 @@ test: test-go test-web test-e2e
 test-go:
 	go test ./...
 
-test-web:
-	cd web && npx ng test
+test-web: test-web-unit test-web-screenshot
+
+test-web-unit:
+	cd web && npx ng test --exclude="**/*.screenshot.spec.ts"
+
+test-web-screenshot:
+	cd web && npx ng test --include="src/app/**/*.screenshot.spec.ts" --browsers=chromium --headless
 
 test-e2e:
 	cd web && npx ng e2e

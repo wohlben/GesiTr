@@ -78,10 +78,7 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test",
-          "options": {
-            "exclude": ["**/*.screenshot.spec.ts"]
-          }
+          "builder": "@angular/build:unit-test"
         },
         "e2e": {
           "builder": "playwright-ng-schematics:playwright",
