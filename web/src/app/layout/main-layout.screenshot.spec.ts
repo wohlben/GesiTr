@@ -15,11 +15,7 @@ describe('MainLayout screenshots', () => {
     document.documentElement.classList.remove('dark');
   });
 
-  const providers = [
-    provideRouter([
-      { path: '**', component: TestPage },
-    ]),
-  ];
+  const providers = [provideRouter([{ path: '**', component: TestPage }])];
 
   describe('desktop', () => {
     beforeEach(async () => {

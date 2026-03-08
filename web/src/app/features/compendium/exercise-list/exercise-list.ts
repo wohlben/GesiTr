@@ -57,8 +57,8 @@ import {
     <app-page-layout
       header="Exercises"
       [isPending]="exercisesQuery.isPending()"
-      [errorMessage]="exercisesQuery.isError() ? exercisesQuery.error().message : undefined">
-
+      [errorMessage]="exercisesQuery.isError() ? exercisesQuery.error().message : undefined"
+    >
       @if (exercisesQuery.data(); as page) {
         <app-data-table [columns]="exerciseColumns" [stale]="exercisesQuery.isPlaceholderData()">
           @for (ex of page.items; track ex.id) {

@@ -16,21 +16,33 @@ function buildParams(filters: Record<string, string | number | undefined>): Http
 export class CompendiumApiClient {
   private http = inject(HttpClient);
 
-  fetchExercises(filters: Record<string, string | number | undefined>): Promise<PaginatedResponse<Exercise>> {
+  fetchExercises(
+    filters: Record<string, string | number | undefined>,
+  ): Promise<PaginatedResponse<Exercise>> {
     return firstValueFrom(
-      this.http.get<PaginatedResponse<Exercise>>('/api/exercises', { params: buildParams(filters) }),
+      this.http.get<PaginatedResponse<Exercise>>('/api/exercises', {
+        params: buildParams(filters),
+      }),
     );
   }
 
-  fetchEquipment(filters: Record<string, string | number | undefined>): Promise<PaginatedResponse<Equipment>> {
+  fetchEquipment(
+    filters: Record<string, string | number | undefined>,
+  ): Promise<PaginatedResponse<Equipment>> {
     return firstValueFrom(
-      this.http.get<PaginatedResponse<Equipment>>('/api/equipment', { params: buildParams(filters) }),
+      this.http.get<PaginatedResponse<Equipment>>('/api/equipment', {
+        params: buildParams(filters),
+      }),
     );
   }
 
-  fetchExerciseGroups(filters: Record<string, string | number | undefined>): Promise<PaginatedResponse<ExerciseGroup>> {
+  fetchExerciseGroups(
+    filters: Record<string, string | number | undefined>,
+  ): Promise<PaginatedResponse<ExerciseGroup>> {
     return firstValueFrom(
-      this.http.get<PaginatedResponse<ExerciseGroup>>('/api/exercise-groups', { params: buildParams(filters) }),
+      this.http.get<PaginatedResponse<ExerciseGroup>>('/api/exercise-groups', {
+        params: buildParams(filters),
+      }),
     );
   }
 }

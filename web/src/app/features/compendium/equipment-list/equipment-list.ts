@@ -23,8 +23,8 @@ import {
     <app-page-layout
       header="Equipment"
       [isPending]="equipmentQuery.isPending()"
-      [errorMessage]="equipmentQuery.isError() ? equipmentQuery.error().message : undefined">
-
+      [errorMessage]="equipmentQuery.isError() ? equipmentQuery.error().message : undefined"
+    >
       @if (equipmentQuery.data(); as page) {
         <app-data-table [columns]="equipmentColumns" [stale]="equipmentQuery.isPlaceholderData()">
           @for (item of page.items; track item.id) {

@@ -12,9 +12,13 @@
     <script>
       (function () {
         var mq = window.matchMedia('(prefers-color-scheme: dark)');
-        function apply(dark) { document.documentElement.classList.toggle('dark', dark); }
+        function apply(dark) {
+          document.documentElement.classList.toggle('dark', dark);
+        }
         apply(mq.matches);
-        mq.addEventListener('change', function (e) { apply(e.matches); });
+        mq.addEventListener('change', function (e) {
+          apply(e.matches);
+        });
       })();
     </script>
     <app-root></app-root>

@@ -6,7 +6,9 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
   template: `
     <div class="flex h-screen flex-col bg-gray-50 dark:bg-gray-950">
-      <nav class="border-b border-gray-200 bg-white px-6 py-3 dark:border-gray-800 dark:bg-gray-900">
+      <nav
+        class="border-b border-gray-200 bg-white px-6 py-3 dark:border-gray-800 dark:bg-gray-900"
+      >
         <div class="flex items-center gap-6">
           <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">GesiTr</span>
           <div class="flex gap-1">

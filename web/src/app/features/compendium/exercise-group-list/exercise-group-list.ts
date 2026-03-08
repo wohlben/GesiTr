@@ -15,8 +15,8 @@ import { PageLayout } from '../../../layout/page-layout';
     <app-page-layout
       header="Exercise Groups"
       [isPending]="groupsQuery.isPending()"
-      [errorMessage]="groupsQuery.isError() ? groupsQuery.error().message : undefined">
-
+      [errorMessage]="groupsQuery.isError() ? groupsQuery.error().message : undefined"
+    >
       @if (groupsQuery.data(); as page) {
         <app-data-table [columns]="groupColumns" [stale]="groupsQuery.isPlaceholderData()">
           @for (group of page.items; track group.id) {
@@ -50,8 +50,5 @@ export class ExerciseGroupList {
     placeholderData: keepPreviousData,
   }));
 
-  groupColumns: DataTableColumn[] = [
-    { label: 'Name', searchParam: 'q' },
-    { label: 'Description' },
-  ];
+  groupColumns: DataTableColumn[] = [{ label: 'Name', searchParam: 'q' }, { label: 'Description' }];
 }

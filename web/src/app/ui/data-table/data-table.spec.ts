@@ -6,10 +6,7 @@ import { provideLocationMocks } from '@angular/common/testing';
 import { DataTable, DataTableColumn } from './data-table';
 
 describe('DataTable', () => {
-  const staticColumns: DataTableColumn[] = [
-    { label: 'Name' },
-    { label: 'Value' },
-  ];
+  const staticColumns: DataTableColumn[] = [{ label: 'Name' }, { label: 'Value' }];
 
   const filterableColumns: DataTableColumn[] = [
     { label: 'Name', searchParam: 'q' },

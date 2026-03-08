@@ -17,7 +17,11 @@ describe('FilterSelect screenshots', () => {
 
   it('with selection - light', async () => {
     const { fixture } = await render(FilterSelect, {
-      inputs: { allLabel: 'All types', options: ['STRENGTH', 'CARDIO', 'STRETCHING'], value: 'STRENGTH' },
+      inputs: {
+        allLabel: 'All types',
+        options: ['STRENGTH', 'CARDIO', 'STRETCHING'],
+        value: 'STRENGTH',
+      },
     });
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('selected-light');
@@ -35,7 +39,11 @@ describe('FilterSelect screenshots', () => {
   it('with selection - dark', async () => {
     document.documentElement.classList.add('dark');
     const { fixture } = await render(FilterSelect, {
-      inputs: { allLabel: 'All types', options: ['STRENGTH', 'CARDIO', 'STRETCHING'], value: 'STRENGTH' },
+      inputs: {
+        allLabel: 'All types',
+        options: ['STRENGTH', 'CARDIO', 'STRETCHING'],
+        value: 'STRENGTH',
+      },
     });
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('selected-dark');

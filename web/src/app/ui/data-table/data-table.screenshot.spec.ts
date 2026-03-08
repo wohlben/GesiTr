@@ -10,7 +10,11 @@ describe('DataTable screenshots', () => {
 
   const columns: DataTableColumn[] = [
     { label: 'Name', searchParam: 'q' },
-    { label: 'Category', filterParam: 'category', options: ['free_weights', 'machines', 'accessories'] },
+    {
+      label: 'Category',
+      filterParam: 'category',
+      options: ['free_weights', 'machines', 'accessories'],
+    },
     { label: 'Description' },
   ];
 

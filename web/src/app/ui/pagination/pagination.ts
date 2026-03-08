@@ -7,17 +7,29 @@ import { PaginatedResponse } from '$core/api-clients/paginated-response';
   template: `
     @if (page(); as p) {
       <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-        <p>{{ p.total === 0 ? emptyLabel() : 'Showing ' + (p.offset + 1) + '–' + (p.offset + p.items.length) + ' of ' + p.total }}</p>
+        <p>
+          {{
+            p.total === 0
+              ? emptyLabel()
+              : 'Showing ' + (p.offset + 1) + '–' + (p.offset + p.items.length) + ' of ' + p.total
+          }}
+        </p>
         @if (totalPages() > 1) {
           <div class="flex gap-2">
             <button
               class="rounded border border-gray-300 px-3 py-1 disabled:opacity-50 dark:border-gray-600"
               [disabled]="!hasPrev()"
-              (click)="prev()">Previous</button>
+              (click)="prev()"
+            >
+              Previous
+            </button>
             <button
               class="rounded border border-gray-300 px-3 py-1 disabled:opacity-50 dark:border-gray-600"
               [disabled]="!hasNext()"
-              (click)="next()">Next</button>
+              (click)="next()"
+            >
+              Next
+            </button>
           </div>
         }
       </div>
