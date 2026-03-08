@@ -1,4 +1,4 @@
-.PHONY: build build-web build-go dev-api dev-web docker clean dolt generate seed test test-go test-web test-e2e update-screenshots update-screenshots-web update-screenshots-e2e
+.PHONY: build build-web build-go dev dev-api dev-web docker clean dolt generate seed test test-go test-web test-e2e update-screenshots update-screenshots-web update-screenshots-e2e
 
 # Generate TypeScript types from Go structs
 generate:
@@ -13,7 +13,10 @@ build-web:
 build-go: build-web
 	go build -o gesitr .
 
-# Development: run these in separate terminals
+# Development: start both API and web servers
+dev:
+	$(MAKE) -j2 dev-api dev-web
+
 dev-api:
 	DEV=true go run .
 
