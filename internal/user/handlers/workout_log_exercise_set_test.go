@@ -169,9 +169,9 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 
 	t.Run("update preserves target fields", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
-			"completed":  true,
-			"actualReps": 4,
-			"targetReps": 999,
+			"completed":    true,
+			"actualReps":   4,
+			"targetReps":   999,
 			"targetWeight": 999.0,
 		})
 		if w.Code != http.StatusOK {

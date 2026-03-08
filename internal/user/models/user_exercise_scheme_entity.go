@@ -2,8 +2,8 @@ package models
 
 type UserExerciseSchemeEntity struct {
 	BaseModel
-	UserExerciseID uint     `gorm:"not null;index"`
-	MeasurementType string  `gorm:"not null"`
+	UserExerciseID  uint   `gorm:"not null;index"`
+	MeasurementType string `gorm:"not null"`
 	Sets            *int
 	Reps            *int
 	Weight          *float64

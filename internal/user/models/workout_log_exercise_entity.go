@@ -2,9 +2,9 @@ package models
 
 type WorkoutLogExerciseEntity struct {
 	BaseModel
-	WorkoutLogSectionID  uint   `gorm:"not null;index"`
-	UserExerciseSchemeID uint   `gorm:"not null"`
-	Position             int    `gorm:"not null"`
+	WorkoutLogSectionID  uint `gorm:"not null;index"`
+	UserExerciseSchemeID uint `gorm:"not null"`
+	Position             int  `gorm:"not null"`
 
 	// Target fields (snapshotted from scheme on creation)
 	TargetMeasurementType string `gorm:"not null"`

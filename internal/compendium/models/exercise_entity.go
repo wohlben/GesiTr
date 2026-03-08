@@ -18,13 +18,13 @@ type ExerciseEntity struct {
 	ParentExerciseID    *uint
 	TemplateID          *string
 
-	Forces           []ExerciseForce              `gorm:"foreignKey:ExerciseID"`
-	Muscles          []ExerciseMuscle             `gorm:"foreignKey:ExerciseID"`
+	Forces           []ExerciseForce               `gorm:"foreignKey:ExerciseID"`
+	Muscles          []ExerciseMuscle              `gorm:"foreignKey:ExerciseID"`
 	Paradigms        []ExerciseMeasurementParadigm `gorm:"foreignKey:ExerciseID"`
-	Instructions     []ExerciseInstruction        `gorm:"foreignKey:ExerciseID"`
-	Images           []ExerciseImage              `gorm:"foreignKey:ExerciseID"`
-	AlternativeNames []ExerciseAlternativeName    `gorm:"foreignKey:ExerciseID"`
-	Equipment        []ExerciseEquipment          `gorm:"foreignKey:ExerciseID"`
+	Instructions     []ExerciseInstruction         `gorm:"foreignKey:ExerciseID"`
+	Images           []ExerciseImage               `gorm:"foreignKey:ExerciseID"`
+	AlternativeNames []ExerciseAlternativeName     `gorm:"foreignKey:ExerciseID"`
+	Equipment        []ExerciseEquipment           `gorm:"foreignKey:ExerciseID"`
 }
 
 func (ExerciseEntity) TableName() string { return "exercises" }

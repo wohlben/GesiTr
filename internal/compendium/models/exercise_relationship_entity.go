@@ -3,7 +3,7 @@ package models
 type ExerciseRelationshipEntity struct {
 	BaseModel
 	RelationshipType       ExerciseRelationshipType `gorm:"not null;uniqueIndex:idx_exercise_relationship"`
-	Strength               float64 `gorm:"not null"`
+	Strength               float64                  `gorm:"not null"`
 	Description            *string
 	CreatedBy              string `gorm:"not null"`
 	FromExerciseTemplateID string `gorm:"not null;uniqueIndex:idx_exercise_relationship"`

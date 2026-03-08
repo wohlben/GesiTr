@@ -208,7 +208,7 @@ func TestUpdateUserExerciseScheme(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/user/exercise-schemes/1", map[string]any{
 			"measurementType": "REP_BASED",
-			"sets": 5, "reps": 5, "weight": 80.0, "restBetweenSets": 180,
+			"sets":            5, "reps": 5, "weight": 80.0, "restBetweenSets": 180,
 		})
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())

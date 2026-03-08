@@ -202,10 +202,10 @@ func TestUpdateWorkoutLogExercise(t *testing.T) {
 
 	t.Run("update preserves target fields and returns sets", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/user/workout-log-exercises/1", map[string]any{
-			"position":                2,
-			"targetMeasurementType":   "CHANGED",
-			"workoutLogSectionId":     999,
-			"userExerciseSchemeId":    999,
+			"position":              2,
+			"targetMeasurementType": "CHANGED",
+			"workoutLogSectionId":   999,
+			"userExerciseSchemeId":  999,
 		})
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())

@@ -320,10 +320,10 @@ func TestSeedExercises(t *testing.T) {
 		writeTempJSON(t, tmpDir, "compendium_exercises", "squat.json", map[string]any{
 			"name": "Squat", "slug": "squat", "type": "STRENGTH",
 			"force": []string{"PUSH"}, "primaryMuscles": []string{"QUADS"},
-			"secondaryMuscles": []string{"GLUTES"},
+			"secondaryMuscles":    []string{"GLUTES"},
 			"technicalDifficulty": "intermediate", "bodyWeightScaling": 1.0,
 			"suggestedMeasurementParadigms": []string{"REP_BASED"},
-			"description": "A squat", "instructions": []string{"Go down", "Go up"},
+			"description":                   "A squat", "instructions": []string{"Go down", "Go up"},
 			"images": []string{"/img/squat.jpg"}, "alternativeNames": []string{"Back Squat"},
 			"authorName": nil, "authorUrl": nil,
 			"createdBy": "system", "createdAt": ts, "updatedAt": updTs,
@@ -366,7 +366,7 @@ func TestSeedExercises(t *testing.T) {
 		writeTempJSON(t, tmpDir, "compendium_exercises", "curl.json", map[string]any{
 			"name": "Curl", "slug": "curl", "type": "STRENGTH",
 			"force": []string{}, "primaryMuscles": []string{},
-			"secondaryMuscles": []string{},
+			"secondaryMuscles":    []string{},
 			"technicalDifficulty": "beginner", "bodyWeightScaling": 0.0,
 			"suggestedMeasurementParadigms": []string{}, "description": "",
 			"instructions": []string{}, "images": []string{},

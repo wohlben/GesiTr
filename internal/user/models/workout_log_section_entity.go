@@ -5,7 +5,7 @@ type WorkoutLogSectionEntity struct {
 	WorkoutLogID         uint               `gorm:"not null;index"`
 	Type                 WorkoutSectionType `gorm:"not null"`
 	Label                *string
-	Position             int                `gorm:"not null"`
+	Position             int `gorm:"not null"`
 	RestBetweenExercises *int
 	Exercises            []WorkoutLogExerciseEntity `gorm:"foreignKey:WorkoutLogSectionID"`
 }

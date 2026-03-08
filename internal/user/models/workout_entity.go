@@ -4,10 +4,10 @@ import "time"
 
 type WorkoutEntity struct {
 	BaseModel
-	Owner    string     `gorm:"not null;index"`
-	Name     string     `gorm:"not null"`
+	Owner    string `gorm:"not null;index"`
+	Name     string `gorm:"not null"`
 	Notes    *string
-	Date     time.Time  `gorm:"not null;index"`
+	Date     time.Time              `gorm:"not null;index"`
 	Sections []WorkoutSectionEntity `gorm:"foreignKey:WorkoutID"`
 }
 

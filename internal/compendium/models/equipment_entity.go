@@ -4,14 +4,14 @@ import "gorm.io/gorm"
 
 type EquipmentEntity struct {
 	BaseModel
-	Name        string  `gorm:"not null"`
-	DisplayName string  `gorm:"not null"`
+	Name        string `gorm:"not null"`
+	DisplayName string `gorm:"not null"`
 	Description string
 	Category    EquipmentCategory `gorm:"not null"`
 	ImageUrl    *string
-	TemplateID  string  `gorm:"not null;uniqueIndex"`
-	CreatedBy   string  `gorm:"not null"`
-	Version     int     `gorm:"not null;default:0"`
+	TemplateID  string `gorm:"not null;uniqueIndex"`
+	CreatedBy   string `gorm:"not null"`
+	Version     int    `gorm:"not null;default:0"`
 }
 
 func (EquipmentEntity) TableName() string { return "equipment" }

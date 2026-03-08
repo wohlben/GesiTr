@@ -3,13 +3,13 @@ package models
 type ExerciseType string
 
 const (
-	ExerciseTypeStrength           ExerciseType = "STRENGTH"
-	ExerciseTypeCardio             ExerciseType = "CARDIO"
-	ExerciseTypeStretching         ExerciseType = "STRETCHING"
-	ExerciseTypePlyometric         ExerciseType = "PLYOMETRIC"
-	ExerciseTypeStrongman          ExerciseType = "STRONGMAN"
+	ExerciseTypeStrength             ExerciseType = "STRENGTH"
+	ExerciseTypeCardio               ExerciseType = "CARDIO"
+	ExerciseTypeStretching           ExerciseType = "STRETCHING"
+	ExerciseTypePlyometric           ExerciseType = "PLYOMETRIC"
+	ExerciseTypeStrongman            ExerciseType = "STRONGMAN"
 	ExerciseTypeOlympicWeightlifting ExerciseType = "OLYMPIC_WEIGHTLIFTING"
-	ExerciseTypePowerlifting       ExerciseType = "POWERLIFTING"
+	ExerciseTypePowerlifting         ExerciseType = "POWERLIFTING"
 )
 
 type Force string
@@ -76,35 +76,35 @@ const (
 type EquipmentCategory string
 
 const (
-	EquipmentCategoryFreeWeights  EquipmentCategory = "free_weights"
-	EquipmentCategoryAccessories  EquipmentCategory = "accessories"
-	EquipmentCategoryBenches      EquipmentCategory = "benches"
-	EquipmentCategoryMachines     EquipmentCategory = "machines"
-	EquipmentCategoryFunctional   EquipmentCategory = "functional"
-	EquipmentCategoryOther        EquipmentCategory = "other"
+	EquipmentCategoryFreeWeights EquipmentCategory = "free_weights"
+	EquipmentCategoryAccessories EquipmentCategory = "accessories"
+	EquipmentCategoryBenches     EquipmentCategory = "benches"
+	EquipmentCategoryMachines    EquipmentCategory = "machines"
+	EquipmentCategoryFunctional  EquipmentCategory = "functional"
+	EquipmentCategoryOther       EquipmentCategory = "other"
 )
 
 type ExerciseRelationshipType string
 
 const (
-	ExerciseRelationshipTypeAccessory            ExerciseRelationshipType = "accessory"
-	ExerciseRelationshipTypeAlternative          ExerciseRelationshipType = "alternative"
-	ExerciseRelationshipTypeAntagonist           ExerciseRelationshipType = "antagonist"
-	ExerciseRelationshipTypeBilateralUnilateral  ExerciseRelationshipType = "bilateral_unilateral"
-	ExerciseRelationshipTypeComplementary        ExerciseRelationshipType = "complementary"
-	ExerciseRelationshipTypeEasierAlternative    ExerciseRelationshipType = "easier_alternative"
-	ExerciseRelationshipTypeEquipmentVariation   ExerciseRelationshipType = "equipment_variation"
-	ExerciseRelationshipTypeHarderAlternative    ExerciseRelationshipType = "harder_alternative"
-	ExerciseRelationshipTypePreparation          ExerciseRelationshipType = "preparation"
-	ExerciseRelationshipTypePrerequisite         ExerciseRelationshipType = "prerequisite"
-	ExerciseRelationshipTypeProgressesTo         ExerciseRelationshipType = "progresses_to"
-	ExerciseRelationshipTypeProgression          ExerciseRelationshipType = "progression"
-	ExerciseRelationshipTypeRegressesTo          ExerciseRelationshipType = "regresses_to"
-	ExerciseRelationshipTypeRegression           ExerciseRelationshipType = "regression"
-	ExerciseRelationshipTypeRelated              ExerciseRelationshipType = "related"
-	ExerciseRelationshipTypeSimilar              ExerciseRelationshipType = "similar"
-	ExerciseRelationshipTypeSupersetWith         ExerciseRelationshipType = "superset_with"
-	ExerciseRelationshipTypeSupports             ExerciseRelationshipType = "supports"
-	ExerciseRelationshipTypeVariant              ExerciseRelationshipType = "variant"
-	ExerciseRelationshipTypeVariation            ExerciseRelationshipType = "variation"
+	ExerciseRelationshipTypeAccessory           ExerciseRelationshipType = "accessory"
+	ExerciseRelationshipTypeAlternative         ExerciseRelationshipType = "alternative"
+	ExerciseRelationshipTypeAntagonist          ExerciseRelationshipType = "antagonist"
+	ExerciseRelationshipTypeBilateralUnilateral ExerciseRelationshipType = "bilateral_unilateral"
+	ExerciseRelationshipTypeComplementary       ExerciseRelationshipType = "complementary"
+	ExerciseRelationshipTypeEasierAlternative   ExerciseRelationshipType = "easier_alternative"
+	ExerciseRelationshipTypeEquipmentVariation  ExerciseRelationshipType = "equipment_variation"
+	ExerciseRelationshipTypeHarderAlternative   ExerciseRelationshipType = "harder_alternative"
+	ExerciseRelationshipTypePreparation         ExerciseRelationshipType = "preparation"
+	ExerciseRelationshipTypePrerequisite        ExerciseRelationshipType = "prerequisite"
+	ExerciseRelationshipTypeProgressesTo        ExerciseRelationshipType = "progresses_to"
+	ExerciseRelationshipTypeProgression         ExerciseRelationshipType = "progression"
+	ExerciseRelationshipTypeRegressesTo         ExerciseRelationshipType = "regresses_to"
+	ExerciseRelationshipTypeRegression          ExerciseRelationshipType = "regression"
+	ExerciseRelationshipTypeRelated             ExerciseRelationshipType = "related"
+	ExerciseRelationshipTypeSimilar             ExerciseRelationshipType = "similar"
+	ExerciseRelationshipTypeSupersetWith        ExerciseRelationshipType = "superset_with"
+	ExerciseRelationshipTypeSupports            ExerciseRelationshipType = "supports"
+	ExerciseRelationshipTypeVariant             ExerciseRelationshipType = "variant"
+	ExerciseRelationshipTypeVariation           ExerciseRelationshipType = "variation"
 )

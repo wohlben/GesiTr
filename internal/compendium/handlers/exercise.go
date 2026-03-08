@@ -3,8 +3,8 @@ package handlers
 import (
 	"net/http"
 
-	"gesitr/internal/database"
 	"gesitr/internal/compendium/models"
+	"gesitr/internal/database"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"os"
 
-	"gesitr/internal/database"
 	"gesitr/internal/compendium/handlers"
 	"gesitr/internal/compendium/models"
+	"gesitr/internal/database"
 	userhandlers "gesitr/internal/user/handlers"
 	usermodels "gesitr/internal/user/models"
 
@@ -194,6 +194,10 @@ func setupSPA(r *gin.Engine) {
 	if err != nil {
 		log.Fatal("Failed to load embedded files:", err)
 	}
+	indexHTML, err := fs.ReadFile(distFS, "index.html")
+	if err != nil {
+		log.Fatal("Failed to read index.html:", err)
+	}
 	r.NoRoute(func(c *gin.Context) {
 		f, err := http.FS(distFS).Open(c.Request.URL.Path)
 		if err == nil {
@@ -201,7 +205,7 @@ func setupSPA(r *gin.Engine) {
 			c.FileFromFS(c.Request.URL.Path, http.FS(distFS))
 			return
 		}
-		c.FileFromFS("index.html", http.FS(distFS))
+		c.Data(http.StatusOK, "text/html; charset=utf-8", indexHTML)
 	})
 }
 

@@ -13,6 +13,6 @@ type WorkoutLogExerciseSet struct {
 	ActualReps           *int     `json:"actualReps"`
 	ActualWeight         *float64 `json:"actualWeight"`
 	ActualDuration       *int     `json:"actualDuration"`
-	ActualDistance        *float64 `json:"actualDistance"`
+	ActualDistance       *float64 `json:"actualDistance"`
 	ActualTime           *int     `json:"actualTime"`
 }

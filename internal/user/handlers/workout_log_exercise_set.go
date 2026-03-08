@@ -114,7 +114,7 @@ func maybeUpdateRecord(set *models.WorkoutLogExerciseSetEntity) {
 			ActualReps:              set.ActualReps,
 			ActualWeight:            set.ActualWeight,
 			ActualDuration:          set.ActualDuration,
-			ActualDistance:           set.ActualDistance,
+			ActualDistance:          set.ActualDistance,
 			ActualTime:              set.ActualTime,
 			WorkoutLogExerciseSetID: set.ID,
 		})

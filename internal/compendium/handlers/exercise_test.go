@@ -18,12 +18,12 @@ func newExercisePayload(name, slug string) map[string]any {
 		"technicalDifficulty": "beginner", "bodyWeightScaling": 0.5,
 		"description": "test", "createdBy": "system", "version": 0,
 		"force": []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
-		"secondaryMuscles": []string{"TRICEPS"},
+		"secondaryMuscles":              []string{"TRICEPS"},
 		"suggestedMeasurementParadigms": []string{"REP_BASED"},
-		"instructions": []string{"Step 1", "Step 2"},
-		"images": []string{"/img/a.jpg"},
-		"alternativeNames": []string{"Alt Name"},
-		"equipmentIds": []string{"barbell"},
+		"instructions":                  []string{"Step 1", "Step 2"},
+		"images":                        []string{"/img/a.jpg"},
+		"alternativeNames":              []string{"Alt Name"},
+		"equipmentIds":                  []string{"barbell"},
 	}
 }
 
@@ -56,7 +56,7 @@ func TestListExercises(t *testing.T) {
 		"technicalDifficulty": "intermediate", "bodyWeightScaling": 1.0,
 		"description": "run", "createdBy": "system", "version": 0,
 		"force": []string{"DYNAMIC"}, "primaryMuscles": []string{"QUADS"},
-		"secondaryMuscles": []string{"CALVES"},
+		"secondaryMuscles":              []string{"CALVES"},
 		"suggestedMeasurementParadigms": []string{"DISTANCE"},
 	}
 	doJSON(r, "POST", "/api/exercises", cardio)

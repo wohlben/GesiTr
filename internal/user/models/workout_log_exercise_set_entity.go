@@ -2,9 +2,9 @@ package models
 
 type WorkoutLogExerciseSetEntity struct {
 	BaseModel
-	WorkoutLogExerciseID uint     `gorm:"not null;index"`
-	SetNumber            int      `gorm:"not null"`
-	Completed            bool     `gorm:"not null;default:false"`
+	WorkoutLogExerciseID uint `gorm:"not null;index"`
+	SetNumber            int  `gorm:"not null"`
+	Completed            bool `gorm:"not null;default:false"`
 	TargetReps           *int
 	TargetWeight         *float64
 	TargetDuration       *int
@@ -13,7 +13,7 @@ type WorkoutLogExerciseSetEntity struct {
 	ActualReps           *int
 	ActualWeight         *float64
 	ActualDuration       *int
-	ActualDistance        *float64
+	ActualDistance       *float64
 	ActualTime           *int
 }
 
@@ -28,12 +28,12 @@ func (e *WorkoutLogExerciseSetEntity) ToDTO() WorkoutLogExerciseSet {
 		TargetReps:           e.TargetReps,
 		TargetWeight:         e.TargetWeight,
 		TargetDuration:       e.TargetDuration,
-		TargetDistance:        e.TargetDistance,
+		TargetDistance:       e.TargetDistance,
 		TargetTime:           e.TargetTime,
 		ActualReps:           e.ActualReps,
 		ActualWeight:         e.ActualWeight,
 		ActualDuration:       e.ActualDuration,
-		ActualDistance:        e.ActualDistance,
+		ActualDistance:       e.ActualDistance,
 		ActualTime:           e.ActualTime,
 	}
 }
@@ -47,12 +47,12 @@ func WorkoutLogExerciseSetFromDTO(dto WorkoutLogExerciseSet) WorkoutLogExerciseS
 		TargetReps:           dto.TargetReps,
 		TargetWeight:         dto.TargetWeight,
 		TargetDuration:       dto.TargetDuration,
-		TargetDistance:        dto.TargetDistance,
+		TargetDistance:       dto.TargetDistance,
 		TargetTime:           dto.TargetTime,
 		ActualReps:           dto.ActualReps,
 		ActualWeight:         dto.ActualWeight,
 		ActualDuration:       dto.ActualDuration,
-		ActualDistance:        dto.ActualDistance,
+		ActualDistance:       dto.ActualDistance,
 		ActualTime:           dto.ActualTime,
 	}
 }

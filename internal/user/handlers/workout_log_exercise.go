@@ -78,7 +78,7 @@ func CreateWorkoutLogExercise(c *gin.Context) {
 			TargetReps:           scheme.Reps,
 			TargetWeight:         scheme.Weight,
 			TargetDuration:       scheme.Duration,
-			TargetDistance:        scheme.Distance,
+			TargetDistance:       scheme.Distance,
 			TargetTime:           scheme.TargetTime,
 		}
 		if err := database.DB.Create(&set).Error; err != nil {

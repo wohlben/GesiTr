@@ -2,8 +2,8 @@ package models
 
 type ExerciseGroupEntity struct {
 	BaseModel
-	TemplateID  string  `gorm:"not null;uniqueIndex"`
-	Name        string  `gorm:"not null"`
+	TemplateID  string `gorm:"not null;uniqueIndex"`
+	Name        string `gorm:"not null"`
 	Description *string
 	CreatedBy   string `gorm:"not null"`
 }

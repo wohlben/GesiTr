@@ -9,12 +9,12 @@ const (
 
 type WorkoutSectionEntity struct {
 	BaseModel
-	WorkoutID             uint               `gorm:"not null;index"`
-	Type                  WorkoutSectionType `gorm:"not null"`
-	Label                 *string
-	Position              int                `gorm:"not null"`
-	RestBetweenExercises  *int
-	Exercises             []WorkoutSectionExerciseEntity `gorm:"foreignKey:WorkoutSectionID"`
+	WorkoutID            uint               `gorm:"not null;index"`
+	Type                 WorkoutSectionType `gorm:"not null"`
+	Label                *string
+	Position             int `gorm:"not null"`
+	RestBetweenExercises *int
+	Exercises            []WorkoutSectionExerciseEntity `gorm:"foreignKey:WorkoutSectionID"`
 }
 
 func (WorkoutSectionEntity) TableName() string { return "workout_sections" }
