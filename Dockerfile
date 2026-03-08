@@ -1,10 +1,16 @@
 # Stage 1: Build + test Angular
 FROM node:22-slim AS web-builder
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 \
+    libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libpango-1.0-0 \
+    libcairo2 libasound2 libxshmfence1 && rm -rf /var/lib/apt/lists/*
 WORKDIR /app/web
 COPY web/package*.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci
+RUN npx playwright install chromium
 COPY web/ ./
-RUN npx ng test
+RUN npm run lint && npm run format:check
+RUN npm test
 RUN npx ng build --configuration=production
 
 # Stage 2: Build + test Go
@@ -16,6 +22,7 @@ COPY go.mod go.sum ./
 RUN --mount=type=cache,target=/go/pkg/mod go mod download
 COPY . .
 COPY --from=web-builder /app/web/dist ./web/dist
+RUN test -z "$(gofmt -l .)" || (echo "Go files not formatted:" && gofmt -l . && exit 1)
 RUN chown -R tester:tester /app
 USER tester
 RUN --mount=type=cache,target=/home/tester/.cache/go-build,uid=1000 \

@@ -1,4 +1,4 @@
-.PHONY: build build-web build-go dev dev-api dev-web docker clean dolt generate seed test test-go test-web test-web-unit test-web-screenshot test-e2e update-screenshots update-screenshots-web update-screenshots-e2e
+.PHONY: build build-web build-go dev dev-api dev-web docker clean dolt generate seed test test-go test-web test-e2e lint lint-go lint-web update-screenshots update-screenshots-web update-screenshots-e2e
 
 # Generate TypeScript types from Go structs
 generate:
@@ -26,19 +26,23 @@ dev-web: generate
 dolt:
 	dolt sql-server --host 127.0.0.1 --port 3307 --data-dir .beads/dolt
 
+# Lint and format check
+lint: lint-go lint-web
+
+lint-go:
+	@test -z "$$(gofmt -l .)" || (echo "Go files not formatted:" && gofmt -l . && exit 1)
+
+lint-web:
+	cd web && npm run lint && npm run format:check
+
 # Run all tests
-test: test-go test-web test-e2e
+test: lint test-go test-web test-e2e
 
 test-go:
 	go test ./...
 
-test-web: test-web-unit test-web-screenshot
-
-test-web-unit:
-	cd web && npx ng test
-
-test-web-screenshot:
-	cd web && npx ng run web:test-screenshot
+test-web:
+	cd web && npm test
 
 test-e2e:
 	cd web && npx ng e2e
