@@ -192,7 +192,7 @@ export interface DataTableColumn {
         class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
         (click)="showColumnSettings.set(false)"
       >
-        <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+        <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events -->
         <div
           class="min-w-48 rounded-lg bg-white p-4 shadow-xl dark:bg-gray-800"
           (click)="$event.stopPropagation()"
@@ -318,7 +318,11 @@ export class DataTable {
   toggleColumn(label: string) {
     this.hiddenColumns.update((set) => {
       const next = new Set(set);
-      next.has(label) ? next.delete(label) : next.add(label);
+      if (next.has(label)) {
+        next.delete(label);
+      } else {
+        next.add(label);
+      }
       return next;
     });
     this.hiddenColumnsChange.emit([...this.hiddenColumns()]);

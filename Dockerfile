@@ -31,6 +31,9 @@ RUN --mount=type=cache,target=/home/tester/.cache/go-build,uid=1000 \
 RUN --mount=type=cache,target=/home/tester/.cache/go-build,uid=1000 \
     --mount=type=cache,target=/go/pkg/mod \
     CGO_ENABLED=1 go build -o gesitr .
+RUN --mount=type=cache,target=/home/tester/.cache/go-build,uid=1000 \
+    --mount=type=cache,target=/go/pkg/mod \
+    CGO_ENABLED=1 go build -o seed ./cmd/seed
 
 # Stage 3: E2E tests — Playwright against the production binary
 FROM node:22 AS e2e-tester
@@ -47,10 +50,15 @@ RUN npx playwright install chromium
 COPY --chown=node:node web/playwright.config.ts ./
 COPY --chown=node:node web/e2e/ ./e2e/
 COPY --from=go-builder --chown=node:node /app/gesitr /app/gesitr
+COPY --from=go-builder --chown=node:node /app/seed /app/seed
+COPY --from=go-builder --chown=node:node /app/data/ /app/data/
 ENV PLAYWRIGHT_TEST_BASE_URL=http://localhost:8080
-RUN /app/gesitr & SERVER_PID=$! && \
+ENV AUTH_FALLBACK_USER=e2e-tester
+WORKDIR /app
+RUN ./seed
+RUN ./gesitr & SERVER_PID=$! && \
     sleep 2 && \
-    npx playwright test --project=chromium ; \
+    cd web && npx playwright test --project=chromium ; \
     TEST_EXIT=$? ; kill $SERVER_PID 2>/dev/null ; exit $TEST_EXIT
 RUN date -u '+%Y-%m-%dT%H:%M:%SZ' > /tmp/.e2e-passed
 

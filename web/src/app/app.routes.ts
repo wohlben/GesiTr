@@ -10,9 +10,7 @@ export const routes: Routes = [
       {
         path: 'exercises/:id/:slug/edit',
         loadComponent: () =>
-          import('$features/compendium/exercise-edit/exercise-edit').then(
-            (m) => m.ExerciseEdit,
-          ),
+          import('$features/compendium/exercise-edit/exercise-edit').then((m) => m.ExerciseEdit),
       },
       {
         path: 'exercises/:id/:slug',
@@ -24,16 +22,12 @@ export const routes: Routes = [
       {
         path: 'exercises',
         loadComponent: () =>
-          import('$features/compendium/exercise-list/exercise-list').then(
-            (m) => m.ExerciseList,
-          ),
+          import('$features/compendium/exercise-list/exercise-list').then((m) => m.ExerciseList),
       },
       {
         path: 'equipment/:id/:slug/edit',
         loadComponent: () =>
-          import('$features/compendium/equipment-edit/equipment-edit').then(
-            (m) => m.EquipmentEdit,
-          ),
+          import('$features/compendium/equipment-edit/equipment-edit').then((m) => m.EquipmentEdit),
       },
       {
         path: 'equipment/:id/:slug',
@@ -45,9 +39,7 @@ export const routes: Routes = [
       {
         path: 'equipment',
         loadComponent: () =>
-          import('$features/compendium/equipment-list/equipment-list').then(
-            (m) => m.EquipmentList,
-          ),
+          import('$features/compendium/equipment-list/equipment-list').then((m) => m.EquipmentList),
       },
       {
         path: 'exercise-groups/:id/:slug/edit',

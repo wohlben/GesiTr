@@ -15,7 +15,12 @@ import { PageLayout } from '../../../layout/page-layout';
       [isPending]="exerciseQuery.isPending()"
       [errorMessage]="exerciseQuery.isError() ? exerciseQuery.error().message : undefined"
     >
-      <a actions routerLink="./edit" class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">Edit</a>
+      <a
+        actions
+        routerLink="./edit"
+        class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        >Edit</a
+      >
       @if (exerciseQuery.data(); as exercise) {
         <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
@@ -24,15 +29,21 @@ import { PageLayout } from '../../../layout/page-layout';
           </div>
           <div>
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Difficulty</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ exercise.technicalDifficulty }}</dd>
+            <dd class="text-sm text-gray-900 dark:text-gray-100">
+              {{ exercise.technicalDifficulty }}
+            </dd>
           </div>
           <div>
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Primary Muscles</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ exercise.primaryMuscles?.join(', ') }}</dd>
+            <dd class="text-sm text-gray-900 dark:text-gray-100">
+              {{ exercise.primaryMuscles?.join(', ') }}
+            </dd>
           </div>
           <div>
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Secondary Muscles</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ exercise.secondaryMuscles?.join(', ') }}</dd>
+            <dd class="text-sm text-gray-900 dark:text-gray-100">
+              {{ exercise.secondaryMuscles?.join(', ') }}
+            </dd>
           </div>
           <div class="sm:col-span-2">
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Description</dt>

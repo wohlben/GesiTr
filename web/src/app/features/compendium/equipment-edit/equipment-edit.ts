@@ -2,7 +2,12 @@ import { Component, inject, computed, effect } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { injectQuery, injectMutation, injectQueryClient } from '@tanstack/angular-query-experimental';
+import {
+  injectQuery,
+  injectMutation,
+  injectQueryClient,
+  QueryClient,
+} from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { equipmentKeys } from '$core/query-keys';
 import { PageLayout } from '../../../layout/page-layout';
@@ -37,7 +42,9 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
       @if (equipmentQuery.data(); as equipment) {
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
           <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name *</label>
+            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >Name *</label
+            >
             <input
               id="name"
               formControlName="name"
@@ -46,7 +53,9 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
           </div>
 
           <div>
-            <label for="displayName" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            <label
+              for="displayName"
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >Display Name *</label
             >
             <input
@@ -57,7 +66,9 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
           </div>
 
           <div>
-            <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            <label
+              for="description"
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >Description</label
             >
             <textarea
@@ -84,7 +95,9 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
           </div>
 
           <div>
-            <label for="imageUrl" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image URL</label>
+            <label for="imageUrl" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >Image URL</label
+            >
             <input
               id="imageUrl"
               formControlName="imageUrl"
@@ -116,7 +129,7 @@ export class EquipmentEdit {
   private api = inject(CompendiumApiClient);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private queryClient = injectQueryClient();
+  private queryClient = inject(QueryClient);
   private params = toSignal(this.route.paramMap);
 
   private id = computed(() => Number(this.params()?.get('id')));

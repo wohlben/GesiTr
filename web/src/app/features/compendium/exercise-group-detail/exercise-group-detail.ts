@@ -15,7 +15,12 @@ import { PageLayout } from '../../../layout/page-layout';
       [isPending]="groupQuery.isPending()"
       [errorMessage]="groupQuery.isError() ? groupQuery.error().message : undefined"
     >
-      <a actions routerLink="./edit" class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">Edit</a>
+      <a
+        actions
+        routerLink="./edit"
+        class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        >Edit</a
+      >
       @if (groupQuery.data(); as group) {
         <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div class="sm:col-span-2">
