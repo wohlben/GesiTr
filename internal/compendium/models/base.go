@@ -1,7 +1,18 @@
 package models
 
-import sharedmodels "gesitr/internal/models"
+import (
+	"time"
 
-type BaseModel = sharedmodels.BaseModel
+	"gorm.io/gorm"
+)
 
-type ErrorResponse = sharedmodels.ErrorResponse
+type BaseModel struct {
+	ID        uint           `json:"id" gorm:"primarykey"`
+	CreatedAt time.Time      `json:"createdAt"`
+	UpdatedAt time.Time      `json:"updatedAt"`
+	DeletedAt gorm.DeletedAt `json:"deletedAt,omitempty" gorm:"index"`
+}
+
+type ErrorResponse struct {
+	Error string `json:"error"`
+}
