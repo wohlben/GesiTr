@@ -78,7 +78,18 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "exclude": ["**/*.screenshot.spec.ts"]
+          }
+        },
+        "test-screenshot": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "include": ["**/*.screenshot.spec.ts"],
+            "browsers": ["chromium"],
+            "headless": true
+          }
         },
         "e2e": {
           "builder": "playwright-ng-schematics:playwright",

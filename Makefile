@@ -35,10 +35,10 @@ test-go:
 test-web: test-web-unit test-web-screenshot
 
 test-web-unit:
-	cd web && npx ng test --exclude="**/*.screenshot.spec.ts"
+	cd web && npx ng test
 
 test-web-screenshot:
-	cd web && npx ng test --include="src/app/**/*.screenshot.spec.ts" --browsers=chromium --headless
+	cd web && npx ng run web:test-screenshot
 
 test-e2e:
 	cd web && npx ng e2e
@@ -48,8 +48,8 @@ update-screenshots: update-screenshots-web update-screenshots-e2e
 
 update-screenshots-web:
 	find web/src/app -path '*__screenshots__*' -name '*.png' -delete
-	cd web && npx ng test --include="src/app/**/*.screenshot.spec.ts" --browsers=chromium --headless || true
-	cd web && npx ng test --include="src/app/**/*.screenshot.spec.ts" --browsers=chromium --headless
+	cd web && npx ng run web:test-screenshot || true
+	cd web && npx ng run web:test-screenshot
 
 update-screenshots-e2e:
 	cd web && npx ng e2e --update-snapshots
