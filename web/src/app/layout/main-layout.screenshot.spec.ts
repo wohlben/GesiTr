@@ -21,18 +21,45 @@ describe('MainLayout screenshots', () => {
     ]),
   ];
 
-  it('light', async () => {
-    const { fixture } = await render(MainLayout, { providers });
-    await fixture.whenStable();
-    const locator = page.elementLocator(fixture.nativeElement);
-    await expect(locator).toMatchScreenshot('light');
+  describe('desktop', () => {
+    beforeEach(async () => {
+      await page.viewport(1280, 720);
+    });
+
+    it('light', async () => {
+      const { fixture } = await render(MainLayout, { providers });
+      await fixture.whenStable();
+      const locator = page.elementLocator(fixture.nativeElement);
+      await expect(locator).toMatchScreenshot('desktop-light');
+    });
+
+    it('dark', async () => {
+      document.documentElement.classList.add('dark');
+      const { fixture } = await render(MainLayout, { providers });
+      await fixture.whenStable();
+      const locator = page.elementLocator(fixture.nativeElement);
+      await expect(locator).toMatchScreenshot('desktop-dark');
+    });
   });
 
-  it('dark', async () => {
-    document.documentElement.classList.add('dark');
-    const { fixture } = await render(MainLayout, { providers });
-    await fixture.whenStable();
-    const locator = page.elementLocator(fixture.nativeElement);
-    await expect(locator).toMatchScreenshot('dark');
+  describe('mobile', () => {
+    beforeEach(async () => {
+      await page.viewport(375, 667);
+    });
+
+    it('light', async () => {
+      const { fixture } = await render(MainLayout, { providers });
+      await fixture.whenStable();
+      const locator = page.elementLocator(fixture.nativeElement);
+      await expect(locator).toMatchScreenshot('mobile-light');
+    });
+
+    it('dark', async () => {
+      document.documentElement.classList.add('dark');
+      const { fixture } = await render(MainLayout, { providers });
+      await fixture.whenStable();
+      const locator = page.elementLocator(fixture.nativeElement);
+      await expect(locator).toMatchScreenshot('mobile-dark');
+    });
   });
 });
