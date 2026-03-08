@@ -1,12 +1,5 @@
 package models
 
-type WorkoutSectionType string
-
-const (
-	WorkoutSectionTypeMain          WorkoutSectionType = "main"
-	WorkoutSectionTypeSupplementary WorkoutSectionType = "supplementary"
-)
-
 type WorkoutSectionEntity struct {
 	BaseModel
 	WorkoutID            uint               `gorm:"not null;index"`

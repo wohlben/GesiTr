@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { createEquipment, deleteEquipment, toSlug } from '../../helpers';
 
 const viewports = [
   { name: 'desktop', width: 1280, height: 720 },
@@ -10,23 +11,47 @@ test.describe('/compendium/equipment/:id', () => {
     test.describe(viewport.name, () => {
       test.use({ viewport: { width: viewport.width, height: viewport.height } });
 
-      test('light', async ({ page }) => {
-        await page.goto('/compendium/equipment/1/dumbbells-pair', { waitUntil: 'networkidle' });
-        await expect(page.locator('h1')).not.toHaveText('Equipment');
+      test('light', async ({ request, page }) => {
+        const equipment = await createEquipment(request, {
+          name: 'medicine-ball',
+          displayName: 'Medicine Ball',
+          description: 'A weighted ball for core and strength training',
+          category: 'FREE_WEIGHTS',
+        });
+        await page.goto(`/compendium/equipment/${equipment.id}/${equipment.name}`, {
+          waitUntil: 'networkidle',
+        });
+        await expect(page.locator('h1')).toHaveText('Medicine Ball');
         await expect(page).toHaveScreenshot(`${viewport.name}-light.png`);
+        await deleteEquipment(request, equipment.id);
       });
 
-      test('dark', async ({ page }) => {
+      test('dark', async ({ request, page }) => {
+        const equipment = await createEquipment(request, {
+          name: 'medicine-ball',
+          displayName: 'Medicine Ball',
+          description: 'A weighted ball for core and strength training',
+          category: 'FREE_WEIGHTS',
+        });
         await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto('/compendium/equipment/1/dumbbells-pair', { waitUntil: 'networkidle' });
-        await expect(page.locator('h1')).not.toHaveText('Equipment');
+        await page.goto(`/compendium/equipment/${equipment.id}/${equipment.name}`, {
+          waitUntil: 'networkidle',
+        });
+        await expect(page.locator('h1')).toHaveText('Medicine Ball');
         await expect(page).toHaveScreenshot(`${viewport.name}-dark.png`);
+        await deleteEquipment(request, equipment.id);
       });
     });
   }
 
-  test('delete dialog cancel closes the dialog', async ({ page }) => {
-    await page.goto('/compendium/equipment/1/dumbbells-pair', { waitUntil: 'networkidle' });
+  test('delete dialog cancel closes the dialog', async ({ request, page }) => {
+    const equipment = await createEquipment(request, {
+      name: 'cancel-delete-equipment',
+      displayName: 'Cancel Delete Test',
+    });
+    await page.goto(`/compendium/equipment/${equipment.id}/${equipment.name}`, {
+      waitUntil: 'networkidle',
+    });
 
     await page.locator('button:has-text("Delete")').click();
     await expect(page.locator('[role="dialog"]')).toBeVisible();
@@ -34,42 +59,32 @@ test.describe('/compendium/equipment/:id', () => {
     await page.locator('[role="dialog"] button:has-text("Cancel")').click();
     await expect(page.locator('[role="dialog"]')).not.toBeVisible();
 
-    // Still on detail page
-    await expect(page.locator('h1')).not.toHaveText('Equipment');
+    await expect(page.locator('h1')).toHaveText('Cancel Delete Test');
+    await deleteEquipment(request, equipment.id);
   });
 
   test('delete dialog confirm deletes and navigates to list', async ({ request, page }) => {
-    // Create a temporary equipment item to delete via API
-    const createResponse = await request.post('/api/equipment', {
-      data: {
-        name: 'temp-delete-test',
-        displayName: 'Temp Delete Test',
-        description: '',
-        category: 'FREE_WEIGHTS',
-      },
+    const equipment = await createEquipment(request, {
+      name: 'confirm-delete-equipment',
+      displayName: 'Confirm Delete Test',
     });
-    const created = await createResponse.json();
-
-    // Navigate to the created equipment's detail page
-    await page.goto(`/compendium/equipment/${created.id}/temp-delete-test`, {
+    await page.goto(`/compendium/equipment/${equipment.id}/${equipment.name}`, {
       waitUntil: 'networkidle',
     });
-    await expect(page.locator('h1')).toHaveText('Temp Delete Test');
+    await expect(page.locator('h1')).toHaveText('Confirm Delete Test');
 
-    // Open delete dialog and confirm
     await page.locator('button:has-text("Delete")').click();
     await expect(page.locator('[role="dialog"]')).toBeVisible();
-    await expect(page.locator('[role="dialog"]')).toContainText('Temp Delete Test');
+    await expect(page.locator('[role="dialog"]')).toContainText('Confirm Delete Test');
 
     await Promise.all([
       page.waitForResponse(
         (r) =>
-          r.url().includes(`/api/equipment/${created.id}`) && r.request().method() === 'DELETE',
+          r.url().includes(`/api/equipment/${equipment.id}`) && r.request().method() === 'DELETE',
       ),
       page.locator('[role="dialog"] button:has-text("Delete")').click(),
     ]);
 
-    // Should navigate to list page
     await page.waitForURL(/\/compendium\/equipment$/);
     await expect(page.locator('h1')).toHaveText('Equipment');
   });

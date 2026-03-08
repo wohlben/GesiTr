@@ -170,7 +170,7 @@ func TestGetWorkoutLogWithSectionsAndExercises(t *testing.T) {
 
 	// Setup: exercise -> scheme -> workout log -> section -> exercise
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "bench-press", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "bench-press", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"userExerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,

@@ -26,10 +26,10 @@ func TestListUserExercises(t *testing.T) {
 
 	// Seed data
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "bench-press", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "bench-press", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "bob", "exerciseTemplateId": "squat", "compendiumVersion": 2,
+		"owner": "bob", "compendiumExerciseId": "squat", "compendiumVersion": 2,
 	})
 
 	t.Run("list all", func(t *testing.T) {
@@ -50,11 +50,11 @@ func TestListUserExercises(t *testing.T) {
 		}
 	})
 
-	t.Run("filter by exerciseTemplateId", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/user/exercises?exerciseTemplateId=squat", nil)
+	t.Run("filter by compendiumExerciseId", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/user/exercises?compendiumExerciseId=squat", nil)
 		var result []models.UserExercise
 		json.Unmarshal(w.Body.Bytes(), &result)
-		if len(result) != 1 || result[0].ExerciseTemplateID != "squat" {
+		if len(result) != 1 || result[0].CompendiumExerciseID != "squat" {
 			t.Errorf("templateId filter: got %d results", len(result))
 		}
 	})
@@ -74,21 +74,21 @@ func TestCreateUserExercise(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/user/exercises", map[string]any{
-			"owner": "alice", "exerciseTemplateId": "deadlift", "compendiumVersion": 3,
+			"owner": "alice", "compendiumExerciseId": "deadlift", "compendiumVersion": 3,
 		})
 		if w.Code != http.StatusCreated {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
 		}
 		var result models.UserExercise
 		json.Unmarshal(w.Body.Bytes(), &result)
-		if result.ID == 0 || result.Owner != "alice" || result.ExerciseTemplateID != "deadlift" || result.CompendiumVersion != 3 {
+		if result.ID == 0 || result.Owner != "alice" || result.CompendiumExerciseID != "deadlift" || result.CompendiumVersion != 3 {
 			t.Error("create response mismatch")
 		}
 	})
 
 	t.Run("duplicate import", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/user/exercises", map[string]any{
-			"owner": "alice", "exerciseTemplateId": "deadlift", "compendiumVersion": 3,
+			"owner": "alice", "compendiumExerciseId": "deadlift", "compendiumVersion": 3,
 		})
 		if w.Code != http.StatusInternalServerError {
 			t.Errorf("expected 500 for duplicate, got %d", w.Code)
@@ -105,7 +105,7 @@ func TestCreateUserExercise(t *testing.T) {
 	t.Run("db error", func(t *testing.T) {
 		closeDB(t)
 		w := doJSON(r, "POST", "/api/user/exercises", map[string]any{
-			"owner": "x", "exerciseTemplateId": "x", "compendiumVersion": 0,
+			"owner": "x", "compendiumExerciseId": "x", "compendiumVersion": 0,
 		})
 		if w.Code != http.StatusInternalServerError {
 			t.Errorf("expected 500, got %d", w.Code)
@@ -118,7 +118,7 @@ func TestGetUserExercise(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "bench-press", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "bench-press", "compendiumVersion": 1,
 	})
 
 	t.Run("found", func(t *testing.T) {
@@ -128,7 +128,7 @@ func TestGetUserExercise(t *testing.T) {
 		}
 		var result models.UserExercise
 		json.Unmarshal(w.Body.Bytes(), &result)
-		if result.ExerciseTemplateID != "bench-press" {
+		if result.CompendiumExerciseID != "bench-press" {
 			t.Error("get response mismatch")
 		}
 	})
@@ -146,7 +146,7 @@ func TestDeleteUserExercise(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "bench-press", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "bench-press", "compendiumVersion": 1,
 	})
 
 	t.Run("success", func(t *testing.T) {

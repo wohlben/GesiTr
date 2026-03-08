@@ -50,15 +50,12 @@ RUN npx playwright install chromium
 COPY --chown=node:node web/playwright.config.ts ./
 COPY --chown=node:node web/e2e/ ./e2e/
 COPY --from=go-builder --chown=node:node /app/gesitr /app/gesitr
-COPY --from=go-builder --chown=node:node /app/seed /app/seed
-COPY --from=go-builder --chown=node:node /app/data/ /app/data/
 ENV PLAYWRIGHT_TEST_BASE_URL=http://localhost:8080
 ENV AUTH_FALLBACK_USER=e2e-tester
 WORKDIR /app
-RUN ./seed
 RUN ./gesitr & SERVER_PID=$! && \
     sleep 2 && \
-    cd web && npx playwright test --project=chromium ; \
+    cd web && npx playwright test ; \
     TEST_EXIT=$? ; kill $SERVER_PID 2>/dev/null ; exit $TEST_EXIT
 RUN date -u '+%Y-%m-%dT%H:%M:%SZ' > /tmp/.e2e-passed
 

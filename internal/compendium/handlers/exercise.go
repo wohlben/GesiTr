@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 	"time"
 
 	"gesitr/internal/compendium/models"
@@ -292,6 +293,28 @@ func ListExerciseVersions(c *gin.Context) {
 		entries[i] = history[i].ToVersionEntry()
 	}
 	c.JSON(http.StatusOK, entries)
+}
+
+func GetExerciseVersion(c *gin.Context) {
+	version, err := strconv.Atoi(c.Param("version"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid version"})
+		return
+	}
+
+	var entity models.ExerciseEntity
+	if err := database.DB.Unscoped().Where("template_id = ?", c.Param("templateId")).First(&entity).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
+		return
+	}
+
+	var history models.ExerciseHistoryEntity
+	if err := database.DB.Where("exercise_id = ? AND version = ?", entity.ID, version).First(&history).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Version not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, history.ToVersionEntry())
 }
 
 func DeleteExercise(c *gin.Context) {

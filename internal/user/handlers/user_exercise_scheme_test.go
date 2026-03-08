@@ -14,7 +14,7 @@ func TestListUserExerciseSchemes(t *testing.T) {
 
 	// Create a user exercise to link schemes to
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "bench-press", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "bench-press", "compendiumVersion": 1,
 	})
 
 	t.Run("empty list", func(t *testing.T) {
@@ -86,7 +86,7 @@ func TestCreateUserExerciseScheme(t *testing.T) {
 
 	// Create a user exercise first
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "squat", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
 	})
 
 	t.Run("success with rep-based fields", func(t *testing.T) {
@@ -166,7 +166,7 @@ func TestGetUserExerciseScheme(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "deadlift", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "deadlift", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"userExerciseId": 1, "measurementType": "REP_BASED",
@@ -198,7 +198,7 @@ func TestUpdateUserExerciseScheme(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "bench-press", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "bench-press", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"userExerciseId": 1, "measurementType": "REP_BASED",
@@ -246,7 +246,7 @@ func TestDeleteUserExerciseScheme(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "row", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "row", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"userExerciseId": 1, "measurementType": "REP_BASED", "sets": 4, "reps": 12,

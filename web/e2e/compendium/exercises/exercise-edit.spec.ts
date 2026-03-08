@@ -1,67 +1,73 @@
 import { expect, test } from '@playwright/test';
+import { createExercise, deleteExercise, toSlug } from '../../helpers';
 
 const viewports = [
   { name: 'desktop', width: 1280, height: 720 },
   { name: 'mobile', width: 375, height: 667 },
 ];
 
+const variantNames: Record<string, string> = {
+  'desktop-light': 'Tricep Extension',
+  'desktop-dark': 'Tricep Dip',
+  'mobile-light': 'Skull Crusher',
+  'mobile-dark': 'Cable Pushdown',
+};
+
 test.describe('/compendium/exercises/:id/:slug/edit', () => {
   for (const viewport of viewports) {
     test.describe(viewport.name, () => {
       test.use({ viewport: { width: viewport.width, height: viewport.height } });
 
-      test('light', async ({ page }) => {
-        await page.goto('/compendium/exercises/1/3-4-sit-up/edit', { waitUntil: 'networkidle' });
+      test('light', async ({ request, page }) => {
+        const name = variantNames[`${viewport.name}-light`];
+        const exercise = await createExercise(request, { name });
+        await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.name)}/edit`, {
+          waitUntil: 'networkidle',
+        });
         await expect(page.locator('h1')).toHaveText('Edit Exercise');
         await expect(page).toHaveScreenshot(`${viewport.name}-light.png`);
+        await deleteExercise(request, exercise.id);
       });
 
-      test('dark', async ({ page }) => {
+      test('dark', async ({ request, page }) => {
+        const name = variantNames[`${viewport.name}-dark`];
+        const exercise = await createExercise(request, { name });
         await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto('/compendium/exercises/1/3-4-sit-up/edit', { waitUntil: 'networkidle' });
+        await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.name)}/edit`, {
+          waitUntil: 'networkidle',
+        });
         await expect(page.locator('h1')).toHaveText('Edit Exercise');
         await expect(page).toHaveScreenshot(`${viewport.name}-dark.png`);
+        await deleteExercise(request, exercise.id);
       });
     });
   }
 
-  test('edits name and verifies detail and list views update', async ({ page }) => {
-    await page.goto('/compendium/exercises/1/3-4-sit-up/edit', { waitUntil: 'networkidle' });
+  test('edits name and verifies detail and list views update', async ({ request, page }) => {
+    const exercise = await createExercise(request, { name: 'Edit Test Exercise' });
+    await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.name)}/edit`, {
+      waitUntil: 'networkidle',
+    });
     await expect(page.locator('h1')).toHaveText('Edit Exercise');
 
     const nameInput = page.locator('#name');
-    const originalName = await nameInput.inputValue();
-    const editedName = `${originalName} (edited)`;
+    const editedName = 'Edit Test Exercise (edited)';
     await nameInput.clear();
     await nameInput.fill(editedName);
 
-    // Submit and wait for the PUT to complete, then navigation to detail page
     await Promise.all([
       page.waitForResponse(
         (r) => r.url().includes('/api/exercises/') && r.request().method() === 'PUT',
       ),
       page.locator('button[type="submit"]').click(),
     ]);
-    await page.waitForURL(/\/compendium\/exercises\/1\//);
+    await page.waitForURL(new RegExp(`/compendium/exercises/${exercise.id}/`));
 
-    // Verify detail page shows updated name in the header
     await expect(page.locator('h1')).toHaveText(editedName);
 
-    // Navigate to list page and verify updated name appears
     await page.goto('/compendium/exercises', { waitUntil: 'networkidle' });
     await expect(page.locator('table')).toContainText(editedName);
 
-    // Restore original name
-    await page.goto('/compendium/exercises/1/3-4-sit-up/edit', { waitUntil: 'networkidle' });
-    await page.locator('#name').clear();
-    await page.locator('#name').fill(originalName);
-    await Promise.all([
-      page.waitForResponse(
-        (r) => r.url().includes('/api/exercises/') && r.request().method() === 'PUT',
-      ),
-      page.locator('button[type="submit"]').click(),
-    ]);
-    await page.waitForURL(/\/compendium\/exercises\/1\//);
-    await expect(page.locator('h1')).toHaveText(originalName);
+    await deleteExercise(request, exercise.id);
   });
 });

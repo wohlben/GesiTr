@@ -26,10 +26,10 @@ func TestListUserEquipment(t *testing.T) {
 
 	// Seed data
 	doJSON(r, "POST", "/api/user/equipment", map[string]any{
-		"owner": "alice", "equipmentTemplateId": "barbell", "compendiumVersion": 1,
+		"owner": "alice", "compendiumEquipmentId": "barbell", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/equipment", map[string]any{
-		"owner": "bob", "equipmentTemplateId": "dumbbell", "compendiumVersion": 2,
+		"owner": "bob", "compendiumEquipmentId": "dumbbell", "compendiumVersion": 2,
 	})
 
 	t.Run("list all", func(t *testing.T) {
@@ -50,11 +50,11 @@ func TestListUserEquipment(t *testing.T) {
 		}
 	})
 
-	t.Run("filter by equipmentTemplateId", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/user/equipment?equipmentTemplateId=dumbbell", nil)
+	t.Run("filter by compendiumEquipmentId", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/user/equipment?compendiumEquipmentId=dumbbell", nil)
 		var result []models.UserEquipment
 		json.Unmarshal(w.Body.Bytes(), &result)
-		if len(result) != 1 || result[0].EquipmentTemplateID != "dumbbell" {
+		if len(result) != 1 || result[0].CompendiumEquipmentID != "dumbbell" {
 			t.Errorf("templateId filter: got %d results", len(result))
 		}
 	})
@@ -74,21 +74,21 @@ func TestCreateUserEquipment(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/user/equipment", map[string]any{
-			"owner": "alice", "equipmentTemplateId": "kettlebell", "compendiumVersion": 1,
+			"owner": "alice", "compendiumEquipmentId": "kettlebell", "compendiumVersion": 1,
 		})
 		if w.Code != http.StatusCreated {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
 		}
 		var result models.UserEquipment
 		json.Unmarshal(w.Body.Bytes(), &result)
-		if result.ID == 0 || result.Owner != "alice" || result.EquipmentTemplateID != "kettlebell" || result.CompendiumVersion != 1 {
+		if result.ID == 0 || result.Owner != "alice" || result.CompendiumEquipmentID != "kettlebell" || result.CompendiumVersion != 1 {
 			t.Error("create response mismatch")
 		}
 	})
 
 	t.Run("duplicate import", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/user/equipment", map[string]any{
-			"owner": "alice", "equipmentTemplateId": "kettlebell", "compendiumVersion": 1,
+			"owner": "alice", "compendiumEquipmentId": "kettlebell", "compendiumVersion": 1,
 		})
 		if w.Code != http.StatusInternalServerError {
 			t.Errorf("expected 500 for duplicate, got %d", w.Code)
@@ -105,7 +105,7 @@ func TestCreateUserEquipment(t *testing.T) {
 	t.Run("db error", func(t *testing.T) {
 		closeDB(t)
 		w := doJSON(r, "POST", "/api/user/equipment", map[string]any{
-			"owner": "x", "equipmentTemplateId": "x", "compendiumVersion": 0,
+			"owner": "x", "compendiumEquipmentId": "x", "compendiumVersion": 0,
 		})
 		if w.Code != http.StatusInternalServerError {
 			t.Errorf("expected 500, got %d", w.Code)
@@ -118,7 +118,7 @@ func TestGetUserEquipment(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/equipment", map[string]any{
-		"owner": "alice", "equipmentTemplateId": "barbell", "compendiumVersion": 1,
+		"owner": "alice", "compendiumEquipmentId": "barbell", "compendiumVersion": 1,
 	})
 
 	t.Run("found", func(t *testing.T) {
@@ -128,7 +128,7 @@ func TestGetUserEquipment(t *testing.T) {
 		}
 		var result models.UserEquipment
 		json.Unmarshal(w.Body.Bytes(), &result)
-		if result.EquipmentTemplateID != "barbell" {
+		if result.CompendiumEquipmentID != "barbell" {
 			t.Error("get response mismatch")
 		}
 	})
@@ -146,7 +146,7 @@ func TestDeleteUserEquipment(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/equipment", map[string]any{
-		"owner": "alice", "equipmentTemplateId": "barbell", "compendiumVersion": 1,
+		"owner": "alice", "compendiumEquipmentId": "barbell", "compendiumVersion": 1,
 	})
 
 	t.Run("success", func(t *testing.T) {

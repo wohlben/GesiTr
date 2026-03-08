@@ -13,7 +13,7 @@ func TestRecordCreatedOnSetCompletion(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "squat", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"userExerciseId": 1, "measurementType": "REP_BASED",
@@ -64,7 +64,7 @@ func TestRecordUpdatedOnBetterPerformance(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "squat", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"userExerciseId": 1, "measurementType": "REP_BASED",
@@ -110,7 +110,7 @@ func TestRecordNotUpdatedOnWorsePerformance(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "squat", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"userExerciseId": 1, "measurementType": "REP_BASED",
@@ -156,7 +156,7 @@ func TestNoRecordWhenNotCompleted(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "squat", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"userExerciseId": 1, "measurementType": "REP_BASED",
@@ -191,7 +191,7 @@ func TestDifferentMeasurementTypes(t *testing.T) {
 
 	// TIME_BASED exercise
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "plank", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "plank", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"userExerciseId": 1, "measurementType": "TIME_BASED",
@@ -226,7 +226,7 @@ func TestDifferentMeasurementTypes(t *testing.T) {
 
 	// DISTANCE_BASED exercise
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "run", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "run", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"userExerciseId": 2, "measurementType": "DISTANCE_BASED",
@@ -255,7 +255,7 @@ func TestPerExerciseNotPerScheme(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "squat", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
 	})
 	// Two schemes for the same exercise
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
@@ -310,10 +310,10 @@ func TestListAndGetRecordEndpoints(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "squat", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "bob", "exerciseTemplateId": "bench", "compendiumVersion": 1,
+		"owner": "bob", "compendiumExerciseId": "bench", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"userExerciseId": 1, "measurementType": "REP_BASED",

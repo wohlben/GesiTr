@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { createEquipment, deleteEquipment } from '../../helpers';
 
 const viewports = [
   { name: 'desktop', width: 1280, height: 720 },
@@ -10,62 +11,66 @@ test.describe('/compendium/equipment/:id/:slug/edit', () => {
     test.describe(viewport.name, () => {
       test.use({ viewport: { width: viewport.width, height: viewport.height } });
 
-      test('light', async ({ page }) => {
-        await page.goto('/compendium/equipment/1/dumbbells-pair/edit', {
+      test('light', async ({ request, page }) => {
+        const equipment = await createEquipment(request, {
+          name: 'jump-rope',
+          displayName: 'Jump Rope',
+        });
+        await page.goto(`/compendium/equipment/${equipment.id}/${equipment.name}/edit`, {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText('Edit Equipment');
         await expect(page).toHaveScreenshot(`${viewport.name}-light.png`);
+        await deleteEquipment(request, equipment.id);
       });
 
-      test('dark', async ({ page }) => {
+      test('dark', async ({ request, page }) => {
+        const equipment = await createEquipment(request, {
+          name: 'jump-rope',
+          displayName: 'Jump Rope',
+        });
         await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto('/compendium/equipment/1/dumbbells-pair/edit', {
+        await page.goto(`/compendium/equipment/${equipment.id}/${equipment.name}/edit`, {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText('Edit Equipment');
         await expect(page).toHaveScreenshot(`${viewport.name}-dark.png`);
+        await deleteEquipment(request, equipment.id);
       });
     });
   }
 
-  test('edits display name and verifies detail and list views update', async ({ page }) => {
-    await page.goto('/compendium/equipment/1/dumbbells-pair/edit', { waitUntil: 'networkidle' });
+  test('edits display name and verifies detail and list views update', async ({
+    request,
+    page,
+  }) => {
+    const equipment = await createEquipment(request, {
+      name: 'edit-test-equipment',
+      displayName: 'Edit Test Equipment',
+    });
+    await page.goto(`/compendium/equipment/${equipment.id}/${equipment.name}/edit`, {
+      waitUntil: 'networkidle',
+    });
     await expect(page.locator('h1')).toHaveText('Edit Equipment');
 
     const displayNameInput = page.locator('#displayName');
-    const originalDisplayName = await displayNameInput.inputValue();
-    const editedDisplayName = `${originalDisplayName} (edited)`;
+    const editedDisplayName = 'Edit Test Equipment (edited)';
     await displayNameInput.clear();
     await displayNameInput.fill(editedDisplayName);
 
-    // Submit and wait for the PUT to complete, then navigation to detail page
     await Promise.all([
       page.waitForResponse(
         (r) => r.url().includes('/api/equipment/') && r.request().method() === 'PUT',
       ),
       page.locator('button[type="submit"]').click(),
     ]);
-    await page.waitForURL(/\/compendium\/equipment\/1\//);
+    await page.waitForURL(new RegExp(`/compendium/equipment/${equipment.id}/`));
 
-    // Verify detail page shows updated display name in the header
     await expect(page.locator('h1')).toHaveText(editedDisplayName);
 
-    // Navigate to list page and verify updated name appears
     await page.goto('/compendium/equipment', { waitUntil: 'networkidle' });
     await expect(page.locator('table')).toContainText(editedDisplayName);
 
-    // Restore original display name
-    await page.goto('/compendium/equipment/1/dumbbells-pair/edit', { waitUntil: 'networkidle' });
-    await page.locator('#displayName').clear();
-    await page.locator('#displayName').fill(originalDisplayName);
-    await Promise.all([
-      page.waitForResponse(
-        (r) => r.url().includes('/api/equipment/') && r.request().method() === 'PUT',
-      ),
-      page.locator('button[type="submit"]').click(),
-    ]);
-    await page.waitForURL(/\/compendium\/equipment\/1\//);
-    await expect(page.locator('h1')).toHaveText(originalDisplayName);
+    await deleteEquipment(request, equipment.id);
   });
 });

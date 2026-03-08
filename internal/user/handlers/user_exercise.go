@@ -15,8 +15,8 @@ func ListUserExercises(c *gin.Context) {
 	if v := c.Query("owner"); v != "" {
 		db = db.Where("owner = ?", v)
 	}
-	if v := c.Query("exerciseTemplateId"); v != "" {
-		db = db.Where("exercise_template_id = ?", v)
+	if v := c.Query("compendiumExerciseId"); v != "" {
+		db = db.Where("compendium_exercise_id = ?", v)
 	}
 
 	var entities []models.UserExerciseEntity

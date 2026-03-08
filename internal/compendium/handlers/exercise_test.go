@@ -661,6 +661,83 @@ func TestListExerciseVersions(t *testing.T) {
 	})
 }
 
+func TestGetExerciseVersion(t *testing.T) {
+	setupTestDB(t)
+	r := newRouter()
+
+	// Create exercise (v0) and update it (v1)
+	doJSON(r, "POST", "/api/exercises", newExercisePayload("Press", "press"))
+	doJSON(r, "PUT", "/api/exercises/1", map[string]any{
+		"name": "Press v1", "templateId": "press", "type": "STRENGTH",
+		"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
+		"description": "v1", "createdBy": "system",
+		"force": []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
+	})
+
+	t.Run("returns specific version", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/exercises/templates/press/versions/0", nil)
+		if w.Code != http.StatusOK {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var entry models.VersionEntry
+		json.Unmarshal(w.Body.Bytes(), &entry)
+		if entry.Version != 0 {
+			t.Errorf("version = %d, want 0", entry.Version)
+		}
+		var snapshot models.Exercise
+		json.Unmarshal(entry.Snapshot, &snapshot)
+		if snapshot.Name != "Press" {
+			t.Errorf("snapshot name = %q, want Press", snapshot.Name)
+		}
+	})
+
+	t.Run("returns v1", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/exercises/templates/press/versions/1", nil)
+		if w.Code != http.StatusOK {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var entry models.VersionEntry
+		json.Unmarshal(w.Body.Bytes(), &entry)
+		if entry.Version != 1 {
+			t.Errorf("version = %d, want 1", entry.Version)
+		}
+		var snapshot models.Exercise
+		json.Unmarshal(entry.Snapshot, &snapshot)
+		if snapshot.Name != "Press v1" {
+			t.Errorf("snapshot name = %q, want Press v1", snapshot.Name)
+		}
+	})
+
+	t.Run("works for soft-deleted exercises", func(t *testing.T) {
+		doJSON(r, "DELETE", "/api/exercises/1", nil)
+		w := doJSON(r, "GET", "/api/exercises/templates/press/versions/0", nil)
+		if w.Code != http.StatusOK {
+			t.Errorf("expected 200 for soft-deleted exercise version, got %d", w.Code)
+		}
+	})
+
+	t.Run("template not found", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/exercises/templates/nonexistent/versions/0", nil)
+		if w.Code != http.StatusNotFound {
+			t.Errorf("expected 404, got %d", w.Code)
+		}
+	})
+
+	t.Run("version not found", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/exercises/templates/press/versions/999", nil)
+		if w.Code != http.StatusNotFound {
+			t.Errorf("expected 404, got %d", w.Code)
+		}
+	})
+
+	t.Run("invalid version", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/exercises/templates/press/versions/abc", nil)
+		if w.Code != http.StatusBadRequest {
+			t.Errorf("expected 400, got %d", w.Code)
+		}
+	})
+}
+
 func TestDeleteExercise(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()

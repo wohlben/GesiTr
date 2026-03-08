@@ -4,6 +4,40 @@ import { MainLayout } from './layout/main-layout';
 export const routes: Routes = [
   { path: '', redirectTo: '/compendium/exercises', pathMatch: 'full' },
   {
+    path: 'user',
+    component: MainLayout,
+    children: [
+      {
+        path: 'exercises/:id',
+        loadComponent: () =>
+          import('$features/user/user-exercise-detail/user-exercise-detail').then(
+            (m) => m.UserExerciseDetail,
+          ),
+      },
+      {
+        path: 'exercises',
+        loadComponent: () =>
+          import('$features/user/user-exercise-list/user-exercise-list').then(
+            (m) => m.UserExerciseList,
+          ),
+      },
+      {
+        path: 'equipment/:id',
+        loadComponent: () =>
+          import('$features/user/user-equipment-detail/user-equipment-detail').then(
+            (m) => m.UserEquipmentDetail,
+          ),
+      },
+      {
+        path: 'equipment',
+        loadComponent: () =>
+          import('$features/user/user-equipment-list/user-equipment-list').then(
+            (m) => m.UserEquipmentList,
+          ),
+      },
+    ],
+  },
+  {
     path: 'compendium',
     component: MainLayout,
     children: [

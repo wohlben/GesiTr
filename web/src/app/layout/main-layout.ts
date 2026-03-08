@@ -32,8 +32,10 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 })
 export class MainLayout {
   navLinks = [
-    { path: 'exercises', label: 'Exercises' },
-    { path: 'equipment', label: 'Equipment' },
-    { path: 'exercise-groups', label: 'Exercise Groups' },
+    { path: '/compendium/exercises', label: 'Exercises' },
+    { path: '/compendium/equipment', label: 'Equipment' },
+    { path: '/compendium/exercise-groups', label: 'Exercise Groups' },
+    { path: '/user/exercises', label: 'My Exercises' },
+    { path: '/user/equipment', label: 'My Equipment' },
   ];
 }

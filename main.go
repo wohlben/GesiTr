@@ -63,6 +63,7 @@ func setupRoutes(r *gin.Engine) {
 		exercises.PUT("/:id", handlers.UpdateExercise)
 		exercises.DELETE("/:id", handlers.DeleteExercise)
 		exercises.GET("/:id/versions", handlers.ListExerciseVersions)
+		exercises.GET("/templates/:templateId/versions/:version", handlers.GetExerciseVersion)
 	}
 
 	equipment := api.Group("/equipment")
@@ -73,6 +74,7 @@ func setupRoutes(r *gin.Engine) {
 		equipment.PUT("/:id", handlers.UpdateEquipment)
 		equipment.DELETE("/:id", handlers.DeleteEquipment)
 		equipment.GET("/:id/versions", handlers.ListEquipmentVersions)
+		equipment.GET("/templates/:templateId/versions/:version", handlers.GetEquipmentVersion)
 	}
 
 	fulfillments := api.Group("/fulfillments")
@@ -223,7 +225,19 @@ func buildApp() *gin.Engine {
 	r := gin.Default()
 	setupRoutes(r)
 
-	if os.Getenv("DEV") != "true" {
+	if os.Getenv("DEV") == "true" {
+		r.POST("/api/admin/reset", func(c *gin.Context) {
+			database.DB.Exec("PRAGMA foreign_keys = OFF")
+			var tables []struct{ Name string }
+			database.DB.Raw("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").Scan(&tables)
+			for _, t := range tables {
+				database.DB.Exec("DELETE FROM " + t.Name)
+			}
+			database.DB.Exec("DELETE FROM sqlite_sequence")
+			database.DB.Exec("PRAGMA foreign_keys = ON")
+			c.JSON(http.StatusOK, gin.H{"status": "reset"})
+		})
+	} else {
 		setupSPA(r)
 	}
 	return r

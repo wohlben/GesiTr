@@ -81,6 +81,22 @@ export class CompendiumApiClient {
     );
   }
 
+  fetchExerciseVersion(templateId: string, version: number): Promise<VersionEntry<Exercise>> {
+    return firstValueFrom(
+      this.http.get<VersionEntry<Exercise>>(
+        `/api/exercises/templates/${templateId}/versions/${version}`,
+      ),
+    );
+  }
+
+  fetchEquipmentVersion(templateId: string, version: number): Promise<VersionEntry<Equipment>> {
+    return firstValueFrom(
+      this.http.get<VersionEntry<Equipment>>(
+        `/api/equipment/templates/${templateId}/versions/${version}`,
+      ),
+    );
+  }
+
   deleteExercise(id: number): Promise<void> {
     return firstValueFrom(this.http.delete<void>(`/api/exercises/${id}`));
   }

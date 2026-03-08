@@ -15,8 +15,8 @@ func ListUserEquipment(c *gin.Context) {
 	if v := c.Query("owner"); v != "" {
 		db = db.Where("owner = ?", v)
 	}
-	if v := c.Query("equipmentTemplateId"); v != "" {
-		db = db.Where("equipment_template_id = ?", v)
+	if v := c.Query("compendiumEquipmentId"); v != "" {
+		db = db.Where("compendium_equipment_id = ?", v)
 	}
 
 	var entities []models.UserEquipmentEntity

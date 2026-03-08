@@ -15,7 +15,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 
 	// 1. Create a user exercise (referencing a compendium exercise template)
 	w := doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "barbell-squat", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "barbell-squat", "compendiumVersion": 1,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create user exercise: status = %d, body = %s", w.Code, w.Body.String())
@@ -40,7 +40,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 
 	// 3. Create a second user exercise + scheme for variety
 	w = doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "bench-press", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "bench-press", "compendiumVersion": 1,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create second user exercise: status = %d", w.Code)

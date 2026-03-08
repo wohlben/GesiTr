@@ -7,7 +7,8 @@ import {
   injectQueryClient,
 } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
-import { exerciseKeys } from '$core/query-keys';
+import { UserApiClient } from '$core/api-clients/user-api-client';
+import { exerciseKeys, userExerciseKeys } from '$core/query-keys';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
 
@@ -21,6 +22,14 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
       [errorMessage]="exerciseQuery.isError() ? exerciseQuery.error().message : undefined"
     >
       <div actions class="flex gap-2">
+        <button
+          type="button"
+          (click)="addMutation.mutate()"
+          [disabled]="addMutation.isPending()"
+          class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+        >
+          {{ addMutation.isPending() ? 'Adding...' : 'Add to My Exercises' }}
+        </button>
         @if (hasHistory()) {
           <a
             routerLink="./history"
@@ -84,6 +93,7 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
 })
 export class ExerciseDetail {
   private api = inject(CompendiumApiClient);
+  private userApi = inject(UserApiClient);
   private router = inject(Router);
   private queryClient = injectQueryClient();
   private params = toSignal(inject(ActivatedRoute).paramMap);
@@ -114,6 +124,20 @@ export class ExerciseDetail {
     onSuccess: () => {
       this.queryClient.invalidateQueries({ queryKey: exerciseKeys.all() });
       this.router.navigate(['/compendium/exercises']);
+    },
+  }));
+
+  addMutation = injectMutation(() => ({
+    mutationFn: () => {
+      const exercise = this.exerciseQuery.data()!;
+      return this.userApi.createUserExercise({
+        compendiumExerciseId: exercise.templateId,
+        compendiumVersion: exercise.version,
+      });
+    },
+    onSuccess: (created) => {
+      this.queryClient.invalidateQueries({ queryKey: userExerciseKeys.all() });
+      this.router.navigate(['/user/exercises', created.id]);
     },
   }));
 }

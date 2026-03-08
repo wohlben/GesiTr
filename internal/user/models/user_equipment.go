@@ -1,8 +1,8 @@
 package models
 
 type UserEquipment struct {
-	BaseModel           `tstype:",extends"`
-	Owner               string `json:"owner"`
-	EquipmentTemplateID string `json:"equipmentTemplateId"`
-	CompendiumVersion   int    `json:"compendiumVersion"`
+	BaseModel             `tstype:",extends"`
+	Owner                 string `json:"owner"`
+	CompendiumEquipmentID string `json:"compendiumEquipmentId"`
+	CompendiumVersion     int    `json:"compendiumVersion"`
 }

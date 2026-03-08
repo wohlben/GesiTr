@@ -58,6 +58,7 @@ func newRouter() *gin.Engine {
 	exercises.PUT("/:id", UpdateExercise)
 	exercises.DELETE("/:id", DeleteExercise)
 	exercises.GET("/:id/versions", ListExerciseVersions)
+	exercises.GET("/templates/:templateId/versions/:version", GetExerciseVersion)
 
 	equipment := api.Group("/equipment")
 	equipment.GET("", ListEquipment)
@@ -66,6 +67,7 @@ func newRouter() *gin.Engine {
 	equipment.PUT("/:id", UpdateEquipment)
 	equipment.DELETE("/:id", DeleteEquipment)
 	equipment.GET("/:id/versions", ListEquipmentVersions)
+	equipment.GET("/templates/:templateId/versions/:version", GetEquipmentVersion)
 
 	fulfillments := api.Group("/fulfillments")
 	fulfillments.GET("", ListFulfillments)

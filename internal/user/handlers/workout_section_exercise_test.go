@@ -14,7 +14,7 @@ func TestListWorkoutSectionExercises(t *testing.T) {
 
 	// Setup: exercise -> scheme -> workout -> section
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "bench-press", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "bench-press", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"userExerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
@@ -94,7 +94,7 @@ func TestCreateWorkoutSectionExercise(t *testing.T) {
 
 	// Setup
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "squat", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"userExerciseId": 1, "measurementType": "REP_BASED", "sets": 5, "reps": 5,
@@ -152,7 +152,7 @@ func TestDeleteWorkoutSectionExercise(t *testing.T) {
 
 	// Setup
 	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "exerciseTemplateId": "deadlift", "compendiumVersion": 1,
+		"owner": "alice", "compendiumExerciseId": "deadlift", "compendiumVersion": 1,
 	})
 	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"userExerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 8,

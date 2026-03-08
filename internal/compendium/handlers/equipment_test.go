@@ -335,6 +335,79 @@ func TestListEquipmentVersions(t *testing.T) {
 	})
 }
 
+func TestGetEquipmentVersion(t *testing.T) {
+	setupTestDB(t)
+	r := newRouter()
+
+	// Create equipment (v0) and update it (v1)
+	doJSON(r, "POST", "/api/equipment", map[string]any{
+		"name": "plate", "displayName": "Plate", "description": "A weight plate",
+		"category": "free_weights", "templateId": "plate", "createdBy": "system",
+	})
+	doJSON(r, "PUT", "/api/equipment/1", map[string]any{
+		"name": "bumper-plate", "displayName": "Bumper Plate", "description": "Rubber coated",
+		"category": "free_weights", "templateId": "plate", "createdBy": "system",
+	})
+
+	t.Run("returns specific version", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/equipment/templates/plate/versions/0", nil)
+		if w.Code != http.StatusOK {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var entry models.VersionEntry
+		json.Unmarshal(w.Body.Bytes(), &entry)
+		if entry.Version != 0 {
+			t.Errorf("version = %d, want 0", entry.Version)
+		}
+		var snapshot models.Equipment
+		json.Unmarshal(entry.Snapshot, &snapshot)
+		if snapshot.Name != "plate" {
+			t.Errorf("snapshot name = %q, want plate", snapshot.Name)
+		}
+	})
+
+	t.Run("returns v1", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/equipment/templates/plate/versions/1", nil)
+		if w.Code != http.StatusOK {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var entry models.VersionEntry
+		json.Unmarshal(w.Body.Bytes(), &entry)
+		if entry.Version != 1 {
+			t.Errorf("version = %d, want 1", entry.Version)
+		}
+	})
+
+	t.Run("works for soft-deleted equipment", func(t *testing.T) {
+		doJSON(r, "DELETE", "/api/equipment/1", nil)
+		w := doJSON(r, "GET", "/api/equipment/templates/plate/versions/0", nil)
+		if w.Code != http.StatusOK {
+			t.Errorf("expected 200 for soft-deleted equipment version, got %d", w.Code)
+		}
+	})
+
+	t.Run("template not found", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/equipment/templates/nonexistent/versions/0", nil)
+		if w.Code != http.StatusNotFound {
+			t.Errorf("expected 404, got %d", w.Code)
+		}
+	})
+
+	t.Run("version not found", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/equipment/templates/plate/versions/999", nil)
+		if w.Code != http.StatusNotFound {
+			t.Errorf("expected 404, got %d", w.Code)
+		}
+	})
+
+	t.Run("invalid version", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/equipment/templates/plate/versions/abc", nil)
+		if w.Code != http.StatusBadRequest {
+			t.Errorf("expected 400, got %d", w.Code)
+		}
+	})
+}
+
 func TestDeleteEquipment(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
