@@ -57,7 +57,7 @@ export async function createEquipment(
     name: 'test-equipment',
     displayName: 'Test Equipment',
     description: '',
-    category: 'FREE_WEIGHTS',
+    category: 'free_weights',
     ...overrides,
   };
   const res = await request.post('/api/equipment', { data });

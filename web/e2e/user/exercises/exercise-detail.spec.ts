@@ -33,7 +33,7 @@ test.describe('/user/exercises/:id', () => {
         const userExercise = await createUserExercise(request, exercise.templateId);
         await page.goto(`/user/exercises/${userExercise.id}`, { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).not.toHaveText('Exercise');
-        await expect(page).toHaveScreenshot(`${viewport.name}/light/user/exercises/[id].png`);
+        await expect(page).toHaveScreenshot([viewport.name, 'light', 'user', 'exercises', '[id].png']);
         await deleteUserExercise(request, userExercise.id);
         await deleteExercise(request, exercise.id);
       });
@@ -49,7 +49,7 @@ test.describe('/user/exercises/:id', () => {
         await page.emulateMedia({ colorScheme: 'dark' });
         await page.goto(`/user/exercises/${userExercise.id}`, { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).not.toHaveText('Exercise');
-        await expect(page).toHaveScreenshot(`${viewport.name}/dark/user/exercises/[id].png`);
+        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'user', 'exercises', '[id].png']);
         await deleteUserExercise(request, userExercise.id);
         await deleteExercise(request, exercise.id);
       });

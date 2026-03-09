@@ -13,14 +13,14 @@ test.describe('/compendium/equipment/new', () => {
       test('light', async ({ page }) => {
         await page.goto('/compendium/equipment/new', { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toHaveText('New Equipment');
-        await expect(page).toHaveScreenshot(`${viewport.name}/light/compendium/equipment/new.png`);
+        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'equipment', 'new.png']);
       });
 
       test('dark', async ({ page }) => {
         await page.emulateMedia({ colorScheme: 'dark' });
         await page.goto('/compendium/equipment/new', { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toHaveText('New Equipment');
-        await expect(page).toHaveScreenshot(`${viewport.name}/dark/compendium/equipment/new.png`);
+        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'equipment', 'new.png']);
       });
     });
   }

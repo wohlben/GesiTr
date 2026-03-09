@@ -20,7 +20,7 @@ test.describe('/compendium/equipment/:id/:slug/edit', () => {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText('Edit Equipment');
-        await expect(page).toHaveScreenshot(`${viewport.name}/light/compendium/equipment/[id]/edit.png`);
+        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'equipment', '[id]', 'edit.png']);
         await deleteEquipment(request, equipment.id);
       });
 
@@ -34,7 +34,7 @@ test.describe('/compendium/equipment/:id/:slug/edit', () => {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText('Edit Equipment');
-        await expect(page).toHaveScreenshot(`${viewport.name}/dark/compendium/equipment/[id]/edit.png`);
+        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'equipment', '[id]', 'edit.png']);
         await deleteEquipment(request, equipment.id);
       });
     });
