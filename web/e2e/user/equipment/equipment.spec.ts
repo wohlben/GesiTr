@@ -51,7 +51,7 @@ test.describe('/user/equipment', () => {
         await expect(page.locator('h1')).toHaveText('My Equipment');
         await expect(page.locator('table tbody tr')).toHaveCount(eqList.length);
         await expect(page.locator('table')).toContainText(eqList[0].displayName);
-        await expect(page).toHaveScreenshot([viewport.name, 'light', 'user', 'equipment.png']);
+        await expect(page).toHaveScreenshot([viewport.name, 'light', 'user', 'equipment.png'], { fullPage: true });
         for (const item of items) {
           await deleteUserEquipment(request, item.userEquipment.id);
           await deleteEquipment(request, item.equipment.id);
@@ -71,7 +71,7 @@ test.describe('/user/equipment', () => {
         await expect(page.locator('h1')).toHaveText('My Equipment');
         await expect(page.locator('table tbody tr')).toHaveCount(eqList.length);
         await expect(page.locator('table')).toContainText(eqList[0].displayName);
-        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'user', 'equipment.png']);
+        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'user', 'equipment.png'], { fullPage: true });
         for (const item of items) {
           await deleteUserEquipment(request, item.userEquipment.id);
           await deleteEquipment(request, item.equipment.id);

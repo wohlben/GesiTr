@@ -29,7 +29,7 @@ test.describe('/compendium/exercises/:id', () => {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText(name);
-        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'exercises', '[id].png']);
+        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'exercises', '[id].png'], { fullPage: true });
         await deleteExercise(request, exercise.id);
       });
 
@@ -45,7 +45,7 @@ test.describe('/compendium/exercises/:id', () => {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText(name);
-        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'exercises', '[id].png']);
+        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'exercises', '[id].png'], { fullPage: true });
         await deleteExercise(request, exercise.id);
       });
     });

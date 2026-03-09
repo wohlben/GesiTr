@@ -144,3 +144,84 @@ export async function createUserEquipment(
 export async function deleteUserEquipment(request: APIRequestContext, id: number) {
   await request.delete(`/api/user/equipment/${id}`);
 }
+
+export async function createWorkout(
+  request: APIRequestContext,
+  overrides: Record<string, unknown> = {},
+) {
+  const data = {
+    name: 'Test Workout',
+    date: '2026-01-15T00:00:00Z',
+    notes: '',
+    ...overrides,
+  };
+  const res = await request.post('/api/user/workouts', { data });
+  expect(res.ok(), `Failed to create workout: ${await res.text()}`).toBeTruthy();
+  return res.json();
+}
+
+export async function deleteWorkout(request: APIRequestContext, id: number) {
+  await request.delete(`/api/user/workouts/${id}`);
+}
+
+export async function createExerciseScheme(
+  request: APIRequestContext,
+  overrides: Record<string, unknown> = {},
+) {
+  const data = {
+    measurementType: 'REP_BASED',
+    sets: 3,
+    reps: 10,
+    weight: 60,
+    restBetweenSets: 90,
+    ...overrides,
+  };
+  const res = await request.post('/api/user/exercise-schemes', { data });
+  expect(res.ok(), `Failed to create exercise scheme: ${await res.text()}`).toBeTruthy();
+  return res.json();
+}
+
+export async function deleteExerciseScheme(request: APIRequestContext, id: number) {
+  await request.delete(`/api/user/exercise-schemes/${id}`);
+}
+
+export async function createWorkoutSection(
+  request: APIRequestContext,
+  overrides: Record<string, unknown> = {},
+) {
+  const data = {
+    type: 'main',
+    position: 0,
+    ...overrides,
+  };
+  const res = await request.post('/api/user/workout-sections', { data });
+  expect(res.ok(), `Failed to create workout section: ${await res.text()}`).toBeTruthy();
+  return res.json();
+}
+
+export async function deleteWorkoutSection(request: APIRequestContext, id: number) {
+  await request.delete(`/api/user/workout-sections/${id}`);
+}
+
+export async function createWorkoutSectionExercise(
+  request: APIRequestContext,
+  overrides: Record<string, unknown> = {},
+) {
+  const data = {
+    position: 0,
+    ...overrides,
+  };
+  const res = await request.post('/api/user/workout-section-exercises', { data });
+  expect(
+    res.ok(),
+    `Failed to create workout section exercise: ${await res.text()}`,
+  ).toBeTruthy();
+  return res.json();
+}
+
+export async function deleteWorkoutSectionExercise(
+  request: APIRequestContext,
+  id: number,
+) {
+  await request.delete(`/api/user/workout-section-exercises/${id}`);
+}

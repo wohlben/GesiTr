@@ -36,7 +36,7 @@ test.describe('/compendium/equipment/:id/:slug/history', () => {
         );
         await expect(page.locator('h1')).toContainText('History');
         await freezeDynamicContent(page);
-        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'equipment', '[id]', 'history.png']);
+        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'equipment', '[id]', 'history.png'], { fullPage: true });
         await deleteEquipment(request, equipment.id);
       });
 
@@ -53,7 +53,7 @@ test.describe('/compendium/equipment/:id/:slug/history', () => {
         );
         await expect(page.locator('h1')).toContainText('History');
         await freezeDynamicContent(page);
-        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'equipment', '[id]', 'history.png']);
+        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'equipment', '[id]', 'history.png'], { fullPage: true });
         await deleteEquipment(request, equipment.id);
       });
     });

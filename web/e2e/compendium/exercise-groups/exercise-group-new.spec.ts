@@ -13,14 +13,14 @@ test.describe('/compendium/exercise-groups/new', () => {
       test('light', async ({ page }) => {
         await page.goto('/compendium/exercise-groups/new', { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toHaveText('New Exercise Group');
-        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'exercise-groups', 'new.png']);
+        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'exercise-groups', 'new.png'], { fullPage: true });
       });
 
       test('dark', async ({ page }) => {
         await page.emulateMedia({ colorScheme: 'dark' });
         await page.goto('/compendium/exercise-groups/new', { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toHaveText('New Exercise Group');
-        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'exercise-groups', 'new.png']);
+        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'exercise-groups', 'new.png'], { fullPage: true });
       });
     });
   }

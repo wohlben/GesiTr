@@ -41,7 +41,7 @@ test.describe('/compendium/exercises/:id/:slug/history', () => {
         );
         await expect(page.locator('h1')).toContainText('History');
         await freezeDynamicContent(page);
-        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'exercises', '[id]', 'history.png']);
+        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'exercises', '[id]', 'history.png'], { fullPage: true });
         await deleteExercise(request, exercise.id);
       });
 
@@ -56,7 +56,7 @@ test.describe('/compendium/exercises/:id/:slug/history', () => {
         );
         await expect(page.locator('h1')).toContainText('History');
         await freezeDynamicContent(page);
-        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'exercises', '[id]', 'history.png']);
+        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'exercises', '[id]', 'history.png'], { fullPage: true });
         await deleteExercise(request, exercise.id);
       });
     });

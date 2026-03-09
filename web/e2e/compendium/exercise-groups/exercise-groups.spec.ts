@@ -19,7 +19,7 @@ for (const viewport of viewports) {
       }
       await page.goto('/compendium/exercise-groups', { waitUntil: 'networkidle' });
       await expect(page.locator('h1')).toHaveText('Exercise Groups');
-      await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'exercise-groups.png']);
+      await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'exercise-groups.png'], { fullPage: true });
       for (const item of items) await deleteExerciseGroup(request, item.id);
     });
 
@@ -31,7 +31,7 @@ for (const viewport of viewports) {
       await page.emulateMedia({ colorScheme: 'dark' });
       await page.goto('/compendium/exercise-groups', { waitUntil: 'networkidle' });
       await expect(page.locator('h1')).toHaveText('Exercise Groups');
-      await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'exercise-groups.png']);
+      await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'exercise-groups.png'], { fullPage: true });
       for (const item of items) await deleteExerciseGroup(request, item.id);
     });
   });

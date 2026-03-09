@@ -35,6 +35,25 @@ export const routes: Routes = [
             (m) => m.UserEquipmentList,
           ),
       },
+      {
+        path: 'workouts/new',
+        loadComponent: () =>
+          import('$features/user/workout-edit/workout-edit').then((m) => m.WorkoutEdit),
+      },
+      {
+        path: 'workouts/:id/edit',
+        loadComponent: () =>
+          import('$features/user/workout-edit/workout-edit').then((m) => m.WorkoutEdit),
+      },
+      {
+        path: 'workouts/:id',
+        redirectTo: 'workouts/:id/edit',
+      },
+      {
+        path: 'workouts',
+        loadComponent: () =>
+          import('$features/user/workout-list/workout-list').then((m) => m.WorkoutList),
+      },
     ],
   },
   {

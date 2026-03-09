@@ -35,3 +35,14 @@ export const userEquipmentKeys = {
   list: () => [...userEquipmentKeys.all(), 'list'] as const,
   detail: (id: number) => [...userEquipmentKeys.all(), 'detail', id] as const,
 };
+
+export const workoutKeys = {
+  all: () => ['workouts'] as const,
+  list: () => [...workoutKeys.all(), 'list'] as const,
+  detail: (id: number) => [...workoutKeys.all(), 'detail', id] as const,
+};
+
+export const exerciseSchemeKeys = {
+  all: () => ['exercise-schemes'] as const,
+  detail: (id: number) => [...exerciseSchemeKeys.all(), 'detail', id] as const,
+};

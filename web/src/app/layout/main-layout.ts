@@ -4,10 +4,11 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-main-layout',
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  host: { class: 'block' },
   template: `
-    <div class="flex h-screen flex-col bg-gray-50 dark:bg-gray-950">
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-950">
       <nav
-        class="border-b border-gray-200 bg-white px-6 py-3 dark:border-gray-800 dark:bg-gray-900"
+        class="sticky top-0 z-20 border-b border-gray-200 bg-white px-6 py-3 dark:border-gray-800 dark:bg-gray-900"
       >
         <div class="flex items-center gap-6">
           <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">GesiTr</span>
@@ -24,7 +25,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
           </div>
         </div>
       </nav>
-      <main class="flex-1 overflow-auto p-6">
+      <main class="p-6">
         <router-outlet />
       </main>
     </div>
@@ -37,5 +38,6 @@ export class MainLayout {
     { path: '/compendium/exercise-groups', label: 'Exercise Groups' },
     { path: '/user/exercises', label: 'My Exercises' },
     { path: '/user/equipment', label: 'My Equipment' },
+    { path: '/user/workouts', label: 'My Workouts' },
   ];
 }

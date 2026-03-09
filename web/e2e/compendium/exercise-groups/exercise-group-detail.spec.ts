@@ -20,7 +20,7 @@ test.describe('/compendium/exercise-groups/:id', () => {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText('Balance Training');
-        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'exercise-groups', '[id].png']);
+        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'exercise-groups', '[id].png'], { fullPage: true });
         await deleteExerciseGroup(request, group.id);
       });
 
@@ -34,7 +34,7 @@ test.describe('/compendium/exercise-groups/:id', () => {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText('Balance Training');
-        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'exercise-groups', '[id].png']);
+        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'exercise-groups', '[id].png'], { fullPage: true });
         await deleteExerciseGroup(request, group.id);
       });
     });

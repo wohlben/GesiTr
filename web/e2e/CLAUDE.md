@@ -11,8 +11,10 @@ Screenshots are centralized in `e2e/__screenshots__/` using the `snapshotPathTem
 **MUST use array syntax** — passing a string with `/` will get sanitized by Playwright (slashes replaced with dashes). Only array args preserve the directory structure.
 
 ```typescript
-await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'exercises.png']);
+await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'exercises.png'], { fullPage: true });
 ```
+
+**MUST pass `{ fullPage: true }`** as the second argument to every `toHaveScreenshot()` call. This captures the entire scrollable page, not just the viewport. This option cannot be set in `playwright.config.ts` — it must be passed per-call.
 
 - `viewport.name` = `desktop` or `mobile`
 - Next element = `light` or `dark` (theme)

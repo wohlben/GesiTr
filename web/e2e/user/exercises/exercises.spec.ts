@@ -35,7 +35,7 @@ test.describe('/user/exercises', () => {
         await expect(page.locator('h1')).toHaveText('My Exercises');
         await expect(page.locator('table tbody tr')).toHaveCount(names.length);
         await expect(page.locator('table')).toContainText(names[0]);
-        await expect(page).toHaveScreenshot([viewport.name, 'light', 'user', 'exercises.png']);
+        await expect(page).toHaveScreenshot([viewport.name, 'light', 'user', 'exercises.png'], { fullPage: true });
         for (const item of items) {
           await deleteUserExercise(request, item.userExercise.id);
           await deleteExercise(request, item.exercise.id);
@@ -55,7 +55,7 @@ test.describe('/user/exercises', () => {
         await expect(page.locator('h1')).toHaveText('My Exercises');
         await expect(page.locator('table tbody tr')).toHaveCount(names.length);
         await expect(page.locator('table')).toContainText(names[0]);
-        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'user', 'exercises.png']);
+        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'user', 'exercises.png'], { fullPage: true });
         for (const item of items) {
           await deleteUserExercise(request, item.userExercise.id);
           await deleteExercise(request, item.exercise.id);
