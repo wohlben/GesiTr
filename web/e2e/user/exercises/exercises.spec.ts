@@ -13,14 +13,14 @@ test.describe('/user/exercises', () => {
       test('light', async ({ page }) => {
         await page.goto('/user/exercises', { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toHaveText('My Exercises');
-        await expect(page).toHaveScreenshot(`${viewport.name}-light.png`);
+        await expect(page).toHaveScreenshot(`${viewport.name}/light/user/exercises.png`);
       });
 
       test('dark', async ({ page }) => {
         await page.emulateMedia({ colorScheme: 'dark' });
         await page.goto('/user/exercises', { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toHaveText('My Exercises');
-        await expect(page).toHaveScreenshot(`${viewport.name}-dark.png`);
+        await expect(page).toHaveScreenshot(`${viewport.name}/dark/user/exercises.png`);
       });
     });
   }

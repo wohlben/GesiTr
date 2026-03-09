@@ -29,7 +29,7 @@ test.describe('/user/equipment/:id', () => {
         const userEquipment = await createUserEquipment(request, equipment.templateId);
         await page.goto(`/user/equipment/${userEquipment.id}`, { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).not.toHaveText('Equipment');
-        await expect(page).toHaveScreenshot(`${viewport.name}-light.png`);
+        await expect(page).toHaveScreenshot(`${viewport.name}/light/user/equipment/[id].png`);
         await deleteUserEquipment(request, userEquipment.id);
         await deleteEquipment(request, equipment.id);
       });
@@ -41,7 +41,7 @@ test.describe('/user/equipment/:id', () => {
         await page.emulateMedia({ colorScheme: 'dark' });
         await page.goto(`/user/equipment/${userEquipment.id}`, { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).not.toHaveText('Equipment');
-        await expect(page).toHaveScreenshot(`${viewport.name}-dark.png`);
+        await expect(page).toHaveScreenshot(`${viewport.name}/dark/user/equipment/[id].png`);
         await deleteUserEquipment(request, userEquipment.id);
         await deleteEquipment(request, equipment.id);
       });

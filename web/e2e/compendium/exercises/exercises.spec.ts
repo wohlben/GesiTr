@@ -37,7 +37,7 @@ for (const viewport of viewports) {
       }
       await page.goto('/compendium/exercises', { waitUntil: 'networkidle' });
       await expect(page.locator('h1')).toHaveText('Exercises');
-      await expect(page).toHaveScreenshot(`${viewport.name}-light.png`);
+      await expect(page).toHaveScreenshot(`${viewport.name}/light/compendium/exercises.png`);
       for (const item of items) await deleteExercise(request, item.id);
     });
 
@@ -50,7 +50,7 @@ for (const viewport of viewports) {
       await page.emulateMedia({ colorScheme: 'dark' });
       await page.goto('/compendium/exercises', { waitUntil: 'networkidle' });
       await expect(page.locator('h1')).toHaveText('Exercises');
-      await expect(page).toHaveScreenshot(`${viewport.name}-dark.png`);
+      await expect(page).toHaveScreenshot(`${viewport.name}/dark/compendium/exercises.png`);
       for (const item of items) await deleteExercise(request, item.id);
     });
   });

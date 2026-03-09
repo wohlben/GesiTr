@@ -22,7 +22,7 @@ test.describe('/compendium/equipment/:id', () => {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText('Medicine Ball');
-        await expect(page).toHaveScreenshot(`${viewport.name}-light.png`);
+        await expect(page).toHaveScreenshot(`${viewport.name}/light/compendium/equipment/[id].png`);
         await deleteEquipment(request, equipment.id);
       });
 
@@ -38,7 +38,7 @@ test.describe('/compendium/equipment/:id', () => {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText('Medicine Ball');
-        await expect(page).toHaveScreenshot(`${viewport.name}-dark.png`);
+        await expect(page).toHaveScreenshot(`${viewport.name}/dark/compendium/equipment/[id].png`);
         await deleteEquipment(request, equipment.id);
       });
     });

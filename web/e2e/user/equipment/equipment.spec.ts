@@ -13,14 +13,14 @@ test.describe('/user/equipment', () => {
       test('light', async ({ page }) => {
         await page.goto('/user/equipment', { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toHaveText('My Equipment');
-        await expect(page).toHaveScreenshot(`${viewport.name}-light.png`);
+        await expect(page).toHaveScreenshot(`${viewport.name}/light/user/equipment.png`);
       });
 
       test('dark', async ({ page }) => {
         await page.emulateMedia({ colorScheme: 'dark' });
         await page.goto('/user/equipment', { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toHaveText('My Equipment');
-        await expect(page).toHaveScreenshot(`${viewport.name}-dark.png`);
+        await expect(page).toHaveScreenshot(`${viewport.name}/dark/user/equipment.png`);
       });
     });
   }

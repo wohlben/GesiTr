@@ -25,7 +25,7 @@ for (const viewport of viewports) {
       }
       await page.goto('/compendium/equipment', { waitUntil: 'networkidle' });
       await expect(page.locator('h1')).toHaveText('Equipment');
-      await expect(page).toHaveScreenshot(`${viewport.name}-light.png`);
+      await expect(page).toHaveScreenshot(`${viewport.name}/light/compendium/equipment.png`);
       for (const item of items) await deleteEquipment(request, item.id);
     });
 
@@ -37,7 +37,7 @@ for (const viewport of viewports) {
       await page.emulateMedia({ colorScheme: 'dark' });
       await page.goto('/compendium/equipment', { waitUntil: 'networkidle' });
       await expect(page.locator('h1')).toHaveText('Equipment');
-      await expect(page).toHaveScreenshot(`${viewport.name}-dark.png`);
+      await expect(page).toHaveScreenshot(`${viewport.name}/dark/compendium/equipment.png`);
       for (const item of items) await deleteEquipment(request, item.id);
     });
   });

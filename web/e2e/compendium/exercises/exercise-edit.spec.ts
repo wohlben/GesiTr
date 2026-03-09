@@ -25,7 +25,7 @@ test.describe('/compendium/exercises/:id/:slug/edit', () => {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText('Edit Exercise');
-        await expect(page).toHaveScreenshot(`${viewport.name}-light.png`);
+        await expect(page).toHaveScreenshot(`${viewport.name}/light/compendium/exercises/[id]/edit.png`);
         await deleteExercise(request, exercise.id);
       });
 
@@ -37,7 +37,7 @@ test.describe('/compendium/exercises/:id/:slug/edit', () => {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText('Edit Exercise');
-        await expect(page).toHaveScreenshot(`${viewport.name}-dark.png`);
+        await expect(page).toHaveScreenshot(`${viewport.name}/dark/compendium/exercises/[id]/edit.png`);
         await deleteExercise(request, exercise.id);
       });
     });

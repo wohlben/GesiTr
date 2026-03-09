@@ -18,7 +18,7 @@ test.describe('/compendium/exercise-groups/:id/:slug/edit', () => {
           { waitUntil: 'networkidle' },
         );
         await expect(page.locator('h1')).toHaveText('Edit Exercise Group');
-        await expect(page).toHaveScreenshot(`${viewport.name}-light.png`);
+        await expect(page).toHaveScreenshot(`${viewport.name}/light/compendium/exercise-groups/[id]/edit.png`);
         await deleteExerciseGroup(request, group.id);
       });
 
@@ -30,7 +30,7 @@ test.describe('/compendium/exercise-groups/:id/:slug/edit', () => {
           { waitUntil: 'networkidle' },
         );
         await expect(page.locator('h1')).toHaveText('Edit Exercise Group');
-        await expect(page).toHaveScreenshot(`${viewport.name}-dark.png`);
+        await expect(page).toHaveScreenshot(`${viewport.name}/dark/compendium/exercise-groups/[id]/edit.png`);
         await deleteExerciseGroup(request, group.id);
       });
     });
