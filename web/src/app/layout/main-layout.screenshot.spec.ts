@@ -58,4 +58,29 @@ describe('MainLayout screenshots', () => {
       await expect(locator).toMatchScreenshot('mobile-dark');
     });
   });
+
+  describe('mobile menu open', () => {
+    beforeEach(async () => {
+      await page.viewport(375, 667);
+    });
+
+    it('light', async () => {
+      const { fixture } = await render(MainLayout, { providers });
+      await fixture.whenStable();
+      await page.getByRole('button', { name: /toggle menu/i }).click();
+      await fixture.whenStable();
+      const locator = page.elementLocator(fixture.nativeElement);
+      await expect(locator).toMatchScreenshot('mobile-menu-open-light');
+    });
+
+    it('dark', async () => {
+      document.documentElement.classList.add('dark');
+      const { fixture } = await render(MainLayout, { providers });
+      await fixture.whenStable();
+      await page.getByRole('button', { name: /toggle menu/i }).click();
+      await fixture.whenStable();
+      const locator = page.elementLocator(fixture.nativeElement);
+      await expect(locator).toMatchScreenshot('mobile-menu-open-dark');
+    });
+  });
 });
