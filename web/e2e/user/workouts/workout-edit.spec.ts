@@ -40,7 +40,6 @@ test.describe('/user/workouts/[id]/edit', () => {
         });
         const workout = await createWorkout(request, {
           name: v.workoutName,
-          date: '2026-02-01T00:00:00Z',
         });
         const section = await createWorkoutSection(request, {
           workoutId: workout.id,
@@ -80,7 +79,6 @@ test.describe('/user/workouts/[id]/edit', () => {
         });
         const workout = await createWorkout(request, {
           name: v.workoutName,
-          date: '2026-02-02T00:00:00Z',
         });
         const section = await createWorkoutSection(request, {
           workoutId: workout.id,

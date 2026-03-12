@@ -151,7 +151,6 @@ export async function createWorkout(
 ) {
   const data = {
     name: 'Test Workout',
-    date: '2026-01-15T00:00:00Z',
     notes: '',
     ...overrides,
   };

@@ -50,28 +50,15 @@ type SectionFormGroup = FormGroup<{
       @if (isCreateMode() || workoutQuery.data()) {
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
           <!-- Basic Fields -->
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >Name *</label
-              >
-              <input
-                id="name"
-                formControlName="name"
-                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-              />
-            </div>
-            <div>
-              <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >Date *</label
-              >
-              <input
-                id="date"
-                type="date"
-                formControlName="date"
-                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-              />
-            </div>
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >Name *</label
+            >
+            <input
+              id="name"
+              formControlName="name"
+              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+            />
           </div>
 
           <div>
@@ -341,7 +328,6 @@ export class WorkoutEdit {
 
   form = new FormGroup({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    date: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     notes: new FormControl('', { nonNullable: true }),
     sections: new FormArray<SectionFormGroup>([]),
   });
@@ -415,7 +401,6 @@ export class WorkoutEdit {
 
       this.form.patchValue({
         name: data.name,
-        date: data.date.substring(0, 10),
         notes: data.notes ?? '',
       });
 
@@ -538,7 +523,6 @@ export class WorkoutEdit {
   private async createFlow(val: ReturnType<typeof this.form.getRawValue>) {
     const workout = await this.userApi.createWorkout({
       name: val.name,
-      date: val.date + 'T00:00:00Z',
       notes: val.notes || undefined,
     });
 
@@ -551,7 +535,6 @@ export class WorkoutEdit {
 
     await this.userApi.updateWorkout(workoutId, {
       name: val.name,
-      date: val.date + 'T00:00:00Z',
       notes: val.notes || undefined,
     });
 

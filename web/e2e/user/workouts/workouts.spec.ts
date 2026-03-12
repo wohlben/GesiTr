@@ -19,22 +19,22 @@ const viewports = [
   { name: 'mobile', width: 375, height: 667 },
 ];
 
-const variantWorkouts: Record<string, { workoutName: string; exerciseName: string; date: string }[]> = {
+const variantWorkouts: Record<string, { workoutName: string; exerciseName: string }[]> = {
   'desktop-light': [
-    { workoutName: 'Push Day A', exerciseName: 'WL DL Bench Press', date: '2026-01-15T00:00:00Z' },
-    { workoutName: 'Pull Day A', exerciseName: 'WL DL Barbell Row', date: '2026-01-16T00:00:00Z' },
+    { workoutName: 'Push Day A', exerciseName: 'WL DL Bench Press' },
+    { workoutName: 'Pull Day A', exerciseName: 'WL DL Barbell Row' },
   ],
   'desktop-dark': [
-    { workoutName: 'Leg Day A', exerciseName: 'WL DD Back Squat', date: '2026-01-17T00:00:00Z' },
-    { workoutName: 'Upper Body B', exerciseName: 'WL DD Overhead Press', date: '2026-01-18T00:00:00Z' },
+    { workoutName: 'Leg Day A', exerciseName: 'WL DD Back Squat' },
+    { workoutName: 'Upper Body B', exerciseName: 'WL DD Overhead Press' },
   ],
   'mobile-light': [
-    { workoutName: 'Full Body A', exerciseName: 'WL ML Deadlift', date: '2026-01-19T00:00:00Z' },
-    { workoutName: 'Full Body B', exerciseName: 'WL ML Front Squat', date: '2026-01-20T00:00:00Z' },
+    { workoutName: 'Full Body A', exerciseName: 'WL ML Deadlift' },
+    { workoutName: 'Full Body B', exerciseName: 'WL ML Front Squat' },
   ],
   'mobile-dark': [
-    { workoutName: 'Push Day B', exerciseName: 'WL MD Incline Press', date: '2026-01-21T00:00:00Z' },
-    { workoutName: 'Pull Day B', exerciseName: 'WL MD Pull Up', date: '2026-01-22T00:00:00Z' },
+    { workoutName: 'Push Day B', exerciseName: 'WL MD Incline Press' },
+    { workoutName: 'Pull Day B', exerciseName: 'WL MD Pull Up' },
   ],
 };
 
@@ -62,7 +62,6 @@ test.describe('/user/workouts', () => {
           });
           const workout = await createWorkout(request, {
             name: v.workoutName,
-            date: v.date,
           });
           const section = await createWorkoutSection(request, {
             workoutId: workout.id,
@@ -109,7 +108,6 @@ test.describe('/user/workouts', () => {
           });
           const workout = await createWorkout(request, {
             name: v.workoutName,
-            date: v.date,
           });
           const section = await createWorkoutSection(request, {
             workoutId: workout.id,

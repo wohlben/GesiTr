@@ -1,13 +1,10 @@
 package models
 
-import "time"
-
 type WorkoutEntity struct {
 	BaseModel
 	Owner    string `gorm:"not null;index"`
 	Name     string `gorm:"not null"`
 	Notes    *string
-	Date     time.Time              `gorm:"not null;index"`
 	Sections []WorkoutSectionEntity `gorm:"foreignKey:WorkoutID"`
 }
 
@@ -19,7 +16,6 @@ func (e *WorkoutEntity) ToDTO() Workout {
 		Owner:     e.Owner,
 		Name:      e.Name,
 		Notes:     e.Notes,
-		Date:      e.Date,
 	}
 	for _, s := range e.Sections {
 		dto.Sections = append(dto.Sections, s.ToDTO())
@@ -33,6 +29,5 @@ func WorkoutFromDTO(dto Workout) WorkoutEntity {
 		Owner:     dto.Owner,
 		Name:      dto.Name,
 		Notes:     dto.Notes,
-		Date:      dto.Date,
 	}
 }

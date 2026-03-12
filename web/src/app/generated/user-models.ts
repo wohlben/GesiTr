@@ -69,7 +69,6 @@ export interface Workout extends BaseModel {
   owner: string;
   name: string;
   notes?: string;
-  date: string;
   sections: WorkoutSection[];
 }
 

@@ -38,11 +38,6 @@ import { PageLayout } from '../../../layout/page-layout';
                   <th
                     class="px-4 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
                   >
-                    Date
-                  </th>
-                  <th
-                    class="px-4 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
-                  >
                     Sections
                   </th>
                   <th
@@ -60,9 +55,6 @@ import { PageLayout } from '../../../layout/page-layout';
                   >
                     <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
                       {{ workout.name }}
-                    </td>
-                    <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
-                      {{ workout.date }}
                     </td>
                     <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                       {{ workout.sectionCount }}
@@ -95,7 +87,6 @@ export class WorkoutList {
     return workouts.map((w) => ({
       id: w.id,
       name: w.name,
-      date: w.date.substring(0, 10),
       sectionCount: w.sections?.length ?? 0,
       exerciseCount: w.sections?.reduce((sum, s) => sum + (s.exercises?.length ?? 0), 0) ?? 0,
     }));
