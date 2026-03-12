@@ -41,6 +41,11 @@ export const routes: Routes = [
           import('$features/user/workout-edit/workout-edit').then((m) => m.WorkoutEdit),
       },
       {
+        path: 'workouts/:id/start',
+        loadComponent: () =>
+          import('$features/user/workout-start/workout-start').then((m) => m.WorkoutStart),
+      },
+      {
         path: 'workouts/:id/edit',
         loadComponent: () =>
           import('$features/user/workout-edit/workout-edit').then((m) => m.WorkoutEdit),
@@ -48,6 +53,13 @@ export const routes: Routes = [
       {
         path: 'workouts/:id',
         redirectTo: 'workouts/:id/edit',
+      },
+      {
+        path: 'workout-logs/:id',
+        loadComponent: () =>
+          import('$features/user/workout-log-detail/workout-log-detail').then(
+            (m) => m.WorkoutLogDetail,
+          ),
       },
       {
         path: 'workouts',

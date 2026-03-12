@@ -46,3 +46,9 @@ export const exerciseSchemeKeys = {
   all: () => ['exercise-schemes'] as const,
   detail: (id: number) => [...exerciseSchemeKeys.all(), 'detail', id] as const,
 };
+
+export const workoutLogKeys = {
+  all: () => ['workout-logs'] as const,
+  list: () => [...workoutLogKeys.all(), 'list'] as const,
+  detail: (id: number) => [...workoutLogKeys.all(), 'detail', id] as const,
+};

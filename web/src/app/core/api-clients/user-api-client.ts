@@ -8,6 +8,9 @@ import {
   WorkoutSection,
   WorkoutSectionExercise,
   UserExerciseScheme,
+  WorkoutLog,
+  WorkoutLogSection,
+  WorkoutLogExercise,
 } from '$generated/user-models';
 
 @Injectable({ providedIn: 'root' })
@@ -106,5 +109,26 @@ export class UserApiClient {
 
   deleteExerciseScheme(id: number): Promise<void> {
     return firstValueFrom(this.http.delete<void>(`/api/user/exercise-schemes/${id}`));
+  }
+
+  // Workout Logs
+  fetchWorkoutLog(id: number): Promise<WorkoutLog> {
+    return firstValueFrom(this.http.get<WorkoutLog>(`/api/user/workout-logs/${id}`));
+  }
+
+  createWorkoutLog(data: Partial<WorkoutLog>): Promise<WorkoutLog> {
+    return firstValueFrom(this.http.post<WorkoutLog>('/api/user/workout-logs', data));
+  }
+
+  createWorkoutLogSection(data: Partial<WorkoutLogSection>): Promise<WorkoutLogSection> {
+    return firstValueFrom(
+      this.http.post<WorkoutLogSection>('/api/user/workout-log-sections', data),
+    );
+  }
+
+  createWorkoutLogExercise(data: Partial<WorkoutLogExercise>): Promise<WorkoutLogExercise> {
+    return firstValueFrom(
+      this.http.post<WorkoutLogExercise>('/api/user/workout-log-exercises', data),
+    );
   }
 }

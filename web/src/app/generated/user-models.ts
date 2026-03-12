@@ -156,5 +156,5 @@ export interface WorkoutSectionExercise extends BaseModel {
 // source: workout_section_type.go
 
 export type WorkoutSectionType = string;
-export const WorkoutSectionTypeMain: WorkoutSectionType = 'main';
-export const WorkoutSectionTypeSupplementary: WorkoutSectionType = 'supplementary';
+export const WorkoutSectionTypeMain: WorkoutSectionType = "main";
+export const WorkoutSectionTypeSupplementary: WorkoutSectionType = "supplementary";
