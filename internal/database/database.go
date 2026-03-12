@@ -2,6 +2,7 @@ package database
 
 import (
 	"log"
+	"os"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -16,7 +17,11 @@ func InitDB(path string) error {
 }
 
 func Init() {
-	if err := InitDB("gesitr.db"); err != nil {
+	path := os.Getenv("DATABASE_PATH")
+	if path == "" {
+		path = "gesitr.db"
+	}
+	if err := InitDB(path); err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
 }

@@ -42,12 +42,15 @@ Example: `e2e/__screenshots__/desktop/light/compendium/exercises/chromium-linux.
 
 **Every time you modify e2e test files**, you MUST follow this full workflow:
 
-1. **Start the API server**: `DEV=true AUTH_FALLBACK_USER=anon go run .` (from project root), or use `make dev` which also starts the web server
-2. **Update screenshots locally**: `cd web && npx ng e2e --update-snapshots` (the `ng e2e` command starts the Angular dev server automatically)
-3. **Visually verify** the updated screenshots look correct
-4. **Run the Docker pipeline**: `docker build -t gesitr .` (from project root) to confirm tests pass in CI-like environment
+1. **Update screenshots locally**: `make update-screenshots-e2e` (from project root — starts API server automatically)
+2. **Visually verify** the updated screenshots look correct
+3. **Run the Docker pipeline**: `docker build -t gesitr .` (from project root) to confirm tests pass in CI-like environment
+
+To run e2e tests without updating screenshots: `make test-e2e` (also starts the API server automatically).
 
 **NEVER update screenshots from Docker.** The Docker pipeline is strictly for verification — it ensures the locally-recorded screenshots are correct and match what CI would produce. Always record screenshots against the local dev server.
+
+**Note:** Both `make test-e2e` and `make update-screenshots-e2e` are fully self-contained and safe to run alongside `make dev`. They use dedicated ports (API on :9876, Angular on :4300) and an isolated database (`gesitr-e2e.db`). You do NOT need to start any servers manually.
 
 ## Data Values
 

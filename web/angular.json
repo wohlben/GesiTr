@@ -70,6 +70,11 @@
             },
             "development": {
               "buildTarget": "web:build:development"
+            },
+            "e2e": {
+              "buildTarget": "web:build:development",
+              "port": 4300,
+              "proxyConfig": "proxy.e2e.conf.json"
             }
           },
           "defaultConfiguration": "development"
@@ -96,6 +101,9 @@
           "configurations": {
             "production": {
               "devServerTarget": "web:serve:production"
+            },
+            "isolated": {
+              "devServerTarget": "web:serve:e2e"
             }
           }
         },

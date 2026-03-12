@@ -44,10 +44,29 @@ test-go:
 test-web:
 	cd web && npm test
 
-test-e2e:
-	cd web && npx ng e2e
+# E2E uses dedicated ports to avoid conflicts with dev servers (8080/4200).
+# API on :9876, Angular on :4300 (configured in angular.json serve:e2e + proxy.e2e.conf.json).
+E2E_API_PORT := 9876
 
-# Update screenshot baselines
+# E2E tests: builds Go binary, starts API on dedicated port, runs ng e2e (which manages
+# its own Angular dev server via the "isolated" configuration), then cleans up.
+test-e2e:
+	@rm -f gesitr-e2e.db .gesitr-e2e
+	@go build -o .gesitr-e2e .
+	@echo "Starting API server on :$(E2E_API_PORT)..."
+	@DATABASE_PATH=gesitr-e2e.db DEV=true AUTH_FALLBACK_USER=anon PORT=$(E2E_API_PORT) ./.gesitr-e2e & \
+		API_PID=$$!; \
+		for i in 1 2 3 4 5 6 7 8 9 10; do \
+			curl -sf http://localhost:$(E2E_API_PORT)/api/exercises > /dev/null 2>&1 && break; \
+			sleep 1; \
+		done; \
+		cd web && npx ng e2e --configuration=isolated; \
+		TEST_EXIT=$$?; \
+		kill $$API_PID 2>/dev/null; wait $$API_PID 2>/dev/null; \
+		rm -f ../gesitr-e2e.db ../.gesitr-e2e; \
+		exit $$TEST_EXIT
+
+# Update screenshot baselines — same server setup as test-e2e.
 update-screenshots: update-screenshots-web update-screenshots-e2e
 
 update-screenshots-web:
@@ -56,7 +75,20 @@ update-screenshots-web:
 	cd web && npx ng run web:test-screenshot
 
 update-screenshots-e2e:
-	cd web && npx ng e2e --update-snapshots
+	@rm -f gesitr-e2e.db .gesitr-e2e
+	@go build -o .gesitr-e2e .
+	@echo "Starting API server on :$(E2E_API_PORT)..."
+	@DATABASE_PATH=gesitr-e2e.db DEV=true AUTH_FALLBACK_USER=anon PORT=$(E2E_API_PORT) ./.gesitr-e2e & \
+		API_PID=$$!; \
+		for i in 1 2 3 4 5 6 7 8 9 10; do \
+			curl -sf http://localhost:$(E2E_API_PORT)/api/exercises > /dev/null 2>&1 && break; \
+			sleep 1; \
+		done; \
+		cd web && npx ng e2e --configuration=isolated --update-snapshots; \
+		TEST_EXIT=$$?; \
+		kill $$API_PID 2>/dev/null; wait $$API_PID 2>/dev/null; \
+		rm -f ../gesitr-e2e.db ../.gesitr-e2e; \
+		exit $$TEST_EXIT
 
 docker:
 	docker build -t gesitr .
