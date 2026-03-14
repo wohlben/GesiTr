@@ -4,9 +4,21 @@ import { UserApiClient } from '$core/api-clients/user-api-client';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { WorkoutSection, UserExerciseScheme } from '$generated/user-models';
 
+export interface SetPreview {
+  setNumber: number;
+  targetReps?: number | null;
+  targetWeight?: number | null;
+  targetDuration?: number | null;
+  targetDistance?: number | null;
+  targetTime?: number | null;
+  restAfterSeconds?: number | null;
+}
+
 export interface ExerciseDisplayInfo {
   name: string;
   summary: string;
+  measurementType: string;
+  sets: SetPreview[];
 }
 
 interface WorkoutStartState {
@@ -98,13 +110,28 @@ export const WorkoutStartStore = signalStore(
             }),
         );
 
-        // 4. Build display map
+        // 4. Build display map with set previews
         for (const item of schemes) {
+          const numSets = item.scheme.sets ?? 0;
+          const sets: SetPreview[] = [];
+          for (let i = 1; i <= numSets; i++) {
+            sets.push({
+              setNumber: i,
+              targetReps: item.scheme.reps,
+              targetWeight: item.scheme.weight,
+              targetDuration: item.scheme.duration,
+              targetDistance: item.scheme.distance,
+              targetTime: item.scheme.targetTime,
+              restAfterSeconds: i < numSets ? (item.scheme.restBetweenSets ?? null) : null,
+            });
+          }
           display[item.schemeId] = {
             name:
               exerciseNames[item.scheme.userExerciseId] ??
               `Exercise #${item.scheme.userExerciseId}`,
             summary: formatSchemeSummary(item.scheme),
+            measurementType: item.scheme.measurementType,
+            sets,
           };
         }
 

@@ -81,6 +81,7 @@ export interface WorkoutLog extends BaseModel {
   name: string;
   notes?: string;
   date: string;
+  completed: boolean;
   sections: WorkoutLogSection[];
 }
 
@@ -89,13 +90,14 @@ export interface WorkoutLog extends BaseModel {
 
 export interface WorkoutLogExercise extends BaseModel {
   workoutLogSectionId: number /* uint */;
-  userExerciseSchemeId: number /* uint */;
+  sourceExerciseSchemeId: number /* uint */;
   position: number /* int */;
+  completed: boolean;
+  breakAfterSeconds?: number /* int */;
   /**
    * Target fields (snapshotted from scheme on creation)
    */
   targetMeasurementType: string;
-  targetRestBetweenSets?: number /* int */;
   targetTimePerRep?: number /* int */;
   sets: WorkoutLogExerciseSet[];
 }
@@ -107,6 +109,7 @@ export interface WorkoutLogExerciseSet extends BaseModel {
   workoutLogExerciseId: number /* uint */;
   setNumber: number /* int */;
   completed: boolean;
+  breakAfterSeconds?: number /* int */;
   targetReps?: number /* int */;
   targetWeight?: number /* float64 */;
   targetDuration?: number /* int */;
@@ -128,6 +131,7 @@ export interface WorkoutLogSection extends BaseModel {
   label?: string;
   position: number /* int */;
   restBetweenExercises?: number /* int */;
+  completed: boolean;
   exercises: WorkoutLogExercise[];
 }
 
@@ -156,5 +160,5 @@ export interface WorkoutSectionExercise extends BaseModel {
 // source: workout_section_type.go
 
 export type WorkoutSectionType = string;
-export const WorkoutSectionTypeMain: WorkoutSectionType = "main";
-export const WorkoutSectionTypeSupplementary: WorkoutSectionType = "supplementary";
+export const WorkoutSectionTypeMain: WorkoutSectionType = 'main';
+export const WorkoutSectionTypeSupplementary: WorkoutSectionType = 'supplementary';

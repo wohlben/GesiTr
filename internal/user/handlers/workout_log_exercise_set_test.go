@@ -27,7 +27,7 @@ func TestListWorkoutLogExerciseSets(t *testing.T) {
 		"workoutLogId": 1, "type": "main", "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
 	t.Run("list all sets", func(t *testing.T) {
@@ -89,7 +89,7 @@ func TestCreateWorkoutLogExerciseSet(t *testing.T) {
 		"workoutLogId": 1, "type": "main", "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
 	t.Run("create additional set", func(t *testing.T) {
@@ -144,7 +144,7 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 		"workoutLogId": 1, "type": "main", "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
 	t.Run("update actual fields and completed", func(t *testing.T) {
@@ -167,12 +167,10 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 		}
 	})
 
-	t.Run("update preserves target fields", func(t *testing.T) {
+	t.Run("update preserves target fields when not provided", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
-			"completed":    true,
-			"actualReps":   4,
-			"targetReps":   999,
-			"targetWeight": 999.0,
+			"completed":  true,
+			"actualReps": 4,
 		})
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d", w.Code)
@@ -187,6 +185,26 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 		}
 		if result.ActualReps == nil || *result.ActualReps != 4 {
 			t.Error("actual reps not updated")
+		}
+	})
+
+	t.Run("update target fields when provided", func(t *testing.T) {
+		w := doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+			"completed":    true,
+			"actualReps":   4,
+			"targetReps":   8,
+			"targetWeight": 120.0,
+		})
+		if w.Code != http.StatusOK {
+			t.Fatalf("status = %d", w.Code)
+		}
+		var result models.WorkoutLogExerciseSet
+		json.Unmarshal(w.Body.Bytes(), &result)
+		if result.TargetReps == nil || *result.TargetReps != 8 {
+			t.Errorf("target reps: expected 8, got %v", result.TargetReps)
+		}
+		if result.TargetWeight == nil || *result.TargetWeight != 120.0 {
+			t.Errorf("target weight: expected 120, got %v", result.TargetWeight)
 		}
 	})
 
@@ -207,6 +225,125 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 	})
 }
 
+func TestProgressiveCompletion(t *testing.T) {
+	setupTestDB(t)
+	r := newRouter()
+
+	doJSON(r, "POST", "/api/user/exercises", map[string]any{
+		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	})
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
+		"userExerciseId": 1, "measurementType": "REP_BASED",
+		"sets": 2, "reps": 5, "weight": 100.0,
+	})
+	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
+		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+	})
+	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
+		"workoutLogId": 1, "type": "main", "position": 0,
+	})
+	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
+	})
+
+	// Complete first set — exercise should NOT be completed yet
+	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+		"completed": true, "actualReps": 5, "actualWeight": 100.0,
+	})
+
+	w := doJSON(r, "GET", "/api/user/workout-logs/1", nil)
+	var log models.WorkoutLog
+	json.Unmarshal(w.Body.Bytes(), &log)
+	if log.Completed {
+		t.Error("log should not be completed after 1 of 2 sets")
+	}
+	if log.Sections[0].Completed {
+		t.Error("section should not be completed after 1 of 2 sets")
+	}
+	if log.Sections[0].Exercises[0].Completed {
+		t.Error("exercise should not be completed after 1 of 2 sets")
+	}
+
+	// Complete second set — everything should propagate to completed
+	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
+		"completed": true, "actualReps": 5, "actualWeight": 100.0,
+	})
+
+	w = doJSON(r, "GET", "/api/user/workout-logs/1", nil)
+	json.Unmarshal(w.Body.Bytes(), &log)
+	if !log.Sections[0].Exercises[0].Completed {
+		t.Error("exercise should be completed after all sets done")
+	}
+	if !log.Sections[0].Completed {
+		t.Error("section should be completed after all exercises done")
+	}
+	if !log.Completed {
+		t.Error("log should be completed after all sections done")
+	}
+
+	// Un-complete a set — should propagate false upward
+	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+		"completed": false, "actualReps": 5, "actualWeight": 100.0,
+	})
+
+	w = doJSON(r, "GET", "/api/user/workout-logs/1", nil)
+	json.Unmarshal(w.Body.Bytes(), &log)
+	if log.Sections[0].Exercises[0].Completed {
+		t.Error("exercise should not be completed after un-completing a set")
+	}
+	if log.Sections[0].Completed {
+		t.Error("section should not be completed after un-completing a set")
+	}
+	if log.Completed {
+		t.Error("log should not be completed after un-completing a set")
+	}
+}
+
+func TestDeleteSetPropagatesCompletion(t *testing.T) {
+	setupTestDB(t)
+	r := newRouter()
+
+	doJSON(r, "POST", "/api/user/exercises", map[string]any{
+		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	})
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
+		"userExerciseId": 1, "measurementType": "REP_BASED",
+		"sets": 2, "reps": 5, "weight": 100.0,
+	})
+	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
+		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+	})
+	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
+		"workoutLogId": 1, "type": "main", "position": 0,
+	})
+	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
+	})
+
+	// Complete only set 1 — exercise not yet complete
+	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+		"completed": true, "actualReps": 5, "actualWeight": 100.0,
+	})
+
+	// Delete the incomplete set 2 — now the only remaining set is completed,
+	// so exercise/section/log should propagate to completed
+	doJSON(r, "DELETE", "/api/user/workout-log-exercise-sets/2", nil)
+
+	w := doJSON(r, "GET", "/api/user/workout-logs/1", nil)
+	var log models.WorkoutLog
+	json.Unmarshal(w.Body.Bytes(), &log)
+
+	if !log.Sections[0].Exercises[0].Completed {
+		t.Error("exercise should be completed after deleting the incomplete set")
+	}
+	if !log.Sections[0].Completed {
+		t.Error("section should be completed")
+	}
+	if !log.Completed {
+		t.Error("log should be completed")
+	}
+}
+
 func TestDeleteWorkoutLogExerciseSet(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
@@ -224,7 +361,7 @@ func TestDeleteWorkoutLogExerciseSet(t *testing.T) {
 		"workoutLogId": 1, "type": "main", "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
 	t.Run("success", func(t *testing.T) {

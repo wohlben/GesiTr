@@ -110,7 +110,16 @@ describe('WorkoutStartStore', () => {
 
     expect(store.isLoadingDisplay()).toBe(false);
     expect(store.exerciseDisplay()).toEqual({
-      10: { name: 'Bench Press', summary: '3x10 @ 60kg' },
+      10: {
+        name: 'Bench Press',
+        summary: '3x10 @ 60kg',
+        measurementType: 'REP_BASED',
+        sets: [
+          { setNumber: 1, targetReps: 10, targetWeight: 60, restAfterSeconds: null },
+          { setNumber: 2, targetReps: 10, targetWeight: 60, restAfterSeconds: null },
+          { setNumber: 3, targetReps: 10, targetWeight: 60, restAfterSeconds: null },
+        ],
+      },
     });
   });
 
@@ -166,8 +175,24 @@ describe('WorkoutStartStore', () => {
     await store.loadExerciseDisplay(sections);
 
     expect(store.exerciseDisplay()).toEqual({
-      10: { name: 'Squat', summary: '5x5 @ 100kg' },
-      20: { name: 'Plank', summary: '30s' },
+      10: {
+        name: 'Squat',
+        summary: '5x5 @ 100kg',
+        measurementType: 'REP_BASED',
+        sets: [
+          { setNumber: 1, targetReps: 5, targetWeight: 100, restAfterSeconds: null },
+          { setNumber: 2, targetReps: 5, targetWeight: 100, restAfterSeconds: null },
+          { setNumber: 3, targetReps: 5, targetWeight: 100, restAfterSeconds: null },
+          { setNumber: 4, targetReps: 5, targetWeight: 100, restAfterSeconds: null },
+          { setNumber: 5, targetReps: 5, targetWeight: 100, restAfterSeconds: null },
+        ],
+      },
+      20: {
+        name: 'Plank',
+        summary: '30s',
+        measurementType: 'TIME_BASED',
+        sets: [],
+      },
     });
   });
 
@@ -201,7 +226,12 @@ describe('WorkoutStartStore', () => {
     await store.loadExerciseDisplay(sections);
 
     expect(store.exerciseDisplay()).toEqual({
-      10: { name: 'Exercise #5', summary: '8' },
+      10: {
+        name: 'Exercise #5',
+        summary: '8',
+        measurementType: 'REP_BASED',
+        sets: [],
+      },
     });
   });
 
@@ -245,5 +275,37 @@ describe('WorkoutStartStore', () => {
 
     expect(store.exerciseDisplay()[10].name).toBe('Curl');
     expect(store.exerciseDisplay()[11].name).toBe('Curl');
+  });
+
+  it('generates set previews with restBetweenSets', async () => {
+    userApiMock.fetchExerciseScheme.mockResolvedValue({
+      id: 10,
+      userExerciseId: 5,
+      measurementType: 'REP_BASED',
+      sets: 3,
+      reps: 8,
+      weight: 50,
+      restBetweenSets: 90,
+    });
+    userApiMock.fetchUserExercise.mockResolvedValue({
+      id: 5,
+      compendiumExerciseId: 'tmpl-abc',
+      compendiumVersion: 1,
+    });
+    compendiumApiMock.fetchExerciseVersion.mockResolvedValue({
+      version: 1,
+      snapshot: { name: 'Row' },
+    });
+
+    const sections = [{ exercises: [{ userExerciseSchemeId: 10 }] }] as WorkoutSection[];
+
+    await store.loadExerciseDisplay(sections);
+
+    const info = store.exerciseDisplay()[10];
+    expect(info.sets).toEqual([
+      { setNumber: 1, targetReps: 8, targetWeight: 50, restAfterSeconds: 90 },
+      { setNumber: 2, targetReps: 8, targetWeight: 50, restAfterSeconds: 90 },
+      { setNumber: 3, targetReps: 8, targetWeight: 50, restAfterSeconds: null },
+    ]);
   });
 });

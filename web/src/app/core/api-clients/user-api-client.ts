@@ -11,6 +11,7 @@ import {
   WorkoutLog,
   WorkoutLogSection,
   WorkoutLogExercise,
+  WorkoutLogExerciseSet,
 } from '$generated/user-models';
 
 @Injectable({ providedIn: 'root' })
@@ -129,6 +130,15 @@ export class UserApiClient {
   createWorkoutLogExercise(data: Partial<WorkoutLogExercise>): Promise<WorkoutLogExercise> {
     return firstValueFrom(
       this.http.post<WorkoutLogExercise>('/api/user/workout-log-exercises', data),
+    );
+  }
+
+  updateWorkoutLogExerciseSet(
+    id: number,
+    data: Partial<WorkoutLogExerciseSet>,
+  ): Promise<WorkoutLogExerciseSet> {
+    return firstValueFrom(
+      this.http.put<WorkoutLogExerciseSet>(`/api/user/workout-log-exercise-sets/${id}`, data),
     );
   }
 }

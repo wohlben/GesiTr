@@ -9,6 +9,7 @@ type WorkoutLogEntity struct {
 	Name      string `gorm:"not null"`
 	Notes     *string
 	Date      time.Time                 `gorm:"not null;index"`
+	Completed bool                      `gorm:"not null;default:false"`
 	Sections  []WorkoutLogSectionEntity `gorm:"foreignKey:WorkoutLogID"`
 }
 
@@ -22,6 +23,7 @@ func (e *WorkoutLogEntity) ToDTO() WorkoutLog {
 		Name:      e.Name,
 		Notes:     e.Notes,
 		Date:      e.Date,
+		Completed: e.Completed,
 	}
 	for _, s := range e.Sections {
 		dto.Sections = append(dto.Sections, s.ToDTO())
@@ -37,5 +39,6 @@ func WorkoutLogFromDTO(dto WorkoutLog) WorkoutLogEntity {
 		Name:      dto.Name,
 		Notes:     dto.Notes,
 		Date:      dto.Date,
+		Completed: dto.Completed,
 	}
 }

@@ -9,5 +9,6 @@ type WorkoutLog struct {
 	Name      string              `json:"name"`
 	Notes     *string             `json:"notes"`
 	Date      time.Time           `json:"date"`
+	Completed bool                `json:"completed"`
 	Sections  []WorkoutLogSection `json:"sections" gorm:"-"`
 }

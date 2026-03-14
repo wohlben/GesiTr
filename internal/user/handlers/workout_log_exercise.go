@@ -46,18 +46,23 @@ func CreateWorkoutLogExercise(c *gin.Context) {
 	}
 
 	var scheme models.UserExerciseSchemeEntity
-	if err := database.DB.First(&scheme, dto.UserExerciseSchemeID).Error; err != nil {
+	if err := database.DB.First(&scheme, dto.SourceExerciseSchemeID).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User exercise scheme not found"})
 		return
 	}
 
+	breakAfter := section.RestBetweenExercises
+	if dto.BreakAfterSeconds != nil {
+		breakAfter = dto.BreakAfterSeconds
+	}
+
 	entity := models.WorkoutLogExerciseEntity{
-		WorkoutLogSectionID:   dto.WorkoutLogSectionID,
-		UserExerciseSchemeID:  dto.UserExerciseSchemeID,
-		Position:              dto.Position,
-		TargetMeasurementType: scheme.MeasurementType,
-		TargetRestBetweenSets: scheme.RestBetweenSets,
-		TargetTimePerRep:      scheme.TimePerRep,
+		WorkoutLogSectionID:    dto.WorkoutLogSectionID,
+		SourceExerciseSchemeID: dto.SourceExerciseSchemeID,
+		Position:               dto.Position,
+		BreakAfterSeconds:      breakAfter,
+		TargetMeasurementType:  scheme.MeasurementType,
+		TargetTimePerRep:       scheme.TimePerRep,
 	}
 
 	if err := database.DB.Create(&entity).Error; err != nil {
@@ -80,6 +85,10 @@ func CreateWorkoutLogExercise(c *gin.Context) {
 			TargetDuration:       scheme.Duration,
 			TargetDistance:       scheme.Distance,
 			TargetTime:           scheme.TargetTime,
+		}
+		// BreakAfterSeconds for sets 1..N-1, nil for the last set
+		if i < numSets {
+			set.BreakAfterSeconds = scheme.RestBetweenSets
 		}
 		if err := database.DB.Create(&set).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -121,9 +130,17 @@ func UpdateWorkoutLogExercise(c *gin.Context) {
 }
 
 func DeleteWorkoutLogExercise(c *gin.Context) {
-	if err := database.DB.Delete(&models.WorkoutLogExerciseEntity{}, c.Param("id")).Error; err != nil {
+	var existing models.WorkoutLogExerciseEntity
+	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log exercise not found"})
 		return
 	}
+
+	if err := database.DB.Delete(&existing).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	propagateSectionCompletion(existing.WorkoutLogSectionID)
 	c.JSON(http.StatusNoContent, nil)
 }

@@ -185,7 +185,7 @@ func TestGetWorkoutLogWithSectionsAndExercises(t *testing.T) {
 		"workoutLogId": 1, "type": "main", "position": 1,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 2, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 2, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
 	w := doJSON(r, "GET", "/api/user/workout-logs/1", nil)
@@ -205,7 +205,7 @@ func TestGetWorkoutLogWithSectionsAndExercises(t *testing.T) {
 	if len(result.Sections[1].Exercises) != 1 {
 		t.Fatalf("expected 1 exercise in main section, got %d", len(result.Sections[1].Exercises))
 	}
-	if result.Sections[1].Exercises[0].UserExerciseSchemeID != 1 {
+	if result.Sections[1].Exercises[0].SourceExerciseSchemeID != 1 {
 		t.Error("exercise scheme ID mismatch")
 	}
 }

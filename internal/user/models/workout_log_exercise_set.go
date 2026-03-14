@@ -5,6 +5,7 @@ type WorkoutLogExerciseSet struct {
 	WorkoutLogExerciseID uint     `json:"workoutLogExerciseId"`
 	SetNumber            int      `json:"setNumber"`
 	Completed            bool     `json:"completed"`
+	BreakAfterSeconds    *int     `json:"breakAfterSeconds"`
 	TargetReps           *int     `json:"targetReps"`
 	TargetWeight         *float64 `json:"targetWeight"`
 	TargetDuration       *int     `json:"targetDuration"`

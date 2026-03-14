@@ -5,6 +5,7 @@ type WorkoutLogExerciseSetEntity struct {
 	WorkoutLogExerciseID uint `gorm:"not null;index"`
 	SetNumber            int  `gorm:"not null"`
 	Completed            bool `gorm:"not null;default:false"`
+	BreakAfterSeconds    *int
 	TargetReps           *int
 	TargetWeight         *float64
 	TargetDuration       *int
@@ -25,6 +26,7 @@ func (e *WorkoutLogExerciseSetEntity) ToDTO() WorkoutLogExerciseSet {
 		WorkoutLogExerciseID: e.WorkoutLogExerciseID,
 		SetNumber:            e.SetNumber,
 		Completed:            e.Completed,
+		BreakAfterSeconds:    e.BreakAfterSeconds,
 		TargetReps:           e.TargetReps,
 		TargetWeight:         e.TargetWeight,
 		TargetDuration:       e.TargetDuration,
@@ -44,6 +46,7 @@ func WorkoutLogExerciseSetFromDTO(dto WorkoutLogExerciseSet) WorkoutLogExerciseS
 		WorkoutLogExerciseID: dto.WorkoutLogExerciseID,
 		SetNumber:            dto.SetNumber,
 		Completed:            dto.Completed,
+		BreakAfterSeconds:    dto.BreakAfterSeconds,
 		TargetReps:           dto.TargetReps,
 		TargetWeight:         dto.TargetWeight,
 		TargetDuration:       dto.TargetDuration,

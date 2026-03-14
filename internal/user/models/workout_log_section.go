@@ -7,5 +7,6 @@ type WorkoutLogSection struct {
 	Label                *string              `json:"label"`
 	Position             int                  `json:"position"`
 	RestBetweenExercises *int                 `json:"restBetweenExercises"`
+	Completed            bool                 `json:"completed"`
 	Exercises            []WorkoutLogExercise `json:"exercises" gorm:"-"`
 }

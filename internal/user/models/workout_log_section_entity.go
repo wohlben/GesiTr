@@ -7,6 +7,7 @@ type WorkoutLogSectionEntity struct {
 	Label                *string
 	Position             int `gorm:"not null"`
 	RestBetweenExercises *int
+	Completed            bool                       `gorm:"not null;default:false"`
 	Exercises            []WorkoutLogExerciseEntity `gorm:"foreignKey:WorkoutLogSectionID"`
 }
 
@@ -20,6 +21,7 @@ func (e *WorkoutLogSectionEntity) ToDTO() WorkoutLogSection {
 		Label:                e.Label,
 		Position:             e.Position,
 		RestBetweenExercises: e.RestBetweenExercises,
+		Completed:            e.Completed,
 	}
 	for _, ex := range e.Exercises {
 		dto.Exercises = append(dto.Exercises, ex.ToDTO())
@@ -35,5 +37,6 @@ func WorkoutLogSectionFromDTO(dto WorkoutLogSection) WorkoutLogSectionEntity {
 		Label:                dto.Label,
 		Position:             dto.Position,
 		RestBetweenExercises: dto.RestBetweenExercises,
+		Completed:            dto.Completed,
 	}
 }

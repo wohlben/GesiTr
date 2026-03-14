@@ -42,10 +42,10 @@ func TestListWorkoutLogExercises(t *testing.T) {
 	})
 
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 2, "position": 1,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 2, "position": 1,
 	})
 
 	t.Run("list all with sets preloaded", func(t *testing.T) {
@@ -111,12 +111,12 @@ func TestCreateWorkoutLogExercise(t *testing.T) {
 		"owner": "alice", "name": "Leg Day Log", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
-		"workoutLogId": 1, "type": "main", "position": 0,
+		"workoutLogId": 1, "type": "main", "position": 0, "restBetweenExercises": 90,
 	})
 
 	t.Run("success with auto-created sets", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-			"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+			"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 		})
 		if w.Code != http.StatusCreated {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
@@ -129,8 +129,9 @@ func TestCreateWorkoutLogExercise(t *testing.T) {
 		if result.TargetMeasurementType != "REP_BASED" {
 			t.Errorf("expected REP_BASED, got %s", result.TargetMeasurementType)
 		}
-		if result.TargetRestBetweenSets == nil || *result.TargetRestBetweenSets != 180 {
-			t.Error("target rest between sets mismatch")
+		// Exercise-level BreakAfterSeconds should be snapshotted from section's RestBetweenExercises
+		if result.BreakAfterSeconds == nil || *result.BreakAfterSeconds != 90 {
+			t.Errorf("exercise breakAfterSeconds: expected 90, got %v", result.BreakAfterSeconds)
 		}
 		// Should have 5 auto-created sets
 		if len(result.Sets) != 5 {
@@ -149,12 +150,38 @@ func TestCreateWorkoutLogExercise(t *testing.T) {
 			if s.TargetWeight == nil || *s.TargetWeight != 100.0 {
 				t.Errorf("set %d: target weight mismatch", i)
 			}
+			// Sets 1..4 should have BreakAfterSeconds=180, set 5 should be nil
+			if i < 4 {
+				if s.BreakAfterSeconds == nil || *s.BreakAfterSeconds != 180 {
+					t.Errorf("set %d: expected breakAfterSeconds 180, got %v", i+1, s.BreakAfterSeconds)
+				}
+			} else {
+				if s.BreakAfterSeconds != nil {
+					t.Errorf("set %d (last): expected nil breakAfterSeconds, got %v", i+1, *s.BreakAfterSeconds)
+				}
+			}
+		}
+	})
+
+	t.Run("success with dto breakAfterSeconds override", func(t *testing.T) {
+		w := doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
+			"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 1,
+			"breakAfterSeconds": 120,
+		})
+		if w.Code != http.StatusCreated {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var result models.WorkoutLogExercise
+		json.Unmarshal(w.Body.Bytes(), &result)
+		// Should use the DTO value (120) instead of the section fallback (90)
+		if result.BreakAfterSeconds == nil || *result.BreakAfterSeconds != 120 {
+			t.Errorf("exercise breakAfterSeconds: expected 120, got %v", result.BreakAfterSeconds)
 		}
 	})
 
 	t.Run("section not found", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-			"workoutLogSectionId": 999, "userExerciseSchemeId": 1, "position": 0,
+			"workoutLogSectionId": 999, "sourceExerciseSchemeId": 1, "position": 0,
 		})
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
@@ -163,7 +190,7 @@ func TestCreateWorkoutLogExercise(t *testing.T) {
 
 	t.Run("scheme not found", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-			"workoutLogSectionId": 1, "userExerciseSchemeId": 999, "position": 0,
+			"workoutLogSectionId": 1, "sourceExerciseSchemeId": 999, "position": 0,
 		})
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
@@ -197,15 +224,15 @@ func TestUpdateWorkoutLogExercise(t *testing.T) {
 		"workoutLogId": 1, "type": "main", "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
 	t.Run("update preserves target fields and returns sets", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/user/workout-log-exercises/1", map[string]any{
-			"position":              2,
-			"targetMeasurementType": "CHANGED",
-			"workoutLogSectionId":   999,
-			"userExerciseSchemeId":  999,
+			"position":               2,
+			"targetMeasurementType":  "CHANGED",
+			"workoutLogSectionId":    999,
+			"sourceExerciseSchemeId": 999,
 		})
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
@@ -220,7 +247,7 @@ func TestUpdateWorkoutLogExercise(t *testing.T) {
 		if result.WorkoutLogSectionID != 1 {
 			t.Error("section ID changed")
 		}
-		if result.UserExerciseSchemeID != 1 {
+		if result.SourceExerciseSchemeID != 1 {
 			t.Error("scheme ID changed")
 		}
 		// Position should be updated
@@ -250,6 +277,65 @@ func TestUpdateWorkoutLogExercise(t *testing.T) {
 	})
 }
 
+func TestDeleteExercisePropagatesCompletion(t *testing.T) {
+	setupTestDB(t)
+	r := newRouter()
+
+	doJSON(r, "POST", "/api/user/exercises", map[string]any{
+		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	})
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
+		"userExerciseId": 1, "measurementType": "REP_BASED",
+		"sets": 1, "reps": 5, "weight": 100.0,
+	})
+	// Second exercise scheme
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
+		"userExerciseId": 1, "measurementType": "REP_BASED",
+		"sets": 1, "reps": 8, "weight": 60.0,
+	})
+
+	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
+		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+	})
+	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
+		"workoutLogId": 1, "type": "main", "position": 0,
+	})
+	// Exercise 1: completed
+	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
+	})
+	// Exercise 2: incomplete
+	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 2, "position": 1,
+	})
+
+	// Complete exercise 1's only set
+	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+		"completed": true, "actualReps": 5, "actualWeight": 100.0,
+	})
+
+	// Section should not be completed (exercise 2 incomplete)
+	w := doJSON(r, "GET", "/api/user/workout-logs/1", nil)
+	var log models.WorkoutLog
+	json.Unmarshal(w.Body.Bytes(), &log)
+	if log.Completed {
+		t.Fatal("log should not be completed yet")
+	}
+
+	// Delete the incomplete exercise 2 — now the section only has completed exercise 1
+	doJSON(r, "DELETE", "/api/user/workout-log-exercises/2", nil)
+
+	w = doJSON(r, "GET", "/api/user/workout-logs/1", nil)
+	json.Unmarshal(w.Body.Bytes(), &log)
+
+	if !log.Sections[0].Completed {
+		t.Error("section should be completed after deleting incomplete exercise")
+	}
+	if !log.Completed {
+		t.Error("log should be completed after deleting incomplete exercise")
+	}
+}
+
 func TestDeleteWorkoutLogExercise(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
@@ -268,7 +354,7 @@ func TestDeleteWorkoutLogExercise(t *testing.T) {
 		"workoutLogId": 1, "type": "main", "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
 	t.Run("success", func(t *testing.T) {

@@ -26,7 +26,7 @@ func TestRecordCreatedOnSetCompletion(t *testing.T) {
 		"workoutLogId": 1, "type": "main", "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
 	// Complete set 1 with 5 reps @ 100kg → e1RM = 100 * (1 + 5/30) = 116.667
@@ -77,7 +77,7 @@ func TestRecordUpdatedOnBetterPerformance(t *testing.T) {
 		"workoutLogId": 1, "type": "main", "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
 	// Complete set 1: 5 reps @ 100kg → e1RM = 116.667
@@ -123,7 +123,7 @@ func TestRecordNotUpdatedOnWorsePerformance(t *testing.T) {
 		"workoutLogId": 1, "type": "main", "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
 	// Complete set 1: 8 reps @ 100kg → e1RM = 126.667
@@ -169,7 +169,7 @@ func TestNoRecordWhenNotCompleted(t *testing.T) {
 		"workoutLogId": 1, "type": "main", "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
 	// Update set without completed=true
@@ -204,7 +204,7 @@ func TestDifferentMeasurementTypes(t *testing.T) {
 		"workoutLogId": 1, "type": "main", "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
 	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
@@ -233,7 +233,7 @@ func TestDifferentMeasurementTypes(t *testing.T) {
 		"sets": 1, "distance": 5.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 2, "position": 1,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 2, "position": 1,
 	})
 
 	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
@@ -274,11 +274,11 @@ func TestPerExerciseNotPerScheme(t *testing.T) {
 	})
 	// Log exercise from scheme 1
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 	// Log exercise from scheme 2
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 2, "position": 1,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 2, "position": 1,
 	})
 
 	// Complete set from scheme 1: 5 reps @ 100kg → e1RM = 116.667
@@ -330,10 +330,10 @@ func TestListAndGetRecordEndpoints(t *testing.T) {
 		"workoutLogId": 1, "type": "main", "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "userExerciseSchemeId": 2, "position": 1,
+		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 2, "position": 1,
 	})
 
 	// Complete both

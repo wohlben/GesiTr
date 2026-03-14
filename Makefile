@@ -21,7 +21,7 @@ dev-api:
 	DEV=true AUTH_FALLBACK_USER=anon go run .
 
 dev-web: generate
-	cd web && npx ng serve
+	cd web && CI=true npx ng serve
 
 dolt:
 	dolt sql-server --host 127.0.0.1 --port 3307 --data-dir .beads/dolt

@@ -145,7 +145,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 
 	// 10. Add exercises to the log section — targets should be snapshotted from scheme
 	w = doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": logSection.ID, "userExerciseSchemeId": scheme.ID, "position": 0,
+		"workoutLogSectionId": logSection.ID, "sourceExerciseSchemeId": scheme.ID, "position": 0,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create log exercise 1: status = %d, body = %s", w.Code, w.Body.String())
@@ -157,8 +157,9 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	if logExercise1.TargetMeasurementType != "REP_BASED" {
 		t.Errorf("expected REP_BASED, got %s", logExercise1.TargetMeasurementType)
 	}
-	if logExercise1.TargetRestBetweenSets == nil || *logExercise1.TargetRestBetweenSets != 180 {
-		t.Error("target rest between sets not snapshotted correctly")
+	// Exercise-level BreakAfterSeconds should come from section's RestBetweenExercises
+	if logExercise1.BreakAfterSeconds == nil || *logExercise1.BreakAfterSeconds != 90 {
+		t.Errorf("exercise breakAfterSeconds: expected 90, got %v", logExercise1.BreakAfterSeconds)
 	}
 	// Should have 5 auto-created sets with snapshotted targets
 	if len(logExercise1.Sets) != 5 {
@@ -171,10 +172,20 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 		if s.TargetWeight == nil || *s.TargetWeight != 140.0 {
 			t.Errorf("set %d: target weight not snapshotted correctly", i+1)
 		}
+		// Sets 1..4 should have BreakAfterSeconds=180, set 5 should be nil
+		if i < 4 {
+			if s.BreakAfterSeconds == nil || *s.BreakAfterSeconds != 180 {
+				t.Errorf("set %d: expected breakAfterSeconds 180, got %v", i+1, s.BreakAfterSeconds)
+			}
+		} else {
+			if s.BreakAfterSeconds != nil {
+				t.Errorf("set %d (last): expected nil breakAfterSeconds, got %v", i+1, *s.BreakAfterSeconds)
+			}
+		}
 	}
 
 	w = doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": logSection.ID, "userExerciseSchemeId": scheme2.ID, "position": 1,
+		"workoutLogSectionId": logSection.ID, "sourceExerciseSchemeId": scheme2.ID, "position": 1,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create log exercise 2: status = %d", w.Code)
@@ -237,9 +248,12 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	ex1 := fullLog.Sections[0].Exercises[0]
 	ex2 := fullLog.Sections[0].Exercises[1]
 
-	// Exercise 1: all 5 sets completed
+	// Exercise 1: all 5 sets completed — exercise should be completed
 	if len(ex1.Sets) != 5 {
 		t.Fatalf("expected 5 sets for exercise 1, got %d", len(ex1.Sets))
+	}
+	if !ex1.Completed {
+		t.Error("exercise 1 should be completed (all sets done)")
 	}
 	for i, s := range ex1.Sets {
 		if !s.Completed {
@@ -254,9 +268,12 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 		}
 	}
 
-	// Exercise 2: 3 of 4 sets completed
+	// Exercise 2: 3 of 4 sets completed — exercise should NOT be completed
 	if len(ex2.Sets) != 4 {
 		t.Fatalf("expected 4 sets for exercise 2, got %d", len(ex2.Sets))
+	}
+	if ex2.Completed {
+		t.Error("exercise 2 should not be completed (1 set remaining)")
 	}
 	completedCount := 0
 	for _, s := range ex2.Sets {
@@ -273,6 +290,14 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	// Last set should not be completed
 	if ex2.Sets[3].Completed {
 		t.Error("exercise 2 last set should not be completed")
+	}
+
+	// Section and log should not be completed (exercise 2 is incomplete)
+	if fullLog.Sections[0].Completed {
+		t.Error("section should not be completed (exercise 2 incomplete)")
+	}
+	if fullLog.Completed {
+		t.Error("log should not be completed (section incomplete)")
 	}
 
 	// 13. Also create an ad-hoc log (no workout template)
