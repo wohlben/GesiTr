@@ -1,11 +1,14 @@
 package models
 
+import "time"
+
 type WorkoutLogExerciseEntity struct {
 	BaseModel
-	WorkoutLogSectionID    uint `gorm:"not null;index"`
-	SourceExerciseSchemeID uint `gorm:"not null"`
-	Position               int  `gorm:"not null"`
-	Completed              bool `gorm:"not null;default:false"`
+	WorkoutLogSectionID    uint             `gorm:"not null;index"`
+	SourceExerciseSchemeID uint             `gorm:"not null"`
+	Position               int              `gorm:"not null"`
+	Status                 WorkoutLogStatus `gorm:"not null;default:'planning'"`
+	StatusChangedAt        *time.Time
 	BreakAfterSeconds      *int
 
 	// Target fields (snapshotted from scheme on creation)
@@ -23,7 +26,8 @@ func (e *WorkoutLogExerciseEntity) ToDTO() WorkoutLogExercise {
 		WorkoutLogSectionID:    e.WorkoutLogSectionID,
 		SourceExerciseSchemeID: e.SourceExerciseSchemeID,
 		Position:               e.Position,
-		Completed:              e.Completed,
+		Status:                 e.Status,
+		StatusChangedAt:        e.StatusChangedAt,
 		BreakAfterSeconds:      e.BreakAfterSeconds,
 		TargetMeasurementType:  e.TargetMeasurementType,
 		TargetTimePerRep:       e.TargetTimePerRep,
@@ -40,7 +44,8 @@ func WorkoutLogExerciseFromDTO(dto WorkoutLogExercise) WorkoutLogExerciseEntity 
 		WorkoutLogSectionID:    dto.WorkoutLogSectionID,
 		SourceExerciseSchemeID: dto.SourceExerciseSchemeID,
 		Position:               dto.Position,
-		Completed:              dto.Completed,
+		Status:                 dto.Status,
+		StatusChangedAt:        dto.StatusChangedAt,
 		BreakAfterSeconds:      dto.BreakAfterSeconds,
 		TargetMeasurementType:  dto.TargetMeasurementType,
 		TargetTimePerRep:       dto.TargetTimePerRep,

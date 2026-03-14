@@ -1,10 +1,13 @@
 package models
 
+import "time"
+
 type WorkoutLogExerciseSetEntity struct {
 	BaseModel
-	WorkoutLogExerciseID uint `gorm:"not null;index"`
-	SetNumber            int  `gorm:"not null"`
-	Completed            bool `gorm:"not null;default:false"`
+	WorkoutLogExerciseID uint             `gorm:"not null;index"`
+	SetNumber            int              `gorm:"not null"`
+	Status               WorkoutLogStatus `gorm:"not null;default:'planning'"`
+	StatusChangedAt      *time.Time
 	BreakAfterSeconds    *int
 	TargetReps           *int
 	TargetWeight         *float64
@@ -25,7 +28,8 @@ func (e *WorkoutLogExerciseSetEntity) ToDTO() WorkoutLogExerciseSet {
 		BaseModel:            e.BaseModel,
 		WorkoutLogExerciseID: e.WorkoutLogExerciseID,
 		SetNumber:            e.SetNumber,
-		Completed:            e.Completed,
+		Status:               e.Status,
+		StatusChangedAt:      e.StatusChangedAt,
 		BreakAfterSeconds:    e.BreakAfterSeconds,
 		TargetReps:           e.TargetReps,
 		TargetWeight:         e.TargetWeight,
@@ -45,7 +49,8 @@ func WorkoutLogExerciseSetFromDTO(dto WorkoutLogExerciseSet) WorkoutLogExerciseS
 		BaseModel:            dto.BaseModel,
 		WorkoutLogExerciseID: dto.WorkoutLogExerciseID,
 		SetNumber:            dto.SetNumber,
-		Completed:            dto.Completed,
+		Status:               dto.Status,
+		StatusChangedAt:      dto.StatusChangedAt,
 		BreakAfterSeconds:    dto.BreakAfterSeconds,
 		TargetReps:           dto.TargetReps,
 		TargetWeight:         dto.TargetWeight,

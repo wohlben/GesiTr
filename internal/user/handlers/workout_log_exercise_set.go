@@ -2,11 +2,13 @@ package handlers
 
 import (
 	"net/http"
+	"time"
 
 	"gesitr/internal/database"
 	"gesitr/internal/user/models"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func ListWorkoutLogExerciseSets(c *gin.Context) {
@@ -42,8 +44,19 @@ func CreateWorkoutLogExerciseSet(c *gin.Context) {
 		return
 	}
 
+	// Guard: parent log must be in planning status (also checks ownership)
+	logID, err := getLogIDFromSection(exercise.WorkoutLogSectionID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	if _, ok := requireLogStatus(c, logID, models.WorkoutLogStatusPlanning); !ok {
+		return
+	}
+
 	entity := models.WorkoutLogExerciseSetFromDTO(dto)
 	entity.ID = 0
+	entity.Status = models.WorkoutLogStatusPlanning
 	if err := database.DB.Create(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -58,14 +71,34 @@ func UpdateWorkoutLogExerciseSet(c *gin.Context) {
 		return
 	}
 
+	// Owner check via parent log
+	logID, err := getLogIDFromExercise(existing.WorkoutLogExerciseID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	if !requireLogOwner(c, logID) {
+		return
+	}
+
 	var dto models.WorkoutLogExerciseSet
 	if err := c.ShouldBindJSON(&dto); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Update actual fields and completed
-	existing.Completed = dto.Completed
+	// Status transition: validate against the state machine
+	if dto.Status != "" && dto.Status != existing.Status {
+		if err := existing.Status.TransitionTo(dto.Status); err != nil {
+			c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
+			return
+		}
+		now := time.Now()
+		existing.Status = dto.Status
+		existing.StatusChangedAt = &now
+	}
+
+	// Update actual fields
 	existing.ActualReps = dto.ActualReps
 	existing.ActualWeight = dto.ActualWeight
 	existing.ActualDuration = dto.ActualDuration
@@ -92,91 +125,160 @@ func UpdateWorkoutLogExerciseSet(c *gin.Context) {
 		existing.BreakAfterSeconds = dto.BreakAfterSeconds
 	}
 
-	if err := database.DB.Save(&existing).Error; err != nil {
+	err = database.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Save(&existing).Error; err != nil {
+			return err
+		}
+		if existing.Status == models.WorkoutLogStatusFinished {
+			maybeUpdateRecord(tx, &existing)
+		}
+		return propagateStatus(tx, existing.WorkoutLogExerciseID)
+	})
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	if existing.Completed {
-		maybeUpdateRecord(&existing)
-	}
-
-	propagateCompletion(existing.WorkoutLogExerciseID)
-
 	c.JSON(http.StatusOK, existing.ToDTO())
 }
 
-func propagateCompletion(exerciseID uint) {
-	// Check if all sets of this exercise are completed
+func propagateStatus(db *gorm.DB, exerciseID uint) error {
 	var exercise models.WorkoutLogExerciseEntity
-	if err := database.DB.Preload("Sets").First(&exercise, exerciseID).Error; err != nil {
-		return
+	if err := db.Preload("Sets").First(&exercise, exerciseID).Error; err != nil {
+		return err
 	}
 
-	allSetsCompleted := len(exercise.Sets) > 0
+	if len(exercise.Sets) == 0 {
+		return nil
+	}
+
+	// Check if all sets are terminal
+	allTerminal := true
+	anyAborted := false
 	for _, s := range exercise.Sets {
-		if !s.Completed {
-			allSetsCompleted = false
+		if !s.Status.IsTerminal() {
+			allTerminal = false
 			break
+		}
+		if s.Status == models.WorkoutLogStatusAborted {
+			anyAborted = true
 		}
 	}
 
-	if exercise.Completed != allSetsCompleted {
-		exercise.Completed = allSetsCompleted
-		database.DB.Model(&exercise).Update("completed", allSetsCompleted)
+	if !allTerminal {
+		return nil
 	}
 
-	propagateSectionCompletion(exercise.WorkoutLogSectionID)
+	now := time.Now()
+	newStatus := models.WorkoutLogStatusFinished
+	if anyAborted {
+		newStatus = models.WorkoutLogStatusAborted
+	}
+
+	if exercise.Status != newStatus {
+		if err := db.Model(&exercise).Updates(map[string]any{
+			"status":            newStatus,
+			"status_changed_at": now,
+		}).Error; err != nil {
+			return err
+		}
+	}
+
+	return propagateSectionStatus(db, exercise.WorkoutLogSectionID)
 }
 
-func propagateSectionCompletion(sectionID uint) {
-	// Check if all exercises of the section are completed
+func propagateSectionStatus(db *gorm.DB, sectionID uint) error {
 	var section models.WorkoutLogSectionEntity
-	if err := database.DB.Preload("Exercises").First(&section, sectionID).Error; err != nil {
-		return
+	if err := db.Preload("Exercises").First(&section, sectionID).Error; err != nil {
+		return err
 	}
 
-	allExercisesCompleted := len(section.Exercises) > 0
+	if len(section.Exercises) == 0 {
+		return nil
+	}
+
+	allTerminal := true
+	anyAborted := false
 	for _, ex := range section.Exercises {
-		if !ex.Completed {
-			allExercisesCompleted = false
+		if !ex.Status.IsTerminal() {
+			allTerminal = false
 			break
+		}
+		if ex.Status == models.WorkoutLogStatusAborted {
+			anyAborted = true
 		}
 	}
 
-	if section.Completed != allExercisesCompleted {
-		section.Completed = allExercisesCompleted
-		database.DB.Model(&section).Update("completed", allExercisesCompleted)
+	if !allTerminal {
+		return nil
 	}
 
-	// Check if all sections of the log are completed
+	now := time.Now()
+	newStatus := models.WorkoutLogStatusFinished
+	if anyAborted {
+		newStatus = models.WorkoutLogStatusAborted
+	}
+
+	if section.Status != newStatus {
+		if err := db.Model(&section).Updates(map[string]any{
+			"status":            newStatus,
+			"status_changed_at": now,
+		}).Error; err != nil {
+			return err
+		}
+	}
+
+	// Propagate to log
 	var log models.WorkoutLogEntity
-	if err := database.DB.Preload("Sections").First(&log, section.WorkoutLogID).Error; err != nil {
-		return
+	if err := db.Preload("Sections").First(&log, section.WorkoutLogID).Error; err != nil {
+		return err
 	}
 
-	allSectionsCompleted := len(log.Sections) > 0
+	if len(log.Sections) == 0 {
+		return nil
+	}
+
+	allTerminal = true
+	anyAborted = false
 	for _, s := range log.Sections {
-		if !s.Completed {
-			allSectionsCompleted = false
+		if !s.Status.IsTerminal() {
+			allTerminal = false
 			break
+		}
+		if s.Status == models.WorkoutLogStatusAborted {
+			anyAborted = true
 		}
 	}
 
-	if log.Completed != allSectionsCompleted {
-		log.Completed = allSectionsCompleted
-		database.DB.Model(&log).Update("completed", allSectionsCompleted)
+	if !allTerminal {
+		return nil
 	}
+
+	newStatus = models.WorkoutLogStatusFinished
+	if anyAborted {
+		newStatus = models.WorkoutLogStatusAborted
+	}
+
+	if log.Status != newStatus {
+		if err := db.Model(&log).Updates(map[string]any{
+			"status":            newStatus,
+			"status_changed_at": now,
+		}).Error; err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
-func maybeUpdateRecord(set *models.WorkoutLogExerciseSetEntity) {
+func maybeUpdateRecord(db *gorm.DB, set *models.WorkoutLogExerciseSetEntity) {
 	var logExercise models.WorkoutLogExerciseEntity
-	if err := database.DB.First(&logExercise, set.WorkoutLogExerciseID).Error; err != nil {
+	if err := db.First(&logExercise, set.WorkoutLogExerciseID).Error; err != nil {
 		return
 	}
 
 	var scheme models.UserExerciseSchemeEntity
-	if err := database.DB.First(&scheme, logExercise.SourceExerciseSchemeID).Error; err != nil {
+	if err := db.First(&scheme, logExercise.SourceExerciseSchemeID).Error; err != nil {
 		return
 	}
 
@@ -186,13 +288,13 @@ func maybeUpdateRecord(set *models.WorkoutLogExerciseSetEntity) {
 	}
 
 	var existing models.UserRecordEntity
-	err := database.DB.
+	err := db.
 		Where("user_exercise_id = ? AND measurement_type = ?", scheme.UserExerciseID, logExercise.TargetMeasurementType).
 		First(&existing).Error
 
 	if err != nil {
 		// No existing record — create
-		database.DB.Create(&models.UserRecordEntity{
+		db.Create(&models.UserRecordEntity{
 			UserExerciseID:          scheme.UserExerciseID,
 			MeasurementType:         logExercise.TargetMeasurementType,
 			RecordValue:             value,
@@ -214,7 +316,7 @@ func maybeUpdateRecord(set *models.WorkoutLogExerciseSetEntity) {
 		existing.ActualDistance = set.ActualDistance
 		existing.ActualTime = set.ActualTime
 		existing.WorkoutLogExerciseSetID = set.ID
-		database.DB.Save(&existing)
+		db.Save(&existing)
 	}
 }
 
@@ -225,12 +327,26 @@ func DeleteWorkoutLogExerciseSet(c *gin.Context) {
 		return
 	}
 
-	exerciseID := existing.WorkoutLogExerciseID
-	if err := database.DB.Delete(&existing).Error; err != nil {
+	// Guard: parent log must be in planning status (also checks ownership)
+	logID, err := getLogIDFromExercise(existing.WorkoutLogExerciseID)
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	if _, ok := requireLogStatus(c, logID, models.WorkoutLogStatusPlanning); !ok {
+		return
+	}
 
-	propagateCompletion(exerciseID)
+	exerciseID := existing.WorkoutLogExerciseID
+	err = database.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Delete(&existing).Error; err != nil {
+			return err
+		}
+		return propagateStatus(tx, exerciseID)
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 	c.JSON(http.StatusNoContent, nil)
 }

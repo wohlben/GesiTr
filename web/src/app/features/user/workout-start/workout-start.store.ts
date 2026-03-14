@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
-import { WorkoutSection, UserExerciseScheme } from '$generated/user-models';
+import { WorkoutSection, WorkoutLogSection, UserExerciseScheme } from '$generated/user-models';
 
 export interface SetPreview {
   setNumber: number;
@@ -133,6 +133,85 @@ export const WorkoutStartStore = signalStore(
             measurementType: item.scheme.measurementType,
             sets,
           };
+        }
+
+        patchState(store, { exerciseDisplay: display, isLoadingDisplay: false });
+      },
+
+      async loadExerciseDisplayFromLog(sections: WorkoutLogSection[]) {
+        patchState(store, { isLoadingDisplay: true });
+
+        const display: Record<number, ExerciseDisplayInfo> = {};
+
+        // Collect unique scheme IDs
+        const schemeIds = [
+          ...new Set(
+            sections.flatMap((s) => (s.exercises ?? []).map((ex) => ex.sourceExerciseSchemeId)),
+          ),
+        ];
+
+        // Fetch schemes to resolve names via userExercise → compendium
+        const schemeResults = await Promise.all(
+          schemeIds.map((id) =>
+            userApi
+              .fetchExerciseScheme(id)
+              .then((scheme) => ({ schemeId: id, scheme }))
+              .catch(() => null),
+          ),
+        );
+        const schemes = schemeResults.filter(
+          (r): r is { schemeId: number; scheme: UserExerciseScheme } => r !== null,
+        );
+
+        // Fetch unique user exercises to get compendium IDs
+        const uniqueUserExerciseIds = [...new Set(schemes.map((s) => s.scheme.userExerciseId))];
+        const userExerciseResults = await Promise.all(
+          uniqueUserExerciseIds.map((id) => userApi.fetchUserExercise(id).catch(() => null)),
+        );
+
+        // Fetch exercise version names
+        const exerciseNames: Record<number, string> = {};
+        await Promise.all(
+          userExerciseResults
+            .filter((ue) => ue !== null)
+            .map(async (ue) => {
+              try {
+                const version = await compendiumApi.fetchExerciseVersion(
+                  ue.compendiumExerciseId,
+                  ue.compendiumVersion,
+                );
+                exerciseNames[ue.id] = version.snapshot?.name ?? `Exercise #${ue.id}`;
+              } catch {
+                exerciseNames[ue.id] = `Exercise #${ue.id}`;
+              }
+            }),
+        );
+
+        // Build display map using log exercise data (already snapshotted)
+        for (const section of sections) {
+          for (const ex of section.exercises ?? []) {
+            const schemeItem = schemes.find((s) => s.schemeId === ex.sourceExerciseSchemeId);
+            const sets: SetPreview[] = (ex.sets ?? []).map((s) => ({
+              setNumber: s.setNumber,
+              targetReps: s.targetReps,
+              targetWeight: s.targetWeight,
+              targetDuration: s.targetDuration,
+              targetDistance: s.targetDistance,
+              targetTime: s.targetTime,
+              restAfterSeconds: s.breakAfterSeconds ?? null,
+            }));
+            display[ex.id] = {
+              name: schemeItem
+                ? (exerciseNames[schemeItem.scheme.userExerciseId] ??
+                  `Exercise #${schemeItem.scheme.userExerciseId}`)
+                : `Exercise #${ex.sourceExerciseSchemeId}`,
+              summary: schemeItem
+                ? formatSchemeSummary(schemeItem.scheme)
+                : ex.targetMeasurementType,
+              measurementType: ex.targetMeasurementType,
+              sets,
+            };
+          }
         }
 
         patchState(store, { exerciseDisplay: display, isLoadingDisplay: false });

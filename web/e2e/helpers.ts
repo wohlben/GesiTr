@@ -224,3 +224,20 @@ export async function deleteWorkoutSectionExercise(
 ) {
   await request.delete(`/api/user/workout-section-exercises/${id}`);
 }
+
+export async function fetchWorkoutLogs(
+  request: APIRequestContext,
+  params: Record<string, string | number> = {},
+) {
+  const qp = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    qp.set(key, String(value));
+  }
+  const qs = qp.toString();
+  const res = await request.get(`/api/user/workout-logs${qs ? '?' + qs : ''}`);
+  return res.json();
+}
+
+export async function deleteWorkoutLog(request: APIRequestContext, id: number) {
+  await request.delete(`/api/user/workout-logs/${id}`);
+}

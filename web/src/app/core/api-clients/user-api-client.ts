@@ -113,6 +113,16 @@ export class UserApiClient {
   }
 
   // Workout Logs
+  fetchWorkoutLogs(params?: { workoutId?: number; status?: string }): Promise<WorkoutLog[]> {
+    const qp = new URLSearchParams();
+    if (params?.workoutId != null) qp.set('workoutId', String(params.workoutId));
+    if (params?.status) qp.set('status', params.status);
+    const qs = qp.toString();
+    return firstValueFrom(
+      this.http.get<WorkoutLog[]>(`/api/user/workout-logs${qs ? '?' + qs : ''}`),
+    );
+  }
+
   fetchWorkoutLog(id: number): Promise<WorkoutLog> {
     return firstValueFrom(this.http.get<WorkoutLog>(`/api/user/workout-logs/${id}`));
   }
@@ -140,5 +150,13 @@ export class UserApiClient {
     return firstValueFrom(
       this.http.put<WorkoutLogExerciseSet>(`/api/user/workout-log-exercise-sets/${id}`, data),
     );
+  }
+
+  startWorkoutLog(id: number): Promise<WorkoutLog> {
+    return firstValueFrom(this.http.post<WorkoutLog>(`/api/user/workout-logs/${id}/start`, {}));
+  }
+
+  abandonWorkoutLog(id: number): Promise<WorkoutLog> {
+    return firstValueFrom(this.http.post<WorkoutLog>(`/api/user/workout-logs/${id}/abandon`, {}));
   }
 }

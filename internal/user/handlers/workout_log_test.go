@@ -25,27 +25,23 @@ func TestListWorkoutLogs(t *testing.T) {
 	})
 
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Monday Session", "date": "2026-03-07T10:00:00Z",
+		"name": "Monday Session", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "bob", "name": "Tuesday Session", "date": "2026-03-08T10:00:00Z",
+		"name": "Tuesday Session", "date": "2026-03-08T10:00:00Z",
 	})
 
-	t.Run("list all", func(t *testing.T) {
+	t.Run("list all (scoped to auth user)", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/user/workout-logs", nil)
 		var result []models.WorkoutLog
 		json.Unmarshal(w.Body.Bytes(), &result)
 		if len(result) != 2 {
 			t.Errorf("expected 2, got %d", len(result))
 		}
-	})
-
-	t.Run("filter by owner", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/user/workout-logs?owner=alice", nil)
-		var result []models.WorkoutLog
-		json.Unmarshal(w.Body.Bytes(), &result)
-		if len(result) != 1 || result[0].Owner != "alice" {
-			t.Errorf("owner filter: got %d results", len(result))
+		for _, log := range result {
+			if log.Owner != "alice" {
+				t.Errorf("expected owner alice, got %s", log.Owner)
+			}
 		}
 	})
 

@@ -1,0 +1,56 @@
+package models
+
+import "testing"
+
+func TestCanTransitionTo(t *testing.T) {
+	allowed := []struct {
+		from, to WorkoutLogStatus
+	}{
+		{WorkoutLogStatusPlanning, WorkoutLogStatusInProgress},
+		{WorkoutLogStatusInProgress, WorkoutLogStatusFinished},
+		{WorkoutLogStatusInProgress, WorkoutLogStatusAborted},
+	}
+	for _, tt := range allowed {
+		if !tt.from.CanTransitionTo(tt.to) {
+			t.Errorf("%s -> %s should be allowed", tt.from, tt.to)
+		}
+	}
+
+	forbidden := []struct {
+		from, to WorkoutLogStatus
+	}{
+		{WorkoutLogStatusPlanning, WorkoutLogStatusFinished},
+		{WorkoutLogStatusPlanning, WorkoutLogStatusAborted},
+		{WorkoutLogStatusInProgress, WorkoutLogStatusPlanning},
+		{WorkoutLogStatusFinished, WorkoutLogStatusPlanning},
+		{WorkoutLogStatusFinished, WorkoutLogStatusInProgress},
+		{WorkoutLogStatusFinished, WorkoutLogStatusAborted},
+		{WorkoutLogStatusAborted, WorkoutLogStatusPlanning},
+		{WorkoutLogStatusAborted, WorkoutLogStatusInProgress},
+		{WorkoutLogStatusAborted, WorkoutLogStatusFinished},
+	}
+	for _, tt := range forbidden {
+		if tt.from.CanTransitionTo(tt.to) {
+			t.Errorf("%s -> %s should be forbidden", tt.from, tt.to)
+		}
+	}
+}
+
+func TestTransitionTo(t *testing.T) {
+	if err := WorkoutLogStatusPlanning.TransitionTo(WorkoutLogStatusInProgress); err != nil {
+		t.Errorf("expected nil error, got %v", err)
+	}
+	if err := WorkoutLogStatusFinished.TransitionTo(WorkoutLogStatusPlanning); err == nil {
+		t.Error("expected error for terminal -> planning transition")
+	}
+}
+
+func TestIsTerminalConsistency(t *testing.T) {
+	for status, targets := range validTransitions {
+		isTerminal := status.IsTerminal()
+		hasNoTransitions := len(targets) == 0
+		if isTerminal != hasNoTransitions {
+			t.Errorf("%s: IsTerminal=%v but has %d valid transitions", status, isTerminal, len(targets))
+		}
+	}
+}

@@ -165,6 +165,8 @@ func setupRoutes(r *gin.Engine) {
 		workoutLogs.GET("/:id", userhandlers.GetWorkoutLog)
 		workoutLogs.PUT("/:id", userhandlers.UpdateWorkoutLog)
 		workoutLogs.DELETE("/:id", userhandlers.DeleteWorkoutLog)
+		workoutLogs.POST("/:id/start", userhandlers.StartWorkoutLog)
+		workoutLogs.POST("/:id/abandon", userhandlers.AbandonWorkoutLog)
 	}
 
 	workoutLogSections := user.Group("/workout-log-sections")

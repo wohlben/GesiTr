@@ -41,9 +41,7 @@ func CreateWorkoutLogSection(c *gin.Context) {
 		return
 	}
 
-	var log models.WorkoutLogEntity
-	if err := database.DB.First(&log, dto.WorkoutLogID).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log not found"})
+	if _, ok := requireLogStatus(c, dto.WorkoutLogID, models.WorkoutLogStatusPlanning); !ok {
 		return
 	}
 
@@ -69,8 +67,18 @@ func GetWorkoutLogSection(c *gin.Context) {
 }
 
 func DeleteWorkoutLogSection(c *gin.Context) {
-	if err := database.DB.Delete(&models.WorkoutLogSectionEntity{}, c.Param("id")).Error; err != nil {
+	var existing models.WorkoutLogSectionEntity
+	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log section not found"})
+		return
+	}
+
+	if _, ok := requireLogStatus(c, existing.WorkoutLogID, models.WorkoutLogStatusPlanning); !ok {
+		return
+	}
+
+	if err := database.DB.Delete(&existing).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusNoContent, nil)

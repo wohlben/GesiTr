@@ -80,8 +80,9 @@ export interface WorkoutLog extends BaseModel {
   workoutId?: number /* uint */;
   name: string;
   notes?: string;
-  date: string;
-  completed: boolean;
+  date?: string;
+  status: WorkoutLogStatus;
+  statusChangedAt?: string;
   sections: WorkoutLogSection[];
 }
 
@@ -92,7 +93,8 @@ export interface WorkoutLogExercise extends BaseModel {
   workoutLogSectionId: number /* uint */;
   sourceExerciseSchemeId: number /* uint */;
   position: number /* int */;
-  completed: boolean;
+  status: WorkoutLogStatus;
+  statusChangedAt?: string;
   breakAfterSeconds?: number /* int */;
   /**
    * Target fields (snapshotted from scheme on creation)
@@ -108,7 +110,8 @@ export interface WorkoutLogExercise extends BaseModel {
 export interface WorkoutLogExerciseSet extends BaseModel {
   workoutLogExerciseId: number /* uint */;
   setNumber: number /* int */;
-  completed: boolean;
+  status: WorkoutLogStatus;
+  statusChangedAt?: string;
   breakAfterSeconds?: number /* int */;
   targetReps?: number /* int */;
   targetWeight?: number /* float64 */;
@@ -131,9 +134,19 @@ export interface WorkoutLogSection extends BaseModel {
   label?: string;
   position: number /* int */;
   restBetweenExercises?: number /* int */;
-  completed: boolean;
+  status: WorkoutLogStatus;
+  statusChangedAt?: string;
   exercises: WorkoutLogExercise[];
 }
+
+//////////
+// source: workout_log_status.go
+
+export type WorkoutLogStatus = string;
+export const WorkoutLogStatusPlanning: WorkoutLogStatus = 'planning';
+export const WorkoutLogStatusInProgress: WorkoutLogStatus = 'in_progress';
+export const WorkoutLogStatusFinished: WorkoutLogStatus = 'finished';
+export const WorkoutLogStatusAborted: WorkoutLogStatus = 'aborted';
 
 //////////
 // source: workout_section.go

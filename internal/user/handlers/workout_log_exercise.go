@@ -45,6 +45,11 @@ func CreateWorkoutLogExercise(c *gin.Context) {
 		return
 	}
 
+	// Guard: parent log must be in planning status
+	if _, ok := requireLogStatus(c, section.WorkoutLogID, models.WorkoutLogStatusPlanning); !ok {
+		return
+	}
+
 	var scheme models.UserExerciseSchemeEntity
 	if err := database.DB.First(&scheme, dto.SourceExerciseSchemeID).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User exercise scheme not found"})
@@ -79,7 +84,7 @@ func CreateWorkoutLogExercise(c *gin.Context) {
 		set := models.WorkoutLogExerciseSetEntity{
 			WorkoutLogExerciseID: entity.ID,
 			SetNumber:            i,
-			Completed:            false,
+			Status:               models.WorkoutLogStatusPlanning,
 			TargetReps:           scheme.Reps,
 			TargetWeight:         scheme.Weight,
 			TargetDuration:       scheme.Duration,
@@ -136,11 +141,26 @@ func DeleteWorkoutLogExercise(c *gin.Context) {
 		return
 	}
 
-	if err := database.DB.Delete(&existing).Error; err != nil {
+	// Guard: parent log must be in planning status
+	logID, err := getLogIDFromSection(existing.WorkoutLogSectionID)
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	if _, ok := requireLogStatus(c, logID, models.WorkoutLogStatusPlanning); !ok {
+		return
+	}
 
-	propagateSectionCompletion(existing.WorkoutLogSectionID)
+	sectionID := existing.WorkoutLogSectionID
+	err = database.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Delete(&existing).Error; err != nil {
+			return err
+		}
+		return propagateSectionStatus(tx, sectionID)
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 	c.JSON(http.StatusNoContent, nil)
 }

@@ -29,9 +29,12 @@ func TestRecordCreatedOnSetCompletion(t *testing.T) {
 		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
-	// Complete set 1 with 5 reps @ 100kg → e1RM = 100 * (1 + 5/30) = 116.667
+	// Start the workout
+	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
+
+	// Finish set 1 with 5 reps @ 100kg → e1RM = 100 * (1 + 5/30) = 116.667
 	w := doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
-		"completed": true, "actualReps": 5, "actualWeight": 100.0,
+		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 	if w.Code != http.StatusOK {
 		t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
@@ -80,14 +83,17 @@ func TestRecordUpdatedOnBetterPerformance(t *testing.T) {
 		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
-	// Complete set 1: 5 reps @ 100kg → e1RM = 116.667
+	// Start the workout
+	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
+
+	// Finish set 1: 5 reps @ 100kg → e1RM = 116.667
 	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
-		"completed": true, "actualReps": 5, "actualWeight": 100.0,
+		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 
-	// Complete set 2: 8 reps @ 100kg → e1RM = 100 * (1 + 8/30) = 126.667 (better)
+	// Finish set 2: 8 reps @ 100kg → e1RM = 100 * (1 + 8/30) = 126.667 (better)
 	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
-		"completed": true, "actualReps": 8, "actualWeight": 100.0,
+		"status": "finished", "actualReps": 8, "actualWeight": 100.0,
 	})
 
 	w := doJSON(r, "GET", "/api/user/records?userExerciseId=1", nil)
@@ -126,14 +132,17 @@ func TestRecordNotUpdatedOnWorsePerformance(t *testing.T) {
 		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
-	// Complete set 1: 8 reps @ 100kg → e1RM = 126.667
+	// Start the workout
+	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
+
+	// Finish set 1: 8 reps @ 100kg → e1RM = 126.667
 	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
-		"completed": true, "actualReps": 8, "actualWeight": 100.0,
+		"status": "finished", "actualReps": 8, "actualWeight": 100.0,
 	})
 
-	// Complete set 2: 3 reps @ 100kg → e1RM = 100 * (1 + 3/30) = 110.0 (worse)
+	// Finish set 2: 3 reps @ 100kg → e1RM = 100 * (1 + 3/30) = 110.0 (worse)
 	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
-		"completed": true, "actualReps": 3, "actualWeight": 100.0,
+		"status": "finished", "actualReps": 3, "actualWeight": 100.0,
 	})
 
 	w := doJSON(r, "GET", "/api/user/records?userExerciseId=1", nil)
@@ -151,7 +160,7 @@ func TestRecordNotUpdatedOnWorsePerformance(t *testing.T) {
 	}
 }
 
-func TestNoRecordWhenNotCompleted(t *testing.T) {
+func TestNoRecordWhenNotFinished(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
@@ -172,9 +181,12 @@ func TestNoRecordWhenNotCompleted(t *testing.T) {
 		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
-	// Update set without completed=true
+	// Start the workout
+	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
+
+	// Update set without finishing — just update actuals without status change
 	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
-		"completed": false, "actualReps": 5, "actualWeight": 100.0,
+		"actualReps": 5, "actualWeight": 100.0,
 	})
 
 	w := doJSON(r, "GET", "/api/user/records?userExerciseId=1", nil)
@@ -207,8 +219,11 @@ func TestDifferentMeasurementTypes(t *testing.T) {
 		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
 
+	// Start the workout
+	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
+
 	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
-		"completed": true, "actualDuration": 75,
+		"status": "finished", "actualDuration": 75,
 	})
 
 	w := doJSON(r, "GET", "/api/user/records?userExerciseId=1", nil)
@@ -236,8 +251,28 @@ func TestDifferentMeasurementTypes(t *testing.T) {
 		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 2, "position": 1,
 	})
 
+	// Need to start a new log for the distance exercise since log 1 is already in_progress
+	// and the new exercise was created while in_progress — this would be blocked.
+	// Actually, the exercise was added while the log was already started.
+	// The guard blocks creating exercises when log is NOT planning.
+	// We need a separate log for this test.
+
+	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
+		"owner": "alice", "name": "Test2", "date": "2026-03-07T10:00:00Z",
+	})
+	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
+		"workoutLogId": 2, "type": "main", "position": 0,
+	})
+	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
+		"workoutLogSectionId": 2, "sourceExerciseSchemeId": 2, "position": 0,
+	})
+	doJSON(r, "POST", "/api/user/workout-logs/2/start", nil)
+
+	// The set ID depends on how many sets were created.
+	// Log 1: 1 set (TIME_BASED scheme with sets=1) = set ID 1
+	// Log 2: 1 set (DISTANCE_BASED scheme with sets=1) = set ID 2
 	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
-		"completed": true, "actualDistance": 5.5,
+		"status": "finished", "actualDistance": 5.5,
 	})
 
 	w = doJSON(r, "GET", "/api/user/records?userExerciseId=2", nil)
@@ -281,14 +316,17 @@ func TestPerExerciseNotPerScheme(t *testing.T) {
 		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 2, "position": 1,
 	})
 
-	// Complete set from scheme 1: 5 reps @ 100kg → e1RM = 116.667
+	// Start the workout
+	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
+
+	// Finish set from scheme 1: 5 reps @ 100kg → e1RM = 116.667
 	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
-		"completed": true, "actualReps": 5, "actualWeight": 100.0,
+		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 
-	// Complete set from scheme 2: 10 reps @ 80kg → e1RM = 80 * (1 + 10/30) = 106.667 (worse)
+	// Finish set from scheme 2: 10 reps @ 80kg → e1RM = 80 * (1 + 10/30) = 106.667 (worse)
 	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
-		"completed": true, "actualReps": 10, "actualWeight": 80.0,
+		"status": "finished", "actualReps": 10, "actualWeight": 80.0,
 	})
 
 	// Should have only 1 record for the exercise (not 2 for each scheme)
@@ -336,12 +374,15 @@ func TestListAndGetRecordEndpoints(t *testing.T) {
 		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 2, "position": 1,
 	})
 
-	// Complete both
+	// Start the workout
+	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
+
+	// Finish both
 	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
-		"completed": true, "actualReps": 5, "actualWeight": 100.0,
+		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
-		"completed": true, "actualReps": 5, "actualWeight": 60.0,
+		"status": "finished", "actualReps": 5, "actualWeight": 60.0,
 	})
 
 	t.Run("filter by userExerciseId", func(t *testing.T) {

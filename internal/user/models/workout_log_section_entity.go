@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type WorkoutLogSectionEntity struct {
 	BaseModel
 	WorkoutLogID         uint               `gorm:"not null;index"`
@@ -7,7 +9,8 @@ type WorkoutLogSectionEntity struct {
 	Label                *string
 	Position             int `gorm:"not null"`
 	RestBetweenExercises *int
-	Completed            bool                       `gorm:"not null;default:false"`
+	Status               WorkoutLogStatus `gorm:"not null;default:'planning'"`
+	StatusChangedAt      *time.Time
 	Exercises            []WorkoutLogExerciseEntity `gorm:"foreignKey:WorkoutLogSectionID"`
 }
 
@@ -21,7 +24,8 @@ func (e *WorkoutLogSectionEntity) ToDTO() WorkoutLogSection {
 		Label:                e.Label,
 		Position:             e.Position,
 		RestBetweenExercises: e.RestBetweenExercises,
-		Completed:            e.Completed,
+		Status:               e.Status,
+		StatusChangedAt:      e.StatusChangedAt,
 	}
 	for _, ex := range e.Exercises {
 		dto.Exercises = append(dto.Exercises, ex.ToDTO())
@@ -37,6 +41,7 @@ func WorkoutLogSectionFromDTO(dto WorkoutLogSection) WorkoutLogSectionEntity {
 		Label:                dto.Label,
 		Position:             dto.Position,
 		RestBetweenExercises: dto.RestBetweenExercises,
-		Completed:            dto.Completed,
+		Status:               dto.Status,
+		StatusChangedAt:      dto.StatusChangedAt,
 	}
 }

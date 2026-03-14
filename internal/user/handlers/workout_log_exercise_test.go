@@ -141,8 +141,8 @@ func TestCreateWorkoutLogExercise(t *testing.T) {
 			if s.SetNumber != i+1 {
 				t.Errorf("set %d: expected setNumber %d, got %d", i, i+1, s.SetNumber)
 			}
-			if s.Completed {
-				t.Errorf("set %d: should not be completed", i)
+			if s.Status != models.WorkoutLogStatusPlanning {
+				t.Errorf("set %d: expected planning status, got %s", i, s.Status)
 			}
 			if s.TargetReps == nil || *s.TargetReps != 5 {
 				t.Errorf("set %d: target reps mismatch", i)
@@ -277,7 +277,7 @@ func TestUpdateWorkoutLogExercise(t *testing.T) {
 	})
 }
 
-func TestDeleteExercisePropagatesCompletion(t *testing.T) {
+func TestDeleteExercisePropagatesStatus(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
@@ -300,39 +300,27 @@ func TestDeleteExercisePropagatesCompletion(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
 	})
-	// Exercise 1: completed
+	// Exercise 1
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
 		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
 	})
-	// Exercise 2: incomplete
+	// Exercise 2
 	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
 		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 2, "position": 1,
 	})
 
-	// Complete exercise 1's only set
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
-		"completed": true, "actualReps": 5, "actualWeight": 100.0,
-	})
+	// Delete the second exercise while still in planning — should be allowed
+	w := doJSON(r, "DELETE", "/api/user/workout-log-exercises/2", nil)
+	if w.Code != http.StatusNoContent {
+		t.Fatalf("expected 204, got %d, body = %s", w.Code, w.Body.String())
+	}
 
-	// Section should not be completed (exercise 2 incomplete)
-	w := doJSON(r, "GET", "/api/user/workout-logs/1", nil)
+	// Verify only 1 exercise remains
+	w = doJSON(r, "GET", "/api/user/workout-logs/1", nil)
 	var log models.WorkoutLog
 	json.Unmarshal(w.Body.Bytes(), &log)
-	if log.Completed {
-		t.Fatal("log should not be completed yet")
-	}
-
-	// Delete the incomplete exercise 2 — now the section only has completed exercise 1
-	doJSON(r, "DELETE", "/api/user/workout-log-exercises/2", nil)
-
-	w = doJSON(r, "GET", "/api/user/workout-logs/1", nil)
-	json.Unmarshal(w.Body.Bytes(), &log)
-
-	if !log.Sections[0].Completed {
-		t.Error("section should be completed after deleting incomplete exercise")
-	}
-	if !log.Completed {
-		t.Error("log should be completed after deleting incomplete exercise")
+	if len(log.Sections[0].Exercises) != 1 {
+		t.Fatalf("expected 1 exercise, got %d", len(log.Sections[0].Exercises))
 	}
 }
 

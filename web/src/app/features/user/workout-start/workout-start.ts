@@ -1,4 +1,4 @@
-import { Component, inject, computed, effect } from '@angular/core';
+import { Component, inject, computed, effect, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormGroup, FormControl, FormArray } from '@angular/forms';
@@ -10,11 +10,17 @@ import {
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { formatBreak } from '$core/format-utils';
 import { workoutKeys, workoutLogKeys } from '$core/query-keys';
-import { WorkoutSectionTypeMain, WorkoutSectionTypeSupplementary } from '$generated/user-models';
+import {
+  Workout,
+  WorkoutSectionTypeMain,
+  WorkoutSectionTypeSupplementary,
+  WorkoutLog,
+} from '$generated/user-models';
 import { PageLayout } from '../../../layout/page-layout';
 import { WorkoutStartStore, SetPreview } from './workout-start.store';
 
 type SetFormGroup = FormGroup<{
+  id: FormControl<number | null>;
   targetReps: FormControl<number | null>;
   targetWeight: FormControl<number | null>;
   targetDuration: FormControl<number | null>;
@@ -24,6 +30,7 @@ type SetFormGroup = FormGroup<{
 }>;
 
 type ExerciseFormGroup = FormGroup<{
+  id: FormControl<number | null>;
   sourceExerciseSchemeId: FormControl<number>;
   breakAfterSeconds: FormControl<number | null>;
   sets: FormArray<SetFormGroup>;
@@ -41,11 +48,11 @@ type SectionFormGroup = FormGroup<{
   providers: [WorkoutStartStore],
   template: `
     <app-page-layout
-      header="Start Workout"
-      [isPending]="workoutQuery.isPending()"
+      header="Plan Workout"
+      [isPending]="isPending()"
       [errorMessage]="workoutQuery.isError() ? workoutQuery.error().message : undefined"
     >
-      @if (workoutQuery.data()) {
+      @if (workoutQuery.data() && currentLogId()) {
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
           <!-- Basic Fields -->
           <div>
@@ -69,18 +76,6 @@ type SectionFormGroup = FormGroup<{
               rows="2"
               class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
             ></textarea>
-          </div>
-
-          <div>
-            <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >Date</label
-            >
-            <input
-              id="date"
-              type="date"
-              formControlName="date"
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-            />
           </div>
 
           <!-- Sections -->
@@ -131,7 +126,7 @@ type SectionFormGroup = FormGroup<{
                     let ei = $index;
                     let lastEx = $last
                   ) {
-                    @let info = store.exerciseDisplay()[ex.get('sourceExerciseSchemeId')!.value];
+                    @let info = store.exerciseDisplay()[ex.get('id')!.value!];
                     <div
                       [formGroupName]="ei"
                       class="rounded-md border border-gray-200 dark:border-gray-600"
@@ -205,6 +200,7 @@ type SectionFormGroup = FormGroup<{
                                   <input
                                     type="number"
                                     formControlName="targetReps"
+                                    (change)="onSetChange(si, ei, setIdx)"
                                     class="w-16 rounded border border-gray-300 px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                                   />
                                 </div>
@@ -212,6 +208,7 @@ type SectionFormGroup = FormGroup<{
                                   <input
                                     type="number"
                                     formControlName="targetWeight"
+                                    (change)="onSetChange(si, ei, setIdx)"
                                     class="w-20 rounded border border-gray-300 px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                                     step="0.5"
                                   />
@@ -222,6 +219,7 @@ type SectionFormGroup = FormGroup<{
                                   <input
                                     type="number"
                                     formControlName="targetDuration"
+                                    (change)="onSetChange(si, ei, setIdx)"
                                     class="w-20 rounded border border-gray-300 px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                                   />
                                 </div>
@@ -231,6 +229,7 @@ type SectionFormGroup = FormGroup<{
                                   <input
                                     type="number"
                                     formControlName="targetDistance"
+                                    (change)="onSetChange(si, ei, setIdx)"
                                     class="w-20 rounded border border-gray-300 px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                                     step="0.1"
                                   />
@@ -341,13 +340,18 @@ export class WorkoutStart {
   readonly SECTION_TYPE_MAIN = WorkoutSectionTypeMain;
   readonly SECTION_TYPE_SUPPLEMENTARY = WorkoutSectionTypeSupplementary;
 
-  private id = computed(() => Number(this.params()?.get('id')));
+  id = computed(() => Number(this.params()?.get('id')));
   private initialized = false;
+  currentLogId = signal<number | null>(null);
+  private creating = signal(false);
+
+  isPending = computed(
+    () => this.workoutQuery.isPending() || this.planningLogQuery.isPending() || this.creating(),
+  );
 
   form = new FormGroup({
     name: new FormControl('', { nonNullable: true }),
     notes: new FormControl('', { nonNullable: true }),
-    date: new FormControl('', { nonNullable: true }),
     sections: new FormArray<SectionFormGroup>([]),
   });
 
@@ -369,61 +373,28 @@ export class WorkoutStart {
     enabled: !!this.id(),
   }));
 
+  planningLogQuery = injectQuery(() => ({
+    queryKey: workoutLogKeys.list({ workoutId: this.id(), status: 'planning' }),
+    queryFn: () => this.userApi.fetchWorkoutLogs({ workoutId: this.id(), status: 'planning' }),
+    enabled: !!this.id(),
+  }));
+
   startMutation = injectMutation(() => ({
     mutationFn: () => this.startWorkout(),
   }));
 
   constructor() {
+    // Fetch-or-create effect
     effect(() => {
-      const data = this.workoutQuery.data();
-      if (!data || this.initialized) return;
+      const workout = this.workoutQuery.data();
+      const planningLogs = this.planningLogQuery.data();
+      if (!workout || planningLogs === undefined || this.initialized) return;
       this.initialized = true;
 
-      const today = new Date().toISOString().split('T')[0];
-      this.form.patchValue({
-        name: data.name,
-        notes: data.notes ?? '',
-        date: today,
-      });
-
-      this.sectionsArray.clear();
-
-      for (const section of data.sections ?? []) {
-        const sectionGroup = this.createSectionGroup();
-        sectionGroup.patchValue({
-          type: section.type,
-          label: section.label ?? '',
-        });
-
-        for (const ex of section.exercises ?? []) {
-          sectionGroup.controls.exercises.push(
-            this.createExerciseGroup(ex.userExerciseSchemeId, section.restBetweenExercises ?? null),
-          );
-        }
-
-        this.sectionsArray.push(sectionGroup);
-      }
-
-      this.store.loadExerciseDisplay(data.sections ?? []);
-    });
-
-    // Populate set form arrays once store display data is loaded
-    effect(() => {
-      const display = this.store.exerciseDisplay();
-      if (this.store.isLoadingDisplay() || Object.keys(display).length === 0) return;
-
-      for (let si = 0; si < this.sectionsArray.length; si++) {
-        const exercises = this.getExercisesArray(si);
-        for (let ei = 0; ei < exercises.length; ei++) {
-          const exGroup = exercises.at(ei);
-          const schemeId = exGroup.controls.sourceExerciseSchemeId.value;
-          const info = display[schemeId];
-          if (info && exGroup.controls.sets.length === 0 && info.sets.length > 0) {
-            for (const set of info.sets) {
-              exGroup.controls.sets.push(this.createSetGroup(set));
-            }
-          }
-        }
+      if (planningLogs.length > 0) {
+        this.populateFromLog(planningLogs[0]);
+      } else {
+        this.createPlanningLog(workout);
       }
     });
   }
@@ -442,6 +413,116 @@ export class WorkoutStart {
     this.startMutation.mutate();
   }
 
+  async onSetChange(si: number, ei: number, setIdx: number) {
+    const setGroup = this.getSetsArray(si, ei).at(setIdx);
+    const setId = setGroup.controls.id.value;
+    if (!setId) return;
+
+    const val = setGroup.getRawValue();
+    try {
+      await this.userApi.updateWorkoutLogExerciseSet(setId, {
+        targetReps: val.targetReps ?? undefined,
+        targetWeight: val.targetWeight ?? undefined,
+        targetDuration: val.targetDuration ?? undefined,
+        targetDistance: val.targetDistance ?? undefined,
+        targetTime: val.targetTime ?? undefined,
+        breakAfterSeconds: val.restAfterSeconds ?? undefined,
+      });
+    } catch (err) {
+      console.error('Failed to save set changes:', err);
+    }
+  }
+
+  private populateFromLog(log: WorkoutLog) {
+    this.currentLogId.set(log.id);
+    this.form.patchValue({
+      name: log.name,
+      notes: log.notes ?? '',
+    });
+
+    this.sectionsArray.clear();
+
+    for (const section of log.sections ?? []) {
+      const sectionGroup = this.createSectionGroup();
+      sectionGroup.patchValue({
+        type: section.type,
+        label: section.label ?? '',
+      });
+
+      for (const ex of section.exercises ?? []) {
+        const exGroup = this.createExerciseGroup(
+          ex.sourceExerciseSchemeId,
+          ex.breakAfterSeconds ?? null,
+          ex.id,
+        );
+
+        for (const set of ex.sets ?? []) {
+          exGroup.controls.sets.push(
+            this.createSetGroup(
+              {
+                setNumber: set.setNumber,
+                targetReps: set.targetReps,
+                targetWeight: set.targetWeight,
+                targetDuration: set.targetDuration,
+                targetDistance: set.targetDistance,
+                targetTime: set.targetTime,
+                restAfterSeconds: set.breakAfterSeconds ?? null,
+              },
+              set.id,
+            ),
+          );
+        }
+
+        sectionGroup.controls.exercises.push(exGroup);
+      }
+
+      this.sectionsArray.push(sectionGroup);
+    }
+
+    this.store.loadExerciseDisplayFromLog(log.sections ?? []);
+  }
+
+  private async createPlanningLog(workout: Workout) {
+    this.creating.set(true);
+
+    const log = await this.userApi.createWorkoutLog({
+      name: workout.name,
+      notes: workout.notes || undefined,
+      workoutId: workout.id,
+    });
+
+    for (let si = 0; si < (workout.sections ?? []).length; si++) {
+      const templateSection = workout.sections[si];
+
+      const section = await this.userApi.createWorkoutLogSection({
+        workoutLogId: log.id,
+        type: templateSection.type,
+        label: templateSection.label || undefined,
+        position: si,
+        restBetweenExercises: templateSection.restBetweenExercises ?? undefined,
+      });
+
+      for (let ei = 0; ei < (templateSection.exercises ?? []).length; ei++) {
+        const templateEx = templateSection.exercises[ei];
+        await this.userApi.createWorkoutLogExercise({
+          workoutLogSectionId: section.id,
+          sourceExerciseSchemeId: templateEx.userExerciseSchemeId,
+          position: ei,
+        });
+      }
+    }
+
+    // Fetch the full log with nested structure
+    const fullLog = await this.userApi.fetchWorkoutLog(log.id);
+    this.creating.set(false);
+    this.populateFromLog(fullLog);
+
+    // Invalidate planning log query so it reflects the new log
+    this.queryClient.invalidateQueries({
+      queryKey: workoutLogKeys.list({ workoutId: workout.id, status: 'planning' }),
+    });
+  }
+
   private createSectionGroup(): SectionFormGroup {
     return new FormGroup({
       type: new FormControl(WorkoutSectionTypeMain, { nonNullable: true }),
@@ -453,16 +534,19 @@ export class WorkoutStart {
   private createExerciseGroup(
     schemeId: number,
     breakAfterSeconds: number | null = null,
+    id: number | null = null,
   ): ExerciseFormGroup {
     return new FormGroup({
+      id: new FormControl<number | null>(id),
       sourceExerciseSchemeId: new FormControl(schemeId, { nonNullable: true }),
       breakAfterSeconds: new FormControl<number | null>(breakAfterSeconds),
       sets: new FormArray<SetFormGroup>([]),
     });
   }
 
-  private createSetGroup(set: SetPreview): SetFormGroup {
+  private createSetGroup(set: SetPreview, id: number | null = null): SetFormGroup {
     return new FormGroup({
+      id: new FormControl<number | null>(id),
       targetReps: new FormControl<number | null>(set.targetReps ?? null),
       targetWeight: new FormControl<number | null>(set.targetWeight ?? null),
       targetDuration: new FormControl<number | null>(set.targetDuration ?? null),
@@ -473,66 +557,8 @@ export class WorkoutStart {
   }
 
   private async startWorkout() {
-    const val = this.form.getRawValue();
-    const workoutId = this.id();
-
-    const log = await this.userApi.createWorkoutLog({
-      name: val.name,
-      notes: val.notes || undefined,
-      date: new Date(val.date).toISOString(),
-      workoutId,
-    });
-
-    for (let si = 0; si < val.sections.length; si++) {
-      const sectionVal = val.sections[si];
-
-      const section = await this.userApi.createWorkoutLogSection({
-        workoutLogId: log.id,
-        type: sectionVal.type,
-        label: sectionVal.label || undefined,
-        position: si,
-      });
-
-      for (let ei = 0; ei < sectionVal.exercises.length; ei++) {
-        const exVal = sectionVal.exercises[ei];
-        const logExercise = await this.userApi.createWorkoutLogExercise({
-          workoutLogSectionId: section.id,
-          sourceExerciseSchemeId: exVal.sourceExerciseSchemeId,
-          position: ei,
-          breakAfterSeconds: exVal.breakAfterSeconds ?? undefined,
-        });
-
-        // Apply per-set target overrides where user changed values
-        for (let setIdx = 0; setIdx < exVal.sets.length; setIdx++) {
-          const setVal = exVal.sets[setIdx];
-          const created = logExercise.sets?.[setIdx];
-          if (!created) continue;
-
-          const overrides: Record<string, number | undefined> = {};
-          if (setVal.targetReps != null && setVal.targetReps !== created.targetReps)
-            overrides['targetReps'] = setVal.targetReps;
-          if (setVal.targetWeight != null && setVal.targetWeight !== created.targetWeight)
-            overrides['targetWeight'] = setVal.targetWeight;
-          if (setVal.targetDuration != null && setVal.targetDuration !== created.targetDuration)
-            overrides['targetDuration'] = setVal.targetDuration;
-          if (setVal.targetDistance != null && setVal.targetDistance !== created.targetDistance)
-            overrides['targetDistance'] = setVal.targetDistance;
-          if (setVal.targetTime != null && setVal.targetTime !== created.targetTime)
-            overrides['targetTime'] = setVal.targetTime;
-          if (
-            setVal.restAfterSeconds != null &&
-            setVal.restAfterSeconds !== created.breakAfterSeconds
-          )
-            overrides['breakAfterSeconds'] = setVal.restAfterSeconds;
-
-          if (Object.keys(overrides).length > 0) {
-            await this.userApi.updateWorkoutLogExerciseSet(created.id, overrides);
-          }
-        }
-      }
-    }
-
+    await this.userApi.startWorkoutLog(this.currentLogId()!);
     this.queryClient.invalidateQueries({ queryKey: workoutLogKeys.all() });
-    this.router.navigate(['/user/workout-logs', log.id]);
+    this.router.navigate(['/user/workout-logs', this.currentLogId()]);
   }
 }

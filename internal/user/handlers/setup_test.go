@@ -8,6 +8,7 @@ import (
 	"os"
 	"testing"
 
+	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	"gesitr/internal/user/models"
 
@@ -23,6 +24,7 @@ func TestMain(m *testing.M) {
 
 func setupTestDB(t *testing.T) {
 	t.Helper()
+	t.Setenv("AUTH_FALLBACK_USER", "alice")
 	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
 	if err != nil {
 		t.Fatal(err)
@@ -46,6 +48,7 @@ func setupTestDB(t *testing.T) {
 func newRouter() *gin.Engine {
 	r := gin.New()
 	api := r.Group("/api/user")
+	api.Use(auth.UserID())
 
 	exercises := api.Group("/exercises")
 	exercises.GET("", ListUserExercises)
@@ -90,6 +93,8 @@ func newRouter() *gin.Engine {
 	workoutLogs.GET("/:id", GetWorkoutLog)
 	workoutLogs.PUT("/:id", UpdateWorkoutLog)
 	workoutLogs.DELETE("/:id", DeleteWorkoutLog)
+	workoutLogs.POST("/:id/start", StartWorkoutLog)
+	workoutLogs.POST("/:id/abandon", AbandonWorkoutLog)
 
 	logSections := api.Group("/workout-log-sections")
 	logSections.GET("", ListWorkoutLogSections)

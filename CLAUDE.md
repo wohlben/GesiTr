@@ -13,12 +13,13 @@ Two data domains:
 ## Development Commands
 
 ```bash
-# Start both API (port 8080) and web dev server (port 4200) — web proxies /api to 8080
-make dev
+# Start both API (port 8080) and web dev server (port 4200) — single process
+make dev        # Starts Go API, waits for ready, then starts ng serve
+# Also works from web/: npm start
 
 # Or run them separately:
 make dev-api    # DEV=true AUTH_FALLBACK_USER=anon go run .
-make dev-web    # cd web && npx ng serve
+make dev-web    # cd web && npx ng serve (Angular only, no API)
 
 # Regenerate TypeScript types from Go structs (tygo)
 make generate

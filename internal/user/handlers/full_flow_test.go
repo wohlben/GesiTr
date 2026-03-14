@@ -132,6 +132,9 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	if workoutLog.WorkoutID == nil || *workoutLog.WorkoutID != workout.ID {
 		t.Error("workout log workoutId mismatch")
 	}
+	if workoutLog.Status != models.WorkoutLogStatusPlanning {
+		t.Errorf("expected planning status, got %s", workoutLog.Status)
+	}
 
 	// 9. Add sections to the log (mirroring the template but independent)
 	w = doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
@@ -201,10 +204,16 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 		t.Error("second exercise set target weight not snapshotted from scheme2")
 	}
 
+	// Start the workout log (planning → in_progress)
+	w = doJSON(r, "POST", "/api/user/workout-logs/"+itoa(workoutLog.ID)+"/start", nil)
+	if w.Code != http.StatusOK {
+		t.Fatalf("start workout log: status = %d, body = %s", w.Code, w.Body.String())
+	}
+
 	// 11. Record actual performance — update individual sets
 	for i, s := range logExercise1.Sets {
 		w = doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/"+itoa(s.ID), map[string]any{
-			"completed": true, "actualReps": 5, "actualWeight": 140.0,
+			"status": "finished", "actualReps": 5, "actualWeight": 140.0,
 		})
 		if w.Code != http.StatusOK {
 			t.Fatalf("update set %d: status = %d, body = %s", i+1, w.Code, w.Body.String())
@@ -217,7 +226,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 			break // skip last set (not attempted)
 		}
 		w = doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/"+itoa(s.ID), map[string]any{
-			"completed": true, "actualReps": 6, "actualWeight": 75.0,
+			"status": "finished", "actualReps": 6, "actualWeight": 75.0,
 		})
 		if w.Code != http.StatusOK {
 			t.Fatalf("update exercise 2 set %d: status = %d", i+1, w.Code)
@@ -248,16 +257,16 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	ex1 := fullLog.Sections[0].Exercises[0]
 	ex2 := fullLog.Sections[0].Exercises[1]
 
-	// Exercise 1: all 5 sets completed — exercise should be completed
+	// Exercise 1: all 5 sets finished — exercise should be finished
 	if len(ex1.Sets) != 5 {
 		t.Fatalf("expected 5 sets for exercise 1, got %d", len(ex1.Sets))
 	}
-	if !ex1.Completed {
-		t.Error("exercise 1 should be completed (all sets done)")
+	if ex1.Status != models.WorkoutLogStatusFinished {
+		t.Errorf("exercise 1 should be finished (all sets done), got %s", ex1.Status)
 	}
 	for i, s := range ex1.Sets {
-		if !s.Completed {
-			t.Errorf("exercise 1 set %d should be completed", i+1)
+		if s.Status != models.WorkoutLogStatusFinished {
+			t.Errorf("exercise 1 set %d should be finished", i+1)
 		}
 		if s.ActualWeight == nil || *s.ActualWeight != 140.0 {
 			t.Errorf("exercise 1 set %d actual weight mismatch", i+1)
@@ -268,36 +277,36 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 		}
 	}
 
-	// Exercise 2: 3 of 4 sets completed — exercise should NOT be completed
+	// Exercise 2: 3 of 4 sets finished — exercise should still be in_progress
 	if len(ex2.Sets) != 4 {
 		t.Fatalf("expected 4 sets for exercise 2, got %d", len(ex2.Sets))
 	}
-	if ex2.Completed {
-		t.Error("exercise 2 should not be completed (1 set remaining)")
+	if ex2.Status == models.WorkoutLogStatusFinished {
+		t.Error("exercise 2 should not be finished (1 set remaining)")
 	}
-	completedCount := 0
+	finishedCount := 0
 	for _, s := range ex2.Sets {
-		if s.Completed {
-			completedCount++
+		if s.Status == models.WorkoutLogStatusFinished {
+			finishedCount++
 			if s.ActualReps == nil || *s.ActualReps != 6 {
-				t.Error("exercise 2 completed set actual reps mismatch")
+				t.Error("exercise 2 finished set actual reps mismatch")
 			}
 		}
 	}
-	if completedCount != 3 {
-		t.Errorf("expected 3 completed sets for exercise 2, got %d", completedCount)
+	if finishedCount != 3 {
+		t.Errorf("expected 3 finished sets for exercise 2, got %d", finishedCount)
 	}
-	// Last set should not be completed
-	if ex2.Sets[3].Completed {
-		t.Error("exercise 2 last set should not be completed")
+	// Last set should still be in_progress
+	if ex2.Sets[3].Status != models.WorkoutLogStatusInProgress {
+		t.Errorf("exercise 2 last set should be in_progress, got %s", ex2.Sets[3].Status)
 	}
 
-	// Section and log should not be completed (exercise 2 is incomplete)
-	if fullLog.Sections[0].Completed {
-		t.Error("section should not be completed (exercise 2 incomplete)")
+	// Section and log should not be finished (exercise 2 is incomplete)
+	if fullLog.Sections[0].Status == models.WorkoutLogStatusFinished {
+		t.Error("section should not be finished (exercise 2 incomplete)")
 	}
-	if fullLog.Completed {
-		t.Error("log should not be completed (section incomplete)")
+	if fullLog.Status == models.WorkoutLogStatusFinished {
+		t.Error("log should not be finished (section incomplete)")
 	}
 
 	// 13. Also create an ad-hoc log (no workout template)

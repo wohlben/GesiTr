@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type WorkoutLogSection struct {
 	BaseModel            `tstype:",extends"`
 	WorkoutLogID         uint                 `json:"workoutLogId"`
@@ -7,6 +9,7 @@ type WorkoutLogSection struct {
 	Label                *string              `json:"label"`
 	Position             int                  `json:"position"`
 	RestBetweenExercises *int                 `json:"restBetweenExercises"`
-	Completed            bool                 `json:"completed"`
+	Status               WorkoutLogStatus     `json:"status"`
+	StatusChangedAt      *time.Time           `json:"statusChangedAt"`
 	Exercises            []WorkoutLogExercise `json:"exercises" gorm:"-"`
 }

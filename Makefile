@@ -13,9 +13,9 @@ build-web:
 build-go: build-web
 	go build -o gesitr .
 
-# Development: start both API and web servers
-dev:
-	$(MAKE) -j2 dev-api dev-web
+# Development: start Go API + Angular dev server together
+dev: generate
+	cd web && node dev-server.mjs
 
 dev-api:
 	DEV=true AUTH_FALLBACK_USER=anon go run .

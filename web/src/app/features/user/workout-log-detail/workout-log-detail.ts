@@ -10,7 +10,11 @@ import {
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { formatBreak } from '$core/format-utils';
 import { workoutLogKeys } from '$core/query-keys';
-import { WorkoutLogExerciseSet } from '$generated/user-models';
+import {
+  WorkoutLogExerciseSet,
+  WorkoutLogStatusFinished,
+  WorkoutLogStatusAborted,
+} from '$generated/user-models';
 import { PageLayout } from '../../../layout/page-layout';
 import { WorkoutLogDetailStore } from './workout-log-detail.store';
 
@@ -45,25 +49,53 @@ import { WorkoutLogDetailStore } from './workout-log-detail.store';
               <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">{{ log.notes }}</p>
             }
           </div>
-          <span [class]="log.completed ? 'text-green-600 dark:text-green-400' : 'text-gray-400'">
-            @if (log.completed) {
-              <svg class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                  fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-            } @else {
-              <svg class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                  fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v4.59L7.3 9.24a.75.75 0 00-1.1 1.02l3.25 3.5a.75.75 0 001.1 0l3.25-3.5a.75.75 0 10-1.1-1.02l-1.95 2.1V6.75z"
-                  clip-rule="evenodd"
-                />
-              </svg>
+          <div class="flex items-center gap-2">
+            @if (log.status === 'in_progress') {
+              <button
+                type="button"
+                (click)="abandonWorkout()"
+                [disabled]="abandonMutation.isPending()"
+                class="rounded-md border border-red-300 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
+              >
+                Abandon
+              </button>
             }
-          </span>
+            <span
+              [class]="
+                log.status === 'finished'
+                  ? 'text-green-600 dark:text-green-400'
+                  : log.status === 'aborted'
+                    ? 'text-red-500 dark:text-red-400'
+                    : 'text-gray-400'
+              "
+            >
+              @if (log.status === 'finished') {
+                <svg class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              } @else if (log.status === 'aborted') {
+                <svg class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              } @else {
+                <svg class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v4.59L7.3 9.24a.75.75 0 00-1.1 1.02l3.25 3.5a.75.75 0 001.1 0l3.25-3.5a.75.75 0 10-1.1-1.02l-1.95 2.1V6.75z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              }
+            </span>
+          </div>
         </div>
 
         <!-- Sections -->
@@ -91,7 +123,7 @@ import { WorkoutLogDetailStore } from './workout-log-detail.store';
                     }}</span>
                   }
                 </div>
-                @if (section.completed) {
+                @if (section.status === 'finished') {
                   <svg
                     class="h-5 w-5 text-green-500 dark:text-green-400"
                     viewBox="0 0 20 20"
@@ -118,7 +150,7 @@ import { WorkoutLogDetailStore } from './workout-log-detail.store';
                             store.exerciseNames()[exercise.sourceExerciseSchemeId] || 'Loading...'
                           }}
                         </span>
-                        @if (exercise.completed) {
+                        @if (exercise.status === 'finished') {
                           <svg
                             class="h-4 w-4 text-green-500 dark:text-green-400"
                             viewBox="0 0 20 20"
@@ -172,18 +204,27 @@ import { WorkoutLogDetailStore } from './workout-log-detail.store';
                                 <button
                                   type="button"
                                   (click)="toggleSet(set)"
+                                  [disabled]="isSetTerminal(set)"
                                   class="inline-flex items-center justify-center rounded p-0.5 transition-colors"
                                   [class]="
-                                    set.completed
+                                    set.status === 'finished'
                                       ? 'text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300'
-                                      : 'text-gray-300 hover:text-gray-400 dark:text-gray-600 dark:hover:text-gray-500'
+                                      : set.status === 'aborted'
+                                        ? 'text-red-500 dark:text-red-400 cursor-not-allowed'
+                                        : 'text-gray-300 hover:text-gray-400 dark:text-gray-600 dark:hover:text-gray-500'
                                   "
                                 >
                                   <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    @if (set.completed) {
+                                    @if (set.status === 'finished') {
                                       <path
                                         fill-rule="evenodd"
                                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                        clip-rule="evenodd"
+                                      />
+                                    } @else if (set.status === 'aborted') {
+                                      <path
+                                        fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
                                         clip-rule="evenodd"
                                       />
                                     } @else {
@@ -247,13 +288,20 @@ export class WorkoutLogDetail {
   private toggleMutation = injectMutation(() => ({
     mutationFn: (set: WorkoutLogExerciseSet) =>
       this.userApi.updateWorkoutLogExerciseSet(set.id, {
-        completed: !set.completed,
+        status: WorkoutLogStatusFinished,
         actualReps: set.actualReps,
         actualWeight: set.actualWeight,
         actualDuration: set.actualDuration,
         actualDistance: set.actualDistance,
         actualTime: set.actualTime,
       }),
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: workoutLogKeys.detail(this.id()) });
+    },
+  }));
+
+  abandonMutation = injectMutation(() => ({
+    mutationFn: () => this.userApi.abandonWorkoutLog(this.id()),
     onSuccess: () => {
       this.queryClient.invalidateQueries({ queryKey: workoutLogKeys.detail(this.id()) });
     },
@@ -269,7 +317,16 @@ export class WorkoutLogDetail {
   }
 
   toggleSet(set: WorkoutLogExerciseSet) {
+    if (this.isSetTerminal(set)) return;
     this.toggleMutation.mutate(set);
+  }
+
+  isSetTerminal(set: WorkoutLogExerciseSet): boolean {
+    return set.status === WorkoutLogStatusFinished || set.status === WorkoutLogStatusAborted;
+  }
+
+  abandonWorkout() {
+    this.abandonMutation.mutate();
   }
 
   hasBreaks(sets: WorkoutLogExerciseSet[]): boolean {
@@ -295,7 +352,7 @@ export class WorkoutLogDetail {
   }
 
   formatActual(set: WorkoutLogExerciseSet, measurementType: string): string {
-    if (!set.completed) return '-';
+    if (set.status !== WorkoutLogStatusFinished) return '-';
     if (measurementType === 'REP_BASED') {
       const parts: string[] = [];
       if (set.actualReps != null) parts.push(`${set.actualReps} reps`);
