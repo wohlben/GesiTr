@@ -238,6 +238,31 @@ export async function fetchWorkoutLogs(
   return res.json();
 }
 
+export async function createWorkoutLog(
+  request: APIRequestContext,
+  overrides: Record<string, unknown> = {},
+) {
+  const data = {
+    name: 'Test Log',
+    ...overrides,
+  };
+  const res = await request.post('/api/user/workout-logs', { data });
+  expect(res.ok(), `Failed to create workout log: ${await res.text()}`).toBeTruthy();
+  return res.json();
+}
+
+export async function startWorkoutLog(request: APIRequestContext, id: number) {
+  const res = await request.post(`/api/user/workout-logs/${id}/start`);
+  expect(res.ok(), `Failed to start workout log: ${await res.text()}`).toBeTruthy();
+  return res.json();
+}
+
+export async function abandonWorkoutLog(request: APIRequestContext, id: number) {
+  const res = await request.post(`/api/user/workout-logs/${id}/abandon`);
+  expect(res.ok(), `Failed to abandon workout log: ${await res.text()}`).toBeTruthy();
+  return res.json();
+}
+
 export async function deleteWorkoutLog(request: APIRequestContext, id: number) {
   await request.delete(`/api/user/workout-logs/${id}`);
 }

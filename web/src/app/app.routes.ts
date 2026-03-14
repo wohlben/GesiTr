@@ -66,6 +66,10 @@ export const routes: Routes = [
         loadComponent: () =>
           import('$features/user/workout-list/workout-list').then((m) => m.WorkoutList),
       },
+      {
+        path: 'calendar',
+        loadComponent: () => import('$features/user/calendar/calendar').then((m) => m.Calendar),
+      },
     ],
   },
   {

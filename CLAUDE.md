@@ -53,7 +53,7 @@ make docker
 - **`internal/auth/`** — middleware extracting UserID (falls back to `AUTH_FALLBACK_USER` env var in dev)
 - **`internal/database/`** — SQLite init via GORM
 - **`cmd/seed/`** — database seeder loading CSV/JSON from `data/`
-- **DEV mode** (`DEV=true`): exposes `POST /api/admin/reset` to wipe all tables (used by e2e tests)
+- **DEV mode** (`DEV=true`): exposes `POST /api/ci/reset-db` to wipe all tables (used by e2e tests)
 - **`DATABASE_PATH`** env var overrides the default `gesitr.db` (used by `make test-e2e` to isolate test data)
 
 ### Frontend (Angular)

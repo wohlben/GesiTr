@@ -132,5 +132,6 @@ export class MainLayout {
     { path: '/user/exercises', label: 'My Exercises' },
     { path: '/user/equipment', label: 'My Equipment' },
     { path: '/user/workouts', label: 'My Workouts' },
+    { path: '/user/calendar', label: 'Calendar' },
   ];
 }

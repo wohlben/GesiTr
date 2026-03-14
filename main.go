@@ -228,7 +228,7 @@ func buildApp() *gin.Engine {
 	setupRoutes(r)
 
 	if os.Getenv("DEV") == "true" {
-		r.POST("/api/admin/reset", func(c *gin.Context) {
+		r.POST("/api/ci/reset-db", func(c *gin.Context) {
 			database.DB.Exec("PRAGMA foreign_keys = OFF")
 			var tables []struct{ Name string }
 			database.DB.Raw("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").Scan(&tables)
