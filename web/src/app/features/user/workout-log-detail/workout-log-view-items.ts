@@ -20,6 +20,7 @@ export interface ViewItemSet {
   exerciseName: string;
   role: 'completed' | 'active' | 'upcoming';
   setCount: number;
+  isNaturalNext?: boolean;
 }
 
 export interface ViewItemBreak {

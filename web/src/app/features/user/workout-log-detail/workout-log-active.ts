@@ -45,17 +45,23 @@ import { WorkoutLogActiveBreak } from './workout-log-active-break';
         } @else if (item | asSet; as s) {
           <app-workout-log-active-set
             [data]="s"
+            [peeked]="peekedItemId() === s.id && s.role !== 'active'"
             [(actualReps)]="actualReps"
             [(actualWeight)]="actualWeight"
             [(actualDuration)]="actualDuration"
             [(actualDistance)]="actualDistance"
             (done)="markDone()"
+            (togglePeek)="togglePeek(s.id)"
+            (save)="saveSet($event)"
+            (jumpTo)="jumpToSet(s.set.id)"
           />
         } @else if (item | asBreak; as b) {
           <app-workout-log-active-break
             [data]="b"
+            [peeked]="peekedItemId() === b.id && b.role !== 'active-timer'"
             [remainingSeconds]="restSecondsRemaining()"
             (skip)="skipRest()"
+            (togglePeek)="togglePeek(b.id)"
           />
         }
       }
@@ -116,16 +122,37 @@ export class WorkoutLogActive {
     return items;
   });
 
-  private activeIdx = computed(() =>
+  // Override: user-chosen active set (non-linear progression)
+  overrideSetId = signal<number | null>(null);
+  // Tracks which break is currently timing
+  activeBreakId = signal<string | null>(null);
+
+  private naturalActiveIdx = computed(() =>
     this.flatSets().findIndex(
       (item) =>
         item.set.status !== WorkoutLogStatusFinished && item.set.status !== WorkoutLogStatusAborted,
     ),
   );
 
+  private activeIdx = computed(() => {
+    const overrideId = this.overrideSetId();
+    if (overrideId !== null) {
+      const idx = this.flatSets().findIndex((item) => item.set.id === overrideId);
+      if (idx !== -1) {
+        const s = this.flatSets()[idx].set;
+        if (s.status !== WorkoutLogStatusFinished && s.status !== WorkoutLogStatusAborted) {
+          return idx;
+        }
+      }
+    }
+    return this.naturalActiveIdx();
+  });
+
   viewItems = computed<ViewItem[]>(() => {
     const flat = this.flatSets();
     const activeIdx = this.activeIdx();
+    const naturalIdx = this.naturalActiveIdx();
+    const isOverriding = activeIdx !== naturalIdx;
     const resting = this.isResting();
     const items: ViewItem[] = [];
 
@@ -141,12 +168,13 @@ export class WorkoutLogActive {
         });
       }
 
-      const role: 'completed' | 'active' | 'upcoming' =
-        activeIdx === -1 || i < activeIdx
-          ? 'completed'
-          : i === activeIdx && !resting
-            ? 'active'
-            : 'upcoming';
+      const isTerminal =
+        curr.set.status === WorkoutLogStatusFinished || curr.set.status === WorkoutLogStatusAborted;
+      const role: 'completed' | 'active' | 'upcoming' = isTerminal
+        ? 'completed'
+        : i === activeIdx && !resting
+          ? 'active'
+          : 'upcoming';
 
       items.push({
         type: 'set',
@@ -157,6 +185,7 @@ export class WorkoutLogActive {
         exerciseName: curr.exerciseName,
         role,
         setCount: curr.exercise.sets?.length ?? 0,
+        isNaturalNext: isOverriding && i === naturalIdx,
       });
 
       if (i + 1 < flat.length) {
@@ -167,18 +196,29 @@ export class WorkoutLogActive {
           : (curr.exercise.breakAfterSeconds ?? undefined);
 
         if (breakSeconds) {
+          const breakId = sameExercise
+            ? 'break-set-' + curr.set.id
+            : 'break-ex-' + curr.exercise.id;
+          const activeBreak = this.activeBreakId();
+          const currTerminal =
+            curr.set.status === WorkoutLogStatusFinished ||
+            curr.set.status === WorkoutLogStatusAborted;
+          const nextTerminal =
+            next.set.status === WorkoutLogStatusFinished ||
+            next.set.status === WorkoutLogStatusAborted;
+
           let breakRole: 'elapsed' | 'active-timer' | 'upcoming';
-          if (activeIdx === -1 || i + 1 < activeIdx) {
-            breakRole = 'elapsed';
-          } else if (i === activeIdx - 1 && resting) {
+          if (breakId === activeBreak) {
             breakRole = 'active-timer';
+          } else if (currTerminal && nextTerminal) {
+            breakRole = 'elapsed';
           } else {
             breakRole = 'upcoming';
           }
 
           items.push({
             type: 'break',
-            id: sameExercise ? 'break-set-' + curr.set.id : 'break-ex-' + curr.exercise.id,
+            id: breakId,
             seconds: breakSeconds,
             label: next.exerciseName,
             role: breakRole,
@@ -190,9 +230,17 @@ export class WorkoutLogActive {
     return items;
   });
 
-  allCompleted = computed(() => this.activeIdx() === -1);
+  allCompleted = computed(() => this.naturalActiveIdx() === -1);
+
+  peekedItemId = signal<string | null>(null);
 
   constructor() {
+    // Auto-reset peek when workout advances
+    effect(() => {
+      this.activeIdx(); // track
+      this.peekedItemId.set(null);
+    });
+
     effect(() => {
       const activeItem = this.viewItems().find(
         (item): item is ViewItemSet => item.type === 'set' && item.role === 'active',
@@ -206,6 +254,10 @@ export class WorkoutLogActive {
     });
 
     this.destroyRef.onDestroy(() => this.clearTimer());
+  }
+
+  togglePeek(itemId: string) {
+    this.peekedItemId.set(this.peekedItemId() === itemId ? null : itemId);
   }
 
   markDone() {
@@ -224,8 +276,10 @@ export class WorkoutLogActive {
 
     const nextItem = items[activeSetIdx + 1];
     if (nextItem?.type === 'break') {
+      this.activeBreakId.set(nextItem.id);
       this.startRestTimer(nextItem.seconds, nextItem.label);
     }
+    this.overrideSetId.set(null);
   }
 
   startRestTimer(seconds: number, nextLabel: string) {
@@ -246,15 +300,27 @@ export class WorkoutLogActive {
       if (remaining <= 0) {
         this.clearTimer();
         this.restState.set({ active: false });
+        this.activeBreakId.set(null);
       } else {
         this.restState.set({ ...s, secondsRemaining: remaining });
       }
     }, 1000);
   }
 
+  jumpToSet(setId: number) {
+    this.skipRest();
+    this.peekedItemId.set(null);
+    this.overrideSetId.set(setId);
+  }
+
+  saveSet(set: WorkoutLogExerciseSet) {
+    this.setToggled.emit(set);
+  }
+
   skipRest() {
     this.clearTimer();
     this.restState.set({ active: false });
+    this.activeBreakId.set(null);
   }
 
   private clearTimer() {

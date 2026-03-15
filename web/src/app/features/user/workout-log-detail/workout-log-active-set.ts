@@ -9,9 +9,7 @@ import { ViewItemSet } from './workout-log-view-items';
   imports: [FormsModule],
   template: `
     @if (peeked()) {
-      <div
-        class="my-3 flex flex-col rounded-xl border-2 border-blue-500 bg-blue-50/50 p-5 dark:border-blue-400 dark:bg-blue-950/20"
-      >
+      <div class="flex flex-col rounded-lg bg-blue-100 px-4 py-5 dark:bg-blue-900/30">
         <div class="mb-1 flex items-center justify-between">
           <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">
             {{ data().exerciseName }}
@@ -164,7 +162,7 @@ import { ViewItemSet } from './workout-log-view-items';
         }
         @case ('active') {
           <div
-            class="my-3 flex flex-1 flex-col rounded-xl border-2 border-blue-500 bg-blue-50/50 p-5 dark:border-blue-400 dark:bg-blue-950/20 md:flex-initial md:min-h-48"
+            class="flex flex-1 flex-col rounded-lg bg-blue-100 px-4 py-5 dark:bg-blue-900/30 md:flex-initial md:min-h-48"
           >
             <div class="mb-1 text-lg font-semibold text-gray-900 dark:text-gray-100">
               {{ data().exerciseName }}
@@ -269,7 +267,7 @@ import { ViewItemSet } from './workout-log-view-items';
                 'w-6 text-center text-sm font-medium ' +
                 (data().isNaturalNext
                   ? 'text-blue-600 dark:text-blue-400'
-                  : 'text-gray-400 dark:text-gray-500')
+                  : 'text-gray-700 dark:text-gray-300')
               "
             >
               {{ data().set.setNumber }}
@@ -279,7 +277,7 @@ import { ViewItemSet } from './workout-log-view-items';
                 'flex-1 text-sm ' +
                 (data().isNaturalNext
                   ? 'text-blue-600 dark:text-blue-400'
-                  : 'text-gray-400 dark:text-gray-500')
+                  : 'text-gray-700 dark:text-gray-300')
               "
             >
               {{ formatSetValue(data().set, data().exercise.targetMeasurementType) }}
