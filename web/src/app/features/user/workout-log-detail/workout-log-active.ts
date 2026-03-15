@@ -56,9 +56,7 @@ type ViewItem =
             @let s = $any(item);
             @switch (s.role) {
               @case ('completed') {
-                <div
-                  class="flex items-center gap-3 border-b border-gray-100 px-2 py-1.5 dark:border-gray-800"
-                >
+                <div class="flex items-center gap-3 px-2 py-1.5">
                   <span
                     class="w-6 text-center text-sm font-medium text-gray-400 dark:text-gray-500"
                   >
