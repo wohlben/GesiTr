@@ -177,14 +177,11 @@ import { WorkoutLogDetailStore } from './workout-log-detail.store';
                             <th class="pb-1 pr-3">Set</th>
                             <th class="pb-1 pr-3">Target</th>
                             <th class="pb-1 pr-3">Actual</th>
-                            @if (hasBreaks(exercise.sets)) {
-                              <th class="pb-1 pr-3">Rest</th>
-                            }
                             <th class="pb-1 w-10 text-center">Done</th>
                           </tr>
                         </thead>
                         <tbody>
-                          @for (set of exercise.sets; track set.id) {
+                          @for (set of exercise.sets; track set.id; let lastSet = $last) {
                             <tr class="border-t border-gray-100 dark:border-gray-800">
                               <td class="py-2 pr-3 font-medium text-gray-900 dark:text-gray-100">
                                 {{ set.setNumber }}
@@ -195,11 +192,6 @@ import { WorkoutLogDetailStore } from './workout-log-detail.store';
                               <td class="py-2 pr-3 text-gray-900 dark:text-gray-100">
                                 {{ formatActual(set, exercise.targetMeasurementType) }}
                               </td>
-                              @if (hasBreaks(exercise.sets)) {
-                                <td class="py-2 pr-3 text-gray-500 dark:text-gray-400">
-                                  {{ formatBreak(set.breakAfterSeconds) }}
-                                </td>
-                              }
                               <td class="py-2 text-center">
                                 <button
                                   type="button"
@@ -238,6 +230,33 @@ import { WorkoutLogDetailStore } from './workout-log-detail.store';
                                 </button>
                               </td>
                             </tr>
+                            @if (
+                              !lastSet &&
+                              set.breakAfterSeconds !== null &&
+                              set.breakAfterSeconds !== undefined
+                            ) {
+                              <tr>
+                                <td colspan="4" class="p-0">
+                                  <div class="relative flex items-center justify-center py-0.5">
+                                    <div
+                                      class="absolute inset-x-0 top-1/2 border-t border-dashed border-gray-200 dark:border-gray-700"
+                                    ></div>
+                                    <div
+                                      class="relative z-10 flex items-center gap-1 rounded-full bg-gray-50 px-2 py-0.5 text-xs text-gray-400 dark:bg-gray-900 dark:text-gray-500"
+                                    >
+                                      <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                                        <path
+                                          fill-rule="evenodd"
+                                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                                          clip-rule="evenodd"
+                                        />
+                                      </svg>
+                                      {{ formatBreak(set.breakAfterSeconds) }}
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            }
                           }
                         </tbody>
                       </table>
@@ -327,10 +346,6 @@ export class WorkoutLogDetail {
 
   abandonWorkout() {
     this.abandonMutation.mutate();
-  }
-
-  hasBreaks(sets: WorkoutLogExerciseSet[]): boolean {
-    return sets.some((s) => s.breakAfterSeconds != null);
   }
 
   formatTarget(set: WorkoutLogExerciseSet, measurementType: string): string {
