@@ -9,6 +9,7 @@ export interface ViewItemHeader {
   type: 'header';
   id: string;
   exerciseName: string;
+  hasOverride?: boolean;
 }
 
 export interface ViewItemSet {

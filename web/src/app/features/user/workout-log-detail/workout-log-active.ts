@@ -41,7 +41,7 @@ import { WorkoutLogActiveBreak } from './workout-log-active-break';
     <div class="flex min-h-[calc(100dvh-12rem)] flex-col md:min-h-0">
       @for (item of viewItems(); track item.id) {
         @if (item | asHeader; as h) {
-          <app-workout-log-active-header [data]="h" />
+          <app-workout-log-active-header [data]="h" (resetOverride)="resetOverride()" />
         } @else if (item | asSet; as s) {
           <app-workout-log-active-set
             [data]="s"
@@ -154,6 +154,11 @@ export class WorkoutLogActive {
     const naturalIdx = this.naturalActiveIdx();
     const isOverriding = activeIdx !== naturalIdx;
     const resting = this.isResting();
+    const overrideId = this.overrideSetId();
+    const overrideExerciseId =
+      overrideId !== null
+        ? (flat.find((item) => item.set.id === overrideId)?.exercise.id ?? null)
+        : null;
     const items: ViewItem[] = [];
 
     for (let i = 0; i < flat.length; i++) {
@@ -165,6 +170,7 @@ export class WorkoutLogActive {
           type: 'header',
           id: 'header-' + curr.exercise.id,
           exerciseName: curr.exerciseName,
+          hasOverride: curr.exercise.id === overrideExerciseId,
         });
       }
 
@@ -311,6 +317,10 @@ export class WorkoutLogActive {
   jumpToSet(setId: number) {
     this.peekedItemId.set(null);
     this.overrideSetId.set(setId);
+  }
+
+  resetOverride() {
+    this.overrideSetId.set(null);
   }
 
   saveSet(set: WorkoutLogExerciseSet) {
