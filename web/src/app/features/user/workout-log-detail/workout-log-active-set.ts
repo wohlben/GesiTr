@@ -164,8 +164,23 @@ import { ViewItemSet } from './workout-log-view-items';
           <div
             class="flex flex-1 flex-col rounded-lg bg-blue-100 px-4 py-5 dark:bg-blue-900/30 md:flex-initial md:min-h-48"
           >
-            <div class="mb-1 text-lg font-semibold text-gray-900 dark:text-gray-100">
-              {{ data().exerciseName }}
+            <div class="mb-1 flex items-center justify-between">
+              <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                {{ data().exerciseName }}
+              </span>
+              @if (data().isOverride) {
+                <button
+                  type="button"
+                  (click)="resetOverride.emit(); $event.stopPropagation()"
+                  class="rounded-md p-1 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+                >
+                  <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+                    />
+                  </svg>
+                </button>
+              }
             </div>
             <div class="mb-4 text-sm text-gray-500 dark:text-gray-400">
               Set {{ data().set.setNumber }} of {{ data().setCount }}
@@ -299,6 +314,7 @@ export class WorkoutLogActiveSet {
   togglePeek = output<void>();
   save = output<WorkoutLogExerciseSet>();
   jumpTo = output<void>();
+  resetOverride = output<void>();
 
   // Local editing state for completed sets
   editing = signal(false);

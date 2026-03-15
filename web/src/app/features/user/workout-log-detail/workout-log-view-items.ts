@@ -9,7 +9,6 @@ export interface ViewItemHeader {
   type: 'header';
   id: string;
   exerciseName: string;
-  hasOverride?: boolean;
 }
 
 export interface ViewItemSet {
@@ -22,6 +21,7 @@ export interface ViewItemSet {
   role: 'completed' | 'active' | 'upcoming';
   setCount: number;
   isNaturalNext?: boolean;
+  isOverride?: boolean;
 }
 
 export interface ViewItemBreak {

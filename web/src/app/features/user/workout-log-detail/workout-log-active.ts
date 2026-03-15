@@ -41,7 +41,7 @@ import { WorkoutLogActiveBreak } from './workout-log-active-break';
     <div class="flex min-h-[calc(100dvh-12rem)] flex-col md:min-h-0">
       @for (item of viewItems(); track item.id) {
         @if (item | asHeader; as h) {
-          <app-workout-log-active-header [data]="h" (resetOverride)="resetOverride()" />
+          <app-workout-log-active-header [data]="h" />
         } @else if (item | asSet; as s) {
           <app-workout-log-active-set
             [data]="s"
@@ -54,6 +54,7 @@ import { WorkoutLogActiveBreak } from './workout-log-active-break';
             (togglePeek)="togglePeek(s.id)"
             (save)="saveSet($event)"
             (jumpTo)="jumpToSet(s.set.id)"
+            (resetOverride)="resetOverride()"
           />
         } @else if (item | asBreak; as b) {
           <app-workout-log-active-break
@@ -154,11 +155,6 @@ export class WorkoutLogActive {
     const naturalIdx = this.naturalActiveIdx();
     const isOverriding = activeIdx !== naturalIdx;
     const resting = this.isResting();
-    const overrideId = this.overrideSetId();
-    const overrideExerciseId =
-      overrideId !== null
-        ? (flat.find((item) => item.set.id === overrideId)?.exercise.id ?? null)
-        : null;
     const items: ViewItem[] = [];
 
     for (let i = 0; i < flat.length; i++) {
@@ -170,7 +166,6 @@ export class WorkoutLogActive {
           type: 'header',
           id: 'header-' + curr.exercise.id,
           exerciseName: curr.exerciseName,
-          hasOverride: curr.exercise.id === overrideExerciseId,
         });
       }
 
@@ -193,6 +188,7 @@ export class WorkoutLogActive {
         role,
         setCount: curr.exercise.sets?.length ?? 0,
         isNaturalNext: isOverriding && i === naturalIdx,
+        isOverride: isOverriding && i === activeIdx,
       });
 
       if (i + 1 < flat.length) {
