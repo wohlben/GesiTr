@@ -172,7 +172,7 @@ export class WorkoutLogActive {
         curr.set.status === WorkoutLogStatusFinished || curr.set.status === WorkoutLogStatusAborted;
       const role: 'completed' | 'active' | 'upcoming' = isTerminal
         ? 'completed'
-        : i === activeIdx && !resting
+        : i === activeIdx && (!resting || isOverriding)
           ? 'active'
           : 'upcoming';
 
