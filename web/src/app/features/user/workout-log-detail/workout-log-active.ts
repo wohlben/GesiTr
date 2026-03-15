@@ -308,7 +308,6 @@ export class WorkoutLogActive {
   }
 
   jumpToSet(setId: number) {
-    this.skipRest();
     this.peekedItemId.set(null);
     this.overrideSetId.set(setId);
   }
