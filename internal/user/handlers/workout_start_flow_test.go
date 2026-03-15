@@ -186,12 +186,12 @@ func TestWorkoutStartFlow(t *testing.T) {
 		t.Logf("  → Created exercise with %d auto-generated sets", len(logExercise.Sets))
 	}
 
-	// ── Step 4: PUT /api/user/workout-log-exercise-sets/:id — optional target overrides ──
+	// ── Step 4: PATCH /api/user/workout-log-exercise-sets/:id — optional target overrides ──
 
 	t.Log("=== STEP 4: Override targets on first exercise's first set ===")
 	if len(logExercises) > 0 && len(logExercises[0].Sets) > 0 {
 		firstSet := logExercises[0].Sets[0]
-		w = doJSONLog(t, r, "PUT", "/api/user/workout-log-exercise-sets/"+itoa(firstSet.ID), map[string]any{
+		w = doJSONLog(t, r, "PATCH", "/api/user/workout-log-exercise-sets/"+itoa(firstSet.ID), map[string]any{
 			"targetReps":   3,
 			"targetWeight": 160.0,
 		})

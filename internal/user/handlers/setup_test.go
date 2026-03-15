@@ -91,7 +91,7 @@ func newRouter() *gin.Engine {
 	workoutLogs.GET("", ListWorkoutLogs)
 	workoutLogs.POST("", CreateWorkoutLog)
 	workoutLogs.GET("/:id", GetWorkoutLog)
-	workoutLogs.PUT("/:id", UpdateWorkoutLog)
+	workoutLogs.PATCH("/:id", UpdateWorkoutLog)
 	workoutLogs.DELETE("/:id", DeleteWorkoutLog)
 	workoutLogs.POST("/:id/start", StartWorkoutLog)
 	workoutLogs.POST("/:id/abandon", AbandonWorkoutLog)
@@ -111,7 +111,7 @@ func newRouter() *gin.Engine {
 	logExerciseSets := api.Group("/workout-log-exercise-sets")
 	logExerciseSets.GET("", ListWorkoutLogExerciseSets)
 	logExerciseSets.POST("", CreateWorkoutLogExerciseSet)
-	logExerciseSets.PUT("/:id", UpdateWorkoutLogExerciseSet)
+	logExerciseSets.PATCH("/:id", UpdateWorkoutLogExerciseSet)
 	logExerciseSets.DELETE("/:id", DeleteWorkoutLogExerciseSet)
 
 	records := api.Group("/records")

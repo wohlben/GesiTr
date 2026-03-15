@@ -154,7 +154,7 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
 	t.Run("finish a set", func(t *testing.T) {
-		w := doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+		w := doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 			"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 		})
 		if w.Code != http.StatusOK {
@@ -174,7 +174,7 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 	})
 
 	t.Run("update preserves target fields when not provided", func(t *testing.T) {
-		w := doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
+		w := doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/2", map[string]any{
 			"status":     "finished",
 			"actualReps": 4,
 		})
@@ -195,7 +195,7 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 	})
 
 	t.Run("cannot transition from finished", func(t *testing.T) {
-		w := doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+		w := doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 			"status": "in_progress",
 		})
 		if w.Code != http.StatusConflict {
@@ -204,7 +204,7 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 	})
 
 	t.Run("not found", func(t *testing.T) {
-		w := doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/999", map[string]any{
+		w := doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/999", map[string]any{
 			"status": "finished",
 		})
 		if w.Code != http.StatusNotFound {
@@ -213,7 +213,7 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 	})
 
 	t.Run("bad json", func(t *testing.T) {
-		w := doRaw(r, "PUT", "/api/user/workout-log-exercise-sets/1", "{bad")
+		w := doRaw(r, "PATCH", "/api/user/workout-log-exercise-sets/1", "{bad")
 		if w.Code != http.StatusBadRequest {
 			t.Errorf("expected 400, got %d", w.Code)
 		}
@@ -245,7 +245,7 @@ func TestProgressiveCompletion(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
 	// Finish first set — exercise should NOT be finished yet
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 
@@ -263,7 +263,7 @@ func TestProgressiveCompletion(t *testing.T) {
 	}
 
 	// Finish second set — everything should propagate to finished
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/2", map[string]any{
 		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 

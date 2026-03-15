@@ -33,7 +33,7 @@ func TestRecordCreatedOnSetCompletion(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
 	// Finish set 1 with 5 reps @ 100kg → e1RM = 100 * (1 + 5/30) = 116.667
-	w := doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+	w := doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 	if w.Code != http.StatusOK {
@@ -87,12 +87,12 @@ func TestRecordUpdatedOnBetterPerformance(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
 	// Finish set 1: 5 reps @ 100kg → e1RM = 116.667
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 
 	// Finish set 2: 8 reps @ 100kg → e1RM = 100 * (1 + 8/30) = 126.667 (better)
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/2", map[string]any{
 		"status": "finished", "actualReps": 8, "actualWeight": 100.0,
 	})
 
@@ -136,12 +136,12 @@ func TestRecordNotUpdatedOnWorsePerformance(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
 	// Finish set 1: 8 reps @ 100kg → e1RM = 126.667
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 		"status": "finished", "actualReps": 8, "actualWeight": 100.0,
 	})
 
 	// Finish set 2: 3 reps @ 100kg → e1RM = 100 * (1 + 3/30) = 110.0 (worse)
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/2", map[string]any{
 		"status": "finished", "actualReps": 3, "actualWeight": 100.0,
 	})
 
@@ -185,7 +185,7 @@ func TestNoRecordWhenNotFinished(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
 	// Update set without finishing — just update actuals without status change
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 		"actualReps": 5, "actualWeight": 100.0,
 	})
 
@@ -222,7 +222,7 @@ func TestDifferentMeasurementTypes(t *testing.T) {
 	// Start the workout
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 		"status": "finished", "actualDuration": 75,
 	})
 
@@ -271,7 +271,7 @@ func TestDifferentMeasurementTypes(t *testing.T) {
 	// The set ID depends on how many sets were created.
 	// Log 1: 1 set (TIME_BASED scheme with sets=1) = set ID 1
 	// Log 2: 1 set (DISTANCE_BASED scheme with sets=1) = set ID 2
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/2", map[string]any{
 		"status": "finished", "actualDistance": 5.5,
 	})
 
@@ -320,12 +320,12 @@ func TestPerExerciseNotPerScheme(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
 	// Finish set from scheme 1: 5 reps @ 100kg → e1RM = 116.667
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 
 	// Finish set from scheme 2: 10 reps @ 80kg → e1RM = 80 * (1 + 10/30) = 106.667 (worse)
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/2", map[string]any{
 		"status": "finished", "actualReps": 10, "actualWeight": 80.0,
 	})
 
@@ -378,10 +378,10 @@ func TestListAndGetRecordEndpoints(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
 	// Finish both
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/2", map[string]any{
 		"status": "finished", "actualReps": 5, "actualWeight": 60.0,
 	})
 

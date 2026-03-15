@@ -212,7 +212,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 
 	// 11. Record actual performance — update individual sets
 	for i, s := range logExercise1.Sets {
-		w = doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/"+itoa(s.ID), map[string]any{
+		w = doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/"+itoa(s.ID), map[string]any{
 			"status": "finished", "actualReps": 5, "actualWeight": 140.0,
 		})
 		if w.Code != http.StatusOK {
@@ -225,7 +225,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 		if i >= 3 {
 			break // skip last set (not attempted)
 		}
-		w = doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/"+itoa(s.ID), map[string]any{
+		w = doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/"+itoa(s.ID), map[string]any{
 			"status": "finished", "actualReps": 6, "actualWeight": 75.0,
 		})
 		if w.Code != http.StatusOK {

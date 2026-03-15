@@ -215,7 +215,7 @@ func TestUpdateWorkoutLog(t *testing.T) {
 	})
 
 	t.Run("success", func(t *testing.T) {
-		w := doJSON(r, "PUT", "/api/user/workout-logs/1", map[string]any{
+		w := doJSON(r, "PATCH", "/api/user/workout-logs/1", map[string]any{
 			"owner": "alice", "name": "Updated Session", "date": "2026-03-07T10:00:00Z",
 		})
 		if w.Code != http.StatusOK {
@@ -229,7 +229,7 @@ func TestUpdateWorkoutLog(t *testing.T) {
 	})
 
 	t.Run("not found", func(t *testing.T) {
-		w := doJSON(r, "PUT", "/api/user/workout-logs/999", map[string]any{
+		w := doJSON(r, "PATCH", "/api/user/workout-logs/999", map[string]any{
 			"owner": "x", "name": "X", "date": "2026-03-07T10:00:00Z",
 		})
 		if w.Code != http.StatusNotFound {
@@ -238,7 +238,7 @@ func TestUpdateWorkoutLog(t *testing.T) {
 	})
 
 	t.Run("bad json", func(t *testing.T) {
-		w := doRaw(r, "PUT", "/api/user/workout-logs/1", "{bad")
+		w := doRaw(r, "PATCH", "/api/user/workout-logs/1", "{bad")
 		if w.Code != http.StatusBadRequest {
 			t.Errorf("expected 400, got %d", w.Code)
 		}

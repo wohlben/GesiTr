@@ -120,7 +120,7 @@ func TestAbandonCascade(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
 	// Finish the first set
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 
@@ -174,7 +174,7 @@ func TestAbandonWhenTerminal(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
 	// Finish the only set — log should propagate to finished
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 
@@ -320,10 +320,10 @@ func TestPropagationAllFinished(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
 	// Finish both sets
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/2", map[string]any{
 		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 
@@ -366,10 +366,10 @@ func TestPropagationAnyAborted(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
 	// Finish set 1, abort set 2
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/2", map[string]any{
 		"status": "aborted",
 	})
 
@@ -451,7 +451,7 @@ func TestMultiSectionPropagation(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
 	// Finish the set in section 1 — section 1 should be finished, section 2 and log should not
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/1", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
 		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 
@@ -470,7 +470,7 @@ func TestMultiSectionPropagation(t *testing.T) {
 	}
 
 	// Finish the set in section 2 — everything should propagate to finished
-	doJSON(r, "PUT", "/api/user/workout-log-exercise-sets/2", map[string]any{
+	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/2", map[string]any{
 		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 
@@ -508,8 +508,8 @@ func TestUpdateLogPreservesStatus(t *testing.T) {
 
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
-	// Try to change status via generic PUT — should be ignored
-	w := doJSON(r, "PUT", "/api/user/workout-logs/1", map[string]any{
+	// Try to change status via generic PATCH — should be ignored
+	w := doJSON(r, "PATCH", "/api/user/workout-logs/1", map[string]any{
 		"name": "Updated", "status": "planning",
 	})
 	if w.Code != http.StatusOK {
@@ -603,7 +603,7 @@ func TestOwnerAuthorization(t *testing.T) {
 	})
 
 	t.Run("cannot update another user's log", func(t *testing.T) {
-		w := doJSON(r, "PUT", "/api/user/workout-logs/2", map[string]any{
+		w := doJSON(r, "PATCH", "/api/user/workout-logs/2", map[string]any{
 			"name": "Hacked",
 		})
 		if w.Code != http.StatusForbidden {

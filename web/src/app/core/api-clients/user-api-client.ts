@@ -132,7 +132,7 @@ export class UserApiClient {
   }
 
   updateWorkoutLog(id: number, data: Partial<WorkoutLog>): Promise<WorkoutLog> {
-    return firstValueFrom(this.http.put<WorkoutLog>(`/api/user/workout-logs/${id}`, data));
+    return firstValueFrom(this.http.patch<WorkoutLog>(`/api/user/workout-logs/${id}`, data));
   }
 
   createWorkoutLogSection(data: Partial<WorkoutLogSection>): Promise<WorkoutLogSection> {
@@ -146,7 +146,7 @@ export class UserApiClient {
     data: Partial<WorkoutLogSection>,
   ): Promise<WorkoutLogSection> {
     return firstValueFrom(
-      this.http.put<WorkoutLogSection>(`/api/user/workout-log-sections/${id}`, data),
+      this.http.patch<WorkoutLogSection>(`/api/user/workout-log-sections/${id}`, data),
     );
   }
 
@@ -170,7 +170,7 @@ export class UserApiClient {
     data: Partial<WorkoutLogExerciseSet>,
   ): Promise<WorkoutLogExerciseSet> {
     return firstValueFrom(
-      this.http.put<WorkoutLogExerciseSet>(`/api/user/workout-log-exercise-sets/${id}`, data),
+      this.http.patch<WorkoutLogExerciseSet>(`/api/user/workout-log-exercise-sets/${id}`, data),
     );
   }
 

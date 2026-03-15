@@ -163,7 +163,7 @@ func setupRoutes(r *gin.Engine) {
 		workoutLogs.GET("", userhandlers.ListWorkoutLogs)
 		workoutLogs.POST("", userhandlers.CreateWorkoutLog)
 		workoutLogs.GET("/:id", userhandlers.GetWorkoutLog)
-		workoutLogs.PUT("/:id", userhandlers.UpdateWorkoutLog)
+		workoutLogs.PATCH("/:id", userhandlers.UpdateWorkoutLog)
 		workoutLogs.DELETE("/:id", userhandlers.DeleteWorkoutLog)
 		workoutLogs.POST("/:id/start", userhandlers.StartWorkoutLog)
 		workoutLogs.POST("/:id/abandon", userhandlers.AbandonWorkoutLog)
@@ -174,7 +174,7 @@ func setupRoutes(r *gin.Engine) {
 		workoutLogSections.GET("", userhandlers.ListWorkoutLogSections)
 		workoutLogSections.POST("", userhandlers.CreateWorkoutLogSection)
 		workoutLogSections.GET("/:id", userhandlers.GetWorkoutLogSection)
-		workoutLogSections.PUT("/:id", userhandlers.UpdateWorkoutLogSection)
+		workoutLogSections.PATCH("/:id", userhandlers.UpdateWorkoutLogSection)
 		workoutLogSections.DELETE("/:id", userhandlers.DeleteWorkoutLogSection)
 	}
 
@@ -190,7 +190,7 @@ func setupRoutes(r *gin.Engine) {
 	{
 		workoutLogExerciseSets.GET("", userhandlers.ListWorkoutLogExerciseSets)
 		workoutLogExerciseSets.POST("", userhandlers.CreateWorkoutLogExerciseSet)
-		workoutLogExerciseSets.PUT("/:id", userhandlers.UpdateWorkoutLogExerciseSet)
+		workoutLogExerciseSets.PATCH("/:id", userhandlers.UpdateWorkoutLogExerciseSet)
 		workoutLogExerciseSets.DELETE("/:id", userhandlers.DeleteWorkoutLogExerciseSet)
 	}
 
