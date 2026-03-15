@@ -170,9 +170,10 @@ export class WorkoutLogActive {
 
       const isTerminal =
         curr.set.status === WorkoutLogStatusFinished || curr.set.status === WorkoutLogStatusAborted;
+      const hasOverride = this.overrideSetId() !== null;
       const role: 'completed' | 'active' | 'upcoming' = isTerminal
         ? 'completed'
-        : i === activeIdx && (!resting || isOverriding)
+        : i === activeIdx && (!resting || hasOverride)
           ? 'active'
           : 'upcoming';
 
