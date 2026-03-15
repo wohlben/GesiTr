@@ -1,4 +1,4 @@
-import { formatBreak } from './format-utils';
+import { formatBreak, formatCountdown } from './format-utils';
 
 describe('formatBreak', () => {
   it('returns empty string for null', () => {
@@ -26,5 +26,26 @@ describe('formatBreak', () => {
 
   it('formats zero seconds', () => {
     expect(formatBreak(0)).toBe('0s');
+  });
+});
+
+describe('formatCountdown', () => {
+  it('formats seconds under 60 with s suffix', () => {
+    expect(formatCountdown(10)).toBe('10s');
+    expect(formatCountdown(45)).toBe('45s');
+  });
+
+  it('formats zero seconds', () => {
+    expect(formatCountdown(0)).toBe('0s');
+  });
+
+  it('formats exact minutes as M:00', () => {
+    expect(formatCountdown(60)).toBe('1:00');
+    expect(formatCountdown(120)).toBe('2:00');
+  });
+
+  it('formats minutes with seconds as M:SS', () => {
+    expect(formatCountdown(90)).toBe('1:30');
+    expect(formatCountdown(65)).toBe('1:05');
   });
 });

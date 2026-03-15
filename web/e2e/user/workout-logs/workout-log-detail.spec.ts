@@ -128,7 +128,7 @@ test.describe('/user/workout-logs/[id]', () => {
         await expect(page.locator('h1')).toHaveText(v.workoutName, { timeout: 10000 });
         // Wait for exercise names to resolve
         for (const ex of v.exercises) {
-          await expect(page.getByText(ex.name)).toBeVisible({ timeout: 10000 });
+          await expect(page.getByText(ex.name).first()).toBeVisible({ timeout: 10000 });
         }
         await expect(page).toHaveScreenshot(
           [viewport.name, 'light', 'user', 'workout-logs', '[id].png'],
@@ -147,7 +147,7 @@ test.describe('/user/workout-logs/[id]', () => {
 
         await expect(page.locator('h1')).toHaveText(v.workoutName, { timeout: 10000 });
         for (const ex of v.exercises) {
-          await expect(page.getByText(ex.name)).toBeVisible({ timeout: 10000 });
+          await expect(page.getByText(ex.name).first()).toBeVisible({ timeout: 10000 });
         }
         await expect(page).toHaveScreenshot(
           [viewport.name, 'dark', 'user', 'workout-logs', '[id].png'],
