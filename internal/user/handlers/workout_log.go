@@ -109,22 +109,19 @@ func UpdateWorkoutLog(c *gin.Context) {
 		return
 	}
 
-	entity := models.WorkoutLogFromDTO(dto)
-	entity.ID = existing.ID
-	// Preserve status fields — don't let generic PUT change status
-	entity.Status = existing.Status
-	entity.StatusChangedAt = existing.StatusChangedAt
+	existing.Name = dto.Name
+	existing.Notes = dto.Notes
 
-	if err := database.DB.Save(&entity).Error; err != nil {
+	if err := database.DB.Save(&existing).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err := preloadWorkoutLog(database.DB).First(&entity, entity.ID).Error; err != nil {
+	if err := preloadWorkoutLog(database.DB).First(&existing, existing.ID).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	c.JSON(http.StatusOK, existing.ToDTO())
 }
 
 func DeleteWorkoutLog(c *gin.Context) {

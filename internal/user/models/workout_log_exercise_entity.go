@@ -5,6 +5,7 @@ import "time"
 type WorkoutLogExerciseEntity struct {
 	BaseModel
 	WorkoutLogSectionID    uint             `gorm:"not null;index"`
+	WorkoutLogID           uint             `gorm:"not null;index"`
 	SourceExerciseSchemeID uint             `gorm:"not null"`
 	Position               int              `gorm:"not null"`
 	Status                 WorkoutLogStatus `gorm:"not null;default:'planning'"`
@@ -24,6 +25,7 @@ func (e *WorkoutLogExerciseEntity) ToDTO() WorkoutLogExercise {
 	dto := WorkoutLogExercise{
 		BaseModel:              e.BaseModel,
 		WorkoutLogSectionID:    e.WorkoutLogSectionID,
+		WorkoutLogID:           e.WorkoutLogID,
 		SourceExerciseSchemeID: e.SourceExerciseSchemeID,
 		Position:               e.Position,
 		Status:                 e.Status,
@@ -42,6 +44,7 @@ func WorkoutLogExerciseFromDTO(dto WorkoutLogExercise) WorkoutLogExerciseEntity 
 	return WorkoutLogExerciseEntity{
 		BaseModel:              dto.BaseModel,
 		WorkoutLogSectionID:    dto.WorkoutLogSectionID,
+		WorkoutLogID:           dto.WorkoutLogID,
 		SourceExerciseSchemeID: dto.SourceExerciseSchemeID,
 		Position:               dto.Position,
 		Status:                 dto.Status,

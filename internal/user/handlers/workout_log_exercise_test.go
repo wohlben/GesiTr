@@ -228,7 +228,7 @@ func TestUpdateWorkoutLogExercise(t *testing.T) {
 	})
 
 	t.Run("update preserves target fields and returns sets", func(t *testing.T) {
-		w := doJSON(r, "PUT", "/api/user/workout-log-exercises/1", map[string]any{
+		w := doJSON(r, "PATCH", "/api/user/workout-log-exercises/1", map[string]any{
 			"position":               2,
 			"targetMeasurementType":  "CHANGED",
 			"workoutLogSectionId":    999,
@@ -261,7 +261,7 @@ func TestUpdateWorkoutLogExercise(t *testing.T) {
 	})
 
 	t.Run("not found", func(t *testing.T) {
-		w := doJSON(r, "PUT", "/api/user/workout-log-exercises/999", map[string]any{
+		w := doJSON(r, "PATCH", "/api/user/workout-log-exercises/999", map[string]any{
 			"position": 1,
 		})
 		if w.Code != http.StatusNotFound {
@@ -270,7 +270,7 @@ func TestUpdateWorkoutLogExercise(t *testing.T) {
 	})
 
 	t.Run("bad json", func(t *testing.T) {
-		w := doRaw(r, "PUT", "/api/user/workout-log-exercises/1", "{bad")
+		w := doRaw(r, "PATCH", "/api/user/workout-log-exercises/1", "{bad")
 		if w.Code != http.StatusBadRequest {
 			t.Errorf("expected 400, got %d", w.Code)
 		}

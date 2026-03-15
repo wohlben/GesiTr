@@ -5,6 +5,7 @@ import "time"
 type WorkoutLogExerciseSet struct {
 	BaseModel            `tstype:",extends"`
 	WorkoutLogExerciseID uint             `json:"workoutLogExerciseId"`
+	WorkoutLogID         uint             `json:"workoutLogId"`
 	SetNumber            int              `json:"setNumber"`
 	Status               WorkoutLogStatus `json:"status"`
 	StatusChangedAt      *time.Time       `json:"statusChangedAt"`

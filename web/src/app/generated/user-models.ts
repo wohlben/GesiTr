@@ -91,6 +91,7 @@ export interface WorkoutLog extends BaseModel {
 
 export interface WorkoutLogExercise extends BaseModel {
   workoutLogSectionId: number /* uint */;
+  workoutLogId: number /* uint */;
   sourceExerciseSchemeId: number /* uint */;
   position: number /* int */;
   status: WorkoutLogStatus;
@@ -109,6 +110,7 @@ export interface WorkoutLogExercise extends BaseModel {
 
 export interface WorkoutLogExerciseSet extends BaseModel {
   workoutLogExerciseId: number /* uint */;
+  workoutLogId: number /* uint */;
   setNumber: number /* int */;
   status: WorkoutLogStatus;
   statusChangedAt?: string;

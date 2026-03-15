@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	"gesitr/internal/user/models"
 
@@ -14,7 +15,13 @@ func ListWorkoutLogSections(c *gin.Context) {
 	db := database.DB.Model(&models.WorkoutLogSectionEntity{})
 
 	if v := c.Query("workoutLogId"); v != "" {
+		if !requireLogOwner(c, parseUint(v)) {
+			return
+		}
 		db = db.Where("workout_log_id = ?", v)
+	} else {
+		db = db.Joins("JOIN workout_logs ON workout_logs.id = workout_log_sections.workout_log_id").
+			Where("workout_logs.owner = ?", auth.GetUserID(c))
 	}
 
 	var entities []models.WorkoutLogSectionEntity
@@ -63,7 +70,46 @@ func GetWorkoutLogSection(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log section not found"})
 		return
 	}
+	if !requireLogOwner(c, entity.WorkoutLogID) {
+		return
+	}
 	c.JSON(http.StatusOK, entity.ToDTO())
+}
+
+func UpdateWorkoutLogSection(c *gin.Context) {
+	var existing models.WorkoutLogSectionEntity
+	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log section not found"})
+		return
+	}
+
+	if !requireLogOwner(c, existing.WorkoutLogID) {
+		return
+	}
+
+	var dto models.WorkoutLogSection
+	if err := c.ShouldBindJSON(&dto); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	existing.Type = dto.Type
+	existing.Label = dto.Label
+	existing.RestBetweenExercises = dto.RestBetweenExercises
+
+	if err := database.DB.Save(&existing).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Reload with exercises and sets
+	database.DB.Preload("Exercises", func(db *gorm.DB) *gorm.DB {
+		return db.Order("position")
+	}).Preload("Exercises.Sets", func(db *gorm.DB) *gorm.DB {
+		return db.Order("set_number")
+	}).First(&existing, existing.ID)
+
+	c.JSON(http.StatusOK, existing.ToDTO())
 }
 
 func DeleteWorkoutLogSection(c *gin.Context) {

@@ -105,7 +105,7 @@ func newRouter() *gin.Engine {
 	logExercises := api.Group("/workout-log-exercises")
 	logExercises.GET("", ListWorkoutLogExercises)
 	logExercises.POST("", CreateWorkoutLogExercise)
-	logExercises.PUT("/:id", UpdateWorkoutLogExercise)
+	logExercises.PATCH("/:id", UpdateWorkoutLogExercise)
 	logExercises.DELETE("/:id", DeleteWorkoutLogExercise)
 
 	logExerciseSets := api.Group("/workout-log-exercise-sets")

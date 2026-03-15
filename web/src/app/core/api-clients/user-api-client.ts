@@ -131,15 +131,37 @@ export class UserApiClient {
     return firstValueFrom(this.http.post<WorkoutLog>('/api/user/workout-logs', data));
   }
 
+  updateWorkoutLog(id: number, data: Partial<WorkoutLog>): Promise<WorkoutLog> {
+    return firstValueFrom(this.http.put<WorkoutLog>(`/api/user/workout-logs/${id}`, data));
+  }
+
   createWorkoutLogSection(data: Partial<WorkoutLogSection>): Promise<WorkoutLogSection> {
     return firstValueFrom(
       this.http.post<WorkoutLogSection>('/api/user/workout-log-sections', data),
     );
   }
 
+  updateWorkoutLogSection(
+    id: number,
+    data: Partial<WorkoutLogSection>,
+  ): Promise<WorkoutLogSection> {
+    return firstValueFrom(
+      this.http.put<WorkoutLogSection>(`/api/user/workout-log-sections/${id}`, data),
+    );
+  }
+
   createWorkoutLogExercise(data: Partial<WorkoutLogExercise>): Promise<WorkoutLogExercise> {
     return firstValueFrom(
       this.http.post<WorkoutLogExercise>('/api/user/workout-log-exercises', data),
+    );
+  }
+
+  updateWorkoutLogExercise(
+    id: number,
+    data: Partial<WorkoutLogExercise>,
+  ): Promise<WorkoutLogExercise> {
+    return firstValueFrom(
+      this.http.patch<WorkoutLogExercise>(`/api/user/workout-log-exercises/${id}`, data),
     );
   }
 

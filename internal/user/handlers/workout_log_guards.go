@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
@@ -9,6 +10,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
+// parseUint converts a string to uint, returning 0 on failure.
+func parseUint(s string) uint {
+	v, _ := strconv.ParseUint(s, 10, 64)
+	return uint(v)
+}
 
 // requireOwner checks that the authenticated user matches the given owner.
 func requireOwner(c *gin.Context, owner string) bool {
@@ -47,23 +54,4 @@ func requireLogStatus(c *gin.Context, logID uint, allowed ...models.WorkoutLogSt
 	}
 	c.JSON(http.StatusConflict, gin.H{"error": "Workout log status is " + string(log.Status) + ", operation not allowed"})
 	return log, false
-}
-
-// getLogIDFromSection returns the parent log ID for a given section ID.
-func getLogIDFromSection(sectionID uint) (uint, error) {
-	var section models.WorkoutLogSectionEntity
-	if err := database.DB.Select("workout_log_id").First(&section, sectionID).Error; err != nil {
-		return 0, err
-	}
-	return section.WorkoutLogID, nil
-}
-
-// getLogIDFromExercise returns the parent log ID for a given exercise ID
-// by traversing exercise → section → log.
-func getLogIDFromExercise(exerciseID uint) (uint, error) {
-	var exercise models.WorkoutLogExerciseEntity
-	if err := database.DB.Select("workout_log_section_id").First(&exercise, exerciseID).Error; err != nil {
-		return 0, err
-	}
-	return getLogIDFromSection(exercise.WorkoutLogSectionID)
 }

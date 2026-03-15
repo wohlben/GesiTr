@@ -37,6 +37,7 @@ type ExerciseFormGroup = FormGroup<{
 }>;
 
 type SectionFormGroup = FormGroup<{
+  id: FormControl<number | null>;
   type: FormControl<string>;
   label: FormControl<string>;
   exercises: FormArray<ExerciseFormGroup>;
@@ -62,6 +63,7 @@ type SectionFormGroup = FormGroup<{
             <input
               id="name"
               formControlName="name"
+              (change)="onLogChange()"
               class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
             />
           </div>
@@ -73,6 +75,7 @@ type SectionFormGroup = FormGroup<{
             <textarea
               id="notes"
               formControlName="notes"
+              (change)="onLogChange()"
               rows="2"
               class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
             ></textarea>
@@ -103,6 +106,7 @@ type SectionFormGroup = FormGroup<{
                     Type
                     <select
                       formControlName="type"
+                      (change)="onSectionChange(si)"
                       class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                     >
                       <option [value]="SECTION_TYPE_MAIN">Main</option>
@@ -113,6 +117,7 @@ type SectionFormGroup = FormGroup<{
                     Label
                     <input
                       formControlName="label"
+                      (change)="onSectionChange(si)"
                       class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                     />
                   </label>
@@ -259,6 +264,7 @@ type SectionFormGroup = FormGroup<{
                                   <input
                                     type="number"
                                     formControlName="restAfterSeconds"
+                                    (change)="onSetChange(si, ei, setIdx)"
                                     class="w-12 border-0 bg-transparent p-0 text-center text-xs text-gray-400 focus:ring-0 dark:text-gray-500"
                                   />
                                   <span>s</span>
@@ -292,6 +298,7 @@ type SectionFormGroup = FormGroup<{
                           <input
                             type="number"
                             formControlName="breakAfterSeconds"
+                            (change)="onExerciseChange(si, ei)"
                             class="w-12 border-0 bg-transparent p-0 text-center text-xs text-gray-500 focus:ring-0 dark:text-gray-400"
                           />
                           <span>s rest</span>
@@ -413,6 +420,49 @@ export class WorkoutStart {
     this.startMutation.mutate();
   }
 
+  async onLogChange() {
+    const logId = this.currentLogId();
+    if (!logId) return;
+    const val = this.form.getRawValue();
+    try {
+      await this.userApi.updateWorkoutLog(logId, {
+        name: val.name,
+        notes: val.notes || undefined,
+      });
+    } catch (err) {
+      console.error('Failed to save log changes:', err);
+    }
+  }
+
+  async onSectionChange(si: number) {
+    const section = this.sectionsArray.at(si);
+    const sectionId = section.controls.id.value;
+    if (!sectionId) return;
+    const val = section.getRawValue();
+    try {
+      await this.userApi.updateWorkoutLogSection(sectionId, {
+        type: val.type,
+        label: val.label || undefined,
+      });
+    } catch (err) {
+      console.error('Failed to save section changes:', err);
+    }
+  }
+
+  async onExerciseChange(si: number, ei: number) {
+    const exercise = this.getExercisesArray(si).at(ei);
+    const exerciseId = exercise.controls.id.value;
+    if (!exerciseId) return;
+    const val = exercise.getRawValue();
+    try {
+      await this.userApi.updateWorkoutLogExercise(exerciseId, {
+        breakAfterSeconds: val.breakAfterSeconds ?? undefined,
+      });
+    } catch (err) {
+      console.error('Failed to save exercise changes:', err);
+    }
+  }
+
   async onSetChange(si: number, ei: number, setIdx: number) {
     const setGroup = this.getSetsArray(si, ei).at(setIdx);
     const setId = setGroup.controls.id.value;
@@ -443,7 +493,7 @@ export class WorkoutStart {
     this.sectionsArray.clear();
 
     for (const section of log.sections ?? []) {
-      const sectionGroup = this.createSectionGroup();
+      const sectionGroup = this.createSectionGroup(section.id);
       sectionGroup.patchValue({
         type: section.type,
         label: section.label ?? '',
@@ -523,8 +573,9 @@ export class WorkoutStart {
     });
   }
 
-  private createSectionGroup(): SectionFormGroup {
+  private createSectionGroup(id: number | null = null): SectionFormGroup {
     return new FormGroup({
+      id: new FormControl<number | null>(id),
       type: new FormControl(WorkoutSectionTypeMain, { nonNullable: true }),
       label: new FormControl('', { nonNullable: true }),
       exercises: new FormArray<ExerciseFormGroup>([]),

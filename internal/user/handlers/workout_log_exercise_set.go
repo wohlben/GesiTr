@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	"gesitr/internal/user/models"
 
@@ -15,7 +16,18 @@ func ListWorkoutLogExerciseSets(c *gin.Context) {
 	db := database.DB.Model(&models.WorkoutLogExerciseSetEntity{})
 
 	if v := c.Query("workoutLogExerciseId"); v != "" {
+		var exercise models.WorkoutLogExerciseEntity
+		if err := database.DB.First(&exercise, v).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Workout log exercise not found"})
+			return
+		}
+		if !requireLogOwner(c, exercise.WorkoutLogID) {
+			return
+		}
 		db = db.Where("workout_log_exercise_id = ?", v)
+	} else {
+		db = db.Joins("JOIN workout_logs ON workout_logs.id = workout_log_exercise_sets.workout_log_id").
+			Where("workout_logs.owner = ?", auth.GetUserID(c))
 	}
 
 	var entities []models.WorkoutLogExerciseSetEntity
@@ -45,17 +57,15 @@ func CreateWorkoutLogExerciseSet(c *gin.Context) {
 	}
 
 	// Guard: parent log must be in planning status (also checks ownership)
-	logID, err := getLogIDFromSection(exercise.WorkoutLogSectionID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	if _, ok := requireLogStatus(c, logID, models.WorkoutLogStatusPlanning); !ok {
+	if _, ok := requireLogStatus(c, exercise.WorkoutLogID, models.WorkoutLogStatusPlanning); !ok {
 		return
 	}
 
 	entity := models.WorkoutLogExerciseSetFromDTO(dto)
 	entity.ID = 0
+	entity.CreatedAt = time.Time{}
+	entity.UpdatedAt = time.Time{}
+	entity.WorkoutLogID = exercise.WorkoutLogID
 	entity.Status = models.WorkoutLogStatusPlanning
 	if err := database.DB.Create(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -72,12 +82,7 @@ func UpdateWorkoutLogExerciseSet(c *gin.Context) {
 	}
 
 	// Owner check via parent log
-	logID, err := getLogIDFromExercise(existing.WorkoutLogExerciseID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	if !requireLogOwner(c, logID) {
+	if !requireLogOwner(c, existing.WorkoutLogID) {
 		return
 	}
 
@@ -125,7 +130,7 @@ func UpdateWorkoutLogExerciseSet(c *gin.Context) {
 		existing.BreakAfterSeconds = dto.BreakAfterSeconds
 	}
 
-	err = database.DB.Transaction(func(tx *gorm.DB) error {
+	err := database.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Save(&existing).Error; err != nil {
 			return err
 		}
@@ -328,17 +333,12 @@ func DeleteWorkoutLogExerciseSet(c *gin.Context) {
 	}
 
 	// Guard: parent log must be in planning status (also checks ownership)
-	logID, err := getLogIDFromExercise(existing.WorkoutLogExerciseID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	if _, ok := requireLogStatus(c, logID, models.WorkoutLogStatusPlanning); !ok {
+	if _, ok := requireLogStatus(c, existing.WorkoutLogID, models.WorkoutLogStatusPlanning); !ok {
 		return
 	}
 
 	exerciseID := existing.WorkoutLogExerciseID
-	err = database.DB.Transaction(func(tx *gorm.DB) error {
+	err := database.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Delete(&existing).Error; err != nil {
 			return err
 		}

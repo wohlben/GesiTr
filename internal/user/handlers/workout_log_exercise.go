@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	"gesitr/internal/user/models"
 
@@ -14,7 +15,18 @@ func ListWorkoutLogExercises(c *gin.Context) {
 	db := database.DB.Model(&models.WorkoutLogExerciseEntity{})
 
 	if v := c.Query("workoutLogSectionId"); v != "" {
+		var section models.WorkoutLogSectionEntity
+		if err := database.DB.First(&section, v).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Workout log section not found"})
+			return
+		}
+		if !requireLogOwner(c, section.WorkoutLogID) {
+			return
+		}
 		db = db.Where("workout_log_section_id = ?", v)
+	} else {
+		db = db.Joins("JOIN workout_logs ON workout_logs.id = workout_log_exercises.workout_log_id").
+			Where("workout_logs.owner = ?", auth.GetUserID(c))
 	}
 
 	var entities []models.WorkoutLogExerciseEntity
@@ -63,6 +75,7 @@ func CreateWorkoutLogExercise(c *gin.Context) {
 
 	entity := models.WorkoutLogExerciseEntity{
 		WorkoutLogSectionID:    dto.WorkoutLogSectionID,
+		WorkoutLogID:           section.WorkoutLogID,
 		SourceExerciseSchemeID: dto.SourceExerciseSchemeID,
 		Position:               dto.Position,
 		BreakAfterSeconds:      breakAfter,
@@ -83,6 +96,7 @@ func CreateWorkoutLogExercise(c *gin.Context) {
 	for i := 1; i <= numSets; i++ {
 		set := models.WorkoutLogExerciseSetEntity{
 			WorkoutLogExerciseID: entity.ID,
+			WorkoutLogID:         section.WorkoutLogID,
 			SetNumber:            i,
 			Status:               models.WorkoutLogStatusPlanning,
 			TargetReps:           scheme.Reps,
@@ -112,14 +126,25 @@ func UpdateWorkoutLogExercise(c *gin.Context) {
 		return
 	}
 
-	var dto models.WorkoutLogExercise
-	if err := c.ShouldBindJSON(&dto); err != nil {
+	if !requireLogOwner(c, existing.WorkoutLogID) {
+		return
+	}
+
+	var patch struct {
+		Position          *int `json:"position"`
+		BreakAfterSeconds *int `json:"breakAfterSeconds"`
+	}
+	if err := c.ShouldBindJSON(&patch); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Only allow updating position
-	existing.Position = dto.Position
+	if patch.Position != nil {
+		existing.Position = *patch.Position
+	}
+	if patch.BreakAfterSeconds != nil {
+		existing.BreakAfterSeconds = patch.BreakAfterSeconds
+	}
 
 	if err := database.DB.Save(&existing).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -142,17 +167,12 @@ func DeleteWorkoutLogExercise(c *gin.Context) {
 	}
 
 	// Guard: parent log must be in planning status
-	logID, err := getLogIDFromSection(existing.WorkoutLogSectionID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	if _, ok := requireLogStatus(c, logID, models.WorkoutLogStatusPlanning); !ok {
+	if _, ok := requireLogStatus(c, existing.WorkoutLogID, models.WorkoutLogStatusPlanning); !ok {
 		return
 	}
 
 	sectionID := existing.WorkoutLogSectionID
-	err = database.DB.Transaction(func(tx *gorm.DB) error {
+	err := database.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Delete(&existing).Error; err != nil {
 			return err
 		}
