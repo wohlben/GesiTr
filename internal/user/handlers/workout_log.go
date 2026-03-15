@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"reflect"
 	"time"
 
 	"gesitr/internal/auth"
@@ -103,14 +104,26 @@ func UpdateWorkoutLog(c *gin.Context) {
 		return
 	}
 
-	var dto models.WorkoutLog
-	if err := c.ShouldBindJSON(&dto); err != nil {
+	var patch struct {
+		Name  *string `json:"name"`
+		Notes *string `json:"notes"`
+	}
+	if err := c.ShouldBindJSON(&patch); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	existing.Name = dto.Name
-	existing.Notes = dto.Notes
+	if reflect.ValueOf(patch).IsZero() {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "patch body contains no updatable fields"})
+		return
+	}
+
+	if patch.Name != nil {
+		existing.Name = *patch.Name
+	}
+	if patch.Notes != nil {
+		existing.Notes = patch.Notes
+	}
 
 	if err := database.DB.Save(&existing).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

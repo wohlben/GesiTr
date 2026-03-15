@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"reflect"
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
@@ -136,6 +137,11 @@ func UpdateWorkoutLogExercise(c *gin.Context) {
 	}
 	if err := c.ShouldBindJSON(&patch); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if reflect.ValueOf(patch).IsZero() {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "patch body contains no updatable fields"})
 		return
 	}
 

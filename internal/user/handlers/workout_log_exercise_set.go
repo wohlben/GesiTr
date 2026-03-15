@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"reflect"
 	"time"
 
 	"gesitr/internal/auth"
@@ -86,48 +87,77 @@ func UpdateWorkoutLogExerciseSet(c *gin.Context) {
 		return
 	}
 
-	var dto models.WorkoutLogExerciseSet
-	if err := c.ShouldBindJSON(&dto); err != nil {
+	var patch struct {
+		Status            models.WorkoutLogStatus `json:"status"`
+		BreakAfterSeconds *int                    `json:"breakAfterSeconds"`
+		TargetReps        *int                    `json:"targetReps"`
+		TargetWeight      *float64                `json:"targetWeight"`
+		TargetDuration    *int                    `json:"targetDuration"`
+		TargetDistance    *float64                `json:"targetDistance"`
+		TargetTime        *int                    `json:"targetTime"`
+		ActualReps        *int                    `json:"actualReps"`
+		ActualWeight      *float64                `json:"actualWeight"`
+		ActualDuration    *int                    `json:"actualDuration"`
+		ActualDistance    *float64                `json:"actualDistance"`
+		ActualTime        *int                    `json:"actualTime"`
+	}
+	if err := c.ShouldBindJSON(&patch); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
+	if reflect.ValueOf(patch).IsZero() {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "patch body contains no updatable fields"})
+		return
+	}
+
 	// Status transition: validate against the state machine
-	if dto.Status != "" && dto.Status != existing.Status {
-		if err := existing.Status.TransitionTo(dto.Status); err != nil {
+	if patch.Status != "" && patch.Status != existing.Status {
+		if err := existing.Status.TransitionTo(patch.Status); err != nil {
 			c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
 			return
 		}
 		now := time.Now()
-		existing.Status = dto.Status
+		existing.Status = patch.Status
 		existing.StatusChangedAt = &now
 	}
 
-	// Update actual fields
-	existing.ActualReps = dto.ActualReps
-	existing.ActualWeight = dto.ActualWeight
-	existing.ActualDuration = dto.ActualDuration
-	existing.ActualDistance = dto.ActualDistance
-	existing.ActualTime = dto.ActualTime
+	// Update target fields when provided
+	if patch.TargetReps != nil {
+		existing.TargetReps = patch.TargetReps
+	}
+	if patch.TargetWeight != nil {
+		existing.TargetWeight = patch.TargetWeight
+	}
+	if patch.TargetDuration != nil {
+		existing.TargetDuration = patch.TargetDuration
+	}
+	if patch.TargetDistance != nil {
+		existing.TargetDistance = patch.TargetDistance
+	}
+	if patch.TargetTime != nil {
+		existing.TargetTime = patch.TargetTime
+	}
 
-	// Update target fields and break when provided (non-nil in DTO)
-	if dto.TargetReps != nil {
-		existing.TargetReps = dto.TargetReps
+	// Update actual fields when provided
+	if patch.ActualReps != nil {
+		existing.ActualReps = patch.ActualReps
 	}
-	if dto.TargetWeight != nil {
-		existing.TargetWeight = dto.TargetWeight
+	if patch.ActualWeight != nil {
+		existing.ActualWeight = patch.ActualWeight
 	}
-	if dto.TargetDuration != nil {
-		existing.TargetDuration = dto.TargetDuration
+	if patch.ActualDuration != nil {
+		existing.ActualDuration = patch.ActualDuration
 	}
-	if dto.TargetDistance != nil {
-		existing.TargetDistance = dto.TargetDistance
+	if patch.ActualDistance != nil {
+		existing.ActualDistance = patch.ActualDistance
 	}
-	if dto.TargetTime != nil {
-		existing.TargetTime = dto.TargetTime
+	if patch.ActualTime != nil {
+		existing.ActualTime = patch.ActualTime
 	}
-	if dto.BreakAfterSeconds != nil {
-		existing.BreakAfterSeconds = dto.BreakAfterSeconds
+
+	if patch.BreakAfterSeconds != nil {
+		existing.BreakAfterSeconds = patch.BreakAfterSeconds
 	}
 
 	err := database.DB.Transaction(func(tx *gorm.DB) error {
