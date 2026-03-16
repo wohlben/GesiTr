@@ -94,6 +94,15 @@ export class UserApiClient {
   }
 
   // Exercise Schemes
+  fetchExerciseSchemes(params?: { userExerciseId?: number }): Promise<UserExerciseScheme[]> {
+    const qp = new URLSearchParams();
+    if (params?.userExerciseId != null) qp.set('userExerciseId', String(params.userExerciseId));
+    const qs = qp.toString();
+    return firstValueFrom(
+      this.http.get<UserExerciseScheme[]>(`/api/user/exercise-schemes${qs ? '?' + qs : ''}`),
+    );
+  }
+
   fetchExerciseScheme(id: number): Promise<UserExerciseScheme> {
     return firstValueFrom(this.http.get<UserExerciseScheme>(`/api/user/exercise-schemes/${id}`));
   }
@@ -150,6 +159,10 @@ export class UserApiClient {
     );
   }
 
+  deleteWorkoutLogSection(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/user/workout-log-sections/${id}`));
+  }
+
   createWorkoutLogExercise(data: Partial<WorkoutLogExercise>): Promise<WorkoutLogExercise> {
     return firstValueFrom(
       this.http.post<WorkoutLogExercise>('/api/user/workout-log-exercises', data),
@@ -163,6 +176,10 @@ export class UserApiClient {
     return firstValueFrom(
       this.http.patch<WorkoutLogExercise>(`/api/user/workout-log-exercises/${id}`, data),
     );
+  }
+
+  deleteWorkoutLogExercise(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/user/workout-log-exercises/${id}`));
   }
 
   updateWorkoutLogExerciseSet(

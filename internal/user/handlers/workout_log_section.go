@@ -92,6 +92,7 @@ func UpdateWorkoutLogSection(c *gin.Context) {
 		Type                 *models.WorkoutSectionType `json:"type"`
 		Label                *string                    `json:"label"`
 		RestBetweenExercises *int                       `json:"restBetweenExercises"`
+		Position             *int                       `json:"position"`
 	}
 	if err := c.ShouldBindJSON(&patch); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -111,6 +112,9 @@ func UpdateWorkoutLogSection(c *gin.Context) {
 	}
 	if patch.RestBetweenExercises != nil {
 		existing.RestBetweenExercises = patch.RestBetweenExercises
+	}
+	if patch.Position != nil {
+		existing.Position = *patch.Position
 	}
 
 	if err := database.DB.Save(&existing).Error; err != nil {

@@ -1,5 +1,3 @@
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -19,7 +17,14 @@
       "$core/*": ["src/app/core/*"],
       "$features/*": ["src/app/features/*"],
       "$ui/*": ["src/app/ui/*"],
-      "$generated/*": ["src/app/generated/*"]
+      "$generated/*": ["src/app/generated/*"],
+      "@spartan-ng/helm/combobox": ["./src/app/ui/spartan/combobox/src/index.ts"],
+      "@spartan-ng/helm/utils": ["./src/app/ui/spartan/utils/src/index.ts"],
+      "@spartan-ng/helm/input-group": ["./src/app/ui/spartan/input-group/src/index.ts"],
+      "@spartan-ng/helm/button": ["./src/app/ui/spartan/button/src/index.ts"],
+      "@spartan-ng/helm/input": ["./src/app/ui/spartan/input/src/index.ts"],
+      "@spartan-ng/helm/textarea": ["./src/app/ui/spartan/textarea/src/index.ts"],
+      "@spartan-ng/helm/icon": ["./src/app/ui/spartan/icon/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

@@ -1,6 +1,7 @@
 # Stage 1: Build + test Angular
 FROM node:22-slim AS web-builder
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN npm install -g npm@11 && \
+    apt-get update && apt-get install -y --no-install-recommends \
     libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 \
     libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libpango-1.0-0 \
     libcairo2 libasound2 libxshmfence1 && rm -rf /var/lib/apt/lists/*
@@ -37,6 +38,7 @@ RUN --mount=type=cache,target=/home/tester/.cache/go-build,uid=1000 \
 
 # Stage 3: E2E tests — Playwright against the production binary
 FROM node:22 AS e2e-tester
+RUN npm install -g npm@11
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 \
     libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libpango-1.0-0 \

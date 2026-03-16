@@ -216,6 +216,26 @@ export const WorkoutStartStore = signalStore(
 
         patchState(store, { exerciseDisplay: display, isLoadingDisplay: false });
       },
+
+      addExerciseDisplay(
+        exerciseLogId: number,
+        exerciseName: string,
+        scheme: UserExerciseScheme,
+        sets: SetPreview[],
+      ) {
+        const current = store.exerciseDisplay();
+        patchState(store, {
+          exerciseDisplay: {
+            ...current,
+            [exerciseLogId]: {
+              name: exerciseName,
+              summary: formatSchemeSummary(scheme),
+              measurementType: scheme.measurementType,
+              sets,
+            },
+          },
+        });
+      },
     };
   }),
 );

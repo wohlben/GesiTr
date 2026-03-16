@@ -44,6 +44,7 @@ export const workoutKeys = {
 
 export const exerciseSchemeKeys = {
   all: () => ['exercise-schemes'] as const,
+  list: (filters?: Filters) => [...exerciseSchemeKeys.all(), 'list', filters] as const,
   detail: (id: number) => [...exerciseSchemeKeys.all(), 'detail', id] as const,
 };
 
