@@ -87,9 +87,11 @@ import { DayDialog } from './day-dialog';
                       [class]="
                         log.status === 'finished'
                           ? 'bg-green-500'
-                          : log.status === 'in_progress'
-                            ? 'bg-blue-500'
-                            : 'bg-red-500'
+                          : log.status === 'partially_finished'
+                            ? 'bg-yellow-500'
+                            : log.status === 'in_progress'
+                              ? 'bg-blue-500'
+                              : 'bg-red-500'
                       "
                     ></span>
                   }
