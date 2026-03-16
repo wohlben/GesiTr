@@ -1,4 +1,4 @@
-import { WorkoutLogExerciseSet, WorkoutLogStatusFinished } from '$generated/user-models';
+import { WorkoutLogExerciseSet, WorkoutLogItemStatusFinished } from '$generated/user-models';
 
 export function formatBreak(seconds?: number | null): string {
   if (seconds == null) return '';
@@ -29,7 +29,7 @@ export function formatTarget(set: WorkoutLogExerciseSet, measurementType: string
 }
 
 export function formatActual(set: WorkoutLogExerciseSet, measurementType: string): string {
-  if (set.status !== WorkoutLogStatusFinished) return '-';
+  if (set.status !== WorkoutLogItemStatusFinished) return '-';
   if (measurementType === 'REP_BASED') {
     const parts: string[] = [];
     if (set.actualReps != null) parts.push(`${set.actualReps} reps`);
@@ -48,7 +48,7 @@ export function formatActual(set: WorkoutLogExerciseSet, measurementType: string
 }
 
 export function formatSetValue(set: WorkoutLogExerciseSet, measurementType: string): string {
-  if (set.status === WorkoutLogStatusFinished) return formatActual(set, measurementType);
+  if (set.status === WorkoutLogItemStatusFinished) return formatActual(set, measurementType);
   return formatTarget(set, measurementType);
 }
 

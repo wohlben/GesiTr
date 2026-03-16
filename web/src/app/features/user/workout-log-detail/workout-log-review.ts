@@ -67,6 +67,28 @@ import { WorkoutLog } from '$generated/user-models';
                   clip-rule="evenodd"
                 />
               </svg>
+            } @else if (section.status === 'skipped') {
+              <svg
+                class="h-5 w-5 text-yellow-500 dark:text-yellow-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"
+                />
+              </svg>
+            } @else if (section.status === 'partially_finished') {
+              <svg
+                class="h-5 w-5 text-amber-500 dark:text-amber-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v4.59L7.3 9.24a.75.75 0 00-1.1 1.02l3.25 3.5a.75.75 0 001.1 0l3.25-3.5a.75.75 0 10-1.1-1.02l-1.95 2.1V6.75z"
+                  clip-rule="evenodd"
+                />
+              </svg>
             }
           </div>
 
@@ -89,6 +111,28 @@ import { WorkoutLog } from '$generated/user-models';
                         <path
                           fill-rule="evenodd"
                           d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    } @else if (exercise.status === 'skipped') {
+                      <svg
+                        class="h-4 w-4 text-yellow-500 dark:text-yellow-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"
+                        />
+                      </svg>
+                    } @else if (exercise.status === 'partially_finished') {
+                      <svg
+                        class="h-4 w-4 text-amber-500 dark:text-amber-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v4.59L7.3 9.24a.75.75 0 00-1.1 1.02l3.25 3.5a.75.75 0 001.1 0l3.25-3.5a.75.75 0 10-1.1-1.02l-1.95 2.1V6.75z"
                           clip-rule="evenodd"
                         />
                       </svg>
@@ -121,6 +165,16 @@ import { WorkoutLog } from '$generated/user-models';
                             fill-rule="evenodd"
                             d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
                             clip-rule="evenodd"
+                          />
+                        </svg>
+                      } @else if (set.status === 'skipped') {
+                        <svg
+                          class="h-5 w-5 text-yellow-500 dark:text-yellow-400"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"
                           />
                         </svg>
                       }

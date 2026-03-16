@@ -99,7 +99,7 @@ func CreateWorkoutLogExercise(c *gin.Context) {
 			WorkoutLogExerciseID: entity.ID,
 			WorkoutLogID:         section.WorkoutLogID,
 			SetNumber:            i,
-			Status:               models.WorkoutLogStatusPlanning,
+			Status:               models.WorkoutLogItemStatusPlanning,
 			TargetReps:           scheme.Reps,
 			TargetWeight:         scheme.Weight,
 			TargetDuration:       scheme.Duration,

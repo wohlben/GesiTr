@@ -107,7 +107,7 @@ func TestCreateWorkoutLogExerciseSet(t *testing.T) {
 		if result.TargetWeight == nil || *result.TargetWeight != 105.0 {
 			t.Errorf("target weight mismatch")
 		}
-		if result.Status != models.WorkoutLogStatusPlanning {
+		if result.Status != models.WorkoutLogItemStatusPlanning {
 			t.Errorf("expected planning status, got %s", result.Status)
 		}
 	})
@@ -162,7 +162,7 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 		}
 		var result models.WorkoutLogExerciseSet
 		json.Unmarshal(w.Body.Bytes(), &result)
-		if result.Status != models.WorkoutLogStatusFinished {
+		if result.Status != models.WorkoutLogItemStatusFinished {
 			t.Errorf("expected finished status, got %s", result.Status)
 		}
 		if result.ActualReps == nil || *result.ActualReps != 5 {
@@ -255,10 +255,10 @@ func TestProgressiveCompletion(t *testing.T) {
 	if log.Status == models.WorkoutLogStatusFinished {
 		t.Error("log should not be finished after 1 of 2 sets")
 	}
-	if log.Sections[0].Status == models.WorkoutLogStatusFinished {
+	if log.Sections[0].Status == models.WorkoutLogItemStatusFinished {
 		t.Error("section should not be finished after 1 of 2 sets")
 	}
-	if log.Sections[0].Exercises[0].Status == models.WorkoutLogStatusFinished {
+	if log.Sections[0].Exercises[0].Status == models.WorkoutLogItemStatusFinished {
 		t.Error("exercise should not be finished after 1 of 2 sets")
 	}
 
@@ -269,10 +269,10 @@ func TestProgressiveCompletion(t *testing.T) {
 
 	w = doJSON(r, "GET", "/api/user/workout-logs/1", nil)
 	json.Unmarshal(w.Body.Bytes(), &log)
-	if log.Sections[0].Exercises[0].Status != models.WorkoutLogStatusFinished {
+	if log.Sections[0].Exercises[0].Status != models.WorkoutLogItemStatusFinished {
 		t.Error("exercise should be finished after all sets done")
 	}
-	if log.Sections[0].Status != models.WorkoutLogStatusFinished {
+	if log.Sections[0].Status != models.WorkoutLogItemStatusFinished {
 		t.Error("section should be finished after all exercises done")
 	}
 	if log.Status != models.WorkoutLogStatusFinished {

@@ -8,6 +8,7 @@ func TestCanTransitionTo(t *testing.T) {
 	}{
 		{WorkoutLogStatusPlanning, WorkoutLogStatusInProgress},
 		{WorkoutLogStatusInProgress, WorkoutLogStatusFinished},
+		{WorkoutLogStatusInProgress, WorkoutLogStatusPartiallyFinished},
 		{WorkoutLogStatusInProgress, WorkoutLogStatusAborted},
 	}
 	for _, tt := range allowed {
@@ -21,10 +22,14 @@ func TestCanTransitionTo(t *testing.T) {
 	}{
 		{WorkoutLogStatusPlanning, WorkoutLogStatusFinished},
 		{WorkoutLogStatusPlanning, WorkoutLogStatusAborted},
+		{WorkoutLogStatusPlanning, WorkoutLogStatusPartiallyFinished},
 		{WorkoutLogStatusInProgress, WorkoutLogStatusPlanning},
 		{WorkoutLogStatusFinished, WorkoutLogStatusPlanning},
 		{WorkoutLogStatusFinished, WorkoutLogStatusInProgress},
 		{WorkoutLogStatusFinished, WorkoutLogStatusAborted},
+		{WorkoutLogStatusPartiallyFinished, WorkoutLogStatusPlanning},
+		{WorkoutLogStatusPartiallyFinished, WorkoutLogStatusInProgress},
+		{WorkoutLogStatusPartiallyFinished, WorkoutLogStatusFinished},
 		{WorkoutLogStatusAborted, WorkoutLogStatusPlanning},
 		{WorkoutLogStatusAborted, WorkoutLogStatusInProgress},
 		{WorkoutLogStatusAborted, WorkoutLogStatusFinished},

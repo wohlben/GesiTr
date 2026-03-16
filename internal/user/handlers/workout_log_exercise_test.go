@@ -141,7 +141,7 @@ func TestCreateWorkoutLogExercise(t *testing.T) {
 			if s.SetNumber != i+1 {
 				t.Errorf("set %d: expected setNumber %d, got %d", i, i+1, s.SetNumber)
 			}
-			if s.Status != models.WorkoutLogStatusPlanning {
+			if s.Status != models.WorkoutLogItemStatusPlanning {
 				t.Errorf("set %d: expected planning status, got %s", i, s.Status)
 			}
 			if s.TargetReps == nil || *s.TargetReps != 5 {

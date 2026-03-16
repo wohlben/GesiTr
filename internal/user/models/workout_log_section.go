@@ -9,7 +9,7 @@ type WorkoutLogSection struct {
 	Label                *string              `json:"label"`
 	Position             int                  `json:"position"`
 	RestBetweenExercises *int                 `json:"restBetweenExercises"`
-	Status               WorkoutLogStatus     `json:"status"`
+	Status               WorkoutLogItemStatus `json:"status"`
 	StatusChangedAt      *time.Time           `json:"statusChangedAt"`
 	Exercises            []WorkoutLogExercise `json:"exercises" gorm:"-"`
 }

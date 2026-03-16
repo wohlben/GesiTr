@@ -187,7 +187,7 @@ func StartWorkoutLog(c *gin.Context) {
 		// Update all sections
 		for i := range entity.Sections {
 			if err := tx.Model(&entity.Sections[i]).Updates(map[string]any{
-				"status":            models.WorkoutLogStatusInProgress,
+				"status":            models.WorkoutLogItemStatusInProgress,
 				"status_changed_at": now,
 			}).Error; err != nil {
 				return err
@@ -196,7 +196,7 @@ func StartWorkoutLog(c *gin.Context) {
 			// Update all exercises
 			for j := range entity.Sections[i].Exercises {
 				if err := tx.Model(&entity.Sections[i].Exercises[j]).Updates(map[string]any{
-					"status":            models.WorkoutLogStatusInProgress,
+					"status":            models.WorkoutLogItemStatusInProgress,
 					"status_changed_at": now,
 				}).Error; err != nil {
 					return err
@@ -205,7 +205,7 @@ func StartWorkoutLog(c *gin.Context) {
 				// Update all sets
 				for k := range entity.Sections[i].Exercises[j].Sets {
 					if err := tx.Model(&entity.Sections[i].Exercises[j].Sets[k]).Updates(map[string]any{
-						"status":            models.WorkoutLogStatusInProgress,
+						"status":            models.WorkoutLogItemStatusInProgress,
 						"status_changed_at": now,
 					}).Error; err != nil {
 						return err
@@ -255,12 +255,12 @@ func AbandonWorkoutLog(c *gin.Context) {
 			return err
 		}
 
-		// Cascade to children — only change in_progress ones (preserve finished)
+		// Cascade to children — only change in_progress ones (preserve finished/skipped)
 		for i := range entity.Sections {
 			sec := &entity.Sections[i]
-			if sec.Status == models.WorkoutLogStatusInProgress {
+			if sec.Status == models.WorkoutLogItemStatusInProgress {
 				if err := tx.Model(sec).Updates(map[string]any{
-					"status":            models.WorkoutLogStatusAborted,
+					"status":            models.WorkoutLogItemStatusAborted,
 					"status_changed_at": now,
 				}).Error; err != nil {
 					return err
@@ -269,9 +269,9 @@ func AbandonWorkoutLog(c *gin.Context) {
 
 			for j := range sec.Exercises {
 				ex := &sec.Exercises[j]
-				if ex.Status == models.WorkoutLogStatusInProgress {
+				if ex.Status == models.WorkoutLogItemStatusInProgress {
 					if err := tx.Model(ex).Updates(map[string]any{
-						"status":            models.WorkoutLogStatusAborted,
+						"status":            models.WorkoutLogItemStatusAborted,
 						"status_changed_at": now,
 					}).Error; err != nil {
 						return err
@@ -280,9 +280,9 @@ func AbandonWorkoutLog(c *gin.Context) {
 
 				for k := range ex.Sets {
 					set := &ex.Sets[k]
-					if set.Status == models.WorkoutLogStatusInProgress {
+					if set.Status == models.WorkoutLogItemStatusInProgress {
 						if err := tx.Model(set).Updates(map[string]any{
-							"status":            models.WorkoutLogStatusAborted,
+							"status":            models.WorkoutLogItemStatusAborted,
 							"status_changed_at": now,
 						}).Error; err != nil {
 							return err

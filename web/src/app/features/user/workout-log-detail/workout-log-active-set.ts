@@ -1,7 +1,7 @@
 import { Component, input, model, output, signal, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { formatTarget, formatActual, formatSetValue } from '$core/format-utils';
-import { WorkoutLogExerciseSet } from '$generated/user-models';
+import { WorkoutLogExerciseSet, WorkoutLogItemStatusSkipped } from '$generated/user-models';
 import { ViewItemSet } from './workout-log-view-items';
 
 @Component({
@@ -147,17 +147,29 @@ import { ViewItemSet } from './workout-log-view-items';
             <span class="flex-1 text-sm text-gray-500 dark:text-gray-400">
               {{ formatSetValue(data().set, data().exercise.targetMeasurementType) }}
             </span>
-            <svg
-              class="h-5 w-5 text-green-500 dark:text-green-400"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                clip-rule="evenodd"
-              />
-            </svg>
+            @if (data().set.status === skippedStatus) {
+              <svg
+                class="h-5 w-5 text-yellow-500 dark:text-yellow-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"
+                />
+              </svg>
+            } @else {
+              <svg
+                class="h-5 w-5 text-green-500 dark:text-green-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            }
           </div>
         }
         @case ('active') {
@@ -179,6 +191,14 @@ import { ViewItemSet } from './workout-log-view-items';
                       d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
                     />
                   </svg>
+                </button>
+              } @else {
+                <button
+                  type="button"
+                  (click)="skip.emit(); $event.stopPropagation()"
+                  class="rounded-md px-2 py-1 text-xs font-medium text-yellow-700 bg-yellow-100 hover:bg-yellow-200 dark:text-yellow-300 dark:bg-yellow-900/30 dark:hover:bg-yellow-900/50"
+                >
+                  Skip
                 </button>
               }
             </div>
@@ -311,6 +331,7 @@ export class WorkoutLogActiveSet {
   actualDuration = model<number | undefined>(undefined);
   actualDistance = model<number | undefined>(undefined);
   done = output<void>();
+  skip = output<void>();
   togglePeek = output<void>();
   save = output<WorkoutLogExerciseSet>();
   jumpTo = output<void>();
@@ -326,6 +347,7 @@ export class WorkoutLogActiveSet {
   formatTarget = formatTarget;
   formatActual = formatActual;
   formatSetValue = formatSetValue;
+  skippedStatus = WorkoutLogItemStatusSkipped;
 
   constructor() {
     effect(() => {

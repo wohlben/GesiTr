@@ -94,7 +94,7 @@ export interface WorkoutLogExercise extends BaseModel {
   workoutLogId: number /* uint */;
   sourceExerciseSchemeId: number /* uint */;
   position: number /* int */;
-  status: WorkoutLogStatus;
+  status: WorkoutLogItemStatus;
   statusChangedAt?: string;
   breakAfterSeconds?: number /* int */;
   /**
@@ -112,7 +112,7 @@ export interface WorkoutLogExerciseSet extends BaseModel {
   workoutLogExerciseId: number /* uint */;
   workoutLogId: number /* uint */;
   setNumber: number /* int */;
-  status: WorkoutLogStatus;
+  status: WorkoutLogItemStatus;
   statusChangedAt?: string;
   breakAfterSeconds?: number /* int */;
   targetReps?: number /* int */;
@@ -128,6 +128,17 @@ export interface WorkoutLogExerciseSet extends BaseModel {
 }
 
 //////////
+// source: workout_log_item_status.go
+
+export type WorkoutLogItemStatus = string;
+export const WorkoutLogItemStatusPlanning: WorkoutLogItemStatus = 'planning';
+export const WorkoutLogItemStatusInProgress: WorkoutLogItemStatus = 'in_progress';
+export const WorkoutLogItemStatusFinished: WorkoutLogItemStatus = 'finished';
+export const WorkoutLogItemStatusSkipped: WorkoutLogItemStatus = 'skipped';
+export const WorkoutLogItemStatusPartiallyFinished: WorkoutLogItemStatus = 'partially_finished';
+export const WorkoutLogItemStatusAborted: WorkoutLogItemStatus = 'aborted';
+
+//////////
 // source: workout_log_section.go
 
 export interface WorkoutLogSection extends BaseModel {
@@ -136,7 +147,7 @@ export interface WorkoutLogSection extends BaseModel {
   label?: string;
   position: number /* int */;
   restBetweenExercises?: number /* int */;
-  status: WorkoutLogStatus;
+  status: WorkoutLogItemStatus;
   statusChangedAt?: string;
   exercises: WorkoutLogExercise[];
 }
@@ -148,6 +159,7 @@ export type WorkoutLogStatus = string;
 export const WorkoutLogStatusPlanning: WorkoutLogStatus = 'planning';
 export const WorkoutLogStatusInProgress: WorkoutLogStatus = 'in_progress';
 export const WorkoutLogStatusFinished: WorkoutLogStatus = 'finished';
+export const WorkoutLogStatusPartiallyFinished: WorkoutLogStatus = 'partially_finished';
 export const WorkoutLogStatusAborted: WorkoutLogStatus = 'aborted';
 
 //////////

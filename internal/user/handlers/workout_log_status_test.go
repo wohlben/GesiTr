@@ -48,14 +48,14 @@ func TestStartCascade(t *testing.T) {
 	if log.Date == nil {
 		t.Error("log date should be set after start")
 	}
-	if log.Sections[0].Status != models.WorkoutLogStatusInProgress {
+	if log.Sections[0].Status != models.WorkoutLogItemStatusInProgress {
 		t.Errorf("section status: expected in_progress, got %s", log.Sections[0].Status)
 	}
-	if log.Sections[0].Exercises[0].Status != models.WorkoutLogStatusInProgress {
+	if log.Sections[0].Exercises[0].Status != models.WorkoutLogItemStatusInProgress {
 		t.Errorf("exercise status: expected in_progress, got %s", log.Sections[0].Exercises[0].Status)
 	}
 	for i, s := range log.Sections[0].Exercises[0].Sets {
-		if s.Status != models.WorkoutLogStatusInProgress {
+		if s.Status != models.WorkoutLogItemStatusInProgress {
 			t.Errorf("set %d status: expected in_progress, got %s", i, s.Status)
 		}
 		if s.StatusChangedAt == nil {
@@ -139,13 +139,13 @@ func TestAbandonCascade(t *testing.T) {
 
 	// The finished set should stay finished
 	set1 := log.Sections[0].Exercises[0].Sets[0]
-	if set1.Status != models.WorkoutLogStatusFinished {
+	if set1.Status != models.WorkoutLogItemStatusFinished {
 		t.Errorf("set 1 should remain finished, got %s", set1.Status)
 	}
 
 	// The in_progress set should be aborted
 	set2 := log.Sections[0].Exercises[0].Sets[1]
-	if set2.Status != models.WorkoutLogStatusAborted {
+	if set2.Status != models.WorkoutLogItemStatusAborted {
 		t.Errorf("set 2 should be aborted, got %s", set2.Status)
 	}
 }
@@ -334,10 +334,10 @@ func TestPropagationAllFinished(t *testing.T) {
 	if log.Status != models.WorkoutLogStatusFinished {
 		t.Errorf("log should be finished, got %s", log.Status)
 	}
-	if log.Sections[0].Status != models.WorkoutLogStatusFinished {
+	if log.Sections[0].Status != models.WorkoutLogItemStatusFinished {
 		t.Errorf("section should be finished, got %s", log.Sections[0].Status)
 	}
-	if log.Sections[0].Exercises[0].Status != models.WorkoutLogStatusFinished {
+	if log.Sections[0].Exercises[0].Status != models.WorkoutLogItemStatusFinished {
 		t.Errorf("exercise should be finished, got %s", log.Sections[0].Exercises[0].Status)
 	}
 }
@@ -381,10 +381,10 @@ func TestPropagationAnyAborted(t *testing.T) {
 	if log.Status != models.WorkoutLogStatusAborted {
 		t.Errorf("log should be aborted (has aborted set), got %s", log.Status)
 	}
-	if log.Sections[0].Status != models.WorkoutLogStatusAborted {
+	if log.Sections[0].Status != models.WorkoutLogItemStatusAborted {
 		t.Errorf("section should be aborted, got %s", log.Sections[0].Status)
 	}
-	if log.Sections[0].Exercises[0].Status != models.WorkoutLogStatusAborted {
+	if log.Sections[0].Exercises[0].Status != models.WorkoutLogItemStatusAborted {
 		t.Errorf("exercise should be aborted, got %s", log.Sections[0].Exercises[0].Status)
 	}
 }
@@ -459,10 +459,10 @@ func TestMultiSectionPropagation(t *testing.T) {
 	var log models.WorkoutLog
 	json.Unmarshal(w.Body.Bytes(), &log)
 
-	if log.Sections[0].Status != models.WorkoutLogStatusFinished {
+	if log.Sections[0].Status != models.WorkoutLogItemStatusFinished {
 		t.Errorf("section 1 should be finished, got %s", log.Sections[0].Status)
 	}
-	if log.Sections[1].Status != models.WorkoutLogStatusInProgress {
+	if log.Sections[1].Status != models.WorkoutLogItemStatusInProgress {
 		t.Errorf("section 2 should still be in_progress, got %s", log.Sections[1].Status)
 	}
 	if log.Status != models.WorkoutLogStatusInProgress {
@@ -477,7 +477,7 @@ func TestMultiSectionPropagation(t *testing.T) {
 	w = doJSON(r, "GET", "/api/user/workout-logs/1", nil)
 	json.Unmarshal(w.Body.Bytes(), &log)
 
-	if log.Sections[1].Status != models.WorkoutLogStatusFinished {
+	if log.Sections[1].Status != models.WorkoutLogItemStatusFinished {
 		t.Errorf("section 2 should be finished, got %s", log.Sections[1].Status)
 	}
 	if log.Status != models.WorkoutLogStatusFinished {

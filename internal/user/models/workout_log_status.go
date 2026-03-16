@@ -5,23 +5,25 @@ import "fmt"
 type WorkoutLogStatus string
 
 const (
-	WorkoutLogStatusPlanning   WorkoutLogStatus = "planning"
-	WorkoutLogStatusInProgress WorkoutLogStatus = "in_progress"
-	WorkoutLogStatusFinished   WorkoutLogStatus = "finished"
-	WorkoutLogStatusAborted    WorkoutLogStatus = "aborted"
+	WorkoutLogStatusPlanning          WorkoutLogStatus = "planning"
+	WorkoutLogStatusInProgress        WorkoutLogStatus = "in_progress"
+	WorkoutLogStatusFinished          WorkoutLogStatus = "finished"
+	WorkoutLogStatusPartiallyFinished WorkoutLogStatus = "partially_finished"
+	WorkoutLogStatusAborted           WorkoutLogStatus = "aborted"
 )
 
 // validTransitions defines the allowed state transitions.
 // This is the single source of truth for the workout log state machine.
 var validTransitions = map[WorkoutLogStatus][]WorkoutLogStatus{
-	WorkoutLogStatusPlanning:   {WorkoutLogStatusInProgress},
-	WorkoutLogStatusInProgress: {WorkoutLogStatusFinished, WorkoutLogStatusAborted},
-	WorkoutLogStatusFinished:   {},
-	WorkoutLogStatusAborted:    {},
+	WorkoutLogStatusPlanning:          {WorkoutLogStatusInProgress},
+	WorkoutLogStatusInProgress:        {WorkoutLogStatusFinished, WorkoutLogStatusPartiallyFinished, WorkoutLogStatusAborted},
+	WorkoutLogStatusFinished:          {},
+	WorkoutLogStatusPartiallyFinished: {},
+	WorkoutLogStatusAborted:           {},
 }
 
 func (s WorkoutLogStatus) IsTerminal() bool {
-	return s == WorkoutLogStatusFinished || s == WorkoutLogStatusAborted
+	return s == WorkoutLogStatusFinished || s == WorkoutLogStatusPartiallyFinished || s == WorkoutLogStatusAborted
 }
 
 // CanTransitionTo reports whether transitioning from s to target is valid.

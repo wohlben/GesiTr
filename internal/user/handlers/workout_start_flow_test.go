@@ -248,7 +248,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	if fullLog.Status != models.WorkoutLogStatusInProgress {
 		t.Errorf("log status: expected in_progress, got %s", fullLog.Status)
 	}
-	if fullLog.Sections[0].Status != models.WorkoutLogStatusInProgress {
+	if fullLog.Sections[0].Status != models.WorkoutLogItemStatusInProgress {
 		t.Errorf("section status: expected in_progress, got %s", fullLog.Sections[0].Status)
 	}
 

@@ -4,11 +4,11 @@ import "time"
 
 type WorkoutLogExerciseEntity struct {
 	BaseModel
-	WorkoutLogSectionID    uint             `gorm:"not null;index"`
-	WorkoutLogID           uint             `gorm:"not null;index"`
-	SourceExerciseSchemeID uint             `gorm:"not null"`
-	Position               int              `gorm:"not null"`
-	Status                 WorkoutLogStatus `gorm:"not null;default:'planning'"`
+	WorkoutLogSectionID    uint                 `gorm:"not null;index"`
+	WorkoutLogID           uint                 `gorm:"not null;index"`
+	SourceExerciseSchemeID uint                 `gorm:"not null"`
+	Position               int                  `gorm:"not null"`
+	Status                 WorkoutLogItemStatus `gorm:"not null;default:'planning'"`
 	StatusChangedAt        *time.Time
 	BreakAfterSeconds      *int
 

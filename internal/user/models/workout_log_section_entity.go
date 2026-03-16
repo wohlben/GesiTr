@@ -9,7 +9,7 @@ type WorkoutLogSectionEntity struct {
 	Label                *string
 	Position             int `gorm:"not null"`
 	RestBetweenExercises *int
-	Status               WorkoutLogStatus `gorm:"not null;default:'planning'"`
+	Status               WorkoutLogItemStatus `gorm:"not null;default:'planning'"`
 	StatusChangedAt      *time.Time
 	Exercises            []WorkoutLogExerciseEntity `gorm:"foreignKey:WorkoutLogSectionID"`
 }

@@ -67,7 +67,7 @@ func CreateWorkoutLogExerciseSet(c *gin.Context) {
 	entity.CreatedAt = time.Time{}
 	entity.UpdatedAt = time.Time{}
 	entity.WorkoutLogID = exercise.WorkoutLogID
-	entity.Status = models.WorkoutLogStatusPlanning
+	entity.Status = models.WorkoutLogItemStatusPlanning
 	if err := database.DB.Create(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -88,18 +88,18 @@ func UpdateWorkoutLogExerciseSet(c *gin.Context) {
 	}
 
 	var patch struct {
-		Status            models.WorkoutLogStatus `json:"status"`
-		BreakAfterSeconds *int                    `json:"breakAfterSeconds"`
-		TargetReps        *int                    `json:"targetReps"`
-		TargetWeight      *float64                `json:"targetWeight"`
-		TargetDuration    *int                    `json:"targetDuration"`
-		TargetDistance    *float64                `json:"targetDistance"`
-		TargetTime        *int                    `json:"targetTime"`
-		ActualReps        *int                    `json:"actualReps"`
-		ActualWeight      *float64                `json:"actualWeight"`
-		ActualDuration    *int                    `json:"actualDuration"`
-		ActualDistance    *float64                `json:"actualDistance"`
-		ActualTime        *int                    `json:"actualTime"`
+		Status            models.WorkoutLogItemStatus `json:"status"`
+		BreakAfterSeconds *int                        `json:"breakAfterSeconds"`
+		TargetReps        *int                        `json:"targetReps"`
+		TargetWeight      *float64                    `json:"targetWeight"`
+		TargetDuration    *int                        `json:"targetDuration"`
+		TargetDistance    *float64                    `json:"targetDistance"`
+		TargetTime        *int                        `json:"targetTime"`
+		ActualReps        *int                        `json:"actualReps"`
+		ActualWeight      *float64                    `json:"actualWeight"`
+		ActualDuration    *int                        `json:"actualDuration"`
+		ActualDistance    *float64                    `json:"actualDistance"`
+		ActualTime        *int                        `json:"actualTime"`
 	}
 	if err := c.ShouldBindJSON(&patch); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -164,7 +164,7 @@ func UpdateWorkoutLogExerciseSet(c *gin.Context) {
 		if err := tx.Save(&existing).Error; err != nil {
 			return err
 		}
-		if existing.Status == models.WorkoutLogStatusFinished {
+		if existing.Status == models.WorkoutLogItemStatusFinished {
 			maybeUpdateRecord(tx, &existing)
 		}
 		return propagateStatus(tx, existing.WorkoutLogExerciseID)
@@ -187,16 +187,31 @@ func propagateStatus(db *gorm.DB, exerciseID uint) error {
 		return nil
 	}
 
-	// Check if all sets are terminal
 	allTerminal := true
 	anyAborted := false
+	anySkipped := false
+	anyPartiallyFinished := false
+	allFinished := true
+	allSkipped := true
 	for _, s := range exercise.Sets {
 		if !s.Status.IsTerminal() {
 			allTerminal = false
 			break
 		}
-		if s.Status == models.WorkoutLogStatusAborted {
+		if s.Status == models.WorkoutLogItemStatusAborted {
 			anyAborted = true
+		}
+		if s.Status == models.WorkoutLogItemStatusSkipped {
+			anySkipped = true
+		}
+		if s.Status == models.WorkoutLogItemStatusPartiallyFinished {
+			anyPartiallyFinished = true
+		}
+		if s.Status != models.WorkoutLogItemStatusFinished {
+			allFinished = false
+		}
+		if s.Status != models.WorkoutLogItemStatusSkipped {
+			allSkipped = false
 		}
 	}
 
@@ -205,9 +220,18 @@ func propagateStatus(db *gorm.DB, exerciseID uint) error {
 	}
 
 	now := time.Now()
-	newStatus := models.WorkoutLogStatusFinished
-	if anyAborted {
-		newStatus = models.WorkoutLogStatusAborted
+	var newStatus models.WorkoutLogItemStatus
+	switch {
+	case allFinished:
+		newStatus = models.WorkoutLogItemStatusFinished
+	case allSkipped:
+		newStatus = models.WorkoutLogItemStatusSkipped
+	case anyAborted:
+		newStatus = models.WorkoutLogItemStatusAborted
+	case anySkipped || anyPartiallyFinished:
+		newStatus = models.WorkoutLogItemStatusPartiallyFinished
+	default:
+		newStatus = models.WorkoutLogItemStatusFinished
 	}
 
 	if exercise.Status != newStatus {
@@ -234,13 +258,29 @@ func propagateSectionStatus(db *gorm.DB, sectionID uint) error {
 
 	allTerminal := true
 	anyAborted := false
+	anySkipped := false
+	anyPartiallyFinished := false
+	allFinished := true
+	allSkipped := true
 	for _, ex := range section.Exercises {
 		if !ex.Status.IsTerminal() {
 			allTerminal = false
 			break
 		}
-		if ex.Status == models.WorkoutLogStatusAborted {
+		if ex.Status == models.WorkoutLogItemStatusAborted {
 			anyAborted = true
+		}
+		if ex.Status == models.WorkoutLogItemStatusSkipped {
+			anySkipped = true
+		}
+		if ex.Status == models.WorkoutLogItemStatusPartiallyFinished {
+			anyPartiallyFinished = true
+		}
+		if ex.Status != models.WorkoutLogItemStatusFinished {
+			allFinished = false
+		}
+		if ex.Status != models.WorkoutLogItemStatusSkipped {
+			allSkipped = false
 		}
 	}
 
@@ -249,14 +289,23 @@ func propagateSectionStatus(db *gorm.DB, sectionID uint) error {
 	}
 
 	now := time.Now()
-	newStatus := models.WorkoutLogStatusFinished
-	if anyAborted {
-		newStatus = models.WorkoutLogStatusAborted
+	var newSectionStatus models.WorkoutLogItemStatus
+	switch {
+	case allFinished:
+		newSectionStatus = models.WorkoutLogItemStatusFinished
+	case allSkipped:
+		newSectionStatus = models.WorkoutLogItemStatusSkipped
+	case anyAborted:
+		newSectionStatus = models.WorkoutLogItemStatusAborted
+	case anySkipped || anyPartiallyFinished:
+		newSectionStatus = models.WorkoutLogItemStatusPartiallyFinished
+	default:
+		newSectionStatus = models.WorkoutLogItemStatusFinished
 	}
 
-	if section.Status != newStatus {
+	if section.Status != newSectionStatus {
 		if err := db.Model(&section).Updates(map[string]any{
-			"status":            newStatus,
+			"status":            newSectionStatus,
 			"status_changed_at": now,
 		}).Error; err != nil {
 			return err
@@ -275,13 +324,17 @@ func propagateSectionStatus(db *gorm.DB, sectionID uint) error {
 
 	allTerminal = true
 	anyAborted = false
+	allFinished = true
 	for _, s := range log.Sections {
 		if !s.Status.IsTerminal() {
 			allTerminal = false
 			break
 		}
-		if s.Status == models.WorkoutLogStatusAborted {
+		if s.Status == models.WorkoutLogItemStatusAborted {
 			anyAborted = true
+		}
+		if s.Status != models.WorkoutLogItemStatusFinished {
+			allFinished = false
 		}
 	}
 
@@ -289,14 +342,19 @@ func propagateSectionStatus(db *gorm.DB, sectionID uint) error {
 		return nil
 	}
 
-	newStatus = models.WorkoutLogStatusFinished
-	if anyAborted {
-		newStatus = models.WorkoutLogStatusAborted
+	var newLogStatus models.WorkoutLogStatus
+	switch {
+	case allFinished:
+		newLogStatus = models.WorkoutLogStatusFinished
+	case anyAborted:
+		newLogStatus = models.WorkoutLogStatusAborted
+	default:
+		newLogStatus = models.WorkoutLogStatusPartiallyFinished
 	}
 
-	if log.Status != newStatus {
+	if log.Status != newLogStatus {
 		if err := db.Model(&log).Updates(map[string]any{
-			"status":            newStatus,
+			"status":            newLogStatus,
 			"status_changed_at": now,
 		}).Error; err != nil {
 			return err

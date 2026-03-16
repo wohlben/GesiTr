@@ -9,7 +9,11 @@ import {
 } from '@tanstack/angular-query-experimental';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { workoutLogKeys } from '$core/query-keys';
-import { WorkoutLogExerciseSet, WorkoutLogStatusFinished } from '$generated/user-models';
+import {
+  WorkoutLogExerciseSet,
+  WorkoutLogItemStatusFinished,
+  WorkoutLogItemStatusSkipped,
+} from '$generated/user-models';
 import { PageLayout } from '../../../layout/page-layout';
 import { WorkoutLogDetailStore } from './workout-log-detail.store';
 import { WorkoutLogReview } from './workout-log-review';
@@ -61,9 +65,11 @@ import { WorkoutLogActive } from './workout-log-active';
               [class]="
                 log.status === 'finished'
                   ? 'text-green-600 dark:text-green-400'
-                  : log.status === 'aborted'
-                    ? 'text-red-500 dark:text-red-400'
-                    : 'text-gray-400'
+                  : log.status === 'partially_finished'
+                    ? 'text-yellow-500 dark:text-yellow-400'
+                    : log.status === 'aborted'
+                      ? 'text-red-500 dark:text-red-400'
+                      : 'text-gray-400'
               "
             >
               @if (log.status === 'finished') {
@@ -71,6 +77,14 @@ import { WorkoutLogActive } from './workout-log-active';
                   <path
                     fill-rule="evenodd"
                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              } @else if (log.status === 'partially_finished') {
+                <svg class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v4.59L7.3 9.24a.75.75 0 00-1.1 1.02l3.25 3.5a.75.75 0 001.1 0l3.25-3.5a.75.75 0 10-1.1-1.02l-1.95 2.1V6.75z"
                     clip-rule="evenodd"
                   />
                 </svg>
@@ -100,6 +114,7 @@ import { WorkoutLogActive } from './workout-log-active';
             [log]="log"
             [exerciseNames]="store.exerciseNames()"
             (setToggled)="toggleSet($event)"
+            (setSkipped)="skipSet($event)"
           />
         } @else {
           <app-workout-log-review [log]="log" [exerciseNames]="store.exerciseNames()" />
@@ -128,12 +143,22 @@ export class WorkoutLogDetail {
   private toggleMutation = injectMutation(() => ({
     mutationFn: (set: WorkoutLogExerciseSet) =>
       this.userApi.updateWorkoutLogExerciseSet(set.id, {
-        status: WorkoutLogStatusFinished,
+        status: WorkoutLogItemStatusFinished,
         actualReps: set.actualReps,
         actualWeight: set.actualWeight,
         actualDuration: set.actualDuration,
         actualDistance: set.actualDistance,
         actualTime: set.actualTime,
+      }),
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: workoutLogKeys.detail(this.id()) });
+    },
+  }));
+
+  private skipMutation = injectMutation(() => ({
+    mutationFn: (set: WorkoutLogExerciseSet) =>
+      this.userApi.updateWorkoutLogExerciseSet(set.id, {
+        status: WorkoutLogItemStatusSkipped,
       }),
     onSuccess: () => {
       this.queryClient.invalidateQueries({ queryKey: workoutLogKeys.detail(this.id()) });
@@ -158,6 +183,10 @@ export class WorkoutLogDetail {
 
   toggleSet(set: WorkoutLogExerciseSet) {
     this.toggleMutation.mutate(set);
+  }
+
+  skipSet(set: WorkoutLogExerciseSet) {
+    this.skipMutation.mutate(set);
   }
 
   abandonWorkout() {

@@ -13,8 +13,10 @@ import {
   WorkoutLogExercise,
   WorkoutLogExerciseSet,
   WorkoutLogSection,
-  WorkoutLogStatusFinished,
-  WorkoutLogStatusAborted,
+  WorkoutLogItemStatusFinished,
+  WorkoutLogItemStatusSkipped,
+  WorkoutLogItemStatusPartiallyFinished,
+  WorkoutLogItemStatusAborted,
 } from '$generated/user-models';
 import {
   ViewItem,
@@ -26,6 +28,15 @@ import {
 import { WorkoutLogActiveHeader } from './workout-log-active-header';
 import { WorkoutLogActiveSet } from './workout-log-active-set';
 import { WorkoutLogActiveBreak } from './workout-log-active-break';
+
+function isItemTerminal(status: string): boolean {
+  return (
+    status === WorkoutLogItemStatusFinished ||
+    status === WorkoutLogItemStatusSkipped ||
+    status === WorkoutLogItemStatusPartiallyFinished ||
+    status === WorkoutLogItemStatusAborted
+  );
+}
 
 @Component({
   selector: 'app-workout-log-active',
@@ -51,6 +62,7 @@ import { WorkoutLogActiveBreak } from './workout-log-active-break';
             [(actualDuration)]="actualDuration"
             [(actualDistance)]="actualDistance"
             (done)="markDone()"
+            (skip)="markSkipped()"
             (togglePeek)="togglePeek(s.id)"
             (save)="saveSet($event)"
             (jumpTo)="jumpToSet(s.set.id)"
@@ -79,6 +91,7 @@ export class WorkoutLogActive {
   log = input.required<WorkoutLog>();
   exerciseNames = input.required<Record<number, string>>();
   setToggled = output<WorkoutLogExerciseSet>();
+  setSkipped = output<WorkoutLogExerciseSet>();
 
   // Actual value signals for the active set inputs
   actualReps = signal<number | undefined>(undefined);
@@ -129,10 +142,7 @@ export class WorkoutLogActive {
   activeBreakId = signal<string | null>(null);
 
   private naturalActiveIdx = computed(() =>
-    this.flatSets().findIndex(
-      (item) =>
-        item.set.status !== WorkoutLogStatusFinished && item.set.status !== WorkoutLogStatusAborted,
-    ),
+    this.flatSets().findIndex((item) => !isItemTerminal(item.set.status)),
   );
 
   private activeIdx = computed(() => {
@@ -141,7 +151,7 @@ export class WorkoutLogActive {
       const idx = this.flatSets().findIndex((item) => item.set.id === overrideId);
       if (idx !== -1) {
         const s = this.flatSets()[idx].set;
-        if (s.status !== WorkoutLogStatusFinished && s.status !== WorkoutLogStatusAborted) {
+        if (!isItemTerminal(s.status)) {
           return idx;
         }
       }
@@ -169,8 +179,7 @@ export class WorkoutLogActive {
         });
       }
 
-      const isTerminal =
-        curr.set.status === WorkoutLogStatusFinished || curr.set.status === WorkoutLogStatusAborted;
+      const isTerminal = isItemTerminal(curr.set.status);
       const hasOverride = this.overrideSetId() !== null;
       const role: 'completed' | 'active' | 'upcoming' = isTerminal
         ? 'completed'
@@ -203,12 +212,8 @@ export class WorkoutLogActive {
             ? 'break-set-' + curr.set.id
             : 'break-ex-' + curr.exercise.id;
           const activeBreak = this.activeBreakId();
-          const currTerminal =
-            curr.set.status === WorkoutLogStatusFinished ||
-            curr.set.status === WorkoutLogStatusAborted;
-          const nextTerminal =
-            next.set.status === WorkoutLogStatusFinished ||
-            next.set.status === WorkoutLogStatusAborted;
+          const currTerminal = isItemTerminal(curr.set.status);
+          const nextTerminal = isItemTerminal(next.set.status);
 
           let breakRole: 'elapsed' | 'active-timer' | 'upcoming';
           if (breakId === activeBreak) {
@@ -282,6 +287,17 @@ export class WorkoutLogActive {
       this.activeBreakId.set(nextItem.id);
       this.startRestTimer(nextItem.seconds, nextItem.label);
     }
+    this.overrideSetId.set(null);
+  }
+
+  markSkipped() {
+    const items = this.viewItems();
+    const activeSetIdx = items.findIndex((item) => item.type === 'set' && item.role === 'active');
+    if (activeSetIdx === -1) return;
+    const activeItem = items[activeSetIdx] as ViewItemSet;
+
+    this.setSkipped.emit(activeItem.set);
+    // No rest timer for skipped sets
     this.overrideSetId.set(null);
   }
 
