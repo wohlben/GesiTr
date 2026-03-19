@@ -8,28 +8,33 @@ import (
 	"path/filepath"
 	"time"
 
-	"gesitr/internal/compendium/models"
+	compEquipment "gesitr/internal/compendium/equipment"
+	compFulfillment "gesitr/internal/compendium/equipmentfulfillment"
+	compExercise "gesitr/internal/compendium/exercise"
+	compGroup "gesitr/internal/compendium/exercisegroup"
+	compRelationship "gesitr/internal/compendium/exerciserelationship"
 	"gesitr/internal/database"
+	"gesitr/internal/shared"
 )
 
 func main() {
 	database.Init()
 	database.DB.AutoMigrate(
-		&models.ExerciseEntity{},
-		&models.ExerciseForce{},
-		&models.ExerciseMuscle{},
-		&models.ExerciseMeasurementParadigm{},
-		&models.ExerciseInstruction{},
-		&models.ExerciseImage{},
-		&models.ExerciseAlternativeName{},
-		&models.EquipmentEntity{},
-		&models.ExerciseEquipment{},
-		&models.FulfillmentEntity{},
-		&models.ExerciseRelationshipEntity{},
-		&models.ExerciseGroupEntity{},
-		&models.ExerciseGroupMemberEntity{},
-		&models.ExerciseHistoryEntity{},
-		&models.EquipmentHistoryEntity{},
+		&compExercise.ExerciseEntity{},
+		&compExercise.ExerciseForce{},
+		&compExercise.ExerciseMuscle{},
+		&compExercise.ExerciseMeasurementParadigm{},
+		&compExercise.ExerciseInstruction{},
+		&compExercise.ExerciseImage{},
+		&compExercise.ExerciseAlternativeName{},
+		&compEquipment.EquipmentEntity{},
+		&compExercise.ExerciseEquipment{},
+		&compFulfillment.FulfillmentEntity{},
+		&compRelationship.ExerciseRelationshipEntity{},
+		&compGroup.ExerciseGroupEntity{},
+		&compGroup.ExerciseGroupMemberEntity{},
+		&compExercise.ExerciseHistoryEntity{},
+		&compEquipment.EquipmentHistoryEntity{},
 	)
 
 	steps := []struct {
@@ -92,17 +97,17 @@ func seedEquipment() error {
 	if err != nil {
 		return err
 	}
-	var entities []models.EquipmentEntity
+	var entities []compEquipment.EquipmentEntity
 	for _, data := range files {
 		var j jsonEquipment
 		if err := json.Unmarshal(data, &j); err != nil {
 			return fmt.Errorf("parse equipment JSON: %w", err)
 		}
-		entities = append(entities, models.EquipmentEntity{
+		entities = append(entities, compEquipment.EquipmentEntity{
 			Name:        j.Name,
 			DisplayName: j.DisplayName,
 			Description: j.Description,
-			Category:    models.EquipmentCategory(j.Category),
+			Category:    compEquipment.EquipmentCategory(j.Category),
 			ImageUrl:    j.ImageUrl,
 			TemplateID:  j.TemplateID,
 			CreatedBy:   "system",
@@ -112,13 +117,13 @@ func seedEquipment() error {
 		return fmt.Errorf("insert equipment: %w", err)
 	}
 
-	var history []models.EquipmentHistoryEntity
+	var history []compEquipment.EquipmentHistoryEntity
 	for i := range entities {
 		dto := entities[i].ToDTO()
-		history = append(history, models.EquipmentHistoryEntity{
+		history = append(history, compEquipment.EquipmentHistoryEntity{
 			EquipmentID: entities[i].ID,
 			Version:     0,
-			Snapshot:    models.SnapshotJSON(dto),
+			Snapshot:    shared.SnapshotJSON(dto),
 			ChangedAt:   entities[i].CreatedAt,
 			ChangedBy:   entities[i].CreatedBy,
 		})
@@ -145,13 +150,13 @@ func seedFulfillments() error {
 	if err != nil {
 		return err
 	}
-	var entities []models.FulfillmentEntity
+	var entities []compFulfillment.FulfillmentEntity
 	for _, data := range files {
 		var j jsonFulfillment
 		if err := json.Unmarshal(data, &j); err != nil {
 			return fmt.Errorf("parse fulfillment JSON: %w", err)
 		}
-		e := models.FulfillmentEntity{
+		e := compFulfillment.FulfillmentEntity{
 			EquipmentTemplateID:         j.EquipmentTemplateID,
 			FulfillsEquipmentTemplateID: j.FulfillsEquipmentTemplateID,
 			CreatedBy:                   j.CreatedBy,
@@ -198,7 +203,7 @@ func seedExercises() error {
 	if err != nil {
 		return err
 	}
-	var entities []models.ExerciseEntity
+	var entities []compExercise.ExerciseEntity
 	for _, data := range files {
 		var j jsonExercise
 		if err := json.Unmarshal(data, &j); err != nil {
@@ -208,11 +213,11 @@ func seedExercises() error {
 		if j.TemplateID != nil {
 			templateID = *j.TemplateID
 		}
-		e := models.ExerciseEntity{
+		e := compExercise.ExerciseEntity{
 			Name:                j.Name,
 			Slug:                j.Slug,
-			Type:                models.ExerciseType(j.Type),
-			TechnicalDifficulty: models.TechnicalDifficulty(j.TechnicalDifficulty),
+			Type:                compExercise.ExerciseType(j.Type),
+			TechnicalDifficulty: compExercise.TechnicalDifficulty(j.TechnicalDifficulty),
 			BodyWeightScaling:   j.BodyWeightScaling,
 			Description:         j.Description,
 			AuthorName:          j.AuthorName,
@@ -230,28 +235,28 @@ func seedExercises() error {
 		}
 
 		for _, f := range j.Force {
-			e.Forces = append(e.Forces, models.ExerciseForce{Force: models.Force(f)})
+			e.Forces = append(e.Forces, compExercise.ExerciseForce{Force: compExercise.Force(f)})
 		}
 		for _, m := range j.PrimaryMuscles {
-			e.Muscles = append(e.Muscles, models.ExerciseMuscle{Muscle: models.Muscle(m), IsPrimary: true})
+			e.Muscles = append(e.Muscles, compExercise.ExerciseMuscle{Muscle: compExercise.Muscle(m), IsPrimary: true})
 		}
 		for _, m := range j.SecondaryMuscles {
-			e.Muscles = append(e.Muscles, models.ExerciseMuscle{Muscle: models.Muscle(m), IsPrimary: false})
+			e.Muscles = append(e.Muscles, compExercise.ExerciseMuscle{Muscle: compExercise.Muscle(m), IsPrimary: false})
 		}
 		for _, p := range j.SuggestedMeasurementParadigms {
-			e.Paradigms = append(e.Paradigms, models.ExerciseMeasurementParadigm{Paradigm: models.MeasurementParadigm(p)})
+			e.Paradigms = append(e.Paradigms, compExercise.ExerciseMeasurementParadigm{Paradigm: compExercise.MeasurementParadigm(p)})
 		}
 		for i, text := range j.Instructions {
-			e.Instructions = append(e.Instructions, models.ExerciseInstruction{Position: i, Text: text})
+			e.Instructions = append(e.Instructions, compExercise.ExerciseInstruction{Position: i, Text: text})
 		}
 		for i, path := range j.Images {
-			e.Images = append(e.Images, models.ExerciseImage{Position: i, Path: path})
+			e.Images = append(e.Images, compExercise.ExerciseImage{Position: i, Path: path})
 		}
 		for _, name := range j.AlternativeNames {
-			e.AlternativeNames = append(e.AlternativeNames, models.ExerciseAlternativeName{Name: name})
+			e.AlternativeNames = append(e.AlternativeNames, compExercise.ExerciseAlternativeName{Name: name})
 		}
 		for _, tid := range j.EquipmentIDs {
-			e.Equipment = append(e.Equipment, models.ExerciseEquipment{EquipmentTemplateID: tid})
+			e.Equipment = append(e.Equipment, compExercise.ExerciseEquipment{EquipmentTemplateID: tid})
 		}
 
 		entities = append(entities, e)
@@ -260,13 +265,13 @@ func seedExercises() error {
 		return fmt.Errorf("insert exercises: %w", err)
 	}
 
-	var history []models.ExerciseHistoryEntity
+	var history []compExercise.ExerciseHistoryEntity
 	for i := range entities {
 		dto := entities[i].ToDTO()
-		history = append(history, models.ExerciseHistoryEntity{
+		history = append(history, compExercise.ExerciseHistoryEntity{
 			ExerciseID: entities[i].ID,
 			Version:    0,
-			Snapshot:   models.SnapshotJSON(dto),
+			Snapshot:   shared.SnapshotJSON(dto),
 			ChangedAt:  entities[i].CreatedAt,
 			ChangedBy:  entities[i].CreatedBy,
 		})
@@ -296,14 +301,14 @@ func seedExerciseRelationships() error {
 	if err != nil {
 		return err
 	}
-	var entities []models.ExerciseRelationshipEntity
+	var entities []compRelationship.ExerciseRelationshipEntity
 	for _, data := range files {
 		var j jsonExerciseRelationship
 		if err := json.Unmarshal(data, &j); err != nil {
 			return fmt.Errorf("parse relationship JSON: %w", err)
 		}
-		e := models.ExerciseRelationshipEntity{
-			RelationshipType:       models.ExerciseRelationshipType(j.RelationshipType),
+		e := compRelationship.ExerciseRelationshipEntity{
+			RelationshipType:       compRelationship.ExerciseRelationshipType(j.RelationshipType),
 			Strength:               j.Strength,
 			Description:            j.Description,
 			CreatedBy:              j.CreatedBy,
@@ -336,13 +341,13 @@ func seedExerciseGroups() error {
 	if err != nil {
 		return err
 	}
-	var entities []models.ExerciseGroupEntity
+	var entities []compGroup.ExerciseGroupEntity
 	for _, data := range files {
 		var j jsonExerciseGroup
 		if err := json.Unmarshal(data, &j); err != nil {
 			return fmt.Errorf("parse exercise group JSON: %w", err)
 		}
-		e := models.ExerciseGroupEntity{
+		e := compGroup.ExerciseGroupEntity{
 			TemplateID:  j.ID,
 			Name:        j.Name,
 			Description: j.Description,
@@ -377,13 +382,13 @@ func seedExerciseGroupMembers() error {
 	if err != nil {
 		return err
 	}
-	var entities []models.ExerciseGroupMemberEntity
+	var entities []compGroup.ExerciseGroupMemberEntity
 	for _, data := range files {
 		var j jsonExerciseGroupMember
 		if err := json.Unmarshal(data, &j); err != nil {
 			return fmt.Errorf("parse exercise group member JSON: %w", err)
 		}
-		e := models.ExerciseGroupMemberEntity{
+		e := compGroup.ExerciseGroupMemberEntity{
 			GroupTemplateID:    j.GroupID,
 			ExerciseTemplateID: j.ExerciseTemplateID,
 			AddedBy:            j.AddedBy,

@@ -14,26 +14,18 @@ export interface ErrorResponse {
 }
 
 //////////
-// source: user_equipment.go
-
-export interface UserEquipment extends BaseModel {
-  owner: string;
-  compendiumEquipmentId: string;
-  compendiumVersion: number /* int */;
-}
-
-//////////
-// source: user_exercise.go
+// source: models.go
 
 export interface UserExercise extends BaseModel {
   owner: string;
   compendiumExerciseId: string;
   compendiumVersion: number /* int */;
 }
-
-//////////
-// source: user_exercise_scheme.go
-
+export interface UserEquipment extends BaseModel {
+  owner: string;
+  compendiumEquipmentId: string;
+  compendiumVersion: number /* int */;
+}
 export interface UserExerciseScheme extends BaseModel {
   userExerciseId: number /* uint */;
   measurementType: string;
@@ -48,22 +40,7 @@ export interface UserExerciseScheme extends BaseModel {
 }
 
 //////////
-// source: user_record.go
-
-export interface UserRecord extends BaseModel {
-  userExerciseId: number /* uint */;
-  measurementType: string;
-  recordValue: number /* float64 */;
-  actualReps?: number /* int */;
-  actualWeight?: number /* float64 */;
-  actualDuration?: number /* int */;
-  actualDistance?: number /* float64 */;
-  actualTime?: number /* int */;
-  workoutLogExerciseSetId: number /* uint */;
-}
-
-//////////
-// source: workout.go
+// source: models.go
 
 export interface Workout extends BaseModel {
   owner: string;
@@ -71,9 +48,36 @@ export interface Workout extends BaseModel {
   notes?: string;
   sections: WorkoutSection[];
 }
+export type WorkoutSectionType = string;
+export const WorkoutSectionTypeMain: WorkoutSectionType = 'main';
+export const WorkoutSectionTypeSupplementary: WorkoutSectionType = 'supplementary';
+export interface WorkoutSection extends BaseModel {
+  workoutId: number /* uint */;
+  type: WorkoutSectionType;
+  label?: string;
+  position: number /* int */;
+  restBetweenExercises?: number /* int */;
+  exercises: WorkoutSectionExercise[];
+}
+export interface WorkoutSectionExercise extends BaseModel {
+  workoutSectionId: number /* uint */;
+  userExerciseSchemeId: number /* uint */;
+  position: number /* int */;
+}
 
 //////////
-// source: workout_log.go
+// source: item_status.go
+
+export type WorkoutLogItemStatus = string;
+export const WorkoutLogItemStatusPlanning: WorkoutLogItemStatus = 'planning';
+export const WorkoutLogItemStatusInProgress: WorkoutLogItemStatus = 'in_progress';
+export const WorkoutLogItemStatusFinished: WorkoutLogItemStatus = 'finished';
+export const WorkoutLogItemStatusSkipped: WorkoutLogItemStatus = 'skipped';
+export const WorkoutLogItemStatusPartiallyFinished: WorkoutLogItemStatus = 'partially_finished';
+export const WorkoutLogItemStatusAborted: WorkoutLogItemStatus = 'aborted';
+
+//////////
+// source: models.go
 
 export interface WorkoutLog extends BaseModel {
   owner: string;
@@ -85,10 +89,16 @@ export interface WorkoutLog extends BaseModel {
   statusChangedAt?: string;
   sections: WorkoutLogSection[];
 }
-
-//////////
-// source: workout_log_exercise.go
-
+export interface WorkoutLogSection extends BaseModel {
+  workoutLogId: number /* uint */;
+  type: WorkoutSectionType;
+  label?: string;
+  position: number /* int */;
+  restBetweenExercises?: number /* int */;
+  status: WorkoutLogItemStatus;
+  statusChangedAt?: string;
+  exercises: WorkoutLogExercise[];
+}
 export interface WorkoutLogExercise extends BaseModel {
   workoutLogSectionId: number /* uint */;
   workoutLogId: number /* uint */;
@@ -104,10 +114,6 @@ export interface WorkoutLogExercise extends BaseModel {
   targetTimePerRep?: number /* int */;
   sets: WorkoutLogExerciseSet[];
 }
-
-//////////
-// source: workout_log_exercise_set.go
-
 export interface WorkoutLogExerciseSet extends BaseModel {
   workoutLogExerciseId: number /* uint */;
   workoutLogId: number /* uint */;
@@ -128,32 +134,7 @@ export interface WorkoutLogExerciseSet extends BaseModel {
 }
 
 //////////
-// source: workout_log_item_status.go
-
-export type WorkoutLogItemStatus = string;
-export const WorkoutLogItemStatusPlanning: WorkoutLogItemStatus = 'planning';
-export const WorkoutLogItemStatusInProgress: WorkoutLogItemStatus = 'in_progress';
-export const WorkoutLogItemStatusFinished: WorkoutLogItemStatus = 'finished';
-export const WorkoutLogItemStatusSkipped: WorkoutLogItemStatus = 'skipped';
-export const WorkoutLogItemStatusPartiallyFinished: WorkoutLogItemStatus = 'partially_finished';
-export const WorkoutLogItemStatusAborted: WorkoutLogItemStatus = 'aborted';
-
-//////////
-// source: workout_log_section.go
-
-export interface WorkoutLogSection extends BaseModel {
-  workoutLogId: number /* uint */;
-  type: WorkoutSectionType;
-  label?: string;
-  position: number /* int */;
-  restBetweenExercises?: number /* int */;
-  status: WorkoutLogItemStatus;
-  statusChangedAt?: string;
-  exercises: WorkoutLogExercise[];
-}
-
-//////////
-// source: workout_log_status.go
+// source: status.go
 
 export type WorkoutLogStatus = string;
 export const WorkoutLogStatusPlanning: WorkoutLogStatus = 'planning';
@@ -163,29 +144,16 @@ export const WorkoutLogStatusPartiallyFinished: WorkoutLogStatus = 'partially_fi
 export const WorkoutLogStatusAborted: WorkoutLogStatus = 'aborted';
 
 //////////
-// source: workout_section.go
+// source: models.go
 
-export interface WorkoutSection extends BaseModel {
-  workoutId: number /* uint */;
-  type: WorkoutSectionType;
-  label?: string;
-  position: number /* int */;
-  restBetweenExercises?: number /* int */;
-  exercises: WorkoutSectionExercise[];
+export interface UserRecord extends BaseModel {
+  userExerciseId: number /* uint */;
+  measurementType: string;
+  recordValue: number /* float64 */;
+  actualReps?: number /* int */;
+  actualWeight?: number /* float64 */;
+  actualDuration?: number /* int */;
+  actualDistance?: number /* float64 */;
+  actualTime?: number /* int */;
+  workoutLogExerciseSetId: number /* uint */;
 }
-
-//////////
-// source: workout_section_exercise.go
-
-export interface WorkoutSectionExercise extends BaseModel {
-  workoutSectionId: number /* uint */;
-  userExerciseSchemeId: number /* uint */;
-  position: number /* int */;
-}
-
-//////////
-// source: workout_section_type.go
-
-export type WorkoutSectionType = string;
-export const WorkoutSectionTypeMain: WorkoutSectionType = 'main';
-export const WorkoutSectionTypeSupplementary: WorkoutSectionType = 'supplementary';

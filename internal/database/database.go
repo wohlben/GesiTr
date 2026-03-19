@@ -4,6 +4,8 @@ import (
 	"log"
 	"os"
 
+	gormlog "gorm.io/gorm/logger"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -12,7 +14,11 @@ var DB *gorm.DB
 
 func InitDB(path string) error {
 	var err error
-	DB, err = gorm.Open(sqlite.Open(path), &gorm.Config{})
+	DB, err = gorm.Open(sqlite.Open(path), &gorm.Config{
+		Logger: gormlog.New(log.Default(), gormlog.Config{
+			IgnoreRecordNotFoundError: true,
+		}),
+	})
 	return err
 }
 

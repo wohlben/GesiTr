@@ -8,11 +8,17 @@ import (
 	"os"
 
 	"gesitr/internal/auth"
-	"gesitr/internal/compendium/handlers"
-	"gesitr/internal/compendium/models"
+	compEquipment "gesitr/internal/compendium/equipment"
+	compFulfillment "gesitr/internal/compendium/equipmentfulfillment"
+	compExercise "gesitr/internal/compendium/exercise"
+	compGroup "gesitr/internal/compendium/exercisegroup"
+	compRelationship "gesitr/internal/compendium/exerciserelationship"
 	"gesitr/internal/database"
-	userhandlers "gesitr/internal/user/handlers"
-	usermodels "gesitr/internal/user/models"
+	userExercise "gesitr/internal/user/exercise"
+	"gesitr/internal/user/record"
+	"gesitr/internal/user/workout"
+	workoutloghandlers "gesitr/internal/user/workoutlog/handlers"
+	workoutlogmodels "gesitr/internal/user/workoutlog/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,32 +28,32 @@ var staticFiles embed.FS
 
 func autoMigrate() {
 	database.DB.AutoMigrate(
-		&models.ExerciseEntity{},
-		&models.ExerciseForce{},
-		&models.ExerciseMuscle{},
-		&models.ExerciseMeasurementParadigm{},
-		&models.ExerciseInstruction{},
-		&models.ExerciseImage{},
-		&models.ExerciseAlternativeName{},
-		&models.EquipmentEntity{},
-		&models.ExerciseEquipment{},
-		&models.FulfillmentEntity{},
-		&models.ExerciseRelationshipEntity{},
-		&models.ExerciseGroupEntity{},
-		&models.ExerciseGroupMemberEntity{},
-		&models.ExerciseHistoryEntity{},
-		&models.EquipmentHistoryEntity{},
-		&usermodels.UserExerciseEntity{},
-		&usermodels.UserEquipmentEntity{},
-		&usermodels.UserExerciseSchemeEntity{},
-		&usermodels.WorkoutEntity{},
-		&usermodels.WorkoutSectionEntity{},
-		&usermodels.WorkoutSectionExerciseEntity{},
-		&usermodels.WorkoutLogEntity{},
-		&usermodels.WorkoutLogSectionEntity{},
-		&usermodels.WorkoutLogExerciseEntity{},
-		&usermodels.WorkoutLogExerciseSetEntity{},
-		&usermodels.UserRecordEntity{},
+		&compExercise.ExerciseEntity{},
+		&compExercise.ExerciseForce{},
+		&compExercise.ExerciseMuscle{},
+		&compExercise.ExerciseMeasurementParadigm{},
+		&compExercise.ExerciseInstruction{},
+		&compExercise.ExerciseImage{},
+		&compExercise.ExerciseAlternativeName{},
+		&compEquipment.EquipmentEntity{},
+		&compExercise.ExerciseEquipment{},
+		&compFulfillment.FulfillmentEntity{},
+		&compRelationship.ExerciseRelationshipEntity{},
+		&compGroup.ExerciseGroupEntity{},
+		&compGroup.ExerciseGroupMemberEntity{},
+		&compExercise.ExerciseHistoryEntity{},
+		&compEquipment.EquipmentHistoryEntity{},
+		&userExercise.UserExerciseEntity{},
+		&userExercise.UserEquipmentEntity{},
+		&userExercise.UserExerciseSchemeEntity{},
+		&workout.WorkoutEntity{},
+		&workout.WorkoutSectionEntity{},
+		&workout.WorkoutSectionExerciseEntity{},
+		&workoutlogmodels.WorkoutLogEntity{},
+		&workoutlogmodels.WorkoutLogSectionEntity{},
+		&workoutlogmodels.WorkoutLogExerciseEntity{},
+		&workoutlogmodels.WorkoutLogExerciseSetEntity{},
+		&record.UserRecordEntity{},
 	)
 }
 
@@ -57,147 +63,147 @@ func setupRoutes(r *gin.Engine) {
 
 	exercises := api.Group("/exercises")
 	{
-		exercises.GET("", handlers.ListExercises)
-		exercises.POST("", handlers.CreateExercise)
-		exercises.GET("/:id", handlers.GetExercise)
-		exercises.PUT("/:id", handlers.UpdateExercise)
-		exercises.DELETE("/:id", handlers.DeleteExercise)
-		exercises.GET("/:id/versions", handlers.ListExerciseVersions)
-		exercises.GET("/templates/:templateId/versions/:version", handlers.GetExerciseVersion)
+		exercises.GET("", compExercise.ListExercises)
+		exercises.POST("", compExercise.CreateExercise)
+		exercises.GET("/:id", compExercise.GetExercise)
+		exercises.PUT("/:id", compExercise.UpdateExercise)
+		exercises.DELETE("/:id", compExercise.DeleteExercise)
+		exercises.GET("/:id/versions", compExercise.ListExerciseVersions)
+		exercises.GET("/templates/:templateId/versions/:version", compExercise.GetExerciseVersion)
 	}
 
 	equipment := api.Group("/equipment")
 	{
-		equipment.GET("", handlers.ListEquipment)
-		equipment.POST("", handlers.CreateEquipment)
-		equipment.GET("/:id", handlers.GetEquipment)
-		equipment.PUT("/:id", handlers.UpdateEquipment)
-		equipment.DELETE("/:id", handlers.DeleteEquipment)
-		equipment.GET("/:id/versions", handlers.ListEquipmentVersions)
-		equipment.GET("/templates/:templateId/versions/:version", handlers.GetEquipmentVersion)
+		equipment.GET("", compEquipment.ListEquipment)
+		equipment.POST("", compEquipment.CreateEquipment)
+		equipment.GET("/:id", compEquipment.GetEquipment)
+		equipment.PUT("/:id", compEquipment.UpdateEquipment)
+		equipment.DELETE("/:id", compEquipment.DeleteEquipment)
+		equipment.GET("/:id/versions", compEquipment.ListEquipmentVersions)
+		equipment.GET("/templates/:templateId/versions/:version", compEquipment.GetEquipmentVersion)
 	}
 
 	fulfillments := api.Group("/fulfillments")
 	{
-		fulfillments.GET("", handlers.ListFulfillments)
-		fulfillments.POST("", handlers.CreateFulfillment)
-		fulfillments.DELETE("/:id", handlers.DeleteFulfillment)
+		fulfillments.GET("", compFulfillment.ListFulfillments)
+		fulfillments.POST("", compFulfillment.CreateFulfillment)
+		fulfillments.DELETE("/:id", compFulfillment.DeleteFulfillment)
 	}
 
 	exerciseRelationships := api.Group("/exercise-relationships")
 	{
-		exerciseRelationships.GET("", handlers.ListExerciseRelationships)
-		exerciseRelationships.POST("", handlers.CreateExerciseRelationship)
-		exerciseRelationships.DELETE("/:id", handlers.DeleteExerciseRelationship)
+		exerciseRelationships.GET("", compRelationship.ListExerciseRelationships)
+		exerciseRelationships.POST("", compRelationship.CreateExerciseRelationship)
+		exerciseRelationships.DELETE("/:id", compRelationship.DeleteExerciseRelationship)
 	}
 
 	exerciseGroups := api.Group("/exercise-groups")
 	{
-		exerciseGroups.GET("", handlers.ListExerciseGroups)
-		exerciseGroups.POST("", handlers.CreateExerciseGroup)
-		exerciseGroups.GET("/:id", handlers.GetExerciseGroup)
-		exerciseGroups.PUT("/:id", handlers.UpdateExerciseGroup)
-		exerciseGroups.DELETE("/:id", handlers.DeleteExerciseGroup)
+		exerciseGroups.GET("", compGroup.ListExerciseGroups)
+		exerciseGroups.POST("", compGroup.CreateExerciseGroup)
+		exerciseGroups.GET("/:id", compGroup.GetExerciseGroup)
+		exerciseGroups.PUT("/:id", compGroup.UpdateExerciseGroup)
+		exerciseGroups.DELETE("/:id", compGroup.DeleteExerciseGroup)
 	}
 
 	exerciseGroupMembers := api.Group("/exercise-group-members")
 	{
-		exerciseGroupMembers.GET("", handlers.ListExerciseGroupMembers)
-		exerciseGroupMembers.POST("", handlers.CreateExerciseGroupMember)
-		exerciseGroupMembers.DELETE("/:id", handlers.DeleteExerciseGroupMember)
+		exerciseGroupMembers.GET("", compGroup.ListExerciseGroupMembers)
+		exerciseGroupMembers.POST("", compGroup.CreateExerciseGroupMember)
+		exerciseGroupMembers.DELETE("/:id", compGroup.DeleteExerciseGroupMember)
 	}
 
 	user := api.Group("/user")
 
 	userExercises := user.Group("/exercises")
 	{
-		userExercises.GET("", userhandlers.ListUserExercises)
-		userExercises.POST("", userhandlers.CreateUserExercise)
-		userExercises.GET("/:id", userhandlers.GetUserExercise)
-		userExercises.DELETE("/:id", userhandlers.DeleteUserExercise)
+		userExercises.GET("", userExercise.ListUserExercises)
+		userExercises.POST("", userExercise.CreateUserExercise)
+		userExercises.GET("/:id", userExercise.GetUserExercise)
+		userExercises.DELETE("/:id", userExercise.DeleteUserExercise)
 	}
 
 	userEquipment := user.Group("/equipment")
 	{
-		userEquipment.GET("", userhandlers.ListUserEquipment)
-		userEquipment.POST("", userhandlers.CreateUserEquipment)
-		userEquipment.GET("/:id", userhandlers.GetUserEquipment)
-		userEquipment.DELETE("/:id", userhandlers.DeleteUserEquipment)
+		userEquipment.GET("", userExercise.ListUserEquipment)
+		userEquipment.POST("", userExercise.CreateUserEquipment)
+		userEquipment.GET("/:id", userExercise.GetUserEquipment)
+		userEquipment.DELETE("/:id", userExercise.DeleteUserEquipment)
 	}
 
 	userExerciseSchemes := user.Group("/exercise-schemes")
 	{
-		userExerciseSchemes.GET("", userhandlers.ListUserExerciseSchemes)
-		userExerciseSchemes.POST("", userhandlers.CreateUserExerciseScheme)
-		userExerciseSchemes.GET("/:id", userhandlers.GetUserExerciseScheme)
-		userExerciseSchemes.PUT("/:id", userhandlers.UpdateUserExerciseScheme)
-		userExerciseSchemes.DELETE("/:id", userhandlers.DeleteUserExerciseScheme)
+		userExerciseSchemes.GET("", userExercise.ListUserExerciseSchemes)
+		userExerciseSchemes.POST("", userExercise.CreateUserExerciseScheme)
+		userExerciseSchemes.GET("/:id", userExercise.GetUserExerciseScheme)
+		userExerciseSchemes.PUT("/:id", userExercise.UpdateUserExerciseScheme)
+		userExerciseSchemes.DELETE("/:id", userExercise.DeleteUserExerciseScheme)
 	}
 
 	workouts := user.Group("/workouts")
 	{
-		workouts.GET("", userhandlers.ListWorkouts)
-		workouts.POST("", userhandlers.CreateWorkout)
-		workouts.GET("/:id", userhandlers.GetWorkout)
-		workouts.PUT("/:id", userhandlers.UpdateWorkout)
-		workouts.DELETE("/:id", userhandlers.DeleteWorkout)
+		workouts.GET("", workout.ListWorkouts)
+		workouts.POST("", workout.CreateWorkout)
+		workouts.GET("/:id", workout.GetWorkout)
+		workouts.PUT("/:id", workout.UpdateWorkout)
+		workouts.DELETE("/:id", workout.DeleteWorkout)
 	}
 
 	workoutSections := user.Group("/workout-sections")
 	{
-		workoutSections.GET("", userhandlers.ListWorkoutSections)
-		workoutSections.POST("", userhandlers.CreateWorkoutSection)
-		workoutSections.GET("/:id", userhandlers.GetWorkoutSection)
-		workoutSections.DELETE("/:id", userhandlers.DeleteWorkoutSection)
+		workoutSections.GET("", workout.ListWorkoutSections)
+		workoutSections.POST("", workout.CreateWorkoutSection)
+		workoutSections.GET("/:id", workout.GetWorkoutSection)
+		workoutSections.DELETE("/:id", workout.DeleteWorkoutSection)
 	}
 
 	workoutSectionExercises := user.Group("/workout-section-exercises")
 	{
-		workoutSectionExercises.GET("", userhandlers.ListWorkoutSectionExercises)
-		workoutSectionExercises.POST("", userhandlers.CreateWorkoutSectionExercise)
-		workoutSectionExercises.DELETE("/:id", userhandlers.DeleteWorkoutSectionExercise)
+		workoutSectionExercises.GET("", workout.ListWorkoutSectionExercises)
+		workoutSectionExercises.POST("", workout.CreateWorkoutSectionExercise)
+		workoutSectionExercises.DELETE("/:id", workout.DeleteWorkoutSectionExercise)
 	}
 
 	workoutLogs := user.Group("/workout-logs")
 	{
-		workoutLogs.GET("", userhandlers.ListWorkoutLogs)
-		workoutLogs.POST("", userhandlers.CreateWorkoutLog)
-		workoutLogs.GET("/:id", userhandlers.GetWorkoutLog)
-		workoutLogs.PATCH("/:id", userhandlers.UpdateWorkoutLog)
-		workoutLogs.DELETE("/:id", userhandlers.DeleteWorkoutLog)
-		workoutLogs.POST("/:id/start", userhandlers.StartWorkoutLog)
-		workoutLogs.POST("/:id/abandon", userhandlers.AbandonWorkoutLog)
+		workoutLogs.GET("", workoutloghandlers.ListWorkoutLogs)
+		workoutLogs.POST("", workoutloghandlers.CreateWorkoutLog)
+		workoutLogs.GET("/:id", workoutloghandlers.GetWorkoutLog)
+		workoutLogs.PATCH("/:id", workoutloghandlers.UpdateWorkoutLog)
+		workoutLogs.DELETE("/:id", workoutloghandlers.DeleteWorkoutLog)
+		workoutLogs.POST("/:id/start", workoutloghandlers.StartWorkoutLog)
+		workoutLogs.POST("/:id/abandon", workoutloghandlers.AbandonWorkoutLog)
 	}
 
 	workoutLogSections := user.Group("/workout-log-sections")
 	{
-		workoutLogSections.GET("", userhandlers.ListWorkoutLogSections)
-		workoutLogSections.POST("", userhandlers.CreateWorkoutLogSection)
-		workoutLogSections.GET("/:id", userhandlers.GetWorkoutLogSection)
-		workoutLogSections.PATCH("/:id", userhandlers.UpdateWorkoutLogSection)
-		workoutLogSections.DELETE("/:id", userhandlers.DeleteWorkoutLogSection)
+		workoutLogSections.GET("", workoutloghandlers.ListWorkoutLogSections)
+		workoutLogSections.POST("", workoutloghandlers.CreateWorkoutLogSection)
+		workoutLogSections.GET("/:id", workoutloghandlers.GetWorkoutLogSection)
+		workoutLogSections.PATCH("/:id", workoutloghandlers.UpdateWorkoutLogSection)
+		workoutLogSections.DELETE("/:id", workoutloghandlers.DeleteWorkoutLogSection)
 	}
 
 	workoutLogExercises := user.Group("/workout-log-exercises")
 	{
-		workoutLogExercises.GET("", userhandlers.ListWorkoutLogExercises)
-		workoutLogExercises.POST("", userhandlers.CreateWorkoutLogExercise)
-		workoutLogExercises.PATCH("/:id", userhandlers.UpdateWorkoutLogExercise)
-		workoutLogExercises.DELETE("/:id", userhandlers.DeleteWorkoutLogExercise)
+		workoutLogExercises.GET("", workoutloghandlers.ListWorkoutLogExercises)
+		workoutLogExercises.POST("", workoutloghandlers.CreateWorkoutLogExercise)
+		workoutLogExercises.PATCH("/:id", workoutloghandlers.UpdateWorkoutLogExercise)
+		workoutLogExercises.DELETE("/:id", workoutloghandlers.DeleteWorkoutLogExercise)
 	}
 
 	workoutLogExerciseSets := user.Group("/workout-log-exercise-sets")
 	{
-		workoutLogExerciseSets.GET("", userhandlers.ListWorkoutLogExerciseSets)
-		workoutLogExerciseSets.POST("", userhandlers.CreateWorkoutLogExerciseSet)
-		workoutLogExerciseSets.PATCH("/:id", userhandlers.UpdateWorkoutLogExerciseSet)
-		workoutLogExerciseSets.DELETE("/:id", userhandlers.DeleteWorkoutLogExerciseSet)
+		workoutLogExerciseSets.GET("", workoutloghandlers.ListWorkoutLogExerciseSets)
+		workoutLogExerciseSets.POST("", workoutloghandlers.CreateWorkoutLogExerciseSet)
+		workoutLogExerciseSets.PATCH("/:id", workoutloghandlers.UpdateWorkoutLogExerciseSet)
+		workoutLogExerciseSets.DELETE("/:id", workoutloghandlers.DeleteWorkoutLogExerciseSet)
 	}
 
 	records := user.Group("/records")
 	{
-		records.GET("", userhandlers.ListUserRecords)
-		records.GET("/:id", userhandlers.GetUserRecord)
+		records.GET("", record.ListUserRecords)
+		records.GET("/:id", record.GetUserRecord)
 	}
 }
 

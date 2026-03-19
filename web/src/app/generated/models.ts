@@ -14,8 +14,33 @@ export interface ErrorResponse {
 }
 
 //////////
-// source: enums.go
+// source: models.go
 
+/**
+ * Exercise is the API DTO (tygo generates TypeScript from this)
+ */
+export interface Exercise extends BaseModel {
+  name: string;
+  slug: string;
+  type: ExerciseType;
+  force: Force[];
+  primaryMuscles: Muscle[];
+  secondaryMuscles: Muscle[];
+  technicalDifficulty: TechnicalDifficulty;
+  bodyWeightScaling: number /* float64 */;
+  suggestedMeasurementParadigms: MeasurementParadigm[];
+  description: string;
+  instructions: string[];
+  images: string[];
+  alternativeNames: string[];
+  authorName?: string;
+  authorUrl?: string;
+  createdBy: string;
+  version: number /* int */;
+  parentExerciseId?: number /* uint */;
+  templateId: string;
+  equipmentIds: string[];
+}
 export type ExerciseType = string;
 export const ExerciseTypeStrength: ExerciseType = 'STRENGTH';
 export const ExerciseTypeCardio: ExerciseType = 'CARDIO';
@@ -62,6 +87,20 @@ export const MeasurementEMOM: MeasurementParadigm = 'EMOM';
 export const MeasurementRoundsForTime: MeasurementParadigm = 'ROUNDS_FOR_TIME';
 export const MeasurementTime: MeasurementParadigm = 'TIME';
 export const MeasurementDistance: MeasurementParadigm = 'DISTANCE';
+
+//////////
+// source: models.go
+
+export interface Equipment extends BaseModel {
+  name: string;
+  displayName: string;
+  description: string;
+  category: EquipmentCategory;
+  imageUrl?: string;
+  templateId: string;
+  createdBy: string;
+  version: number /* int */;
+}
 export type EquipmentCategory = string;
 export const EquipmentCategoryFreeWeights: EquipmentCategory = 'free_weights';
 export const EquipmentCategoryAccessories: EquipmentCategory = 'accessories';
@@ -69,6 +108,33 @@ export const EquipmentCategoryBenches: EquipmentCategory = 'benches';
 export const EquipmentCategoryMachines: EquipmentCategory = 'machines';
 export const EquipmentCategoryFunctional: EquipmentCategory = 'functional';
 export const EquipmentCategoryOther: EquipmentCategory = 'other';
+
+//////////
+// source: models.go
+
+export interface ExerciseGroup extends BaseModel {
+  templateId: string;
+  name: string;
+  description?: string;
+  createdBy: string;
+}
+export interface ExerciseGroupMember extends BaseModel {
+  groupTemplateId: string;
+  exerciseTemplateId: string;
+  addedBy: string;
+}
+
+//////////
+// source: models.go
+
+export interface ExerciseRelationship extends BaseModel {
+  relationshipType: ExerciseRelationshipType;
+  strength: number /* float64 */;
+  description?: string;
+  createdBy: string;
+  fromExerciseTemplateId: string;
+  toExerciseTemplateId: string;
+}
 export type ExerciseRelationshipType = string;
 export const ExerciseRelationshipTypeAccessory: ExerciseRelationshipType = 'accessory';
 export const ExerciseRelationshipTypeAlternative: ExerciseRelationshipType = 'alternative';
@@ -96,81 +162,7 @@ export const ExerciseRelationshipTypeVariant: ExerciseRelationshipType = 'varian
 export const ExerciseRelationshipTypeVariation: ExerciseRelationshipType = 'variation';
 
 //////////
-// source: equipment.go
-
-export interface Equipment extends BaseModel {
-  name: string;
-  displayName: string;
-  description: string;
-  category: EquipmentCategory;
-  imageUrl?: string;
-  templateId: string;
-  createdBy: string;
-  version: number /* int */;
-}
-
-//////////
-// source: exercise.go
-
-/**
- * Exercise is the API DTO (tygo generates TypeScript from this)
- */
-export interface Exercise extends BaseModel {
-  name: string;
-  slug: string;
-  type: ExerciseType;
-  force: Force[];
-  primaryMuscles: Muscle[];
-  secondaryMuscles: Muscle[];
-  technicalDifficulty: TechnicalDifficulty;
-  bodyWeightScaling: number /* float64 */;
-  suggestedMeasurementParadigms: MeasurementParadigm[];
-  description: string;
-  instructions: string[];
-  images: string[];
-  alternativeNames: string[];
-  authorName?: string;
-  authorUrl?: string;
-  createdBy: string;
-  version: number /* int */;
-  parentExerciseId?: number /* uint */;
-  templateId: string;
-  equipmentIds: string[];
-}
-
-//////////
-// source: exercise_group.go
-
-export interface ExerciseGroup extends BaseModel {
-  templateId: string;
-  name: string;
-  description?: string;
-  createdBy: string;
-}
-
-//////////
-// source: exercise_group_member.go
-
-export interface ExerciseGroupMember extends BaseModel {
-  groupTemplateId: string;
-  exerciseTemplateId: string;
-  addedBy: string;
-}
-
-//////////
-// source: exercise_relationship.go
-
-export interface ExerciseRelationship extends BaseModel {
-  relationshipType: ExerciseRelationshipType;
-  strength: number /* float64 */;
-  description?: string;
-  createdBy: string;
-  fromExerciseTemplateId: string;
-  toExerciseTemplateId: string;
-}
-
-//////////
-// source: fulfillment.go
+// source: models.go
 
 export interface Fulfillment extends BaseModel {
   equipmentTemplateId: string;

@@ -1,31 +1,85 @@
 packages:
-  - path: "gesitr/internal/compendium/models"
-    output_path: "web/src/app/generated/models.ts"
+  - path: "gesitr/internal/shared"
+    output_path: "web/src/app/generated/compendium-shared.ts"
     type_mappings:
       "time.Time": "string"
       "gorm.DeletedAt": "string | null"
     exclude_files:
-      - "exercise_entity.go"
-      - "equipment_entity.go"
-      - "fulfillment_entity.go"
-      - "exercise_relationship_entity.go"
-      - "exercise_group_entity.go"
-      - "exercise_group_member_entity.go"
+      - "pagination.go"
       - "history.go"
-  - path: "gesitr/internal/user/models"
-    output_path: "web/src/app/generated/user-models.ts"
+  - path: "gesitr/internal/compendium/exercise"
+    output_path: "web/src/app/generated/compendium-exercise.ts"
     type_mappings:
       "time.Time": "string"
       "gorm.DeletedAt": "string | null"
     exclude_files:
-      - "user_exercise_entity.go"
-      - "user_equipment_entity.go"
-      - "user_exercise_scheme_entity.go"
-      - "workout_entity.go"
-      - "workout_section_entity.go"
-      - "workout_section_exercise_entity.go"
-      - "workout_log_entity.go"
-      - "workout_log_section_entity.go"
-      - "workout_log_exercise_entity.go"
-      - "workout_log_exercise_set_entity.go"
-      - "user_record_entity.go"
+      - "entity.go"
+      - "history.go"
+      - "handlers.go"
+  - path: "gesitr/internal/compendium/equipment"
+    output_path: "web/src/app/generated/compendium-equipment.ts"
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+    exclude_files:
+      - "entity.go"
+      - "history.go"
+      - "handlers.go"
+  - path: "gesitr/internal/compendium/exercisegroup"
+    output_path: "web/src/app/generated/compendium-group.ts"
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+    exclude_files:
+      - "entity.go"
+      - "handlers.go"
+      - "member_handlers.go"
+  - path: "gesitr/internal/compendium/exerciserelationship"
+    output_path: "web/src/app/generated/compendium-relationship.ts"
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+    exclude_files:
+      - "entity.go"
+      - "handlers.go"
+  - path: "gesitr/internal/compendium/equipmentfulfillment"
+    output_path: "web/src/app/generated/compendium-fulfillment.ts"
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+    exclude_files:
+      - "entity.go"
+      - "handlers.go"
+  - path: "gesitr/internal/user/exercise"
+    output_path: "web/src/app/generated/user-exercise.ts"
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+    exclude_files:
+      - "entity.go"
+      - "handlers.go"
+      - "equipment_handlers.go"
+      - "scheme_handlers.go"
+  - path: "gesitr/internal/user/workout"
+    output_path: "web/src/app/generated/user-workout.ts"
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+    exclude_files:
+      - "entity.go"
+      - "handlers.go"
+      - "section_handlers.go"
+      - "section_exercise_handlers.go"
+  - path: "gesitr/internal/user/workoutlog/models"
+    output_path: "web/src/app/generated/user-workoutlog.ts"
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+  - path: "gesitr/internal/user/record"
+    output_path: "web/src/app/generated/user-record.ts"
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+    exclude_files:
+      - "entity.go"
+      - "handlers.go"

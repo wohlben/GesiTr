@@ -7,7 +7,11 @@ import (
 	"testing"
 	"time"
 
-	"gesitr/internal/compendium/models"
+	compEquipment "gesitr/internal/compendium/equipment"
+	compFulfillment "gesitr/internal/compendium/equipmentfulfillment"
+	compExercise "gesitr/internal/compendium/exercise"
+	compGroup "gesitr/internal/compendium/exercisegroup"
+	compRelationship "gesitr/internal/compendium/exerciserelationship"
 	"gesitr/internal/database"
 
 	"gorm.io/driver/sqlite"
@@ -21,21 +25,21 @@ func setupSeedTestDB(t *testing.T) {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
-		&models.ExerciseEntity{},
-		&models.ExerciseForce{},
-		&models.ExerciseMuscle{},
-		&models.ExerciseMeasurementParadigm{},
-		&models.ExerciseInstruction{},
-		&models.ExerciseImage{},
-		&models.ExerciseAlternativeName{},
-		&models.EquipmentEntity{},
-		&models.ExerciseEquipment{},
-		&models.FulfillmentEntity{},
-		&models.ExerciseRelationshipEntity{},
-		&models.ExerciseGroupEntity{},
-		&models.ExerciseGroupMemberEntity{},
-		&models.ExerciseHistoryEntity{},
-		&models.EquipmentHistoryEntity{},
+		&compExercise.ExerciseEntity{},
+		&compExercise.ExerciseForce{},
+		&compExercise.ExerciseMuscle{},
+		&compExercise.ExerciseMeasurementParadigm{},
+		&compExercise.ExerciseInstruction{},
+		&compExercise.ExerciseImage{},
+		&compExercise.ExerciseAlternativeName{},
+		&compEquipment.EquipmentEntity{},
+		&compExercise.ExerciseEquipment{},
+		&compFulfillment.FulfillmentEntity{},
+		&compRelationship.ExerciseRelationshipEntity{},
+		&compGroup.ExerciseGroupEntity{},
+		&compGroup.ExerciseGroupMemberEntity{},
+		&compExercise.ExerciseHistoryEntity{},
+		&compEquipment.EquipmentHistoryEntity{},
 	)
 	database.DB = db
 }
@@ -105,12 +109,12 @@ func TestMainFunction(t *testing.T) {
 
 	// Verify all entities were seeded
 	var eqCount, fCount, exCount, relCount, gCount, mCount int64
-	database.DB.Model(&models.EquipmentEntity{}).Count(&eqCount)
-	database.DB.Model(&models.FulfillmentEntity{}).Count(&fCount)
-	database.DB.Model(&models.ExerciseEntity{}).Count(&exCount)
-	database.DB.Model(&models.ExerciseRelationshipEntity{}).Count(&relCount)
-	database.DB.Model(&models.ExerciseGroupEntity{}).Count(&gCount)
-	database.DB.Model(&models.ExerciseGroupMemberEntity{}).Count(&mCount)
+	database.DB.Model(&compEquipment.EquipmentEntity{}).Count(&eqCount)
+	database.DB.Model(&compFulfillment.FulfillmentEntity{}).Count(&fCount)
+	database.DB.Model(&compExercise.ExerciseEntity{}).Count(&exCount)
+	database.DB.Model(&compRelationship.ExerciseRelationshipEntity{}).Count(&relCount)
+	database.DB.Model(&compGroup.ExerciseGroupEntity{}).Count(&gCount)
+	database.DB.Model(&compGroup.ExerciseGroupMemberEntity{}).Count(&mCount)
 
 	if eqCount != 1 || fCount != 1 || exCount != 1 || relCount != 1 || gCount != 1 || mCount != 1 {
 		t.Errorf("counts: eq=%d f=%d ex=%d rel=%d g=%d m=%d", eqCount, fCount, exCount, relCount, gCount, mCount)
@@ -118,8 +122,8 @@ func TestMainFunction(t *testing.T) {
 
 	// Verify history entries were created
 	var eqHistCount, exHistCount int64
-	database.DB.Model(&models.ExerciseHistoryEntity{}).Count(&exHistCount)
-	database.DB.Model(&models.EquipmentHistoryEntity{}).Count(&eqHistCount)
+	database.DB.Model(&compExercise.ExerciseHistoryEntity{}).Count(&exHistCount)
+	database.DB.Model(&compEquipment.EquipmentHistoryEntity{}).Count(&eqHistCount)
 	if exHistCount != 1 || eqHistCount != 1 {
 		t.Errorf("history counts: exerciseHistory=%d equipmentHistory=%d", exHistCount, eqHistCount)
 	}
@@ -207,19 +211,19 @@ func TestSeedEquipment(t *testing.T) {
 		}
 
 		var count int64
-		database.DB.Model(&models.EquipmentEntity{}).Count(&count)
+		database.DB.Model(&compEquipment.EquipmentEntity{}).Count(&count)
 		if count != 2 {
 			t.Errorf("expected 2, got %d", count)
 		}
 
-		var eq models.EquipmentEntity
+		var eq compEquipment.EquipmentEntity
 		database.DB.Where("template_id = ?", "barbell").First(&eq)
 		if eq.Name != "barbell" || eq.Category != "free_weights" || eq.CreatedBy != "system" {
 			t.Errorf("field mismatch: %+v", eq)
 		}
 
 		var histCount int64
-		database.DB.Model(&models.EquipmentHistoryEntity{}).Count(&histCount)
+		database.DB.Model(&compEquipment.EquipmentHistoryEntity{}).Count(&histCount)
 		if histCount != 2 {
 			t.Errorf("expected 2 equipment history entries, got %d", histCount)
 		}
@@ -284,7 +288,7 @@ func TestSeedFulfillments(t *testing.T) {
 		}
 
 		var count int64
-		database.DB.Model(&models.FulfillmentEntity{}).Count(&count)
+		database.DB.Model(&compFulfillment.FulfillmentEntity{}).Count(&count)
 		if count != 1 {
 			t.Errorf("expected 1, got %d", count)
 		}
@@ -352,29 +356,29 @@ func TestSeedExercises(t *testing.T) {
 		}
 
 		var count int64
-		database.DB.Model(&models.ExerciseEntity{}).Count(&count)
+		database.DB.Model(&compExercise.ExerciseEntity{}).Count(&count)
 		if count != 1 {
 			t.Errorf("expected 1, got %d", count)
 		}
 
 		// Verify child records
-		var ex models.ExerciseEntity
+		var ex compExercise.ExerciseEntity
 		database.DB.Where("slug = ?", "squat").First(&ex)
 		var fc, mc, pc, ic, imgc, alc, eqc int64
-		database.DB.Model(&models.ExerciseForce{}).Where("exercise_id = ?", ex.ID).Count(&fc)
-		database.DB.Model(&models.ExerciseMuscle{}).Where("exercise_id = ?", ex.ID).Count(&mc)
-		database.DB.Model(&models.ExerciseMeasurementParadigm{}).Where("exercise_id = ?", ex.ID).Count(&pc)
-		database.DB.Model(&models.ExerciseInstruction{}).Where("exercise_id = ?", ex.ID).Count(&ic)
-		database.DB.Model(&models.ExerciseImage{}).Where("exercise_id = ?", ex.ID).Count(&imgc)
-		database.DB.Model(&models.ExerciseAlternativeName{}).Where("exercise_id = ?", ex.ID).Count(&alc)
-		database.DB.Model(&models.ExerciseEquipment{}).Where("exercise_id = ?", ex.ID).Count(&eqc)
+		database.DB.Model(&compExercise.ExerciseForce{}).Where("exercise_id = ?", ex.ID).Count(&fc)
+		database.DB.Model(&compExercise.ExerciseMuscle{}).Where("exercise_id = ?", ex.ID).Count(&mc)
+		database.DB.Model(&compExercise.ExerciseMeasurementParadigm{}).Where("exercise_id = ?", ex.ID).Count(&pc)
+		database.DB.Model(&compExercise.ExerciseInstruction{}).Where("exercise_id = ?", ex.ID).Count(&ic)
+		database.DB.Model(&compExercise.ExerciseImage{}).Where("exercise_id = ?", ex.ID).Count(&imgc)
+		database.DB.Model(&compExercise.ExerciseAlternativeName{}).Where("exercise_id = ?", ex.ID).Count(&alc)
+		database.DB.Model(&compExercise.ExerciseEquipment{}).Where("exercise_id = ?", ex.ID).Count(&eqc)
 		if fc != 1 || mc != 2 || pc != 1 || ic != 2 || imgc != 1 || alc != 1 || eqc != 1 {
 			t.Errorf("child counts: forces=%d muscles=%d paradigms=%d instr=%d img=%d alt=%d eq=%d",
 				fc, mc, pc, ic, imgc, alc, eqc)
 		}
 
 		var histCount int64
-		database.DB.Model(&models.ExerciseHistoryEntity{}).Where("exercise_id = ?", ex.ID).Count(&histCount)
+		database.DB.Model(&compExercise.ExerciseHistoryEntity{}).Where("exercise_id = ?", ex.ID).Count(&histCount)
 		if histCount != 1 {
 			t.Errorf("expected 1 exercise history entry, got %d", histCount)
 		}
@@ -465,7 +469,7 @@ func TestSeedExerciseRelationships(t *testing.T) {
 		}
 
 		var count int64
-		database.DB.Model(&models.ExerciseRelationshipEntity{}).Count(&count)
+		database.DB.Model(&compRelationship.ExerciseRelationshipEntity{}).Count(&count)
 		if count != 1 {
 			t.Errorf("expected 1, got %d", count)
 		}
@@ -523,7 +527,7 @@ func TestSeedExerciseGroups(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		var g models.ExerciseGroupEntity
+		var g compGroup.ExerciseGroupEntity
 		database.DB.Where("template_id = ?", "push").First(&g)
 		if g.Name != "Push Day" || g.CreatedBy != "user" {
 			t.Errorf("field mismatch: %+v", g)
@@ -599,12 +603,12 @@ func TestSeedExerciseGroupMembers(t *testing.T) {
 		}
 
 		var count int64
-		database.DB.Model(&models.ExerciseGroupMemberEntity{}).Count(&count)
+		database.DB.Model(&compGroup.ExerciseGroupMemberEntity{}).Count(&count)
 		if count != 2 {
 			t.Errorf("expected 2, got %d", count)
 		}
 
-		var m models.ExerciseGroupMemberEntity
+		var m compGroup.ExerciseGroupMemberEntity
 		database.DB.First(&m)
 		if m.GroupTemplateID != "g1" || m.AddedBy != "user" {
 			t.Errorf("field mismatch: %+v", m)
