@@ -11,7 +11,7 @@ RUN --mount=type=cache,target=/root/.npm npm ci
 RUN npx playwright install chromium
 COPY web/ ./
 RUN npm run lint && npm run format:check
-RUN npx ng test --no-watch
+RUN npm test
 RUN npx ng build --configuration=production
 
 # Stage 2: Build + test Go
