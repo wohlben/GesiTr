@@ -68,7 +68,14 @@ RUN useradd -m app
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=go-builder --chown=app:app /app/gesitr .
+COPY --from=go-builder --chown=app:app /app/seed .
+COPY --from=go-builder --chown=app:app /app/data ./data/
+COPY --chown=app:app entrypoint.sh .
 COPY --from=e2e-tester /tmp/.e2e-passed /tmp/.e2e-passed
+RUN chmod +x entrypoint.sh && mkdir -p /app/db && chown app:app /app/db
+ENV GIN_MODE=release
+ENV DATABASE_PATH=/app/db/gesitr.db
+VOLUME /app/db
 USER app
 EXPOSE 8080
-CMD ["./gesitr"]
+ENTRYPOINT ["./entrypoint.sh"]
