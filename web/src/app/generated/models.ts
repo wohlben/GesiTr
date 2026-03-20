@@ -14,7 +14,7 @@ export interface ErrorResponse {
 }
 
 //////////
-// source: models.go
+// source: exercise.go
 
 /**
  * Exercise is the API DTO (tygo generates TypeScript from this)
@@ -89,7 +89,7 @@ export const MeasurementTime: MeasurementParadigm = 'TIME';
 export const MeasurementDistance: MeasurementParadigm = 'DISTANCE';
 
 //////////
-// source: models.go
+// source: equipment.go
 
 export interface Equipment extends BaseModel {
   name: string;
@@ -110,7 +110,7 @@ export const EquipmentCategoryFunctional: EquipmentCategory = 'functional';
 export const EquipmentCategoryOther: EquipmentCategory = 'other';
 
 //////////
-// source: models.go
+// source: exercisegroup.go
 
 export interface ExerciseGroup extends BaseModel {
   templateId: string;
@@ -125,7 +125,7 @@ export interface ExerciseGroupMember extends BaseModel {
 }
 
 //////////
-// source: models.go
+// source: relationship.go
 
 export interface ExerciseRelationship extends BaseModel {
   relationshipType: ExerciseRelationshipType;
@@ -162,7 +162,7 @@ export const ExerciseRelationshipTypeVariant: ExerciseRelationshipType = 'varian
 export const ExerciseRelationshipTypeVariation: ExerciseRelationshipType = 'variation';
 
 //////////
-// source: models.go
+// source: fulfillment.go
 
 export interface Fulfillment extends BaseModel {
   equipmentTemplateId: string;

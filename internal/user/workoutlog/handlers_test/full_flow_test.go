@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"testing"
 
-	userexercise "gesitr/internal/user/exercise"
-	"gesitr/internal/user/workout"
+	userexercisemodels "gesitr/internal/user/exercise/models"
+	workoutmodels "gesitr/internal/user/workout/models"
 	"gesitr/internal/user/workoutlog/models"
 )
 
@@ -21,7 +21,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create user exercise: status = %d, body = %s", w.Code, w.Body.String())
 	}
-	var userExercise userexercise.UserExercise
+	var userExercise userexercisemodels.UserExercise
 	json.Unmarshal(w.Body.Bytes(), &userExercise)
 
 	// 2. Create an exercise scheme for that user exercise
@@ -36,7 +36,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create scheme: status = %d, body = %s", w.Code, w.Body.String())
 	}
-	var scheme userexercise.UserExerciseScheme
+	var scheme userexercisemodels.UserExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme)
 
 	// 3. Create a second user exercise + scheme for variety
@@ -46,7 +46,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create second user exercise: status = %d", w.Code)
 	}
-	var userExercise2 userexercise.UserExercise
+	var userExercise2 userexercisemodels.UserExercise
 	json.Unmarshal(w.Body.Bytes(), &userExercise2)
 
 	w = doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
@@ -59,7 +59,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create second scheme: status = %d", w.Code)
 	}
-	var scheme2 userexercise.UserExerciseScheme
+	var scheme2 userexercisemodels.UserExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme2)
 
 	// 4. Create a workout template
@@ -69,7 +69,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create workout: status = %d", w.Code)
 	}
-	var wkt workout.Workout
+	var wkt workoutmodels.Workout
 	json.Unmarshal(w.Body.Bytes(), &wkt)
 
 	// 5. Add sections to the workout template (with restBetweenExercises)
@@ -86,7 +86,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create main section: status = %d", w.Code)
 	}
-	var mainSection workout.WorkoutSection
+	var mainSection workoutmodels.WorkoutSection
 	json.Unmarshal(w.Body.Bytes(), &mainSection)
 
 	// 6. Add exercises to the workout template sections

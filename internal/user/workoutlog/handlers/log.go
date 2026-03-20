@@ -7,7 +7,7 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
-	"gesitr/internal/user/workout"
+	workoutmodels "gesitr/internal/user/workout/models"
 	"gesitr/internal/user/workoutlog/models"
 
 	"github.com/gin-gonic/gin"
@@ -56,7 +56,7 @@ func CreateWorkoutLog(c *gin.Context) {
 	}
 
 	if dto.WorkoutID != nil {
-		var w workout.WorkoutEntity
+		var w workoutmodels.WorkoutEntity
 		if err := database.DB.First(&w, *dto.WorkoutID).Error; err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Workout not found"})
 			return

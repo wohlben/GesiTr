@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"testing"
 
-	userexercise "gesitr/internal/user/exercise"
-	"gesitr/internal/user/workout"
+	userexercisemodels "gesitr/internal/user/exercise/models"
+	workoutmodels "gesitr/internal/user/workout/models"
 	"gesitr/internal/user/workoutlog/models"
 )
 
@@ -22,7 +22,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create user exercise 1: status = %d", w.Code)
 	}
-	var userExercise1 userexercise.UserExercise
+	var userExercise1 userexercisemodels.UserExercise
 	json.Unmarshal(w.Body.Bytes(), &userExercise1)
 
 	w = doJSONLog(t, r, "POST", "/api/user/exercise-schemes", map[string]any{
@@ -36,7 +36,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create scheme 1: status = %d, body = %s", w.Code, w.Body.String())
 	}
-	var scheme1 userexercise.UserExerciseScheme
+	var scheme1 userexercisemodels.UserExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme1)
 
 	w = doJSONLog(t, r, "POST", "/api/user/exercises", map[string]any{
@@ -45,7 +45,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create user exercise 2: status = %d", w.Code)
 	}
-	var userExercise2 userexercise.UserExercise
+	var userExercise2 userexercisemodels.UserExercise
 	json.Unmarshal(w.Body.Bytes(), &userExercise2)
 
 	w = doJSONLog(t, r, "POST", "/api/user/exercise-schemes", map[string]any{
@@ -59,7 +59,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create scheme 2: status = %d, body = %s", w.Code, w.Body.String())
 	}
-	var scheme2 userexercise.UserExerciseScheme
+	var scheme2 userexercisemodels.UserExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme2)
 
 	// -- Setup: create workout template with sections and exercises --
@@ -70,7 +70,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create workout: status = %d", w.Code)
 	}
-	var wkt workout.Workout
+	var wkt workoutmodels.Workout
 	json.Unmarshal(w.Body.Bytes(), &wkt)
 
 	w = doJSONLog(t, r, "POST", "/api/user/workout-sections", map[string]any{
@@ -79,7 +79,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section: status = %d", w.Code)
 	}
-	var section workout.WorkoutSection
+	var section workoutmodels.WorkoutSection
 	json.Unmarshal(w.Body.Bytes(), &section)
 
 	w = doJSONLog(t, r, "POST", "/api/user/workout-section-exercises", map[string]any{

@@ -6,7 +6,7 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
-	userexercise "gesitr/internal/user/exercise"
+	userexercisemodels "gesitr/internal/user/exercise/models"
 	"gesitr/internal/user/workoutlog/models"
 
 	"github.com/gin-gonic/gin"
@@ -64,7 +64,7 @@ func CreateWorkoutLogExercise(c *gin.Context) {
 		return
 	}
 
-	var scheme userexercise.UserExerciseSchemeEntity
+	var scheme userexercisemodels.UserExerciseSchemeEntity
 	if err := database.DB.First(&scheme, dto.SourceExerciseSchemeID).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User exercise scheme not found"})
 		return

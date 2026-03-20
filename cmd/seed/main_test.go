@@ -7,11 +7,11 @@ import (
 	"testing"
 	"time"
 
-	compEquipment "gesitr/internal/compendium/equipment"
-	compFulfillment "gesitr/internal/compendium/equipmentfulfillment"
-	compExercise "gesitr/internal/compendium/exercise"
-	compGroup "gesitr/internal/compendium/exercisegroup"
-	compRelationship "gesitr/internal/compendium/exerciserelationship"
+	compEquipment "gesitr/internal/compendium/equipment/models"
+	compFulfillment "gesitr/internal/compendium/equipmentfulfillment/models"
+	compExercise "gesitr/internal/compendium/exercise/models"
+	compGroup "gesitr/internal/compendium/exercisegroup/models"
+	compRelationship "gesitr/internal/compendium/exerciserelationship/models"
 	"gesitr/internal/database"
 
 	"gorm.io/driver/sqlite"

@@ -7,8 +7,8 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
-	userexercise "gesitr/internal/user/exercise"
-	"gesitr/internal/user/record"
+	userexercisemodels "gesitr/internal/user/exercise/models"
+	recordmodels "gesitr/internal/user/record/models"
 	"gesitr/internal/user/workoutlog/models"
 
 	"github.com/gin-gonic/gin"
@@ -394,7 +394,7 @@ func maybeUpdateRecord(db *gorm.DB, set *models.WorkoutLogExerciseSetEntity) {
 		return
 	}
 
-	var scheme userexercise.UserExerciseSchemeEntity
+	var scheme userexercisemodels.UserExerciseSchemeEntity
 	if err := db.First(&scheme, logExercise.SourceExerciseSchemeID).Error; err != nil {
 		return
 	}
@@ -404,14 +404,14 @@ func maybeUpdateRecord(db *gorm.DB, set *models.WorkoutLogExerciseSetEntity) {
 		return
 	}
 
-	var existing record.UserRecordEntity
+	var existing recordmodels.UserRecordEntity
 	err := db.
 		Where("user_exercise_id = ? AND measurement_type = ?", scheme.UserExerciseID, logExercise.TargetMeasurementType).
 		First(&existing).Error
 
 	if err != nil {
 		// No existing record — create
-		db.Create(&record.UserRecordEntity{
+		db.Create(&recordmodels.UserRecordEntity{
 			UserExerciseID:          scheme.UserExerciseID,
 			MeasurementType:         logExercise.TargetMeasurementType,
 			RecordValue:             value,

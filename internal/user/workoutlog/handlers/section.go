@@ -6,7 +6,7 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
-	"gesitr/internal/user/workout"
+	workoutmodels "gesitr/internal/user/workout/models"
 	"gesitr/internal/user/workoutlog/models"
 
 	"github.com/gin-gonic/gin"
@@ -90,10 +90,10 @@ func UpdateWorkoutLogSection(c *gin.Context) {
 	}
 
 	var patch struct {
-		Type                 *workout.WorkoutSectionType `json:"type"`
-		Label                *string                     `json:"label"`
-		RestBetweenExercises *int                        `json:"restBetweenExercises"`
-		Position             *int                        `json:"position"`
+		Type                 *workoutmodels.WorkoutSectionType `json:"type"`
+		Label                *string                           `json:"label"`
+		RestBetweenExercises *int                              `json:"restBetweenExercises"`
+		Position             *int                              `json:"position"`
 	}
 	if err := c.ShouldBindJSON(&patch); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

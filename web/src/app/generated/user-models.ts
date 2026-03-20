@@ -14,7 +14,7 @@ export interface ErrorResponse {
 }
 
 //////////
-// source: models.go
+// source: exercise.go
 
 export interface UserExercise extends BaseModel {
   owner: string;
@@ -40,7 +40,7 @@ export interface UserExerciseScheme extends BaseModel {
 }
 
 //////////
-// source: models.go
+// source: workout.go
 
 export interface Workout extends BaseModel {
   owner: string;
@@ -66,39 +66,8 @@ export interface WorkoutSectionExercise extends BaseModel {
 }
 
 //////////
-// source: item_status.go
+// source: exercise.go
 
-export type WorkoutLogItemStatus = string;
-export const WorkoutLogItemStatusPlanning: WorkoutLogItemStatus = 'planning';
-export const WorkoutLogItemStatusInProgress: WorkoutLogItemStatus = 'in_progress';
-export const WorkoutLogItemStatusFinished: WorkoutLogItemStatus = 'finished';
-export const WorkoutLogItemStatusSkipped: WorkoutLogItemStatus = 'skipped';
-export const WorkoutLogItemStatusPartiallyFinished: WorkoutLogItemStatus = 'partially_finished';
-export const WorkoutLogItemStatusAborted: WorkoutLogItemStatus = 'aborted';
-
-//////////
-// source: models.go
-
-export interface WorkoutLog extends BaseModel {
-  owner: string;
-  workoutId?: number /* uint */;
-  name: string;
-  notes?: string;
-  date?: string;
-  status: WorkoutLogStatus;
-  statusChangedAt?: string;
-  sections: WorkoutLogSection[];
-}
-export interface WorkoutLogSection extends BaseModel {
-  workoutLogId: number /* uint */;
-  type: WorkoutSectionType;
-  label?: string;
-  position: number /* int */;
-  restBetweenExercises?: number /* int */;
-  status: WorkoutLogItemStatus;
-  statusChangedAt?: string;
-  exercises: WorkoutLogExercise[];
-}
 export interface WorkoutLogExercise extends BaseModel {
   workoutLogSectionId: number /* uint */;
   workoutLogId: number /* uint */;
@@ -114,6 +83,49 @@ export interface WorkoutLogExercise extends BaseModel {
   targetTimePerRep?: number /* int */;
   sets: WorkoutLogExerciseSet[];
 }
+
+//////////
+// source: item_status.go
+
+export type WorkoutLogItemStatus = string;
+export const WorkoutLogItemStatusPlanning: WorkoutLogItemStatus = 'planning';
+export const WorkoutLogItemStatusInProgress: WorkoutLogItemStatus = 'in_progress';
+export const WorkoutLogItemStatusFinished: WorkoutLogItemStatus = 'finished';
+export const WorkoutLogItemStatusSkipped: WorkoutLogItemStatus = 'skipped';
+export const WorkoutLogItemStatusPartiallyFinished: WorkoutLogItemStatus = 'partially_finished';
+export const WorkoutLogItemStatusAborted: WorkoutLogItemStatus = 'aborted';
+
+//////////
+// source: log.go
+
+export interface WorkoutLog extends BaseModel {
+  owner: string;
+  workoutId?: number /* uint */;
+  name: string;
+  notes?: string;
+  date?: string;
+  status: WorkoutLogStatus;
+  statusChangedAt?: string;
+  sections: WorkoutLogSection[];
+}
+
+//////////
+// source: section.go
+
+export interface WorkoutLogSection extends BaseModel {
+  workoutLogId: number /* uint */;
+  type: WorkoutSectionType;
+  label?: string;
+  position: number /* int */;
+  restBetweenExercises?: number /* int */;
+  status: WorkoutLogItemStatus;
+  statusChangedAt?: string;
+  exercises: WorkoutLogExercise[];
+}
+
+//////////
+// source: set.go
+
 export interface WorkoutLogExerciseSet extends BaseModel {
   workoutLogExerciseId: number /* uint */;
   workoutLogId: number /* uint */;
@@ -144,7 +156,7 @@ export const WorkoutLogStatusPartiallyFinished: WorkoutLogStatus = 'partially_fi
 export const WorkoutLogStatusAborted: WorkoutLogStatus = 'aborted';
 
 //////////
-// source: models.go
+// source: record.go
 
 export interface UserRecord extends BaseModel {
   userExerciseId: number /* uint */;
