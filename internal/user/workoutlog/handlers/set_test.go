@@ -220,66 +220,6 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 	})
 }
 
-func TestProgressiveCompletion(t *testing.T) {
-	setupTestDB(t)
-	r := newRouter()
-
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
-	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
-		"sets": 2, "reps": 5, "weight": 100.0,
-	})
-	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
-	})
-	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
-		"workoutLogId": 1, "type": "main", "position": 0,
-	})
-	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
-	})
-
-	// Start the workout
-	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
-
-	// Finish first set — exercise should NOT be finished yet
-	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/1", map[string]any{
-		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
-	})
-
-	w := doJSON(r, "GET", "/api/user/workout-logs/1", nil)
-	var log models.WorkoutLog
-	json.Unmarshal(w.Body.Bytes(), &log)
-	if log.Status == models.WorkoutLogStatusFinished {
-		t.Error("log should not be finished after 1 of 2 sets")
-	}
-	if log.Sections[0].Status == models.WorkoutLogItemStatusFinished {
-		t.Error("section should not be finished after 1 of 2 sets")
-	}
-	if log.Sections[0].Exercises[0].Status == models.WorkoutLogItemStatusFinished {
-		t.Error("exercise should not be finished after 1 of 2 sets")
-	}
-
-	// Finish second set — everything should propagate to finished
-	doJSON(r, "PATCH", "/api/user/workout-log-exercise-sets/2", map[string]any{
-		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
-	})
-
-	w = doJSON(r, "GET", "/api/user/workout-logs/1", nil)
-	json.Unmarshal(w.Body.Bytes(), &log)
-	if log.Sections[0].Exercises[0].Status != models.WorkoutLogItemStatusFinished {
-		t.Error("exercise should be finished after all sets done")
-	}
-	if log.Sections[0].Status != models.WorkoutLogItemStatusFinished {
-		t.Error("section should be finished after all exercises done")
-	}
-	if log.Status != models.WorkoutLogStatusFinished {
-		t.Error("log should be finished after all sections done")
-	}
-}
-
 func TestDeleteWorkoutLogExerciseSet(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()

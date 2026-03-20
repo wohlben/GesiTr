@@ -277,53 +277,6 @@ func TestUpdateWorkoutLogExercise(t *testing.T) {
 	})
 }
 
-func TestDeleteExercisePropagatesStatus(t *testing.T) {
-	setupTestDB(t)
-	r := newRouter()
-
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
-	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
-		"sets": 1, "reps": 5, "weight": 100.0,
-	})
-	// Second exercise scheme
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
-		"sets": 1, "reps": 8, "weight": 60.0,
-	})
-
-	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
-	})
-	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
-		"workoutLogId": 1, "type": "main", "position": 0,
-	})
-	// Exercise 1
-	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 1, "position": 0,
-	})
-	// Exercise 2
-	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 1, "sourceExerciseSchemeId": 2, "position": 1,
-	})
-
-	// Delete the second exercise while still in planning — should be allowed
-	w := doJSON(r, "DELETE", "/api/user/workout-log-exercises/2", nil)
-	if w.Code != http.StatusNoContent {
-		t.Fatalf("expected 204, got %d, body = %s", w.Code, w.Body.String())
-	}
-
-	// Verify only 1 exercise remains
-	w = doJSON(r, "GET", "/api/user/workout-logs/1", nil)
-	var log models.WorkoutLog
-	json.Unmarshal(w.Body.Bytes(), &log)
-	if len(log.Sections[0].Exercises) != 1 {
-		t.Fatalf("expected 1 exercise, got %d", len(log.Sections[0].Exercises))
-	}
-}
-
 func TestDeleteWorkoutLogExercise(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()

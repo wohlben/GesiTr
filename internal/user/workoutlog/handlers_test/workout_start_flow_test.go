@@ -1,41 +1,14 @@
-package handlers
+package handlers_test
 
 import (
 	"encoding/json"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
 	userexercise "gesitr/internal/user/exercise"
 	"gesitr/internal/user/workout"
 	"gesitr/internal/user/workoutlog/models"
-
-	"github.com/gin-gonic/gin"
 )
-
-// doJSONLog wraps doJSON and logs the request body and response with pretty-printed JSON.
-func doJSONLog(t *testing.T, r *gin.Engine, method, path string, body any) *httptest.ResponseRecorder {
-	t.Helper()
-
-	if body != nil {
-		reqJSON, _ := json.MarshalIndent(body, "  ", "  ")
-		t.Logf(">>> %s %s\n  Request body:\n  %s", method, path, reqJSON)
-	} else {
-		t.Logf(">>> %s %s (no body)", method, path)
-	}
-
-	w := doJSON(r, method, path, body)
-
-	var pretty json.RawMessage
-	if err := json.Unmarshal(w.Body.Bytes(), &pretty); err == nil {
-		respJSON, _ := json.MarshalIndent(pretty, "  ", "  ")
-		t.Logf("<<< %d\n  Response body:\n  %s", w.Code, respJSON)
-	} else {
-		t.Logf("<<< %d\n  Response body (raw): %s", w.Code, w.Body.String())
-	}
-
-	return w
-}
 
 func TestWorkoutStartFlow(t *testing.T) {
 	setupTestDB(t)

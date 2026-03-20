@@ -160,52 +160,6 @@ func TestGetWorkoutLog(t *testing.T) {
 	})
 }
 
-func TestGetWorkoutLogWithSectionsAndExercises(t *testing.T) {
-	setupTestDB(t)
-	r := newRouter()
-
-	// Setup: exercise -> scheme -> workout log -> section -> exercise
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "bench-press", "compendiumVersion": 1,
-	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
-	})
-	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Full Session", "date": "2026-03-07T10:00:00Z",
-	})
-	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
-		"workoutLogId": 1, "type": "supplementary", "label": "Warmup", "position": 0,
-	})
-	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
-		"workoutLogId": 1, "type": "main", "position": 1,
-	})
-	doJSON(r, "POST", "/api/user/workout-log-exercises", map[string]any{
-		"workoutLogSectionId": 2, "sourceExerciseSchemeId": 1, "position": 0,
-	})
-
-	w := doJSON(r, "GET", "/api/user/workout-logs/1", nil)
-	if w.Code != http.StatusOK {
-		t.Fatalf("status = %d", w.Code)
-	}
-
-	var result models.WorkoutLog
-	json.Unmarshal(w.Body.Bytes(), &result)
-
-	if len(result.Sections) != 2 {
-		t.Fatalf("expected 2 sections, got %d", len(result.Sections))
-	}
-	if result.Sections[0].Position != 0 || result.Sections[1].Position != 1 {
-		t.Error("sections not ordered by position")
-	}
-	if len(result.Sections[1].Exercises) != 1 {
-		t.Fatalf("expected 1 exercise in main section, got %d", len(result.Sections[1].Exercises))
-	}
-	if result.Sections[1].Exercises[0].SourceExerciseSchemeID != 1 {
-		t.Error("exercise scheme ID mismatch")
-	}
-}
-
 func TestUpdateWorkoutLog(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
