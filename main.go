@@ -19,6 +19,8 @@ import (
 	compRelationshipHandlers "gesitr/internal/compendium/exerciserelationship/handlers"
 	compRelationshipModels "gesitr/internal/compendium/exerciserelationship/models"
 	"gesitr/internal/database"
+	userEquipmentHandlers "gesitr/internal/user/equipment/handlers"
+	userEquipmentModels "gesitr/internal/user/equipment/models"
 	userExerciseHandlers "gesitr/internal/user/exercise/handlers"
 	userExerciseModels "gesitr/internal/user/exercise/models"
 	recordHandlers "gesitr/internal/user/record/handlers"
@@ -52,8 +54,8 @@ func autoMigrate() {
 		&compExerciseModels.ExerciseHistoryEntity{},
 		&compEquipmentModels.EquipmentHistoryEntity{},
 		&userExerciseModels.UserExerciseEntity{},
-		&userExerciseModels.UserEquipmentEntity{},
 		&userExerciseModels.UserExerciseSchemeEntity{},
+		&userEquipmentModels.UserEquipmentEntity{},
 		&workoutModels.WorkoutEntity{},
 		&workoutModels.WorkoutSectionEntity{},
 		&workoutModels.WorkoutSectionExerciseEntity{},
@@ -133,10 +135,10 @@ func setupRoutes(r *gin.Engine) {
 
 	userEquipment := user.Group("/equipment")
 	{
-		userEquipment.GET("", userExerciseHandlers.ListUserEquipment)
-		userEquipment.POST("", userExerciseHandlers.CreateUserEquipment)
-		userEquipment.GET("/:id", userExerciseHandlers.GetUserEquipment)
-		userEquipment.DELETE("/:id", userExerciseHandlers.DeleteUserEquipment)
+		userEquipment.GET("", userEquipmentHandlers.ListUserEquipment)
+		userEquipment.POST("", userEquipmentHandlers.CreateUserEquipment)
+		userEquipment.GET("/:id", userEquipmentHandlers.GetUserEquipment)
+		userEquipment.DELETE("/:id", userEquipmentHandlers.DeleteUserEquipment)
 	}
 
 	userExerciseSchemes := user.Group("/exercise-schemes")

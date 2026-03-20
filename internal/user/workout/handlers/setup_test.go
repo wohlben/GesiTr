@@ -10,6 +10,7 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
+	userequipmentmodels "gesitr/internal/user/equipment/models"
 	userexercisehandlers "gesitr/internal/user/exercise/handlers"
 	userexercisemodels "gesitr/internal/user/exercise/models"
 	"gesitr/internal/user/workout/models"
@@ -34,8 +35,8 @@ func setupTestDB(t *testing.T) {
 	}
 	db.AutoMigrate(
 		&userexercisemodels.UserExerciseEntity{},
-		&userexercisemodels.UserEquipmentEntity{},
 		&userexercisemodels.UserExerciseSchemeEntity{},
+		&userequipmentmodels.UserEquipmentEntity{},
 		&models.WorkoutEntity{},
 		&models.WorkoutSectionEntity{},
 		&models.WorkoutSectionExerciseEntity{},

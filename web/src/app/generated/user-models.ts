@@ -21,11 +21,6 @@ export interface UserExercise extends BaseModel {
   compendiumExerciseId: string;
   compendiumVersion: number /* int */;
 }
-export interface UserEquipment extends BaseModel {
-  owner: string;
-  compendiumEquipmentId: string;
-  compendiumVersion: number /* int */;
-}
 export interface UserExerciseScheme extends BaseModel {
   userExerciseId: number /* uint */;
   measurementType: string;
@@ -37,6 +32,15 @@ export interface UserExerciseScheme extends BaseModel {
   duration?: number /* int */;
   distance?: number /* float64 */;
   targetTime?: number /* int */;
+}
+
+//////////
+// source: equipment.go
+
+export interface UserEquipment extends BaseModel {
+  owner: string;
+  compendiumEquipmentId: string;
+  compendiumVersion: number /* int */;
 }
 
 //////////

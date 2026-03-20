@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"gesitr/internal/user/exercise/models"
+	"gesitr/internal/user/equipment/models"
 )
 
 func TestListUserEquipment(t *testing.T) {

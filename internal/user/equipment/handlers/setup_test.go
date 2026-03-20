@@ -10,7 +10,7 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
-	"gesitr/internal/user/exercise/models"
+	"gesitr/internal/user/equipment/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
@@ -31,8 +31,7 @@ func setupTestDB(t *testing.T) {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
-		&models.UserExerciseEntity{},
-		&models.UserExerciseSchemeEntity{},
+		&models.UserEquipmentEntity{},
 	)
 	database.DB = db
 }
@@ -42,18 +41,11 @@ func newRouter() *gin.Engine {
 	api := r.Group("/api/user")
 	api.Use(auth.UserID())
 
-	exercises := api.Group("/exercises")
-	exercises.GET("", ListUserExercises)
-	exercises.POST("", CreateUserExercise)
-	exercises.GET("/:id", GetUserExercise)
-	exercises.DELETE("/:id", DeleteUserExercise)
-
-	schemes := api.Group("/exercise-schemes")
-	schemes.GET("", ListUserExerciseSchemes)
-	schemes.POST("", CreateUserExerciseScheme)
-	schemes.GET("/:id", GetUserExerciseScheme)
-	schemes.PUT("/:id", UpdateUserExerciseScheme)
-	schemes.DELETE("/:id", DeleteUserExerciseScheme)
+	equipment := api.Group("/equipment")
+	equipment.GET("", ListUserEquipment)
+	equipment.POST("", CreateUserEquipment)
+	equipment.GET("/:id", GetUserEquipment)
+	equipment.DELETE("/:id", DeleteUserEquipment)
 
 	return r
 }

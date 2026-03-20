@@ -48,6 +48,13 @@ packages:
       "gorm.DeletedAt": "string | null"
     include_files:
       - "exercise.go"
+  - path: "gesitr/internal/user/equipment/models"
+    output_path: "web/src/app/generated/user-equipment.ts"
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+    include_files:
+      - "equipment.go"
   - path: "gesitr/internal/user/workout/models"
     output_path: "web/src/app/generated/user-workout.ts"
     type_mappings:

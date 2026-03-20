@@ -9,13 +9,6 @@ type UserExercise struct {
 	CompendiumVersion    int    `json:"compendiumVersion"`
 }
 
-type UserEquipment struct {
-	shared.BaseModel      `tstype:",extends"`
-	Owner                 string `json:"owner"`
-	CompendiumEquipmentID string `json:"compendiumEquipmentId"`
-	CompendiumVersion     int    `json:"compendiumVersion"`
-}
-
 type UserExerciseScheme struct {
 	shared.BaseModel `tstype:",extends"`
 	UserExerciseID   uint     `json:"userExerciseId"`

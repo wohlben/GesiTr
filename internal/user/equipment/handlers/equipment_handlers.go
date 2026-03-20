@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"gesitr/internal/database"
-	"gesitr/internal/user/exercise/models"
+	"gesitr/internal/user/equipment/models"
 
 	"github.com/gin-gonic/gin"
 )

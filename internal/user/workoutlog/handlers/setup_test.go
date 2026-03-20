@@ -10,6 +10,8 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
+	userequipmenthandlers "gesitr/internal/user/equipment/handlers"
+	userequipmentmodels "gesitr/internal/user/equipment/models"
 	userexercisehandlers "gesitr/internal/user/exercise/handlers"
 	userexercisemodels "gesitr/internal/user/exercise/models"
 	recordhandlers "gesitr/internal/user/record/handlers"
@@ -38,8 +40,8 @@ func setupTestDB(t *testing.T) {
 	}
 	db.AutoMigrate(
 		&userexercisemodels.UserExerciseEntity{},
-		&userexercisemodels.UserEquipmentEntity{},
 		&userexercisemodels.UserExerciseSchemeEntity{},
+		&userequipmentmodels.UserEquipmentEntity{},
 		&workoutmodels.WorkoutEntity{},
 		&workoutmodels.WorkoutSectionEntity{},
 		&workoutmodels.WorkoutSectionExerciseEntity{},
@@ -64,10 +66,10 @@ func newRouter() *gin.Engine {
 	exercises.DELETE("/:id", userexercisehandlers.DeleteUserExercise)
 
 	equipment := api.Group("/equipment")
-	equipment.GET("", userexercisehandlers.ListUserEquipment)
-	equipment.POST("", userexercisehandlers.CreateUserEquipment)
-	equipment.GET("/:id", userexercisehandlers.GetUserEquipment)
-	equipment.DELETE("/:id", userexercisehandlers.DeleteUserEquipment)
+	equipment.GET("", userequipmenthandlers.ListUserEquipment)
+	equipment.POST("", userequipmenthandlers.CreateUserEquipment)
+	equipment.GET("/:id", userequipmenthandlers.GetUserEquipment)
+	equipment.DELETE("/:id", userequipmenthandlers.DeleteUserEquipment)
 
 	schemes := api.Group("/exercise-schemes")
 	schemes.GET("", userexercisehandlers.ListUserExerciseSchemes)
