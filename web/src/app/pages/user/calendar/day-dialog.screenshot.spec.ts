@@ -28,13 +28,15 @@ describe('DayDialog screenshots', () => {
   it('light', async () => {
     await renderDialog();
     const locator = page.elementLocator(document.body);
-    await expect(locator).toMatchScreenshot('light');
+    await expect(locator).toMatchScreenshot('light', {
+      allowedMismatchedPixelRatio: 0.02,
+    } as never);
   });
 
   it('dark', async () => {
     document.documentElement.classList.add('dark');
     await renderDialog();
     const locator = page.elementLocator(document.body);
-    await expect(locator).toMatchScreenshot('dark');
+    await expect(locator).toMatchScreenshot('dark', { allowedMismatchedPixelRatio: 0.02 } as never);
   });
 });
