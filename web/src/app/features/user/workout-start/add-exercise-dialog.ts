@@ -9,6 +9,8 @@ import { UserExerciseScheme } from '$generated/user-models';
 import { HlmComboboxImports } from '@spartan-ng/helm/combobox';
 import { HlmDialogImports } from '@spartan-ng/helm/dialog';
 import { HlmButton } from '@spartan-ng/helm/button';
+import { BrnSelectImports } from '@spartan-ng/brain/select';
+import { HlmSelectImports } from '@spartan-ng/helm/select';
 
 interface EnrichedExercise {
   id: number;
@@ -17,7 +19,14 @@ interface EnrichedExercise {
 
 @Component({
   selector: 'app-add-exercise-dialog',
-  imports: [FormsModule, HlmComboboxImports, HlmDialogImports, HlmButton],
+  imports: [
+    FormsModule,
+    HlmComboboxImports,
+    HlmDialogImports,
+    HlmButton,
+    BrnSelectImports,
+    HlmSelectImports,
+  ],
   template: `
     <hlm-dialog [state]="open() ? 'open' : 'closed'" (closed)="onCancel()">
       <ng-template hlmDialogPortal>
@@ -98,17 +107,21 @@ interface EnrichedExercise {
               <!-- Scheme editor (shown when no schemes or custom selected) -->
               @if (editingScheme() || schemesQuery.data()?.length === 0) {
                 <div class="space-y-3">
-                  <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                    Measurement Type
-                    <select
-                      [(ngModel)]="schemeMeasurementType"
-                      class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm shadow-sm dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+                  <div>
+                    <span class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                      >Measurement Type</span
                     >
-                      <option value="REP_BASED">Rep Based</option>
-                      <option value="TIME_BASED">Time Based</option>
-                      <option value="DISTANCE_BASED">Distance Based</option>
-                    </select>
-                  </label>
+                    <brn-select [(ngModel)]="schemeMeasurementType" class="mt-1" hlm>
+                      <hlm-select-trigger class="w-full">
+                        <hlm-select-value />
+                      </hlm-select-trigger>
+                      <hlm-select-content>
+                        <hlm-option value="REP_BASED">Rep Based</hlm-option>
+                        <hlm-option value="TIME_BASED">Time Based</hlm-option>
+                        <hlm-option value="DISTANCE_BASED">Distance Based</hlm-option>
+                      </hlm-select-content>
+                    </brn-select>
+                  </div>
 
                   @if (schemeMeasurementType === 'REP_BASED') {
                     <div class="grid grid-cols-2 gap-2">

@@ -19,6 +19,10 @@ import {
   UserExerciseScheme,
 } from '$generated/user-models';
 import { PageLayout } from '../../../layout/page-layout';
+import { BrnSelectImports } from '@spartan-ng/brain/select';
+import { HlmSelectImports } from '@spartan-ng/helm/select';
+import { HlmInput } from '@spartan-ng/helm/input';
+import { HlmTextarea } from '@spartan-ng/helm/textarea';
 import { WorkoutStartStore, SetPreview } from './workout-start.store';
 import { AddExerciseDialog } from './add-exercise-dialog';
 
@@ -56,6 +60,10 @@ type SectionFormGroup = FormGroup<{
     CdkDropList,
     CdkDrag,
     CdkDragHandle,
+    BrnSelectImports,
+    HlmSelectImports,
+    HlmInput,
+    HlmTextarea,
   ],
   providers: [WorkoutStartStore],
   template: `
@@ -72,10 +80,11 @@ type SectionFormGroup = FormGroup<{
               >Name</label
             >
             <input
+              hlmInput
               id="name"
               formControlName="name"
               (change)="onLogChange()"
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+              class="mt-1"
             />
           </div>
 
@@ -84,11 +93,12 @@ type SectionFormGroup = FormGroup<{
               >Notes</label
             >
             <textarea
+              hlmTextarea
               id="notes"
               formControlName="notes"
               (change)="onLogChange()"
               rows="2"
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+              class="mt-1"
             ></textarea>
           </div>
 
@@ -140,23 +150,32 @@ type SectionFormGroup = FormGroup<{
                 </div>
 
                 <div class="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                    Type
-                    <select
-                      formControlName="type"
-                      (change)="onSectionChange(si)"
-                      class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                  <div>
+                    <span class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                      >Type</span
                     >
-                      <option [value]="SECTION_TYPE_MAIN">Main</option>
-                      <option [value]="SECTION_TYPE_SUPPLEMENTARY">Supplementary</option>
-                    </select>
-                  </label>
+                    <brn-select
+                      formControlName="type"
+                      (valueChange)="onSectionChange(si)"
+                      class="mt-1"
+                      hlm
+                    >
+                      <hlm-select-trigger class="w-full">
+                        <hlm-select-value />
+                      </hlm-select-trigger>
+                      <hlm-select-content>
+                        <hlm-option [value]="SECTION_TYPE_MAIN">Main</hlm-option>
+                        <hlm-option [value]="SECTION_TYPE_SUPPLEMENTARY">Supplementary</hlm-option>
+                      </hlm-select-content>
+                    </brn-select>
+                  </div>
                   <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
                     Label
                     <input
+                      hlmInput
                       formControlName="label"
                       (change)="onSectionChange(si)"
-                      class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                      class="mt-1"
                     />
                   </label>
                 </div>
@@ -270,18 +289,20 @@ type SectionFormGroup = FormGroup<{
                                 @if (info?.measurementType === 'REP_BASED') {
                                   <div>
                                     <input
+                                      hlmInput
                                       type="number"
                                       formControlName="targetReps"
                                       (change)="onSetChange(si, ei, setIdx)"
-                                      class="w-16 rounded border border-gray-300 px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                                      class="mt-1"
                                     />
                                   </div>
                                   <div>
                                     <input
+                                      hlmInput
                                       type="number"
                                       formControlName="targetWeight"
                                       (change)="onSetChange(si, ei, setIdx)"
-                                      class="w-20 rounded border border-gray-300 px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                                      class="mt-1"
                                       step="0.5"
                                     />
                                   </div>
@@ -289,20 +310,22 @@ type SectionFormGroup = FormGroup<{
                                 @if (info?.measurementType === 'TIME_BASED') {
                                   <div>
                                     <input
+                                      hlmInput
                                       type="number"
                                       formControlName="targetDuration"
                                       (change)="onSetChange(si, ei, setIdx)"
-                                      class="w-20 rounded border border-gray-300 px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                                      class="mt-1"
                                     />
                                   </div>
                                 }
                                 @if (info?.measurementType === 'DISTANCE_BASED') {
                                   <div>
                                     <input
+                                      hlmInput
                                       type="number"
                                       formControlName="targetDistance"
                                       (change)="onSetChange(si, ei, setIdx)"
-                                      class="w-20 rounded border border-gray-300 px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                                      class="mt-1"
                                       step="0.1"
                                     />
                                   </div>

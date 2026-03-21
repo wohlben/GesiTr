@@ -11,10 +11,12 @@ import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { exerciseGroupKeys } from '$core/query-keys';
 import { SlugifyPipe } from '$ui/pipes/slugify';
 import { PageLayout } from '../../../layout/page-layout';
+import { HlmInput } from '@spartan-ng/helm/input';
+import { HlmTextarea } from '@spartan-ng/helm/textarea';
 
 @Component({
   selector: 'app-exercise-group-edit',
-  imports: [PageLayout, ReactiveFormsModule, RouterLink],
+  imports: [PageLayout, ReactiveFormsModule, RouterLink, HlmInput, HlmTextarea],
   template: `
     <app-page-layout
       [header]="isCreateMode() ? 'New Exercise Group' : 'Edit Exercise Group'"
@@ -29,11 +31,7 @@ import { PageLayout } from '../../../layout/page-layout';
             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >Name *</label
             >
-            <input
-              id="name"
-              formControlName="name"
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-            />
+            <input id="name" formControlName="name" hlmInput class="mt-1" />
           </div>
 
           <div>
@@ -46,7 +44,8 @@ import { PageLayout } from '../../../layout/page-layout';
               id="description"
               formControlName="description"
               rows="4"
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+              hlmTextarea
+              class="mt-1"
             ></textarea>
           </div>
 

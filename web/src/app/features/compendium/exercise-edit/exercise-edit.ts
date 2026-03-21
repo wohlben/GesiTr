@@ -11,6 +11,10 @@ import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { exerciseKeys } from '$core/query-keys';
 import { SlugifyPipe } from '$ui/pipes/slugify';
 import { PageLayout } from '../../../layout/page-layout';
+import { BrnSelectImports } from '@spartan-ng/brain/select';
+import { HlmSelectImports } from '@spartan-ng/helm/select';
+import { HlmInput } from '@spartan-ng/helm/input';
+import { HlmTextarea } from '@spartan-ng/helm/textarea';
 import {
   ExerciseType,
   ExerciseTypeStrength,
@@ -118,7 +122,15 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
 
 @Component({
   selector: 'app-exercise-edit',
-  imports: [PageLayout, ReactiveFormsModule, RouterLink],
+  imports: [
+    PageLayout,
+    ReactiveFormsModule,
+    RouterLink,
+    BrnSelectImports,
+    HlmSelectImports,
+    HlmInput,
+    HlmTextarea,
+  ],
   template: `
     <app-page-layout
       [header]="isCreateMode() ? 'New Exercise' : 'Edit Exercise'"
@@ -133,11 +145,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >Name *</label
             >
-            <input
-              id="name"
-              formControlName="name"
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-            />
+            <input hlmInput id="name" formControlName="name" class="mt-1" />
           </div>
 
           <div>
@@ -147,10 +155,11 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
               >Description</label
             >
             <textarea
+              hlmTextarea
               id="description"
               formControlName="description"
               rows="3"
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+              class="mt-1"
             ></textarea>
           </div>
 
@@ -159,15 +168,16 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
               <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >Type *</label
               >
-              <select
-                id="type"
-                formControlName="type"
-                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-              >
-                @for (t of exerciseTypes; track t) {
-                  <option [value]="t">{{ t }}</option>
-                }
-              </select>
+              <brn-select formControlName="type" class="mt-1" hlm>
+                <hlm-select-trigger class="w-full">
+                  <hlm-select-value />
+                </hlm-select-trigger>
+                <hlm-select-content>
+                  @for (t of exerciseTypes; track t) {
+                    <hlm-option [value]="t">{{ t }}</hlm-option>
+                  }
+                </hlm-select-content>
+              </brn-select>
             </div>
 
             <div>
@@ -176,15 +186,16 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
                 class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >Difficulty *</label
               >
-              <select
-                id="technicalDifficulty"
-                formControlName="technicalDifficulty"
-                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-              >
-                @for (d of difficulties; track d) {
-                  <option [value]="d">{{ d }}</option>
-                }
-              </select>
+              <brn-select formControlName="technicalDifficulty" class="mt-1" hlm>
+                <hlm-select-trigger class="w-full">
+                  <hlm-select-value />
+                </hlm-select-trigger>
+                <hlm-select-content>
+                  @for (d of difficulties; track d) {
+                    <hlm-option [value]="d">{{ d }}</hlm-option>
+                  }
+                </hlm-select-content>
+              </brn-select>
             </div>
 
             <div>
@@ -194,11 +205,12 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
                 >Body Weight Scaling</label
               >
               <input
+                hlmInput
                 id="bodyWeightScaling"
                 type="number"
                 step="0.01"
                 formControlName="bodyWeightScaling"
-                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                class="mt-1"
               />
             </div>
 
@@ -208,11 +220,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
                 class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >Author Name</label
               >
-              <input
-                id="authorName"
-                formControlName="authorName"
-                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-              />
+              <input hlmInput id="authorName" formControlName="authorName" class="mt-1" />
             </div>
 
             <div class="sm:col-span-2">
@@ -221,11 +229,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
                 class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >Author URL</label
               >
-              <input
-                id="authorUrl"
-                formControlName="authorUrl"
-                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-              />
+              <input hlmInput id="authorUrl" formControlName="authorUrl" class="mt-1" />
             </div>
           </div>
 
@@ -315,10 +319,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
             <div class="mt-1 space-y-2">
               @for (ctrl of instructions.controls; track $index) {
                 <div class="flex gap-2">
-                  <input
-                    [formControl]="ctrl"
-                    class="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-                  />
+                  <input hlmInput [formControl]="ctrl" />
                   <button
                     type="button"
                     (click)="instructions.removeAt($index)"
@@ -344,10 +345,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
             <div class="mt-1 space-y-2">
               @for (ctrl of images.controls; track $index) {
                 <div class="flex gap-2">
-                  <input
-                    [formControl]="ctrl"
-                    class="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-                  />
+                  <input hlmInput [formControl]="ctrl" />
                   <button
                     type="button"
                     (click)="images.removeAt($index)"
@@ -375,10 +373,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
             <div class="mt-1 space-y-2">
               @for (ctrl of alternativeNames.controls; track $index) {
                 <div class="flex gap-2">
-                  <input
-                    [formControl]="ctrl"
-                    class="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-                  />
+                  <input hlmInput [formControl]="ctrl" />
                   <button
                     type="button"
                     (click)="alternativeNames.removeAt($index)"
@@ -406,10 +401,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
             <div class="mt-1 space-y-2">
               @for (ctrl of equipmentIds.controls; track $index) {
                 <div class="flex gap-2">
-                  <input
-                    [formControl]="ctrl"
-                    class="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-                  />
+                  <input hlmInput [formControl]="ctrl" />
                   <button
                     type="button"
                     (click)="equipmentIds.removeAt($index)"

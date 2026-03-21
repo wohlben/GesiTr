@@ -14,6 +14,10 @@ import { userExerciseKeys, exerciseKeys, workoutKeys, exerciseSchemeKeys } from 
 import { WorkoutSectionTypeMain, WorkoutSectionTypeSupplementary } from '$generated/user-models';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
+import { BrnSelectImports } from '@spartan-ng/brain/select';
+import { HlmSelectImports } from '@spartan-ng/helm/select';
+import { HlmInput } from '@spartan-ng/helm/input';
+import { HlmTextarea } from '@spartan-ng/helm/textarea';
 
 type ExerciseFormGroup = FormGroup<{
   existingSchemeId: FormControl<number | null>;
@@ -38,7 +42,16 @@ type SectionFormGroup = FormGroup<{
 
 @Component({
   selector: 'app-workout-edit',
-  imports: [PageLayout, ReactiveFormsModule, RouterLink, ConfirmDialog],
+  imports: [
+    PageLayout,
+    ReactiveFormsModule,
+    RouterLink,
+    ConfirmDialog,
+    BrnSelectImports,
+    HlmSelectImports,
+    HlmInput,
+    HlmTextarea,
+  ],
   template: `
     <app-page-layout
       [header]="isCreateMode() ? 'New Workout' : 'Edit Workout'"
@@ -54,11 +67,7 @@ type SectionFormGroup = FormGroup<{
             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >Name *</label
             >
-            <input
-              id="name"
-              formControlName="name"
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-            />
+            <input id="name" formControlName="name" hlmInput class="mt-1" />
           </div>
 
           <div>
@@ -69,7 +78,8 @@ type SectionFormGroup = FormGroup<{
               id="notes"
               formControlName="notes"
               rows="2"
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+              hlmTextarea
+              class="mt-1"
             ></textarea>
           </div>
 
@@ -94,29 +104,31 @@ type SectionFormGroup = FormGroup<{
                 </div>
 
                 <div class="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                  <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                    Type
-                    <select
-                      formControlName="type"
-                      class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                  <div>
+                    <span class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                      >Type</span
                     >
-                      <option [value]="SECTION_TYPE_MAIN">Main</option>
-                      <option [value]="SECTION_TYPE_SUPPLEMENTARY">Supplementary</option>
-                    </select>
-                  </label>
+                    <brn-select formControlName="type" class="mt-1" hlm>
+                      <hlm-select-trigger class="w-full">
+                        <hlm-select-value />
+                      </hlm-select-trigger>
+                      <hlm-select-content>
+                        <hlm-option [value]="SECTION_TYPE_MAIN">Main</hlm-option>
+                        <hlm-option [value]="SECTION_TYPE_SUPPLEMENTARY">Supplementary</hlm-option>
+                      </hlm-select-content>
+                    </brn-select>
+                  </div>
                   <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
                     Label
-                    <input
-                      formControlName="label"
-                      class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-                    />
+                    <input formControlName="label" hlmInput class="mt-1" />
                   </label>
                   <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
                     Rest Between Exercises (s)
                     <input
                       type="number"
                       formControlName="restBetweenExercises"
-                      class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                      hlmInput
+                      class="mt-1"
                     />
                   </label>
                 </div>
@@ -142,29 +154,41 @@ type SectionFormGroup = FormGroup<{
                       </div>
 
                       <div class="mb-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                          Exercise *
-                          <select
+                        <div>
+                          <span class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                            >Exercise *</span
+                          >
+                          <brn-select
                             formControlName="userExerciseId"
-                            class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                            class="mt-1"
+                            hlm
+                            placeholder="-- Select --"
                           >
-                            <option [ngValue]="null">-- Select --</option>
-                            @for (ue of enrichedUserExercises(); track ue.id) {
-                              <option [ngValue]="ue.id">{{ ue.name }}</option>
-                            }
-                          </select>
-                        </label>
-                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                          Measurement Type
-                          <select
-                            formControlName="measurementType"
-                            class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                            <hlm-select-trigger class="w-full">
+                              <hlm-select-value />
+                            </hlm-select-trigger>
+                            <hlm-select-content>
+                              @for (ue of enrichedUserExercises(); track ue.id) {
+                                <hlm-option [value]="ue.id">{{ ue.name }}</hlm-option>
+                              }
+                            </hlm-select-content>
+                          </brn-select>
+                        </div>
+                        <div>
+                          <span class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                            >Measurement Type</span
                           >
-                            <option value="REP_BASED">Rep Based</option>
-                            <option value="TIME_BASED">Time Based</option>
-                            <option value="DISTANCE_BASED">Distance Based</option>
-                          </select>
-                        </label>
+                          <brn-select formControlName="measurementType" class="mt-1" hlm>
+                            <hlm-select-trigger class="w-full">
+                              <hlm-select-value />
+                            </hlm-select-trigger>
+                            <hlm-select-content>
+                              <hlm-option value="REP_BASED">Rep Based</hlm-option>
+                              <hlm-option value="TIME_BASED">Time Based</hlm-option>
+                              <hlm-option value="DISTANCE_BASED">Distance Based</hlm-option>
+                            </hlm-select-content>
+                          </brn-select>
+                        </div>
                       </div>
 
                       <!-- REP_BASED fields -->
@@ -172,34 +196,23 @@ type SectionFormGroup = FormGroup<{
                         <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
                           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
                             Sets
-                            <input
-                              type="number"
-                              formControlName="sets"
-                              class="mt-1 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-                            />
+                            <input type="number" formControlName="sets" hlmInput class="mt-1" />
                           </label>
                           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
                             Reps
-                            <input
-                              type="number"
-                              formControlName="reps"
-                              class="mt-1 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-                            />
+                            <input type="number" formControlName="reps" hlmInput class="mt-1" />
                           </label>
                           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
                             Weight (kg)
-                            <input
-                              type="number"
-                              formControlName="weight"
-                              class="mt-1 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-                            />
+                            <input type="number" formControlName="weight" hlmInput class="mt-1" />
                           </label>
                           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
                             Rest (s)
                             <input
                               type="number"
                               formControlName="restBetweenSets"
-                              class="mt-1 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                              hlmInput
+                              class="mt-1"
                             />
                           </label>
                         </div>
@@ -210,18 +223,15 @@ type SectionFormGroup = FormGroup<{
                         <div class="grid grid-cols-2 gap-2">
                           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
                             Duration (s)
-                            <input
-                              type="number"
-                              formControlName="duration"
-                              class="mt-1 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-                            />
+                            <input type="number" formControlName="duration" hlmInput class="mt-1" />
                           </label>
                           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
                             Time Per Rep (s)
                             <input
                               type="number"
                               formControlName="timePerRep"
-                              class="mt-1 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                              hlmInput
+                              class="mt-1"
                             />
                           </label>
                         </div>
@@ -232,18 +242,15 @@ type SectionFormGroup = FormGroup<{
                         <div class="grid grid-cols-2 gap-2">
                           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
                             Distance (m)
-                            <input
-                              type="number"
-                              formControlName="distance"
-                              class="mt-1 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-                            />
+                            <input type="number" formControlName="distance" hlmInput class="mt-1" />
                           </label>
                           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
                             Target Time (s)
                             <input
                               type="number"
                               formControlName="targetTime"
-                              class="mt-1 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                              hlmInput
+                              class="mt-1"
                             />
                           </label>
                         </div>

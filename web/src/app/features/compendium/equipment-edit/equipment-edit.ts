@@ -11,6 +11,10 @@ import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { equipmentKeys } from '$core/query-keys';
 import { SlugifyPipe } from '$ui/pipes/slugify';
 import { PageLayout } from '../../../layout/page-layout';
+import { BrnSelectImports } from '@spartan-ng/brain/select';
+import { HlmSelectImports } from '@spartan-ng/helm/select';
+import { HlmInput } from '@spartan-ng/helm/input';
+import { HlmTextarea } from '@spartan-ng/helm/textarea';
 import {
   EquipmentCategory,
   EquipmentCategoryFreeWeights,
@@ -32,7 +36,15 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
 
 @Component({
   selector: 'app-equipment-edit',
-  imports: [PageLayout, ReactiveFormsModule, RouterLink],
+  imports: [
+    PageLayout,
+    ReactiveFormsModule,
+    RouterLink,
+    BrnSelectImports,
+    HlmSelectImports,
+    HlmInput,
+    HlmTextarea,
+  ],
   template: `
     <app-page-layout
       [header]="isCreateMode() ? 'New Equipment' : 'Edit Equipment'"
@@ -47,11 +59,7 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >Name *</label
             >
-            <input
-              id="name"
-              formControlName="name"
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-            />
+            <input id="name" formControlName="name" hlmInput class="mt-1" />
           </div>
 
           <div>
@@ -60,11 +68,7 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
               class="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >Display Name *</label
             >
-            <input
-              id="displayName"
-              formControlName="displayName"
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-            />
+            <input id="displayName" formControlName="displayName" hlmInput class="mt-1" />
           </div>
 
           <div>
@@ -77,7 +81,8 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
               id="description"
               formControlName="description"
               rows="4"
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+              hlmTextarea
+              class="mt-1"
             ></textarea>
           </div>
 
@@ -85,26 +90,23 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
             <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >Category *</label
             >
-            <select
-              id="category"
-              formControlName="category"
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-            >
-              @for (cat of categories; track cat) {
-                <option [value]="cat">{{ cat }}</option>
-              }
-            </select>
+            <brn-select formControlName="category" class="mt-1" hlm>
+              <hlm-select-trigger class="w-full">
+                <hlm-select-value />
+              </hlm-select-trigger>
+              <hlm-select-content>
+                @for (cat of categories; track cat) {
+                  <hlm-option [value]="cat">{{ cat }}</hlm-option>
+                }
+              </hlm-select-content>
+            </brn-select>
           </div>
 
           <div>
             <label for="imageUrl" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >Image URL</label
             >
-            <input
-              id="imageUrl"
-              formControlName="imageUrl"
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-            />
+            <input id="imageUrl" formControlName="imageUrl" hlmInput class="mt-1" />
           </div>
 
           <div class="flex gap-2">
