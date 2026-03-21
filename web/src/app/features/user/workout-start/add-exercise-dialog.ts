@@ -1,13 +1,4 @@
-import {
-  Component,
-  HostListener,
-  inject,
-  input,
-  output,
-  signal,
-  computed,
-  effect,
-} from '@angular/core';
+import { Component, inject, input, output, signal, computed, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { injectQueries } from '@tanstack/angular-query-experimental/inject-queries-experimental';
@@ -16,6 +7,8 @@ import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { userExerciseKeys, exerciseKeys, exerciseSchemeKeys } from '$core/query-keys';
 import { UserExerciseScheme } from '$generated/user-models';
 import { HlmComboboxImports } from '@spartan-ng/helm/combobox';
+import { HlmDialogImports } from '@spartan-ng/helm/dialog';
+import { HlmButton } from '@spartan-ng/helm/button';
 
 interface EnrichedExercise {
   id: number;
@@ -24,22 +17,14 @@ interface EnrichedExercise {
 
 @Component({
   selector: 'app-add-exercise-dialog',
-  imports: [FormsModule, HlmComboboxImports],
+  imports: [FormsModule, HlmComboboxImports, HlmDialogImports, HlmButton],
   template: `
-    @if (open()) {
-      <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
-      <div
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-        (click)="onCancel()"
-      >
-        <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events -->
-        <div
-          class="mx-4 w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800"
-          (click)="$event.stopPropagation()"
-          role="dialog"
-          aria-modal="true"
-        >
-          <h3 class="mb-4 text-lg font-medium text-gray-900 dark:text-gray-100">Add Exercise</h3>
+    <hlm-dialog [state]="open() ? 'open' : 'closed'" (closed)="onCancel()">
+      <ng-template hlmDialogPortal>
+        <hlm-dialog-content [showCloseButton]="false">
+          <hlm-dialog-header>
+            <h3 hlmDialogTitle>Add Exercise</h3>
+          </hlm-dialog-header>
 
           <!-- Step 1: Exercise search via spartan combobox -->
           @if (!selectedExerciseId()) {
@@ -211,31 +196,19 @@ interface EnrichedExercise {
           }
 
           <!-- Actions -->
-          <div class="mt-4 flex justify-end gap-2">
-            <button
-              type="button"
-              (click)="onCancel()"
-              [disabled]="isAdding()"
-              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              (click)="onAdd()"
-              [disabled]="!canAdd() || isAdding()"
-              class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-            >
+          <hlm-dialog-footer>
+            <button hlmBtn variant="outline" hlmDialogClose [disabled]="isAdding()">Cancel</button>
+            <button hlmBtn (click)="onAdd()" [disabled]="!canAdd() || isAdding()">
               @if (isAdding()) {
                 Adding...
               } @else {
                 Add
               }
             </button>
-          </div>
-        </div>
-      </div>
-    }
+          </hlm-dialog-footer>
+        </hlm-dialog-content>
+      </ng-template>
+    </hlm-dialog>
   `,
 })
 export class AddExerciseDialog {
@@ -489,12 +462,5 @@ export class AddExerciseDialog {
     this.schemeRest = null;
     this.schemeDuration = null;
     this.schemeDistance = null;
-  }
-
-  @HostListener('document:keydown.escape')
-  onEscape() {
-    if (this.open()) {
-      this.onCancel();
-    }
   }
 }

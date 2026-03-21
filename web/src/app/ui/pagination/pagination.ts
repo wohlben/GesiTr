@@ -1,38 +1,22 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, effect, inject, input, linkedSignal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatedResponse } from '$core/api-clients/paginated-response';
+import { HlmNumberedPagination } from '@spartan-ng/helm/pagination';
 
 @Component({
   selector: 'app-pagination',
+  imports: [HlmNumberedPagination],
   template: `
     @if (page(); as p) {
-      <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-        <p>
-          {{
-            p.total === 0
-              ? emptyLabel()
-              : 'Showing ' + (p.offset + 1) + '–' + (p.offset + p.items.length) + ' of ' + p.total
-          }}
-        </p>
-        @if (totalPages() > 1) {
-          <div class="flex gap-2">
-            <button
-              class="rounded border border-gray-300 px-3 py-1 disabled:opacity-50 dark:border-gray-600"
-              [disabled]="!hasPrev()"
-              (click)="prev()"
-            >
-              Previous
-            </button>
-            <button
-              class="rounded border border-gray-300 px-3 py-1 disabled:opacity-50 dark:border-gray-600"
-              [disabled]="!hasNext()"
-              (click)="next()"
-            >
-              Next
-            </button>
-          </div>
-        }
-      </div>
+      @if (p.total === 0) {
+        <p class="text-sm text-gray-500 dark:text-gray-400">{{ emptyLabel() }}</p>
+      } @else {
+        <hlm-numbered-pagination
+          [(currentPage)]="currentPage"
+          [(itemsPerPage)]="pageSize"
+          [totalItems]="p.total"
+        />
+      }
     }
   `,
 })
@@ -43,33 +27,31 @@ export class Pagination {
   page = input.required<PaginatedResponse<unknown>>();
   emptyLabel = input('No results found');
 
-  totalPages = computed(() => {
+  currentPage = linkedSignal(() => {
     const p = this.page();
-    return Math.ceil(p.total / p.limit);
+    return p.limit > 0 ? Math.floor(p.offset / p.limit) + 1 : 1;
   });
 
-  hasPrev = computed(() => this.page().offset > 0);
-  hasNext = computed(() => {
-    const p = this.page();
-    return p.offset + p.limit < p.total;
-  });
+  pageSize = linkedSignal(() => this.page().limit);
 
-  prev() {
-    const p = this.page();
-    const newOffset = Math.max(0, p.offset - p.limit);
-    this.navigate(newOffset);
-  }
+  constructor() {
+    effect(() => {
+      const newPage = this.currentPage();
+      const newSize = this.pageSize();
+      const p = this.page();
+      const expectedPage = p.limit > 0 ? Math.floor(p.offset / p.limit) + 1 : 1;
 
-  next() {
-    const p = this.page();
-    this.navigate(p.offset + p.limit);
-  }
-
-  private navigate(offset: number) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { offset: offset || null },
-      queryParamsHandling: 'merge',
+      if (newPage !== expectedPage || newSize !== p.limit) {
+        const offset = (newPage - 1) * newSize;
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {
+            offset: offset || null,
+            limit: newSize !== 50 ? newSize : null,
+          },
+          queryParamsHandling: 'merge',
+        });
+      }
     });
   }
 }

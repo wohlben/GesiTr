@@ -1,44 +1,19 @@
-import { Component, HostListener, input, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { WorkoutLog } from '$generated/user-models';
+import { HlmDialogImports } from '@spartan-ng/helm/dialog';
 
 @Component({
   selector: 'app-day-dialog',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, HlmDialogImports],
   template: `
-    @if (open()) {
-      <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
-      <div
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-        (click)="closed.emit()"
-      >
-        <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events -->
-        <div
-          class="mx-4 w-full max-w-sm rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800"
-          (click)="$event.stopPropagation()"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div class="mb-4 flex items-center justify-between">
-            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-              {{ date() | date }}
-            </h3>
-            <button
-              type="button"
-              (click)="closed.emit()"
-              class="rounded-md p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-            >
-              <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
+    <hlm-dialog [state]="open() ? 'open' : 'closed'" (closed)="closed.emit()">
+      <ng-template hlmDialogPortal>
+        <hlm-dialog-content>
+          <hlm-dialog-header>
+            <h3 hlmDialogTitle>{{ date() | date }}</h3>
+          </hlm-dialog-header>
 
           <div class="space-y-2">
             @for (log of logs(); track log.id) {
@@ -59,9 +34,9 @@ import { WorkoutLog } from '$generated/user-models';
               </a>
             }
           </div>
-        </div>
-      </div>
-    }
+        </hlm-dialog-content>
+      </ng-template>
+    </hlm-dialog>
   `,
 })
 export class DayDialog {
@@ -70,13 +45,6 @@ export class DayDialog {
   logs = input<WorkoutLog[]>([]);
 
   closed = output();
-
-  @HostListener('document:keydown.escape')
-  onEscape() {
-    if (this.open()) {
-      this.closed.emit();
-    }
-  }
 
   statusClass(status: string): string {
     switch (status) {

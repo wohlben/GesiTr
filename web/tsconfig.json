@@ -24,7 +24,10 @@
       "@spartan-ng/helm/button": ["./src/app/ui/spartan/button/src/index.ts"],
       "@spartan-ng/helm/input": ["./src/app/ui/spartan/input/src/index.ts"],
       "@spartan-ng/helm/textarea": ["./src/app/ui/spartan/textarea/src/index.ts"],
-      "@spartan-ng/helm/icon": ["./src/app/ui/spartan/icon/src/index.ts"]
+      "@spartan-ng/helm/icon": ["./src/app/ui/spartan/icon/src/index.ts"],
+      "@spartan-ng/helm/dialog": ["./src/app/ui/spartan/dialog/src/index.ts"],
+      "@spartan-ng/helm/pagination": ["./src/app/ui/spartan/pagination/src/index.ts"],
+      "@spartan-ng/helm/select": ["./src/app/ui/spartan/select/src/index.ts"]
     }
   },
   "angularCompilerOptions": {
