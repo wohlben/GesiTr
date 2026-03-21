@@ -10,45 +10,45 @@ export const routes: Routes = [
       {
         path: 'exercises/:id',
         loadComponent: () =>
-          import('$features/user/user-exercise-detail/user-exercise-detail').then(
+          import('$pages/user/user-exercise-detail/user-exercise-detail').then(
             (m) => m.UserExerciseDetail,
           ),
       },
       {
         path: 'exercises',
         loadComponent: () =>
-          import('$features/user/user-exercise-list/user-exercise-list').then(
+          import('$pages/user/user-exercise-list/user-exercise-list').then(
             (m) => m.UserExerciseList,
           ),
       },
       {
         path: 'equipment/:id',
         loadComponent: () =>
-          import('$features/user/user-equipment-detail/user-equipment-detail').then(
+          import('$pages/user/user-equipment-detail/user-equipment-detail').then(
             (m) => m.UserEquipmentDetail,
           ),
       },
       {
         path: 'equipment',
         loadComponent: () =>
-          import('$features/user/user-equipment-list/user-equipment-list').then(
+          import('$pages/user/user-equipment-list/user-equipment-list').then(
             (m) => m.UserEquipmentList,
           ),
       },
       {
         path: 'workouts/new',
         loadComponent: () =>
-          import('$features/user/workout-edit/workout-edit').then((m) => m.WorkoutEdit),
+          import('$pages/user/workout-edit/workout-edit').then((m) => m.WorkoutEdit),
       },
       {
         path: 'workouts/:id/start',
         loadComponent: () =>
-          import('$features/user/workout-start/workout-start').then((m) => m.WorkoutStart),
+          import('$pages/user/workout-start/workout-start').then((m) => m.WorkoutStart),
       },
       {
         path: 'workouts/:id/edit',
         loadComponent: () =>
-          import('$features/user/workout-edit/workout-edit').then((m) => m.WorkoutEdit),
+          import('$pages/user/workout-edit/workout-edit').then((m) => m.WorkoutEdit),
       },
       {
         path: 'workouts/:id',
@@ -57,18 +57,18 @@ export const routes: Routes = [
       {
         path: 'workout-logs/:id',
         loadComponent: () =>
-          import('$features/user/workout-log-detail/workout-log-detail').then(
+          import('$pages/user/workout-log-detail/workout-log-detail').then(
             (m) => m.WorkoutLogDetail,
           ),
       },
       {
         path: 'workouts',
         loadComponent: () =>
-          import('$features/user/workout-list/workout-list').then((m) => m.WorkoutList),
+          import('$pages/user/workout-list/workout-list').then((m) => m.WorkoutList),
       },
       {
         path: 'calendar',
-        loadComponent: () => import('$features/user/calendar/calendar').then((m) => m.Calendar),
+        loadComponent: () => import('$pages/user/calendar/calendar').then((m) => m.Calendar),
       },
     ],
   },
@@ -79,86 +79,84 @@ export const routes: Routes = [
       {
         path: 'exercises/new',
         loadComponent: () =>
-          import('$features/compendium/exercise-edit/exercise-edit').then((m) => m.ExerciseEdit),
+          import('$pages/compendium/exercise-edit/exercise-edit').then((m) => m.ExerciseEdit),
       },
       {
         path: 'exercises/:id/:slug/history',
         loadComponent: () =>
-          import('$features/compendium/exercise-history/exercise-history').then(
+          import('$pages/compendium/exercise-history/exercise-history').then(
             (m) => m.ExerciseHistory,
           ),
       },
       {
         path: 'exercises/:id/:slug/edit',
         loadComponent: () =>
-          import('$features/compendium/exercise-edit/exercise-edit').then((m) => m.ExerciseEdit),
+          import('$pages/compendium/exercise-edit/exercise-edit').then((m) => m.ExerciseEdit),
       },
       {
         path: 'exercises/:id/:slug',
         loadComponent: () =>
-          import('$features/compendium/exercise-detail/exercise-detail').then(
-            (m) => m.ExerciseDetail,
-          ),
+          import('$pages/compendium/exercise-detail/exercise-detail').then((m) => m.ExerciseDetail),
       },
       {
         path: 'exercises',
         loadComponent: () =>
-          import('$features/compendium/exercise-list/exercise-list').then((m) => m.ExerciseList),
+          import('$pages/compendium/exercise-list/exercise-list').then((m) => m.ExerciseList),
       },
       {
         path: 'equipment/new',
         loadComponent: () =>
-          import('$features/compendium/equipment-edit/equipment-edit').then((m) => m.EquipmentEdit),
+          import('$pages/compendium/equipment-edit/equipment-edit').then((m) => m.EquipmentEdit),
       },
       {
         path: 'equipment/:id/:slug/history',
         loadComponent: () =>
-          import('$features/compendium/equipment-history/equipment-history').then(
+          import('$pages/compendium/equipment-history/equipment-history').then(
             (m) => m.EquipmentHistory,
           ),
       },
       {
         path: 'equipment/:id/:slug/edit',
         loadComponent: () =>
-          import('$features/compendium/equipment-edit/equipment-edit').then((m) => m.EquipmentEdit),
+          import('$pages/compendium/equipment-edit/equipment-edit').then((m) => m.EquipmentEdit),
       },
       {
         path: 'equipment/:id/:slug',
         loadComponent: () =>
-          import('$features/compendium/equipment-detail/equipment-detail').then(
+          import('$pages/compendium/equipment-detail/equipment-detail').then(
             (m) => m.EquipmentDetail,
           ),
       },
       {
         path: 'equipment',
         loadComponent: () =>
-          import('$features/compendium/equipment-list/equipment-list').then((m) => m.EquipmentList),
+          import('$pages/compendium/equipment-list/equipment-list').then((m) => m.EquipmentList),
       },
       {
         path: 'exercise-groups/new',
         loadComponent: () =>
-          import('$features/compendium/exercise-group-edit/exercise-group-edit').then(
+          import('$pages/compendium/exercise-group-edit/exercise-group-edit').then(
             (m) => m.ExerciseGroupEdit,
           ),
       },
       {
         path: 'exercise-groups/:id/:slug/edit',
         loadComponent: () =>
-          import('$features/compendium/exercise-group-edit/exercise-group-edit').then(
+          import('$pages/compendium/exercise-group-edit/exercise-group-edit').then(
             (m) => m.ExerciseGroupEdit,
           ),
       },
       {
         path: 'exercise-groups/:id/:slug',
         loadComponent: () =>
-          import('$features/compendium/exercise-group-detail/exercise-group-detail').then(
+          import('$pages/compendium/exercise-group-detail/exercise-group-detail').then(
             (m) => m.ExerciseGroupDetail,
           ),
       },
       {
         path: 'exercise-groups',
         loadComponent: () =>
-          import('$features/compendium/exercise-group-list/exercise-group-list').then(
+          import('$pages/compendium/exercise-group-list/exercise-group-list').then(
             (m) => m.ExerciseGroupList,
           ),
       },

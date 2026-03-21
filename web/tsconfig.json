@@ -16,6 +16,7 @@
     "paths": {
       "$core/*": ["src/app/core/*"],
       "$features/*": ["src/app/features/*"],
+      "$pages/*": ["src/app/pages/*"],
       "$ui/*": ["src/app/ui/*"],
       "$generated/*": ["src/app/generated/*"],
       "@spartan-ng/helm/combobox": ["./src/app/ui/spartan/combobox/src/index.ts"],

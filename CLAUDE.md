@@ -60,7 +60,8 @@ make docker
 
 Path aliases defined in `tsconfig.json`:
 - `$core/*` → `src/app/core/*` — API clients, query keys
-- `$features/*` → `src/app/features/*` — feature pages (compendium/, user/)
+- `$features/*` → `src/app/features/*` — cross-cutting feature modules
+- `$pages/*` → `src/app/pages/*` — routed page components (compendium/, user/)
 - `$ui/*` → `src/app/ui/*` — reusable components
 - `$generated/*` → `src/app/generated/*` — auto-generated TypeScript types from Go
 
