@@ -34,6 +34,15 @@ export interface ViewItemBreak {
 
 export type ViewItem = ViewItemHeader | ViewItemSet | ViewItemBreak;
 
+export interface SetCompletionPayload {
+  setId: number;
+  actualReps?: number;
+  actualWeight?: number;
+  actualDuration?: number;
+  actualDistance?: number;
+  actualTime?: number;
+}
+
 @Pipe({ name: 'asHeader' })
 export class AsHeaderPipe implements PipeTransform {
   transform(item: ViewItem): ViewItemHeader | undefined {

@@ -21,7 +21,7 @@ func preloadWorkoutLog(db *gorm.DB) *gorm.DB {
 		return db.Order("position")
 	}).Preload("Sections.Exercises.Sets", func(db *gorm.DB) *gorm.DB {
 		return db.Order("set_number")
-	})
+	}).Preload("Sections.Exercises.Sets.ExerciseLog")
 }
 
 func ListWorkoutLogs(c *gin.Context) {

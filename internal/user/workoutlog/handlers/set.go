@@ -8,7 +8,8 @@ import (
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	userexercisemodels "gesitr/internal/user/exercise/models"
-	recordmodels "gesitr/internal/user/record/models"
+	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
+	exerciselogmodels "gesitr/internal/user/exerciselog/models"
 	"gesitr/internal/user/workoutlog/models"
 
 	"github.com/gin-gonic/gin"
@@ -34,7 +35,7 @@ func ListWorkoutLogExerciseSets(c *gin.Context) {
 	}
 
 	var entities []models.WorkoutLogExerciseSetEntity
-	if err := db.Order("set_number").Find(&entities).Error; err != nil {
+	if err := db.Preload("ExerciseLog").Order("set_number").Find(&entities).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -113,6 +114,8 @@ func UpdateWorkoutLogExerciseSet(c *gin.Context) {
 		return
 	}
 
+	transitionToFinished := false
+
 	// Status transition: validate against the state machine
 	if patch.Status != "" && patch.Status != existing.Status {
 		if err := existing.Status.TransitionTo(patch.Status); err != nil {
@@ -122,6 +125,9 @@ func UpdateWorkoutLogExerciseSet(c *gin.Context) {
 		now := time.Now()
 		existing.Status = patch.Status
 		existing.StatusChangedAt = &now
+		if patch.Status == models.WorkoutLogItemStatusFinished {
+			transitionToFinished = true
+		}
 	}
 
 	// Update target fields when provided
@@ -141,34 +147,24 @@ func UpdateWorkoutLogExerciseSet(c *gin.Context) {
 		existing.TargetTime = patch.TargetTime
 	}
 
-	// Update actual fields when provided
-	if patch.ActualReps != nil {
-		existing.ActualReps = patch.ActualReps
-	}
-	if patch.ActualWeight != nil {
-		existing.ActualWeight = patch.ActualWeight
-	}
-	if patch.ActualDuration != nil {
-		existing.ActualDuration = patch.ActualDuration
-	}
-	if patch.ActualDistance != nil {
-		existing.ActualDistance = patch.ActualDistance
-	}
-	if patch.ActualTime != nil {
-		existing.ActualTime = patch.ActualTime
-	}
-
 	if patch.BreakAfterSeconds != nil {
 		existing.BreakAfterSeconds = patch.BreakAfterSeconds
 	}
+
+	hasActuals := patch.ActualReps != nil || patch.ActualWeight != nil ||
+		patch.ActualDuration != nil || patch.ActualDistance != nil || patch.ActualTime != nil
 
 	err := database.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Save(&existing).Error; err != nil {
 			return err
 		}
-		if existing.Status == models.WorkoutLogItemStatusFinished {
-			maybeUpdateRecord(tx, &existing)
+
+		if transitionToFinished || (existing.Status == models.WorkoutLogItemStatusFinished && hasActuals) {
+			if err := createOrUpdateExerciseLog(tx, &existing, patch.ActualReps, patch.ActualWeight, patch.ActualDuration, patch.ActualDistance, patch.ActualTime); err != nil {
+				return err
+			}
 		}
+
 		return propagateStatus(tx, existing.WorkoutLogExerciseID)
 	})
 	if err != nil {
@@ -176,7 +172,77 @@ func UpdateWorkoutLogExerciseSet(c *gin.Context) {
 		return
 	}
 
+	// Reload with ExerciseLog preloaded
+	database.DB.Preload("ExerciseLog").First(&existing, existing.ID)
 	c.JSON(http.StatusOK, existing.ToDTO())
+}
+
+func createOrUpdateExerciseLog(db *gorm.DB, set *models.WorkoutLogExerciseSetEntity, reps *int, weight *float64, duration *int, distance *float64, tm *int) error {
+	var logExercise models.WorkoutLogExerciseEntity
+	if err := db.First(&logExercise, set.WorkoutLogExerciseID).Error; err != nil {
+		return err
+	}
+
+	var scheme userexercisemodels.UserExerciseSchemeEntity
+	if err := db.First(&scheme, logExercise.SourceExerciseSchemeID).Error; err != nil {
+		return err
+	}
+
+	recordValue, _ := exerciselogmodels.ComputeRecordValue(logExercise.TargetMeasurementType, reps, weight, duration, distance)
+
+	// Check if ExerciseLog already exists for this set
+	var existing exerciselogmodels.ExerciseLogEntity
+	err := db.Where("workout_log_exercise_set_id = ?", set.ID).First(&existing).Error
+
+	var log models.WorkoutLogEntity
+	db.Select("owner").First(&log, set.WorkoutLogID)
+
+	if err == gorm.ErrRecordNotFound {
+		schemeID := logExercise.SourceExerciseSchemeID
+		exerciseLog := exerciselogmodels.ExerciseLogEntity{
+			Owner:                   log.Owner,
+			UserExerciseID:          scheme.UserExerciseID,
+			MeasurementType:         logExercise.TargetMeasurementType,
+			Reps:                    reps,
+			Weight:                  weight,
+			Duration:                duration,
+			Distance:                distance,
+			Time:                    tm,
+			RecordValue:             recordValue,
+			PerformedAt:             time.Now(),
+			WorkoutLogExerciseSetID: &set.ID,
+			SourceExerciseSchemeID:  &schemeID,
+		}
+		if err := db.Create(&exerciseLog).Error; err != nil {
+			return err
+		}
+		return exerciseloghandlers.RecomputeRecord(db, scheme.UserExerciseID, logExercise.TargetMeasurementType)
+	} else if err != nil {
+		return err
+	}
+
+	// Update existing ExerciseLog
+	if reps != nil {
+		existing.Reps = reps
+	}
+	if weight != nil {
+		existing.Weight = weight
+	}
+	if duration != nil {
+		existing.Duration = duration
+	}
+	if distance != nil {
+		existing.Distance = distance
+	}
+	if tm != nil {
+		existing.Time = tm
+	}
+	existing.RecordValue = recordValue
+
+	if err := db.Save(&existing).Error; err != nil {
+		return err
+	}
+	return exerciseloghandlers.RecomputeRecord(db, existing.UserExerciseID, existing.MeasurementType)
 }
 
 func propagateStatus(db *gorm.DB, exerciseID uint) error {
@@ -364,77 +430,6 @@ func propagateSectionStatus(db *gorm.DB, sectionID uint) error {
 	}
 
 	return nil
-}
-
-func computeRecordValue(measurementType string, set *models.WorkoutLogExerciseSetEntity) (float64, bool) {
-	switch measurementType {
-	case "REP_BASED", "AMRAP":
-		if set.ActualReps == nil || set.ActualWeight == nil || *set.ActualWeight <= 0 {
-			return 0, false
-		}
-		return *set.ActualWeight * (1 + float64(*set.ActualReps)/30), true
-	case "TIME_BASED", "TIME", "EMOM", "ROUNDS_FOR_TIME":
-		if set.ActualDuration == nil {
-			return 0, false
-		}
-		return float64(*set.ActualDuration), true
-	case "DISTANCE_BASED", "DISTANCE":
-		if set.ActualDistance == nil {
-			return 0, false
-		}
-		return *set.ActualDistance, true
-	default:
-		return 0, false
-	}
-}
-
-func maybeUpdateRecord(db *gorm.DB, set *models.WorkoutLogExerciseSetEntity) {
-	var logExercise models.WorkoutLogExerciseEntity
-	if err := db.First(&logExercise, set.WorkoutLogExerciseID).Error; err != nil {
-		return
-	}
-
-	var scheme userexercisemodels.UserExerciseSchemeEntity
-	if err := db.First(&scheme, logExercise.SourceExerciseSchemeID).Error; err != nil {
-		return
-	}
-
-	value, ok := computeRecordValue(logExercise.TargetMeasurementType, set)
-	if !ok {
-		return
-	}
-
-	var existing recordmodels.UserRecordEntity
-	err := db.
-		Where("user_exercise_id = ? AND measurement_type = ?", scheme.UserExerciseID, logExercise.TargetMeasurementType).
-		First(&existing).Error
-
-	if err != nil {
-		// No existing record — create
-		db.Create(&recordmodels.UserRecordEntity{
-			UserExerciseID:          scheme.UserExerciseID,
-			MeasurementType:         logExercise.TargetMeasurementType,
-			RecordValue:             value,
-			ActualReps:              set.ActualReps,
-			ActualWeight:            set.ActualWeight,
-			ActualDuration:          set.ActualDuration,
-			ActualDistance:          set.ActualDistance,
-			ActualTime:              set.ActualTime,
-			WorkoutLogExerciseSetID: set.ID,
-		})
-		return
-	}
-
-	if value > existing.RecordValue {
-		existing.RecordValue = value
-		existing.ActualReps = set.ActualReps
-		existing.ActualWeight = set.ActualWeight
-		existing.ActualDuration = set.ActualDuration
-		existing.ActualDistance = set.ActualDistance
-		existing.ActualTime = set.ActualTime
-		existing.WorkoutLogExerciseSetID = set.ID
-		db.Save(&existing)
-	}
 }
 
 func DeleteWorkoutLogExerciseSet(c *gin.Context) {

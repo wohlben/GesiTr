@@ -1,8 +1,8 @@
 import { Component, input, model, output, signal, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { formatTarget, formatActual, formatSetValue } from '$core/format-utils';
-import { WorkoutLogExerciseSet, WorkoutLogItemStatusSkipped } from '$generated/user-models';
-import { ViewItemSet } from './workout-log-view-items';
+import { WorkoutLogItemStatusSkipped } from '$generated/user-models';
+import { ViewItemSet, SetCompletionPayload } from './workout-log-view-items';
 
 @Component({
   selector: 'app-workout-log-active-set',
@@ -333,7 +333,7 @@ export class WorkoutLogActiveSet {
   done = output<void>();
   skip = output<void>();
   togglePeek = output<void>();
-  save = output<WorkoutLogExerciseSet>();
+  save = output<SetCompletionPayload>();
   jumpTo = output<void>();
   resetOverride = output<void>();
 
@@ -358,17 +358,17 @@ export class WorkoutLogActiveSet {
   }
 
   startEditing() {
-    const set = this.data().set;
-    this.editReps.set(set.actualReps ?? undefined);
-    this.editWeight.set(set.actualWeight ?? undefined);
-    this.editDuration.set(set.actualDuration ?? undefined);
-    this.editDistance.set(set.actualDistance ?? undefined);
+    const log = this.data().set.exerciseLog;
+    this.editReps.set(log?.reps ?? undefined);
+    this.editWeight.set(log?.weight ?? undefined);
+    this.editDuration.set(log?.duration ?? undefined);
+    this.editDistance.set(log?.distance ?? undefined);
     this.editing.set(true);
   }
 
   saveEdit() {
     this.save.emit({
-      ...this.data().set,
+      setId: this.data().set.id,
       actualReps: this.editReps(),
       actualWeight: this.editWeight(),
       actualDuration: this.editDuration(),

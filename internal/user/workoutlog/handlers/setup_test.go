@@ -14,8 +14,8 @@ import (
 	userequipmentmodels "gesitr/internal/user/equipment/models"
 	userexercisehandlers "gesitr/internal/user/exercise/handlers"
 	userexercisemodels "gesitr/internal/user/exercise/models"
-	recordhandlers "gesitr/internal/user/record/handlers"
-	recordmodels "gesitr/internal/user/record/models"
+	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
+	exerciselogmodels "gesitr/internal/user/exerciselog/models"
 	workouthandlers "gesitr/internal/user/workout/handlers"
 	workoutmodels "gesitr/internal/user/workout/models"
 	"gesitr/internal/user/workoutlog/models"
@@ -49,7 +49,7 @@ func setupTestDB(t *testing.T) {
 		&models.WorkoutLogSectionEntity{},
 		&models.WorkoutLogExerciseEntity{},
 		&models.WorkoutLogExerciseSetEntity{},
-		&recordmodels.UserRecordEntity{},
+		&exerciselogmodels.ExerciseLogEntity{},
 	)
 	database.DB = db
 }
@@ -123,9 +123,12 @@ func newRouter() *gin.Engine {
 	logExerciseSets.PATCH("/:id", UpdateWorkoutLogExerciseSet)
 	logExerciseSets.DELETE("/:id", DeleteWorkoutLogExerciseSet)
 
-	records := api.Group("/records")
-	records.GET("", recordhandlers.ListUserRecords)
-	records.GET("/:id", recordhandlers.GetUserRecord)
+	exerciseLogs := api.Group("/exercise-logs")
+	exerciseLogs.GET("", exerciseloghandlers.ListExerciseLogs)
+	exerciseLogs.POST("", exerciseloghandlers.CreateExerciseLog)
+	exerciseLogs.GET("/:id", exerciseloghandlers.GetExerciseLog)
+	exerciseLogs.PATCH("/:id", exerciseloghandlers.UpdateExerciseLog)
+	exerciseLogs.DELETE("/:id", exerciseloghandlers.DeleteExerciseLog)
 
 	return r
 }

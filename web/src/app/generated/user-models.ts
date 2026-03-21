@@ -70,6 +70,25 @@ export interface WorkoutSectionExercise extends BaseModel {
 }
 
 //////////
+// source: exerciselog.go
+
+export interface ExerciseLog extends BaseModel {
+  owner: string;
+  userExerciseId: number /* uint */;
+  measurementType: string;
+  reps?: number /* int */;
+  weight?: number /* float64 */;
+  duration?: number /* int */;
+  distance?: number /* float64 */;
+  time?: number /* int */;
+  recordValue: number /* float64 */;
+  isRecord: boolean;
+  performedAt: string;
+  workoutLogExerciseSetId?: number /* uint */;
+  sourceExerciseSchemeId?: number /* uint */;
+}
+
+//////////
 // source: exercise.go
 
 export interface WorkoutLogExercise extends BaseModel {
@@ -142,11 +161,7 @@ export interface WorkoutLogExerciseSet extends BaseModel {
   targetDuration?: number /* int */;
   targetDistance?: number /* float64 */;
   targetTime?: number /* int */;
-  actualReps?: number /* int */;
-  actualWeight?: number /* float64 */;
-  actualDuration?: number /* int */;
-  actualDistance?: number /* float64 */;
-  actualTime?: number /* int */;
+  exerciseLog?: ExerciseLog;
 }
 
 //////////
@@ -158,18 +173,3 @@ export const WorkoutLogStatusInProgress: WorkoutLogStatus = 'in_progress';
 export const WorkoutLogStatusFinished: WorkoutLogStatus = 'finished';
 export const WorkoutLogStatusPartiallyFinished: WorkoutLogStatus = 'partially_finished';
 export const WorkoutLogStatusAborted: WorkoutLogStatus = 'aborted';
-
-//////////
-// source: record.go
-
-export interface UserRecord extends BaseModel {
-  userExerciseId: number /* uint */;
-  measurementType: string;
-  recordValue: number /* float64 */;
-  actualReps?: number /* int */;
-  actualWeight?: number /* float64 */;
-  actualDuration?: number /* int */;
-  actualDistance?: number /* float64 */;
-  actualTime?: number /* int */;
-  workoutLogExerciseSetId: number /* uint */;
-}

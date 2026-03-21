@@ -53,3 +53,9 @@ export const workoutLogKeys = {
   list: (filters?: Filters) => [...workoutLogKeys.all(), 'list', filters] as const,
   detail: (id: number) => [...workoutLogKeys.all(), 'detail', id] as const,
 };
+
+export const exerciseLogKeys = {
+  all: () => ['exercise-logs'] as const,
+  list: (filters?: Filters) => [...exerciseLogKeys.all(), 'list', filters] as const,
+  detail: (id: number) => [...exerciseLogKeys.all(), 'detail', id] as const,
+};

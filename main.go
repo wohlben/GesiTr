@@ -23,8 +23,8 @@ import (
 	userEquipmentModels "gesitr/internal/user/equipment/models"
 	userExerciseHandlers "gesitr/internal/user/exercise/handlers"
 	userExerciseModels "gesitr/internal/user/exercise/models"
-	recordHandlers "gesitr/internal/user/record/handlers"
-	recordModels "gesitr/internal/user/record/models"
+	exerciseLogHandlers "gesitr/internal/user/exerciselog/handlers"
+	exerciseLogModels "gesitr/internal/user/exerciselog/models"
 	workoutHandlers "gesitr/internal/user/workout/handlers"
 	workoutModels "gesitr/internal/user/workout/models"
 	workoutloghandlers "gesitr/internal/user/workoutlog/handlers"
@@ -63,7 +63,7 @@ func autoMigrate() {
 		&workoutlogmodels.WorkoutLogSectionEntity{},
 		&workoutlogmodels.WorkoutLogExerciseEntity{},
 		&workoutlogmodels.WorkoutLogExerciseSetEntity{},
-		&recordModels.UserRecordEntity{},
+		&exerciseLogModels.ExerciseLogEntity{},
 	)
 }
 
@@ -210,10 +210,13 @@ func setupRoutes(r *gin.Engine) {
 		workoutLogExerciseSets.DELETE("/:id", workoutloghandlers.DeleteWorkoutLogExerciseSet)
 	}
 
-	records := user.Group("/records")
+	exerciseLogs := user.Group("/exercise-logs")
 	{
-		records.GET("", recordHandlers.ListUserRecords)
-		records.GET("/:id", recordHandlers.GetUserRecord)
+		exerciseLogs.GET("", exerciseLogHandlers.ListExerciseLogs)
+		exerciseLogs.POST("", exerciseLogHandlers.CreateExerciseLog)
+		exerciseLogs.GET("/:id", exerciseLogHandlers.GetExerciseLog)
+		exerciseLogs.PATCH("/:id", exerciseLogHandlers.UpdateExerciseLog)
+		exerciseLogs.DELETE("/:id", exerciseLogHandlers.DeleteExerciseLog)
 	}
 }
 

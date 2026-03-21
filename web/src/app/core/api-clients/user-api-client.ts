@@ -12,6 +12,7 @@ import {
   WorkoutLogSection,
   WorkoutLogExercise,
   WorkoutLogExerciseSet,
+  ExerciseLog,
 } from '$generated/user-models';
 
 @Injectable({ providedIn: 'root' })
@@ -184,11 +185,53 @@ export class UserApiClient {
 
   updateWorkoutLogExerciseSet(
     id: number,
-    data: Partial<WorkoutLogExerciseSet>,
+    data: Partial<WorkoutLogExerciseSet> & {
+      actualReps?: number;
+      actualWeight?: number;
+      actualDuration?: number;
+      actualDistance?: number;
+      actualTime?: number;
+    },
   ): Promise<WorkoutLogExerciseSet> {
     return firstValueFrom(
       this.http.patch<WorkoutLogExerciseSet>(`/api/user/workout-log-exercise-sets/${id}`, data),
     );
+  }
+
+  // Exercise Logs
+  fetchExerciseLogs(params?: {
+    userExerciseId?: number;
+    measurementType?: string;
+    isRecord?: boolean;
+    from?: string;
+    to?: string;
+  }): Promise<ExerciseLog[]> {
+    const qp = new URLSearchParams();
+    if (params?.userExerciseId != null) qp.set('userExerciseId', String(params.userExerciseId));
+    if (params?.measurementType) qp.set('measurementType', params.measurementType);
+    if (params?.isRecord != null) qp.set('isRecord', String(params.isRecord));
+    if (params?.from) qp.set('from', params.from);
+    if (params?.to) qp.set('to', params.to);
+    const qs = qp.toString();
+    return firstValueFrom(
+      this.http.get<ExerciseLog[]>(`/api/user/exercise-logs${qs ? '?' + qs : ''}`),
+    );
+  }
+
+  fetchExerciseLog(id: number): Promise<ExerciseLog> {
+    return firstValueFrom(this.http.get<ExerciseLog>(`/api/user/exercise-logs/${id}`));
+  }
+
+  createExerciseLog(data: Partial<ExerciseLog>): Promise<ExerciseLog> {
+    return firstValueFrom(this.http.post<ExerciseLog>('/api/user/exercise-logs', data));
+  }
+
+  updateExerciseLog(id: number, data: Partial<ExerciseLog>): Promise<ExerciseLog> {
+    return firstValueFrom(this.http.patch<ExerciseLog>(`/api/user/exercise-logs/${id}`, data));
+  }
+
+  deleteExerciseLog(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/user/exercise-logs/${id}`));
   }
 
   startWorkoutLog(id: number): Promise<WorkoutLog> {

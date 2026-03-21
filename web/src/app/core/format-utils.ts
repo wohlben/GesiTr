@@ -29,19 +29,20 @@ export function formatTarget(set: WorkoutLogExerciseSet, measurementType: string
 }
 
 export function formatActual(set: WorkoutLogExerciseSet, measurementType: string): string {
-  if (set.status !== WorkoutLogItemStatusFinished) return '-';
+  if (set.status !== WorkoutLogItemStatusFinished || !set.exerciseLog) return '-';
+  const log = set.exerciseLog;
   if (measurementType === 'REP_BASED') {
     const parts: string[] = [];
-    if (set.actualReps != null) parts.push(`${set.actualReps} reps`);
-    if (set.actualWeight != null) parts.push(`${set.actualWeight}kg`);
+    if (log.reps != null) parts.push(`${log.reps} reps`);
+    if (log.weight != null) parts.push(`${log.weight}kg`);
     return parts.join(' @ ') || '-';
   }
   if (measurementType === 'TIME_BASED') {
-    if (set.actualDuration != null) return `${set.actualDuration}s`;
+    if (log.duration != null) return `${log.duration}s`;
     return '-';
   }
   if (measurementType === 'DISTANCE_BASED') {
-    if (set.actualDistance != null) return `${set.actualDistance}m`;
+    if (log.distance != null) return `${log.distance}m`;
     return '-';
   }
   return '-';

@@ -14,6 +14,7 @@ import {
   WorkoutLogItemStatusFinished,
   WorkoutLogItemStatusSkipped,
 } from '$generated/user-models';
+import { SetCompletionPayload } from './workout-log-view-items';
 import { PageLayout } from '../../../layout/page-layout';
 import { WorkoutLogDetailStore } from './workout-log-detail.store';
 import { WorkoutLogReview } from './workout-log-review';
@@ -113,7 +114,7 @@ import { WorkoutLogActive } from './workout-log-active';
           <app-workout-log-active
             [log]="log"
             [exerciseNames]="store.exerciseNames()"
-            (setToggled)="toggleSet($event)"
+            (setCompleted)="completeSet($event)"
             (setSkipped)="skipSet($event)"
           />
         } @else {
@@ -140,15 +141,15 @@ export class WorkoutLogDetail {
     enabled: !!this.id(),
   }));
 
-  private toggleMutation = injectMutation(() => ({
-    mutationFn: (set: WorkoutLogExerciseSet) =>
-      this.userApi.updateWorkoutLogExerciseSet(set.id, {
+  private completeMutation = injectMutation(() => ({
+    mutationFn: (payload: SetCompletionPayload) =>
+      this.userApi.updateWorkoutLogExerciseSet(payload.setId, {
         status: WorkoutLogItemStatusFinished,
-        actualReps: set.actualReps,
-        actualWeight: set.actualWeight,
-        actualDuration: set.actualDuration,
-        actualDistance: set.actualDistance,
-        actualTime: set.actualTime,
+        actualReps: payload.actualReps,
+        actualWeight: payload.actualWeight,
+        actualDuration: payload.actualDuration,
+        actualDistance: payload.actualDistance,
+        actualTime: payload.actualTime,
       }),
     onSuccess: () => {
       this.queryClient.invalidateQueries({ queryKey: workoutLogKeys.detail(this.id()) });
@@ -181,8 +182,8 @@ export class WorkoutLogDetail {
     });
   }
 
-  toggleSet(set: WorkoutLogExerciseSet) {
-    this.toggleMutation.mutate(set);
+  completeSet(payload: SetCompletionPayload) {
+    this.completeMutation.mutate(payload);
   }
 
   skipSet(set: WorkoutLogExerciseSet) {

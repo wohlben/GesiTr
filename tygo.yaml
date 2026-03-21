@@ -74,10 +74,10 @@ packages:
       - "set.go"
       - "item_status.go"
       - "status.go"
-  - path: "gesitr/internal/user/record/models"
-    output_path: "web/src/app/generated/user-record.ts"
+  - path: "gesitr/internal/user/exerciselog/models"
+    output_path: "web/src/app/generated/user-exerciselog.ts"
     type_mappings:
       "time.Time": "string"
       "gorm.DeletedAt": "string | null"
     include_files:
-      - "record.go"
+      - "exerciselog.go"

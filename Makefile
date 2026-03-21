@@ -29,12 +29,12 @@ generate:
 		echo 'export interface ErrorResponse {'; \
 		echo '  error: string;'; \
 		echo '}'; \
-		for f in $(GEN_DIR)/user-exercise.ts $(GEN_DIR)/user-equipment.ts $(GEN_DIR)/user-workout.ts $(GEN_DIR)/user-workoutlog.ts $(GEN_DIR)/user-record.ts; do \
+		for f in $(GEN_DIR)/user-exercise.ts $(GEN_DIR)/user-equipment.ts $(GEN_DIR)/user-workout.ts $(GEN_DIR)/user-exerciselog.ts $(GEN_DIR)/user-workoutlog.ts; do \
 			tail -n +2 "$$f"; \
 		done; \
-	} | sed -e 's/shared\.BaseModel/BaseModel/g' -e 's/any \/\* workoutmodels\.WorkoutSectionType \*\//WorkoutSectionType/g' > $(GEN_DIR)/user-models.ts
+	} | sed -e 's/shared\.BaseModel/BaseModel/g' -e 's/any \/\* workoutmodels\.WorkoutSectionType \*\//WorkoutSectionType/g' -e 's/any \/\* exerciselogmodels\.ExerciseLog \*\//ExerciseLog/g' > $(GEN_DIR)/user-models.ts
 	@# Clean up intermediate files
-	@rm -f $(GEN_DIR)/compendium-*.ts $(GEN_DIR)/user-exercise.ts $(GEN_DIR)/user-equipment.ts $(GEN_DIR)/user-workout.ts $(GEN_DIR)/user-workoutlog.ts $(GEN_DIR)/user-record.ts
+	@rm -f $(GEN_DIR)/compendium-*.ts $(GEN_DIR)/user-exercise.ts $(GEN_DIR)/user-equipment.ts $(GEN_DIR)/user-workout.ts $(GEN_DIR)/user-workoutlog.ts $(GEN_DIR)/user-exerciselog.ts
 	@cd web && npx prettier --write 'src/app/generated/*.ts' > /dev/null 2>&1 || true
 
 # Full production build: generate types → Angular → Go binary with embedded SPA

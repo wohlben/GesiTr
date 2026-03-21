@@ -269,8 +269,8 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 		if s.Status != models.WorkoutLogItemStatusFinished {
 			t.Errorf("exercise 1 set %d should be finished", i+1)
 		}
-		if s.ActualWeight == nil || *s.ActualWeight != 140.0 {
-			t.Errorf("exercise 1 set %d actual weight mismatch", i+1)
+		if s.ExerciseLog == nil || s.ExerciseLog.Weight == nil || *s.ExerciseLog.Weight != 140.0 {
+			t.Errorf("exercise 1 set %d exerciseLog weight mismatch", i+1)
 		}
 		// Target fields must still be intact
 		if s.TargetWeight == nil || *s.TargetWeight != 140.0 {
@@ -289,8 +289,8 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	for _, s := range ex2.Sets {
 		if s.Status == models.WorkoutLogItemStatusFinished {
 			finishedCount++
-			if s.ActualReps == nil || *s.ActualReps != 6 {
-				t.Error("exercise 2 finished set actual reps mismatch")
+			if s.ExerciseLog == nil || s.ExerciseLog.Reps == nil || *s.ExerciseLog.Reps != 6 {
+				t.Error("exercise 2 finished set exerciseLog reps mismatch")
 			}
 		}
 	}

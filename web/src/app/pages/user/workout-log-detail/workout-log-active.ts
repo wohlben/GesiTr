@@ -21,6 +21,7 @@ import {
 import {
   ViewItem,
   ViewItemSet,
+  SetCompletionPayload,
   AsHeaderPipe,
   AsSetPipe,
   AsBreakPipe,
@@ -64,7 +65,7 @@ function isItemTerminal(status: string): boolean {
             (done)="markDone()"
             (skip)="markSkipped()"
             (togglePeek)="togglePeek(s.id)"
-            (save)="saveSet($event)"
+            (save)="saveCompletedSet($event)"
             (jumpTo)="jumpToSet(s.set.id)"
             (resetOverride)="resetOverride()"
           />
@@ -90,7 +91,7 @@ export class WorkoutLogActive {
 
   log = input.required<WorkoutLog>();
   exerciseNames = input.required<Record<number, string>>();
-  setToggled = output<WorkoutLogExerciseSet>();
+  setCompleted = output<SetCompletionPayload>();
   setSkipped = output<WorkoutLogExerciseSet>();
 
   // Actual value signals for the active set inputs
@@ -274,8 +275,8 @@ export class WorkoutLogActive {
     if (activeSetIdx === -1) return;
     const activeItem = items[activeSetIdx] as ViewItemSet;
 
-    this.setToggled.emit({
-      ...activeItem.set,
+    this.setCompleted.emit({
+      setId: activeItem.set.id,
       actualReps: this.actualReps(),
       actualWeight: this.actualWeight(),
       actualDuration: this.actualDuration(),
@@ -335,8 +336,8 @@ export class WorkoutLogActive {
     this.overrideSetId.set(null);
   }
 
-  saveSet(set: WorkoutLogExerciseSet) {
-    this.setToggled.emit(set);
+  saveCompletedSet(payload: SetCompletionPayload) {
+    this.setCompleted.emit(payload);
   }
 
   skipRest() {

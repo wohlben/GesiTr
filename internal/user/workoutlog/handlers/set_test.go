@@ -165,11 +165,14 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 		if result.Status != models.WorkoutLogItemStatusFinished {
 			t.Errorf("expected finished status, got %s", result.Status)
 		}
-		if result.ActualReps == nil || *result.ActualReps != 5 {
-			t.Error("actual reps mismatch")
+		if result.ExerciseLog == nil {
+			t.Fatal("expected exerciseLog to be populated")
 		}
-		if result.ActualWeight == nil || *result.ActualWeight != 100.0 {
-			t.Error("actual weight mismatch")
+		if result.ExerciseLog.Reps == nil || *result.ExerciseLog.Reps != 5 {
+			t.Error("exerciseLog reps mismatch")
+		}
+		if result.ExerciseLog.Weight == nil || *result.ExerciseLog.Weight != 100.0 {
+			t.Error("exerciseLog weight mismatch")
 		}
 	})
 
@@ -189,8 +192,11 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 		if result.TargetWeight == nil || *result.TargetWeight != 100.0 {
 			t.Errorf("target weight changed to %v", result.TargetWeight)
 		}
-		if result.ActualReps == nil || *result.ActualReps != 4 {
-			t.Error("actual reps not updated")
+		if result.ExerciseLog == nil {
+			t.Fatal("expected exerciseLog to be populated")
+		}
+		if result.ExerciseLog.Reps == nil || *result.ExerciseLog.Reps != 4 {
+			t.Error("exerciseLog reps not updated")
 		}
 	})
 

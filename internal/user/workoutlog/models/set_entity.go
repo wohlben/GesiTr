@@ -3,6 +3,8 @@ package models
 import (
 	"time"
 
+	exerciselogmodels "gesitr/internal/user/exerciselog/models"
+
 	"gesitr/internal/shared"
 )
 
@@ -19,17 +21,13 @@ type WorkoutLogExerciseSetEntity struct {
 	TargetDuration       *int
 	TargetDistance       *float64
 	TargetTime           *int
-	ActualReps           *int
-	ActualWeight         *float64
-	ActualDuration       *int
-	ActualDistance       *float64
-	ActualTime           *int
+	ExerciseLog          *exerciselogmodels.ExerciseLogEntity `gorm:"foreignKey:WorkoutLogExerciseSetID"`
 }
 
 func (WorkoutLogExerciseSetEntity) TableName() string { return "workout_log_exercise_sets" }
 
 func (e *WorkoutLogExerciseSetEntity) ToDTO() WorkoutLogExerciseSet {
-	return WorkoutLogExerciseSet{
+	dto := WorkoutLogExerciseSet{
 		BaseModel:            e.BaseModel,
 		WorkoutLogExerciseID: e.WorkoutLogExerciseID,
 		WorkoutLogID:         e.WorkoutLogID,
@@ -42,12 +40,12 @@ func (e *WorkoutLogExerciseSetEntity) ToDTO() WorkoutLogExerciseSet {
 		TargetDuration:       e.TargetDuration,
 		TargetDistance:       e.TargetDistance,
 		TargetTime:           e.TargetTime,
-		ActualReps:           e.ActualReps,
-		ActualWeight:         e.ActualWeight,
-		ActualDuration:       e.ActualDuration,
-		ActualDistance:       e.ActualDistance,
-		ActualTime:           e.ActualTime,
 	}
+	if e.ExerciseLog != nil {
+		el := e.ExerciseLog.ToDTO()
+		dto.ExerciseLog = &el
+	}
+	return dto
 }
 
 func WorkoutLogExerciseSetFromDTO(dto WorkoutLogExerciseSet) WorkoutLogExerciseSetEntity {
@@ -64,10 +62,5 @@ func WorkoutLogExerciseSetFromDTO(dto WorkoutLogExerciseSet) WorkoutLogExerciseS
 		TargetDuration:       dto.TargetDuration,
 		TargetDistance:       dto.TargetDistance,
 		TargetTime:           dto.TargetTime,
-		ActualReps:           dto.ActualReps,
-		ActualWeight:         dto.ActualWeight,
-		ActualDuration:       dto.ActualDuration,
-		ActualDistance:       dto.ActualDistance,
-		ActualTime:           dto.ActualTime,
 	}
 }
