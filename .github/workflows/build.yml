@@ -27,3 +27,5 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.lower.outputs.image }}:latest
+          build-args: |
+            CACHEBUST=${{ github.sha }}

@@ -124,7 +124,7 @@ update-screenshots-e2e:
 		exit $$TEST_EXIT
 
 docker:
-	docker build -t gesitr .
+	docker build --build-arg CACHEBUST=$$(date +%s) -t gesitr .
 
 seed:
 	rm -f gesitr.db

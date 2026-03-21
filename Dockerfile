@@ -10,6 +10,7 @@ COPY web/package*.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci
 RUN npx playwright install chromium
 COPY web/ ./
+ARG CACHEBUST
 RUN npm run lint && npm run format:check
 RUN npm test
 RUN npx ng build --configuration=production
@@ -23,6 +24,7 @@ COPY go.mod go.sum ./
 RUN --mount=type=cache,target=/go/pkg/mod go mod download
 COPY . .
 COPY --from=web-builder /app/web/dist ./web/dist
+ARG CACHEBUST
 RUN test -z "$(gofmt -l .)" || (echo "Go files not formatted:" && gofmt -l . && exit 1)
 RUN chown -R tester:tester /app
 USER tester
@@ -52,6 +54,7 @@ RUN npx playwright install chromium
 COPY --chown=node:node web/playwright.config.ts ./
 COPY --chown=node:node web/e2e/ ./e2e/
 COPY --from=go-builder --chown=node:node /app/gesitr /app/gesitr
+ARG CACHEBUST
 ENV PLAYWRIGHT_TEST_BASE_URL=http://localhost:8080
 ENV AUTH_FALLBACK_USER=e2e-tester
 WORKDIR /app
