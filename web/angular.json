@@ -90,7 +90,8 @@
           "options": {
             "include": ["**/*.screenshot.spec.ts"],
             "browsers": ["chromium"],
-            "headless": true
+            "headless": true,
+            "runnerConfig": "vitest.screenshot.config.ts"
           }
         },
         "e2e": {
