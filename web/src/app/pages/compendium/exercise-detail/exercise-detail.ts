@@ -22,14 +22,23 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
       [errorMessage]="exerciseQuery.isError() ? exerciseQuery.error().message : undefined"
     >
       <div actions class="flex gap-2">
-        <button
-          type="button"
-          (click)="addMutation.mutate()"
-          [disabled]="addMutation.isPending()"
-          class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
-        >
-          {{ addMutation.isPending() ? 'Adding...' : 'Add to My Exercises' }}
-        </button>
+        @if (alreadyAdded(); as existing) {
+          <a
+            [routerLink]="['/user/exercises', existing.id]"
+            class="rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+          >
+            Already Added
+          </a>
+        } @else {
+          <button
+            type="button"
+            (click)="addMutation.mutate()"
+            [disabled]="addMutation.isPending()"
+            class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+          >
+            {{ addMutation.isPending() ? 'Adding...' : 'Add to My Exercises' }}
+          </button>
+        }
         @if (hasHistory()) {
           <a
             routerLink="./history"
@@ -117,7 +126,19 @@ export class ExerciseDetail {
     enabled: !!this.id(),
   }));
 
+  userExercisesQuery = injectQuery(() => ({
+    queryKey: userExerciseKeys.list(),
+    queryFn: () => this.userApi.fetchUserExercises(),
+  }));
+
   hasHistory = computed(() => (this.versionsQuery.data()?.length ?? 0) > 1);
+
+  alreadyAdded = computed(() => {
+    const templateId = this.exerciseQuery.data()?.templateId;
+    const userExercises = this.userExercisesQuery.data();
+    if (!templateId || !userExercises) return undefined;
+    return userExercises.find((ue) => ue.compendiumExerciseId === templateId);
+  });
 
   deleteMutation = injectMutation(() => ({
     mutationFn: () => this.api.deleteExercise(this.id()),
