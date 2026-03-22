@@ -1,5 +1,5 @@
-import { Component, input, model, output, signal, effect } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, effect, input, output, signal, linkedSignal } from '@angular/core';
+import { form, FormField } from '@angular/forms/signals';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { formatTarget, formatActual, formatSetValue } from '$core/format-utils';
 import { WorkoutLogItemStatusSkipped } from '$generated/user-models';
@@ -7,7 +7,7 @@ import { ViewItemSet, SetCompletionPayload } from './workout-log-view-items';
 
 @Component({
   selector: 'app-workout-log-active-set',
-  imports: [FormsModule, TranslocoDirective],
+  imports: [FormField, TranslocoDirective],
   template: `
     <ng-container *transloco="let t">
       @if (peeked()) {
@@ -63,8 +63,7 @@ import { ViewItemSet, SetCompletionPayload } from './workout-log-view-items';
                     <input
                       type="number"
                       inputmode="numeric"
-                      [ngModel]="editReps()"
-                      (ngModelChange)="editReps.set($event)"
+                      [formField]="editForm.reps"
                       class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-center text-lg font-semibold text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                     />
                   </label>
@@ -75,8 +74,7 @@ import { ViewItemSet, SetCompletionPayload } from './workout-log-view-items';
                     <input
                       type="number"
                       inputmode="decimal"
-                      [ngModel]="editWeight()"
-                      (ngModelChange)="editWeight.set($event)"
+                      [formField]="editForm.weight"
                       class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-center text-lg font-semibold text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                     />
                   </label>
@@ -89,8 +87,7 @@ import { ViewItemSet, SetCompletionPayload } from './workout-log-view-items';
                   <input
                     type="number"
                     inputmode="numeric"
-                    [ngModel]="editDuration()"
-                    (ngModelChange)="editDuration.set($event)"
+                    [formField]="editForm.duration"
                     class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-center text-lg font-semibold text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                   />
                 </label>
@@ -102,8 +99,7 @@ import { ViewItemSet, SetCompletionPayload } from './workout-log-view-items';
                   <input
                     type="number"
                     inputmode="decimal"
-                    [ngModel]="editDistance()"
-                    (ngModelChange)="editDistance.set($event)"
+                    [formField]="editForm.distance"
                     class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-center text-lg font-semibold text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                   />
                 </label>
@@ -233,8 +229,7 @@ import { ViewItemSet, SetCompletionPayload } from './workout-log-view-items';
                       <input
                         type="number"
                         inputmode="numeric"
-                        [ngModel]="actualReps()"
-                        (ngModelChange)="actualReps.set($event)"
+                        [formField]="activeForm.reps"
                         class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-center text-lg font-semibold text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                       />
                     </label>
@@ -245,8 +240,7 @@ import { ViewItemSet, SetCompletionPayload } from './workout-log-view-items';
                       <input
                         type="number"
                         inputmode="decimal"
-                        [ngModel]="actualWeight()"
-                        (ngModelChange)="actualWeight.set($event)"
+                        [formField]="activeForm.weight"
                         class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-center text-lg font-semibold text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                       />
                     </label>
@@ -259,8 +253,7 @@ import { ViewItemSet, SetCompletionPayload } from './workout-log-view-items';
                     <input
                       type="number"
                       inputmode="numeric"
-                      [ngModel]="actualDuration()"
-                      (ngModelChange)="actualDuration.set($event)"
+                      [formField]="activeForm.duration"
                       class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-center text-lg font-semibold text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                     />
                   </label>
@@ -272,8 +265,7 @@ import { ViewItemSet, SetCompletionPayload } from './workout-log-view-items';
                     <input
                       type="number"
                       inputmode="decimal"
-                      [ngModel]="actualDistance()"
-                      (ngModelChange)="actualDistance.set($event)"
+                      [formField]="activeForm.distance"
                       class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-center text-lg font-semibold text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                     />
                   </label>
@@ -282,7 +274,7 @@ import { ViewItemSet, SetCompletionPayload } from './workout-log-view-items';
 
               <button
                 type="button"
-                (click)="done.emit()"
+                (click)="markDone()"
                 class="w-full rounded-lg bg-blue-600 px-4 py-3 text-base font-semibold text-white hover:bg-blue-700 active:bg-blue-800 dark:bg-blue-500 dark:hover:bg-blue-600 dark:active:bg-blue-700"
               >
                 {{ t('common.done') }}
@@ -343,23 +335,35 @@ import { ViewItemSet, SetCompletionPayload } from './workout-log-view-items';
 export class WorkoutLogActiveSet {
   data = input.required<ViewItemSet>();
   peeked = input(false);
-  actualReps = model<number | undefined>(undefined);
-  actualWeight = model<number | undefined>(undefined);
-  actualDuration = model<number | undefined>(undefined);
-  actualDistance = model<number | undefined>(undefined);
-  done = output<void>();
+  initialReps = input<number | null>(null);
+  initialWeight = input<number | null>(null);
+  initialDuration = input<number | null>(null);
+  initialDistance = input<number | null>(null);
+  done = output<SetCompletionPayload>();
   skip = output<void>();
   togglePeek = output<void>();
   save = output<SetCompletionPayload>();
   jumpTo = output<void>();
   resetOverride = output<void>();
 
-  // Local editing state for completed sets
+  // Active form: tracks current input values, resets when parent provides new initial values
+  activeModel = linkedSignal(() => ({
+    reps: this.initialReps(),
+    weight: this.initialWeight(),
+    duration: this.initialDuration(),
+    distance: this.initialDistance(),
+  }));
+  activeForm = form(this.activeModel);
+
+  // Edit form for completed sets
   editing = signal(false);
-  editReps = signal<number | undefined>(undefined);
-  editWeight = signal<number | undefined>(undefined);
-  editDuration = signal<number | undefined>(undefined);
-  editDistance = signal<number | undefined>(undefined);
+  editModel = signal({
+    reps: null as number | null,
+    weight: null as number | null,
+    duration: null as number | null,
+    distance: null as number | null,
+  });
+  editForm = form(this.editModel);
 
   formatTarget = formatTarget;
   formatActual = formatActual;
@@ -376,21 +380,35 @@ export class WorkoutLogActiveSet {
 
   startEditing() {
     const log = this.data().set.exerciseLog;
-    this.editReps.set(log?.reps ?? undefined);
-    this.editWeight.set(log?.weight ?? undefined);
-    this.editDuration.set(log?.duration ?? undefined);
-    this.editDistance.set(log?.distance ?? undefined);
+    this.editModel.set({
+      reps: log?.reps ?? null,
+      weight: log?.weight ?? null,
+      duration: log?.duration ?? null,
+      distance: log?.distance ?? null,
+    });
     this.editing.set(true);
   }
 
   saveEdit() {
+    const m = this.editModel();
     this.save.emit({
       setId: this.data().set.id,
-      actualReps: this.editReps(),
-      actualWeight: this.editWeight(),
-      actualDuration: this.editDuration(),
-      actualDistance: this.editDistance(),
+      actualReps: m.reps ?? undefined,
+      actualWeight: m.weight ?? undefined,
+      actualDuration: m.duration ?? undefined,
+      actualDistance: m.distance ?? undefined,
     });
     this.editing.set(false);
+  }
+
+  markDone() {
+    const m = this.activeModel();
+    this.done.emit({
+      setId: this.data().set.id,
+      actualReps: m.reps ?? undefined,
+      actualWeight: m.weight ?? undefined,
+      actualDuration: m.duration ?? undefined,
+      actualDistance: m.distance ?? undefined,
+    });
   }
 }

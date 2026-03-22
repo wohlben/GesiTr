@@ -1,7 +1,7 @@
 import { Component, inject, computed, effect, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { form, required, applyEach, FormField } from '@angular/forms/signals';
 import {
   injectQuery,
   injectMutation,
@@ -20,32 +20,38 @@ import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmInput } from '@spartan-ng/helm/input';
 import { HlmTextarea } from '@spartan-ng/helm/textarea';
 
-type ExerciseFormGroup = FormGroup<{
-  existingSchemeId: FormControl<number | null>;
-  userExerciseId: FormControl<number | null>;
-  measurementType: FormControl<string>;
-  sets: FormControl<number | null>;
-  reps: FormControl<number | null>;
-  weight: FormControl<number | null>;
-  restBetweenSets: FormControl<number | null>;
-  timePerRep: FormControl<number | null>;
-  duration: FormControl<number | null>;
-  distance: FormControl<number | null>;
-  targetTime: FormControl<number | null>;
-}>;
+interface WorkoutExerciseModel {
+  existingSchemeId: number | null;
+  userExerciseId: number | null;
+  measurementType: string;
+  sets: number | null;
+  reps: number | null;
+  weight: number | null;
+  restBetweenSets: number | null;
+  timePerRep: number | null;
+  duration: number | null;
+  distance: number | null;
+  targetTime: number | null;
+}
 
-type SectionFormGroup = FormGroup<{
-  type: FormControl<string>;
-  label: FormControl<string>;
-  restBetweenExercises: FormControl<number | null>;
-  exercises: FormArray<ExerciseFormGroup>;
-}>;
+interface WorkoutSectionModel {
+  type: string;
+  label: string;
+  restBetweenExercises: number | null;
+  exercises: WorkoutExerciseModel[];
+}
+
+interface WorkoutModel {
+  name: string;
+  notes: string;
+  sections: WorkoutSectionModel[];
+}
 
 @Component({
   selector: 'app-workout-edit',
   imports: [
     PageLayout,
-    ReactiveFormsModule,
+    FormField,
     RouterLink,
     ConfirmDialog,
     BrnSelectImports,
@@ -64,13 +70,13 @@ type SectionFormGroup = FormGroup<{
         "
       >
         @if (isCreateMode() || workoutQuery.data()) {
-          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+          <form (submit)="onSubmit(); $event.preventDefault()" class="space-y-6">
             <!-- Basic Fields -->
             <div>
               <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >{{ t('fields.name') }} *</label
               >
-              <input id="name" formControlName="name" hlmInput class="mt-1" />
+              <input id="name" [formField]="workoutForm.name" hlmInput class="mt-1" />
             </div>
 
             <div>
@@ -81,7 +87,7 @@ type SectionFormGroup = FormGroup<{
               >
               <textarea
                 id="notes"
-                formControlName="notes"
+                [formField]="workoutForm.notes"
                 rows="2"
                 hlmTextarea
                 class="mt-1"
@@ -89,12 +95,9 @@ type SectionFormGroup = FormGroup<{
             </div>
 
             <!-- Sections -->
-            <div formArrayName="sections" class="space-y-4">
-              @for (section of sectionsArray.controls; track $index; let si = $index) {
-                <div
-                  [formGroupName]="si"
-                  class="rounded-lg border border-gray-200 p-4 dark:border-gray-700"
-                >
+            <div class="space-y-4">
+              @for (section of workoutForm.sections; track $index; let si = $index) {
+                <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
                   <div class="mb-3 flex items-center justify-between">
                     <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
                       {{ t('user.workouts.sectionLabel', { n: si + 1 }) }}
@@ -113,7 +116,7 @@ type SectionFormGroup = FormGroup<{
                       <span class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{
                         t('fields.type')
                       }}</span>
-                      <brn-select formControlName="type" class="mt-1" hlm>
+                      <brn-select [formField]="section.type" class="mt-1" hlm>
                         <hlm-select-trigger class="w-full">
                           <hlm-select-value />
                         </hlm-select-trigger>
@@ -129,13 +132,13 @@ type SectionFormGroup = FormGroup<{
                     </div>
                     <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
                       {{ t('fields.label') }}
-                      <input formControlName="label" hlmInput class="mt-1" />
+                      <input [formField]="section.label" hlmInput class="mt-1" />
                     </label>
                     <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
                       {{ t('fields.restBetweenExercises') }}
                       <input
                         type="number"
-                        formControlName="restBetweenExercises"
+                        [formField]="section.restBetweenExercises"
                         hlmInput
                         class="mt-1"
                       />
@@ -143,10 +146,9 @@ type SectionFormGroup = FormGroup<{
                   </div>
 
                   <!-- Exercises in section -->
-                  <div formArrayName="exercises" class="space-y-3">
-                    @for (ex of getExercisesArray(si).controls; track $index; let ei = $index) {
+                  <div class="space-y-3">
+                    @for (exercise of section.exercises; track $index; let ei = $index) {
                       <div
-                        [formGroupName]="ei"
                         class="rounded-md border border-gray-100 bg-gray-50 p-3 dark:border-gray-600 dark:bg-gray-800/50"
                       >
                         <div class="mb-2 flex items-center justify-between">
@@ -169,7 +171,7 @@ type SectionFormGroup = FormGroup<{
                               >{{ t('ui.exerciseConfig.exerciseLabel') }}</span
                             >
                             <brn-select
-                              formControlName="userExerciseId"
+                              [formField]="exercise.userExerciseId"
                               class="mt-1"
                               hlm
                               [placeholder]="t('common.select')"
@@ -189,7 +191,7 @@ type SectionFormGroup = FormGroup<{
                               class="block text-xs font-medium text-gray-700 dark:text-gray-300"
                               >{{ t('fields.measurementType') }}</span
                             >
-                            <brn-select formControlName="measurementType" class="mt-1" hlm>
+                            <brn-select [formField]="exercise.measurementType" class="mt-1" hlm>
                               <hlm-select-trigger class="w-full">
                                 <hlm-select-value />
                               </hlm-select-trigger>
@@ -209,25 +211,40 @@ type SectionFormGroup = FormGroup<{
                         </div>
 
                         <!-- REP_BASED fields -->
-                        @if (ex.get('measurementType')?.value === 'REP_BASED') {
+                        @if (exercise.measurementType().value() === 'REP_BASED') {
                           <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
                             <label
                               class="block text-xs font-medium text-gray-700 dark:text-gray-300"
                             >
                               {{ t('fields.sets') }}
-                              <input type="number" formControlName="sets" hlmInput class="mt-1" />
+                              <input
+                                type="number"
+                                [formField]="exercise.sets"
+                                hlmInput
+                                class="mt-1"
+                              />
                             </label>
                             <label
                               class="block text-xs font-medium text-gray-700 dark:text-gray-300"
                             >
                               {{ t('fields.reps') }}
-                              <input type="number" formControlName="reps" hlmInput class="mt-1" />
+                              <input
+                                type="number"
+                                [formField]="exercise.reps"
+                                hlmInput
+                                class="mt-1"
+                              />
                             </label>
                             <label
                               class="block text-xs font-medium text-gray-700 dark:text-gray-300"
                             >
                               {{ t('fields.weightKg') }}
-                              <input type="number" formControlName="weight" hlmInput class="mt-1" />
+                              <input
+                                type="number"
+                                [formField]="exercise.weight"
+                                hlmInput
+                                class="mt-1"
+                              />
                             </label>
                             <label
                               class="block text-xs font-medium text-gray-700 dark:text-gray-300"
@@ -235,7 +252,7 @@ type SectionFormGroup = FormGroup<{
                               {{ t('fields.restSeconds') }}
                               <input
                                 type="number"
-                                formControlName="restBetweenSets"
+                                [formField]="exercise.restBetweenSets"
                                 hlmInput
                                 class="mt-1"
                               />
@@ -244,7 +261,7 @@ type SectionFormGroup = FormGroup<{
                         }
 
                         <!-- TIME_BASED fields -->
-                        @if (ex.get('measurementType')?.value === 'TIME_BASED') {
+                        @if (exercise.measurementType().value() === 'TIME_BASED') {
                           <div class="grid grid-cols-2 gap-2">
                             <label
                               class="block text-xs font-medium text-gray-700 dark:text-gray-300"
@@ -252,7 +269,7 @@ type SectionFormGroup = FormGroup<{
                               {{ t('fields.durationSeconds') }}
                               <input
                                 type="number"
-                                formControlName="duration"
+                                [formField]="exercise.duration"
                                 hlmInput
                                 class="mt-1"
                               />
@@ -263,7 +280,7 @@ type SectionFormGroup = FormGroup<{
                               {{ t('fields.timePerRepSeconds') }}
                               <input
                                 type="number"
-                                formControlName="timePerRep"
+                                [formField]="exercise.timePerRep"
                                 hlmInput
                                 class="mt-1"
                               />
@@ -272,7 +289,7 @@ type SectionFormGroup = FormGroup<{
                         }
 
                         <!-- DISTANCE_BASED fields -->
-                        @if (ex.get('measurementType')?.value === 'DISTANCE_BASED') {
+                        @if (exercise.measurementType().value() === 'DISTANCE_BASED') {
                           <div class="grid grid-cols-2 gap-2">
                             <label
                               class="block text-xs font-medium text-gray-700 dark:text-gray-300"
@@ -280,7 +297,7 @@ type SectionFormGroup = FormGroup<{
                               {{ t('fields.distanceM') }}
                               <input
                                 type="number"
-                                formControlName="distance"
+                                [formField]="exercise.distance"
                                 hlmInput
                                 class="mt-1"
                               />
@@ -291,7 +308,7 @@ type SectionFormGroup = FormGroup<{
                               {{ t('fields.targetTimeSeconds') }}
                               <input
                                 type="number"
-                                formControlName="targetTime"
+                                [formField]="exercise.targetTime"
                                 hlmInput
                                 class="mt-1"
                               />
@@ -325,7 +342,7 @@ type SectionFormGroup = FormGroup<{
             <div class="flex gap-2">
               <button
                 type="submit"
-                [disabled]="form.invalid || saveMutation.isPending()"
+                [disabled]="!workoutForm().valid() || saveMutation.isPending()"
                 class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
               >
                 {{ t('common.save') }}
@@ -377,19 +394,15 @@ export class WorkoutEdit {
 
   showDeleteDialog = false;
 
-  form = new FormGroup({
-    name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    notes: new FormControl('', { nonNullable: true }),
-    sections: new FormArray<SectionFormGroup>([]),
+  model = signal<WorkoutModel>({ name: '', notes: '', sections: [] });
+  workoutForm = form(this.model, (f) => {
+    required(f.name);
+    applyEach(f.sections, (section) => {
+      applyEach(section.exercises, (exercise) => {
+        required(exercise.userExerciseId);
+      });
+    });
   });
-
-  get sectionsArray() {
-    return this.form.controls.sections;
-  }
-
-  getExercisesArray(sectionIndex: number) {
-    return this.sectionsArray.at(sectionIndex).controls.exercises;
-  }
 
   // Existing workout data for edit mode
   workoutQuery = injectQuery(() => ({
@@ -450,36 +463,36 @@ export class WorkoutEdit {
       const data = this.workoutQuery.data();
       if (!data) return;
 
-      this.form.patchValue({
+      this.model.set({
         name: data.name,
         notes: data.notes ?? '',
-      });
-
-      // Clear existing sections and rebuild
-      this.sectionsArray.clear();
-      const schemeIds: number[] = [];
-
-      for (const section of data.sections ?? []) {
-        const exerciseGroups: ExerciseFormGroup[] = [];
-        for (const ex of section.exercises ?? []) {
-          schemeIds.push(ex.userExerciseSchemeId);
-          exerciseGroups.push(this.createExerciseGroup());
-        }
-        const sectionGroup = this.createSectionGroup();
-        sectionGroup.patchValue({
+        sections: (data.sections ?? []).map((section) => ({
           type: section.type,
           label: section.label ?? '',
           restBetweenExercises: section.restBetweenExercises ?? null,
-        });
-        for (const eg of exerciseGroups) {
-          sectionGroup.controls.exercises.push(eg);
+          exercises: (section.exercises ?? []).map(() => ({
+            existingSchemeId: null,
+            userExerciseId: null,
+            measurementType: 'REP_BASED',
+            sets: null,
+            reps: null,
+            weight: null,
+            restBetweenSets: null,
+            timePerRep: null,
+            duration: null,
+            distance: null,
+            targetTime: null,
+          })),
+        })),
+      });
+
+      const schemeIds: number[] = [];
+      for (const section of data.sections ?? []) {
+        for (const ex of section.exercises ?? []) {
+          schemeIds.push(ex.userExerciseSchemeId);
         }
-        this.sectionsArray.push(sectionGroup);
       }
-
       this.originalSchemeIds.set(schemeIds);
-
-      // Fetch schemes and populate exercise fields
       this.loadSchemes(data.sections ?? []);
     });
   }
@@ -493,20 +506,33 @@ export class WorkoutEdit {
         const ex = section.exercises[ei];
         try {
           const scheme = await this.userApi.fetchExerciseScheme(ex.userExerciseSchemeId);
-          const exerciseFg = this.getExercisesArray(si).at(ei);
-          exerciseFg.patchValue({
-            existingSchemeId: scheme.id,
-            userExerciseId: scheme.userExerciseId,
-            measurementType: scheme.measurementType || 'REP_BASED',
-            sets: scheme.sets ?? null,
-            reps: scheme.reps ?? null,
-            weight: scheme.weight ?? null,
-            restBetweenSets: scheme.restBetweenSets ?? null,
-            timePerRep: scheme.timePerRep ?? null,
-            duration: scheme.duration ?? null,
-            distance: scheme.distance ?? null,
-            targetTime: scheme.targetTime ?? null,
-          });
+          this.model.update((m) => ({
+            ...m,
+            sections: m.sections.map((s, sIdx) =>
+              sIdx !== si
+                ? s
+                : {
+                    ...s,
+                    exercises: s.exercises.map((e, eIdx) =>
+                      eIdx !== ei
+                        ? e
+                        : {
+                            existingSchemeId: scheme.id,
+                            userExerciseId: scheme.userExerciseId,
+                            measurementType: scheme.measurementType || 'REP_BASED',
+                            sets: scheme.sets ?? null,
+                            reps: scheme.reps ?? null,
+                            weight: scheme.weight ?? null,
+                            restBetweenSets: scheme.restBetweenSets ?? null,
+                            timePerRep: scheme.timePerRep ?? null,
+                            duration: scheme.duration ?? null,
+                            distance: scheme.distance ?? null,
+                            targetTime: scheme.targetTime ?? null,
+                          },
+                    ),
+                  },
+            ),
+          }));
         } catch {
           // scheme may have been deleted
         }
@@ -515,54 +541,78 @@ export class WorkoutEdit {
   }
 
   addSection() {
-    this.sectionsArray.push(this.createSectionGroup());
+    this.model.update((m) => ({
+      ...m,
+      sections: [
+        ...m.sections,
+        {
+          type: WorkoutSectionTypeMain,
+          label: '',
+          restBetweenExercises: null,
+          exercises: [],
+        },
+      ],
+    }));
   }
 
   removeSection(index: number) {
-    this.sectionsArray.removeAt(index);
+    this.model.update((m) => ({
+      ...m,
+      sections: m.sections.filter((_, i) => i !== index),
+    }));
   }
 
   addExercise(sectionIndex: number) {
-    this.getExercisesArray(sectionIndex).push(this.createExerciseGroup());
+    this.model.update((m) => ({
+      ...m,
+      sections: m.sections.map((s, i) =>
+        i !== sectionIndex
+          ? s
+          : {
+              ...s,
+              exercises: [
+                ...s.exercises,
+                {
+                  existingSchemeId: null,
+                  userExerciseId: null,
+                  measurementType: 'REP_BASED',
+                  sets: null,
+                  reps: null,
+                  weight: null,
+                  restBetweenSets: null,
+                  timePerRep: null,
+                  duration: null,
+                  distance: null,
+                  targetTime: null,
+                },
+              ],
+            },
+      ),
+    }));
   }
 
   removeExercise(sectionIndex: number, exerciseIndex: number) {
-    this.getExercisesArray(sectionIndex).removeAt(exerciseIndex);
-  }
-
-  private createSectionGroup(): SectionFormGroup {
-    return new FormGroup({
-      type: new FormControl(WorkoutSectionTypeMain, { nonNullable: true }),
-      label: new FormControl('', { nonNullable: true }),
-      restBetweenExercises: new FormControl<number | null>(null),
-      exercises: new FormArray<ExerciseFormGroup>([]),
-    });
-  }
-
-  private createExerciseGroup(): ExerciseFormGroup {
-    return new FormGroup({
-      existingSchemeId: new FormControl<number | null>(null),
-      userExerciseId: new FormControl<number | null>(null, [Validators.required]),
-      measurementType: new FormControl('REP_BASED', { nonNullable: true }),
-      sets: new FormControl<number | null>(null),
-      reps: new FormControl<number | null>(null),
-      weight: new FormControl<number | null>(null),
-      restBetweenSets: new FormControl<number | null>(null),
-      timePerRep: new FormControl<number | null>(null),
-      duration: new FormControl<number | null>(null),
-      distance: new FormControl<number | null>(null),
-      targetTime: new FormControl<number | null>(null),
-    });
+    this.model.update((m) => ({
+      ...m,
+      sections: m.sections.map((s, i) =>
+        i !== sectionIndex
+          ? s
+          : {
+              ...s,
+              exercises: s.exercises.filter((_, j) => j !== exerciseIndex),
+            },
+      ),
+    }));
   }
 
   onSubmit() {
-    if (this.form.valid) {
+    if (this.workoutForm().valid()) {
       this.saveMutation.mutate();
     }
   }
 
   private async saveWorkout() {
-    const val = this.form.getRawValue();
+    const val = this.model();
 
     if (this.isCreateMode()) {
       return this.createFlow(val);
@@ -571,7 +621,7 @@ export class WorkoutEdit {
     }
   }
 
-  private async createFlow(val: ReturnType<typeof this.form.getRawValue>) {
+  private async createFlow(val: WorkoutModel) {
     const workout = await this.userApi.createWorkout({
       name: val.name,
       notes: val.notes || undefined,
@@ -580,7 +630,7 @@ export class WorkoutEdit {
     await this.createSectionsAndExercises(workout.id, val.sections);
   }
 
-  private async editFlow(val: ReturnType<typeof this.form.getRawValue>) {
+  private async editFlow(val: WorkoutModel) {
     const workoutId = this.id();
     const existingWorkout = this.workoutQuery.data()!;
 
@@ -613,10 +663,7 @@ export class WorkoutEdit {
     await this.createSectionsAndExercises(workoutId, val.sections);
   }
 
-  private async createSectionsAndExercises(
-    workoutId: number,
-    sections: ReturnType<typeof this.form.getRawValue>['sections'],
-  ) {
+  private async createSectionsAndExercises(workoutId: number, sections: WorkoutSectionModel[]) {
     for (let si = 0; si < sections.length; si++) {
       const sectionVal = sections[si];
 

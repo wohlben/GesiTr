@@ -1,7 +1,7 @@
-import { Component, inject, computed, effect } from '@angular/core';
+import { Component, inject, computed, effect, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { form, required, FormField } from '@angular/forms/signals';
 import {
   injectQuery,
   injectMutation,
@@ -39,7 +39,7 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
   selector: 'app-equipment-edit',
   imports: [
     PageLayout,
-    ReactiveFormsModule,
+    FormField,
     RouterLink,
     BrnSelectImports,
     HlmSelectImports,
@@ -59,12 +59,12 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
         "
       >
         @if (isCreateMode() || equipmentQuery.data()) {
-          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
+          <form (submit)="onSubmit(); $event.preventDefault()" class="space-y-4">
             <div>
               <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >{{ t('fields.name') }} *</label
               >
-              <input id="name" formControlName="name" hlmInput class="mt-1" />
+              <input id="name" [formField]="equipmentForm.name" hlmInput class="mt-1" />
             </div>
 
             <div>
@@ -73,7 +73,12 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
                 class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >{{ t('fields.displayName') }} *</label
               >
-              <input id="displayName" formControlName="displayName" hlmInput class="mt-1" />
+              <input
+                id="displayName"
+                [formField]="equipmentForm.displayName"
+                hlmInput
+                class="mt-1"
+              />
             </div>
 
             <div>
@@ -84,7 +89,7 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
               >
               <textarea
                 id="description"
-                formControlName="description"
+                [formField]="equipmentForm.description"
                 rows="4"
                 hlmTextarea
                 class="mt-1"
@@ -97,7 +102,7 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
                 class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >{{ t('fields.category') }} *</label
               >
-              <brn-select formControlName="category" class="mt-1" hlm>
+              <brn-select [formField]="equipmentForm.category" class="mt-1" hlm>
                 <hlm-select-trigger class="w-full">
                   <hlm-select-value />
                 </hlm-select-trigger>
@@ -115,13 +120,15 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
                 class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >{{ t('fields.imageUrl') }}</label
               >
-              <input id="imageUrl" formControlName="imageUrl" hlmInput class="mt-1" />
+              <input id="imageUrl" [formField]="equipmentForm.imageUrl" hlmInput class="mt-1" />
             </div>
 
             <div class="flex gap-2">
               <button
                 type="submit"
-                [disabled]="form.invalid || mutation.isPending() || createMutation.isPending()"
+                [disabled]="
+                  !equipmentForm().valid() || mutation.isPending() || createMutation.isPending()
+                "
                 class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
               >
                 {{ t('common.save') }}
@@ -152,15 +159,17 @@ export class EquipmentEdit {
 
   categories = EQUIPMENT_CATEGORIES;
 
-  form = new FormGroup({
-    name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    displayName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    description: new FormControl('', { nonNullable: true }),
-    category: new FormControl<EquipmentCategory>(EquipmentCategoryFreeWeights, {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    imageUrl: new FormControl('', { nonNullable: true }),
+  model = signal({
+    name: '',
+    displayName: '',
+    description: '',
+    category: EquipmentCategoryFreeWeights as string,
+    imageUrl: '',
+  });
+  equipmentForm = form(this.model, (f) => {
+    required(f.name);
+    required(f.displayName);
+    required(f.category);
   });
 
   equipmentQuery = injectQuery(() => ({
@@ -195,7 +204,7 @@ export class EquipmentEdit {
     effect(() => {
       const data = this.equipmentQuery.data();
       if (data) {
-        this.form.patchValue({
+        this.model.set({
           name: data.name,
           displayName: data.displayName,
           description: data.description,
@@ -207,15 +216,14 @@ export class EquipmentEdit {
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      const val = this.form.getRawValue();
+    if (this.equipmentForm().valid()) {
+      const val = this.model();
       const payload = {
         ...(this.isCreateMode() ? {} : this.equipmentQuery.data()!),
         name: val.name,
-
         displayName: val.displayName,
         description: val.description,
-        category: val.category,
+        category: val.category as EquipmentCategory,
         imageUrl: val.imageUrl || undefined,
       };
       if (this.isCreateMode()) {

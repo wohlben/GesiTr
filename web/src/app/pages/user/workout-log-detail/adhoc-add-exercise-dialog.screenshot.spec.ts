@@ -87,11 +87,18 @@ describe('AdhocAddExerciseDialog screenshots', () => {
 
     // Set exercise selection to show the runner (Phase 2)
     const configComponent = result.fixture.componentInstance.exerciseConfig;
-    configComponent.userExerciseId.set(1);
-    configComponent.sets.set(3);
-    configComponent.reps.set(10);
-    configComponent.weight.set(60);
-    configComponent.restBetweenSets.set(90);
+    configComponent.model.set({
+      userExerciseId: 1,
+      measurementType: 'REP_BASED',
+      sets: 3,
+      reps: 10,
+      weight: 60,
+      restBetweenSets: 90,
+      timePerRep: null,
+      duration: null,
+      distance: null,
+      targetTime: null,
+    });
     result.fixture.detectChanges();
     await result.fixture.whenStable();
 

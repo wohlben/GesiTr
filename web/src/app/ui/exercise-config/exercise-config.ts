@@ -1,5 +1,5 @@
 import { Component, inject, computed, signal, input, effect } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { form, FormField, disabled } from '@angular/forms/signals';
 import { injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { injectQueries } from '@tanstack/angular-query-experimental/inject-queries-experimental';
 import { UserApiClient } from '$core/api-clients/user-api-client';
@@ -19,7 +19,7 @@ export interface ExerciseConfigResult {
 
 @Component({
   selector: 'app-exercise-config',
-  imports: [FormsModule, BrnSelectImports, HlmSelectImports, HlmInput, TranslocoDirective],
+  imports: [FormField, BrnSelectImports, HlmSelectImports, HlmInput, TranslocoDirective],
   template: `
     <div
       *transloco="let t"
@@ -31,11 +31,10 @@ export interface ExerciseConfigResult {
             t('ui.exerciseConfig.exerciseLabel')
           }}</span>
           <brn-select
-            [(ngModel)]="userExerciseId"
+            [formField]="configForm.userExerciseId"
             class="mt-1"
             hlm
             [placeholder]="t('common.select')"
-            [disabled]="!!preselectedExerciseId()"
           >
             <hlm-select-trigger class="w-full">
               <hlm-select-value />
@@ -51,7 +50,7 @@ export interface ExerciseConfigResult {
           <span class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{
             t('fields.measurementType')
           }}</span>
-          <brn-select [(ngModel)]="measurementType" class="mt-1" hlm>
+          <brn-select [formField]="configForm.measurementType" class="mt-1" hlm>
             <hlm-select-trigger class="w-full">
               <hlm-select-value />
             </hlm-select-trigger>
@@ -69,51 +68,51 @@ export interface ExerciseConfigResult {
       </div>
 
       <!-- REP_BASED fields -->
-      @if (measurementType() === 'REP_BASED') {
+      @if (model().measurementType === 'REP_BASED') {
         <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
             {{ t('fields.sets') }}
-            <input type="number" [(ngModel)]="sets" hlmInput class="mt-1" />
+            <input type="number" [formField]="configForm.sets" hlmInput class="mt-1" />
           </label>
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
             {{ t('fields.reps') }}
-            <input type="number" [(ngModel)]="reps" hlmInput class="mt-1" />
+            <input type="number" [formField]="configForm.reps" hlmInput class="mt-1" />
           </label>
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
             {{ t('fields.weightKg') }}
-            <input type="number" [(ngModel)]="weight" hlmInput class="mt-1" />
+            <input type="number" [formField]="configForm.weight" hlmInput class="mt-1" />
           </label>
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
             {{ t('fields.restSeconds') }}
-            <input type="number" [(ngModel)]="restBetweenSets" hlmInput class="mt-1" />
+            <input type="number" [formField]="configForm.restBetweenSets" hlmInput class="mt-1" />
           </label>
         </div>
       }
 
       <!-- TIME_BASED fields -->
-      @if (measurementType() === 'TIME_BASED') {
+      @if (model().measurementType === 'TIME_BASED') {
         <div class="grid grid-cols-2 gap-2">
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
             {{ t('fields.durationSeconds') }}
-            <input type="number" [(ngModel)]="duration" hlmInput class="mt-1" />
+            <input type="number" [formField]="configForm.duration" hlmInput class="mt-1" />
           </label>
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
             {{ t('fields.timePerRepSeconds') }}
-            <input type="number" [(ngModel)]="timePerRep" hlmInput class="mt-1" />
+            <input type="number" [formField]="configForm.timePerRep" hlmInput class="mt-1" />
           </label>
         </div>
       }
 
       <!-- DISTANCE_BASED fields -->
-      @if (measurementType() === 'DISTANCE_BASED') {
+      @if (model().measurementType === 'DISTANCE_BASED') {
         <div class="grid grid-cols-2 gap-2">
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
             {{ t('fields.distanceM') }}
-            <input type="number" [(ngModel)]="distance" hlmInput class="mt-1" />
+            <input type="number" [formField]="configForm.distance" hlmInput class="mt-1" />
           </label>
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
             {{ t('fields.targetTimeSeconds') }}
-            <input type="number" [(ngModel)]="targetTime" hlmInput class="mt-1" />
+            <input type="number" [formField]="configForm.targetTime" hlmInput class="mt-1" />
           </label>
         </div>
       }
@@ -128,26 +127,31 @@ export class ExerciseConfig {
   /** When set, the exercise dropdown is locked to this user exercise. */
   preselectedExerciseId = input<number | null>(null);
 
-  // Form fields (signal-backed for [(ngModel)])
-  userExerciseId = signal<number | null>(null);
+  // Form state
+  model = signal({
+    userExerciseId: null as number | null,
+    measurementType: 'REP_BASED',
+    sets: 3 as number | null,
+    reps: 10 as number | null,
+    weight: null as number | null,
+    restBetweenSets: null as number | null,
+    timePerRep: null as number | null,
+    duration: null as number | null,
+    distance: null as number | null,
+    targetTime: null as number | null,
+  });
+  configForm = form(this.model, (f) => {
+    disabled(f.userExerciseId, () => !!this.preselectedExerciseId());
+  });
 
   constructor() {
     effect(() => {
       const preselected = this.preselectedExerciseId();
       if (preselected != null) {
-        this.userExerciseId.set(preselected);
+        this.model.update((m) => ({ ...m, userExerciseId: preselected }));
       }
     });
   }
-  measurementType = signal<string>('REP_BASED');
-  sets = signal<number | null>(3);
-  reps = signal<number | null>(10);
-  weight = signal<number | null>(null);
-  restBetweenSets = signal<number | null>(null);
-  timePerRep = signal<number | null>(null);
-  duration = signal<number | null>(null);
-  distance = signal<number | null>(null);
-  targetTime = signal<number | null>(null);
 
   // User exercises query
   private userExercisesQuery = injectQuery(() => ({
@@ -175,33 +179,34 @@ export class ExerciseConfig {
   });
 
   selectedExerciseName = computed(() => {
-    const id = this.userExerciseId();
+    const id = this.model().userExerciseId;
     if (!id) return '';
     return this.enrichedUserExercises().find((ue) => ue.id === id)?.name ?? '';
   });
 
-  canConfirm = computed(() => this.userExerciseId() != null);
+  canConfirm = computed(() => this.model().userExerciseId != null);
 
   /** Creates a scheme from the field values and returns it. */
   async confirm(): Promise<UserExerciseScheme> {
+    const m = this.model();
     const data: Record<string, unknown> = {
-      userExerciseId: this.userExerciseId(),
-      measurementType: this.measurementType(),
+      userExerciseId: m.userExerciseId,
+      measurementType: m.measurementType,
     };
-    const mt = this.measurementType();
+    const mt = m.measurementType;
     if (mt === 'REP_BASED') {
-      if (this.sets() != null) data['sets'] = this.sets();
-      if (this.reps() != null) data['reps'] = this.reps();
-      if (this.weight() != null) data['weight'] = this.weight();
-      if (this.restBetweenSets() != null) data['restBetweenSets'] = this.restBetweenSets();
+      if (m.sets != null) data['sets'] = m.sets;
+      if (m.reps != null) data['reps'] = m.reps;
+      if (m.weight != null) data['weight'] = m.weight;
+      if (m.restBetweenSets != null) data['restBetweenSets'] = m.restBetweenSets;
     } else if (mt === 'TIME_BASED') {
-      if (this.sets() != null) data['sets'] = this.sets();
-      if (this.duration() != null) data['duration'] = this.duration();
-      if (this.timePerRep() != null) data['timePerRep'] = this.timePerRep();
+      if (m.sets != null) data['sets'] = m.sets;
+      if (m.duration != null) data['duration'] = m.duration;
+      if (m.timePerRep != null) data['timePerRep'] = m.timePerRep;
     } else if (mt === 'DISTANCE_BASED') {
-      if (this.sets() != null) data['sets'] = this.sets();
-      if (this.distance() != null) data['distance'] = this.distance();
-      if (this.targetTime() != null) data['targetTime'] = this.targetTime();
+      if (m.sets != null) data['sets'] = m.sets;
+      if (m.distance != null) data['distance'] = m.distance;
+      if (m.targetTime != null) data['targetTime'] = m.targetTime;
     }
     const scheme = await this.userApi.createExerciseScheme(data);
     this.queryClient.invalidateQueries({ queryKey: exerciseSchemeKeys.all() });
@@ -209,15 +214,17 @@ export class ExerciseConfig {
   }
 
   reset() {
-    this.userExerciseId.set(null);
-    this.measurementType.set('REP_BASED');
-    this.sets.set(3);
-    this.reps.set(10);
-    this.weight.set(null);
-    this.restBetweenSets.set(null);
-    this.timePerRep.set(null);
-    this.duration.set(null);
-    this.distance.set(null);
-    this.targetTime.set(null);
+    this.model.set({
+      userExerciseId: null,
+      measurementType: 'REP_BASED',
+      sets: 3,
+      reps: 10,
+      weight: null,
+      restBetweenSets: null,
+      timePerRep: null,
+      duration: null,
+      distance: null,
+      targetTime: null,
+    });
   }
 }

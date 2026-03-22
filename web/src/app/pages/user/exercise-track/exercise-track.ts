@@ -37,16 +37,16 @@ import { PageLayout } from '../../../layout/page-layout';
         <hlm-separator class="my-4" />
 
         <!-- Phase 2: Set preview -->
-        @if (exerciseConfig.userExerciseId() && exerciseConfig.sets()) {
+        @if (exerciseConfig.model().userExerciseId && exerciseConfig.model().sets) {
           <app-exercise-runner
             [exerciseName]="exerciseConfig.selectedExerciseName()"
-            [measurementType]="exerciseConfig.measurementType()"
-            [setCount]="exerciseConfig.sets()!"
-            [defaultReps]="exerciseConfig.reps()"
-            [defaultWeight]="exerciseConfig.weight()"
-            [defaultDuration]="exerciseConfig.duration()"
-            [defaultDistance]="exerciseConfig.distance()"
-            [defaultRest]="exerciseConfig.restBetweenSets()"
+            [measurementType]="exerciseConfig.model().measurementType"
+            [setCount]="exerciseConfig.model().sets!"
+            [defaultReps]="exerciseConfig.model().reps"
+            [defaultWeight]="exerciseConfig.model().weight"
+            [defaultDuration]="exerciseConfig.model().duration"
+            [defaultDistance]="exerciseConfig.model().distance"
+            [defaultRest]="exerciseConfig.model().restBetweenSets"
           />
         } @else {
           <div class="py-4 text-center text-sm text-gray-400 dark:text-gray-500">

@@ -1,7 +1,7 @@
-import { Component, inject, computed, effect } from '@angular/core';
+import { Component, inject, computed, effect, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { form, required, FormField } from '@angular/forms/signals';
 import {
   injectQuery,
   injectMutation,
@@ -125,7 +125,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
   selector: 'app-exercise-edit',
   imports: [
     PageLayout,
-    ReactiveFormsModule,
+    FormField,
     RouterLink,
     BrnSelectImports,
     HlmSelectImports,
@@ -145,12 +145,12 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
         "
       >
         @if (isCreateMode() || exerciseQuery.data()) {
-          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
+          <form (submit)="onSubmit(); $event.preventDefault()" class="space-y-4">
             <div>
               <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >{{ t('fields.name') }} *</label
               >
-              <input hlmInput id="name" formControlName="name" class="mt-1" />
+              <input hlmInput id="name" [formField]="exerciseForm.name" class="mt-1" />
             </div>
 
             <div>
@@ -162,7 +162,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
               <textarea
                 hlmTextarea
                 id="description"
-                formControlName="description"
+                [formField]="exerciseForm.description"
                 rows="3"
                 class="mt-1"
               ></textarea>
@@ -173,7 +173,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
                 <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                   >{{ t('fields.type') }} *</label
                 >
-                <brn-select formControlName="type" class="mt-1" hlm>
+                <brn-select [formField]="exerciseForm.type" class="mt-1" hlm>
                   <hlm-select-trigger class="w-full">
                     <hlm-select-value />
                   </hlm-select-trigger>
@@ -191,7 +191,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
                   class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                   >{{ t('fields.difficulty') }} *</label
                 >
-                <brn-select formControlName="technicalDifficulty" class="mt-1" hlm>
+                <brn-select [formField]="exerciseForm.technicalDifficulty" class="mt-1" hlm>
                   <hlm-select-trigger class="w-full">
                     <hlm-select-value />
                   </hlm-select-trigger>
@@ -214,7 +214,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
                   id="bodyWeightScaling"
                   type="number"
                   step="0.01"
-                  formControlName="bodyWeightScaling"
+                  [formField]="exerciseForm.bodyWeightScaling"
                   class="mt-1"
                 />
               </div>
@@ -225,7 +225,12 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
                   class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                   >{{ t('fields.authorName') }}</label
                 >
-                <input hlmInput id="authorName" formControlName="authorName" class="mt-1" />
+                <input
+                  hlmInput
+                  id="authorName"
+                  [formField]="exerciseForm.authorName"
+                  class="mt-1"
+                />
               </div>
 
               <div class="sm:col-span-2">
@@ -234,7 +239,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
                   class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                   >{{ t('fields.authorUrl') }}</label
                 >
-                <input hlmInput id="authorUrl" formControlName="authorUrl" class="mt-1" />
+                <input hlmInput id="authorUrl" [formField]="exerciseForm.authorUrl" class="mt-1" />
               </div>
             </div>
 
@@ -318,18 +323,18 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
               </div>
             </fieldset>
 
-            <!-- Instructions FormArray -->
+            <!-- Instructions -->
             <fieldset>
               <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
                 {{ t('fields.instructions') }}
               </legend>
               <div class="mt-1 space-y-2">
-                @for (ctrl of instructions.controls; track $index) {
+                @for (item of exerciseForm.instructions; track $index; let i = $index) {
                   <div class="flex gap-2">
-                    <input hlmInput [formControl]="ctrl" />
+                    <input hlmInput [formField]="item" />
                     <button
                       type="button"
-                      (click)="instructions.removeAt($index)"
+                      (click)="removeInstruction(i)"
                       class="rounded-md border border-red-300 px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
                     >
                       {{ t('common.remove') }}
@@ -338,7 +343,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
                 }
                 <button
                   type="button"
-                  (click)="instructions.push(newStringControl())"
+                  (click)="addInstruction()"
                   class="text-sm text-blue-600 hover:underline dark:text-blue-400"
                 >
                   {{ t('compendium.exercises.addInstruction') }}
@@ -346,18 +351,18 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
               </div>
             </fieldset>
 
-            <!-- Images FormArray -->
+            <!-- Images -->
             <fieldset>
               <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
                 {{ t('fields.images') }}
               </legend>
               <div class="mt-1 space-y-2">
-                @for (ctrl of images.controls; track $index) {
+                @for (item of exerciseForm.images; track $index; let i = $index) {
                   <div class="flex gap-2">
-                    <input hlmInput [formControl]="ctrl" />
+                    <input hlmInput [formField]="item" />
                     <button
                       type="button"
-                      (click)="images.removeAt($index)"
+                      (click)="removeImage(i)"
                       class="rounded-md border border-red-300 px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
                     >
                       {{ t('common.remove') }}
@@ -366,7 +371,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
                 }
                 <button
                   type="button"
-                  (click)="images.push(newStringControl())"
+                  (click)="addImage()"
                   class="text-sm text-blue-600 hover:underline dark:text-blue-400"
                 >
                   {{ t('compendium.exercises.addImage') }}
@@ -374,18 +379,18 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
               </div>
             </fieldset>
 
-            <!-- Alternative Names FormArray -->
+            <!-- Alternative Names -->
             <fieldset>
               <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
                 {{ t('fields.alternativeNames') }}
               </legend>
               <div class="mt-1 space-y-2">
-                @for (ctrl of alternativeNames.controls; track $index) {
+                @for (item of exerciseForm.alternativeNames; track $index; let i = $index) {
                   <div class="flex gap-2">
-                    <input hlmInput [formControl]="ctrl" />
+                    <input hlmInput [formField]="item" />
                     <button
                       type="button"
-                      (click)="alternativeNames.removeAt($index)"
+                      (click)="removeAlternativeName(i)"
                       class="rounded-md border border-red-300 px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
                     >
                       {{ t('common.remove') }}
@@ -394,7 +399,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
                 }
                 <button
                   type="button"
-                  (click)="alternativeNames.push(newStringControl())"
+                  (click)="addAlternativeName()"
                   class="text-sm text-blue-600 hover:underline dark:text-blue-400"
                 >
                   {{ t('compendium.exercises.addAlternativeName') }}
@@ -402,18 +407,18 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
               </div>
             </fieldset>
 
-            <!-- Equipment IDs FormArray -->
+            <!-- Equipment IDs -->
             <fieldset>
               <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
                 {{ t('fields.equipmentIds') }}
               </legend>
               <div class="mt-1 space-y-2">
-                @for (ctrl of equipmentIds.controls; track $index) {
+                @for (item of exerciseForm.equipmentIds; track $index; let i = $index) {
                   <div class="flex gap-2">
-                    <input hlmInput [formControl]="ctrl" />
+                    <input hlmInput [formField]="item" />
                     <button
                       type="button"
-                      (click)="equipmentIds.removeAt($index)"
+                      (click)="removeEquipmentId(i)"
                       class="rounded-md border border-red-300 px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
                     >
                       {{ t('common.remove') }}
@@ -422,7 +427,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
                 }
                 <button
                   type="button"
-                  (click)="equipmentIds.push(newStringControl())"
+                  (click)="addEquipmentId()"
                   class="text-sm text-blue-600 hover:underline dark:text-blue-400"
                 >
                   {{ t('compendium.exercises.addEquipmentId') }}
@@ -433,7 +438,9 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
             <div class="flex gap-2">
               <button
                 type="submit"
-                [disabled]="form.invalid || mutation.isPending() || createMutation.isPending()"
+                [disabled]="
+                  !exerciseForm().valid() || mutation.isPending() || createMutation.isPending()
+                "
                 class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
               >
                 {{ t('common.save') }}
@@ -473,29 +480,24 @@ export class ExerciseEdit {
   selectedSecondaryMuscles = new Set<string>();
   selectedParadigms = new Set<string>();
 
-  instructions = new FormArray<FormControl<string>>([]);
-  images = new FormArray<FormControl<string>>([]);
-  alternativeNames = new FormArray<FormControl<string>>([]);
-  equipmentIds = new FormArray<FormControl<string>>([]);
+  model = signal({
+    name: '',
+    description: '',
+    type: ExerciseTypeStrength as string,
+    technicalDifficulty: DifficultyBeginner as string,
+    bodyWeightScaling: 0,
+    authorName: '',
+    authorUrl: '',
+    instructions: [] as string[],
+    images: [] as string[],
+    alternativeNames: [] as string[],
+    equipmentIds: [] as string[],
+  });
 
-  form = new FormGroup({
-    name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    description: new FormControl('', { nonNullable: true }),
-    type: new FormControl<ExerciseType>(ExerciseTypeStrength, {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    technicalDifficulty: new FormControl<TechnicalDifficulty>(DifficultyBeginner, {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    bodyWeightScaling: new FormControl(0, { nonNullable: true }),
-    authorName: new FormControl('', { nonNullable: true }),
-    authorUrl: new FormControl('', { nonNullable: true }),
-    instructions: this.instructions,
-    images: this.images,
-    alternativeNames: this.alternativeNames,
-    equipmentIds: this.equipmentIds,
+  exerciseForm = form(this.model, (f) => {
+    required(f.name);
+    required(f.type);
+    required(f.technicalDifficulty);
   });
 
   exerciseQuery = injectQuery(() => ({
@@ -530,7 +532,7 @@ export class ExerciseEdit {
     effect(() => {
       const data = this.exerciseQuery.data();
       if (data) {
-        this.form.patchValue({
+        this.model.set({
           name: data.name,
           description: data.description,
           type: data.type,
@@ -538,17 +540,16 @@ export class ExerciseEdit {
           bodyWeightScaling: data.bodyWeightScaling,
           authorName: data.authorName ?? '',
           authorUrl: data.authorUrl ?? '',
+          instructions: data.instructions ?? [],
+          images: data.images ?? [],
+          alternativeNames: data.alternativeNames ?? [],
+          equipmentIds: data.equipmentIds ?? [],
         });
 
         this.selectedForce = new Set(data.force ?? []);
         this.selectedPrimaryMuscles = new Set(data.primaryMuscles ?? []);
         this.selectedSecondaryMuscles = new Set(data.secondaryMuscles ?? []);
         this.selectedParadigms = new Set(data.suggestedMeasurementParadigms ?? []);
-
-        this.rebuildFormArray(this.instructions, data.instructions ?? []);
-        this.rebuildFormArray(this.images, data.images ?? []);
-        this.rebuildFormArray(this.alternativeNames, data.alternativeNames ?? []);
-        this.rebuildFormArray(this.equipmentIds, data.equipmentIds ?? []);
       }
     });
   }
@@ -574,20 +575,46 @@ export class ExerciseEdit {
     }
   }
 
-  newStringControl() {
-    return new FormControl('', { nonNullable: true });
+  addInstruction() {
+    this.model.update((m) => ({ ...m, instructions: [...m.instructions, ''] }));
+  }
+  removeInstruction(i: number) {
+    this.model.update((m) => ({
+      ...m,
+      instructions: m.instructions.filter((_, idx) => idx !== i),
+    }));
   }
 
-  private rebuildFormArray(arr: FormArray<FormControl<string>>, values: string[]) {
-    arr.clear();
-    for (const v of values) {
-      arr.push(new FormControl(v, { nonNullable: true }));
-    }
+  addImage() {
+    this.model.update((m) => ({ ...m, images: [...m.images, ''] }));
+  }
+  removeImage(i: number) {
+    this.model.update((m) => ({ ...m, images: m.images.filter((_, idx) => idx !== i) }));
+  }
+
+  addAlternativeName() {
+    this.model.update((m) => ({ ...m, alternativeNames: [...m.alternativeNames, ''] }));
+  }
+  removeAlternativeName(i: number) {
+    this.model.update((m) => ({
+      ...m,
+      alternativeNames: m.alternativeNames.filter((_, idx) => idx !== i),
+    }));
+  }
+
+  addEquipmentId() {
+    this.model.update((m) => ({ ...m, equipmentIds: [...m.equipmentIds, ''] }));
+  }
+  removeEquipmentId(i: number) {
+    this.model.update((m) => ({
+      ...m,
+      equipmentIds: m.equipmentIds.filter((_, idx) => idx !== i),
+    }));
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      const val = this.form.getRawValue();
+    if (this.exerciseForm().valid()) {
+      const val = this.model();
       const payload = {
         ...(this.isCreateMode() ? {} : this.exerciseQuery.data()!),
         name: val.name,

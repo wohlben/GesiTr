@@ -1,7 +1,7 @@
 import { Component, inject, computed, effect, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule, FormGroup, FormControl, FormArray } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import {
   injectQuery,
   injectMutation,
@@ -27,35 +27,41 @@ import { HlmTextarea } from '@spartan-ng/helm/textarea';
 import { WorkoutStartStore, SetPreview } from './workout-start.store';
 import { AddExerciseDialog } from './add-exercise-dialog';
 
-type SetFormGroup = FormGroup<{
-  id: FormControl<number | null>;
-  targetReps: FormControl<number | null>;
-  targetWeight: FormControl<number | null>;
-  targetDuration: FormControl<number | null>;
-  targetDistance: FormControl<number | null>;
-  targetTime: FormControl<number | null>;
-  restAfterSeconds: FormControl<number | null>;
-}>;
+interface StartSetModel {
+  id: number | null;
+  targetReps: number | null;
+  targetWeight: number | null;
+  targetDuration: number | null;
+  targetDistance: number | null;
+  targetTime: number | null;
+  restAfterSeconds: number | null;
+}
 
-type ExerciseFormGroup = FormGroup<{
-  id: FormControl<number | null>;
-  sourceExerciseSchemeId: FormControl<number>;
-  breakAfterSeconds: FormControl<number | null>;
-  sets: FormArray<SetFormGroup>;
-}>;
+interface StartExerciseModel {
+  id: number | null;
+  sourceExerciseSchemeId: number;
+  breakAfterSeconds: number | null;
+  sets: StartSetModel[];
+}
 
-type SectionFormGroup = FormGroup<{
-  id: FormControl<number | null>;
-  type: FormControl<string>;
-  label: FormControl<string>;
-  exercises: FormArray<ExerciseFormGroup>;
-}>;
+interface StartSectionModel {
+  id: number | null;
+  type: string;
+  label: string;
+  exercises: StartExerciseModel[];
+}
+
+interface StartModel {
+  name: string;
+  notes: string;
+  sections: StartSectionModel[];
+}
 
 @Component({
   selector: 'app-workout-start',
   imports: [
     PageLayout,
-    ReactiveFormsModule,
+    FormField,
     RouterLink,
     AddExerciseDialog,
     CdkDropList,
@@ -76,7 +82,7 @@ type SectionFormGroup = FormGroup<{
         [errorMessage]="workoutQuery.isError() ? workoutQuery.error().message : undefined"
       >
         @if (workoutQuery.data() && currentLogId()) {
-          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+          <form (submit)="onSubmit(); $event.preventDefault()" class="space-y-6">
             <!-- Basic Fields -->
             <div>
               <label
@@ -87,7 +93,7 @@ type SectionFormGroup = FormGroup<{
               <input
                 hlmInput
                 id="name"
-                formControlName="name"
+                [formField]="startForm.name"
                 (change)="onLogChange()"
                 class="mt-1"
               />
@@ -102,7 +108,7 @@ type SectionFormGroup = FormGroup<{
               <textarea
                 hlmTextarea
                 id="notes"
-                formControlName="notes"
+                [formField]="startForm.notes"
                 (change)="onLogChange()"
                 rows="2"
                 class="mt-1"
@@ -111,18 +117,13 @@ type SectionFormGroup = FormGroup<{
 
             <!-- Sections -->
             <div
-              formArrayName="sections"
               cdkDropList
-              [cdkDropListData]="sectionsArray.controls"
+              [cdkDropListData]="startForm.sections"
               (cdkDropListDropped)="onSectionDrop($event)"
               class="space-y-4"
             >
-              @for (section of sectionsArray.controls; track $index; let si = $index) {
-                <div
-                  [formGroupName]="si"
-                  cdkDrag
-                  class="rounded-lg border border-gray-200 p-4 dark:border-gray-700"
-                >
+              @for (section of startForm.sections; track $index; let si = $index) {
+                <div cdkDrag class="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
                   <div class="mb-3 flex items-center justify-between">
                     <div class="flex items-center gap-2">
                       <!-- Section drag handle -->
@@ -162,7 +163,7 @@ type SectionFormGroup = FormGroup<{
                         t('fields.type')
                       }}</span>
                       <brn-select
-                        formControlName="type"
+                        [formField]="section.type"
                         (valueChange)="onSectionChange(si)"
                         class="mt-1"
                         hlm
@@ -184,7 +185,7 @@ type SectionFormGroup = FormGroup<{
                       {{ t('fields.label') }}
                       <input
                         hlmInput
-                        formControlName="label"
+                        [formField]="section.label"
                         (change)="onSectionChange(si)"
                         class="mt-1"
                       />
@@ -193,23 +194,19 @@ type SectionFormGroup = FormGroup<{
 
                   <!-- Exercise cards -->
                   <div
-                    formArrayName="exercises"
                     cdkDropList
-                    [cdkDropListData]="getExercisesArray(si).controls"
+                    [cdkDropListData]="section.exercises"
                     (cdkDropListDropped)="onExerciseDrop($event, si)"
                   >
                     @for (
-                      ex of getExercisesArray(si).controls;
+                      exercise of section.exercises;
                       track $index;
                       let ei = $index;
                       let lastEx = $last
                     ) {
                       <div cdkDrag>
-                        @let info = store.exerciseDisplay()[ex.get('id')!.value!];
-                        <div
-                          [formGroupName]="ei"
-                          class="rounded-md border border-gray-200 dark:border-gray-600"
-                        >
+                        @let info = store.exerciseDisplay()[exercise.id().value()!];
+                        <div class="rounded-md border border-gray-200 dark:border-gray-600">
                           <!-- Exercise header -->
                           <div
                             class="flex items-center justify-between border-b border-gray-100 px-3 py-2 dark:border-gray-700"
@@ -254,9 +251,8 @@ type SectionFormGroup = FormGroup<{
                           </div>
 
                           <!-- Editable sets -->
-                          @if (getSetsArray(si, ei).length) {
-                            @let setsArr = getSetsArray(si, ei);
-                            <div class="px-3 py-2" [formArrayName]="'sets'">
+                          @if (exercise.sets.length) {
+                            <div class="px-3 py-2">
                               <!-- Header -->
                               <div
                                 class="mb-1 grid text-left text-xs text-gray-500 uppercase dark:text-gray-400"
@@ -280,14 +276,13 @@ type SectionFormGroup = FormGroup<{
                               </div>
 
                               @for (
-                                setCtrl of setsArr.controls;
+                                set of exercise.sets;
                                 track $index;
                                 let setIdx = $index;
                                 let lastSet = $last
                               ) {
                                 <!-- Set row -->
                                 <div
-                                  [formGroupName]="setIdx"
                                   class="grid items-center py-1.5"
                                   [class]="
                                     info?.measurementType === 'REP_BASED'
@@ -304,7 +299,8 @@ type SectionFormGroup = FormGroup<{
                                       <input
                                         hlmInput
                                         type="number"
-                                        formControlName="targetReps"
+                                        [formField]="set.targetReps"
+                                        data-field="targetReps"
                                         (change)="onSetChange(si, ei, setIdx)"
                                         class="mt-1"
                                       />
@@ -313,7 +309,8 @@ type SectionFormGroup = FormGroup<{
                                       <input
                                         hlmInput
                                         type="number"
-                                        formControlName="targetWeight"
+                                        [formField]="set.targetWeight"
+                                        data-field="targetWeight"
                                         (change)="onSetChange(si, ei, setIdx)"
                                         class="mt-1"
                                         step="0.5"
@@ -325,7 +322,7 @@ type SectionFormGroup = FormGroup<{
                                       <input
                                         hlmInput
                                         type="number"
-                                        formControlName="targetDuration"
+                                        [formField]="set.targetDuration"
                                         (change)="onSetChange(si, ei, setIdx)"
                                         class="mt-1"
                                       />
@@ -336,7 +333,7 @@ type SectionFormGroup = FormGroup<{
                                       <input
                                         hlmInput
                                         type="number"
-                                        formControlName="targetDistance"
+                                        [formField]="set.targetDistance"
                                         (change)="onSetChange(si, ei, setIdx)"
                                         class="mt-1"
                                         step="0.1"
@@ -346,11 +343,8 @@ type SectionFormGroup = FormGroup<{
                                 </div>
 
                                 <!-- Rest between sets: line with centered badge -->
-                                @if (!lastSet && setCtrl.controls.restAfterSeconds.value !== null) {
-                                  <div
-                                    [formGroupName]="setIdx"
-                                    class="relative flex items-center justify-center py-0.5"
-                                  >
+                                @if (!lastSet && set.restAfterSeconds().value() !== null) {
+                                  <div class="relative flex items-center justify-center py-0.5">
                                     <div
                                       class="absolute inset-x-0 top-1/2 border-t border-dashed border-gray-200 dark:border-gray-700"
                                     ></div>
@@ -366,7 +360,8 @@ type SectionFormGroup = FormGroup<{
                                       </svg>
                                       <input
                                         type="number"
-                                        formControlName="restAfterSeconds"
+                                        [formField]="set.restAfterSeconds"
+                                        data-field="restAfterSeconds"
                                         (change)="onSetChange(si, ei, setIdx)"
                                         class="w-12 border-0 bg-transparent p-0 text-center text-xs text-gray-400 focus:ring-0 dark:text-gray-500"
                                       />
@@ -381,10 +376,7 @@ type SectionFormGroup = FormGroup<{
 
                         <!-- Break after exercise (editable, not shown after last) -->
                         @if (!lastEx) {
-                          <div
-                            [formGroupName]="ei"
-                            class="relative flex items-center justify-center py-3"
-                          >
+                          <div class="relative flex items-center justify-center py-3">
                             <div
                               class="absolute inset-x-0 top-1/2 border-t border-gray-200 dark:border-gray-700"
                             ></div>
@@ -400,7 +392,8 @@ type SectionFormGroup = FormGroup<{
                               </svg>
                               <input
                                 type="number"
-                                formControlName="breakAfterSeconds"
+                                [formField]="exercise.breakAfterSeconds"
+                                data-field="breakAfterSeconds"
                                 (change)="onExerciseChange(si, ei)"
                                 class="w-12 border-0 bg-transparent p-0 text-center text-xs text-gray-500 focus:ring-0 dark:text-gray-400"
                               />
@@ -532,23 +525,8 @@ export class WorkoutStart {
   addDialogSectionId = signal(0);
   addDialogExerciseCount = signal(0);
 
-  form = new FormGroup({
-    name: new FormControl('', { nonNullable: true }),
-    notes: new FormControl('', { nonNullable: true }),
-    sections: new FormArray<SectionFormGroup>([]),
-  });
-
-  get sectionsArray() {
-    return this.form.controls.sections;
-  }
-
-  getExercisesArray(sectionIndex: number) {
-    return this.sectionsArray.at(sectionIndex).controls.exercises;
-  }
-
-  getSetsArray(sectionIndex: number, exerciseIndex: number) {
-    return this.getExercisesArray(sectionIndex).at(exerciseIndex).controls.sets;
-  }
+  model = signal<StartModel>({ name: '', notes: '', sections: [] });
+  startForm = form(this.model);
 
   workoutQuery = injectQuery(() => ({
     queryKey: workoutKeys.detail(this.id()),
@@ -583,31 +561,47 @@ export class WorkoutStart {
   }
 
   // CDK Drag & Drop
-  onSectionDrop(event: CdkDragDrop<SectionFormGroup[]>) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSectionDrop(event: CdkDragDrop<any>) {
     if (event.previousIndex === event.currentIndex) return;
-    this.moveFormArrayItem(this.sectionsArray, event.previousIndex, event.currentIndex);
+    this.model.update((m) => {
+      const sections = [...m.sections];
+      const [moved] = sections.splice(event.previousIndex, 1);
+      sections.splice(event.currentIndex, 0, moved);
+      return { ...m, sections };
+    });
     this.persistSectionPositions();
   }
 
-  onExerciseDrop(event: CdkDragDrop<ExerciseFormGroup[]>, sectionIndex: number) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onExerciseDrop(event: CdkDragDrop<any>, sectionIndex: number) {
     if (event.previousIndex === event.currentIndex) return;
-    this.moveFormArrayItem(
-      this.getExercisesArray(sectionIndex),
-      event.previousIndex,
-      event.currentIndex,
-    );
+    this.model.update((m) => ({
+      ...m,
+      sections: m.sections.map((s, i) =>
+        i !== sectionIndex
+          ? s
+          : {
+              ...s,
+              exercises: (() => {
+                const exercises = [...s.exercises];
+                const [moved] = exercises.splice(event.previousIndex, 1);
+                exercises.splice(event.currentIndex, 0, moved);
+                return exercises;
+              })(),
+            },
+      ),
+    }));
     this.persistExercisePositions(sectionIndex);
   }
 
-  private moveFormArrayItem(formArray: FormArray, from: number, to: number) {
-    const control = formArray.at(from);
-    formArray.removeAt(from);
-    formArray.insert(to, control);
-  }
-
   async removeSection(index: number) {
-    const sectionId = this.sectionsArray.at(index).controls.id.value;
-    this.sectionsArray.removeAt(index);
+    const m = this.model();
+    const sectionId = m.sections[index].id;
+    this.model.update((m) => ({
+      ...m,
+      sections: m.sections.filter((_, i) => i !== index),
+    }));
     if (sectionId) {
       try {
         await this.userApi.deleteWorkoutLogSection(sectionId);
@@ -618,8 +612,19 @@ export class WorkoutStart {
   }
 
   async removeExercise(sectionIndex: number, exerciseIndex: number) {
-    const exerciseId = this.getExercisesArray(sectionIndex).at(exerciseIndex).controls.id.value;
-    this.getExercisesArray(sectionIndex).removeAt(exerciseIndex);
+    const m = this.model();
+    const exerciseId = m.sections[sectionIndex].exercises[exerciseIndex].id;
+    this.model.update((m) => ({
+      ...m,
+      sections: m.sections.map((s, i) =>
+        i !== sectionIndex
+          ? s
+          : {
+              ...s,
+              exercises: s.exercises.filter((_, j) => j !== exerciseIndex),
+            },
+      ),
+    }));
     if (exerciseId) {
       try {
         await this.userApi.deleteWorkoutLogExercise(exerciseId);
@@ -636,20 +641,32 @@ export class WorkoutStart {
       const section = await this.userApi.createWorkoutLogSection({
         workoutLogId: logId,
         type: WorkoutSectionTypeMain,
-        position: this.sectionsArray.length,
+        position: this.model().sections.length,
       });
-      this.sectionsArray.push(this.createSectionGroup(section.id));
+      this.model.update((m) => ({
+        ...m,
+        sections: [
+          ...m.sections,
+          {
+            id: section.id,
+            type: WorkoutSectionTypeMain,
+            label: '',
+            exercises: [],
+          },
+        ],
+      }));
     } catch (err) {
       console.error('Failed to add section:', err);
     }
   }
 
   openAddExerciseDialog(sectionIndex: number) {
-    const sectionId = this.sectionsArray.at(sectionIndex).controls.id.value;
+    const m = this.model();
+    const sectionId = m.sections[sectionIndex].id;
     if (!sectionId) return;
     this.addDialogSectionIndex.set(sectionIndex);
     this.addDialogSectionId.set(sectionId);
-    this.addDialogExerciseCount.set(this.getExercisesArray(sectionIndex).length);
+    this.addDialogExerciseCount.set(m.sections[sectionIndex].exercises.length);
     this.addDialogOpen.set(true);
   }
 
@@ -674,30 +691,32 @@ export class WorkoutStart {
   }) {
     const si = this.addDialogSectionIndex();
 
-    const exGroup = this.createExerciseGroup(
-      event.exercise.sourceExerciseSchemeId,
-      null,
-      event.exercise.id,
-    );
+    const newExercise: StartExerciseModel = {
+      id: event.exercise.id,
+      sourceExerciseSchemeId: event.exercise.sourceExerciseSchemeId,
+      breakAfterSeconds: null,
+      sets: (event.exercise.sets ?? []).map((set) => ({
+        id: set.id,
+        targetReps: set.targetReps ?? null,
+        targetWeight: set.targetWeight ?? null,
+        targetDuration: set.targetDuration ?? null,
+        targetDistance: set.targetDistance ?? null,
+        targetTime: set.targetTime ?? null,
+        restAfterSeconds: set.breakAfterSeconds ?? null,
+      })),
+    };
 
-    for (const set of event.exercise.sets ?? []) {
-      exGroup.controls.sets.push(
-        this.createSetGroup(
-          {
-            setNumber: set.setNumber,
-            targetReps: set.targetReps,
-            targetWeight: set.targetWeight,
-            targetDuration: set.targetDuration,
-            targetDistance: set.targetDistance,
-            targetTime: set.targetTime,
-            restAfterSeconds: set.breakAfterSeconds ?? null,
-          },
-          set.id,
-        ),
-      );
-    }
-
-    this.getExercisesArray(si).push(exGroup);
+    this.model.update((m) => ({
+      ...m,
+      sections: m.sections.map((s, i) =>
+        i !== si
+          ? s
+          : {
+              ...s,
+              exercises: [...s.exercises, newExercise],
+            },
+      ),
+    }));
 
     // Update store display
     const numSets = event.scheme.sets ?? 0;
@@ -719,9 +738,10 @@ export class WorkoutStart {
   }
 
   private async persistSectionPositions() {
+    const m = this.model();
     const updates = [];
-    for (let i = 0; i < this.sectionsArray.length; i++) {
-      const sectionId = this.sectionsArray.at(i).controls.id.value;
+    for (let i = 0; i < m.sections.length; i++) {
+      const sectionId = m.sections[i].id;
       if (sectionId) {
         updates.push(this.userApi.updateWorkoutLogSection(sectionId, { position: i }));
       }
@@ -734,10 +754,11 @@ export class WorkoutStart {
   }
 
   private async persistExercisePositions(sectionIndex: number) {
-    const exercises = this.getExercisesArray(sectionIndex);
+    const m = this.model();
+    const exercises = m.sections[sectionIndex].exercises;
     const updates = [];
     for (let i = 0; i < exercises.length; i++) {
-      const exerciseId = exercises.at(i).controls.id.value;
+      const exerciseId = exercises[i].id;
       if (exerciseId) {
         updates.push(this.userApi.updateWorkoutLogExercise(exerciseId, { position: i }));
       }
@@ -758,7 +779,7 @@ export class WorkoutStart {
   async onLogChange() {
     const logId = this.currentLogId();
     if (!logId) return;
-    const val = this.form.getRawValue();
+    const val = this.model();
     try {
       await this.userApi.updateWorkoutLog(logId, {
         name: val.name,
@@ -770,14 +791,14 @@ export class WorkoutStart {
   }
 
   async onSectionChange(si: number) {
-    const section = this.sectionsArray.at(si);
-    const sectionId = section.controls.id.value;
+    const m = this.model();
+    const section = m.sections[si];
+    const sectionId = section.id;
     if (!sectionId) return;
-    const val = section.getRawValue();
     try {
       await this.userApi.updateWorkoutLogSection(sectionId, {
-        type: val.type,
-        label: val.label || undefined,
+        type: section.type,
+        label: section.label || undefined,
       });
     } catch (err) {
       console.error('Failed to save section changes:', err);
@@ -785,13 +806,13 @@ export class WorkoutStart {
   }
 
   async onExerciseChange(si: number, ei: number) {
-    const exercise = this.getExercisesArray(si).at(ei);
-    const exerciseId = exercise.controls.id.value;
+    const m = this.model();
+    const exercise = m.sections[si].exercises[ei];
+    const exerciseId = exercise.id;
     if (!exerciseId) return;
-    const val = exercise.getRawValue();
     try {
       await this.userApi.updateWorkoutLogExercise(exerciseId, {
-        breakAfterSeconds: val.breakAfterSeconds ?? undefined,
+        breakAfterSeconds: exercise.breakAfterSeconds ?? undefined,
       });
     } catch (err) {
       console.error('Failed to save exercise changes:', err);
@@ -799,19 +820,19 @@ export class WorkoutStart {
   }
 
   async onSetChange(si: number, ei: number, setIdx: number) {
-    const setGroup = this.getSetsArray(si, ei).at(setIdx);
-    const setId = setGroup.controls.id.value;
+    const m = this.model();
+    const set = m.sections[si].exercises[ei].sets[setIdx];
+    const setId = set.id;
     if (!setId) return;
 
-    const val = setGroup.getRawValue();
     try {
       await this.userApi.updateWorkoutLogExerciseSet(setId, {
-        targetReps: val.targetReps ?? undefined,
-        targetWeight: val.targetWeight ?? undefined,
-        targetDuration: val.targetDuration ?? undefined,
-        targetDistance: val.targetDistance ?? undefined,
-        targetTime: val.targetTime ?? undefined,
-        breakAfterSeconds: val.restAfterSeconds ?? undefined,
+        targetReps: set.targetReps ?? undefined,
+        targetWeight: set.targetWeight ?? undefined,
+        targetDuration: set.targetDuration ?? undefined,
+        targetDistance: set.targetDistance ?? undefined,
+        targetTime: set.targetTime ?? undefined,
+        breakAfterSeconds: set.restAfterSeconds ?? undefined,
       });
     } catch (err) {
       console.error('Failed to save set changes:', err);
@@ -820,49 +841,30 @@ export class WorkoutStart {
 
   private populateFromLog(log: WorkoutLog) {
     this.currentLogId.set(log.id);
-    this.form.patchValue({
+
+    this.model.set({
       name: log.name,
       notes: log.notes ?? '',
-    });
-
-    this.sectionsArray.clear();
-
-    for (const section of log.sections ?? []) {
-      const sectionGroup = this.createSectionGroup(section.id);
-      sectionGroup.patchValue({
+      sections: (log.sections ?? []).map((section) => ({
+        id: section.id,
         type: section.type,
         label: section.label ?? '',
-      });
-
-      for (const ex of section.exercises ?? []) {
-        const exGroup = this.createExerciseGroup(
-          ex.sourceExerciseSchemeId,
-          ex.breakAfterSeconds ?? null,
-          ex.id,
-        );
-
-        for (const set of ex.sets ?? []) {
-          exGroup.controls.sets.push(
-            this.createSetGroup(
-              {
-                setNumber: set.setNumber,
-                targetReps: set.targetReps,
-                targetWeight: set.targetWeight,
-                targetDuration: set.targetDuration,
-                targetDistance: set.targetDistance,
-                targetTime: set.targetTime,
-                restAfterSeconds: set.breakAfterSeconds ?? null,
-              },
-              set.id,
-            ),
-          );
-        }
-
-        sectionGroup.controls.exercises.push(exGroup);
-      }
-
-      this.sectionsArray.push(sectionGroup);
-    }
+        exercises: (section.exercises ?? []).map((ex) => ({
+          id: ex.id,
+          sourceExerciseSchemeId: ex.sourceExerciseSchemeId,
+          breakAfterSeconds: ex.breakAfterSeconds ?? null,
+          sets: (ex.sets ?? []).map((set) => ({
+            id: set.id,
+            targetReps: set.targetReps ?? null,
+            targetWeight: set.targetWeight ?? null,
+            targetDuration: set.targetDuration ?? null,
+            targetDistance: set.targetDistance ?? null,
+            targetTime: set.targetTime ?? null,
+            restAfterSeconds: set.breakAfterSeconds ?? null,
+          })),
+        })),
+      })),
+    });
 
     this.store.loadExerciseDisplayFromLog(log.sections ?? []);
   }
@@ -905,40 +907,6 @@ export class WorkoutStart {
     // Invalidate planning log query so it reflects the new log
     this.queryClient.invalidateQueries({
       queryKey: workoutLogKeys.list({ workoutId: workout.id, status: 'planning' }),
-    });
-  }
-
-  private createSectionGroup(id: number | null = null): SectionFormGroup {
-    return new FormGroup({
-      id: new FormControl<number | null>(id),
-      type: new FormControl(WorkoutSectionTypeMain, { nonNullable: true }),
-      label: new FormControl('', { nonNullable: true }),
-      exercises: new FormArray<ExerciseFormGroup>([]),
-    });
-  }
-
-  private createExerciseGroup(
-    schemeId: number,
-    breakAfterSeconds: number | null = null,
-    id: number | null = null,
-  ): ExerciseFormGroup {
-    return new FormGroup({
-      id: new FormControl<number | null>(id),
-      sourceExerciseSchemeId: new FormControl(schemeId, { nonNullable: true }),
-      breakAfterSeconds: new FormControl<number | null>(breakAfterSeconds),
-      sets: new FormArray<SetFormGroup>([]),
-    });
-  }
-
-  private createSetGroup(set: SetPreview, id: number | null = null): SetFormGroup {
-    return new FormGroup({
-      id: new FormControl<number | null>(id),
-      targetReps: new FormControl<number | null>(set.targetReps ?? null),
-      targetWeight: new FormControl<number | null>(set.targetWeight ?? null),
-      targetDuration: new FormControl<number | null>(set.targetDuration ?? null),
-      targetDistance: new FormControl<number | null>(set.targetDistance ?? null),
-      targetTime: new FormControl<number | null>(set.targetTime ?? null),
-      restAfterSeconds: new FormControl<number | null>(set.restAfterSeconds ?? null),
     });
   }
 

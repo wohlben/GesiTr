@@ -48,8 +48,8 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
     await expect(page.getByText('Set Edit Test Ex')).toBeVisible({ timeout: 10000 });
 
     // Verify default values
-    const repsInputs = page.locator('input[formcontrolname="targetReps"]');
-    const weightInputs = page.locator('input[formcontrolname="targetWeight"]');
+    const repsInputs = page.locator('input[data-field="targetReps"]');
+    const weightInputs = page.locator('input[data-field="targetWeight"]');
     await expect(repsInputs.first()).toHaveValue('10');
     await expect(weightInputs.first()).toHaveValue('60');
 
@@ -79,8 +79,8 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
     await expect(page.getByText('Set Edit Test Ex')).toBeVisible({ timeout: 10000 });
 
     // Verify the values persisted
-    const repsAfterReload = page.locator('input[formcontrolname="targetReps"]');
-    const weightAfterReload = page.locator('input[formcontrolname="targetWeight"]');
+    const repsAfterReload = page.locator('input[data-field="targetReps"]');
+    const weightAfterReload = page.locator('input[data-field="targetWeight"]');
     await expect(repsAfterReload.first()).toHaveValue('8');
     await expect(weightAfterReload.first()).toHaveValue('75');
 
@@ -128,7 +128,7 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
     await expect(page.getByText('Rest Edit Test Ex')).toBeVisible({ timeout: 10000 });
 
     // Verify default rest between sets is 90
-    const restInput = page.locator('input[formcontrolname="restAfterSeconds"]');
+    const restInput = page.locator('input[data-field="restAfterSeconds"]');
     await expect(restInput).toHaveValue('90');
 
     // Change rest to 120
@@ -147,7 +147,7 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
     await expect(page.getByText('Rest Edit Test Ex')).toBeVisible({ timeout: 10000 });
 
     // Verify the rest time persisted as 120
-    const restAfterReload = page.locator('input[formcontrolname="restAfterSeconds"]');
+    const restAfterReload = page.locator('input[data-field="restAfterSeconds"]');
     await expect(restAfterReload).toHaveValue('120');
 
     // Cleanup

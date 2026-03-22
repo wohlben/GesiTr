@@ -1,7 +1,7 @@
-import { Component, inject, computed, effect } from '@angular/core';
+import { Component, inject, computed, effect, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { form, required, FormField } from '@angular/forms/signals';
 import {
   injectQuery,
   injectMutation,
@@ -17,7 +17,7 @@ import { HlmTextarea } from '@spartan-ng/helm/textarea';
 
 @Component({
   selector: 'app-exercise-group-edit',
-  imports: [PageLayout, ReactiveFormsModule, RouterLink, HlmInput, HlmTextarea, TranslocoDirective],
+  imports: [PageLayout, FormField, RouterLink, HlmInput, HlmTextarea, TranslocoDirective],
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
@@ -32,12 +32,12 @@ import { HlmTextarea } from '@spartan-ng/helm/textarea';
         "
       >
         @if (isCreateMode() || groupQuery.data()) {
-          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
+          <form (submit)="onSubmit(); $event.preventDefault()" class="space-y-4">
             <div>
               <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >{{ t('fields.name') }} *</label
               >
-              <input id="name" formControlName="name" hlmInput class="mt-1" />
+              <input id="name" [formField]="groupForm.name" hlmInput class="mt-1" />
             </div>
 
             <div>
@@ -48,7 +48,7 @@ import { HlmTextarea } from '@spartan-ng/helm/textarea';
               >
               <textarea
                 id="description"
-                formControlName="description"
+                [formField]="groupForm.description"
                 rows="4"
                 hlmTextarea
                 class="mt-1"
@@ -58,7 +58,9 @@ import { HlmTextarea } from '@spartan-ng/helm/textarea';
             <div class="flex gap-2">
               <button
                 type="submit"
-                [disabled]="form.invalid || mutation.isPending() || createMutation.isPending()"
+                [disabled]="
+                  !groupForm().valid() || mutation.isPending() || createMutation.isPending()
+                "
                 class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
               >
                 {{ t('common.save') }}
@@ -87,9 +89,9 @@ export class ExerciseGroupEdit {
   private id = computed(() => Number(this.params()?.get('id')));
   isCreateMode = computed(() => !this.params()?.get('id'));
 
-  form = new FormGroup({
-    name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    description: new FormControl('', { nonNullable: true }),
+  model = signal({ name: '', description: '' });
+  groupForm = form(this.model, (f) => {
+    required(f.name);
   });
 
   groupQuery = injectQuery(() => ({
@@ -124,7 +126,7 @@ export class ExerciseGroupEdit {
     effect(() => {
       const data = this.groupQuery.data();
       if (data) {
-        this.form.patchValue({
+        this.model.set({
           name: data.name,
           description: data.description ?? '',
         });
@@ -133,12 +135,11 @@ export class ExerciseGroupEdit {
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      const val = this.form.getRawValue();
+    if (this.groupForm().valid()) {
+      const val = this.model();
       const payload = {
         ...(this.isCreateMode() ? {} : this.groupQuery.data()!),
         name: val.name,
-
         description: val.description || undefined,
       };
       if (this.isCreateMode()) {

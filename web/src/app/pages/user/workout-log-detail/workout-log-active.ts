@@ -61,11 +61,11 @@ function isItemTerminal(status: string): boolean {
             <app-workout-log-active-set
               [data]="s"
               [peeked]="peekedItemId() === s.id && s.role !== 'active'"
-              [(actualReps)]="actualReps"
-              [(actualWeight)]="actualWeight"
-              [(actualDuration)]="actualDuration"
-              [(actualDistance)]="actualDistance"
-              (done)="markDone()"
+              [initialReps]="activeTargets().reps"
+              [initialWeight]="activeTargets().weight"
+              [initialDuration]="activeTargets().duration"
+              [initialDistance]="activeTargets().distance"
+              (done)="markDone($event)"
               (skip)="markSkipped()"
               (togglePeek)="togglePeek(s.id)"
               (save)="saveCompletedSet($event)"
@@ -101,11 +101,18 @@ export class WorkoutLogActive {
   setCompleted = output<SetCompletionPayload>();
   setSkipped = output<WorkoutLogExerciseSet>();
 
-  // Actual value signals for the active set inputs
-  actualReps = signal<number | undefined>(undefined);
-  actualWeight = signal<number | undefined>(undefined);
-  actualDuration = signal<number | undefined>(undefined);
-  actualDistance = signal<number | undefined>(undefined);
+  // Initial target values for the active set inputs
+  activeTargets = computed(() => {
+    const activeItem = this.viewItems().find(
+      (item): item is ViewItemSet => item.type === 'set' && item.role === 'active',
+    );
+    return {
+      reps: activeItem?.set.targetReps ?? null,
+      weight: activeItem?.set.targetWeight ?? null,
+      duration: activeItem?.set.targetDuration ?? null,
+      distance: activeItem?.set.targetDistance ?? null,
+    };
+  });
 
   // Rest timer state
   restState = signal<
@@ -258,18 +265,6 @@ export class WorkoutLogActive {
       this.peekedItemId.set(null);
     });
 
-    effect(() => {
-      const activeItem = this.viewItems().find(
-        (item): item is ViewItemSet => item.type === 'set' && item.role === 'active',
-      );
-      if (activeItem) {
-        this.actualReps.set(activeItem.set.targetReps ?? undefined);
-        this.actualWeight.set(activeItem.set.targetWeight ?? undefined);
-        this.actualDuration.set(activeItem.set.targetDuration ?? undefined);
-        this.actualDistance.set(activeItem.set.targetDistance ?? undefined);
-      }
-    });
-
     this.destroyRef.onDestroy(() => this.clearTimer());
   }
 
@@ -277,19 +272,12 @@ export class WorkoutLogActive {
     this.peekedItemId.set(this.peekedItemId() === itemId ? null : itemId);
   }
 
-  markDone() {
+  markDone(payload: SetCompletionPayload) {
+    this.setCompleted.emit(payload);
+
     const items = this.viewItems();
     const activeSetIdx = items.findIndex((item) => item.type === 'set' && item.role === 'active');
     if (activeSetIdx === -1) return;
-    const activeItem = items[activeSetIdx] as ViewItemSet;
-
-    this.setCompleted.emit({
-      setId: activeItem.set.id,
-      actualReps: this.actualReps(),
-      actualWeight: this.actualWeight(),
-      actualDuration: this.actualDuration(),
-      actualDistance: this.actualDistance(),
-    });
 
     const nextItem = items[activeSetIdx + 1];
     if (nextItem?.type === 'break') {

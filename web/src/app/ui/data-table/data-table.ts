@@ -13,7 +13,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormField, form } from '@angular/forms/signals';
 import { NgClass } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal, takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -33,7 +33,7 @@ export interface DataTableColumn {
 
 @Component({
   selector: 'app-data-table',
-  imports: [FormsModule, NgClass, TranslocoDirective],
+  imports: [FormField, NgClass, TranslocoDirective],
   template: `
     <ng-container *transloco="let t">
       <div
@@ -57,8 +57,7 @@ export interface DataTableColumn {
                         <input
                           type="text"
                           [placeholder]="t('ui.dataTable.filterPlaceholder')"
-                          [ngModel]="searchTerm()"
-                          (ngModelChange)="searchTerm.set($event)"
+                          [formField]="searchForm"
                           (keydown.escape)="activeFilter.set(null)"
                           class="w-full min-w-32 rounded border border-blue-400 bg-white px-2 py-0.5 text-xs font-normal normal-case focus:outline-none dark:border-blue-600 dark:bg-gray-800 dark:text-gray-100"
                           #filterInput
@@ -123,8 +122,8 @@ export interface DataTableColumn {
                         <input
                           type="text"
                           [placeholder]="t('ui.dataTable.searchPlaceholder')"
-                          [ngModel]="searchTerm()"
-                          (ngModelChange)="onSearchInput(col, $event)"
+                          [formField]="searchForm"
+                          (input)="onSearchInput(col)"
                           (keydown.escape)="activeFilter.set(null)"
                           class="w-full min-w-32 rounded border border-blue-400 bg-white px-2 py-0.5 text-xs font-normal normal-case focus:outline-none dark:border-blue-600 dark:bg-gray-800 dark:text-gray-100"
                           #filterInput
@@ -253,6 +252,7 @@ export class DataTable {
 
   activeFilter = signal<string | null>(null);
   searchTerm = signal('');
+  searchForm = form(this.searchTerm);
   hiddenColumns = signal<Set<string>>(new Set());
   showColumnSettings = signal(false);
 
@@ -352,9 +352,8 @@ export class DataTable {
     );
   }
 
-  onSearchInput(col: DataTableColumn, value: string) {
-    this.searchTerm.set(value);
-    this.search$.next({ param: col.searchParam!, value });
+  onSearchInput(col: DataTableColumn) {
+    this.search$.next({ param: col.searchParam!, value: this.searchTerm() });
   }
 
   selectOption(col: DataTableColumn, value: string) {

@@ -63,7 +63,7 @@ test.describe('/user/workouts/[id]/start — break time editing', () => {
     await expect(page.getByText('Break Test Ex B')).toBeVisible({ timeout: 10000 });
 
     // Verify the default break time is 90s
-    const breakInput = page.locator('input[formcontrolname="breakAfterSeconds"]');
+    const breakInput = page.locator('input[data-field="breakAfterSeconds"]');
     await expect(breakInput).toHaveValue('90');
 
     // Change break time to 200s
@@ -83,7 +83,7 @@ test.describe('/user/workouts/[id]/start — break time editing', () => {
     await expect(page.getByText('Break Test Ex B')).toBeVisible({ timeout: 10000 });
 
     // Verify the break time persisted as 200s
-    const breakInputAfterReload = page.locator('input[formcontrolname="breakAfterSeconds"]');
+    const breakInputAfterReload = page.locator('input[data-field="breakAfterSeconds"]');
     await expect(breakInputAfterReload).toHaveValue('200');
 
     // Verify exercise order is preserved (A before B)

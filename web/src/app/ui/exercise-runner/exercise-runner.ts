@@ -1,5 +1,5 @@
 import { Component, inject, input, computed, signal, effect } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import { HlmInput } from '@spartan-ng/helm/input';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 
@@ -14,7 +14,7 @@ export interface ExerciseRunnerSet {
 
 @Component({
   selector: 'app-exercise-runner',
-  imports: [FormsModule, HlmInput, TranslocoDirective],
+  imports: [FormField, HlmInput, TranslocoDirective],
   template: `
     <div *transloco="let t" class="rounded-md border border-gray-200 dark:border-gray-600">
       <!-- Exercise header -->
@@ -29,7 +29,7 @@ export interface ExerciseRunnerSet {
         </span>
       </div>
 
-      @if (sets().length) {
+      @if (setsForm().value().length) {
         <div class="px-3 py-2">
           <!-- Column headers -->
           <div
@@ -53,7 +53,7 @@ export interface ExerciseRunnerSet {
             }
           </div>
 
-          @for (set of sets(); track $index; let idx = $index; let last = $last) {
+          @for (set of setsForm; track $index; let idx = $index; let last = $last) {
             <!-- Set row -->
             <div
               class="grid items-center py-1.5"
@@ -68,48 +68,26 @@ export interface ExerciseRunnerSet {
               </span>
               @if (measurementType() === 'REP_BASED') {
                 <div>
-                  <input
-                    hlmInput
-                    type="number"
-                    [ngModel]="set.targetReps"
-                    (ngModelChange)="updateSet(idx, 'targetReps', $event)"
-                  />
+                  <input hlmInput type="number" [formField]="set.targetReps" />
                 </div>
                 <div>
-                  <input
-                    hlmInput
-                    type="number"
-                    step="0.5"
-                    [ngModel]="set.targetWeight"
-                    (ngModelChange)="updateSet(idx, 'targetWeight', $event)"
-                  />
+                  <input hlmInput type="number" step="0.5" [formField]="set.targetWeight" />
                 </div>
               }
               @if (measurementType() === 'TIME_BASED') {
                 <div>
-                  <input
-                    hlmInput
-                    type="number"
-                    [ngModel]="set.targetDuration"
-                    (ngModelChange)="updateSet(idx, 'targetDuration', $event)"
-                  />
+                  <input hlmInput type="number" [formField]="set.targetDuration" />
                 </div>
               }
               @if (measurementType() === 'DISTANCE_BASED') {
                 <div>
-                  <input
-                    hlmInput
-                    type="number"
-                    step="0.1"
-                    [ngModel]="set.targetDistance"
-                    (ngModelChange)="updateSet(idx, 'targetDistance', $event)"
-                  />
+                  <input hlmInput type="number" step="0.1" [formField]="set.targetDistance" />
                 </div>
               }
             </div>
 
             <!-- Rest between sets -->
-            @if (!last && set.restAfterSeconds !== null) {
+            @if (!last && set.restAfterSeconds().value() !== null) {
               <div class="relative flex items-center justify-center py-0.5">
                 <div
                   class="absolute inset-x-0 top-1/2 border-t border-dashed border-gray-200 dark:border-gray-700"
@@ -126,8 +104,7 @@ export interface ExerciseRunnerSet {
                   </svg>
                   <input
                     type="number"
-                    [ngModel]="set.restAfterSeconds"
-                    (ngModelChange)="updateSet(idx, 'restAfterSeconds', $event)"
+                    [formField]="set.restAfterSeconds"
                     class="w-12 border-0 bg-transparent p-0 text-center text-xs text-gray-400 focus:ring-0 dark:text-gray-500"
                   />
                   <span>{{ t('common.unitSeconds') }}</span>
@@ -151,7 +128,8 @@ export class ExerciseRunner {
   defaultDistance = input<number | null>(null);
   defaultRest = input<number | null>(null);
 
-  sets = signal<ExerciseRunnerSet[]>([]);
+  setsModel = signal<ExerciseRunnerSet[]>([]);
+  setsForm = form(this.setsModel);
 
   constructor() {
     // Auto-rebuild sets whenever inputs change
@@ -171,7 +149,7 @@ export class ExerciseRunner {
             restAfterSeconds: i < count - 1 ? (this.defaultRest() ?? null) : null,
           });
         }
-        this.sets.set(sets);
+        this.setsModel.set(sets);
       },
       { allowSignalWrites: true },
     );
@@ -195,16 +173,10 @@ export class ExerciseRunner {
         restAfterSeconds: i < count - 1 ? (defaults.restAfterSeconds ?? null) : null,
       });
     }
-    this.sets.set(sets);
-  }
-
-  updateSet(idx: number, field: keyof ExerciseRunnerSet, value: number | null) {
-    const current = [...this.sets()];
-    current[idx] = { ...current[idx], [field]: value };
-    this.sets.set(current);
+    this.setsModel.set(sets);
   }
 
   reset() {
-    this.sets.set([]);
+    this.setsModel.set([]);
   }
 }
