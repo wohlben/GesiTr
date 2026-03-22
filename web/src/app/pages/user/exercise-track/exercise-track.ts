@@ -1,4 +1,4 @@
-import { Component, inject, computed, signal, ViewChild } from '@angular/core';
+import { Component, inject, computed, signal, viewChild } from '@angular/core';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
@@ -87,7 +87,7 @@ export class ExerciseTrack {
   private transloco = inject(TranslocoService);
   private params = toSignal(this.route.paramMap);
 
-  @ViewChild('exerciseConfig') exerciseConfig!: ExerciseConfig;
+  exerciseConfig = viewChild.required<ExerciseConfig>('exerciseConfig');
 
   exerciseId = computed(() => Number(this.params()?.get('id')));
 
@@ -98,10 +98,10 @@ export class ExerciseTrack {
     this.isStarting.set(true);
     this.errorMessage.set('');
     try {
-      const exerciseName = this.exerciseConfig.selectedExerciseName();
+      const exerciseName = this.exerciseConfig().selectedExerciseName();
 
       // 1. Create scheme from config
-      const scheme = await this.exerciseConfig.confirm();
+      const scheme = await this.exerciseConfig().confirm();
 
       // 2. Create workout log in planning status
       const log = await this.userApi.createWorkoutLog({

@@ -2,11 +2,7 @@ import { Component, inject, computed, effect, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { form, required, FormField } from '@angular/forms/signals';
-import {
-  injectQuery,
-  injectMutation,
-  injectQueryClient,
-} from '@tanstack/angular-query-experimental';
+import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { exerciseGroupKeys } from '$core/query-keys';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -82,7 +78,7 @@ export class ExerciseGroupEdit {
   private api = inject(CompendiumApiClient);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private queryClient = injectQueryClient();
+  private queryClient = inject(QueryClient);
   private slugify = new SlugifyPipe();
   private params = toSignal(this.route.paramMap);
 

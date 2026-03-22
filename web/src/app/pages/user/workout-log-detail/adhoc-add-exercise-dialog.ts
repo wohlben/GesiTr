@@ -1,5 +1,5 @@
-import { Component, inject, input, output, signal, ViewChild } from '@angular/core';
-import { injectQueryClient } from '@tanstack/angular-query-experimental';
+import { Component, inject, input, output, signal, viewChild } from '@angular/core';
+import { QueryClient } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { workoutLogKeys } from '$core/query-keys';
@@ -82,7 +82,7 @@ import { ExerciseRunner } from '$ui/exercise-runner/exercise-runner';
 })
 export class AdhocAddExerciseDialog {
   private userApi = inject(UserApiClient);
-  private queryClient = injectQueryClient();
+  private queryClient = inject(QueryClient);
 
   open = input(false);
   sectionId = input.required<number>();
@@ -91,8 +91,8 @@ export class AdhocAddExerciseDialog {
 
   closed = output<void>();
 
-  @ViewChild('exerciseConfig') exerciseConfig!: ExerciseConfig;
-  @ViewChild('runner') runner?: ExerciseRunner;
+  exerciseConfig = viewChild.required<ExerciseConfig>('exerciseConfig');
+  runner = viewChild<ExerciseRunner>('runner');
 
   isAdding = signal(false);
   errorMessage = signal('');
@@ -102,7 +102,7 @@ export class AdhocAddExerciseDialog {
     this.errorMessage.set('');
     try {
       // 1. Create scheme from Phase 1 config
-      const scheme = await this.exerciseConfig.confirm();
+      const scheme = await this.exerciseConfig().confirm();
 
       // 2. Create workout log exercise (backend auto-creates sets from scheme)
       await this.userApi.createWorkoutLogExercise({
@@ -115,8 +115,8 @@ export class AdhocAddExerciseDialog {
       this.queryClient.invalidateQueries({ queryKey: workoutLogKeys.detail(this.logId()) });
 
       // 4. Reset and close
-      this.exerciseConfig.reset();
-      this.runner?.reset();
+      this.exerciseConfig().reset();
+      this.runner()?.reset();
       this.closed.emit();
     } catch (err) {
       console.error('Failed to add exercise:', err);
@@ -128,8 +128,8 @@ export class AdhocAddExerciseDialog {
 
   onClose() {
     this.errorMessage.set('');
-    this.exerciseConfig?.reset();
-    this.runner?.reset();
+    this.exerciseConfig()?.reset();
+    this.runner()?.reset();
     this.closed.emit();
   }
 }

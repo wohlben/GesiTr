@@ -1,11 +1,7 @@
 import { Component, inject, computed, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  injectQuery,
-  injectMutation,
-  injectQueryClient,
-} from '@tanstack/angular-query-experimental';
+import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { exerciseGroupKeys } from '$core/query-keys';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -69,7 +65,7 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
 export class ExerciseGroupDetail {
   private api = inject(CompendiumApiClient);
   private router = inject(Router);
-  private queryClient = injectQueryClient();
+  private queryClient = inject(QueryClient);
   private params = toSignal(inject(ActivatedRoute).paramMap);
 
   private id = computed(() => Number(this.params()?.get('id')));

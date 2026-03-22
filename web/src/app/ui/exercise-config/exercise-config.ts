@@ -1,6 +1,6 @@
 import { Component, inject, computed, signal, input, effect } from '@angular/core';
 import { form, FormField, disabled } from '@angular/forms/signals';
-import { injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
+import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { injectQueries } from '@tanstack/angular-query-experimental/inject-queries-experimental';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
@@ -122,7 +122,7 @@ export interface ExerciseConfigResult {
 export class ExerciseConfig {
   private userApi = inject(UserApiClient);
   private compendiumApi = inject(CompendiumApiClient);
-  private queryClient = injectQueryClient();
+  private queryClient = inject(QueryClient);
 
   /** When set, the exercise dropdown is locked to this user exercise. */
   preselectedExerciseId = input<number | null>(null);

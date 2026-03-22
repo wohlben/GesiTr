@@ -1,10 +1,6 @@
 import { Component, inject, computed } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import {
-  injectQuery,
-  injectMutation,
-  injectQueryClient,
-} from '@tanstack/angular-query-experimental';
+import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { workoutKeys, workoutLogKeys } from '$core/query-keys';
@@ -128,7 +124,7 @@ import { lucideListCheck } from '@ng-icons/lucide';
 export class WorkoutList {
   private userApi = inject(UserApiClient);
   private router = inject(Router);
-  private queryClient = injectQueryClient();
+  private queryClient = inject(QueryClient);
 
   workoutsQuery = injectQuery(() => ({
     queryKey: workoutKeys.list(),

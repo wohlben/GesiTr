@@ -1,11 +1,7 @@
 import { Component, inject, computed, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  injectQuery,
-  injectMutation,
-  injectQueryClient,
-} from '@tanstack/angular-query-experimental';
+import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
@@ -85,7 +81,7 @@ export class UserEquipmentDetail {
   private userApi = inject(UserApiClient);
   private compendiumApi = inject(CompendiumApiClient);
   private router = inject(Router);
-  private queryClient = injectQueryClient();
+  private queryClient = inject(QueryClient);
   private transloco = inject(TranslocoService);
   private params = toSignal(inject(ActivatedRoute).paramMap);
 

@@ -2,11 +2,7 @@ import { Component, inject, computed, effect, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { form, required, applyEach, FormField } from '@angular/forms/signals';
-import {
-  injectQuery,
-  injectMutation,
-  injectQueryClient,
-} from '@tanstack/angular-query-experimental';
+import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { injectQueries } from '@tanstack/angular-query-experimental/inject-queries-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
@@ -383,7 +379,7 @@ export class WorkoutEdit {
   private compendiumApi = inject(CompendiumApiClient);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private queryClient = injectQueryClient();
+  private queryClient = inject(QueryClient);
   private params = toSignal(this.route.paramMap);
 
   readonly SECTION_TYPE_MAIN = WorkoutSectionTypeMain;

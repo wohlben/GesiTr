@@ -1,5 +1,5 @@
-import { Component, inject, input, output, signal, ViewChild } from '@angular/core';
-import { injectQueryClient } from '@tanstack/angular-query-experimental';
+import { Component, inject, input, output, signal, viewChild } from '@angular/core';
+import { QueryClient } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { UserExerciseScheme } from '$generated/user-models';
@@ -46,7 +46,7 @@ import { ExerciseConfig } from '$ui/exercise-config/exercise-config';
 })
 export class AddExerciseDialog {
   private userApi = inject(UserApiClient);
-  private queryClient = injectQueryClient();
+  private queryClient = inject(QueryClient);
 
   open = input(false);
   sectionId = input.required<number>();
@@ -74,14 +74,14 @@ export class AddExerciseDialog {
   }>();
   cancelled = output();
 
-  @ViewChild('exerciseConfig') exerciseConfig!: ExerciseConfig;
+  exerciseConfig = viewChild.required<ExerciseConfig>('exerciseConfig');
 
   isAdding = signal(false);
 
   async onAdd() {
     this.isAdding.set(true);
     try {
-      const scheme = await this.exerciseConfig.confirm();
+      const scheme = await this.exerciseConfig().confirm();
 
       // Create log exercise
       const logExercise = await this.userApi.createWorkoutLogExercise({
@@ -118,7 +118,7 @@ export class AddExerciseDialog {
 
       this.exerciseAdded.emit({
         exerciseLogId: logExercise.id,
-        exerciseName: this.exerciseConfig.selectedExerciseName(),
+        exerciseName: this.exerciseConfig().selectedExerciseName(),
         scheme,
         exercise: createdExercise ?? {
           id: logExercise.id,
@@ -127,7 +127,7 @@ export class AddExerciseDialog {
         },
       });
 
-      this.exerciseConfig.reset();
+      this.exerciseConfig().reset();
     } catch (err) {
       console.error('Failed to add exercise:', err);
     } finally {
@@ -136,7 +136,7 @@ export class AddExerciseDialog {
   }
 
   onCancel() {
-    this.exerciseConfig.reset();
+    this.exerciseConfig().reset();
     this.cancelled.emit();
   }
 }

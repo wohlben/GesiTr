@@ -2,11 +2,7 @@ import { Component, inject, computed, effect, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  injectQuery,
-  injectMutation,
-  injectQueryClient,
-} from '@tanstack/angular-query-experimental';
+import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { workoutLogKeys } from '$core/query-keys';
@@ -179,7 +175,7 @@ import { HlmButton } from '@spartan-ng/helm/button';
 export class WorkoutLogDetail {
   private userApi = inject(UserApiClient);
   private route = inject(ActivatedRoute);
-  private queryClient = injectQueryClient();
+  private queryClient = inject(QueryClient);
   private params = toSignal(this.route.paramMap);
 
   readonly store = inject(WorkoutLogDetailStore);
