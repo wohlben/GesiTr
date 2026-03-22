@@ -21,7 +21,7 @@ Similarly, exercise relationships today live in the compendium domain with no us
 - Exercises and equipment get a visibility field: `public: bool`.
 - The "compendium" UI becomes a filtered view: all exercises/equipment where `public = true`.
 - The current compendium tables graduate into a secondary role — possibly as a curated/canonical seed set, or removed entirely.
-- Seed data becomes owned by the system user `"Claude"` and marked public.
+- Seed data becomes owned by the system user `"Sinon"` and marked public.
 
 **Why a bool, not an enum?** Other visibility scopes (e.g., "visible to members of a workout group") are determined by membership in a separate table — the exercise itself doesn't know which group it belongs to. An enum value like `group` would be redundant with (and less authoritative than) the group membership lookup. The entity-level question is strictly "is this in the public compendium?" — yes or no. Group-scoped access is derived at query time from the relevant feature's own tables.
 
@@ -39,7 +39,7 @@ In the unified model, relationships become user-owned like exercises:
 
 - `createdBy` becomes the owner (scoped to a user).
 - Relationships have **no own visibility field** — visibility is derived from the linked exercises (visible when both endpoints are visible to the viewer).
-- The 4,046 seeded relationships become owned by `"Claude"`. Since Claude's exercises are public, these relationships are visible to everyone.
+- The 4,046 seeded relationships become owned by `"Sinon"`. Since Sinon's exercises are public, these relationships are visible to everyone.
 - Users inherit all public relationships and can create their own (visible to anyone who can see both linked exercises).
 - A relationship between a user's private exercise and a public exercise is only visible to that user.
 
@@ -74,7 +74,7 @@ Equipment equivalence is a separate concept:
 
 ### Relationship Lifecycle
 
-1. **Seed**: `make seed` loads 4,046 exercise relationships owned by `"claude"` (progressions, alternatives, etc.). Equivalence links between seed exercises are not needed — all seed exercises are already owned by the same user (`"claude"`), so there's nothing to deduplicate.
+1. **Seed**: `make seed` loads 4,046 exercise relationships owned by `"Sinon"` (progressions, alternatives, etc.). Equivalence links between seed exercises are not needed — all seed exercises are already owned by the same user (`"Sinon"`), so there's nothing to deduplicate.
 2. **Inherit**: all users see public relationships when browsing exercises. These provide a curated exercise graph out of the box.
 3. **Create**: users add private relationships for their own exercise collections (e.g., "for me, incline dumbbell press is an easier_alternative to flat barbell bench").
 4. **Propose equivalence**: when a user creates a new exercise, the system suggests equivalences. Accepting creates an `equivalent` relationship linking the user's exercise to the public graph.
@@ -84,8 +84,8 @@ Equipment equivalence is a separate concept:
 
 - **Equivalence governance**: no trust or approval needed. Each user only manages their own equivalence declarations — there's nothing to moderate.
 - **Equivalence transitivity**: doesn't apply. Equivalences are per-user declarations, not a shared graph. User A's equivalences don't chain with User B's.
-- **Conflict resolution**: not an issue. Public exercises are namespaced by author in the UI (`@claude/Pushup`, `@alice/Pushup`). Same-named exercises from different users are distinct and unambiguous.
-- **Seeding pipeline**: `make seed` creates all entities under owner `"claude"` (the user profile ID) with `public = true`.
+- **Conflict resolution**: not an issue. Public exercises are namespaced by author in the UI (`@Sinon/Pushup`, `@alice/Pushup`). Same-named exercises from different users are distinct and unambiguous.
+- **Seeding pipeline**: `make seed` creates all entities under owner `"Sinon"` (the user profile ID) with `public = true`.
 - **Relationship visibility**: relationships don't have their own visibility field. Visibility is derived from the linked exercises — if both endpoints are visible to a viewer, the relationship is too. If either endpoint is non-public, the relationship is only visible to users who can see both exercises.
 - **Migration**: not needed. No user data exists yet — just wipe the database and re-seed with the new schema (`make seed`).
 - **Strength on equivalence**: always 1.0. Equivalence means identity, not similarity. "Similar but debatable" is what the `alternative` relationship type is for.
