@@ -50,11 +50,16 @@ func CreateWorkoutLogSection(c *gin.Context) {
 		return
 	}
 
-	if _, ok := requireLogStatus(c, dto.WorkoutLogID, models.WorkoutLogStatusPlanning); !ok {
+	log, ok := requireLogStatus(c, dto.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc)
+	if !ok {
 		return
 	}
 
 	entity := models.WorkoutLogSectionFromDTO(dto)
+	// For adhoc logs, sections start in_progress immediately
+	if log.Status == models.WorkoutLogStatusAdhoc {
+		entity.Status = models.WorkoutLogItemStatusInProgress
+	}
 	if err := database.DB.Create(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -140,7 +145,7 @@ func DeleteWorkoutLogSection(c *gin.Context) {
 		return
 	}
 
-	if _, ok := requireLogStatus(c, existing.WorkoutLogID, models.WorkoutLogStatusPlanning); !ok {
+	if _, ok := requireLogStatus(c, existing.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc); !ok {
 		return
 	}
 

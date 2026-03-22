@@ -230,6 +230,232 @@ func StartWorkoutLog(c *gin.Context) {
 	c.JSON(http.StatusOK, entity.ToDTO())
 }
 
+func StartAdhocWorkoutLog(c *gin.Context) {
+	now := time.Now()
+	adhocLabel := "Adhoc"
+
+	entity := models.WorkoutLogEntity{
+		Owner:  auth.GetUserID(c),
+		Status: models.WorkoutLogStatusAdhoc,
+		Name:   "Ad-hoc Workout",
+		Date:   &now,
+	}
+
+	err := database.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&entity).Error; err != nil {
+			return err
+		}
+
+		section := models.WorkoutLogSectionEntity{
+			WorkoutLogID: entity.ID,
+			Type:         workoutmodels.WorkoutSectionTypeMain,
+			Label:        &adhocLabel,
+			Position:     0,
+			Status:       models.WorkoutLogItemStatusInProgress,
+		}
+		if err := tx.Create(&section).Error; err != nil {
+			return err
+		}
+		return nil
+	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Reload with preloading
+	if err := preloadWorkoutLog(database.DB).First(&entity, entity.ID).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, entity.ToDTO())
+}
+
+func FinishWorkoutLog(c *gin.Context) {
+	var entity models.WorkoutLogEntity
+	if err := preloadWorkoutLog(database.DB).First(&entity, c.Param("id")).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log not found"})
+		return
+	}
+	if !requireOwner(c, entity.Owner) {
+		return
+	}
+
+	if entity.Status != models.WorkoutLogStatusAdhoc {
+		c.JSON(http.StatusConflict, gin.H{"error": "can only finish adhoc workout logs"})
+		return
+	}
+
+	now := time.Now()
+
+	err := database.DB.Transaction(func(tx *gorm.DB) error {
+		// First: skip any remaining in_progress sets
+		for i := range entity.Sections {
+			for j := range entity.Sections[i].Exercises {
+				for k := range entity.Sections[i].Exercises[j].Sets {
+					set := &entity.Sections[i].Exercises[j].Sets[k]
+					if set.Status == models.WorkoutLogItemStatusInProgress {
+						if err := tx.Model(set).Updates(map[string]any{
+							"status":            models.WorkoutLogItemStatusSkipped,
+							"status_changed_at": now,
+						}).Error; err != nil {
+							return err
+						}
+						set.Status = models.WorkoutLogItemStatusSkipped
+					}
+				}
+			}
+		}
+
+		// Derive exercise statuses from sets
+		for i := range entity.Sections {
+			for j := range entity.Sections[i].Exercises {
+				ex := &entity.Sections[i].Exercises[j]
+				if ex.Status.IsTerminal() {
+					continue
+				}
+				newStatus := deriveStatusFromChildren(extractItemStatuses(ex.Sets))
+				if err := tx.Model(ex).Updates(map[string]any{
+					"status":            newStatus,
+					"status_changed_at": now,
+				}).Error; err != nil {
+					return err
+				}
+				ex.Status = newStatus
+			}
+		}
+
+		// Derive section statuses from exercises
+		for i := range entity.Sections {
+			sec := &entity.Sections[i]
+			if sec.Status.IsTerminal() {
+				continue
+			}
+			newStatus := deriveStatusFromExercises(sec.Exercises)
+			if err := tx.Model(sec).Updates(map[string]any{
+				"status":            newStatus,
+				"status_changed_at": now,
+			}).Error; err != nil {
+				return err
+			}
+			sec.Status = newStatus
+		}
+
+		// Derive log status from sections
+		logStatus := deriveLogStatusFromSections(entity.Sections)
+		if err := tx.Model(&entity).Updates(map[string]any{
+			"status":            logStatus,
+			"status_changed_at": now,
+		}).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Reload
+	if err := preloadWorkoutLog(database.DB).First(&entity, entity.ID).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, entity.ToDTO())
+}
+
+// deriveStatusFromChildren derives the aggregate status from a list of item statuses.
+func deriveStatusFromChildren(statuses []models.WorkoutLogItemStatus) models.WorkoutLogItemStatus {
+	if len(statuses) == 0 {
+		return models.WorkoutLogItemStatusSkipped
+	}
+
+	allFinished := true
+	allSkipped := true
+	anyAborted := false
+	anySkipped := false
+	anyPartiallyFinished := false
+
+	for _, s := range statuses {
+		if s != models.WorkoutLogItemStatusFinished {
+			allFinished = false
+		}
+		if s != models.WorkoutLogItemStatusSkipped {
+			allSkipped = false
+		}
+		if s == models.WorkoutLogItemStatusAborted {
+			anyAborted = true
+		}
+		if s == models.WorkoutLogItemStatusSkipped {
+			anySkipped = true
+		}
+		if s == models.WorkoutLogItemStatusPartiallyFinished {
+			anyPartiallyFinished = true
+		}
+	}
+
+	switch {
+	case allFinished:
+		return models.WorkoutLogItemStatusFinished
+	case allSkipped:
+		return models.WorkoutLogItemStatusSkipped
+	case anyAborted:
+		return models.WorkoutLogItemStatusAborted
+	case anySkipped || anyPartiallyFinished:
+		return models.WorkoutLogItemStatusPartiallyFinished
+	default:
+		return models.WorkoutLogItemStatusFinished
+	}
+}
+
+func extractItemStatuses(sets []models.WorkoutLogExerciseSetEntity) []models.WorkoutLogItemStatus {
+	statuses := make([]models.WorkoutLogItemStatus, len(sets))
+	for i, s := range sets {
+		statuses[i] = s.Status
+	}
+	return statuses
+}
+
+func deriveStatusFromExercises(exercises []models.WorkoutLogExerciseEntity) models.WorkoutLogItemStatus {
+	if len(exercises) == 0 {
+		return models.WorkoutLogItemStatusSkipped
+	}
+	statuses := make([]models.WorkoutLogItemStatus, len(exercises))
+	for i, ex := range exercises {
+		statuses[i] = ex.Status
+	}
+	return deriveStatusFromChildren(statuses)
+}
+
+func deriveLogStatusFromSections(sections []models.WorkoutLogSectionEntity) models.WorkoutLogStatus {
+	if len(sections) == 0 {
+		return models.WorkoutLogStatusFinished
+	}
+
+	allFinished := true
+	anyAborted := false
+	for _, s := range sections {
+		if s.Status != models.WorkoutLogItemStatusFinished {
+			allFinished = false
+		}
+		if s.Status == models.WorkoutLogItemStatusAborted {
+			anyAborted = true
+		}
+	}
+
+	switch {
+	case allFinished:
+		return models.WorkoutLogStatusFinished
+	case anyAborted:
+		return models.WorkoutLogStatusAborted
+	default:
+		return models.WorkoutLogStatusPartiallyFinished
+	}
+}
+
 func AbandonWorkoutLog(c *gin.Context) {
 	var entity models.WorkoutLogEntity
 	if err := preloadWorkoutLog(database.DB).First(&entity, c.Param("id")).Error; err != nil {

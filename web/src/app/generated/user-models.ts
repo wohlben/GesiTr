@@ -170,6 +170,7 @@ export interface WorkoutLogExerciseSet extends BaseModel {
 export type WorkoutLogStatus = string;
 export const WorkoutLogStatusPlanning: WorkoutLogStatus = 'planning';
 export const WorkoutLogStatusInProgress: WorkoutLogStatus = 'in_progress';
+export const WorkoutLogStatusAdhoc: WorkoutLogStatus = 'adhoc';
 export const WorkoutLogStatusFinished: WorkoutLogStatus = 'finished';
 export const WorkoutLogStatusPartiallyFinished: WorkoutLogStatus = 'partially_finished';
 export const WorkoutLogStatusAborted: WorkoutLogStatus = 'aborted';

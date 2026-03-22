@@ -263,6 +263,18 @@ export async function abandonWorkoutLog(request: APIRequestContext, id: number) 
   return res.json();
 }
 
+export async function startAdhocWorkoutLog(request: APIRequestContext) {
+  const res = await request.post('/api/user/workout-logs/adhoc');
+  expect(res.ok(), `Failed to start adhoc workout log: ${await res.text()}`).toBeTruthy();
+  return res.json();
+}
+
+export async function finishWorkoutLog(request: APIRequestContext, id: number) {
+  const res = await request.post(`/api/user/workout-logs/${id}/finish`);
+  expect(res.ok(), `Failed to finish workout log: ${await res.text()}`).toBeTruthy();
+  return res.json();
+}
+
 export async function deleteWorkoutLog(request: APIRequestContext, id: number) {
   await request.delete(`/api/user/workout-logs/${id}`);
 }

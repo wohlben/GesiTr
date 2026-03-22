@@ -102,8 +102,10 @@ func newRouter() *gin.Engine {
 	workoutLogs.GET("/:id", GetWorkoutLog)
 	workoutLogs.PATCH("/:id", UpdateWorkoutLog)
 	workoutLogs.DELETE("/:id", DeleteWorkoutLog)
+	workoutLogs.POST("/adhoc", StartAdhocWorkoutLog)
 	workoutLogs.POST("/:id/start", StartWorkoutLog)
 	workoutLogs.POST("/:id/abandon", AbandonWorkoutLog)
+	workoutLogs.POST("/:id/finish", FinishWorkoutLog)
 
 	logSections := api.Group("/workout-log-sections")
 	logSections.GET("", ListWorkoutLogSections)

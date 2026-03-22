@@ -241,4 +241,12 @@ export class UserApiClient {
   abandonWorkoutLog(id: number): Promise<WorkoutLog> {
     return firstValueFrom(this.http.post<WorkoutLog>(`/api/user/workout-logs/${id}/abandon`, {}));
   }
+
+  startAdhocWorkoutLog(): Promise<WorkoutLog> {
+    return firstValueFrom(this.http.post<WorkoutLog>('/api/user/workout-logs/adhoc', {}));
+  }
+
+  finishWorkoutLog(id: number): Promise<WorkoutLog> {
+    return firstValueFrom(this.http.post<WorkoutLog>(`/api/user/workout-logs/${id}/finish`, {}));
+  }
 }

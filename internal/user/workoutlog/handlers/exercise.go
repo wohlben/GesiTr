@@ -59,8 +59,9 @@ func CreateWorkoutLogExercise(c *gin.Context) {
 		return
 	}
 
-	// Guard: parent log must be in planning status
-	if _, ok := requireLogStatus(c, section.WorkoutLogID, models.WorkoutLogStatusPlanning); !ok {
+	// Guard: parent log must be in planning or adhoc status
+	log, ok := requireLogStatus(c, section.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc)
+	if !ok {
 		return
 	}
 
@@ -75,11 +76,18 @@ func CreateWorkoutLogExercise(c *gin.Context) {
 		breakAfter = dto.BreakAfterSeconds
 	}
 
+	// For adhoc logs, exercises start in_progress immediately
+	exerciseStatus := models.WorkoutLogItemStatusPlanning
+	if log.Status == models.WorkoutLogStatusAdhoc {
+		exerciseStatus = models.WorkoutLogItemStatusInProgress
+	}
+
 	entity := models.WorkoutLogExerciseEntity{
 		WorkoutLogSectionID:    dto.WorkoutLogSectionID,
 		WorkoutLogID:           section.WorkoutLogID,
 		SourceExerciseSchemeID: dto.SourceExerciseSchemeID,
 		Position:               dto.Position,
+		Status:                 exerciseStatus,
 		BreakAfterSeconds:      breakAfter,
 		TargetMeasurementType:  scheme.MeasurementType,
 		TargetTimePerRep:       scheme.TimePerRep,
@@ -91,6 +99,12 @@ func CreateWorkoutLogExercise(c *gin.Context) {
 	}
 
 	// Auto-create set rows from the scheme
+	// For adhoc logs, sets start in_progress immediately
+	setStatus := models.WorkoutLogItemStatusPlanning
+	if log.Status == models.WorkoutLogStatusAdhoc {
+		setStatus = models.WorkoutLogItemStatusInProgress
+	}
+
 	numSets := 0
 	if scheme.Sets != nil {
 		numSets = *scheme.Sets
@@ -100,7 +114,7 @@ func CreateWorkoutLogExercise(c *gin.Context) {
 			WorkoutLogExerciseID: entity.ID,
 			WorkoutLogID:         section.WorkoutLogID,
 			SetNumber:            i,
-			Status:               models.WorkoutLogItemStatusPlanning,
+			Status:               setStatus,
 			TargetReps:           scheme.Reps,
 			TargetWeight:         scheme.Weight,
 			TargetDuration:       scheme.Duration,
@@ -173,8 +187,8 @@ func DeleteWorkoutLogExercise(c *gin.Context) {
 		return
 	}
 
-	// Guard: parent log must be in planning status
-	if _, ok := requireLogStatus(c, existing.WorkoutLogID, models.WorkoutLogStatusPlanning); !ok {
+	// Guard: parent log must be in planning or adhoc status
+	if _, ok := requireLogStatus(c, existing.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc); !ok {
 		return
 	}
 

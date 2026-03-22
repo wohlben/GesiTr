@@ -60,9 +60,16 @@ func CreateWorkoutLogExerciseSet(c *gin.Context) {
 		return
 	}
 
-	// Guard: parent log must be in planning status (also checks ownership)
-	if _, ok := requireLogStatus(c, exercise.WorkoutLogID, models.WorkoutLogStatusPlanning); !ok {
+	// Guard: parent log must be in planning or adhoc status (also checks ownership)
+	log, ok := requireLogStatus(c, exercise.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc)
+	if !ok {
 		return
+	}
+
+	// For adhoc logs, sets start in_progress immediately
+	setStatus := models.WorkoutLogItemStatusPlanning
+	if log.Status == models.WorkoutLogStatusAdhoc {
+		setStatus = models.WorkoutLogItemStatusInProgress
 	}
 
 	entity := models.WorkoutLogExerciseSetFromDTO(dto)
@@ -70,7 +77,7 @@ func CreateWorkoutLogExerciseSet(c *gin.Context) {
 	entity.CreatedAt = time.Time{}
 	entity.UpdatedAt = time.Time{}
 	entity.WorkoutLogID = exercise.WorkoutLogID
-	entity.Status = models.WorkoutLogItemStatusPlanning
+	entity.Status = setStatus
 	if err := database.DB.Create(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -311,6 +318,15 @@ func propagateStatus(db *gorm.DB, exerciseID uint) error {
 		}
 	}
 
+	// Stop propagation at exercise level for adhoc workouts
+	var log models.WorkoutLogEntity
+	if err := db.Select("status").First(&log, exercise.WorkoutLogID).Error; err != nil {
+		return err
+	}
+	if log.Status == models.WorkoutLogStatusAdhoc {
+		return nil
+	}
+
 	return propagateSectionStatus(db, exercise.WorkoutLogSectionID)
 }
 
@@ -439,8 +455,8 @@ func DeleteWorkoutLogExerciseSet(c *gin.Context) {
 		return
 	}
 
-	// Guard: parent log must be in planning status (also checks ownership)
-	if _, ok := requireLogStatus(c, existing.WorkoutLogID, models.WorkoutLogStatusPlanning); !ok {
+	// Guard: parent log must be in planning or adhoc status (also checks ownership)
+	if _, ok := requireLogStatus(c, existing.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc); !ok {
 		return
 	}
 

@@ -22,16 +22,18 @@ Each user maintains their own private set of entities, only readable by the owni
 
 - **Exercises** - the user's personal exercise catalog (imported from compendium or custom)
 - **Equipment** - equipment the user has available
-- **Workouts** - the user's configured workout routines
-  - **Goals** - target parameters per exercise within a workout (e.g. "exercise Y: 7 kg, 10 reps")
-  - **Logs** - actual achieved results per session (e.g. "exercise Y: 5 kg, 7 reps")
+- **Workouts** - the user's configured workout routines, used for planning
+  - **Workout Logs** - a planned session instance of a workout, containing sections, exercises, and sets with target values (e.g. "exercise Y: target 7 kg, 10 reps")
   - **Scheduling** - workouts can be scheduled in flexible ways:
     - **Fixed days** - e.g. "on Mondays and Thursdays"
     - **Frequency-based** - e.g. "three times per week"
-- **Personal Records** - automatic tracking of highest scores per exercise, covering metrics like:
-  - Maximum weight per rep count
-  - Time spent
-  - Speed / incline (for running, walking, etc.)
+- **Exercise Logs** - records of what the user actually performed (reps, weight, duration, distance, time). Created either:
+  - **From a workout** - automatically when a workout log set is marked as finished, linking back to the originating set and scheme
+  - **Ad-hoc** - directly, without any workout context
+- **Personal Records** - automatically derived from exercise logs. The best performance per exercise and measurement type is flagged as a record, using comparable metrics:
+  - **Rep-based / AMRAP**: estimated 1RM via the Brzycki formula (`weight × (1 + reps/30)`)
+  - **Time-based / EMOM / Rounds for Time**: raw duration
+  - **Distance-based**: raw distance
 
 ## Tech Stack
 

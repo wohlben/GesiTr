@@ -1,4 +1,4 @@
-import { Component, inject, computed, effect } from '@angular/core';
+import { Component, inject, computed, effect, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -13,16 +13,27 @@ import {
   WorkoutLogExerciseSet,
   WorkoutLogItemStatusFinished,
   WorkoutLogItemStatusSkipped,
+  WorkoutLogStatusAdhoc,
 } from '$generated/user-models';
 import { SetCompletionPayload } from './workout-log-view-items';
 import { PageLayout } from '../../../layout/page-layout';
 import { WorkoutLogDetailStore } from './workout-log-detail.store';
 import { WorkoutLogReview } from './workout-log-review';
 import { WorkoutLogActive } from './workout-log-active';
+import { AdhocAddExerciseDialog } from './adhoc-add-exercise-dialog';
+import { HlmButton } from '@spartan-ng/helm/button';
 
 @Component({
   selector: 'app-workout-log-detail',
-  imports: [PageLayout, RouterLink, DatePipe, WorkoutLogReview, WorkoutLogActive],
+  imports: [
+    PageLayout,
+    RouterLink,
+    DatePipe,
+    WorkoutLogReview,
+    WorkoutLogActive,
+    AdhocAddExerciseDialog,
+    HlmButton,
+  ],
   providers: [WorkoutLogDetailStore],
   template: `
     <app-page-layout
@@ -52,7 +63,22 @@ import { WorkoutLogActive } from './workout-log-active';
             }
           </div>
           <div class="flex items-center gap-2">
-            @if (log.status === 'in_progress') {
+            @if (log.status === 'adhoc') {
+              <button
+                hlmBtn
+                variant="default"
+                (click)="finishWorkout()"
+                [disabled]="finishMutation.isPending()"
+                class="bg-green-600 text-white hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700"
+              >
+                @if (finishMutation.isPending()) {
+                  Finishing...
+                } @else {
+                  Finish Workout
+                }
+              </button>
+            }
+            @if (log.status === 'in_progress' || log.status === 'adhoc') {
               <button
                 type="button"
                 (click)="abandonWorkout()"
@@ -97,7 +123,7 @@ import { WorkoutLogActive } from './workout-log-active';
                     clip-rule="evenodd"
                   />
                 </svg>
-              } @else {
+              } @else if (log.status !== 'adhoc') {
                 <svg class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
                   <path
                     fill-rule="evenodd"
@@ -110,13 +136,35 @@ import { WorkoutLogActive } from './workout-log-active';
           </div>
         </div>
 
-        @if (log.status === 'in_progress') {
+        @if (log.status === 'in_progress' || log.status === 'adhoc') {
           <app-workout-log-active
             [log]="log"
             [exerciseNames]="store.exerciseNames()"
             (setCompleted)="completeSet($event)"
             (setSkipped)="skipSet($event)"
           />
+
+          <!-- Add Exercise button for adhoc workouts -->
+          @if (log.status === 'adhoc') {
+            <div class="mt-6">
+              <button
+                hlmBtn
+                variant="outline"
+                (click)="addExerciseDialogOpen.set(true)"
+                class="w-full"
+              >
+                + Add Exercise
+              </button>
+            </div>
+
+            <app-adhoc-add-exercise-dialog
+              [open]="addExerciseDialogOpen()"
+              [sectionId]="adhocSectionId()"
+              [logId]="id()"
+              [exerciseCount]="adhocExerciseCount()"
+              (closed)="onAddExerciseDialogClosed()"
+            />
+          }
         } @else {
           <app-workout-log-review [log]="log" [exerciseNames]="store.exerciseNames()" />
         }
@@ -132,14 +180,27 @@ export class WorkoutLogDetail {
 
   readonly store = inject(WorkoutLogDetailStore);
 
-  private id = computed(() => Number(this.params()?.get('id')));
-  private initialized = false;
+  id = computed(() => Number(this.params()?.get('id')));
+
+  addExerciseDialogOpen = signal(false);
 
   logQuery = injectQuery(() => ({
     queryKey: workoutLogKeys.detail(this.id()),
     queryFn: () => this.userApi.fetchWorkoutLog(this.id()),
     enabled: !!this.id(),
   }));
+
+  adhocSectionId = computed(() => {
+    const log = this.logQuery.data();
+    if (!log || log.status !== WorkoutLogStatusAdhoc) return 0;
+    return log.sections?.[0]?.id ?? 0;
+  });
+
+  adhocExerciseCount = computed(() => {
+    const log = this.logQuery.data();
+    if (!log || log.status !== WorkoutLogStatusAdhoc) return 0;
+    return log.sections?.[0]?.exercises?.length ?? 0;
+  });
 
   private completeMutation = injectMutation(() => ({
     mutationFn: (payload: SetCompletionPayload) =>
@@ -173,11 +234,18 @@ export class WorkoutLogDetail {
     },
   }));
 
+  finishMutation = injectMutation(() => ({
+    mutationFn: () => this.userApi.finishWorkoutLog(this.id()),
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: workoutLogKeys.detail(this.id()) });
+    },
+  }));
+
   constructor() {
+    // Load exercise names whenever log data changes
     effect(() => {
       const data = this.logQuery.data();
-      if (!data || this.initialized) return;
-      this.initialized = true;
+      if (!data) return;
       this.store.loadExerciseNames(data.sections ?? []);
     });
   }
@@ -192,5 +260,15 @@ export class WorkoutLogDetail {
 
   abandonWorkout() {
     this.abandonMutation.mutate();
+  }
+
+  finishWorkout() {
+    this.finishMutation.mutate();
+  }
+
+  onAddExerciseDialogClosed() {
+    this.addExerciseDialogOpen.set(false);
+    // Refresh the log to pick up the newly added exercise
+    this.queryClient.invalidateQueries({ queryKey: workoutLogKeys.detail(this.id()) });
   }
 }

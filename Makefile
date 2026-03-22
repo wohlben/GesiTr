@@ -48,7 +48,7 @@ build-go: build-web
 
 # Development: start Go API + Angular dev server together
 dev: generate
-	cd web && node dev-server.mjs
+	./scripts/dev.sh
 
 dev-api:
 	DEV=true AUTH_FALLBACK_USER=anon go run .

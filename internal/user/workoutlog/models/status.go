@@ -7,6 +7,7 @@ type WorkoutLogStatus string
 const (
 	WorkoutLogStatusPlanning          WorkoutLogStatus = "planning"
 	WorkoutLogStatusInProgress        WorkoutLogStatus = "in_progress"
+	WorkoutLogStatusAdhoc             WorkoutLogStatus = "adhoc"
 	WorkoutLogStatusFinished          WorkoutLogStatus = "finished"
 	WorkoutLogStatusPartiallyFinished WorkoutLogStatus = "partially_finished"
 	WorkoutLogStatusAborted           WorkoutLogStatus = "aborted"
@@ -17,6 +18,7 @@ const (
 var validTransitions = map[WorkoutLogStatus][]WorkoutLogStatus{
 	WorkoutLogStatusPlanning:          {WorkoutLogStatusInProgress},
 	WorkoutLogStatusInProgress:        {WorkoutLogStatusFinished, WorkoutLogStatusPartiallyFinished, WorkoutLogStatusAborted},
+	WorkoutLogStatusAdhoc:             {WorkoutLogStatusFinished, WorkoutLogStatusPartiallyFinished, WorkoutLogStatusAborted},
 	WorkoutLogStatusFinished:          {},
 	WorkoutLogStatusPartiallyFinished: {},
 	WorkoutLogStatusAborted:           {},

@@ -1,8 +1,12 @@
 import { Component, inject, computed } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import { Router, RouterLink } from '@angular/router';
+import {
+  injectQuery,
+  injectMutation,
+  injectQueryClient,
+} from '@tanstack/angular-query-experimental';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { workoutKeys } from '$core/query-keys';
+import { workoutKeys, workoutLogKeys } from '$core/query-keys';
 import { PageLayout } from '../../../layout/page-layout';
 
 @Component({
@@ -21,6 +25,36 @@ import { PageLayout } from '../../../layout/page-layout';
       >
         New Workout
       </a>
+
+      <!-- Ad-hoc Workout entry (always visible) -->
+      <button
+        type="button"
+        (click)="startAdhoc()"
+        [disabled]="adhocMutation.isPending()"
+        class="mb-6 flex w-full items-center gap-3 rounded-lg border-2 border-dashed border-gray-300 p-4 text-left transition-colors hover:border-green-400 hover:bg-green-50 disabled:opacity-50 dark:border-gray-600 dark:hover:border-green-500 dark:hover:bg-green-900/20"
+      >
+        <span
+          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path
+              d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.344-5.891a1.5 1.5 0 000-2.538L6.3 2.841z"
+            />
+          </svg>
+        </span>
+        <div>
+          <span class="text-sm font-medium text-gray-900 dark:text-gray-100">
+            @if (adhocMutation.isPending()) {
+              Starting...
+            } @else {
+              Ad-hoc Workout
+            }
+          </span>
+          <p class="text-xs text-gray-500 dark:text-gray-400">
+            Start an open-ended workout and add exercises as you go
+          </p>
+        </div>
+      </button>
 
       @if (enrichedWorkouts(); as workouts) {
         @if (workouts.length === 0) {
@@ -89,10 +123,20 @@ import { PageLayout } from '../../../layout/page-layout';
 })
 export class WorkoutList {
   private userApi = inject(UserApiClient);
+  private router = inject(Router);
+  private queryClient = injectQueryClient();
 
   workoutsQuery = injectQuery(() => ({
     queryKey: workoutKeys.list(),
     queryFn: () => this.userApi.fetchWorkouts(),
+  }));
+
+  adhocMutation = injectMutation(() => ({
+    mutationFn: () => this.userApi.startAdhocWorkoutLog(),
+    onSuccess: (log) => {
+      this.queryClient.invalidateQueries({ queryKey: workoutLogKeys.all() });
+      this.router.navigate(['/user/workout-logs', log.id]);
+    },
   }));
 
   enrichedWorkouts = computed(() => {
@@ -106,4 +150,8 @@ export class WorkoutList {
       exerciseCount: w.sections?.reduce((sum, s) => sum + (s.exercises?.length ?? 0), 0) ?? 0,
     }));
   });
+
+  startAdhoc() {
+    this.adhocMutation.mutate();
+  }
 }
