@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Wrist_Circles",
   "toExerciseTemplateId": "Knee_Circles"

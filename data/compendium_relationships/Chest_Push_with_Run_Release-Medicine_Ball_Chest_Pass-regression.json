@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729933200,
   "fromExerciseTemplateId": "Chest_Push_with_Run_Release",
   "toExerciseTemplateId": "Medicine_Ball_Chest_Pass"

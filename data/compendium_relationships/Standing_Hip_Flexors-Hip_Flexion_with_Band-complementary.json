@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730073600,
   "fromExerciseTemplateId": "Standing_Hip_Flexors",
   "toExerciseTemplateId": "Hip_Flexion_with_Band"

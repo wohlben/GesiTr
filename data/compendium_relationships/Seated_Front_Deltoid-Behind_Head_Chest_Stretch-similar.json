@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Seated_Front_Deltoid",
   "toExerciseTemplateId": "Behind_Head_Chest_Stretch"

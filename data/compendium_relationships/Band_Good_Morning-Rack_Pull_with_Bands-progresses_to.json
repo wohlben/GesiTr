@@ -3,7 +3,7 @@
   "relationshipType": "progresses_to",
   "strength": 0.65,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Band_Good_Morning",
   "toExerciseTemplateId": "Rack_Pull_with_Bands"

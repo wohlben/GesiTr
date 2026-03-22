@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Rope_Jumping",
   "toExerciseTemplateId": "Box_Jump_Multiple_Response"

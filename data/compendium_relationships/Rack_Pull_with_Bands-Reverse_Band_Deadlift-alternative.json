@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761511019,
   "fromExerciseTemplateId": "Rack_Pull_with_Bands",
   "toExerciseTemplateId": "Reverse_Band_Deadlift"

@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "T-Bar_Row_with_Handle",
   "toExerciseTemplateId": "Lying_Cambered_Barbell_Row"

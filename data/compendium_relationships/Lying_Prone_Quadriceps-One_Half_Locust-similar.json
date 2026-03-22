@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": null,
   "description": "Both exercises are performed lying face down while flexing the knee and holding the foot to stretch the quadriceps and hip flexors, with Lying Prone Quadriceps using partner assistance for a deeper stretch",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761024000,
   "fromExerciseTemplateId": "Lying_Prone_Quadriceps",
   "toExerciseTemplateId": "One_Half_Locust"

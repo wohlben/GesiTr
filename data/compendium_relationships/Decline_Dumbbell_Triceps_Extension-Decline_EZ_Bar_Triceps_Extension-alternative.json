@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "dev-user",
+  "createdBy": "claude",
   "createdAt": 1729932000,
   "fromExerciseTemplateId": "Decline_Dumbbell_Triceps_Extension",
   "toExerciseTemplateId": "Decline_EZ_Bar_Triceps_Extension"

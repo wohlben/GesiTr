@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.8,
   "description": "Regression from weighted dynamic neck extension to bodyweight isometric neck training, removing external load for easier difficulty.",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761509530,
   "fromExerciseTemplateId": "Lying_Face_Down_Plate_Neck_Resistance",
   "toExerciseTemplateId": "Isometric_Neck_Exercise_-_Front_And_Back"

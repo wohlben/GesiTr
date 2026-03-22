@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729931400,
   "fromExerciseTemplateId": "Band_Assisted_Pull-Up",
   "toExerciseTemplateId": "Close-Grip_Front_Lat_Pulldown"

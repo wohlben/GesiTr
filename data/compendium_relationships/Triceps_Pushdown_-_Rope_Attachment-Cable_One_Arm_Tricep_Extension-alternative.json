@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Triceps_Pushdown_-_Rope_Attachment",
   "toExerciseTemplateId": "Cable_One_Arm_Tricep_Extension"

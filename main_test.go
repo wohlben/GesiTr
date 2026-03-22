@@ -15,7 +15,7 @@ import (
 
 func setupTestDB(t *testing.T) {
 	t.Helper()
-	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("file::memory:?_foreign_keys=on"), &gorm.Config{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -27,6 +27,7 @@ func TestAutoMigrate(t *testing.T) {
 	autoMigrate()
 
 	tables := []string{
+		"user_profiles",
 		"exercises", "exercise_forces", "exercise_muscles",
 		"exercise_measurement_paradigms", "exercise_instructions",
 		"exercise_images", "exercise_alternative_names",
@@ -50,12 +51,15 @@ func TestSetupRoutes(t *testing.T) {
 
 	routes := r.Routes()
 	expected := map[string]bool{
-		"GET /api/exercises":                                         false,
-		"POST /api/exercises":                                        false,
-		"GET /api/exercises/:id":                                     false,
-		"PUT /api/exercises/:id":                                     false,
-		"DELETE /api/exercises/:id":                                  false,
-		"GET /api/exercises/:id/versions":                            false,
+		"GET /api/profiles/:id":           false,
+		"GET /api/user/profile":           false,
+		"PUT /api/user/profile":           false,
+		"GET /api/exercises":              false,
+		"POST /api/exercises":             false,
+		"GET /api/exercises/:id":          false,
+		"PUT /api/exercises/:id":          false,
+		"DELETE /api/exercises/:id":       false,
+		"GET /api/exercises/:id/versions": false,
 		"GET /api/exercises/templates/:templateId/versions/:version": false,
 		"GET /api/equipment":                                         false,
 		"POST /api/equipment":                                        false,

@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761508980,
   "fromExerciseTemplateId": "Muscle_Up",
   "toExerciseTemplateId": "Kipping_Muscle_Up"

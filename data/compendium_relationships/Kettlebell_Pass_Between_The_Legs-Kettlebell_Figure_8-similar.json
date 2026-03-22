@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761499772,
   "fromExerciseTemplateId": "Kettlebell_Pass_Between_The_Legs",
   "toExerciseTemplateId": "Kettlebell_Figure_8"

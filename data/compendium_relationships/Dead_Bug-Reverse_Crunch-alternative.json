@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761483562,
   "fromExerciseTemplateId": "Dead_Bug",
   "toExerciseTemplateId": "Reverse_Crunch"

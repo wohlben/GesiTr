@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"testing"
 
+	"gesitr/internal/database"
 	"gesitr/internal/user/workout/models"
 )
 
@@ -25,11 +26,9 @@ func TestListWorkouts(t *testing.T) {
 	})
 
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
-		"owner": "alice", "name": "Push Day", "date": "2026-03-07T10:00:00Z",
+		"name": "Push Day",
 	})
-	doJSON(r, "POST", "/api/user/workouts", map[string]any{
-		"owner": "bob", "name": "Pull Day", "date": "2026-03-08T10:00:00Z",
-	})
+	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Pull Day"})
 
 	t.Run("list all", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/user/workouts", nil)

@@ -17,7 +17,7 @@ func newExercisePayload(name, templateID string) map[string]any {
 	return map[string]any{
 		"name": name, "templateId": templateID, "type": "STRENGTH",
 		"technicalDifficulty": "beginner", "bodyWeightScaling": 0.5,
-		"description": "test", "createdBy": "system", "version": 0,
+		"description": "test", "createdBy": "testuser", "version": 0,
 		"force": []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
 		"secondaryMuscles":              []string{"TRICEPS"},
 		"suggestedMeasurementParadigms": []string{"REP_BASED"},
@@ -55,7 +55,7 @@ func TestListExercises(t *testing.T) {
 	cardio := map[string]any{
 		"name": "Running", "templateId": "running", "type": "CARDIO",
 		"technicalDifficulty": "intermediate", "bodyWeightScaling": 1.0,
-		"description": "run", "createdBy": "system", "version": 0,
+		"description": "run", "createdBy": "testuser", "version": 0,
 		"force": []string{"DYNAMIC"}, "primaryMuscles": []string{"QUADS"},
 		"secondaryMuscles":              []string{"CALVES"},
 		"suggestedMeasurementParadigms": []string{"DISTANCE"},
@@ -246,7 +246,7 @@ func TestCreateExercise(t *testing.T) {
 		payload := map[string]any{
 			"name": "Overhead Press", "templateId": "overhead-press", "type": "STRENGTH",
 			"technicalDifficulty": "beginner", "bodyWeightScaling": 0.0,
-			"description": "test", "createdBy": "system",
+			"description": "test", "createdBy": "testuser",
 		}
 		w := doJSON(r, "POST", "/api/exercises", payload)
 		if w.Code != http.StatusCreated {
@@ -263,7 +263,7 @@ func TestCreateExercise(t *testing.T) {
 		payload := map[string]any{
 			"name": "No Template", "type": "STRENGTH",
 			"technicalDifficulty": "beginner", "bodyWeightScaling": 0.0,
-			"description": "test", "createdBy": "system",
+			"description": "test", "createdBy": "testuser",
 		}
 		w := doJSON(r, "POST", "/api/exercises", payload)
 		if w.Code != http.StatusCreated {
@@ -350,7 +350,7 @@ func TestUpdateExercise(t *testing.T) {
 		updated := map[string]any{
 			"name": "Overhead Press", "templateId": "ohp", "type": "STRENGTH",
 			"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
-			"description": "updated", "createdBy": "system", "version": 0,
+			"description": "updated", "createdBy": "testuser", "version": 0,
 			"force": []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
 			"secondaryMuscles":              []string{"TRICEPS", "CHEST"},
 			"suggestedMeasurementParadigms": []string{"REP_BASED", "AMRAP"},
@@ -390,7 +390,7 @@ func TestUpdateExercise(t *testing.T) {
 		same := map[string]any{
 			"name": "Overhead Press", "templateId": "ohp", "type": "STRENGTH",
 			"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
-			"description": "updated", "createdBy": "system", "version": 0,
+			"description": "updated", "createdBy": "testuser", "version": 0,
 			"force": []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
 			"secondaryMuscles":              []string{"TRICEPS", "CHEST"},
 			"suggestedMeasurementParadigms": []string{"REP_BASED", "AMRAP"},
@@ -424,7 +424,7 @@ func TestUpdateExercise(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/exercises/1", map[string]any{
 			"name": "OHP v2", "templateId": "ohp", "type": "STRENGTH",
 			"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
-			"description": "v2", "createdBy": "system", "version": 0,
+			"description": "v2", "createdBy": "testuser", "version": 0,
 			"force": []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
 		})
 		if w.Code != http.StatusOK {
@@ -453,7 +453,7 @@ func TestUpdateExercise(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/exercises/1", map[string]any{
 			"name": "OHP v3 fail", "templateId": "ohp", "type": "STRENGTH",
 			"technicalDifficulty": "advanced", "bodyWeightScaling": 0.0,
-			"description": "v3 fail", "createdBy": "system",
+			"description": "v3 fail", "createdBy": "testuser",
 			"force": []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
 		})
 		if w.Code != http.StatusInternalServerError {
@@ -590,13 +590,13 @@ func TestListExerciseVersions(t *testing.T) {
 	doJSON(r, "PUT", "/api/exercises/1", map[string]any{
 		"name": "Press v1", "templateId": "press", "type": "STRENGTH",
 		"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
-		"description": "v1", "createdBy": "system",
+		"description": "v1", "createdBy": "testuser",
 		"force": []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
 	})
 	doJSON(r, "PUT", "/api/exercises/1", map[string]any{
 		"name": "Press v2", "templateId": "press", "type": "STRENGTH",
 		"technicalDifficulty": "advanced", "bodyWeightScaling": 0.0,
-		"description": "v2", "createdBy": "system",
+		"description": "v2", "createdBy": "testuser",
 		"force": []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
 	})
 
@@ -614,7 +614,7 @@ func TestListExerciseVersions(t *testing.T) {
 			t.Errorf("versions = %d, %d, %d", entries[0].Version, entries[1].Version, entries[2].Version)
 		}
 		for i, e := range entries {
-			if e.ChangedBy != "system" {
+			if e.ChangedBy != "testuser" {
 				t.Errorf("entries[%d].ChangedBy = %q", i, e.ChangedBy)
 			}
 			if e.ChangedAt.IsZero() {
@@ -671,7 +671,7 @@ func TestGetExerciseVersion(t *testing.T) {
 	doJSON(r, "PUT", "/api/exercises/1", map[string]any{
 		"name": "Press v1", "templateId": "press", "type": "STRENGTH",
 		"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
-		"description": "v1", "createdBy": "system",
+		"description": "v1", "createdBy": "testuser",
 		"force": []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
 	})
 

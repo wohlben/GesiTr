@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": "Flat bench version provides elevated surface for better range of motion",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761509905,
   "fromExerciseTemplateId": "Leg_Pull-In",
   "toExerciseTemplateId": "Flat_Bench_Leg_Pull-In"

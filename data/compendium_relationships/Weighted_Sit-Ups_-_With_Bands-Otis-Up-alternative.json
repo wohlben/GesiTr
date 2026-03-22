@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": "Both are weighted sit-ups; Otis-Up adds overhead press component using free weights",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729980000,
   "fromExerciseTemplateId": "Weighted_Sit-Ups_-_With_Bands",
   "toExerciseTemplateId": "Otis-Up"

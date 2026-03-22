@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": "Both are beginner-friendly supine stretches targeting glutes and lower back; One Knee To Chest is simpler knee-pull variation",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Ankle_On_The_Knee",
   "toExerciseTemplateId": "One_Knee_To_Chest"

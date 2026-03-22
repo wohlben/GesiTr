@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.6,
   "description": "Both are standing rotational core exercises. Spell Caster provides a simpler bilateral movement pattern with dumbbells instead of cables.",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730016000,
   "fromExerciseTemplateId": "Standing_Cable_Wood_Chop",
   "toExerciseTemplateId": "Spell_Caster"

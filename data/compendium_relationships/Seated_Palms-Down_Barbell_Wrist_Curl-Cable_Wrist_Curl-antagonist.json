@@ -3,7 +3,7 @@
   "relationshipType": "antagonist",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761479701,
   "fromExerciseTemplateId": "Seated_Palms-Down_Barbell_Wrist_Curl",
   "toExerciseTemplateId": "Cable_Wrist_Curl"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "One-Arm_Kettlebell_Jerk",
   "toExerciseTemplateId": "Double_Kettlebell_Jerk"

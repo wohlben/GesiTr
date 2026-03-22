@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.7,
   "description": "Push-ups add dynamic pressing movement and full body integration to chest activation",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729954800,
   "fromExerciseTemplateId": "Isometric_Chest_Squeezes",
   "toExerciseTemplateId": "Pushups"

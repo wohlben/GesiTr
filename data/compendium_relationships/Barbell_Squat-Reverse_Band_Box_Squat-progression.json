@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761511059,
   "fromExerciseTemplateId": "Barbell_Squat",
   "toExerciseTemplateId": "Reverse_Band_Box_Squat"

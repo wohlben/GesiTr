@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.95,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Side_Lateral_Raise",
   "toExerciseTemplateId": "Dumbbell_Raise"

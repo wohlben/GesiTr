@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Pyramid",
   "toExerciseTemplateId": "Push-Ups_With_Feet_On_An_Exercise_Ball"

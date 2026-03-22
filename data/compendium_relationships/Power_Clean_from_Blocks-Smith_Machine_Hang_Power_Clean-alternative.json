@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Power_Clean_from_Blocks",
   "toExerciseTemplateId": "Smith_Machine_Hang_Power_Clean"

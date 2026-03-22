@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761478645,
   "fromExerciseTemplateId": "Dumbbell_Bench_Press",
   "toExerciseTemplateId": "Cable_Chest_Press"

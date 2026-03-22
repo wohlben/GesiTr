@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Suspended_Push-Up",
   "toExerciseTemplateId": "Push-Up_Wide"

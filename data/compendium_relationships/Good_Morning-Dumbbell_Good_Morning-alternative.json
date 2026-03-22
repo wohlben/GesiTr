@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Good_Morning",
   "toExerciseTemplateId": "Dumbbell_Good_Morning"

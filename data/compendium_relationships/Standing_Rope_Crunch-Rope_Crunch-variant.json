@@ -3,7 +3,7 @@
   "relationshipType": "variant",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730016000,
   "fromExerciseTemplateId": "Standing_Rope_Crunch",
   "toExerciseTemplateId": "Rope_Crunch"

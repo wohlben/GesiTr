@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761496481,
   "fromExerciseTemplateId": "Snatch_Balance",
   "toExerciseTemplateId": "Heaving_Snatch_Balance"

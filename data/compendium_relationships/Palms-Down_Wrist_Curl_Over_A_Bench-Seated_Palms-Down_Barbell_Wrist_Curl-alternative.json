@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761479701,
   "fromExerciseTemplateId": "Palms-Down_Wrist_Curl_Over_A_Bench",
   "toExerciseTemplateId": "Seated_Palms-Down_Barbell_Wrist_Curl"

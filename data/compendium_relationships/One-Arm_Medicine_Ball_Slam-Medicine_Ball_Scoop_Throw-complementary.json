@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.6,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761510517,
   "fromExerciseTemplateId": "One-Arm_Medicine_Ball_Slam",
   "toExerciseTemplateId": "Medicine_Ball_Scoop_Throw"

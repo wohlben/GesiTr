@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761482004,
   "fromExerciseTemplateId": "Close-Grip_EZ-Bar_Press",
   "toExerciseTemplateId": "Close-Grip_Dumbbell_Press"

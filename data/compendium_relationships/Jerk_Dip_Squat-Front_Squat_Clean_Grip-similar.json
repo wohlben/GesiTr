@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761499778,
   "fromExerciseTemplateId": "Jerk_Dip_Squat",
   "toExerciseTemplateId": "Front_Squat_Clean_Grip"

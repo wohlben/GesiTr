@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729969200,
   "fromExerciseTemplateId": "Neck_Press",
   "toExerciseTemplateId": "Barbell_Incline_Bench_Press_-_Medium_Grip"

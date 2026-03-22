@@ -3,7 +3,7 @@
   "relationshipType": "supports",
   "strength": 0.9,
   "description": "The Snatch Balance drill develops the speed and mechanics of dropping under the bar, which directly supports the catch phase of the Power Snatch.",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761518400,
   "fromExerciseTemplateId": "Power_Snatch",
   "toExerciseTemplateId": "Snatch_Balance"

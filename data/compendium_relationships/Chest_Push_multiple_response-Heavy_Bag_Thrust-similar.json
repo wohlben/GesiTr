@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729933200,
   "fromExerciseTemplateId": "Chest_Push_multiple_response",
   "toExerciseTemplateId": "Heavy_Bag_Thrust"

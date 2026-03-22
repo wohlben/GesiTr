@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": "Both exercises involve weighted neck extension training with similar movement patterns, but use different equipment (plate vs head harness) and body positions (lying vs seated).",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761509530,
   "fromExerciseTemplateId": "Lying_Face_Down_Plate_Neck_Resistance",
   "toExerciseTemplateId": "Seated_Head_Harness_Neck_Resistance"

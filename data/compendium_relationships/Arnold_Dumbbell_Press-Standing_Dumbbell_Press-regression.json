@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730073600,
   "fromExerciseTemplateId": "Arnold_Dumbbell_Press",
   "toExerciseTemplateId": "Standing_Dumbbell_Press"

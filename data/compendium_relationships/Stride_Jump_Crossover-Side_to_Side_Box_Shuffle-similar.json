@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Stride_Jump_Crossover",
   "toExerciseTemplateId": "Side_to_Side_Box_Shuffle"

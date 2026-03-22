@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": "Both incline push-up variations; reverse grip emphasizes triceps with supinated hands, wide grip emphasizes outer chest with wider hand placement",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Incline_Push-Up_Reverse_Grip",
   "toExerciseTemplateId": "Incline_Push-Up_Wide"

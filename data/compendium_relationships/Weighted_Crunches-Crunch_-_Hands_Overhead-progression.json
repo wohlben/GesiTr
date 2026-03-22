@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Weighted_Crunches",
   "toExerciseTemplateId": "Crunch_-_Hands_Overhead"

@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1760883050,
   "fromExerciseTemplateId": "One_Arm_Chin-Up",
   "toExerciseTemplateId": "Weighted_Pull_Ups"

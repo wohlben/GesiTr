@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761496103,
   "fromExerciseTemplateId": "Hammer_Grip_Incline_DB_Bench_Press",
   "toExerciseTemplateId": "Dumbbell_Bench_Press_with_Neutral_Grip"

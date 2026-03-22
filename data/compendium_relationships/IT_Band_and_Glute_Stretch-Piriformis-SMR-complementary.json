@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.75,
   "description": "Both address outer hip and glute tension; IT Band targets IT band and glutes with supine band stretch, while Piriformis SMR focuses on deep glute piriformis muscle with foam rolling",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "IT_Band_and_Glute_Stretch",
   "toExerciseTemplateId": "Piriformis-SMR"

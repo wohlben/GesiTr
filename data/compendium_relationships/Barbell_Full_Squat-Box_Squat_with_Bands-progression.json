@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1760883050,
   "fromExerciseTemplateId": "Barbell_Full_Squat",
   "toExerciseTemplateId": "Box_Squat_with_Bands"

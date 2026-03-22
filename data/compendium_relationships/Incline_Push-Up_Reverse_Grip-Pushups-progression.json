@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": "Progress from incline to standard flat push-ups for increased resistance and difficulty",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Incline_Push-Up_Reverse_Grip",
   "toExerciseTemplateId": "Pushups"

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761496481,
   "fromExerciseTemplateId": "Power_Snatch",
   "toExerciseTemplateId": "Heaving_Snatch_Balance"

@@ -3,7 +3,7 @@
   "relationshipType": "variation",
   "strength": 0.7,
   "description": "Extended range of motion variation that continues the front raise movement overhead in a semicircular motion, increasing front deltoid engagement and adding overhead stability challenge.",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Single_Dumbbell_Raise",
   "toExerciseTemplateId": "Standing_Dumbbell_Straight-Arm_Front_Delt_Raise_Above_Head"

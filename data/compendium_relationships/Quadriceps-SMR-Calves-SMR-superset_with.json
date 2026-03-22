@@ -3,7 +3,7 @@
   "relationshipType": "superset_with",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730073600,
   "fromExerciseTemplateId": "Quadriceps-SMR",
   "toExerciseTemplateId": "Calves-SMR"

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761461723,
   "fromExerciseTemplateId": "Alternating_Deltoid_Raise",
   "toExerciseTemplateId": "Side_Laterals_to_Front_Raise"

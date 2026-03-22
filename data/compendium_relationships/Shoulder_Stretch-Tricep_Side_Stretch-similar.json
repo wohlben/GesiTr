@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": "Both use cross-body arm position but target different muscles - deltoids vs triceps",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Shoulder_Stretch",
   "toExerciseTemplateId": "Tricep_Side_Stretch"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": "Both use figure-4 position to stretch piriformis and glutes; seated version offers partner-assisted variation",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Ankle_On_The_Knee",
   "toExerciseTemplateId": "Seated_Glute"

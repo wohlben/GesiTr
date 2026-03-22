@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.8,
   "description": "Floor version isolates leg pull-in without torso movement",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761509905,
   "fromExerciseTemplateId": "Seated_Flat_Bench_Leg_Pull-In",
   "toExerciseTemplateId": "Leg_Pull-In"

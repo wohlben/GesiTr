@@ -3,7 +3,7 @@
   "relationshipType": "variation",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Cable_Hammer_Curls_-_Rope_Attachment",
   "toExerciseTemplateId": "Cross_Body_Hammer_Curl"

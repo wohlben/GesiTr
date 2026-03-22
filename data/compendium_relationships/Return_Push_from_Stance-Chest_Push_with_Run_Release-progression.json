@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.75,
   "description": "Both are athletic stance medicine ball drills; chest push with run release adds explosive stepping motion and sprint, increasing difficulty and conditioning demands",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Return_Push_from_Stance",
   "toExerciseTemplateId": "Chest_Push_with_Run_Release"

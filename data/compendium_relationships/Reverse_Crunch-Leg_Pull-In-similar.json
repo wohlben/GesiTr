@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": "Both involve bringing knees toward chest with hip flexion and lower ab engagement",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761509905,
   "fromExerciseTemplateId": "Reverse_Crunch",
   "toExerciseTemplateId": "Leg_Pull-In"

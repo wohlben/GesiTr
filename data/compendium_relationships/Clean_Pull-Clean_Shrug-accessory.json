@@ -3,7 +3,7 @@
   "relationshipType": "accessory",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761481995,
   "fromExerciseTemplateId": "Clean_Pull",
   "toExerciseTemplateId": "Clean_Shrug"

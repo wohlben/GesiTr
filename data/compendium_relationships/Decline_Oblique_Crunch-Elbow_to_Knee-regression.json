@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730073600,
   "fromExerciseTemplateId": "Decline_Oblique_Crunch",
   "toExerciseTemplateId": "Elbow_to_Knee"

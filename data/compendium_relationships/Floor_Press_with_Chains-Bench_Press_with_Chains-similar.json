@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761472847,
   "fromExerciseTemplateId": "Floor_Press_with_Chains",
   "toExerciseTemplateId": "Bench_Press_with_Chains"

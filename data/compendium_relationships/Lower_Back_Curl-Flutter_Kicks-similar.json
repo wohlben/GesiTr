@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730080800,
   "fromExerciseTemplateId": "Lower_Back_Curl",
   "toExerciseTemplateId": "Flutter_Kicks"

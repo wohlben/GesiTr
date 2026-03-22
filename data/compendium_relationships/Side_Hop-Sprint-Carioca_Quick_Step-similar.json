@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730000000,
   "fromExerciseTemplateId": "Side_Hop-Sprint",
   "toExerciseTemplateId": "Carioca_Quick_Step"

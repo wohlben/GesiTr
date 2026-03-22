@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.5,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761476051,
   "fromExerciseTemplateId": "Bicycling_Stationary",
   "toExerciseTemplateId": "Recumbent_Bike"

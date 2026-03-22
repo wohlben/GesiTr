@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": null,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Backward_Medicine_Ball_Throw",
   "toExerciseTemplateId": "Catch_and_Overhead_Throw"

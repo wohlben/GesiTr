@@ -13,6 +13,7 @@ import (
 	compGroup "gesitr/internal/compendium/exercisegroup/models"
 	compRelationship "gesitr/internal/compendium/exerciserelationship/models"
 	"gesitr/internal/database"
+	profileModels "gesitr/internal/profile/models"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -20,11 +21,12 @@ import (
 
 func setupSeedTestDB(t *testing.T) {
 	t.Helper()
-	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("file::memory:?_foreign_keys=on"), &gorm.Config{})
 	if err != nil {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
+		&profileModels.UserProfileEntity{},
 		&compExercise.ExerciseEntity{},
 		&compExercise.ExerciseForce{},
 		&compExercise.ExerciseMuscle{},
@@ -42,6 +44,11 @@ func setupSeedTestDB(t *testing.T) {
 		&compEquipment.EquipmentHistoryEntity{},
 	)
 	database.DB = db
+
+	// Create profiles for test createdBy/addedBy values
+	for _, id := range []string{"claude", "system", "user", "s"} {
+		db.Create(&profileModels.UserProfileEntity{ID: id, Name: id})
+	}
 }
 
 func writeTempJSON(t *testing.T, base, dir, filename string, data any) {
@@ -83,25 +90,25 @@ func TestMainFunction(t *testing.T) {
 		"imageUrl": nil, "templateId": "bar",
 	})
 	writeTempJSON(t, tmpDir, "compendium_equipment_fulfillment", "f.json", map[string]any{
-		"createdBy": "system", "createdAt": ts, "equipmentTemplateId": "a", "fulfillsEquipmentTemplateId": "b",
+		"createdBy": "claude", "createdAt": ts, "equipmentTemplateId": "a", "fulfillsEquipmentTemplateId": "b",
 	})
 	writeTempJSON(t, tmpDir, "compendium_exercises", "ex.json", map[string]any{
 		"name": "X", "slug": "x", "type": "STRENGTH", "force": []string{}, "primaryMuscles": []string{},
 		"secondaryMuscles": []string{}, "technicalDifficulty": "beginner", "bodyWeightScaling": 0.0,
 		"suggestedMeasurementParadigms": []string{}, "description": "", "instructions": []string{},
 		"images": []string{}, "alternativeNames": []string{}, "authorName": nil, "authorUrl": nil,
-		"createdBy": "system", "createdAt": ts, "updatedAt": nil, "version": 0,
+		"createdBy": "claude", "createdAt": ts, "updatedAt": nil, "version": 0,
 		"parentExerciseId": nil, "templateId": "x", "equipmentIds": []string{},
 	})
 	writeTempJSON(t, tmpDir, "compendium_relationships", "rel.json", map[string]any{
 		"id": "x-y", "relationshipType": "similar", "strength": 0.5, "description": nil,
-		"createdBy": "system", "createdAt": ts, "fromExerciseTemplateId": "a", "toExerciseTemplateId": "b",
+		"createdBy": "claude", "createdAt": ts, "fromExerciseTemplateId": "a", "toExerciseTemplateId": "b",
 	})
 	writeTempJSON(t, tmpDir, "compendium_exercise_groups", "g.json", map[string]any{
-		"id": "g1", "name": "G1", "description": nil, "createdBy": "user", "createdAt": ts, "updatedAt": nil,
+		"id": "g1", "name": "G1", "description": nil, "createdBy": "claude", "createdAt": ts, "updatedAt": nil,
 	})
 	writeTempJSON(t, tmpDir, "compendium_exercise_group_members", "m.json", map[string]any{
-		"groupId": "g1", "exerciseTemplateId": "x", "addedBy": "user", "addedAt": ts,
+		"groupId": "g1", "exerciseTemplateId": "x", "addedBy": "claude", "addedAt": ts,
 	})
 
 	// main() calls database.Init() which creates gesitr.db in cwd (tmpDir)
@@ -218,7 +225,7 @@ func TestSeedEquipment(t *testing.T) {
 
 		var eq compEquipment.EquipmentEntity
 		database.DB.Where("template_id = ?", "barbell").First(&eq)
-		if eq.Name != "barbell" || eq.Category != "free_weights" || eq.CreatedBy != "system" {
+		if eq.Name != "barbell" || eq.Category != "free_weights" || eq.CreatedBy != "claude" {
 			t.Errorf("field mismatch: %+v", eq)
 		}
 

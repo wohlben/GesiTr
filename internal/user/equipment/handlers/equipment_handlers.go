@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	"gesitr/internal/user/equipment/models"
 
@@ -40,6 +41,7 @@ func CreateUserEquipment(c *gin.Context) {
 	}
 
 	entity := models.UserEquipmentFromDTO(dto)
+	entity.Owner = auth.GetUserID(c)
 	if err := database.DB.Create(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

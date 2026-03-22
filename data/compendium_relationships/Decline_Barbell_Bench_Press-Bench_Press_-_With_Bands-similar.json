@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761472847,
   "fromExerciseTemplateId": "Decline_Barbell_Bench_Press",
   "toExerciseTemplateId": "Bench_Press_-_With_Bands"

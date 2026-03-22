@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730051040,
   "fromExerciseTemplateId": "Leverage_Incline_Chest_Press",
   "toExerciseTemplateId": "Barbell_Incline_Bench_Press_-_Medium_Grip"

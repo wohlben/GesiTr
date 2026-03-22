@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": "Both are partner-assisted PNF stretches for the adductors. Progress from Lying Bent Leg Groin's bent-knee butterfly position to Adductor/Groin's straight-leg raised position for increased range of motion and difficulty.",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Adductor_Groin",
   "toExerciseTemplateId": "Lying_Bent_Leg_Groin"

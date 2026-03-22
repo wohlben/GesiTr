@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.95,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729933200,
   "fromExerciseTemplateId": "Chest_Push_multiple_response",
   "toExerciseTemplateId": "Chest_Push_single_response"

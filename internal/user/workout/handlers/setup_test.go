@@ -10,6 +10,7 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
+	profilemodels "gesitr/internal/profile/models"
 	userequipmentmodels "gesitr/internal/user/equipment/models"
 	userexercisehandlers "gesitr/internal/user/exercise/handlers"
 	userexercisemodels "gesitr/internal/user/exercise/models"
@@ -29,11 +30,12 @@ func TestMain(m *testing.M) {
 func setupTestDB(t *testing.T) {
 	t.Helper()
 	t.Setenv("AUTH_FALLBACK_USER", "alice")
-	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent)})
+	db, err := gorm.Open(sqlite.Open("file::memory:?_foreign_keys=on"), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent)})
 	if err != nil {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
+		&profilemodels.UserProfileEntity{},
 		&userexercisemodels.UserExerciseEntity{},
 		&userexercisemodels.UserExerciseSchemeEntity{},
 		&userequipmentmodels.UserEquipmentEntity{},
@@ -41,6 +43,8 @@ func setupTestDB(t *testing.T) {
 		&models.WorkoutSectionEntity{},
 		&models.WorkoutSectionExerciseEntity{},
 	)
+	db.Create(&profilemodels.UserProfileEntity{ID: "alice", Name: "alice"})
+	db.Create(&profilemodels.UserProfileEntity{ID: "bob", Name: "bob"})
 	database.DB = db
 }
 

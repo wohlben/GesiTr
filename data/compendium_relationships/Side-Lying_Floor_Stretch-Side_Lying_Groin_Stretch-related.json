@@ -3,7 +3,7 @@
   "relationshipType": "related",
   "strength": 0.6,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Side-Lying_Floor_Stretch",
   "toExerciseTemplateId": "Side_Lying_Groin_Stretch"

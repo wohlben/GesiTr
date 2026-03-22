@@ -3,7 +3,7 @@
   "relationshipType": "related",
   "strength": 0.6,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761511059,
   "fromExerciseTemplateId": "Reverse_Band_Box_Squat",
   "toExerciseTemplateId": "Reverse_Band_Sumo_Deadlift"

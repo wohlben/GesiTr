@@ -3,7 +3,7 @@
   "relationshipType": "variant",
   "strength": 0.95,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Triceps_Pushdown",
   "toExerciseTemplateId": "Triceps_Pushdown_-_V-Bar_Attachment"

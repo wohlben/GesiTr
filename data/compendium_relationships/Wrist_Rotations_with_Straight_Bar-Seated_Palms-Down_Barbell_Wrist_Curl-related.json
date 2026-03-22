@@ -3,7 +3,7 @@
   "relationshipType": "related",
   "strength": 0.6,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761551538,
   "fromExerciseTemplateId": "Wrist_Rotations_with_Straight_Bar",
   "toExerciseTemplateId": "Seated_Palms-Down_Barbell_Wrist_Curl"

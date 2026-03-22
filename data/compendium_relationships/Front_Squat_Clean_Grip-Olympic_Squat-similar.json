@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1760883050,
   "fromExerciseTemplateId": "Front_Squat_Clean_Grip",
   "toExerciseTemplateId": "Olympic_Squat"

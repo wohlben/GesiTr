@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.6,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761510000,
   "fromExerciseTemplateId": "Power_Jerk",
   "toExerciseTemplateId": "Jerk_Balance"

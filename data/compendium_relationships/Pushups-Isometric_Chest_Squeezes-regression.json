@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.7,
   "description": "Isometric Chest Squeezes isolates chest contraction without full body dynamic movement",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729954800,
   "fromExerciseTemplateId": "Pushups",
   "toExerciseTemplateId": "Isometric_Chest_Squeezes"

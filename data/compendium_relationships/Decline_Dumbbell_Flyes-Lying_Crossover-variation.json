@@ -3,7 +3,7 @@
   "relationshipType": "variation",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Decline_Dumbbell_Flyes",
   "toExerciseTemplateId": "Lying_Crossover"

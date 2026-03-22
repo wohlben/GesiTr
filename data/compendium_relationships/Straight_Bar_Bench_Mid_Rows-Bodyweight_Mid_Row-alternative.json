@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": "Both mid-level rowing exercises targeting lats and rhomboids; bodyweight version offers portable alternative without equipment",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730012400,
   "fromExerciseTemplateId": "Straight_Bar_Bench_Mid_Rows",
   "toExerciseTemplateId": "Bodyweight_Mid_Row"

@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.7,
   "description": "Monster Walk provides foundational hip abductor strength for the more dynamic Carioca movement",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730053200,
   "fromExerciseTemplateId": "Carioca_Quick_Step",
   "toExerciseTemplateId": "Monster_Walk"

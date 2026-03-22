@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": "Both are Bulgarian split squat variations with rear foot elevated, differing in equipment and stability (Smith machine vs suspension trainer)",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761547477,
   "fromExerciseTemplateId": "Smith_Single-Leg_Split_Squat",
   "toExerciseTemplateId": "Suspended_Split_Squat"

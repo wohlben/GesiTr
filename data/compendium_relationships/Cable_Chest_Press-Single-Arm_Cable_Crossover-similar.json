@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761512062,
   "fromExerciseTemplateId": "Cable_Chest_Press",
   "toExerciseTemplateId": "Single-Arm_Cable_Crossover"

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1760883050,
   "fromExerciseTemplateId": "Standing_Cable_Chest_Press",
   "toExerciseTemplateId": "Chain_Press"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": "Both incline push-up variations emphasize triceps; reverse grip uses supinated hands while close-grip uses pronated narrow hand placement",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Incline_Push-Up_Reverse_Grip",
   "toExerciseTemplateId": "Incline_Push-Up_Close-Grip"

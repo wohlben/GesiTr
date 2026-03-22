@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.6,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761545398,
   "fromExerciseTemplateId": "Seated_Triceps_Press",
   "toExerciseTemplateId": "Lying_Dumbbell_Tricep_Extension"

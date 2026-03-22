@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729933200,
   "fromExerciseTemplateId": "Heavy_Bag_Thrust",
   "toExerciseTemplateId": "Supine_Chest_Throw"

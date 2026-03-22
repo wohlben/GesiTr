@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": "Dumbbell version performed standing for unilateral work and different stabilization demands",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761543970,
   "fromExerciseTemplateId": "Reverse_Barbell_Preacher_Curls",
   "toExerciseTemplateId": "Standing_Dumbbell_Reverse_Curl"

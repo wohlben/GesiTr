@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.95,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "One-Arm_Dumbbell_Row",
   "toExerciseTemplateId": "One-Arm_Kettlebell_Row"

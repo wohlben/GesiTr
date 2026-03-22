@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Single_Leg_Push-off",
   "toExerciseTemplateId": "Step-up_with_Knee_Raise"

@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.8,
   "description": "Overhead Triceps is advanced partner-assisted PNF version; Tricep Side Stretch is simpler self-assisted cross-body stretch",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Tricep_Side_Stretch",
   "toExerciseTemplateId": "Overhead_Triceps"

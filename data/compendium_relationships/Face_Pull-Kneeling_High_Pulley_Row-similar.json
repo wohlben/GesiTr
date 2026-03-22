@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": "Both use high pulley cable pulling towards upper body; kneeling high pulley row emphasizes lats more while maintaining rear delt work",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Face_Pull",
   "toExerciseTemplateId": "Kneeling_High_Pulley_Row"

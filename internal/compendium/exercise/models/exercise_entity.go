@@ -1,6 +1,9 @@
 package models
 
-import "gesitr/internal/shared"
+import (
+	profilemodels "gesitr/internal/profile/models"
+	"gesitr/internal/shared"
+)
 
 // ExerciseEntity is the GORM entity for the exercises table
 type ExerciseEntity struct {
@@ -13,8 +16,9 @@ type ExerciseEntity struct {
 	Description         string
 	AuthorName          *string
 	AuthorUrl           *string
-	CreatedBy           string `gorm:"not null"`
-	Version             int    `gorm:"not null;default:0"`
+	CreatedBy           string                           `gorm:"not null"`
+	CreatedByProfile    *profilemodels.UserProfileEntity `gorm:"foreignKey:CreatedBy;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
+	Version             int                              `gorm:"not null;default:0"`
 	ParentExerciseID    *uint
 	TemplateID          string `gorm:"not null;uniqueIndex"`
 

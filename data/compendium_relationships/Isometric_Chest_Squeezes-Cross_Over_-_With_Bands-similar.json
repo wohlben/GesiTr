@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.65,
   "description": "Both involve bringing arms across chest to contract pectorals",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729954800,
   "fromExerciseTemplateId": "Isometric_Chest_Squeezes",
   "toExerciseTemplateId": "Cross_Over_-_With_Bands"

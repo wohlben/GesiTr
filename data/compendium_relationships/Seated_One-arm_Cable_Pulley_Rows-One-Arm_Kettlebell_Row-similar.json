@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Seated_One-arm_Cable_Pulley_Rows",
   "toExerciseTemplateId": "One-Arm_Kettlebell_Row"

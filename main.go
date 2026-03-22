@@ -19,6 +19,9 @@ import (
 	compRelationshipHandlers "gesitr/internal/compendium/exerciserelationship/handlers"
 	compRelationshipModels "gesitr/internal/compendium/exerciserelationship/models"
 	"gesitr/internal/database"
+	"gesitr/internal/profile"
+	profileHandlers "gesitr/internal/profile/handlers"
+	profileModels "gesitr/internal/profile/models"
 	userEquipmentHandlers "gesitr/internal/user/equipment/handlers"
 	userEquipmentModels "gesitr/internal/user/equipment/models"
 	userExerciseHandlers "gesitr/internal/user/exercise/handlers"
@@ -38,6 +41,7 @@ var staticFiles embed.FS
 
 func autoMigrate() {
 	database.DB.AutoMigrate(
+		&profileModels.UserProfileEntity{},
 		&compExerciseModels.ExerciseEntity{},
 		&compExerciseModels.ExerciseForce{},
 		&compExerciseModels.ExerciseMuscle{},
@@ -70,6 +74,9 @@ func autoMigrate() {
 func setupRoutes(r *gin.Engine) {
 	api := r.Group("/api")
 	api.Use(auth.UserID())
+	api.Use(profile.EnsureProfile())
+
+	api.GET("/profiles/:id", profileHandlers.GetProfile)
 
 	exercises := api.Group("/exercises")
 	{
@@ -124,6 +131,9 @@ func setupRoutes(r *gin.Engine) {
 	}
 
 	user := api.Group("/user")
+
+	user.GET("/profile", profileHandlers.GetMyProfile)
+	user.PUT("/profile", profileHandlers.UpdateMyProfile)
 
 	userExercises := user.Group("/exercises")
 	{

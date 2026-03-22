@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1760883050,
   "fromExerciseTemplateId": "Dumbbell_Squat",
   "toExerciseTemplateId": "Dumbbell_Squat_To_A_Bench"

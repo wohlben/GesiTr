@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"time"
 
+	"gesitr/internal/auth"
 	"gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
 	"gesitr/internal/shared"
@@ -95,6 +96,7 @@ func CreateExercise(c *gin.Context) {
 	}
 
 	entity := models.ExerciseFromDTO(dto)
+	entity.CreatedBy = auth.GetUserID(c)
 	if err := database.DB.Create(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -149,6 +151,7 @@ func UpdateExercise(c *gin.Context) {
 
 	entity := models.ExerciseFromDTO(dto)
 	entity.ID = existing.ID
+	entity.CreatedBy = existing.CreatedBy
 	entity.Version = existing.Version + 1
 
 	// Stash child records and clear from entity so Save doesn't try to upsert them

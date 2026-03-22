@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"testing"
 
+	"gesitr/internal/database"
 	"gesitr/internal/user/equipment/models"
 )
 
@@ -24,13 +25,11 @@ func TestListUserEquipment(t *testing.T) {
 		}
 	})
 
-	// Seed data
+	// Seed data: one via handler (owner set from auth = alice), one directly for bob
 	doJSON(r, "POST", "/api/user/equipment", map[string]any{
-		"owner": "alice", "compendiumEquipmentId": "barbell", "compendiumVersion": 1,
+		"compendiumEquipmentId": "barbell", "compendiumVersion": 1,
 	})
-	doJSON(r, "POST", "/api/user/equipment", map[string]any{
-		"owner": "bob", "compendiumEquipmentId": "dumbbell", "compendiumVersion": 2,
-	})
+	database.DB.Create(&models.UserEquipmentEntity{Owner: "bob", CompendiumEquipmentID: "dumbbell", CompendiumVersion: 2})
 
 	t.Run("list all", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/user/equipment", nil)

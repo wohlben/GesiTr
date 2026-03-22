@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761494891,
   "fromExerciseTemplateId": "Crunches",
   "toExerciseTemplateId": "Frog_Sit-Ups"

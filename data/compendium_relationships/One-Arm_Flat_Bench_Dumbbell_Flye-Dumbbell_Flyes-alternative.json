@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729973000,
   "fromExerciseTemplateId": "One-Arm_Flat_Bench_Dumbbell_Flye",
   "toExerciseTemplateId": "Dumbbell_Flyes"

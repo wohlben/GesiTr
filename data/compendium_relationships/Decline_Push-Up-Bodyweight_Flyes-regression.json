@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.55,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761476339,
   "fromExerciseTemplateId": "Decline_Push-Up",
   "toExerciseTemplateId": "Bodyweight_Flyes"

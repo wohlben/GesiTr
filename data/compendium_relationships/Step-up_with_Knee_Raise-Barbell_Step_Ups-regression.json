@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Step-up_with_Knee_Raise",
   "toExerciseTemplateId": "Barbell_Step_Ups"

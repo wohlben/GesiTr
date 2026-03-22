@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761551546,
   "fromExerciseTemplateId": "Weighted_Squat",
   "toExerciseTemplateId": "Hack_Squat"

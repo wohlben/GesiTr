@@ -14,12 +14,14 @@ import (
 	compGroup "gesitr/internal/compendium/exercisegroup/models"
 	compRelationship "gesitr/internal/compendium/exerciserelationship/models"
 	"gesitr/internal/database"
+	profileModels "gesitr/internal/profile/models"
 	"gesitr/internal/shared"
 )
 
 func main() {
 	database.Init()
 	database.DB.AutoMigrate(
+		&profileModels.UserProfileEntity{},
 		&compExercise.ExerciseEntity{},
 		&compExercise.ExerciseForce{},
 		&compExercise.ExerciseMuscle{},
@@ -41,6 +43,7 @@ func main() {
 		name string
 		fn   func() error
 	}{
+		{"Profile", seedProfile},
 		{"Equipment", seedEquipment},
 		{"Fulfillments", seedFulfillments},
 		{"Exercises", seedExercises},
@@ -81,6 +84,20 @@ func unixToTime(ts *int64) time.Time {
 	return time.Unix(*ts, 0)
 }
 
+// --- Profile ---
+
+func seedProfile() error {
+	profile := profileModels.UserProfileEntity{
+		ID:   "claude",
+		Name: "Claude",
+	}
+	if err := database.DB.Create(&profile).Error; err != nil {
+		return fmt.Errorf("insert profile: %w", err)
+	}
+	log.Printf("Profile: claude")
+	return nil
+}
+
 // --- Equipment ---
 
 type jsonEquipment struct {
@@ -110,7 +127,7 @@ func seedEquipment() error {
 			Category:    compEquipment.EquipmentCategory(j.Category),
 			ImageUrl:    j.ImageUrl,
 			TemplateID:  j.TemplateID,
-			CreatedBy:   "system",
+			CreatedBy:   "claude",
 		})
 	}
 	if err := database.DB.CreateInBatches(entities, 100).Error; err != nil {

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Dumbbell_One-Arm_Triceps_Extension",
   "toExerciseTemplateId": "One_Arm_Pronated_Dumbbell_Triceps_Extension"

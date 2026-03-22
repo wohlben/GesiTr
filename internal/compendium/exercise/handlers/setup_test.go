@@ -8,8 +8,10 @@ import (
 	"os"
 	"testing"
 
+	"gesitr/internal/auth"
 	"gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
+	profilemodels "gesitr/internal/profile/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
@@ -24,11 +26,13 @@ func TestMain(m *testing.M) {
 
 func setupTestDB(t *testing.T) {
 	t.Helper()
-	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent)})
+	t.Setenv("AUTH_FALLBACK_USER", "testuser")
+	db, err := gorm.Open(sqlite.Open("file::memory:?_foreign_keys=on"), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent)})
 	if err != nil {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
+		&profilemodels.UserProfileEntity{},
 		&models.ExerciseEntity{},
 		&models.ExerciseForce{},
 		&models.ExerciseMuscle{},
@@ -39,12 +43,15 @@ func setupTestDB(t *testing.T) {
 		&models.ExerciseEquipment{},
 		&models.ExerciseHistoryEntity{},
 	)
+	db.Create(&profilemodels.UserProfileEntity{ID: "testuser", Name: "testuser"})
+	db.Create(&profilemodels.UserProfileEntity{ID: "system", Name: "system"})
 	database.DB = db
 }
 
 func newRouter() *gin.Engine {
 	r := gin.New()
 	api := r.Group("/api")
+	api.Use(auth.UserID())
 
 	exercises := api.Group("/exercises")
 	exercises.GET("", ListExercises)

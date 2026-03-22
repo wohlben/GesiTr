@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1760883050,
   "fromExerciseTemplateId": "Barbell_Bench_Press_-_Medium_Grip",
   "toExerciseTemplateId": "Bench_Press_with_Chains"

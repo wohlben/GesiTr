@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Extended_Range_One-Arm_Kettlebell_Floor_Press",
   "toExerciseTemplateId": "Leg-Over_Floor_Press"

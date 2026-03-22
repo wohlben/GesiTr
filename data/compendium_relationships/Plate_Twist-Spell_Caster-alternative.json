@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.65,
   "description": "Both are rotational core exercises targeting abs with similar twisting mechanics. Spell Caster is standing with full-body rotation while Plate Twist is seated.",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730016000,
   "fromExerciseTemplateId": "Plate_Twist",
   "toExerciseTemplateId": "Spell_Caster"

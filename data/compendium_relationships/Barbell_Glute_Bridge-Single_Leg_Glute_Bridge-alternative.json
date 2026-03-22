@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730000000,
   "fromExerciseTemplateId": "Barbell_Glute_Bridge",
   "toExerciseTemplateId": "Single_Leg_Glute_Bridge"

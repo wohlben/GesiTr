@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729931400,
   "fromExerciseTemplateId": "Close-Grip_Front_Lat_Pulldown",
   "toExerciseTemplateId": "Wide-Grip_Lat_Pulldown"

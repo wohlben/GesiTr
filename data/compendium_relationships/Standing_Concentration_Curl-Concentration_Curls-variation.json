@@ -3,7 +3,7 @@
   "relationshipType": "variation",
   "strength": 0.85,
   "description": "Standing variation of concentration curl with same isolation focus",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729933200,
   "fromExerciseTemplateId": "Standing_Concentration_Curl",
   "toExerciseTemplateId": "Concentration_Curls"

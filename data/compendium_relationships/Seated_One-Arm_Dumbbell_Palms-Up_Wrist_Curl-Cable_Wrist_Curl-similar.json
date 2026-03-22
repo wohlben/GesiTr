@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761479701,
   "fromExerciseTemplateId": "Seated_One-Arm_Dumbbell_Palms-Up_Wrist_Curl",
   "toExerciseTemplateId": "Cable_Wrist_Curl"

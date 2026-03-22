@@ -3,7 +3,7 @@
   "relationshipType": "variation",
   "strength": 0.6,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Flutter_Kicks",
   "toExerciseTemplateId": "Rear_Leg_Raises"

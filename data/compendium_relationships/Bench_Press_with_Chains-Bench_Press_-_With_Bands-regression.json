@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.65,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761472847,
   "fromExerciseTemplateId": "Bench_Press_with_Chains",
   "toExerciseTemplateId": "Bench_Press_-_With_Bands"

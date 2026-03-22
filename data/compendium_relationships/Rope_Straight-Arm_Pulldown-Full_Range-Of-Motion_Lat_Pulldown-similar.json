@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729931400,
   "fromExerciseTemplateId": "Rope_Straight-Arm_Pulldown",
   "toExerciseTemplateId": "Full_Range-Of-Motion_Lat_Pulldown"

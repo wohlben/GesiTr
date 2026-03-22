@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": "Progress from basic sit-up by adding weight and overhead press component",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729980000,
   "fromExerciseTemplateId": "Sit-Up",
   "toExerciseTemplateId": "Otis-Up"

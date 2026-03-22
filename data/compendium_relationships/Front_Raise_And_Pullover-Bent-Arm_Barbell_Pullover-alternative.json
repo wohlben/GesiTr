@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Front_Raise_And_Pullover",
   "toExerciseTemplateId": "Bent-Arm_Barbell_Pullover"

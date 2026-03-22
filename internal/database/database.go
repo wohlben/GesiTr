@@ -14,7 +14,7 @@ var DB *gorm.DB
 
 func InitDB(path string) error {
 	var err error
-	DB, err = gorm.Open(sqlite.Open(path), &gorm.Config{
+	DB, err = gorm.Open(sqlite.Open(path+"?_foreign_keys=on"), &gorm.Config{
 		Logger: gormlog.New(log.Default(), gormlog.Config{
 			IgnoreRecordNotFoundError: true,
 		}),

@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761481210,
   "fromExerciseTemplateId": "Chair_Squat",
   "toExerciseTemplateId": "Barbell_Squat"

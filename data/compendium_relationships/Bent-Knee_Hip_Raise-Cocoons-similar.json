@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.6,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730009600,
   "fromExerciseTemplateId": "Bent-Knee_Hip_Raise",
   "toExerciseTemplateId": "Cocoons"

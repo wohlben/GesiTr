@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"time"
 
+	"gesitr/internal/auth"
 	"gesitr/internal/compendium/equipment/models"
 	"gesitr/internal/database"
 	"gesitr/internal/shared"
@@ -62,6 +63,7 @@ func CreateEquipment(c *gin.Context) {
 	}
 
 	entity := models.EquipmentFromDTO(dto)
+	entity.CreatedBy = auth.GetUserID(c)
 	if err := database.DB.Create(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -109,6 +111,7 @@ func UpdateEquipment(c *gin.Context) {
 
 	entity := models.EquipmentFromDTO(dto)
 	entity.ID = existing.ID
+	entity.CreatedBy = existing.CreatedBy
 	entity.Version = existing.Version + 1
 
 	err := database.DB.Transaction(func(tx *gorm.DB) error {

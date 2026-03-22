@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761478260,
   "fromExerciseTemplateId": "Cable_Crossover",
   "toExerciseTemplateId": "Butterfly"

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761463810,
   "fromExerciseTemplateId": "Keg_Load",
   "toExerciseTemplateId": "Atlas_Stones"

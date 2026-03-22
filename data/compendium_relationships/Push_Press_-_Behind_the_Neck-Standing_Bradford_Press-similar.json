@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Push_Press_-_Behind_the_Neck",
   "toExerciseTemplateId": "Standing_Bradford_Press"

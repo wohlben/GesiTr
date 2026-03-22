@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761464222,
   "fromExerciseTemplateId": "Balance_Board",
   "toExerciseTemplateId": "Calf_Raise_On_A_Dumbbell"

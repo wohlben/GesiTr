@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729931400,
   "fromExerciseTemplateId": "Close-Grip_Front_Lat_Pulldown",
   "toExerciseTemplateId": "One_Arm_Lat_Pulldown"

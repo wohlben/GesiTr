@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Chair_Leg_Extended_Stretch",
   "toExerciseTemplateId": "All_Fours_Quad_Stretch"

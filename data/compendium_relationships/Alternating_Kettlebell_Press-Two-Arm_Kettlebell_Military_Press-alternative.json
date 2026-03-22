@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.83,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761461533,
   "fromExerciseTemplateId": "Alternating_Kettlebell_Press",
   "toExerciseTemplateId": "Two-Arm_Kettlebell_Military_Press"

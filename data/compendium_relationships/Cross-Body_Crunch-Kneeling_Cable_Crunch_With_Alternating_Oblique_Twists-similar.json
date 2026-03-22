@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Cross-Body_Crunch",
   "toExerciseTemplateId": "Kneeling_Cable_Crunch_With_Alternating_Oblique_Twists"

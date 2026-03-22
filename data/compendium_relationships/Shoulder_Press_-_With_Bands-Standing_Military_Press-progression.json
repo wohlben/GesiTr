@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761545420,
   "fromExerciseTemplateId": "Shoulder_Press_-_With_Bands",
   "toExerciseTemplateId": "Standing_Military_Press"

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": null,
   "description": "Both exercises are performed in a prone position while holding the foot to stretch the hip flexors and quadriceps simultaneously, with Intermediate Hip Flexor and Quad Stretch using a band for assistance",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761024000,
   "fromExerciseTemplateId": "Intermediate_Hip_Flexor_and_Quad_Stretch",
   "toExerciseTemplateId": "One_Half_Locust"

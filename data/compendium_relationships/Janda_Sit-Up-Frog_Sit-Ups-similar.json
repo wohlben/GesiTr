@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761494891,
   "fromExerciseTemplateId": "Janda_Sit-Up",
   "toExerciseTemplateId": "Frog_Sit-Ups"

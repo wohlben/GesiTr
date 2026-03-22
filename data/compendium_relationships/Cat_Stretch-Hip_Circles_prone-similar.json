@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": null,
   "description": "Both exercises utilize the same quadruped position (on hands and knees) as their foundation, making them complementary mobility exercises that can be performed in sequence",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761024000,
   "fromExerciseTemplateId": "Cat_Stretch",
   "toExerciseTemplateId": "Hip_Circles_prone"

@@ -1,5 +1,11 @@
 type Filters = Record<string, string | number | undefined>;
 
+export const profileKeys = {
+  all: () => ['profile'] as const,
+  mine: () => [...profileKeys.all(), 'mine'] as const,
+  public: (id: string) => [...profileKeys.all(), 'public', id] as const,
+};
+
 export const exerciseKeys = {
   all: () => ['exercises'] as const,
   list: (filters: Filters) => [...exerciseKeys.all(), 'list', filters] as const,

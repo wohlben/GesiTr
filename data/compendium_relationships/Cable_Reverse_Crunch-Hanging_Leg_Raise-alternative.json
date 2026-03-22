@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761479425,
   "fromExerciseTemplateId": "Cable_Reverse_Crunch",
   "toExerciseTemplateId": "Hanging_Leg_Raise"

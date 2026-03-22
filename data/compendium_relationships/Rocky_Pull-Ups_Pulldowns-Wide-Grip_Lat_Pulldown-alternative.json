@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Rocky_Pull-Ups_Pulldowns",
   "toExerciseTemplateId": "Wide-Grip_Lat_Pulldown"

@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729933200,
   "fromExerciseTemplateId": "Plyo_Push-up",
   "toExerciseTemplateId": "Heavy_Bag_Thrust"

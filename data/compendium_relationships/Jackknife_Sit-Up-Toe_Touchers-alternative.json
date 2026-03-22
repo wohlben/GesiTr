@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730016000,
   "fromExerciseTemplateId": "Jackknife_Sit-Up",
   "toExerciseTemplateId": "Toe_Touchers"

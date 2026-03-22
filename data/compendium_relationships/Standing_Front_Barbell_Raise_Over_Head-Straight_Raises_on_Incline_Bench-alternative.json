@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Standing_Front_Barbell_Raise_Over_Head",
   "toExerciseTemplateId": "Straight_Raises_on_Incline_Bench"

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { UserProfile, UpdateProfileRequest } from '$generated/profile';
 import {
   UserExercise,
   UserEquipment,
@@ -18,6 +19,19 @@ import {
 @Injectable({ providedIn: 'root' })
 export class UserApiClient {
   private http = inject(HttpClient);
+
+  // Profile
+  fetchProfile(): Promise<UserProfile> {
+    return firstValueFrom(this.http.get<UserProfile>('/api/user/profile'));
+  }
+
+  updateProfile(data: UpdateProfileRequest): Promise<UserProfile> {
+    return firstValueFrom(this.http.put<UserProfile>('/api/user/profile', data));
+  }
+
+  fetchPublicProfile(id: string): Promise<UserProfile> {
+    return firstValueFrom(this.http.get<UserProfile>(`/api/profiles/${id}`));
+  }
 
   fetchUserExercises(): Promise<UserExercise[]> {
     return firstValueFrom(this.http.get<UserExercise[]>('/api/user/exercises'));

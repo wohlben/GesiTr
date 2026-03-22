@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761483562,
   "fromExerciseTemplateId": "Dead_Bug",
   "toExerciseTemplateId": "Scissor_Kick"

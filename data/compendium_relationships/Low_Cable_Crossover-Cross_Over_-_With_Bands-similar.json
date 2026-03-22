@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730025600,
   "fromExerciseTemplateId": "Low_Cable_Crossover",
   "toExerciseTemplateId": "Cross_Over_-_With_Bands"

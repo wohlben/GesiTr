@@ -3,7 +3,7 @@
   "relationshipType": "variant",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730000000,
   "fromExerciseTemplateId": "Reverse_Band_Sumo_Deadlift",
   "toExerciseTemplateId": "Reverse_Band_Deadlift"

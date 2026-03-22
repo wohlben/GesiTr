@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Standing_Palm-In_One-Arm_Dumbbell_Press",
   "toExerciseTemplateId": "One-Arm_Kettlebell_Para_Press"

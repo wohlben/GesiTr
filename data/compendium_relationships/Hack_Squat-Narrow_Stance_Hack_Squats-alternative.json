@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.95,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729976400,
   "fromExerciseTemplateId": "Hack_Squat",
   "toExerciseTemplateId": "Narrow_Stance_Hack_Squats"

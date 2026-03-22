@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.98,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Alternating_Hang_Clean",
   "toExerciseTemplateId": "Double_Kettlebell_Alternating_Hang_Clean"

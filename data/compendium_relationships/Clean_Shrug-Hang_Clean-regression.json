@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761481995,
   "fromExerciseTemplateId": "Clean_Shrug",
   "toExerciseTemplateId": "Hang_Clean"

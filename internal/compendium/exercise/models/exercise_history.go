@@ -5,16 +5,18 @@ import (
 	"slices"
 	"time"
 
+	profilemodels "gesitr/internal/profile/models"
 	"gesitr/internal/shared"
 )
 
 type ExerciseHistoryEntity struct {
-	ID         uint      `gorm:"primaryKey;autoIncrement"`
-	ExerciseID uint      `gorm:"not null;index:idx_exercise_history"`
-	Version    int       `gorm:"not null"`
-	Snapshot   string    `gorm:"type:text;not null"`
-	ChangedAt  time.Time `gorm:"not null"`
-	ChangedBy  string    `gorm:"not null"`
+	ID               uint                             `gorm:"primaryKey;autoIncrement"`
+	ExerciseID       uint                             `gorm:"not null;index:idx_exercise_history"`
+	Version          int                              `gorm:"not null"`
+	Snapshot         string                           `gorm:"type:text;not null"`
+	ChangedAt        time.Time                        `gorm:"not null"`
+	ChangedBy        string                           `gorm:"not null"`
+	ChangedByProfile *profilemodels.UserProfileEntity `gorm:"foreignKey:ChangedBy;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
 }
 
 func (ExerciseHistoryEntity) TableName() string { return "exercise_history" }

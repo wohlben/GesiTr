@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": "Both are supine glute stretches targeting similar muscle groups; Lying Glute requires partner assistance",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Ankle_On_The_Knee",
   "toExerciseTemplateId": "Lying_Glute"

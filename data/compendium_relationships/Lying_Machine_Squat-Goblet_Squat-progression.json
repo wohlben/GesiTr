@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": "Goblet Squat requires more stability and core engagement than Lying Machine Squat, as you must hold weight and balance yourself. Both target the same primary muscles (quads, glutes, hamstrings), making Goblet Squat a natural progression from the machine-assisted version.",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730014000,
   "fromExerciseTemplateId": "Lying_Machine_Squat",
   "toExerciseTemplateId": "Goblet_Squat"

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Stiff-Legged_Dumbbell_Deadlift",
   "toExerciseTemplateId": "Kettlebell_One-Legged_Deadlift"

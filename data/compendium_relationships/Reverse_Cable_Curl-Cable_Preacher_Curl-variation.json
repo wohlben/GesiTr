@@ -3,7 +3,7 @@
   "relationshipType": "variation",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761543931,
   "fromExerciseTemplateId": "Reverse_Cable_Curl",
   "toExerciseTemplateId": "Cable_Preacher_Curl"

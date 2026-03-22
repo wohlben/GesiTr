@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.6,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761499179,
   "fromExerciseTemplateId": "Incline_Dumbbell_Press",
   "toExerciseTemplateId": "Incline_Dumbbell_Flyes_-_With_A_Twist"

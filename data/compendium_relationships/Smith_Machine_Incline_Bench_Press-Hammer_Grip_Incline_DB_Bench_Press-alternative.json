@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761496103,
   "fromExerciseTemplateId": "Smith_Machine_Incline_Bench_Press",
   "toExerciseTemplateId": "Hammer_Grip_Incline_DB_Bench_Press"

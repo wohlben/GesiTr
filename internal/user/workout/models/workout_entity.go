@@ -1,13 +1,17 @@
 package models
 
-import "gesitr/internal/shared"
+import (
+	profilemodels "gesitr/internal/profile/models"
+	"gesitr/internal/shared"
+)
 
 type WorkoutEntity struct {
 	shared.BaseModel
-	Owner    string `gorm:"not null;index"`
-	Name     string `gorm:"not null"`
-	Notes    *string
-	Sections []WorkoutSectionEntity `gorm:"foreignKey:WorkoutID"`
+	Owner        string                           `gorm:"not null;index"`
+	OwnerProfile *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
+	Name         string                           `gorm:"not null"`
+	Notes        *string
+	Sections     []WorkoutSectionEntity `gorm:"foreignKey:WorkoutID"`
 }
 
 func (WorkoutEntity) TableName() string { return "workouts" }

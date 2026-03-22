@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "90_90_Hamstring",
   "toExerciseTemplateId": "Leg-Up_Hamstring_Stretch"

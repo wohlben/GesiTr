@@ -1,12 +1,16 @@
 package models
 
-import "gesitr/internal/shared"
+import (
+	profilemodels "gesitr/internal/profile/models"
+	"gesitr/internal/shared"
+)
 
 type FulfillmentEntity struct {
 	shared.BaseModel
-	EquipmentTemplateID         string `gorm:"not null;uniqueIndex:idx_fulfillment_pair"`
-	FulfillsEquipmentTemplateID string `gorm:"not null;uniqueIndex:idx_fulfillment_pair"`
-	CreatedBy                   string `gorm:"not null"`
+	EquipmentTemplateID         string                           `gorm:"not null;uniqueIndex:idx_fulfillment_pair"`
+	FulfillsEquipmentTemplateID string                           `gorm:"not null;uniqueIndex:idx_fulfillment_pair"`
+	CreatedBy                   string                           `gorm:"not null"`
+	CreatedByProfile            *profilemodels.UserProfileEntity `gorm:"foreignKey:CreatedBy;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
 }
 
 func (FulfillmentEntity) TableName() string { return "fulfillments" }

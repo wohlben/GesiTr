@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761499120,
   "fromExerciseTemplateId": "Incline_Push-Up_Wide",
   "toExerciseTemplateId": "Push-Up_Wide"

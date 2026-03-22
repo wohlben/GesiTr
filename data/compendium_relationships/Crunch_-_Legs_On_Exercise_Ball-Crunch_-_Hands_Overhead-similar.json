@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730027200,
   "fromExerciseTemplateId": "Crunch_-_Legs_On_Exercise_Ball",
   "toExerciseTemplateId": "Crunch_-_Hands_Overhead"

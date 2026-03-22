@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761496140,
   "fromExerciseTemplateId": "Hang_Clean_-_Below_the_Knees",
   "toExerciseTemplateId": "Clean_from_Blocks"

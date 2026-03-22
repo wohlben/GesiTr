@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730000000,
   "fromExerciseTemplateId": "Physioball_Hip_Bridge",
   "toExerciseTemplateId": "Barbell_Glute_Bridge"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": "Complementary ankle mobility stretches targeting opposite muscle groups - posterior tibialis (foot eversion) vs peroneals (foot inversion)",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Posterior_Tibialis_Stretch",
   "toExerciseTemplateId": "Peroneals_Stretch"

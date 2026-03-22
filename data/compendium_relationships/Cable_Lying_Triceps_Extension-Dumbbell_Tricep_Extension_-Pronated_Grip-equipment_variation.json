@@ -3,7 +3,7 @@
   "relationshipType": "equipment_variation",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729951200,
   "fromExerciseTemplateId": "Cable_Lying_Triceps_Extension",
   "toExerciseTemplateId": "Dumbbell_Tricep_Extension_-Pronated_Grip"

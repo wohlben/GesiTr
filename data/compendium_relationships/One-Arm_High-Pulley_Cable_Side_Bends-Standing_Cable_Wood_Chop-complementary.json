@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730000000,
   "fromExerciseTemplateId": "One-Arm_High-Pulley_Cable_Side_Bends",
   "toExerciseTemplateId": "Standing_Cable_Wood_Chop"

@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"gesitr/internal/auth"
 	"gesitr/internal/compendium/exerciserelationship/models"
 	"gesitr/internal/database"
 
@@ -43,6 +44,7 @@ func CreateExerciseRelationship(c *gin.Context) {
 	}
 
 	entity := models.ExerciseRelationshipFromDTO(dto)
+	entity.CreatedBy = auth.GetUserID(c)
 	if err := database.DB.Create(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

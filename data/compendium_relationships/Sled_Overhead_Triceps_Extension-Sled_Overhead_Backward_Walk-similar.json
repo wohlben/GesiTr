@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730016000,
   "fromExerciseTemplateId": "Sled_Overhead_Triceps_Extension",
   "toExerciseTemplateId": "Sled_Overhead_Backward_Walk"

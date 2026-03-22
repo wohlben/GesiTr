@@ -3,7 +3,7 @@
   "relationshipType": "superset_with",
   "strength": null,
   "description": "These exercises complement each other as One Half Locust extends the spine and stretches the front body while Cat Stretch flexes the spine and stretches the back, creating a balanced spinal mobility routine",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761024000,
   "fromExerciseTemplateId": "One_Half_Locust",
   "toExerciseTemplateId": "Cat_Stretch"

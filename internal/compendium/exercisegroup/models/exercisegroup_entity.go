@@ -1,13 +1,17 @@
 package models
 
-import "gesitr/internal/shared"
+import (
+	profilemodels "gesitr/internal/profile/models"
+	"gesitr/internal/shared"
+)
 
 type ExerciseGroupEntity struct {
 	shared.BaseModel
-	TemplateID  string `gorm:"not null;uniqueIndex"`
-	Name        string `gorm:"not null"`
-	Description *string
-	CreatedBy   string `gorm:"not null"`
+	TemplateID       string `gorm:"not null;uniqueIndex"`
+	Name             string `gorm:"not null"`
+	Description      *string
+	CreatedBy        string                           `gorm:"not null"`
+	CreatedByProfile *profilemodels.UserProfileEntity `gorm:"foreignKey:CreatedBy;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
 }
 
 func (ExerciseGroupEntity) TableName() string { return "exercise_groups" }
@@ -34,9 +38,10 @@ func ExerciseGroupFromDTO(dto ExerciseGroup) ExerciseGroupEntity {
 
 type ExerciseGroupMemberEntity struct {
 	shared.BaseModel
-	GroupTemplateID    string `gorm:"not null;uniqueIndex:idx_group_member"`
-	ExerciseTemplateID string `gorm:"not null;uniqueIndex:idx_group_member"`
-	AddedBy            string `gorm:"not null"`
+	GroupTemplateID    string                           `gorm:"not null;uniqueIndex:idx_group_member"`
+	ExerciseTemplateID string                           `gorm:"not null;uniqueIndex:idx_group_member"`
+	AddedBy            string                           `gorm:"not null"`
+	AddedByProfile     *profilemodels.UserProfileEntity `gorm:"foreignKey:AddedBy;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
 }
 
 func (ExerciseGroupMemberEntity) TableName() string { return "exercise_group_members" }

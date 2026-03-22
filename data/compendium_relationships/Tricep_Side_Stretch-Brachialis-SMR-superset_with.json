@@ -3,7 +3,7 @@
   "relationshipType": "superset_with",
   "strength": 0.8,
   "description": "Pair triceps stretch with biceps/brachialis release for balanced upper arm flexibility",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Tricep_Side_Stretch",
   "toExerciseTemplateId": "Brachialis-SMR"

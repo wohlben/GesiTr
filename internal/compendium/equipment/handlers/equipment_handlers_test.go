@@ -31,11 +31,11 @@ func TestListEquipment(t *testing.T) {
 	// Seed data for filter tests
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "barbell", "displayName": "Barbell", "description": "A bar",
-		"category": "free_weights", "templateId": "barbell", "createdBy": "system",
+		"category": "free_weights", "templateId": "barbell", "createdBy": "testuser",
 	})
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "bench", "displayName": "Flat Bench", "description": "A bench",
-		"category": "benches", "templateId": "bench", "createdBy": "system",
+		"category": "benches", "templateId": "bench", "createdBy": "testuser",
 	})
 
 	t.Run("list all", func(t *testing.T) {
@@ -98,7 +98,7 @@ func TestCreateEquipment(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/equipment", map[string]any{
 			"name": "dumbbell", "displayName": "Dumbbell", "description": "A weight",
-			"category": "free_weights", "templateId": "dumbbell", "createdBy": "system",
+			"category": "free_weights", "templateId": "dumbbell", "createdBy": "testuser",
 		})
 		if w.Code != http.StatusCreated {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
@@ -136,7 +136,7 @@ func TestGetEquipment(t *testing.T) {
 	// Create one
 	w := doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "kettlebell", "displayName": "Kettlebell", "description": "",
-		"category": "free_weights", "templateId": "kb", "createdBy": "system",
+		"category": "free_weights", "templateId": "kb", "createdBy": "testuser",
 	})
 	var created models.Equipment
 	json.Unmarshal(w.Body.Bytes(), &created)
@@ -167,13 +167,13 @@ func TestUpdateEquipment(t *testing.T) {
 
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "band", "displayName": "Band", "description": "",
-		"category": "accessories", "templateId": "band", "createdBy": "system",
+		"category": "accessories", "templateId": "band", "createdBy": "testuser",
 	})
 
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/equipment/1", map[string]any{
 			"name": "resistance-band", "displayName": "Resistance Band", "description": "elastic",
-			"category": "accessories", "templateId": "band", "createdBy": "system",
+			"category": "accessories", "templateId": "band", "createdBy": "testuser",
 		})
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
@@ -188,7 +188,7 @@ func TestUpdateEquipment(t *testing.T) {
 	t.Run("no version bump when unchanged", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/equipment/1", map[string]any{
 			"name": "resistance-band", "displayName": "Resistance Band", "description": "elastic",
-			"category": "accessories", "templateId": "band", "createdBy": "system",
+			"category": "accessories", "templateId": "band", "createdBy": "testuser",
 		})
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d", w.Code)
@@ -211,7 +211,7 @@ func TestUpdateEquipment(t *testing.T) {
 	t.Run("successive updates accumulate history", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/equipment/1", map[string]any{
 			"name": "super-band", "displayName": "Super Band", "description": "v2",
-			"category": "accessories", "templateId": "band", "createdBy": "system",
+			"category": "accessories", "templateId": "band", "createdBy": "testuser",
 		})
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d", w.Code)
@@ -249,12 +249,12 @@ func TestUpdateEquipment(t *testing.T) {
 		// Create a second equipment
 		doJSON(r, "POST", "/api/equipment", map[string]any{
 			"name": "other", "displayName": "Other", "description": "",
-			"category": "other", "templateId": "other-tid", "createdBy": "system",
+			"category": "other", "templateId": "other-tid", "createdBy": "testuser",
 		})
 		// Update second equipment with first's templateId -> unique violation on Save
 		w := doJSON(r, "PUT", "/api/equipment/2", map[string]any{
 			"name": "conflict", "displayName": "Conflict", "description": "",
-			"category": "other", "templateId": "band", "createdBy": "system",
+			"category": "other", "templateId": "band", "createdBy": "testuser",
 		})
 		if w.Code != http.StatusInternalServerError {
 			t.Errorf("expected 500 for unique violation, got %d", w.Code)
@@ -280,11 +280,11 @@ func TestListEquipmentVersions(t *testing.T) {
 	// Create equipment (v0) and update it (v1)
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "plate", "displayName": "Plate", "description": "A weight plate",
-		"category": "free_weights", "templateId": "plate", "createdBy": "system",
+		"category": "free_weights", "templateId": "plate", "createdBy": "testuser",
 	})
 	doJSON(r, "PUT", "/api/equipment/1", map[string]any{
 		"name": "bumper-plate", "displayName": "Bumper Plate", "description": "Rubber coated",
-		"category": "free_weights", "templateId": "plate", "createdBy": "system",
+		"category": "free_weights", "templateId": "plate", "createdBy": "testuser",
 	})
 
 	t.Run("returns all versions ordered", func(t *testing.T) {
@@ -343,11 +343,11 @@ func TestGetEquipmentVersion(t *testing.T) {
 	// Create equipment (v0) and update it (v1)
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "plate", "displayName": "Plate", "description": "A weight plate",
-		"category": "free_weights", "templateId": "plate", "createdBy": "system",
+		"category": "free_weights", "templateId": "plate", "createdBy": "testuser",
 	})
 	doJSON(r, "PUT", "/api/equipment/1", map[string]any{
 		"name": "bumper-plate", "displayName": "Bumper Plate", "description": "Rubber coated",
-		"category": "free_weights", "templateId": "plate", "createdBy": "system",
+		"category": "free_weights", "templateId": "plate", "createdBy": "testuser",
 	})
 
 	t.Run("returns specific version", func(t *testing.T) {
@@ -415,7 +415,7 @@ func TestDeleteEquipment(t *testing.T) {
 
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "rope", "displayName": "Rope", "description": "",
-		"category": "accessories", "templateId": "rope", "createdBy": "system",
+		"category": "accessories", "templateId": "rope", "createdBy": "testuser",
 	})
 
 	t.Run("success", func(t *testing.T) {

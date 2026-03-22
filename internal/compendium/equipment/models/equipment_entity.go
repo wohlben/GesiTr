@@ -1,17 +1,21 @@
 package models
 
-import "gesitr/internal/shared"
+import (
+	profilemodels "gesitr/internal/profile/models"
+	"gesitr/internal/shared"
+)
 
 type EquipmentEntity struct {
 	shared.BaseModel
-	Name        string `gorm:"not null"`
-	DisplayName string `gorm:"not null"`
-	Description string
-	Category    EquipmentCategory `gorm:"not null"`
-	ImageUrl    *string
-	TemplateID  string `gorm:"not null;uniqueIndex"`
-	CreatedBy   string `gorm:"not null"`
-	Version     int    `gorm:"not null;default:0"`
+	Name             string `gorm:"not null"`
+	DisplayName      string `gorm:"not null"`
+	Description      string
+	Category         EquipmentCategory `gorm:"not null"`
+	ImageUrl         *string
+	TemplateID       string                           `gorm:"not null;uniqueIndex"`
+	CreatedBy        string                           `gorm:"not null"`
+	CreatedByProfile *profilemodels.UserProfileEntity `gorm:"foreignKey:CreatedBy;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
+	Version          int                              `gorm:"not null;default:0"`
 }
 
 func (EquipmentEntity) TableName() string { return "equipment" }

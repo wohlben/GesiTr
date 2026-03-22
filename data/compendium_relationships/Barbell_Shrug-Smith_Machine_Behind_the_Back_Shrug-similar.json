@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Barbell_Shrug",
   "toExerciseTemplateId": "Smith_Machine_Behind_the_Back_Shrug"

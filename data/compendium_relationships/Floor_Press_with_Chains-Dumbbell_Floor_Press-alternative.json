@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.65,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761472847,
   "fromExerciseTemplateId": "Floor_Press_with_Chains",
   "toExerciseTemplateId": "Dumbbell_Floor_Press"

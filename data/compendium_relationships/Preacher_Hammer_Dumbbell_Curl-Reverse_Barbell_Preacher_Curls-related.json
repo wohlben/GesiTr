@@ -3,7 +3,7 @@
   "relationshipType": "related",
   "strength": 0.7,
   "description": "Barbell version with pronated grip on preacher bench",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761543970,
   "fromExerciseTemplateId": "Preacher_Hammer_Dumbbell_Curl",
   "toExerciseTemplateId": "Reverse_Barbell_Preacher_Curls"

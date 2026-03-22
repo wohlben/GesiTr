@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": "Progression from bodyweight isometric neck training to weighted dynamic neck extension with plate resistance, adding external load and increased difficulty.",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761509530,
   "fromExerciseTemplateId": "Isometric_Neck_Exercise_-_Front_And_Back",
   "toExerciseTemplateId": "Lying_Face_Down_Plate_Neck_Resistance"

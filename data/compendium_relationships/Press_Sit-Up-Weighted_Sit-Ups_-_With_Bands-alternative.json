@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": "Both are weighted sit-up variations on bench. Press Sit-Up adds overhead barbell press (advanced), while Weighted Sit-Ups use resistance bands for resistance (intermediate)",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Press_Sit-Up",
   "toExerciseTemplateId": "Weighted_Sit-Ups_-_With_Bands"

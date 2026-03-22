@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761499120,
   "fromExerciseTemplateId": "Push-Up_Wide",
   "toExerciseTemplateId": "Incline_Push-Up_Wide"

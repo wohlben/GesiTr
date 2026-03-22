@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": null,
   "description": "Both exercises create spinal flexion to decompress and stretch the lower back and glutes, using different positions but achieving similar therapeutic effects",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761024000,
   "fromExerciseTemplateId": "Cat_Stretch",
   "toExerciseTemplateId": "Hug_Knees_To_Chest"

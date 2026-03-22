@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"gesitr/internal/auth"
 	"gesitr/internal/compendium/exercisegroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/shared"
@@ -56,6 +57,7 @@ func CreateExerciseGroup(c *gin.Context) {
 	}
 
 	entity := models.ExerciseGroupFromDTO(dto)
+	entity.CreatedBy = auth.GetUserID(c)
 	if err := database.DB.Create(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -87,6 +89,7 @@ func UpdateExerciseGroup(c *gin.Context) {
 
 	entity := models.ExerciseGroupFromDTO(dto)
 	entity.ID = existing.ID
+	entity.CreatedBy = existing.CreatedBy
 
 	if err := database.DB.Save(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

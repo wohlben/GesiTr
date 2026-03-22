@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761548543,
   "fromExerciseTemplateId": "Standing_One-Arm_Cable_Curl",
   "toExerciseTemplateId": "Dumbbell_Bicep_Curl"

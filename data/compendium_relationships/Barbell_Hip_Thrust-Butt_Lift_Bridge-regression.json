@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.85,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761464685,
   "fromExerciseTemplateId": "Barbell_Hip_Thrust",
   "toExerciseTemplateId": "Butt_Lift_Bridge"

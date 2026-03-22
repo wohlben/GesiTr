@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1730009000,
   "fromExerciseTemplateId": "Frankenstein_Squat",
   "toExerciseTemplateId": "Front_Barbell_Squat"

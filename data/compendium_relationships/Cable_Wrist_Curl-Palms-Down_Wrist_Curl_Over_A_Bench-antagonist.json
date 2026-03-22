@@ -3,7 +3,7 @@
   "relationshipType": "antagonist",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761479701,
   "fromExerciseTemplateId": "Cable_Wrist_Curl",
   "toExerciseTemplateId": "Palms-Down_Wrist_Curl_Over_A_Bench"

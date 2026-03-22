@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": "Ball version adds plank position and instability for greater core challenge",
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761509905,
   "fromExerciseTemplateId": "Leg_Pull-In",
   "toExerciseTemplateId": "Exercise_Ball_Pull-In"

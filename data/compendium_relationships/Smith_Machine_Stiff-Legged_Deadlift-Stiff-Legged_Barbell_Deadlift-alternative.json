@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1761547427,
   "fromExerciseTemplateId": "Smith_Machine_Stiff-Legged_Deadlift",
   "toExerciseTemplateId": "Stiff-Legged_Barbell_Deadlift"

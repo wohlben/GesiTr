@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729940400,
   "fromExerciseTemplateId": "Pallof_Press",
   "toExerciseTemplateId": "Standing_Cable_Wood_Chop"

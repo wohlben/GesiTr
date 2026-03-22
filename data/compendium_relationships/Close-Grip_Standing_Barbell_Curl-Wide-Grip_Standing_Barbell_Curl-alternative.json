@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.95,
   "description": null,
-  "createdBy": "system",
+  "createdBy": "claude",
   "createdAt": 1729931400,
   "fromExerciseTemplateId": "Close-Grip_Standing_Barbell_Curl",
   "toExerciseTemplateId": "Wide-Grip_Standing_Barbell_Curl"
