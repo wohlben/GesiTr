@@ -1,4 +1,4 @@
-import { Component, inject, computed, signal } from '@angular/core';
+import { Component, inject, computed, signal, input, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { injectQueries } from '@tanstack/angular-query-experimental/inject-queries-experimental';
@@ -26,7 +26,13 @@ export interface ExerciseConfigResult {
       <div class="mb-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div>
           <span class="block text-xs font-medium text-gray-700 dark:text-gray-300">Exercise *</span>
-          <brn-select [(ngModel)]="userExerciseId" class="mt-1" hlm placeholder="-- Select --">
+          <brn-select
+            [(ngModel)]="userExerciseId"
+            class="mt-1"
+            hlm
+            placeholder="-- Select --"
+            [disabled]="!!preselectedExerciseId()"
+          >
             <hlm-select-trigger class="w-full">
               <hlm-select-value />
             </hlm-select-trigger>
@@ -111,8 +117,20 @@ export class ExerciseConfig {
   private compendiumApi = inject(CompendiumApiClient);
   private queryClient = injectQueryClient();
 
+  /** When set, the exercise dropdown is locked to this user exercise. */
+  preselectedExerciseId = input<number | null>(null);
+
   // Form fields (signal-backed for [(ngModel)])
   userExerciseId = signal<number | null>(null);
+
+  constructor() {
+    effect(() => {
+      const preselected = this.preselectedExerciseId();
+      if (preselected != null) {
+        this.userExerciseId.set(preselected);
+      }
+    });
+  }
   measurementType = signal<string>('REP_BASED');
   sets = signal<number | null>(3);
   reps = signal<number | null>(10);

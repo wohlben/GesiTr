@@ -8,6 +8,11 @@ export const routes: Routes = [
     component: MainLayout,
     children: [
       {
+        path: 'exercises/:id/track',
+        loadComponent: () =>
+          import('$pages/user/exercise-track/exercise-track').then((m) => m.ExerciseTrack),
+      },
+      {
         path: 'exercises/:id',
         loadComponent: () =>
           import('$pages/user/user-exercise-detail/user-exercise-detail').then(

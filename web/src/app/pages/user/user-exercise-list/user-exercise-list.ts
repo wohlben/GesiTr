@@ -6,10 +6,13 @@ import { UserApiClient } from '$core/api-clients/user-api-client';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { userExerciseKeys, exerciseKeys } from '$core/query-keys';
 import { PageLayout } from '../../../layout/page-layout';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucideListCheck } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-user-exercise-list',
-  imports: [PageLayout, RouterLink],
+  imports: [PageLayout, RouterLink, NgIcon],
+  providers: [provideIcons({ lucideListCheck })],
   template: `
     <app-page-layout
       header="My Exercises"
@@ -39,6 +42,7 @@ import { PageLayout } from '../../../layout/page-layout';
                   >
                     Version
                   </th>
+                  <th class="px-4 py-3"></th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -56,6 +60,16 @@ import { PageLayout } from '../../../layout/page-layout';
                     </td>
                     <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                       v{{ item.compendiumVersion }}
+                    </td>
+                    <td class="px-4 py-3 text-right">
+                      <a
+                        [routerLink]="['./', item.userExerciseId, 'track']"
+                        (click)="$event.stopPropagation()"
+                        class="inline-flex items-center rounded-md p-1.5 text-green-600 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-900/30"
+                        title="Quick track"
+                      >
+                        <ng-icon name="lucideListCheck" class="text-lg" />
+                      </a>
                     </td>
                   </tr>
                 }
@@ -96,6 +110,7 @@ export class UserExerciseList {
       const exercise = versionEntry?.snapshot;
       return {
         id: ue.id,
+        userExerciseId: ue.id,
         compendiumVersion: ue.compendiumVersion,
         name: exercise?.name ?? '...',
         type: exercise?.type ?? '',

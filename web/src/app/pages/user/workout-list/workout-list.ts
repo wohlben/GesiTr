@@ -8,10 +8,13 @@ import {
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { workoutKeys, workoutLogKeys } from '$core/query-keys';
 import { PageLayout } from '../../../layout/page-layout';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucideListCheck } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-workout-list',
-  imports: [PageLayout, RouterLink],
+  imports: [PageLayout, RouterLink, NgIcon],
+  providers: [provideIcons({ lucideListCheck })],
   template: `
     <app-page-layout
       header="My Workouts"
@@ -104,11 +107,7 @@ import { PageLayout } from '../../../layout/page-layout';
                         class="inline-flex items-center rounded-md p-1.5 text-green-600 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-900/30"
                         title="Start workout"
                       >
-                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                          <path
-                            d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.344-5.891a1.5 1.5 0 000-2.538L6.3 2.841z"
-                          />
-                        </svg>
+                        <ng-icon name="lucideListCheck" class="text-lg" />
                       </a>
                     </td>
                   </tr>
