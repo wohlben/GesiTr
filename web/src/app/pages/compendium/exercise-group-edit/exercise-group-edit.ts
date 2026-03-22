@@ -9,6 +9,7 @@ import {
 } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { exerciseGroupKeys } from '$core/query-keys';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { SlugifyPipe } from '$ui/pipes/slugify';
 import { PageLayout } from '../../../layout/page-layout';
 import { HlmInput } from '@spartan-ng/helm/input';
@@ -16,57 +17,63 @@ import { HlmTextarea } from '@spartan-ng/helm/textarea';
 
 @Component({
   selector: 'app-exercise-group-edit',
-  imports: [PageLayout, ReactiveFormsModule, RouterLink, HlmInput, HlmTextarea],
+  imports: [PageLayout, ReactiveFormsModule, RouterLink, HlmInput, HlmTextarea, TranslocoDirective],
   template: `
-    <app-page-layout
-      [header]="isCreateMode() ? 'New Exercise Group' : 'Edit Exercise Group'"
-      [isPending]="!isCreateMode() && groupQuery.isPending()"
-      [errorMessage]="
-        !isCreateMode() && groupQuery.isError() ? groupQuery.error().message : undefined
-      "
-    >
-      @if (isCreateMode() || groupQuery.data()) {
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
-          <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >Name *</label
-            >
-            <input id="name" formControlName="name" hlmInput class="mt-1" />
-          </div>
+    <ng-container *transloco="let t">
+      <app-page-layout
+        [header]="
+          isCreateMode()
+            ? t('compendium.exerciseGroups.newTitle')
+            : t('compendium.exerciseGroups.editTitle')
+        "
+        [isPending]="!isCreateMode() && groupQuery.isPending()"
+        [errorMessage]="
+          !isCreateMode() && groupQuery.isError() ? groupQuery.error().message : undefined
+        "
+      >
+        @if (isCreateMode() || groupQuery.data()) {
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >{{ t('fields.name') }} *</label
+              >
+              <input id="name" formControlName="name" hlmInput class="mt-1" />
+            </div>
 
-          <div>
-            <label
-              for="description"
-              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >Description</label
-            >
-            <textarea
-              id="description"
-              formControlName="description"
-              rows="4"
-              hlmTextarea
-              class="mt-1"
-            ></textarea>
-          </div>
+            <div>
+              <label
+                for="description"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >{{ t('fields.description') }}</label
+              >
+              <textarea
+                id="description"
+                formControlName="description"
+                rows="4"
+                hlmTextarea
+                class="mt-1"
+              ></textarea>
+            </div>
 
-          <div class="flex gap-2">
-            <button
-              type="submit"
-              [disabled]="form.invalid || mutation.isPending() || createMutation.isPending()"
-              class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-            >
-              Save
-            </button>
-            <a
-              [routerLink]="isCreateMode() ? ['/compendium/exercise-groups'] : ['..']"
-              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
-            >
-              Cancel
-            </a>
-          </div>
-        </form>
-      }
-    </app-page-layout>
+            <div class="flex gap-2">
+              <button
+                type="submit"
+                [disabled]="form.invalid || mutation.isPending() || createMutation.isPending()"
+                class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              >
+                {{ t('common.save') }}
+              </button>
+              <a
+                [routerLink]="isCreateMode() ? ['/compendium/exercise-groups'] : ['..']"
+                class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+              >
+                {{ t('common.cancel') }}
+              </a>
+            </div>
+          </form>
+        }
+      </app-page-layout>
+    </ng-container>
   `,
 })
 export class ExerciseGroupEdit {

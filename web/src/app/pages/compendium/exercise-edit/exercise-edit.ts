@@ -9,6 +9,7 @@ import {
 } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { exerciseKeys } from '$core/query-keys';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { SlugifyPipe } from '$ui/pipes/slugify';
 import { PageLayout } from '../../../layout/page-layout';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
@@ -130,315 +131,324 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
     HlmSelectImports,
     HlmInput,
     HlmTextarea,
+    TranslocoDirective,
   ],
   template: `
-    <app-page-layout
-      [header]="isCreateMode() ? 'New Exercise' : 'Edit Exercise'"
-      [isPending]="!isCreateMode() && exerciseQuery.isPending()"
-      [errorMessage]="
-        !isCreateMode() && exerciseQuery.isError() ? exerciseQuery.error().message : undefined
-      "
-    >
-      @if (isCreateMode() || exerciseQuery.data()) {
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
-          <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >Name *</label
-            >
-            <input hlmInput id="name" formControlName="name" class="mt-1" />
-          </div>
-
-          <div>
-            <label
-              for="description"
-              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >Description</label
-            >
-            <textarea
-              hlmTextarea
-              id="description"
-              formControlName="description"
-              rows="3"
-              class="mt-1"
-            ></textarea>
-          </div>
-
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <ng-container *transloco="let t">
+      <app-page-layout
+        [header]="
+          isCreateMode() ? t('compendium.exercises.newTitle') : t('compendium.exercises.editTitle')
+        "
+        [isPending]="!isCreateMode() && exerciseQuery.isPending()"
+        [errorMessage]="
+          !isCreateMode() && exerciseQuery.isError() ? exerciseQuery.error().message : undefined
+        "
+      >
+        @if (isCreateMode() || exerciseQuery.data()) {
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
             <div>
-              <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >Type *</label
+              <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >{{ t('fields.name') }} *</label
               >
-              <brn-select formControlName="type" class="mt-1" hlm>
-                <hlm-select-trigger class="w-full">
-                  <hlm-select-value />
-                </hlm-select-trigger>
-                <hlm-select-content>
-                  @for (t of exerciseTypes; track t) {
-                    <hlm-option [value]="t">{{ t }}</hlm-option>
-                  }
-                </hlm-select-content>
-              </brn-select>
+              <input hlmInput id="name" formControlName="name" class="mt-1" />
             </div>
 
             <div>
               <label
-                for="technicalDifficulty"
+                for="description"
                 class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >Difficulty *</label
+                >{{ t('fields.description') }}</label
               >
-              <brn-select formControlName="technicalDifficulty" class="mt-1" hlm>
-                <hlm-select-trigger class="w-full">
-                  <hlm-select-value />
-                </hlm-select-trigger>
-                <hlm-select-content>
-                  @for (d of difficulties; track d) {
-                    <hlm-option [value]="d">{{ d }}</hlm-option>
-                  }
-                </hlm-select-content>
-              </brn-select>
-            </div>
-
-            <div>
-              <label
-                for="bodyWeightScaling"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >Body Weight Scaling</label
-              >
-              <input
-                hlmInput
-                id="bodyWeightScaling"
-                type="number"
-                step="0.01"
-                formControlName="bodyWeightScaling"
+              <textarea
+                hlmTextarea
+                id="description"
+                formControlName="description"
+                rows="3"
                 class="mt-1"
-              />
+              ></textarea>
             </div>
 
-            <div>
-              <label
-                for="authorName"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >Author Name</label
-              >
-              <input hlmInput id="authorName" formControlName="authorName" class="mt-1" />
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >{{ t('fields.type') }} *</label
+                >
+                <brn-select formControlName="type" class="mt-1" hlm>
+                  <hlm-select-trigger class="w-full">
+                    <hlm-select-value />
+                  </hlm-select-trigger>
+                  <hlm-select-content>
+                    @for (tp of exerciseTypes; track tp) {
+                      <hlm-option [value]="tp">{{ t('enums.exerciseType.' + tp) }}</hlm-option>
+                    }
+                  </hlm-select-content>
+                </brn-select>
+              </div>
+
+              <div>
+                <label
+                  for="technicalDifficulty"
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >{{ t('fields.difficulty') }} *</label
+                >
+                <brn-select formControlName="technicalDifficulty" class="mt-1" hlm>
+                  <hlm-select-trigger class="w-full">
+                    <hlm-select-value />
+                  </hlm-select-trigger>
+                  <hlm-select-content>
+                    @for (d of difficulties; track d) {
+                      <hlm-option [value]="d">{{ t('enums.difficulty.' + d) }}</hlm-option>
+                    }
+                  </hlm-select-content>
+                </brn-select>
+              </div>
+
+              <div>
+                <label
+                  for="bodyWeightScaling"
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >{{ t('fields.bodyWeightScaling') }}</label
+                >
+                <input
+                  hlmInput
+                  id="bodyWeightScaling"
+                  type="number"
+                  step="0.01"
+                  formControlName="bodyWeightScaling"
+                  class="mt-1"
+                />
+              </div>
+
+              <div>
+                <label
+                  for="authorName"
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >{{ t('fields.authorName') }}</label
+                >
+                <input hlmInput id="authorName" formControlName="authorName" class="mt-1" />
+              </div>
+
+              <div class="sm:col-span-2">
+                <label
+                  for="authorUrl"
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >{{ t('fields.authorUrl') }}</label
+                >
+                <input hlmInput id="authorUrl" formControlName="authorUrl" class="mt-1" />
+              </div>
             </div>
 
-            <div class="sm:col-span-2">
-              <label
-                for="authorUrl"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >Author URL</label
-              >
-              <input hlmInput id="authorUrl" formControlName="authorUrl" class="mt-1" />
-            </div>
-          </div>
+            <!-- Force checkboxes -->
+            <fieldset>
+              <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {{ t('fields.force') }}
+              </legend>
+              <div class="mt-1 flex flex-wrap gap-3">
+                @for (f of forces; track f) {
+                  <label class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
+                    <input
+                      type="checkbox"
+                      [checked]="isForceSelected(f)"
+                      (change)="toggleArrayValue(selectedForce, f)"
+                      class="rounded"
+                    />
+                    {{ t('enums.force.' + f) }}
+                  </label>
+                }
+              </div>
+            </fieldset>
 
-          <!-- Force checkboxes -->
-          <fieldset>
-            <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">Force</legend>
-            <div class="mt-1 flex flex-wrap gap-3">
-              @for (f of forces; track f) {
-                <label class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
-                  <input
-                    type="checkbox"
-                    [checked]="isForceSelected(f)"
-                    (change)="toggleArrayValue(selectedForce, f)"
-                    class="rounded"
-                  />
-                  {{ f }}
-                </label>
-              }
-            </div>
-          </fieldset>
+            <!-- Primary Muscles checkboxes -->
+            <fieldset>
+              <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {{ t('fields.primaryMuscles') }}
+              </legend>
+              <div class="mt-1 flex flex-wrap gap-3">
+                @for (m of muscles; track m) {
+                  <label class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
+                    <input
+                      type="checkbox"
+                      [checked]="isPrimaryMuscleSelected(m)"
+                      (change)="toggleArrayValue(selectedPrimaryMuscles, m)"
+                      class="rounded"
+                    />
+                    {{ t('enums.muscle.' + m) }}
+                  </label>
+                }
+              </div>
+            </fieldset>
 
-          <!-- Primary Muscles checkboxes -->
-          <fieldset>
-            <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Primary Muscles
-            </legend>
-            <div class="mt-1 flex flex-wrap gap-3">
-              @for (m of muscles; track m) {
-                <label class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
-                  <input
-                    type="checkbox"
-                    [checked]="isPrimaryMuscleSelected(m)"
-                    (change)="toggleArrayValue(selectedPrimaryMuscles, m)"
-                    class="rounded"
-                  />
-                  {{ m }}
-                </label>
-              }
-            </div>
-          </fieldset>
+            <!-- Secondary Muscles checkboxes -->
+            <fieldset>
+              <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {{ t('fields.secondaryMuscles') }}
+              </legend>
+              <div class="mt-1 flex flex-wrap gap-3">
+                @for (m of muscles; track m) {
+                  <label class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
+                    <input
+                      type="checkbox"
+                      [checked]="isSecondaryMuscleSelected(m)"
+                      (change)="toggleArrayValue(selectedSecondaryMuscles, m)"
+                      class="rounded"
+                    />
+                    {{ t('enums.muscle.' + m) }}
+                  </label>
+                }
+              </div>
+            </fieldset>
 
-          <!-- Secondary Muscles checkboxes -->
-          <fieldset>
-            <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Secondary Muscles
-            </legend>
-            <div class="mt-1 flex flex-wrap gap-3">
-              @for (m of muscles; track m) {
-                <label class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
-                  <input
-                    type="checkbox"
-                    [checked]="isSecondaryMuscleSelected(m)"
-                    (change)="toggleArrayValue(selectedSecondaryMuscles, m)"
-                    class="rounded"
-                  />
-                  {{ m }}
-                </label>
-              }
-            </div>
-          </fieldset>
+            <!-- Measurement Paradigms checkboxes -->
+            <fieldset>
+              <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {{ t('fields.suggestedMeasurementParadigms') }}
+              </legend>
+              <div class="mt-1 flex flex-wrap gap-3">
+                @for (p of measurementParadigms; track p) {
+                  <label class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
+                    <input
+                      type="checkbox"
+                      [checked]="isParadigmSelected(p)"
+                      (change)="toggleArrayValue(selectedParadigms, p)"
+                      class="rounded"
+                    />
+                    {{ t('enums.measurementType.' + p) }}
+                  </label>
+                }
+              </div>
+            </fieldset>
 
-          <!-- Measurement Paradigms checkboxes -->
-          <fieldset>
-            <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Suggested Measurement Paradigms
-            </legend>
-            <div class="mt-1 flex flex-wrap gap-3">
-              @for (p of measurementParadigms; track p) {
-                <label class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
-                  <input
-                    type="checkbox"
-                    [checked]="isParadigmSelected(p)"
-                    (change)="toggleArrayValue(selectedParadigms, p)"
-                    class="rounded"
-                  />
-                  {{ p }}
-                </label>
-              }
-            </div>
-          </fieldset>
+            <!-- Instructions FormArray -->
+            <fieldset>
+              <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {{ t('fields.instructions') }}
+              </legend>
+              <div class="mt-1 space-y-2">
+                @for (ctrl of instructions.controls; track $index) {
+                  <div class="flex gap-2">
+                    <input hlmInput [formControl]="ctrl" />
+                    <button
+                      type="button"
+                      (click)="instructions.removeAt($index)"
+                      class="rounded-md border border-red-300 px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
+                    >
+                      {{ t('common.remove') }}
+                    </button>
+                  </div>
+                }
+                <button
+                  type="button"
+                  (click)="instructions.push(newStringControl())"
+                  class="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  {{ t('compendium.exercises.addInstruction') }}
+                </button>
+              </div>
+            </fieldset>
 
-          <!-- Instructions FormArray -->
-          <fieldset>
-            <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Instructions
-            </legend>
-            <div class="mt-1 space-y-2">
-              @for (ctrl of instructions.controls; track $index) {
-                <div class="flex gap-2">
-                  <input hlmInput [formControl]="ctrl" />
-                  <button
-                    type="button"
-                    (click)="instructions.removeAt($index)"
-                    class="rounded-md border border-red-300 px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
-                  >
-                    Remove
-                  </button>
-                </div>
-              }
+            <!-- Images FormArray -->
+            <fieldset>
+              <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {{ t('fields.images') }}
+              </legend>
+              <div class="mt-1 space-y-2">
+                @for (ctrl of images.controls; track $index) {
+                  <div class="flex gap-2">
+                    <input hlmInput [formControl]="ctrl" />
+                    <button
+                      type="button"
+                      (click)="images.removeAt($index)"
+                      class="rounded-md border border-red-300 px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
+                    >
+                      {{ t('common.remove') }}
+                    </button>
+                  </div>
+                }
+                <button
+                  type="button"
+                  (click)="images.push(newStringControl())"
+                  class="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  {{ t('compendium.exercises.addImage') }}
+                </button>
+              </div>
+            </fieldset>
+
+            <!-- Alternative Names FormArray -->
+            <fieldset>
+              <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {{ t('fields.alternativeNames') }}
+              </legend>
+              <div class="mt-1 space-y-2">
+                @for (ctrl of alternativeNames.controls; track $index) {
+                  <div class="flex gap-2">
+                    <input hlmInput [formControl]="ctrl" />
+                    <button
+                      type="button"
+                      (click)="alternativeNames.removeAt($index)"
+                      class="rounded-md border border-red-300 px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
+                    >
+                      {{ t('common.remove') }}
+                    </button>
+                  </div>
+                }
+                <button
+                  type="button"
+                  (click)="alternativeNames.push(newStringControl())"
+                  class="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  {{ t('compendium.exercises.addAlternativeName') }}
+                </button>
+              </div>
+            </fieldset>
+
+            <!-- Equipment IDs FormArray -->
+            <fieldset>
+              <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {{ t('fields.equipmentIds') }}
+              </legend>
+              <div class="mt-1 space-y-2">
+                @for (ctrl of equipmentIds.controls; track $index) {
+                  <div class="flex gap-2">
+                    <input hlmInput [formControl]="ctrl" />
+                    <button
+                      type="button"
+                      (click)="equipmentIds.removeAt($index)"
+                      class="rounded-md border border-red-300 px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
+                    >
+                      {{ t('common.remove') }}
+                    </button>
+                  </div>
+                }
+                <button
+                  type="button"
+                  (click)="equipmentIds.push(newStringControl())"
+                  class="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  {{ t('compendium.exercises.addEquipmentId') }}
+                </button>
+              </div>
+            </fieldset>
+
+            <div class="flex gap-2">
               <button
-                type="button"
-                (click)="instructions.push(newStringControl())"
-                class="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                type="submit"
+                [disabled]="form.invalid || mutation.isPending() || createMutation.isPending()"
+                class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
               >
-                + Add instruction
+                {{ t('common.save') }}
               </button>
-            </div>
-          </fieldset>
-
-          <!-- Images FormArray -->
-          <fieldset>
-            <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">Images</legend>
-            <div class="mt-1 space-y-2">
-              @for (ctrl of images.controls; track $index) {
-                <div class="flex gap-2">
-                  <input hlmInput [formControl]="ctrl" />
-                  <button
-                    type="button"
-                    (click)="images.removeAt($index)"
-                    class="rounded-md border border-red-300 px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
-                  >
-                    Remove
-                  </button>
-                </div>
-              }
-              <button
-                type="button"
-                (click)="images.push(newStringControl())"
-                class="text-sm text-blue-600 hover:underline dark:text-blue-400"
+              <a
+                [routerLink]="isCreateMode() ? ['/compendium/exercises'] : ['..']"
+                class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
               >
-                + Add image
-              </button>
+                {{ t('common.cancel') }}
+              </a>
             </div>
-          </fieldset>
-
-          <!-- Alternative Names FormArray -->
-          <fieldset>
-            <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Alternative Names
-            </legend>
-            <div class="mt-1 space-y-2">
-              @for (ctrl of alternativeNames.controls; track $index) {
-                <div class="flex gap-2">
-                  <input hlmInput [formControl]="ctrl" />
-                  <button
-                    type="button"
-                    (click)="alternativeNames.removeAt($index)"
-                    class="rounded-md border border-red-300 px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
-                  >
-                    Remove
-                  </button>
-                </div>
-              }
-              <button
-                type="button"
-                (click)="alternativeNames.push(newStringControl())"
-                class="text-sm text-blue-600 hover:underline dark:text-blue-400"
-              >
-                + Add alternative name
-              </button>
-            </div>
-          </fieldset>
-
-          <!-- Equipment IDs FormArray -->
-          <fieldset>
-            <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Equipment IDs
-            </legend>
-            <div class="mt-1 space-y-2">
-              @for (ctrl of equipmentIds.controls; track $index) {
-                <div class="flex gap-2">
-                  <input hlmInput [formControl]="ctrl" />
-                  <button
-                    type="button"
-                    (click)="equipmentIds.removeAt($index)"
-                    class="rounded-md border border-red-300 px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
-                  >
-                    Remove
-                  </button>
-                </div>
-              }
-              <button
-                type="button"
-                (click)="equipmentIds.push(newStringControl())"
-                class="text-sm text-blue-600 hover:underline dark:text-blue-400"
-              >
-                + Add equipment ID
-              </button>
-            </div>
-          </fieldset>
-
-          <div class="flex gap-2">
-            <button
-              type="submit"
-              [disabled]="form.invalid || mutation.isPending() || createMutation.isPending()"
-              class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-            >
-              Save
-            </button>
-            <a
-              [routerLink]="isCreateMode() ? ['/compendium/exercises'] : ['..']"
-              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
-            >
-              Cancel
-            </a>
-          </div>
-        </form>
-      }
-    </app-page-layout>
+          </form>
+        }
+      </app-page-layout>
+    </ng-container>
   `,
 })
 export class ExerciseEdit {

@@ -1,5 +1,6 @@
 import { Component, inject, input, output, signal, ViewChild } from '@angular/core';
 import { injectQueryClient } from '@tanstack/angular-query-experimental';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { workoutLogKeys } from '$core/query-keys';
 import { HlmDialogImports } from '@spartan-ng/helm/dialog';
@@ -10,64 +11,73 @@ import { ExerciseRunner } from '$ui/exercise-runner/exercise-runner';
 
 @Component({
   selector: 'app-adhoc-add-exercise-dialog',
-  imports: [HlmDialogImports, HlmButton, HlmSeparator, ExerciseConfig, ExerciseRunner],
+  imports: [
+    HlmDialogImports,
+    HlmButton,
+    HlmSeparator,
+    ExerciseConfig,
+    ExerciseRunner,
+    TranslocoDirective,
+  ],
   template: `
-    <hlm-dialog [state]="open() ? 'open' : 'closed'" (closed)="onClose()">
-      <ng-template hlmDialogPortal>
-        <hlm-dialog-content [showCloseButton]="false" class="max-h-[90dvh] overflow-y-auto">
-          <hlm-dialog-header>
-            <h3 hlmDialogTitle>Add Exercise</h3>
-          </hlm-dialog-header>
+    <ng-container *transloco="let t">
+      <hlm-dialog [state]="open() ? 'open' : 'closed'" (closed)="onClose()">
+        <ng-template hlmDialogPortal>
+          <hlm-dialog-content [showCloseButton]="false" class="max-h-[90dvh] overflow-y-auto">
+            <hlm-dialog-header>
+              <h3 hlmDialogTitle>{{ t('user.workoutLog.addExerciseTitle') }}</h3>
+            </hlm-dialog-header>
 
-          <!-- Phase 1: Exercise configuration -->
-          <app-exercise-config #exerciseConfig />
+            <!-- Phase 1: Exercise configuration -->
+            <app-exercise-config #exerciseConfig />
 
-          <hlm-separator class="my-4" />
+            <hlm-separator class="my-4" />
 
-          <!-- Phase 2: Exercise sets planning -->
-          @if (exerciseConfig.userExerciseId() && exerciseConfig.sets()) {
-            <app-exercise-runner
-              #runner
-              [exerciseName]="exerciseConfig.selectedExerciseName()"
-              [measurementType]="exerciseConfig.measurementType()"
-              [setCount]="exerciseConfig.sets()!"
-              [defaultReps]="exerciseConfig.reps()"
-              [defaultWeight]="exerciseConfig.weight()"
-              [defaultDuration]="exerciseConfig.duration()"
-              [defaultDistance]="exerciseConfig.distance()"
-              [defaultRest]="exerciseConfig.restBetweenSets()"
-            />
-          } @else {
-            <div class="py-4 text-center text-sm text-gray-400 dark:text-gray-500">
-              Select an exercise above to plan sets
-            </div>
-          }
+            <!-- Phase 2: Exercise sets planning -->
+            @if (exerciseConfig.userExerciseId() && exerciseConfig.sets()) {
+              <app-exercise-runner
+                #runner
+                [exerciseName]="exerciseConfig.selectedExerciseName()"
+                [measurementType]="exerciseConfig.measurementType()"
+                [setCount]="exerciseConfig.sets()!"
+                [defaultReps]="exerciseConfig.reps()"
+                [defaultWeight]="exerciseConfig.weight()"
+                [defaultDuration]="exerciseConfig.duration()"
+                [defaultDistance]="exerciseConfig.distance()"
+                [defaultRest]="exerciseConfig.restBetweenSets()"
+              />
+            } @else {
+              <div class="py-4 text-center text-sm text-gray-400 dark:text-gray-500">
+                {{ t('user.workoutLog.selectHint') }}
+              </div>
+            }
 
-          @if (errorMessage()) {
-            <div
-              class="mt-2 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-700 dark:bg-red-900/20 dark:text-red-400"
-            >
-              {{ errorMessage() }}
-            </div>
-          }
+            @if (errorMessage()) {
+              <div
+                class="mt-2 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-700 dark:bg-red-900/20 dark:text-red-400"
+              >
+                {{ errorMessage() }}
+              </div>
+            }
 
-          <hlm-dialog-footer>
-            <button hlmBtn variant="outline" hlmDialogClose>Cancel</button>
-            <button
-              hlmBtn
-              (click)="onAdd()"
-              [disabled]="!exerciseConfig.canConfirm() || isAdding()"
-            >
-              @if (isAdding()) {
-                Adding...
-              } @else {
-                Add
-              }
-            </button>
-          </hlm-dialog-footer>
-        </hlm-dialog-content>
-      </ng-template>
-    </hlm-dialog>
+            <hlm-dialog-footer>
+              <button hlmBtn variant="outline" hlmDialogClose>{{ t('common.cancel') }}</button>
+              <button
+                hlmBtn
+                (click)="onAdd()"
+                [disabled]="!exerciseConfig.canConfirm() || isAdding()"
+              >
+                @if (isAdding()) {
+                  {{ t('common.adding') }}
+                } @else {
+                  {{ t('common.add') }}
+                }
+              </button>
+            </hlm-dialog-footer>
+          </hlm-dialog-content>
+        </ng-template>
+      </hlm-dialog>
+    </ng-container>
   `,
 })
 export class AdhocAddExerciseDialog {

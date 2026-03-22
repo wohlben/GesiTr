@@ -1,33 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { DayDialog } from './day-dialog';
 
 describe('DayDialog', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), provideTranslocoForTest()],
     });
   });
 
   function createComponent() {
     return TestBed.createComponent(DayDialog).componentInstance;
   }
-
-  describe('statusLabel', () => {
-    it('replaces underscores with spaces', () => {
-      expect(createComponent().statusLabel('in_progress')).toBe('in progress');
-    });
-
-    it('replaces multiple underscores', () => {
-      expect(createComponent().statusLabel('some_multi_word_status')).toBe(
-        'some multi word status',
-      );
-    });
-
-    it('returns status unchanged when no underscores', () => {
-      expect(createComponent().statusLabel('finished')).toBe('finished');
-    });
-  });
 
   describe('statusClass', () => {
     it('returns green classes for finished', () => {

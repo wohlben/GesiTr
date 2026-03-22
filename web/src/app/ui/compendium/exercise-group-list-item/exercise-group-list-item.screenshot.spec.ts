@@ -1,6 +1,7 @@
 import { render } from '@testing-library/angular';
 import { page } from 'vitest/browser';
 import { provideRouter } from '@angular/router';
+import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { ExerciseGroupListItem } from './exercise-group-list-item';
 import { DataTable, DataTableColumn } from '$ui/data-table/data-table';
 import { ExerciseGroup } from '$generated/models';
@@ -36,7 +37,7 @@ describe('ExerciseGroupListItem screenshots', () => {
 
   const opts = {
     imports: [DataTable, ExerciseGroupListItem],
-    providers: [provideRouter([])],
+    providers: [provideTranslocoForTest(), provideRouter([])],
     componentProperties: { group, columns },
   };
 

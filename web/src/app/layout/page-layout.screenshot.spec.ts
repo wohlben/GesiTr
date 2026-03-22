@@ -2,6 +2,7 @@ import { render } from '@testing-library/angular';
 import { page } from 'vitest/browser';
 import { PageLayout } from './page-layout';
 import { DataTable } from '$ui/data-table/data-table';
+import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 
 describe('PageLayout screenshots', () => {
   afterEach(() => {
@@ -14,7 +15,7 @@ describe('PageLayout screenshots', () => {
         <div filters class="flex flex-wrap gap-3">
           <input type="text" placeholder="Search..." class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
         </div>
-        <app-data-table [columns]="['Name', 'Category']">
+        <app-data-table [columns]="[{ label: 'Name' }, { label: 'Category' }]">
           <tr>
             <td class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-gray-100">Barbell</td>
             <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">free_weights</td>
@@ -23,7 +24,10 @@ describe('PageLayout screenshots', () => {
         <p class="text-sm text-gray-500 dark:text-gray-400">1 item</p>
       </app-page-layout>
     `;
-    const { fixture } = await render(template, { imports: [PageLayout, DataTable] });
+    const { fixture } = await render(template, {
+      imports: [PageLayout, DataTable],
+      providers: [provideTranslocoForTest()],
+    });
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('content-light');
   });
@@ -35,7 +39,7 @@ describe('PageLayout screenshots', () => {
         <div filters class="flex flex-wrap gap-3">
           <input type="text" placeholder="Search..." class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
         </div>
-        <app-data-table [columns]="['Name', 'Category']">
+        <app-data-table [columns]="[{ label: 'Name' }, { label: 'Category' }]">
           <tr>
             <td class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-gray-100">Barbell</td>
             <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">free_weights</td>
@@ -44,7 +48,10 @@ describe('PageLayout screenshots', () => {
         <p class="text-sm text-gray-500 dark:text-gray-400">1 item</p>
       </app-page-layout>
     `;
-    const { fixture } = await render(template, { imports: [PageLayout, DataTable] });
+    const { fixture } = await render(template, {
+      imports: [PageLayout, DataTable],
+      providers: [provideTranslocoForTest()],
+    });
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('content-dark');
   });
@@ -57,7 +64,10 @@ describe('PageLayout screenshots', () => {
         </div>
       </app-page-layout>
     `;
-    const { fixture } = await render(template, { imports: [PageLayout] });
+    const { fixture } = await render(template, {
+      imports: [PageLayout],
+      providers: [provideTranslocoForTest()],
+    });
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('pending-light');
   });
@@ -71,7 +81,10 @@ describe('PageLayout screenshots', () => {
         </div>
       </app-page-layout>
     `;
-    const { fixture } = await render(template, { imports: [PageLayout] });
+    const { fixture } = await render(template, {
+      imports: [PageLayout],
+      providers: [provideTranslocoForTest()],
+    });
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('pending-dark');
   });
@@ -84,7 +97,10 @@ describe('PageLayout screenshots', () => {
         </div>
       </app-page-layout>
     `;
-    const { fixture } = await render(template, { imports: [PageLayout] });
+    const { fixture } = await render(template, {
+      imports: [PageLayout],
+      providers: [provideTranslocoForTest()],
+    });
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('error-light');
   });
@@ -93,7 +109,7 @@ describe('PageLayout screenshots', () => {
     const template = `
       <app-page-layout header="Exercise Detail">
         <button actions class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">Edit</button>
-        <app-data-table [columns]="['Name', 'Category']">
+        <app-data-table [columns]="[{ label: 'Name' }, { label: 'Category' }]">
           <tr>
             <td class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-gray-100">Barbell Curl</td>
             <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">strength</td>
@@ -101,7 +117,10 @@ describe('PageLayout screenshots', () => {
         </app-data-table>
       </app-page-layout>
     `;
-    const { fixture } = await render(template, { imports: [PageLayout, DataTable] });
+    const { fixture } = await render(template, {
+      imports: [PageLayout, DataTable],
+      providers: [provideTranslocoForTest()],
+    });
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('actions-light');
   });
@@ -111,7 +130,7 @@ describe('PageLayout screenshots', () => {
     const template = `
       <app-page-layout header="Exercise Detail">
         <button actions class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">Edit</button>
-        <app-data-table [columns]="['Name', 'Category']">
+        <app-data-table [columns]="[{ label: 'Name' }, { label: 'Category' }]">
           <tr>
             <td class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-gray-100">Barbell Curl</td>
             <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">strength</td>
@@ -119,7 +138,10 @@ describe('PageLayout screenshots', () => {
         </app-data-table>
       </app-page-layout>
     `;
-    const { fixture } = await render(template, { imports: [PageLayout, DataTable] });
+    const { fixture } = await render(template, {
+      imports: [PageLayout, DataTable],
+      providers: [provideTranslocoForTest()],
+    });
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('actions-dark');
   });
@@ -133,7 +155,10 @@ describe('PageLayout screenshots', () => {
         </div>
       </app-page-layout>
     `;
-    const { fixture } = await render(template, { imports: [PageLayout] });
+    const { fixture } = await render(template, {
+      imports: [PageLayout],
+      providers: [provideTranslocoForTest()],
+    });
     const locator = page.elementLocator(fixture.nativeElement);
     await expect(locator).toMatchScreenshot('error-dark');
   });

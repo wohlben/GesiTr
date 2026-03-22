@@ -6,6 +6,7 @@ import {
   injectMutation,
   injectQueryClient,
 } from '@tanstack/angular-query-experimental';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { userEquipmentKeys } from '$core/query-keys';
@@ -15,57 +16,69 @@ import { Equipment } from '$generated/models';
 
 @Component({
   selector: 'app-user-equipment-detail',
-  imports: [PageLayout, ConfirmDialog],
+  imports: [PageLayout, ConfirmDialog, TranslocoDirective],
   template: `
-    <app-page-layout
-      [header]="equipmentName()"
-      [isPending]="detailQuery.isPending()"
-      [errorMessage]="detailQuery.isError() ? detailQuery.error().message : undefined"
-    >
-      <div actions class="flex gap-2">
-        <button
-          type="button"
-          (click)="showDeleteDialog.set(true)"
-          class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
-        >
-          Delete
-        </button>
-      </div>
-      <app-confirm-dialog
-        [open]="showDeleteDialog()"
-        title="Remove Equipment"
-        [message]="deleteMessage()"
-        [isPending]="deleteMutation.isPending()"
-        (confirmed)="deleteMutation.mutate()"
-        (cancelled)="showDeleteDialog.set(false)"
-      />
-      @if (snapshot(); as equipment) {
-        <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Display Name</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ equipment.displayName }}</dd>
-          </div>
-          <div>
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Category</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ equipment.category }}</dd>
-          </div>
-          <div>
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Name</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ equipment.name }}</dd>
-          </div>
-          <div>
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Version</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">
-              v{{ detailQuery.data()?.userEquipment?.compendiumVersion }}
-            </dd>
-          </div>
-          <div class="sm:col-span-2">
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Description</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ equipment.description }}</dd>
-          </div>
-        </dl>
-      }
-    </app-page-layout>
+    <ng-container *transloco="let t">
+      <app-page-layout
+        [header]="equipmentName()"
+        [isPending]="detailQuery.isPending()"
+        [errorMessage]="detailQuery.isError() ? detailQuery.error().message : undefined"
+      >
+        <div actions class="flex gap-2">
+          <button
+            type="button"
+            (click)="showDeleteDialog.set(true)"
+            class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+          >
+            {{ t('common.delete') }}
+          </button>
+        </div>
+        <app-confirm-dialog
+          [open]="showDeleteDialog()"
+          [title]="t('user.equipment.deleteTitle')"
+          [message]="t('user.equipment.deleteMessage', { name: equipmentName() })"
+          [isPending]="deleteMutation.isPending()"
+          (confirmed)="deleteMutation.mutate()"
+          (cancelled)="showDeleteDialog.set(false)"
+        />
+        @if (snapshot(); as equipment) {
+          <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('fields.displayName') }}
+              </dt>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">{{ equipment.displayName }}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('fields.category') }}
+              </dt>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">{{ equipment.category }}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('fields.name') }}
+              </dt>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">{{ equipment.name }}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('fields.version') }}
+              </dt>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">
+                v{{ detailQuery.data()?.userEquipment?.compendiumVersion }}
+              </dd>
+            </div>
+            <div class="sm:col-span-2">
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('fields.description') }}
+              </dt>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">{{ equipment.description }}</dd>
+            </div>
+          </dl>
+        }
+      </app-page-layout>
+    </ng-container>
   `,
 })
 export class UserEquipmentDetail {
@@ -73,6 +86,7 @@ export class UserEquipmentDetail {
   private compendiumApi = inject(CompendiumApiClient);
   private router = inject(Router);
   private queryClient = injectQueryClient();
+  private transloco = inject(TranslocoService);
   private params = toSignal(inject(ActivatedRoute).paramMap);
 
   private id = computed(() => Number(this.params()?.get('id')));
@@ -94,11 +108,11 @@ export class UserEquipmentDetail {
 
   snapshot = computed(() => this.detailQuery.data()?.version.snapshot as Equipment | undefined);
 
-  equipmentName = computed(() => this.snapshot()?.displayName ?? 'Equipment');
-
-  deleteMessage = computed(
-    () => `Are you sure you want to remove '${this.equipmentName()}' from your equipment?`,
+  equipmentName = computed(
+    () => this.snapshot()?.displayName ?? this.transloco.translate('common.loading'),
   );
+
+  // deleteMessage removed: now using Transloco interpolation directly in template
 
   deleteMutation = injectMutation(() => ({
     mutationFn: () => this.userApi.deleteUserEquipment(this.id()),

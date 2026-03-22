@@ -1,6 +1,7 @@
 import { render } from '@testing-library/angular';
 import { page } from 'vitest/browser';
 import { provideRouter } from '@angular/router';
+import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { EquipmentListItem } from './equipment-list-item';
 import { DataTable, DataTableColumn } from '$ui/data-table/data-table';
 import { Equipment } from '$generated/models';
@@ -42,7 +43,7 @@ describe('EquipmentListItem screenshots', () => {
 
   const opts = {
     imports: [DataTable, EquipmentListItem],
-    providers: [provideRouter([])],
+    providers: [provideTranslocoForTest(), provideRouter([])],
     componentProperties: { equipment, columns },
   };
 

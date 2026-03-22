@@ -4,6 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { equipmentKeys } from '$core/query-keys';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { EquipmentListItem } from '$ui/compendium/equipment-list-item/equipment-list-item';
 import { DataTable, DataTableColumn } from '$ui/data-table/data-table';
 import { Pagination } from '$ui/pagination/pagination';
@@ -19,33 +20,35 @@ import {
 
 @Component({
   selector: 'app-equipment-list',
-  imports: [EquipmentListItem, DataTable, Pagination, PageLayout, RouterLink],
+  imports: [EquipmentListItem, DataTable, Pagination, PageLayout, RouterLink, TranslocoDirective],
   template: `
-    <app-page-layout
-      header="Equipment"
-      [isPending]="equipmentQuery.isPending()"
-      [errorMessage]="equipmentQuery.isError() ? equipmentQuery.error().message : undefined"
-    >
-      <a
-        actions
-        routerLink="./new"
-        class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        >New</a
+    <ng-container *transloco="let t">
+      <app-page-layout
+        [header]="t('compendium.equipment.title')"
+        [isPending]="equipmentQuery.isPending()"
+        [errorMessage]="equipmentQuery.isError() ? equipmentQuery.error().message : undefined"
       >
-      @if (equipmentQuery.data(); as page) {
-        <app-data-table
-          [columns]="equipmentColumns"
-          [stale]="equipmentQuery.isPlaceholderData()"
-          [initialHiddenColumns]="savedHiddenColumns"
-          (hiddenColumnsChange)="onHiddenColumnsChange($event)"
+        <a
+          actions
+          routerLink="./new"
+          class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >{{ t('common.new') }}</a
         >
-          @for (item of page.items; track item.id) {
-            <tr app-equipment-list-item [equipment]="item"></tr>
-          }
-        </app-data-table>
-        <app-pagination [page]="page" emptyLabel="No equipment found" />
-      }
-    </app-page-layout>
+        @if (equipmentQuery.data(); as page) {
+          <app-data-table
+            [columns]="equipmentColumns"
+            [stale]="equipmentQuery.isPlaceholderData()"
+            [initialHiddenColumns]="savedHiddenColumns"
+            (hiddenColumnsChange)="onHiddenColumnsChange($event)"
+          >
+            @for (item of page.items; track item.id) {
+              <tr app-equipment-list-item [equipment]="item"></tr>
+            }
+          </app-data-table>
+          <app-pagination [page]="page" [emptyLabel]="t('compendium.equipment.noResults')" />
+        }
+      </app-page-layout>
+    </ng-container>
   `,
 })
 export class EquipmentList {
@@ -88,10 +91,12 @@ export class EquipmentList {
   }
 
   equipmentColumns: DataTableColumn[] = [
-    { label: 'Name', searchParam: 'q' },
+    { label: 'Name', labelKey: 'fields.name', searchParam: 'q' },
     {
       label: 'Category',
+      labelKey: 'fields.category',
       filterParam: 'category',
+      optionKeyPrefix: 'enums.equipmentCategory',
       options: [
         EquipmentCategoryFreeWeights,
         EquipmentCategoryAccessories,
@@ -101,11 +106,11 @@ export class EquipmentList {
         EquipmentCategoryOther,
       ],
     },
-    { label: 'Description' },
-    { label: 'Internal name', defaultHidden: true },
-    { label: 'Version', defaultHidden: true },
-    { label: 'Created by', defaultHidden: true },
-    { label: 'Created at', defaultHidden: true },
-    { label: 'Updated at', defaultHidden: true },
+    { label: 'Description', labelKey: 'fields.description' },
+    { label: 'Internal name', labelKey: 'fields.internalName', defaultHidden: true },
+    { label: 'Version', labelKey: 'fields.version', defaultHidden: true },
+    { label: 'Created by', labelKey: 'fields.createdBy', defaultHidden: true },
+    { label: 'Created at', labelKey: 'fields.createdAt', defaultHidden: true },
+    { label: 'Updated at', labelKey: 'fields.updatedAt', defaultHidden: true },
   ];
 }

@@ -1,12 +1,13 @@
 import { Component, input, output } from '@angular/core';
 import { HlmDialogImports } from '@spartan-ng/helm/dialog';
 import { HlmButton } from '@spartan-ng/helm/button';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-confirm-dialog',
-  imports: [HlmDialogImports, HlmButton],
+  imports: [HlmDialogImports, HlmButton, TranslocoDirective],
   template: `
-    <hlm-dialog [state]="open() ? 'open' : 'closed'" (closed)="cancelled.emit()">
+    <hlm-dialog *transloco="let t" [state]="open() ? 'open' : 'closed'" (closed)="cancelled.emit()">
       <ng-template hlmDialogPortal>
         <hlm-dialog-content [showCloseButton]="false">
           <hlm-dialog-header>
@@ -14,7 +15,9 @@ import { HlmButton } from '@spartan-ng/helm/button';
             <p hlmDialogDescription>{{ message() }}</p>
           </hlm-dialog-header>
           <hlm-dialog-footer>
-            <button hlmBtn variant="outline" hlmDialogClose [disabled]="isPending()">Cancel</button>
+            <button hlmBtn variant="outline" hlmDialogClose [disabled]="isPending()">
+              {{ t('common.cancel') }}
+            </button>
             <button
               hlmBtn
               variant="destructive"

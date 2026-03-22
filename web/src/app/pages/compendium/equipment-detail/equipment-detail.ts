@@ -9,81 +9,98 @@ import {
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { equipmentKeys, userEquipmentKeys } from '$core/query-keys';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-equipment-detail',
-  imports: [PageLayout, RouterLink, ConfirmDialog],
+  imports: [PageLayout, RouterLink, ConfirmDialog, TranslocoDirective],
   template: `
-    <app-page-layout
-      [header]="equipmentQuery.data()?.displayName ?? 'Equipment'"
-      [isPending]="equipmentQuery.isPending()"
-      [errorMessage]="equipmentQuery.isError() ? equipmentQuery.error().message : undefined"
-    >
-      <div actions class="flex gap-2">
-        @if (alreadyAdded(); as existing) {
+    <ng-container *transloco="let t">
+      <app-page-layout
+        [header]="equipmentQuery.data()?.displayName ?? 'Equipment'"
+        [isPending]="equipmentQuery.isPending()"
+        [errorMessage]="equipmentQuery.isError() ? equipmentQuery.error().message : undefined"
+      >
+        <div actions class="flex gap-2">
+          @if (alreadyAdded(); as existing) {
+            <a
+              [routerLink]="['/user/equipment', existing.id]"
+              class="rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+            >
+              {{ t('compendium.equipment.alreadyAdded') }}
+            </a>
+          } @else {
+            <button
+              type="button"
+              (click)="addMutation.mutate()"
+              [disabled]="addMutation.isPending()"
+              class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+            >
+              {{
+                addMutation.isPending() ? t('common.adding') : t('compendium.equipment.addToMine')
+              }}
+            </button>
+          }
+          @if (hasHistory()) {
+            <a
+              routerLink="./history"
+              class="rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
+              >{{ t('common.history') }}</a
+            >
+          }
           <a
-            [routerLink]="['/user/equipment', existing.id]"
-            class="rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+            routerLink="./edit"
+            class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            >{{ t('common.edit') }}</a
           >
-            Already Added
-          </a>
-        } @else {
           <button
             type="button"
-            (click)="addMutation.mutate()"
-            [disabled]="addMutation.isPending()"
-            class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+            (click)="showDeleteDialog.set(true)"
+            class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
           >
-            {{ addMutation.isPending() ? 'Adding...' : 'Add to My Equipment' }}
+            {{ t('common.delete') }}
           </button>
+        </div>
+        <app-confirm-dialog
+          [open]="showDeleteDialog()"
+          [title]="t('compendium.equipment.deleteTitle')"
+          [message]="
+            t('compendium.equipment.deleteMessage', {
+              name: equipmentQuery.data()?.displayName ?? '',
+            })
+          "
+          [isPending]="deleteMutation.isPending()"
+          (confirmed)="deleteMutation.mutate()"
+          (cancelled)="showDeleteDialog.set(false)"
+        />
+        @if (equipmentQuery.data(); as equipment) {
+          <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('fields.category') }}
+              </dt>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">
+                {{ t('enums.equipmentCategory.' + equipment.category) }}
+              </dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('fields.name') }}
+              </dt>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">{{ equipment.name }}</dd>
+            </div>
+            <div class="sm:col-span-2">
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('fields.description') }}
+              </dt>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">{{ equipment.description }}</dd>
+            </div>
+          </dl>
         }
-        @if (hasHistory()) {
-          <a
-            routerLink="./history"
-            class="rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
-            >History</a
-          >
-        }
-        <a
-          routerLink="./edit"
-          class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-          >Edit</a
-        >
-        <button
-          type="button"
-          (click)="showDeleteDialog.set(true)"
-          class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
-        >
-          Delete
-        </button>
-      </div>
-      <app-confirm-dialog
-        [open]="showDeleteDialog()"
-        title="Delete Equipment"
-        [message]="deleteMessage()"
-        [isPending]="deleteMutation.isPending()"
-        (confirmed)="deleteMutation.mutate()"
-        (cancelled)="showDeleteDialog.set(false)"
-      />
-      @if (equipmentQuery.data(); as equipment) {
-        <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Category</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ equipment.category }}</dd>
-          </div>
-          <div>
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Name</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ equipment.name }}</dd>
-          </div>
-          <div class="sm:col-span-2">
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Description</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ equipment.description }}</dd>
-          </div>
-        </dl>
-      }
-    </app-page-layout>
+      </app-page-layout>
+    </ng-container>
   `,
 })
 export class EquipmentDetail {
@@ -96,9 +113,6 @@ export class EquipmentDetail {
   private id = computed(() => Number(this.params()?.get('id')));
 
   showDeleteDialog = signal(false);
-  deleteMessage = computed(
-    () => `Are you sure you want to delete '${this.equipmentQuery.data()?.displayName ?? ''}'?`,
-  );
 
   equipmentQuery = injectQuery(() => ({
     queryKey: equipmentKeys.detail(this.id()),

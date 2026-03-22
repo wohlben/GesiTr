@@ -2,6 +2,7 @@ import { render } from '@testing-library/angular';
 import { page } from 'vitest/browser';
 import { Component } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { MainLayout } from './main-layout';
 
 @Component({
@@ -15,7 +16,10 @@ describe('MainLayout screenshots', () => {
     document.documentElement.classList.remove('dark');
   });
 
-  const providers = [provideRouter([{ path: '**', component: TestPage }])];
+  const providers = [
+    provideTranslocoForTest(),
+    provideRouter([{ path: '**', component: TestPage }]),
+  ];
 
   describe('desktop', () => {
     beforeEach(async () => {
@@ -67,7 +71,7 @@ describe('MainLayout screenshots', () => {
     it('light', async () => {
       const { fixture } = await render(MainLayout, { providers });
       await fixture.whenStable();
-      await page.getByRole('button', { name: /toggle menu/i }).click();
+      await page.getByRole('button', { name: /toggleMenu/i }).click();
       await fixture.whenStable();
       const locator = page.elementLocator(fixture.nativeElement);
       await expect(locator).toMatchScreenshot('mobile-menu-open-light');
@@ -77,7 +81,7 @@ describe('MainLayout screenshots', () => {
       document.documentElement.classList.add('dark');
       const { fixture } = await render(MainLayout, { providers });
       await fixture.whenStable();
-      await page.getByRole('button', { name: /toggle menu/i }).click();
+      await page.getByRole('button', { name: /toggleMenu/i }).click();
       await fixture.whenStable();
       const locator = page.elementLocator(fixture.nativeElement);
       await expect(locator).toMatchScreenshot('mobile-menu-open-dark');

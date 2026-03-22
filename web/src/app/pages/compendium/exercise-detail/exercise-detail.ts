@@ -9,95 +9,114 @@ import {
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { exerciseKeys, userExerciseKeys } from '$core/query-keys';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-exercise-detail',
-  imports: [PageLayout, RouterLink, ConfirmDialog],
+  imports: [PageLayout, RouterLink, ConfirmDialog, TranslocoDirective],
   template: `
-    <app-page-layout
-      [header]="exerciseQuery.data()?.name ?? 'Exercise'"
-      [isPending]="exerciseQuery.isPending()"
-      [errorMessage]="exerciseQuery.isError() ? exerciseQuery.error().message : undefined"
-    >
-      <div actions class="flex gap-2">
-        @if (alreadyAdded(); as existing) {
+    <ng-container *transloco="let t">
+      <app-page-layout
+        [header]="exerciseQuery.data()?.name ?? 'Exercise'"
+        [isPending]="exerciseQuery.isPending()"
+        [errorMessage]="exerciseQuery.isError() ? exerciseQuery.error().message : undefined"
+      >
+        <div actions class="flex gap-2">
+          @if (alreadyAdded(); as existing) {
+            <a
+              [routerLink]="['/user/exercises', existing.id]"
+              class="rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+            >
+              {{ t('compendium.exercises.alreadyAdded') }}
+            </a>
+          } @else {
+            <button
+              type="button"
+              (click)="addMutation.mutate()"
+              [disabled]="addMutation.isPending()"
+              class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+            >
+              {{
+                addMutation.isPending() ? t('common.adding') : t('compendium.exercises.addToMine')
+              }}
+            </button>
+          }
+          @if (hasHistory()) {
+            <a
+              routerLink="./history"
+              class="rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
+              >{{ t('common.history') }}</a
+            >
+          }
           <a
-            [routerLink]="['/user/exercises', existing.id]"
-            class="rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+            routerLink="./edit"
+            class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            >{{ t('common.edit') }}</a
           >
-            Already Added
-          </a>
-        } @else {
           <button
             type="button"
-            (click)="addMutation.mutate()"
-            [disabled]="addMutation.isPending()"
-            class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+            (click)="showDeleteDialog.set(true)"
+            class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
           >
-            {{ addMutation.isPending() ? 'Adding...' : 'Add to My Exercises' }}
+            {{ t('common.delete') }}
           </button>
+        </div>
+        <app-confirm-dialog
+          [open]="showDeleteDialog()"
+          [title]="t('compendium.exercises.deleteTitle')"
+          [message]="
+            t('compendium.exercises.deleteMessage', { name: exerciseQuery.data()?.name ?? '' })
+          "
+          [isPending]="deleteMutation.isPending()"
+          (confirmed)="deleteMutation.mutate()"
+          (cancelled)="showDeleteDialog.set(false)"
+        />
+        @if (exerciseQuery.data(); as exercise) {
+          <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('fields.type') }}
+              </dt>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">
+                {{ t('enums.exerciseType.' + exercise.type) }}
+              </dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('fields.difficulty') }}
+              </dt>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">
+                {{ t('enums.difficulty.' + exercise.technicalDifficulty) }}
+              </dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('fields.primaryMuscles') }}
+              </dt>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">
+                {{ exercise.primaryMuscles?.join(', ') }}
+              </dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('fields.secondaryMuscles') }}
+              </dt>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">
+                {{ exercise.secondaryMuscles?.join(', ') }}
+              </dd>
+            </div>
+            <div class="sm:col-span-2">
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('fields.description') }}
+              </dt>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">{{ exercise.description }}</dd>
+            </div>
+          </dl>
         }
-        @if (hasHistory()) {
-          <a
-            routerLink="./history"
-            class="rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
-            >History</a
-          >
-        }
-        <a
-          routerLink="./edit"
-          class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-          >Edit</a
-        >
-        <button
-          type="button"
-          (click)="showDeleteDialog.set(true)"
-          class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
-        >
-          Delete
-        </button>
-      </div>
-      <app-confirm-dialog
-        [open]="showDeleteDialog()"
-        title="Delete Exercise"
-        [message]="deleteMessage()"
-        [isPending]="deleteMutation.isPending()"
-        (confirmed)="deleteMutation.mutate()"
-        (cancelled)="showDeleteDialog.set(false)"
-      />
-      @if (exerciseQuery.data(); as exercise) {
-        <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Type</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ exercise.type }}</dd>
-          </div>
-          <div>
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Difficulty</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">
-              {{ exercise.technicalDifficulty }}
-            </dd>
-          </div>
-          <div>
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Primary Muscles</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">
-              {{ exercise.primaryMuscles?.join(', ') }}
-            </dd>
-          </div>
-          <div>
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Secondary Muscles</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">
-              {{ exercise.secondaryMuscles?.join(', ') }}
-            </dd>
-          </div>
-          <div class="sm:col-span-2">
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Description</dt>
-            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ exercise.description }}</dd>
-          </div>
-        </dl>
-      }
-    </app-page-layout>
+      </app-page-layout>
+    </ng-container>
   `,
 })
 export class ExerciseDetail {
@@ -110,9 +129,6 @@ export class ExerciseDetail {
   private id = computed(() => Number(this.params()?.get('id')));
 
   showDeleteDialog = signal(false);
-  deleteMessage = computed(
-    () => `Are you sure you want to delete '${this.exerciseQuery.data()?.name ?? ''}'?`,
-  );
 
   exerciseQuery = injectQuery(() => ({
     queryKey: exerciseKeys.detail(this.id()),

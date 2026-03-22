@@ -1,6 +1,7 @@
 import { render } from '@testing-library/angular';
 import { page } from 'vitest/browser';
 import { provideRouter } from '@angular/router';
+import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { Pagination } from './pagination';
 
 describe('Pagination screenshots', () => {
@@ -8,7 +9,7 @@ describe('Pagination screenshots', () => {
     document.documentElement.classList.remove('dark');
   });
 
-  const providers = [provideRouter([])];
+  const providers = [provideTranslocoForTest(), provideRouter([])];
 
   const multiPage = { items: new Array(50), total: 874, limit: 50, offset: 0 };
   const midPage = { items: new Array(50), total: 874, limit: 50, offset: 100 };

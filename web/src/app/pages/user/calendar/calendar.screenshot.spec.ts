@@ -3,6 +3,7 @@ import { page } from 'vitest/browser';
 import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { workoutLogKeys } from '$core/query-keys';
+import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { Calendar } from './calendar';
 import { WorkoutLog } from '$generated/user-models';
 
@@ -25,6 +26,7 @@ describe('Calendar screenshots', () => {
 
     const result = await render(Calendar, {
       providers: [
+        provideTranslocoForTest(),
         provideTanStackQuery(queryClient),
         {
           provide: UserApiClient,

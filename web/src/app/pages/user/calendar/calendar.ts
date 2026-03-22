@@ -1,5 +1,6 @@
 import { Component, inject, computed, signal } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { workoutLogKeys } from '$core/query-keys';
 import { WorkoutLog, WorkoutLogStatusPlanning } from '$generated/user-models';
@@ -8,109 +9,111 @@ import { DayDialog } from './day-dialog';
 
 @Component({
   selector: 'app-calendar',
-  imports: [PageLayout, DayDialog],
+  imports: [PageLayout, DayDialog, TranslocoDirective],
   template: `
-    <app-page-layout
-      header="Calendar"
-      [isPending]="logsQuery.isPending()"
-      [errorMessage]="logsQuery.isError() ? logsQuery.error().message : undefined"
-    >
-      <!-- Month navigation -->
-      <div class="mb-4 flex items-center justify-between">
-        <button
-          type="button"
-          (click)="prevMonth()"
-          class="rounded-md p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
-        >
-          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
-          {{ monthLabel() }}
-        </h2>
-        <button
-          type="button"
-          (click)="nextMonth()"
-          class="rounded-md p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
-        >
-          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
-      </div>
-
-      <!-- Weekday headers -->
-      <div
-        class="grid grid-cols-7 gap-px text-center text-xs font-medium text-gray-500 dark:text-gray-400"
+    <ng-container *transloco="let t">
+      <app-page-layout
+        [header]="t('user.calendar.title')"
+        [isPending]="logsQuery.isPending()"
+        [errorMessage]="logsQuery.isError() ? logsQuery.error().message : undefined"
       >
-        @for (day of weekDays; track day) {
-          <div class="py-2">{{ day }}</div>
-        }
-      </div>
+        <!-- Month navigation -->
+        <div class="mb-4 flex items-center justify-between">
+          <button
+            type="button"
+            (click)="prevMonth()"
+            class="rounded-md p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+          >
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            {{ monthLabel() }}
+          </h2>
+          <button
+            type="button"
+            (click)="nextMonth()"
+            class="rounded-md p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+          >
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </div>
 
-      <!-- Calendar grid -->
-      <div class="grid grid-cols-7 gap-px">
-        @for (cell of calendarCells(); track $index) {
-          @if (cell) {
-            <button
-              type="button"
-              [disabled]="!cell.logs.length"
-              (click)="openDay(cell)"
-              class="flex min-h-12 flex-col items-center rounded-md py-1.5 text-sm transition-colors"
-              [class]="
-                cell.isToday
-                  ? cell.logs.length
-                    ? 'cursor-pointer bg-blue-50 font-semibold text-blue-700 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-300 dark:hover:bg-blue-900/40'
-                    : 'bg-blue-50 font-semibold text-blue-700 dark:bg-blue-900/20 dark:text-blue-300'
-                  : cell.logs.length
-                    ? 'cursor-pointer text-gray-900 hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-800'
-                    : 'text-gray-400 dark:text-gray-600'
-              "
-            >
-              <span>{{ cell.day }}</span>
-              @if (cell.logs.length) {
-                <div class="mt-0.5 flex gap-0.5">
-                  @for (log of cell.logs; track log.id) {
-                    <span
-                      class="h-1.5 w-1.5 rounded-full"
-                      [class]="
-                        log.status === 'finished'
-                          ? 'bg-green-500'
-                          : log.status === 'partially_finished'
-                            ? 'bg-yellow-500'
-                            : log.status === 'in_progress'
-                              ? 'bg-blue-500'
-                              : 'bg-red-500'
-                      "
-                    ></span>
-                  }
-                </div>
-              }
-            </button>
-          } @else {
-            <div></div>
+        <!-- Weekday headers -->
+        <div
+          class="grid grid-cols-7 gap-px text-center text-xs font-medium text-gray-500 dark:text-gray-400"
+        >
+          @for (day of weekDayKeys; track day) {
+            <div class="py-2">{{ t('user.calendar.' + day) }}</div>
           }
-        }
-      </div>
-    </app-page-layout>
+        </div>
 
-    <app-day-dialog
-      [open]="dialogOpen()"
-      [date]="selectedDate()"
-      [logs]="selectedLogs()"
-      (closed)="dialogOpen.set(false)"
-    />
+        <!-- Calendar grid -->
+        <div class="grid grid-cols-7 gap-px">
+          @for (cell of calendarCells(); track $index) {
+            @if (cell) {
+              <button
+                type="button"
+                [disabled]="!cell.logs.length"
+                (click)="openDay(cell)"
+                class="flex min-h-12 flex-col items-center rounded-md py-1.5 text-sm transition-colors"
+                [class]="
+                  cell.isToday
+                    ? cell.logs.length
+                      ? 'cursor-pointer bg-blue-50 font-semibold text-blue-700 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-300 dark:hover:bg-blue-900/40'
+                      : 'bg-blue-50 font-semibold text-blue-700 dark:bg-blue-900/20 dark:text-blue-300'
+                    : cell.logs.length
+                      ? 'cursor-pointer text-gray-900 hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-800'
+                      : 'text-gray-400 dark:text-gray-600'
+                "
+              >
+                <span>{{ cell.day }}</span>
+                @if (cell.logs.length) {
+                  <div class="mt-0.5 flex gap-0.5">
+                    @for (log of cell.logs; track log.id) {
+                      <span
+                        class="h-1.5 w-1.5 rounded-full"
+                        [class]="
+                          log.status === 'finished'
+                            ? 'bg-green-500'
+                            : log.status === 'partially_finished'
+                              ? 'bg-yellow-500'
+                              : log.status === 'in_progress'
+                                ? 'bg-blue-500'
+                                : 'bg-red-500'
+                        "
+                      ></span>
+                    }
+                  </div>
+                }
+              </button>
+            } @else {
+              <div></div>
+            }
+          }
+        </div>
+      </app-page-layout>
+
+      <app-day-dialog
+        [open]="dialogOpen()"
+        [date]="selectedDate()"
+        [logs]="selectedLogs()"
+        (closed)="dialogOpen.set(false)"
+      />
+    </ng-container>
   `,
 })
 export class Calendar {
@@ -121,7 +124,7 @@ export class Calendar {
   selectedDate = signal<Date | undefined>(undefined);
   selectedLogs = signal<WorkoutLog[]>([]);
 
-  weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  weekDayKeys = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
   logsQuery = injectQuery(() => ({
     queryKey: workoutLogKeys.list(),

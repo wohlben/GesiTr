@@ -8,6 +8,7 @@ import {
   injectQueryClient,
 } from '@tanstack/angular-query-experimental';
 import { CdkDragDrop, CdkDrag, CdkDropList, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { formatBreak } from '$core/format-utils';
 import { workoutKeys, workoutLogKeys } from '$core/query-keys';
@@ -64,394 +65,407 @@ type SectionFormGroup = FormGroup<{
     HlmSelectImports,
     HlmInput,
     HlmTextarea,
+    TranslocoDirective,
   ],
   providers: [WorkoutStartStore],
   template: `
-    <app-page-layout
-      header="Plan Workout"
-      [isPending]="isPending()"
-      [errorMessage]="workoutQuery.isError() ? workoutQuery.error().message : undefined"
-    >
-      @if (workoutQuery.data() && currentLogId()) {
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
-          <!-- Basic Fields -->
-          <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >Name</label
-            >
-            <input
-              hlmInput
-              id="name"
-              formControlName="name"
-              (change)="onLogChange()"
-              class="mt-1"
-            />
-          </div>
-
-          <div>
-            <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >Notes</label
-            >
-            <textarea
-              hlmTextarea
-              id="notes"
-              formControlName="notes"
-              (change)="onLogChange()"
-              rows="2"
-              class="mt-1"
-            ></textarea>
-          </div>
-
-          <!-- Sections -->
-          <div
-            formArrayName="sections"
-            cdkDropList
-            [cdkDropListData]="sectionsArray.controls"
-            (cdkDropListDropped)="onSectionDrop($event)"
-            class="space-y-4"
-          >
-            @for (section of sectionsArray.controls; track $index; let si = $index) {
-              <div
-                [formGroupName]="si"
-                cdkDrag
-                class="rounded-lg border border-gray-200 p-4 dark:border-gray-700"
+    <ng-container *transloco="let t">
+      <app-page-layout
+        [header]="t('user.workoutStart.title')"
+        [isPending]="isPending()"
+        [errorMessage]="workoutQuery.isError() ? workoutQuery.error().message : undefined"
+      >
+        @if (workoutQuery.data() && currentLogId()) {
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+            <!-- Basic Fields -->
+            <div>
+              <label
+                for="name"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >{{ t('fields.name') }}</label
               >
-                <div class="mb-3 flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <!-- Section drag handle -->
-                    <div
-                      cdkDragHandle
-                      class="flex cursor-grab flex-col gap-0.5 px-1 py-1 text-gray-400 active:cursor-grabbing dark:text-gray-500"
-                    >
-                      <div class="flex gap-0.5">
-                        <div class="h-1 w-1 rounded-full bg-current"></div>
-                        <div class="h-1 w-1 rounded-full bg-current"></div>
-                      </div>
-                      <div class="flex gap-0.5">
-                        <div class="h-1 w-1 rounded-full bg-current"></div>
-                        <div class="h-1 w-1 rounded-full bg-current"></div>
-                      </div>
-                      <div class="flex gap-0.5">
-                        <div class="h-1 w-1 rounded-full bg-current"></div>
-                        <div class="h-1 w-1 rounded-full bg-current"></div>
-                      </div>
-                    </div>
-                    <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                      Section {{ si + 1 }}
-                    </h3>
-                  </div>
-                  <button
-                    type="button"
-                    (click)="removeSection(si)"
-                    class="text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
-                  >
-                    Remove
-                  </button>
-                </div>
+              <input
+                hlmInput
+                id="name"
+                formControlName="name"
+                (change)="onLogChange()"
+                class="mt-1"
+              />
+            </div>
 
-                <div class="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <div>
-                    <span class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                      >Type</span
-                    >
-                    <brn-select
-                      formControlName="type"
-                      (valueChange)="onSectionChange(si)"
-                      class="mt-1"
-                      hlm
-                    >
-                      <hlm-select-trigger class="w-full">
-                        <hlm-select-value />
-                      </hlm-select-trigger>
-                      <hlm-select-content>
-                        <hlm-option [value]="SECTION_TYPE_MAIN">Main</hlm-option>
-                        <hlm-option [value]="SECTION_TYPE_SUPPLEMENTARY">Supplementary</hlm-option>
-                      </hlm-select-content>
-                    </brn-select>
-                  </div>
-                  <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                    Label
-                    <input
-                      hlmInput
-                      formControlName="label"
-                      (change)="onSectionChange(si)"
-                      class="mt-1"
-                    />
-                  </label>
-                </div>
+            <div>
+              <label
+                for="notes"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >{{ t('fields.notes') }}</label
+              >
+              <textarea
+                hlmTextarea
+                id="notes"
+                formControlName="notes"
+                (change)="onLogChange()"
+                rows="2"
+                class="mt-1"
+              ></textarea>
+            </div>
 
-                <!-- Exercise cards -->
+            <!-- Sections -->
+            <div
+              formArrayName="sections"
+              cdkDropList
+              [cdkDropListData]="sectionsArray.controls"
+              (cdkDropListDropped)="onSectionDrop($event)"
+              class="space-y-4"
+            >
+              @for (section of sectionsArray.controls; track $index; let si = $index) {
                 <div
-                  formArrayName="exercises"
-                  cdkDropList
-                  [cdkDropListData]="getExercisesArray(si).controls"
-                  (cdkDropListDropped)="onExerciseDrop($event, si)"
+                  [formGroupName]="si"
+                  cdkDrag
+                  class="rounded-lg border border-gray-200 p-4 dark:border-gray-700"
                 >
-                  @for (
-                    ex of getExercisesArray(si).controls;
-                    track $index;
-                    let ei = $index;
-                    let lastEx = $last
-                  ) {
-                    <div cdkDrag>
-                      @let info = store.exerciseDisplay()[ex.get('id')!.value!];
+                  <div class="mb-3 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <!-- Section drag handle -->
                       <div
-                        [formGroupName]="ei"
-                        class="rounded-md border border-gray-200 dark:border-gray-600"
+                        cdkDragHandle
+                        class="flex cursor-grab flex-col gap-0.5 px-1 py-1 text-gray-400 active:cursor-grabbing dark:text-gray-500"
                       >
-                        <!-- Exercise header -->
-                        <div
-                          class="flex items-center justify-between border-b border-gray-100 px-3 py-2 dark:border-gray-700"
-                        >
-                          <div
-                            class="flex items-center gap-2 text-sm text-gray-900 dark:text-gray-100"
-                          >
-                            <!-- Exercise drag handle -->
-                            <div
-                              cdkDragHandle
-                              class="flex cursor-grab flex-col gap-0.5 text-gray-400 active:cursor-grabbing dark:text-gray-500"
-                            >
-                              <div class="flex gap-0.5">
-                                <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
-                                <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
-                              </div>
-                              <div class="flex gap-0.5">
-                                <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
-                                <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
-                              </div>
-                              <div class="flex gap-0.5">
-                                <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
-                                <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
-                              </div>
-                            </div>
-                            <div>
-                              <span class="font-semibold">{{ info?.name ?? 'Loading...' }}</span>
-                              <span class="ml-2 text-gray-500 dark:text-gray-400">{{
-                                info?.summary
-                              }}</span>
-                            </div>
-                          </div>
-                          <button
-                            type="button"
-                            (click)="removeExercise(si, ei)"
-                            class="text-xs text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
-                          >
-                            Remove
-                          </button>
+                        <div class="flex gap-0.5">
+                          <div class="h-1 w-1 rounded-full bg-current"></div>
+                          <div class="h-1 w-1 rounded-full bg-current"></div>
                         </div>
+                        <div class="flex gap-0.5">
+                          <div class="h-1 w-1 rounded-full bg-current"></div>
+                          <div class="h-1 w-1 rounded-full bg-current"></div>
+                        </div>
+                        <div class="flex gap-0.5">
+                          <div class="h-1 w-1 rounded-full bg-current"></div>
+                          <div class="h-1 w-1 rounded-full bg-current"></div>
+                        </div>
+                      </div>
+                      <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                        {{ t('user.workouts.sectionLabel', { n: si + 1 }) }}
+                      </h3>
+                    </div>
+                    <button
+                      type="button"
+                      (click)="removeSection(si)"
+                      class="text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+                    >
+                      {{ t('common.remove') }}
+                    </button>
+                  </div>
 
-                        <!-- Editable sets -->
-                        @if (getSetsArray(si, ei).length) {
-                          @let setsArr = getSetsArray(si, ei);
-                          <div class="px-3 py-2" [formArrayName]="'sets'">
-                            <!-- Header -->
+                  <div class="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <div>
+                      <span class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{
+                        t('fields.type')
+                      }}</span>
+                      <brn-select
+                        formControlName="type"
+                        (valueChange)="onSectionChange(si)"
+                        class="mt-1"
+                        hlm
+                      >
+                        <hlm-select-trigger class="w-full">
+                          <hlm-select-value />
+                        </hlm-select-trigger>
+                        <hlm-select-content>
+                          <hlm-option [value]="SECTION_TYPE_MAIN">{{
+                            t('enums.workoutSectionType.main')
+                          }}</hlm-option>
+                          <hlm-option [value]="SECTION_TYPE_SUPPLEMENTARY">{{
+                            t('enums.workoutSectionType.supplementary')
+                          }}</hlm-option>
+                        </hlm-select-content>
+                      </brn-select>
+                    </div>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                      {{ t('fields.label') }}
+                      <input
+                        hlmInput
+                        formControlName="label"
+                        (change)="onSectionChange(si)"
+                        class="mt-1"
+                      />
+                    </label>
+                  </div>
+
+                  <!-- Exercise cards -->
+                  <div
+                    formArrayName="exercises"
+                    cdkDropList
+                    [cdkDropListData]="getExercisesArray(si).controls"
+                    (cdkDropListDropped)="onExerciseDrop($event, si)"
+                  >
+                    @for (
+                      ex of getExercisesArray(si).controls;
+                      track $index;
+                      let ei = $index;
+                      let lastEx = $last
+                    ) {
+                      <div cdkDrag>
+                        @let info = store.exerciseDisplay()[ex.get('id')!.value!];
+                        <div
+                          [formGroupName]="ei"
+                          class="rounded-md border border-gray-200 dark:border-gray-600"
+                        >
+                          <!-- Exercise header -->
+                          <div
+                            class="flex items-center justify-between border-b border-gray-100 px-3 py-2 dark:border-gray-700"
+                          >
                             <div
-                              class="mb-1 grid text-left text-xs text-gray-500 uppercase dark:text-gray-400"
-                              [class]="
-                                info?.measurementType === 'REP_BASED'
-                                  ? 'grid-cols-[2rem_5rem_6rem]'
-                                  : 'grid-cols-[2rem_6rem]'
-                              "
+                              class="flex items-center gap-2 text-sm text-gray-900 dark:text-gray-100"
                             >
-                              <span>Set</span>
-                              @if (info?.measurementType === 'REP_BASED') {
-                                <span>Reps</span>
-                                <span>Weight</span>
-                              }
-                              @if (info?.measurementType === 'TIME_BASED') {
-                                <span>Duration</span>
-                              }
-                              @if (info?.measurementType === 'DISTANCE_BASED') {
-                                <span>Distance</span>
-                              }
-                            </div>
-
-                            @for (
-                              setCtrl of setsArr.controls;
-                              track $index;
-                              let setIdx = $index;
-                              let lastSet = $last
-                            ) {
-                              <!-- Set row -->
+                              <!-- Exercise drag handle -->
                               <div
-                                [formGroupName]="setIdx"
-                                class="grid items-center py-1.5"
+                                cdkDragHandle
+                                class="flex cursor-grab flex-col gap-0.5 text-gray-400 active:cursor-grabbing dark:text-gray-500"
+                              >
+                                <div class="flex gap-0.5">
+                                  <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
+                                  <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
+                                </div>
+                                <div class="flex gap-0.5">
+                                  <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
+                                  <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
+                                </div>
+                                <div class="flex gap-0.5">
+                                  <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
+                                  <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
+                                </div>
+                              </div>
+                              <div>
+                                <span class="font-semibold">{{
+                                  info?.name ?? t('common.loading')
+                                }}</span>
+                                <span class="ml-2 text-gray-500 dark:text-gray-400">{{
+                                  info?.summary
+                                }}</span>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              (click)="removeExercise(si, ei)"
+                              class="text-xs text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+                            >
+                              {{ t('common.remove') }}
+                            </button>
+                          </div>
+
+                          <!-- Editable sets -->
+                          @if (getSetsArray(si, ei).length) {
+                            @let setsArr = getSetsArray(si, ei);
+                            <div class="px-3 py-2" [formArrayName]="'sets'">
+                              <!-- Header -->
+                              <div
+                                class="mb-1 grid text-left text-xs text-gray-500 uppercase dark:text-gray-400"
                                 [class]="
                                   info?.measurementType === 'REP_BASED'
                                     ? 'grid-cols-[2rem_5rem_6rem]'
                                     : 'grid-cols-[2rem_6rem]'
                                 "
                               >
-                                <span
-                                  class="text-sm font-medium text-gray-900 dark:text-gray-100"
-                                  >{{ setIdx + 1 }}</span
-                                >
+                                <span>{{ t('fields.set') }}</span>
                                 @if (info?.measurementType === 'REP_BASED') {
-                                  <div>
-                                    <input
-                                      hlmInput
-                                      type="number"
-                                      formControlName="targetReps"
-                                      (change)="onSetChange(si, ei, setIdx)"
-                                      class="mt-1"
-                                    />
-                                  </div>
-                                  <div>
-                                    <input
-                                      hlmInput
-                                      type="number"
-                                      formControlName="targetWeight"
-                                      (change)="onSetChange(si, ei, setIdx)"
-                                      class="mt-1"
-                                      step="0.5"
-                                    />
-                                  </div>
+                                  <span>{{ t('fields.reps') }}</span>
+                                  <span>{{ t('fields.weight') }}</span>
                                 }
                                 @if (info?.measurementType === 'TIME_BASED') {
-                                  <div>
-                                    <input
-                                      hlmInput
-                                      type="number"
-                                      formControlName="targetDuration"
-                                      (change)="onSetChange(si, ei, setIdx)"
-                                      class="mt-1"
-                                    />
-                                  </div>
+                                  <span>{{ t('fields.duration') }}</span>
                                 }
                                 @if (info?.measurementType === 'DISTANCE_BASED') {
-                                  <div>
-                                    <input
-                                      hlmInput
-                                      type="number"
-                                      formControlName="targetDistance"
-                                      (change)="onSetChange(si, ei, setIdx)"
-                                      class="mt-1"
-                                      step="0.1"
-                                    />
-                                  </div>
+                                  <span>{{ t('fields.distance') }}</span>
                                 }
                               </div>
 
-                              <!-- Rest between sets: line with centered badge -->
-                              @if (!lastSet && setCtrl.controls.restAfterSeconds.value !== null) {
+                              @for (
+                                setCtrl of setsArr.controls;
+                                track $index;
+                                let setIdx = $index;
+                                let lastSet = $last
+                              ) {
+                                <!-- Set row -->
                                 <div
                                   [formGroupName]="setIdx"
-                                  class="relative flex items-center justify-center py-0.5"
+                                  class="grid items-center py-1.5"
+                                  [class]="
+                                    info?.measurementType === 'REP_BASED'
+                                      ? 'grid-cols-[2rem_5rem_6rem]'
+                                      : 'grid-cols-[2rem_6rem]'
+                                  "
                                 >
-                                  <div
-                                    class="absolute inset-x-0 top-1/2 border-t border-dashed border-gray-200 dark:border-gray-700"
-                                  ></div>
-                                  <div
-                                    class="relative z-10 flex items-center gap-1 rounded-full bg-gray-50 px-2 py-0.5 text-xs text-gray-400 dark:bg-gray-900 dark:text-gray-500"
+                                  <span
+                                    class="text-sm font-medium text-gray-900 dark:text-gray-100"
+                                    >{{ setIdx + 1 }}</span
                                   >
-                                    <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                                      <path
-                                        fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                                        clip-rule="evenodd"
+                                  @if (info?.measurementType === 'REP_BASED') {
+                                    <div>
+                                      <input
+                                        hlmInput
+                                        type="number"
+                                        formControlName="targetReps"
+                                        (change)="onSetChange(si, ei, setIdx)"
+                                        class="mt-1"
                                       />
-                                    </svg>
-                                    <input
-                                      type="number"
-                                      formControlName="restAfterSeconds"
-                                      (change)="onSetChange(si, ei, setIdx)"
-                                      class="w-12 border-0 bg-transparent p-0 text-center text-xs text-gray-400 focus:ring-0 dark:text-gray-500"
-                                    />
-                                    <span>s</span>
-                                  </div>
+                                    </div>
+                                    <div>
+                                      <input
+                                        hlmInput
+                                        type="number"
+                                        formControlName="targetWeight"
+                                        (change)="onSetChange(si, ei, setIdx)"
+                                        class="mt-1"
+                                        step="0.5"
+                                      />
+                                    </div>
+                                  }
+                                  @if (info?.measurementType === 'TIME_BASED') {
+                                    <div>
+                                      <input
+                                        hlmInput
+                                        type="number"
+                                        formControlName="targetDuration"
+                                        (change)="onSetChange(si, ei, setIdx)"
+                                        class="mt-1"
+                                      />
+                                    </div>
+                                  }
+                                  @if (info?.measurementType === 'DISTANCE_BASED') {
+                                    <div>
+                                      <input
+                                        hlmInput
+                                        type="number"
+                                        formControlName="targetDistance"
+                                        (change)="onSetChange(si, ei, setIdx)"
+                                        class="mt-1"
+                                        step="0.1"
+                                      />
+                                    </div>
+                                  }
                                 </div>
+
+                                <!-- Rest between sets: line with centered badge -->
+                                @if (!lastSet && setCtrl.controls.restAfterSeconds.value !== null) {
+                                  <div
+                                    [formGroupName]="setIdx"
+                                    class="relative flex items-center justify-center py-0.5"
+                                  >
+                                    <div
+                                      class="absolute inset-x-0 top-1/2 border-t border-dashed border-gray-200 dark:border-gray-700"
+                                    ></div>
+                                    <div
+                                      class="relative z-10 flex items-center gap-1 rounded-full bg-gray-50 px-2 py-0.5 text-xs text-gray-400 dark:bg-gray-900 dark:text-gray-500"
+                                    >
+                                      <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                                        <path
+                                          fill-rule="evenodd"
+                                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                                          clip-rule="evenodd"
+                                        />
+                                      </svg>
+                                      <input
+                                        type="number"
+                                        formControlName="restAfterSeconds"
+                                        (change)="onSetChange(si, ei, setIdx)"
+                                        class="w-12 border-0 bg-transparent p-0 text-center text-xs text-gray-400 focus:ring-0 dark:text-gray-500"
+                                      />
+                                      <span>{{ t('common.unitSeconds') }}</span>
+                                    </div>
+                                  </div>
+                                }
                               }
-                            }
+                            </div>
+                          }
+                        </div>
+
+                        <!-- Break after exercise (editable, not shown after last) -->
+                        @if (!lastEx) {
+                          <div
+                            [formGroupName]="ei"
+                            class="relative flex items-center justify-center py-3"
+                          >
+                            <div
+                              class="absolute inset-x-0 top-1/2 border-t border-gray-200 dark:border-gray-700"
+                            ></div>
+                            <div
+                              class="relative z-10 flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs text-gray-500 shadow-sm ring-1 ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-600"
+                            >
+                              <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                                  clip-rule="evenodd"
+                                />
+                              </svg>
+                              <input
+                                type="number"
+                                formControlName="breakAfterSeconds"
+                                (change)="onExerciseChange(si, ei)"
+                                class="w-12 border-0 bg-transparent p-0 text-center text-xs text-gray-500 focus:ring-0 dark:text-gray-400"
+                              />
+                              <span>{{ t('common.unitSeconds') }}</span>
+                            </div>
                           </div>
                         }
                       </div>
+                    }
+                  </div>
 
-                      <!-- Break after exercise (editable, not shown after last) -->
-                      @if (!lastEx) {
-                        <div
-                          [formGroupName]="ei"
-                          class="relative flex items-center justify-center py-3"
-                        >
-                          <div
-                            class="absolute inset-x-0 top-1/2 border-t border-gray-200 dark:border-gray-700"
-                          ></div>
-                          <div
-                            class="relative z-10 flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs text-gray-500 shadow-sm ring-1 ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-600"
-                          >
-                            <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-                              <path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                                clip-rule="evenodd"
-                              />
-                            </svg>
-                            <input
-                              type="number"
-                              formControlName="breakAfterSeconds"
-                              (change)="onExerciseChange(si, ei)"
-                              class="w-12 border-0 bg-transparent p-0 text-center text-xs text-gray-500 focus:ring-0 dark:text-gray-400"
-                            />
-                            <span>s rest</span>
-                          </div>
-                        </div>
-                      }
-                    </div>
-                  }
+                  <!-- Add Exercise button -->
+                  <button
+                    type="button"
+                    (click)="openAddExerciseDialog(si)"
+                    class="mt-2 text-sm text-blue-500/70 hover:text-blue-600 dark:text-blue-400/70 dark:hover:text-blue-300"
+                  >
+                    {{ t('user.workouts.addExercise') }}
+                  </button>
                 </div>
-
-                <!-- Add Exercise button -->
-                <button
-                  type="button"
-                  (click)="openAddExerciseDialog(si)"
-                  class="mt-2 text-sm text-blue-500/70 hover:text-blue-600 dark:text-blue-400/70 dark:hover:text-blue-300"
-                >
-                  + Add Exercise
-                </button>
-              </div>
-            }
-          </div>
-
-          <!-- Add Section button -->
-          <button
-            type="button"
-            (click)="addSection()"
-            class="w-full rounded-md border border-dashed border-gray-300 px-3 py-1.5 text-xs text-gray-400 hover:border-gray-400 hover:text-gray-500 dark:border-gray-600 dark:text-gray-500 dark:hover:border-gray-500 dark:hover:text-gray-400"
-          >
-            + Add Section
-          </button>
-
-          <!-- Actions -->
-          <div class="flex gap-2">
-            <button
-              type="submit"
-              [disabled]="startMutation.isPending()"
-              class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
-            >
-              @if (startMutation.isPending()) {
-                Starting...
-              } @else {
-                Start Workout
               }
-            </button>
-            <a
-              routerLink="/user/workouts"
-              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
-            >
-              Cancel
-            </a>
-          </div>
-        </form>
-      }
+            </div>
 
-      <app-add-exercise-dialog
-        [open]="addDialogOpen()"
-        [sectionId]="addDialogSectionId()"
-        [logId]="currentLogId() ?? 0"
-        [exerciseCount]="addDialogExerciseCount()"
-        (exerciseAdded)="onExerciseAdded($event)"
-        (cancelled)="addDialogOpen.set(false)"
-      />
-    </app-page-layout>
+            <!-- Add Section button -->
+            <button
+              type="button"
+              (click)="addSection()"
+              class="w-full rounded-md border border-dashed border-gray-300 px-3 py-1.5 text-xs text-gray-400 hover:border-gray-400 hover:text-gray-500 dark:border-gray-600 dark:text-gray-500 dark:hover:border-gray-500 dark:hover:text-gray-400"
+            >
+              {{ t('user.workouts.addSection') }}
+            </button>
+
+            <!-- Actions -->
+            <div class="flex gap-2">
+              <button
+                type="submit"
+                [disabled]="startMutation.isPending()"
+                class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+              >
+                @if (startMutation.isPending()) {
+                  {{ t('common.starting') }}
+                } @else {
+                  {{ t('user.workoutStart.startWorkout') }}
+                }
+              </button>
+              <a
+                routerLink="/user/workouts"
+                class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+              >
+                {{ t('common.cancel') }}
+              </a>
+            </div>
+          </form>
+        }
+
+        <app-add-exercise-dialog
+          [open]="addDialogOpen()"
+          [sectionId]="addDialogSectionId()"
+          [logId]="currentLogId() ?? 0"
+          [exerciseCount]="addDialogExerciseCount()"
+          (exerciseAdded)="onExerciseAdded($event)"
+          (cancelled)="addDialogOpen.set(false)"
+        />
+      </app-page-layout>
+    </ng-container>
   `,
   styles: `
     .cdk-drag-preview {

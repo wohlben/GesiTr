@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { EquipmentDetail } from './equipment-detail';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
+import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { Equipment } from '$generated/models';
 import { UserEquipment } from '$generated/user-models';
 
@@ -55,35 +56,36 @@ function setup(userEquipment: UserEquipment[] = []) {
       },
       { provide: CompendiumApiClient, useValue: compendiumApi },
       { provide: UserApiClient, useValue: userApi },
+      provideTranslocoForTest(),
     ],
   };
 }
 
 describe('EquipmentDetail', () => {
-  it('shows "Add to My Equipment" when equipment is not yet added', async () => {
+  it('shows "compendium.equipment.addToMine" when equipment is not yet added', async () => {
     const { providers } = setup([]);
     await render(EquipmentDetail, { providers });
 
     await waitFor(() => {
-      expect(screen.getByText('Add to My Equipment')).toBeTruthy();
+      expect(screen.getByText('compendium.equipment.addToMine')).toBeTruthy();
     });
-    expect(screen.queryByText('Already Added')).toBeNull();
+    expect(screen.queryByText('compendium.equipment.alreadyAdded')).toBeNull();
   });
 
-  it('shows "Already Added" link when equipment is already imported', async () => {
+  it('shows "compendium.equipment.alreadyAdded" link when equipment is already imported', async () => {
     const { providers } = setup([USER_EQUIPMENT]);
     await render(EquipmentDetail, { providers });
 
     await waitFor(() => {
-      expect(screen.getByText('Already Added')).toBeTruthy();
+      expect(screen.getByText('compendium.equipment.alreadyAdded')).toBeTruthy();
     });
-    expect(screen.queryByText('Add to My Equipment')).toBeNull();
+    expect(screen.queryByText('compendium.equipment.addToMine')).toBeNull();
 
-    const link = screen.getByText('Already Added');
+    const link = screen.getByText('compendium.equipment.alreadyAdded');
     expect(link.getAttribute('href')).toBe('/user/equipment/10');
   });
 
-  it('shows "Add to My Equipment" when user has other equipment but not this one', async () => {
+  it('shows "compendium.equipment.addToMine" when user has other equipment but not this one', async () => {
     const otherEquipment: UserEquipment = {
       ...USER_EQUIPMENT,
       id: 99,
@@ -93,8 +95,8 @@ describe('EquipmentDetail', () => {
     await render(EquipmentDetail, { providers });
 
     await waitFor(() => {
-      expect(screen.getByText('Add to My Equipment')).toBeTruthy();
+      expect(screen.getByText('compendium.equipment.addToMine')).toBeTruthy();
     });
-    expect(screen.queryByText('Already Added')).toBeNull();
+    expect(screen.queryByText('compendium.equipment.alreadyAdded')).toBeNull();
   });
 });

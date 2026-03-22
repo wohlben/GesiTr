@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { provideLocationMocks } from '@angular/common/testing';
 import { DataTable, DataTableColumn } from './data-table';
+import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 
 describe('DataTable', () => {
   const staticColumns: DataTableColumn[] = [
@@ -32,7 +33,7 @@ describe('DataTable', () => {
   const renderTable = (columns: DataTableColumn[], extras: Record<string, unknown> = {}) =>
     render(template, {
       imports: [DataTable],
-      providers: [provideRouter([]), provideLocationMocks()],
+      providers: [provideRouter([]), provideLocationMocks(), provideTranslocoForTest()],
       componentProperties: { columns, stale: false, ...extras },
     });
 
@@ -69,7 +70,7 @@ describe('DataTable', () => {
 
     await user.click(screen.getByRole('button', { name: /type/i }));
 
-    expect(screen.getByText('All')).toBeTruthy();
+    expect(screen.getByText('common.all')).toBeTruthy();
     expect(screen.getByText('Alpha')).toBeTruthy();
     expect(screen.getByText('Beta')).toBeTruthy();
     expect(screen.getByText('Gamma')).toBeTruthy();
@@ -80,7 +81,7 @@ describe('DataTable', () => {
     await renderTable(filterableColumns);
 
     await user.click(screen.getByRole('button', { name: /type/i }));
-    await user.type(screen.getByPlaceholderText('Filter type...'), 'alp');
+    await user.type(screen.getByPlaceholderText('ui.dataTable.filterPlaceholder'), 'alp');
 
     expect(screen.getByText('Alpha')).toBeTruthy();
     expect(screen.queryByText('Beta')).toBeNull();
@@ -95,7 +96,7 @@ describe('DataTable', () => {
     const navigateSpy = vi.spyOn(router, 'navigate');
 
     await user.click(screen.getByRole('button', { name: /type/i }));
-    await user.click(screen.getByText('Beta'));
+    await user.click(screen.getByText('Beta')); // option without optionKeyPrefix, shows raw
 
     expect(navigateSpy).toHaveBeenCalledWith(
       [],
@@ -114,7 +115,7 @@ describe('DataTable', () => {
     const navigateSpy = vi.spyOn(router, 'navigate');
 
     await user.click(screen.getByRole('button', { name: /type/i }));
-    await user.click(screen.getByText('All'));
+    await user.click(screen.getByText('common.all'));
 
     expect(navigateSpy).toHaveBeenCalledWith(
       [],
@@ -130,7 +131,7 @@ describe('DataTable', () => {
 
     await user.click(screen.getByRole('button', { name: /name/i }));
 
-    expect(screen.getByPlaceholderText('Search name...')).toBeTruthy();
+    expect(screen.getByPlaceholderText('ui.dataTable.searchPlaceholder')).toBeTruthy();
   });
 
   it('closes dropdown on escape', async () => {
@@ -138,10 +139,10 @@ describe('DataTable', () => {
     await renderTable(filterableColumns);
 
     await user.click(screen.getByRole('button', { name: /type/i }));
-    expect(screen.getByText('All')).toBeTruthy();
+    expect(screen.getByText('common.all')).toBeTruthy();
 
     await user.keyboard('{Escape}');
-    expect(screen.queryByText('All')).toBeNull();
+    expect(screen.queryByText('common.all')).toBeNull();
   });
 
   it('applies stale opacity when stale is true', async () => {
@@ -159,29 +160,29 @@ describe('DataTable', () => {
   describe('column visibility', () => {
     it('renders settings gear button when columns are hideable', async () => {
       await renderTable(hideableColumns);
-      expect(screen.getByRole('button', { name: /column settings/i })).toBeTruthy();
+      expect(screen.getByRole('button', { name: /columnSettings/i })).toBeTruthy();
     });
 
     it('does not render gear button when all columns have hideable: false', async () => {
       await renderTable(staticColumns);
-      expect(screen.queryByRole('button', { name: /column settings/i })).toBeNull();
+      expect(screen.queryByRole('button', { name: /columnSettings/i })).toBeNull();
     });
 
     it('opens modal on gear click', async () => {
       const user = userEvent.setup();
       await renderTable(hideableColumns);
 
-      await user.click(screen.getByRole('button', { name: /column settings/i }));
+      await user.click(screen.getByRole('button', { name: /columnSettings/i }));
 
       expect(screen.getByRole('dialog')).toBeTruthy();
-      expect(screen.getByText('Columns')).toBeTruthy();
+      expect(screen.getByText('ui.dataTable.columns')).toBeTruthy();
     });
 
     it('shows checkboxes only for hideable columns', async () => {
       const user = userEvent.setup();
       await renderTable(hideableColumns);
 
-      await user.click(screen.getByRole('button', { name: /column settings/i }));
+      await user.click(screen.getByRole('button', { name: /columnSettings/i }));
 
       const checkboxes = screen.getAllByRole('checkbox');
       expect(checkboxes).toHaveLength(2);
@@ -193,7 +194,7 @@ describe('DataTable', () => {
       const user = userEvent.setup();
       const { fixture } = await renderTable(hideableColumns);
 
-      await user.click(screen.getByRole('button', { name: /column settings/i }));
+      await user.click(screen.getByRole('button', { name: /columnSettings/i }));
       await user.click(screen.getByLabelText('Name'));
 
       fixture.detectChanges();
@@ -210,7 +211,7 @@ describe('DataTable', () => {
       const user = userEvent.setup();
       const { fixture } = await renderTable(hideableColumns);
 
-      await user.click(screen.getByRole('button', { name: /column settings/i }));
+      await user.click(screen.getByRole('button', { name: /columnSettings/i }));
       await user.click(screen.getByLabelText('Name'));
       fixture.detectChanges();
 
@@ -225,7 +226,7 @@ describe('DataTable', () => {
       const user = userEvent.setup();
       await renderTable(hideableColumns);
 
-      await user.click(screen.getByRole('button', { name: /column settings/i }));
+      await user.click(screen.getByRole('button', { name: /columnSettings/i }));
       expect(screen.getByRole('dialog')).toBeTruthy();
 
       // Click the backdrop (the fixed overlay parent of the dialog)
@@ -239,10 +240,10 @@ describe('DataTable', () => {
       const user = userEvent.setup();
       await renderTable(hideableColumns);
 
-      await user.click(screen.getByRole('button', { name: /column settings/i }));
+      await user.click(screen.getByRole('button', { name: /columnSettings/i }));
       expect(screen.getByRole('dialog')).toBeTruthy();
 
-      await user.click(screen.getByRole('button', { name: /close/i }));
+      await user.click(screen.getByRole('button', { name: /common\.close/i }));
 
       expect(screen.queryByRole('dialog')).toBeNull();
     });
@@ -251,7 +252,7 @@ describe('DataTable', () => {
       const user = userEvent.setup();
       await renderTable(hideableColumns);
 
-      await user.click(screen.getByRole('button', { name: /column settings/i }));
+      await user.click(screen.getByRole('button', { name: /columnSettings/i }));
       expect(screen.getByRole('dialog')).toBeTruthy();
 
       await user.keyboard('{Escape}');
@@ -271,7 +272,7 @@ describe('DataTable', () => {
       await fixture.whenStable();
       fixture.detectChanges();
 
-      await user.click(screen.getByRole('button', { name: /column settings/i }));
+      await user.click(screen.getByRole('button', { name: /columnSettings/i }));
 
       const nameCheckbox = screen.getByLabelText('Name') as HTMLInputElement;
       expect(nameCheckbox.checked).toBe(true);
@@ -289,12 +290,12 @@ describe('DataTable', () => {
         </app-data-table>`,
         {
           imports: [DataTable],
-          providers: [provideRouter([]), provideLocationMocks()],
+          providers: [provideRouter([]), provideLocationMocks(), provideTranslocoForTest()],
           componentProperties: { columns: hideableColumns, onChange: changeSpy },
         },
       );
 
-      await user.click(screen.getByRole('button', { name: /column settings/i }));
+      await user.click(screen.getByRole('button', { name: /columnSettings/i }));
       await user.click(screen.getByLabelText('Value'));
 
       expect(changeSpy).toHaveBeenCalledWith(['Value']);
@@ -308,7 +309,7 @@ describe('DataTable', () => {
         </app-data-table>`,
         {
           imports: [DataTable],
-          providers: [provideRouter([]), provideLocationMocks()],
+          providers: [provideRouter([]), provideLocationMocks(), provideTranslocoForTest()],
           componentProperties: { columns: hideableColumns, initialHidden: ['Name'] },
         },
       );
@@ -316,7 +317,7 @@ describe('DataTable', () => {
       await fixture.whenStable();
       fixture.detectChanges();
 
-      await user.click(screen.getByRole('button', { name: /column settings/i }));
+      await user.click(screen.getByRole('button', { name: /columnSettings/i }));
 
       const nameCheckbox = screen.getByLabelText('Name') as HTMLInputElement;
       expect(nameCheckbox.checked).toBe(false);

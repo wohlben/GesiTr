@@ -1,5 +1,6 @@
 import { Component, inject, input, output, signal, ViewChild } from '@angular/core';
 import { injectQueryClient } from '@tanstack/angular-query-experimental';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { UserExerciseScheme } from '$generated/user-models';
 import { HlmDialogImports } from '@spartan-ng/helm/dialog';
@@ -8,35 +9,39 @@ import { ExerciseConfig } from '$ui/exercise-config/exercise-config';
 
 @Component({
   selector: 'app-add-exercise-dialog',
-  imports: [HlmDialogImports, HlmButton, ExerciseConfig],
+  imports: [HlmDialogImports, HlmButton, ExerciseConfig, TranslocoDirective],
   template: `
-    <hlm-dialog [state]="open() ? 'open' : 'closed'" (closed)="onCancel()">
-      <ng-template hlmDialogPortal>
-        <hlm-dialog-content [showCloseButton]="false">
-          <hlm-dialog-header>
-            <h3 hlmDialogTitle>Add Exercise</h3>
-          </hlm-dialog-header>
+    <ng-container *transloco="let t">
+      <hlm-dialog [state]="open() ? 'open' : 'closed'" (closed)="onCancel()">
+        <ng-template hlmDialogPortal>
+          <hlm-dialog-content [showCloseButton]="false">
+            <hlm-dialog-header>
+              <h3 hlmDialogTitle>{{ t('user.workoutLog.addExerciseTitle') }}</h3>
+            </hlm-dialog-header>
 
-          <app-exercise-config #exerciseConfig />
+            <app-exercise-config #exerciseConfig />
 
-          <!-- Actions -->
-          <hlm-dialog-footer>
-            <button hlmBtn variant="outline" hlmDialogClose [disabled]="isAdding()">Cancel</button>
-            <button
-              hlmBtn
-              (click)="onAdd()"
-              [disabled]="!exerciseConfig.canConfirm() || isAdding()"
-            >
-              @if (isAdding()) {
-                Adding...
-              } @else {
-                Add
-              }
-            </button>
-          </hlm-dialog-footer>
-        </hlm-dialog-content>
-      </ng-template>
-    </hlm-dialog>
+            <!-- Actions -->
+            <hlm-dialog-footer>
+              <button hlmBtn variant="outline" hlmDialogClose [disabled]="isAdding()">
+                {{ t('common.cancel') }}
+              </button>
+              <button
+                hlmBtn
+                (click)="onAdd()"
+                [disabled]="!exerciseConfig.canConfirm() || isAdding()"
+              >
+                @if (isAdding()) {
+                  {{ t('common.adding') }}
+                } @else {
+                  {{ t('common.add') }}
+                }
+              </button>
+            </hlm-dialog-footer>
+          </hlm-dialog-content>
+        </ng-template>
+      </hlm-dialog>
+    </ng-container>
   `,
 })
 export class AddExerciseDialog {

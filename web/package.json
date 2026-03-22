@@ -9,7 +9,9 @@
     "test": "ng test --no-watch && ng run web:test-screenshot --no-watch",
     "e2e": "ng e2e",
     "lint": "ng lint",
-    "format:check": "prettier --check 'src/**/*.{ts,html,scss}'"
+    "format:check": "prettier --check 'src/**/*.{ts,html,scss}'",
+    "i18n:extract": "transloco-keys-manager extract --input src --translations-path public/i18n --langs en",
+    "i18n:find": "transloco-keys-manager find --input src --translations-path public/i18n --langs en"
   },
   "private": true,
   "packageManager": "npm@11.11.0",
@@ -23,6 +25,7 @@
     "@angular/router": "^21.2.4",
     "@angular/service-worker": "^21.2.4",
     "@fontsource-variable/inter": "^5.2.8",
+    "@jsverse/transloco": "^8.2.1",
     "@ng-icons/core": ">=32.0.0 <34.0.0",
     "@ng-icons/lucide": ">=32.0.0 <34.0.0",
     "@ngrx/signals": "^21.0.1",
@@ -40,6 +43,7 @@
     "@angular/cli": "^21.2.1",
     "@angular/compiler-cli": "^21.2.4",
     "@eslint/js": "^10.0.1",
+    "@jsverse/transloco-keys-manager": "^8.1.0",
     "@playwright/test": "^1.58.2",
     "@spartan-ng/cli": "^0.0.1-alpha.655",
     "@tailwindcss/postcss": "^4.2.1",

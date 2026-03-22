@@ -1,6 +1,7 @@
-import { Component, input, computed, signal, effect } from '@angular/core';
+import { Component, inject, input, computed, signal, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HlmInput } from '@spartan-ng/helm/input';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 
 export interface ExerciseRunnerSet {
   targetReps: number | null;
@@ -13,9 +14,9 @@ export interface ExerciseRunnerSet {
 
 @Component({
   selector: 'app-exercise-runner',
-  imports: [FormsModule, HlmInput],
+  imports: [FormsModule, HlmInput, TranslocoDirective],
   template: `
-    <div class="rounded-md border border-gray-200 dark:border-gray-600">
+    <div *transloco="let t" class="rounded-md border border-gray-200 dark:border-gray-600">
       <!-- Exercise header -->
       <div
         class="flex items-center justify-between border-b border-gray-100 px-3 py-2 dark:border-gray-700"
@@ -39,16 +40,16 @@ export interface ExerciseRunnerSet {
                 : 'grid-cols-[2rem_6rem]'
             "
           >
-            <span>Set</span>
+            <span>{{ t('fields.set') }}</span>
             @if (measurementType() === 'REP_BASED') {
-              <span>Reps</span>
-              <span>Weight</span>
+              <span>{{ t('fields.reps') }}</span>
+              <span>{{ t('fields.weight') }}</span>
             }
             @if (measurementType() === 'TIME_BASED') {
-              <span>Duration</span>
+              <span>{{ t('fields.duration') }}</span>
             }
             @if (measurementType() === 'DISTANCE_BASED') {
-              <span>Distance</span>
+              <span>{{ t('fields.distance') }}</span>
             }
           </div>
 
@@ -129,7 +130,7 @@ export interface ExerciseRunnerSet {
                     (ngModelChange)="updateSet(idx, 'restAfterSeconds', $event)"
                     class="w-12 border-0 bg-transparent p-0 text-center text-xs text-gray-400 focus:ring-0 dark:text-gray-500"
                   />
-                  <span>s</span>
+                  <span>{{ t('common.unitSeconds') }}</span>
                 </div>
               </div>
             }
@@ -140,6 +141,7 @@ export interface ExerciseRunnerSet {
   `,
 })
 export class ExerciseRunner {
+  private transloco = inject(TranslocoService);
   exerciseName = input.required<string>();
   measurementType = input.required<string>();
   setCount = input.required<number>();
@@ -177,10 +179,7 @@ export class ExerciseRunner {
 
   measurementLabel = computed(() => {
     const mt = this.measurementType();
-    if (mt === 'REP_BASED') return 'Rep Based';
-    if (mt === 'TIME_BASED') return 'Time Based';
-    if (mt === 'DISTANCE_BASED') return 'Distance Based';
-    return mt;
+    return this.transloco.translate('enums.measurementType.' + mt);
   });
 
   /** Called by the parent to rebuild sets from Phase 1 config. */

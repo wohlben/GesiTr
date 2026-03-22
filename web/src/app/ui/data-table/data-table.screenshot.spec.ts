@@ -1,6 +1,7 @@
 import { render } from '@testing-library/angular';
 import { page } from 'vitest/browser';
 import { provideRouter } from '@angular/router';
+import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { DataTable, DataTableColumn } from './data-table';
 
 describe('DataTable screenshots', () => {
@@ -35,7 +36,7 @@ describe('DataTable screenshots', () => {
 
   const renderOpts = (stale = false) => ({
     imports: [DataTable],
-    providers: [provideRouter([])],
+    providers: [provideTranslocoForTest(), provideRouter([])],
     componentProperties: { columns, stale },
   });
 
@@ -82,7 +83,7 @@ describe('DataTable screenshots', () => {
 
   it('column settings modal - light', async () => {
     await render(template, renderOpts());
-    await page.getByRole('button', { name: /column settings/i }).click();
+    await page.getByRole('button', { name: /columnSettings/i }).click();
     const locator = page.elementLocator(document.body);
     await expect(locator).toMatchScreenshot('column-settings-light');
   });
@@ -90,7 +91,7 @@ describe('DataTable screenshots', () => {
   it('column settings modal - dark', async () => {
     document.documentElement.classList.add('dark');
     await render(template, renderOpts());
-    await page.getByRole('button', { name: /column settings/i }).click();
+    await page.getByRole('button', { name: /columnSettings/i }).click();
     const locator = page.elementLocator(document.body);
     await expect(locator).toMatchScreenshot('column-settings-dark');
   });

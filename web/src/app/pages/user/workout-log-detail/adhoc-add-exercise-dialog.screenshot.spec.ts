@@ -4,6 +4,7 @@ import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-exper
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { userExerciseKeys, exerciseKeys } from '$core/query-keys';
+import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { AdhocAddExerciseDialog } from './adhoc-add-exercise-dialog';
 import { UserExercise } from '$generated/user-models';
 import { Exercise } from '$generated/models';
@@ -58,6 +59,7 @@ describe('AdhocAddExerciseDialog screenshots', () => {
         exerciseCount: 0,
       },
       providers: [
+        provideTranslocoForTest(),
         provideTanStackQuery(queryClient),
         {
           provide: UserApiClient,

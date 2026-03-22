@@ -9,6 +9,7 @@ import {
 } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { equipmentKeys } from '$core/query-keys';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { SlugifyPipe } from '$ui/pipes/slugify';
 import { PageLayout } from '../../../layout/page-layout';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
@@ -44,89 +45,98 @@ const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
     HlmSelectImports,
     HlmInput,
     HlmTextarea,
+    TranslocoDirective,
   ],
   template: `
-    <app-page-layout
-      [header]="isCreateMode() ? 'New Equipment' : 'Edit Equipment'"
-      [isPending]="!isCreateMode() && equipmentQuery.isPending()"
-      [errorMessage]="
-        !isCreateMode() && equipmentQuery.isError() ? equipmentQuery.error().message : undefined
-      "
-    >
-      @if (isCreateMode() || equipmentQuery.data()) {
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
-          <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >Name *</label
-            >
-            <input id="name" formControlName="name" hlmInput class="mt-1" />
-          </div>
+    <ng-container *transloco="let t">
+      <app-page-layout
+        [header]="
+          isCreateMode() ? t('compendium.equipment.newTitle') : t('compendium.equipment.editTitle')
+        "
+        [isPending]="!isCreateMode() && equipmentQuery.isPending()"
+        [errorMessage]="
+          !isCreateMode() && equipmentQuery.isError() ? equipmentQuery.error().message : undefined
+        "
+      >
+        @if (isCreateMode() || equipmentQuery.data()) {
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >{{ t('fields.name') }} *</label
+              >
+              <input id="name" formControlName="name" hlmInput class="mt-1" />
+            </div>
 
-          <div>
-            <label
-              for="displayName"
-              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >Display Name *</label
-            >
-            <input id="displayName" formControlName="displayName" hlmInput class="mt-1" />
-          </div>
+            <div>
+              <label
+                for="displayName"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >{{ t('fields.displayName') }} *</label
+              >
+              <input id="displayName" formControlName="displayName" hlmInput class="mt-1" />
+            </div>
 
-          <div>
-            <label
-              for="description"
-              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >Description</label
-            >
-            <textarea
-              id="description"
-              formControlName="description"
-              rows="4"
-              hlmTextarea
-              class="mt-1"
-            ></textarea>
-          </div>
+            <div>
+              <label
+                for="description"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >{{ t('fields.description') }}</label
+              >
+              <textarea
+                id="description"
+                formControlName="description"
+                rows="4"
+                hlmTextarea
+                class="mt-1"
+              ></textarea>
+            </div>
 
-          <div>
-            <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >Category *</label
-            >
-            <brn-select formControlName="category" class="mt-1" hlm>
-              <hlm-select-trigger class="w-full">
-                <hlm-select-value />
-              </hlm-select-trigger>
-              <hlm-select-content>
-                @for (cat of categories; track cat) {
-                  <hlm-option [value]="cat">{{ cat }}</hlm-option>
-                }
-              </hlm-select-content>
-            </brn-select>
-          </div>
+            <div>
+              <label
+                for="category"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >{{ t('fields.category') }} *</label
+              >
+              <brn-select formControlName="category" class="mt-1" hlm>
+                <hlm-select-trigger class="w-full">
+                  <hlm-select-value />
+                </hlm-select-trigger>
+                <hlm-select-content>
+                  @for (cat of categories; track cat) {
+                    <hlm-option [value]="cat">{{ t('enums.equipmentCategory.' + cat) }}</hlm-option>
+                  }
+                </hlm-select-content>
+              </brn-select>
+            </div>
 
-          <div>
-            <label for="imageUrl" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >Image URL</label
-            >
-            <input id="imageUrl" formControlName="imageUrl" hlmInput class="mt-1" />
-          </div>
+            <div>
+              <label
+                for="imageUrl"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >{{ t('fields.imageUrl') }}</label
+              >
+              <input id="imageUrl" formControlName="imageUrl" hlmInput class="mt-1" />
+            </div>
 
-          <div class="flex gap-2">
-            <button
-              type="submit"
-              [disabled]="form.invalid || mutation.isPending() || createMutation.isPending()"
-              class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-            >
-              Save
-            </button>
-            <a
-              [routerLink]="isCreateMode() ? ['/compendium/equipment'] : ['..']"
-              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
-            >
-              Cancel
-            </a>
-          </div>
-        </form>
-      }
-    </app-page-layout>
+            <div class="flex gap-2">
+              <button
+                type="submit"
+                [disabled]="form.invalid || mutation.isPending() || createMutation.isPending()"
+                class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              >
+                {{ t('common.save') }}
+              </button>
+              <a
+                [routerLink]="isCreateMode() ? ['/compendium/equipment'] : ['..']"
+                class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+              >
+                {{ t('common.cancel') }}
+              </a>
+            </div>
+          </form>
+        }
+      </app-page-layout>
+    </ng-container>
   `,
 })
 export class EquipmentEdit {

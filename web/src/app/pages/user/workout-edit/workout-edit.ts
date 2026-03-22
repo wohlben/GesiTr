@@ -8,6 +8,7 @@ import {
   injectQueryClient,
 } from '@tanstack/angular-query-experimental';
 import { injectQueries } from '@tanstack/angular-query-experimental/inject-queries-experimental';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { userExerciseKeys, exerciseKeys, workoutKeys, exerciseSchemeKeys } from '$core/query-keys';
@@ -51,270 +52,313 @@ type SectionFormGroup = FormGroup<{
     HlmSelectImports,
     HlmInput,
     HlmTextarea,
+    TranslocoDirective,
   ],
   template: `
-    <app-page-layout
-      [header]="isCreateMode() ? 'New Workout' : 'Edit Workout'"
-      [isPending]="!isCreateMode() && workoutQuery.isPending()"
-      [errorMessage]="
-        !isCreateMode() && workoutQuery.isError() ? workoutQuery.error().message : undefined
-      "
-    >
-      @if (isCreateMode() || workoutQuery.data()) {
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
-          <!-- Basic Fields -->
-          <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >Name *</label
-            >
-            <input id="name" formControlName="name" hlmInput class="mt-1" />
-          </div>
-
-          <div>
-            <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >Notes</label
-            >
-            <textarea
-              id="notes"
-              formControlName="notes"
-              rows="2"
-              hlmTextarea
-              class="mt-1"
-            ></textarea>
-          </div>
-
-          <!-- Sections -->
-          <div formArrayName="sections" class="space-y-4">
-            @for (section of sectionsArray.controls; track $index; let si = $index) {
-              <div
-                [formGroupName]="si"
-                class="rounded-lg border border-gray-200 p-4 dark:border-gray-700"
+    <ng-container *transloco="let t">
+      <app-page-layout
+        [header]="isCreateMode() ? t('user.workouts.newTitle') : t('user.workouts.editTitle')"
+        [isPending]="!isCreateMode() && workoutQuery.isPending()"
+        [errorMessage]="
+          !isCreateMode() && workoutQuery.isError() ? workoutQuery.error().message : undefined
+        "
+      >
+        @if (isCreateMode() || workoutQuery.data()) {
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+            <!-- Basic Fields -->
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >{{ t('fields.name') }} *</label
               >
-                <div class="mb-3 flex items-center justify-between">
-                  <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                    Section {{ si + 1 }}
-                  </h3>
+              <input id="name" formControlName="name" hlmInput class="mt-1" />
+            </div>
+
+            <div>
+              <label
+                for="notes"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >{{ t('fields.notes') }}</label
+              >
+              <textarea
+                id="notes"
+                formControlName="notes"
+                rows="2"
+                hlmTextarea
+                class="mt-1"
+              ></textarea>
+            </div>
+
+            <!-- Sections -->
+            <div formArrayName="sections" class="space-y-4">
+              @for (section of sectionsArray.controls; track $index; let si = $index) {
+                <div
+                  [formGroupName]="si"
+                  class="rounded-lg border border-gray-200 p-4 dark:border-gray-700"
+                >
+                  <div class="mb-3 flex items-center justify-between">
+                    <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      {{ t('user.workouts.sectionLabel', { n: si + 1 }) }}
+                    </h3>
+                    <button
+                      type="button"
+                      (click)="removeSection(si)"
+                      class="text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+                    >
+                      {{ t('common.remove') }}
+                    </button>
+                  </div>
+
+                  <div class="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    <div>
+                      <span class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{
+                        t('fields.type')
+                      }}</span>
+                      <brn-select formControlName="type" class="mt-1" hlm>
+                        <hlm-select-trigger class="w-full">
+                          <hlm-select-value />
+                        </hlm-select-trigger>
+                        <hlm-select-content>
+                          <hlm-option [value]="SECTION_TYPE_MAIN">{{
+                            t('enums.workoutSectionType.main')
+                          }}</hlm-option>
+                          <hlm-option [value]="SECTION_TYPE_SUPPLEMENTARY">{{
+                            t('enums.workoutSectionType.supplementary')
+                          }}</hlm-option>
+                        </hlm-select-content>
+                      </brn-select>
+                    </div>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                      {{ t('fields.label') }}
+                      <input formControlName="label" hlmInput class="mt-1" />
+                    </label>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                      {{ t('fields.restBetweenExercises') }}
+                      <input
+                        type="number"
+                        formControlName="restBetweenExercises"
+                        hlmInput
+                        class="mt-1"
+                      />
+                    </label>
+                  </div>
+
+                  <!-- Exercises in section -->
+                  <div formArrayName="exercises" class="space-y-3">
+                    @for (ex of getExercisesArray(si).controls; track $index; let ei = $index) {
+                      <div
+                        [formGroupName]="ei"
+                        class="rounded-md border border-gray-100 bg-gray-50 p-3 dark:border-gray-600 dark:bg-gray-800/50"
+                      >
+                        <div class="mb-2 flex items-center justify-between">
+                          <span class="text-xs font-medium text-gray-600 dark:text-gray-400">
+                            {{ t('user.workouts.exerciseLabel', { n: ei + 1 }) }}
+                          </span>
+                          <button
+                            type="button"
+                            (click)="removeExercise(si, ei)"
+                            class="text-xs text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+                          >
+                            {{ t('common.remove') }}
+                          </button>
+                        </div>
+
+                        <div class="mb-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                          <div>
+                            <span
+                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                              >{{ t('ui.exerciseConfig.exerciseLabel') }}</span
+                            >
+                            <brn-select
+                              formControlName="userExerciseId"
+                              class="mt-1"
+                              hlm
+                              [placeholder]="t('common.select')"
+                            >
+                              <hlm-select-trigger class="w-full">
+                                <hlm-select-value />
+                              </hlm-select-trigger>
+                              <hlm-select-content>
+                                @for (ue of enrichedUserExercises(); track ue.id) {
+                                  <hlm-option [value]="ue.id">{{ ue.name }}</hlm-option>
+                                }
+                              </hlm-select-content>
+                            </brn-select>
+                          </div>
+                          <div>
+                            <span
+                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                              >{{ t('fields.measurementType') }}</span
+                            >
+                            <brn-select formControlName="measurementType" class="mt-1" hlm>
+                              <hlm-select-trigger class="w-full">
+                                <hlm-select-value />
+                              </hlm-select-trigger>
+                              <hlm-select-content>
+                                <hlm-option value="REP_BASED">{{
+                                  t('enums.measurementType.REP_BASED')
+                                }}</hlm-option>
+                                <hlm-option value="TIME_BASED">{{
+                                  t('enums.measurementType.TIME_BASED')
+                                }}</hlm-option>
+                                <hlm-option value="DISTANCE_BASED">{{
+                                  t('enums.measurementType.DISTANCE_BASED')
+                                }}</hlm-option>
+                              </hlm-select-content>
+                            </brn-select>
+                          </div>
+                        </div>
+
+                        <!-- REP_BASED fields -->
+                        @if (ex.get('measurementType')?.value === 'REP_BASED') {
+                          <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                            <label
+                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                            >
+                              {{ t('fields.sets') }}
+                              <input type="number" formControlName="sets" hlmInput class="mt-1" />
+                            </label>
+                            <label
+                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                            >
+                              {{ t('fields.reps') }}
+                              <input type="number" formControlName="reps" hlmInput class="mt-1" />
+                            </label>
+                            <label
+                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                            >
+                              {{ t('fields.weightKg') }}
+                              <input type="number" formControlName="weight" hlmInput class="mt-1" />
+                            </label>
+                            <label
+                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                            >
+                              {{ t('fields.restSeconds') }}
+                              <input
+                                type="number"
+                                formControlName="restBetweenSets"
+                                hlmInput
+                                class="mt-1"
+                              />
+                            </label>
+                          </div>
+                        }
+
+                        <!-- TIME_BASED fields -->
+                        @if (ex.get('measurementType')?.value === 'TIME_BASED') {
+                          <div class="grid grid-cols-2 gap-2">
+                            <label
+                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                            >
+                              {{ t('fields.durationSeconds') }}
+                              <input
+                                type="number"
+                                formControlName="duration"
+                                hlmInput
+                                class="mt-1"
+                              />
+                            </label>
+                            <label
+                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                            >
+                              {{ t('fields.timePerRepSeconds') }}
+                              <input
+                                type="number"
+                                formControlName="timePerRep"
+                                hlmInput
+                                class="mt-1"
+                              />
+                            </label>
+                          </div>
+                        }
+
+                        <!-- DISTANCE_BASED fields -->
+                        @if (ex.get('measurementType')?.value === 'DISTANCE_BASED') {
+                          <div class="grid grid-cols-2 gap-2">
+                            <label
+                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                            >
+                              {{ t('fields.distanceM') }}
+                              <input
+                                type="number"
+                                formControlName="distance"
+                                hlmInput
+                                class="mt-1"
+                              />
+                            </label>
+                            <label
+                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                            >
+                              {{ t('fields.targetTimeSeconds') }}
+                              <input
+                                type="number"
+                                formControlName="targetTime"
+                                hlmInput
+                                class="mt-1"
+                              />
+                            </label>
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+
                   <button
                     type="button"
-                    (click)="removeSection(si)"
-                    class="text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+                    (click)="addExercise(si)"
+                    class="mt-2 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                   >
-                    Remove
+                    {{ t('user.workouts.addExercise') }}
                   </button>
                 </div>
+              }
+            </div>
 
-                <div class="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                  <div>
-                    <span class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                      >Type</span
-                    >
-                    <brn-select formControlName="type" class="mt-1" hlm>
-                      <hlm-select-trigger class="w-full">
-                        <hlm-select-value />
-                      </hlm-select-trigger>
-                      <hlm-select-content>
-                        <hlm-option [value]="SECTION_TYPE_MAIN">Main</hlm-option>
-                        <hlm-option [value]="SECTION_TYPE_SUPPLEMENTARY">Supplementary</hlm-option>
-                      </hlm-select-content>
-                    </brn-select>
-                  </div>
-                  <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                    Label
-                    <input formControlName="label" hlmInput class="mt-1" />
-                  </label>
-                  <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                    Rest Between Exercises (s)
-                    <input
-                      type="number"
-                      formControlName="restBetweenExercises"
-                      hlmInput
-                      class="mt-1"
-                    />
-                  </label>
-                </div>
+            <button
+              type="button"
+              (click)="addSection()"
+              class="rounded-md border border-dashed border-gray-300 px-4 py-2 text-sm text-gray-600 hover:border-gray-400 hover:text-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:border-gray-500 dark:hover:text-gray-300"
+            >
+              {{ t('user.workouts.addSection') }}
+            </button>
 
-                <!-- Exercises in section -->
-                <div formArrayName="exercises" class="space-y-3">
-                  @for (ex of getExercisesArray(si).controls; track $index; let ei = $index) {
-                    <div
-                      [formGroupName]="ei"
-                      class="rounded-md border border-gray-100 bg-gray-50 p-3 dark:border-gray-600 dark:bg-gray-800/50"
-                    >
-                      <div class="mb-2 flex items-center justify-between">
-                        <span class="text-xs font-medium text-gray-600 dark:text-gray-400">
-                          Exercise {{ ei + 1 }}
-                        </span>
-                        <button
-                          type="button"
-                          (click)="removeExercise(si, ei)"
-                          class="text-xs text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
-                        >
-                          Remove
-                        </button>
-                      </div>
-
-                      <div class="mb-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                        <div>
-                          <span class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                            >Exercise *</span
-                          >
-                          <brn-select
-                            formControlName="userExerciseId"
-                            class="mt-1"
-                            hlm
-                            placeholder="-- Select --"
-                          >
-                            <hlm-select-trigger class="w-full">
-                              <hlm-select-value />
-                            </hlm-select-trigger>
-                            <hlm-select-content>
-                              @for (ue of enrichedUserExercises(); track ue.id) {
-                                <hlm-option [value]="ue.id">{{ ue.name }}</hlm-option>
-                              }
-                            </hlm-select-content>
-                          </brn-select>
-                        </div>
-                        <div>
-                          <span class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                            >Measurement Type</span
-                          >
-                          <brn-select formControlName="measurementType" class="mt-1" hlm>
-                            <hlm-select-trigger class="w-full">
-                              <hlm-select-value />
-                            </hlm-select-trigger>
-                            <hlm-select-content>
-                              <hlm-option value="REP_BASED">Rep Based</hlm-option>
-                              <hlm-option value="TIME_BASED">Time Based</hlm-option>
-                              <hlm-option value="DISTANCE_BASED">Distance Based</hlm-option>
-                            </hlm-select-content>
-                          </brn-select>
-                        </div>
-                      </div>
-
-                      <!-- REP_BASED fields -->
-                      @if (ex.get('measurementType')?.value === 'REP_BASED') {
-                        <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                            Sets
-                            <input type="number" formControlName="sets" hlmInput class="mt-1" />
-                          </label>
-                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                            Reps
-                            <input type="number" formControlName="reps" hlmInput class="mt-1" />
-                          </label>
-                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                            Weight (kg)
-                            <input type="number" formControlName="weight" hlmInput class="mt-1" />
-                          </label>
-                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                            Rest (s)
-                            <input
-                              type="number"
-                              formControlName="restBetweenSets"
-                              hlmInput
-                              class="mt-1"
-                            />
-                          </label>
-                        </div>
-                      }
-
-                      <!-- TIME_BASED fields -->
-                      @if (ex.get('measurementType')?.value === 'TIME_BASED') {
-                        <div class="grid grid-cols-2 gap-2">
-                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                            Duration (s)
-                            <input type="number" formControlName="duration" hlmInput class="mt-1" />
-                          </label>
-                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                            Time Per Rep (s)
-                            <input
-                              type="number"
-                              formControlName="timePerRep"
-                              hlmInput
-                              class="mt-1"
-                            />
-                          </label>
-                        </div>
-                      }
-
-                      <!-- DISTANCE_BASED fields -->
-                      @if (ex.get('measurementType')?.value === 'DISTANCE_BASED') {
-                        <div class="grid grid-cols-2 gap-2">
-                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                            Distance (m)
-                            <input type="number" formControlName="distance" hlmInput class="mt-1" />
-                          </label>
-                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                            Target Time (s)
-                            <input
-                              type="number"
-                              formControlName="targetTime"
-                              hlmInput
-                              class="mt-1"
-                            />
-                          </label>
-                        </div>
-                      }
-                    </div>
-                  }
-                </div>
-
+            <!-- Actions -->
+            <div class="flex gap-2">
+              <button
+                type="submit"
+                [disabled]="form.invalid || saveMutation.isPending()"
+                class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              >
+                {{ t('common.save') }}
+              </button>
+              <a
+                routerLink="/user/workouts"
+                class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+              >
+                {{ t('common.cancel') }}
+              </a>
+              @if (!isCreateMode()) {
                 <button
                   type="button"
-                  (click)="addExercise(si)"
-                  class="mt-2 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                  (click)="showDeleteDialog = true"
+                  class="ml-auto rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
                 >
-                  + Add Exercise
+                  {{ t('common.delete') }}
                 </button>
-              </div>
-            }
-          </div>
+              }
+            </div>
+          </form>
+        }
 
-          <button
-            type="button"
-            (click)="addSection()"
-            class="rounded-md border border-dashed border-gray-300 px-4 py-2 text-sm text-gray-600 hover:border-gray-400 hover:text-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:border-gray-500 dark:hover:text-gray-300"
-          >
-            + Add Section
-          </button>
-
-          <!-- Actions -->
-          <div class="flex gap-2">
-            <button
-              type="submit"
-              [disabled]="form.invalid || saveMutation.isPending()"
-              class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-            >
-              Save
-            </button>
-            <a
-              routerLink="/user/workouts"
-              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
-            >
-              Cancel
-            </a>
-            @if (!isCreateMode()) {
-              <button
-                type="button"
-                (click)="showDeleteDialog = true"
-                class="ml-auto rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
-              >
-                Delete
-              </button>
-            }
-          </div>
-        </form>
-      }
-
-      <app-confirm-dialog
-        [open]="showDeleteDialog"
-        title="Delete Workout"
-        message="Are you sure you want to delete this workout? This cannot be undone."
-        [isPending]="deleteMutation.isPending()"
-        (confirmed)="onDelete()"
-        (cancelled)="showDeleteDialog = false"
-      />
-    </app-page-layout>
+        <app-confirm-dialog
+          [open]="showDeleteDialog"
+          [title]="t('user.workouts.deleteTitle')"
+          [message]="t('user.workouts.deleteMessage')"
+          [isPending]="deleteMutation.isPending()"
+          (confirmed)="onDelete()"
+          (cancelled)="showDeleteDialog = false"
+        />
+      </app-page-layout>
+    </ng-container>
   `,
 })
 export class WorkoutEdit {

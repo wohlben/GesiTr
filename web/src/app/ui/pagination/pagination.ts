@@ -2,22 +2,25 @@ import { Component, effect, inject, input, linkedSignal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatedResponse } from '$core/api-clients/paginated-response';
 import { HlmNumberedPagination } from '@spartan-ng/helm/pagination';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-pagination',
-  imports: [HlmNumberedPagination],
+  imports: [HlmNumberedPagination, TranslocoDirective],
   template: `
-    @if (page(); as p) {
-      @if (p.total === 0) {
-        <p class="text-sm text-gray-500 dark:text-gray-400">{{ emptyLabel() }}</p>
-      } @else {
-        <hlm-numbered-pagination
-          [(currentPage)]="currentPage"
-          [(itemsPerPage)]="pageSize"
-          [totalItems]="p.total"
-        />
+    <ng-container *transloco="let t">
+      @if (page(); as p) {
+        @if (p.total === 0) {
+          <p class="text-sm text-gray-500 dark:text-gray-400">{{ t(emptyLabel()) }}</p>
+        } @else {
+          <hlm-numbered-pagination
+            [(currentPage)]="currentPage"
+            [(itemsPerPage)]="pageSize"
+            [totalItems]="p.total"
+          />
+        }
       }
-    }
+    </ng-container>
   `,
 })
 export class Pagination {
@@ -25,7 +28,7 @@ export class Pagination {
   private route = inject(ActivatedRoute);
 
   page = input.required<PaginatedResponse<unknown>>();
-  emptyLabel = input('No results found');
+  emptyLabel = input('ui.pagination.noResults');
 
   currentPage = linkedSignal(() => {
     const p = this.page();

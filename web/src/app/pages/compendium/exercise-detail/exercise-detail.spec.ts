@@ -7,6 +7,7 @@ import { convertToParamMap } from '@angular/router';
 import { ExerciseDetail } from './exercise-detail';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
+import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { Exercise } from '$generated/models';
 import { UserExercise } from '$generated/user-models';
 
@@ -66,35 +67,36 @@ function setup(userExercises: UserExercise[] = []) {
       },
       { provide: CompendiumApiClient, useValue: compendiumApi },
       { provide: UserApiClient, useValue: userApi },
+      provideTranslocoForTest(),
     ],
   };
 }
 
 describe('ExerciseDetail', () => {
-  it('shows "Add to My Exercises" when exercise is not yet added', async () => {
+  it('shows "compendium.exercises.addToMine" when exercise is not yet added', async () => {
     const { providers } = setup([]);
     await render(ExerciseDetail, { providers });
 
     await waitFor(() => {
-      expect(screen.getByText('Add to My Exercises')).toBeTruthy();
+      expect(screen.getByText('compendium.exercises.addToMine')).toBeTruthy();
     });
-    expect(screen.queryByText('Already Added')).toBeNull();
+    expect(screen.queryByText('compendium.exercises.alreadyAdded')).toBeNull();
   });
 
-  it('shows "Already Added" link when exercise is already imported', async () => {
+  it('shows "compendium.exercises.alreadyAdded" link when exercise is already imported', async () => {
     const { providers } = setup([USER_EXERCISE]);
     await render(ExerciseDetail, { providers });
 
     await waitFor(() => {
-      expect(screen.getByText('Already Added')).toBeTruthy();
+      expect(screen.getByText('compendium.exercises.alreadyAdded')).toBeTruthy();
     });
-    expect(screen.queryByText('Add to My Exercises')).toBeNull();
+    expect(screen.queryByText('compendium.exercises.addToMine')).toBeNull();
 
-    const link = screen.getByText('Already Added');
+    const link = screen.getByText('compendium.exercises.alreadyAdded');
     expect(link.getAttribute('href')).toBe('/user/exercises/10');
   });
 
-  it('shows "Add to My Exercises" when user has other exercises but not this one', async () => {
+  it('shows "compendium.exercises.addToMine" when user has other exercises but not this one', async () => {
     const otherExercise: UserExercise = {
       ...USER_EXERCISE,
       id: 99,
@@ -104,8 +106,8 @@ describe('ExerciseDetail', () => {
     await render(ExerciseDetail, { providers });
 
     await waitFor(() => {
-      expect(screen.getByText('Add to My Exercises')).toBeTruthy();
+      expect(screen.getByText('compendium.exercises.addToMine')).toBeTruthy();
     });
-    expect(screen.queryByText('Already Added')).toBeNull();
+    expect(screen.queryByText('compendium.exercises.alreadyAdded')).toBeNull();
   });
 });

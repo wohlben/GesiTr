@@ -1,6 +1,7 @@
 import { render } from '@testing-library/angular';
 import { page } from 'vitest/browser';
 import { provideRouter } from '@angular/router';
+import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { DayDialog } from './day-dialog';
 import { WorkoutLog } from '$generated/user-models';
 
@@ -22,7 +23,7 @@ describe('DayDialog screenshots', () => {
         date: new Date(2024, 0, 15),
         logs,
       },
-      providers: [provideRouter([])],
+      providers: [provideTranslocoForTest(), provideRouter([])],
     });
 
   it('light', async () => {

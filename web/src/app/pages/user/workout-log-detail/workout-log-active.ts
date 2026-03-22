@@ -18,6 +18,7 @@ import {
   WorkoutLogItemStatusPartiallyFinished,
   WorkoutLogItemStatusAborted,
 } from '$generated/user-models';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import {
   ViewItem,
   ViewItemSet,
@@ -48,46 +49,52 @@ function isItemTerminal(status: string): boolean {
     WorkoutLogActiveHeader,
     WorkoutLogActiveSet,
     WorkoutLogActiveBreak,
+    TranslocoDirective,
   ],
   template: `
-    <div class="flex min-h-[calc(100dvh-12rem)] flex-col md:min-h-0">
-      @for (item of viewItems(); track item.id) {
-        @if (item | asHeader; as h) {
-          <app-workout-log-active-header [data]="h" />
-        } @else if (item | asSet; as s) {
-          <app-workout-log-active-set
-            [data]="s"
-            [peeked]="peekedItemId() === s.id && s.role !== 'active'"
-            [(actualReps)]="actualReps"
-            [(actualWeight)]="actualWeight"
-            [(actualDuration)]="actualDuration"
-            [(actualDistance)]="actualDistance"
-            (done)="markDone()"
-            (skip)="markSkipped()"
-            (togglePeek)="togglePeek(s.id)"
-            (save)="saveCompletedSet($event)"
-            (jumpTo)="jumpToSet(s.set.id)"
-            (resetOverride)="resetOverride()"
-          />
-        } @else if (item | asBreak; as b) {
-          <app-workout-log-active-break
-            [data]="b"
-            [peeked]="peekedItemId() === b.id && b.role !== 'active-timer'"
-            [remainingSeconds]="restSecondsRemaining()"
-            (skip)="skipRest()"
-            (togglePeek)="togglePeek(b.id)"
-          />
+    <ng-container *transloco="let t">
+      <div class="flex min-h-[calc(100dvh-12rem)] flex-col md:min-h-0">
+        @for (item of viewItems(); track item.id) {
+          @if (item | asHeader; as h) {
+            <app-workout-log-active-header [data]="h" />
+          } @else if (item | asSet; as s) {
+            <app-workout-log-active-set
+              [data]="s"
+              [peeked]="peekedItemId() === s.id && s.role !== 'active'"
+              [(actualReps)]="actualReps"
+              [(actualWeight)]="actualWeight"
+              [(actualDuration)]="actualDuration"
+              [(actualDistance)]="actualDistance"
+              (done)="markDone()"
+              (skip)="markSkipped()"
+              (togglePeek)="togglePeek(s.id)"
+              (save)="saveCompletedSet($event)"
+              (jumpTo)="jumpToSet(s.set.id)"
+              (resetOverride)="resetOverride()"
+            />
+          } @else if (item | asBreak; as b) {
+            <app-workout-log-active-break
+              [data]="b"
+              [peeked]="peekedItemId() === b.id && b.role !== 'active-timer'"
+              [remainingSeconds]="restSecondsRemaining()"
+              (skip)="skipRest()"
+              (togglePeek)="togglePeek(b.id)"
+            />
+          }
         }
-      }
 
-      @if (allCompleted()) {
-        <div class="py-8 text-center text-gray-500 dark:text-gray-400">All sets completed!</div>
-      }
-    </div>
+        @if (allCompleted()) {
+          <div class="py-8 text-center text-gray-500 dark:text-gray-400">
+            {{ t('user.workoutLog.allCompleted') }}
+          </div>
+        }
+      </div>
+    </ng-container>
   `,
 })
 export class WorkoutLogActive {
   private destroyRef = inject(DestroyRef);
+  private transloco = inject(TranslocoService);
 
   log = input.required<WorkoutLog>();
   exerciseNames = input.required<Record<number, string>>();
@@ -129,7 +136,8 @@ export class WorkoutLogActive {
             set,
             exercise,
             section,
-            exerciseName: names[exercise.sourceExerciseSchemeId] || 'Loading...',
+            exerciseName:
+              names[exercise.sourceExerciseSchemeId] || this.transloco.translate('common.loading'),
           });
         }
       }

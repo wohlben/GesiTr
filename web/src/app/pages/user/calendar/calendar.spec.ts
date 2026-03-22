@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { UserApiClient } from '$core/api-clients/user-api-client';
+import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { Calendar } from './calendar';
 
 describe('Calendar', () => {
@@ -9,6 +10,7 @@ describe('Calendar', () => {
       providers: [
         provideTanStackQuery(new QueryClient({ defaultOptions: { queries: { retry: false } } })),
         { provide: UserApiClient, useValue: { fetchWorkoutLogs: vi.fn().mockResolvedValue([]) } },
+        provideTranslocoForTest(),
       ],
     });
   });

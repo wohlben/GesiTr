@@ -1,0 +1,309 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "new": "New",
+    "remove": "Remove",
+    "confirm": "Confirm",
+    "areYouSure": "Are you sure?",
+    "select": "-- Select --",
+    "add": "Add",
+    "adding": "Adding...",
+    "starting": "Starting...",
+    "finishing": "Finishing...",
+    "loading": "Loading...",
+    "history": "History",
+    "close": "Close",
+    "all": "All",
+    "skip": "Skip",
+    "done": "Done",
+    "unitSeconds": "s"
+  },
+  "nav": {
+    "exercises": "Exercises",
+    "equipment": "Equipment",
+    "exerciseGroups": "Exercise Groups",
+    "myExercises": "My Exercises",
+    "myEquipment": "My Equipment",
+    "myWorkouts": "My Workouts",
+    "workouts": "Workouts",
+    "calendar": "Calendar",
+    "compendium": "Compendium",
+    "personal": "Personal",
+    "toggleMenu": "Toggle menu"
+  },
+  "fields": {
+    "name": "Name",
+    "displayName": "Display Name",
+    "description": "Description",
+    "type": "Type",
+    "difficulty": "Difficulty",
+    "category": "Category",
+    "force": "Force",
+    "primaryMuscles": "Primary Muscles",
+    "secondaryMuscles": "Secondary Muscles",
+    "version": "Version",
+    "slug": "Slug",
+    "bodyWeightScaling": "Body Weight Scaling",
+    "measurementParadigms": "Measurement Paradigms",
+    "alternativeNames": "Alternative Names",
+    "author": "Author",
+    "authorName": "Author Name",
+    "authorUrl": "Author URL",
+    "createdBy": "Created By",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "imageUrl": "Image URL",
+    "internalName": "Internal name",
+    "notes": "Notes",
+    "label": "Label",
+    "sections": "Sections",
+    "exercises": "Exercises",
+    "sets": "Sets",
+    "set": "Set",
+    "reps": "Reps",
+    "weightKg": "Weight (kg)",
+    "weight": "Weight",
+    "restSeconds": "Rest (s)",
+    "durationSeconds": "Duration (s)",
+    "duration": "Duration",
+    "distance": "Distance",
+    "distanceM": "Distance (m)",
+    "targetTimeSeconds": "Target Time (s)",
+    "timePerRepSeconds": "Time Per Rep (s)",
+    "measurementType": "Measurement Type",
+    "restBetweenExercises": "Rest Between Exercises (s)",
+    "instructions": "Instructions",
+    "images": "Images",
+    "equipmentIds": "Equipment IDs",
+    "suggestedMeasurementParadigms": "Suggested Measurement Paradigms"
+  },
+  "enums": {
+    "exerciseType": {
+      "STRENGTH": "Strength",
+      "CARDIO": "Cardio",
+      "STRETCHING": "Stretching",
+      "STRONGMAN": "Strongman"
+    },
+    "force": {
+      "PULL": "Pull",
+      "PUSH": "Push",
+      "STATIC": "Static",
+      "DYNAMIC": "Dynamic",
+      "HINGE": "Hinge",
+      "ROTATION": "Rotation"
+    },
+    "muscle": {
+      "ABS": "Abs",
+      "ADDUCTORS": "Adductors",
+      "BICEPS": "Biceps",
+      "CALVES": "Calves",
+      "CHEST": "Chest",
+      "FOREARMS": "Forearms",
+      "GLUTES": "Glutes",
+      "HAMSTRINGS": "Hamstrings",
+      "HIP_FLEXORS": "Hip Flexors",
+      "LATS": "Lats",
+      "LOWER_BACK": "Lower Back",
+      "NECK": "Neck",
+      "OBLIQUES": "Obliques",
+      "QUADS": "Quads",
+      "TRAPS": "Traps",
+      "TRICEPS": "Triceps",
+      "FRONT_DELTS": "Front Delts",
+      "REAR_DELTS": "Rear Delts",
+      "RHOMBOIDS": "Rhomboids",
+      "SIDE_DELTS": "Side Delts"
+    },
+    "difficulty": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "measurementType": {
+      "REP_BASED": "Rep Based",
+      "AMRAP": "AMRAP",
+      "TIME_BASED": "Time Based",
+      "DISTANCE_BASED": "Distance Based",
+      "EMOM": "EMOM",
+      "ROUNDS_FOR_TIME": "Rounds for Time",
+      "TIME": "Time",
+      "DISTANCE": "Distance"
+    },
+    "equipmentCategory": {
+      "free_weights": "Free Weights",
+      "accessories": "Accessories",
+      "benches": "Benches",
+      "machines": "Machines",
+      "functional": "Functional",
+      "other": "Other"
+    },
+    "workoutSectionType": {
+      "main": "Main",
+      "supplementary": "Supplementary"
+    },
+    "workoutLogItemStatus": {
+      "planning": "Planning",
+      "in_progress": "In Progress",
+      "finished": "Finished",
+      "skipped": "Skipped",
+      "partially_finished": "Partially Finished",
+      "aborted": "Aborted"
+    },
+    "workoutLogStatus": {
+      "planning": "Planning",
+      "in_progress": "In Progress",
+      "adhoc": "Ad-hoc",
+      "finished": "Finished",
+      "partially_finished": "Partially Finished",
+      "aborted": "Aborted"
+    },
+    "exerciseRelationshipType": {
+      "accessory": "Accessory",
+      "alternative": "Alternative",
+      "antagonist": "Antagonist",
+      "bilateral_unilateral": "Bilateral/Unilateral",
+      "complementary": "Complementary",
+      "easier_alternative": "Easier Alternative",
+      "equipment_variation": "Equipment Variation",
+      "harder_alternative": "Harder Alternative",
+      "preparation": "Preparation",
+      "prerequisite": "Prerequisite",
+      "progresses_to": "Progresses To",
+      "progression": "Progression",
+      "regresses_to": "Regresses To",
+      "regression": "Regression",
+      "related": "Related",
+      "similar": "Similar",
+      "superset_with": "Superset With",
+      "supports": "Supports",
+      "variant": "Variant",
+      "variation": "Variation"
+    }
+  },
+  "ui": {
+    "dataTable": {
+      "all": "All",
+      "columns": "Columns",
+      "filterPlaceholder": "Filter...",
+      "searchPlaceholder": "Search...",
+      "columnSettings": "Column settings",
+      "columnVisibility": "Column visibility settings",
+      "close": "Close"
+    },
+    "pagination": {
+      "noResults": "No results found"
+    },
+    "exerciseConfig": {
+      "exerciseLabel": "Exercise *",
+      "measurementType": "Measurement Type"
+    }
+  },
+  "compendium": {
+    "exercises": {
+      "title": "Exercises",
+      "noResults": "No exercises found",
+      "deleteTitle": "Delete Exercise",
+      "deleteMessage": "Are you sure you want to delete '{{name}}'?",
+      "alreadyAdded": "Already Added",
+      "addToMine": "Add to My Exercises",
+      "newTitle": "New Exercise",
+      "editTitle": "Edit Exercise",
+      "historyTitle": "History",
+      "versionLabel": "Version {{version}}",
+      "byLabel": " by {{changedBy}}",
+      "addInstruction": "+ Add instruction",
+      "addImage": "+ Add image",
+      "addAlternativeName": "+ Add alternative name",
+      "addEquipmentId": "+ Add equipment ID"
+    },
+    "equipment": {
+      "title": "Equipment",
+      "noResults": "No equipment found",
+      "deleteTitle": "Delete Equipment",
+      "deleteMessage": "Are you sure you want to delete '{{name}}'?",
+      "alreadyAdded": "Already Added",
+      "addToMine": "Add to My Equipment",
+      "newTitle": "New Equipment",
+      "editTitle": "Edit Equipment",
+      "historyTitle": "History"
+    },
+    "exerciseGroups": {
+      "title": "Exercise Groups",
+      "noResults": "No groups found",
+      "fallbackHeader": "Exercise Group",
+      "deleteTitle": "Delete Exercise Group",
+      "deleteMessage": "Are you sure you want to delete '{{name}}'?",
+      "newTitle": "New Exercise Group",
+      "editTitle": "Edit Exercise Group"
+    }
+  },
+  "user": {
+    "exercises": {
+      "title": "My Exercises",
+      "noResults": "No exercises imported yet.",
+      "quickTrack": "Quick track",
+      "deleteTitle": "Remove Exercise",
+      "deleteMessage": "Are you sure you want to remove '{{name}}' from your exercises?"
+    },
+    "equipment": {
+      "title": "My Equipment",
+      "noResults": "No equipment imported yet.",
+      "deleteTitle": "Remove Equipment",
+      "deleteMessage": "Are you sure you want to remove '{{name}}' from your equipment?"
+    },
+    "workouts": {
+      "title": "My Workouts",
+      "newWorkout": "New Workout",
+      "adhocWorkout": "Ad-hoc Workout",
+      "adhocDescription": "Start an open-ended workout and add exercises as you go",
+      "noResults": "No workouts yet.",
+      "startWorkout": "Start workout",
+      "newTitle": "New Workout",
+      "editTitle": "Edit Workout",
+      "deleteTitle": "Delete Workout",
+      "deleteMessage": "Are you sure you want to delete this workout? This cannot be undone.",
+      "sectionLabel": "Section {{n}}",
+      "exerciseLabel": "Exercise {{n}}",
+      "addExercise": "+ Add Exercise",
+      "addSection": "+ Add Section"
+    },
+    "workoutStart": {
+      "title": "Plan Workout",
+      "startWorkout": "Start Workout"
+    },
+    "exerciseTrack": {
+      "title": "Quick Track",
+      "configureHint": "Configure the exercise above to preview sets",
+      "startWorkout": "Start Workout"
+    },
+    "workoutLog": {
+      "fallbackHeader": "Workout Log",
+      "finishWorkout": "Finish Workout",
+      "abandon": "Abandon",
+      "addExercise": "+ Add Exercise",
+      "addExerciseTitle": "Add Exercise",
+      "allCompleted": "All sets completed!",
+      "rest": "Rest",
+      "next": "Next: {{label}}",
+      "setOf": "Set {{current}} of {{total}}",
+      "target": "Target:",
+      "actual": "Actual:",
+      "restTimes": "Rest times",
+      "selectHint": "Select an exercise above to plan sets"
+    },
+    "calendar": {
+      "title": "Calendar",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    }
+  }
+}

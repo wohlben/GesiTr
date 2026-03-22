@@ -9,6 +9,7 @@ import { UserExerciseScheme } from '$generated/user-models';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmInput } from '@spartan-ng/helm/input';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 export interface ExerciseConfigResult {
   userExerciseId: number;
@@ -18,19 +19,22 @@ export interface ExerciseConfigResult {
 
 @Component({
   selector: 'app-exercise-config',
-  imports: [FormsModule, BrnSelectImports, HlmSelectImports, HlmInput],
+  imports: [FormsModule, BrnSelectImports, HlmSelectImports, HlmInput, TranslocoDirective],
   template: `
     <div
+      *transloco="let t"
       class="rounded-md border border-gray-100 bg-gray-50 p-3 dark:border-gray-600 dark:bg-gray-800/50"
     >
       <div class="mb-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div>
-          <span class="block text-xs font-medium text-gray-700 dark:text-gray-300">Exercise *</span>
+          <span class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{
+            t('ui.exerciseConfig.exerciseLabel')
+          }}</span>
           <brn-select
             [(ngModel)]="userExerciseId"
             class="mt-1"
             hlm
-            placeholder="-- Select --"
+            [placeholder]="t('common.select')"
             [disabled]="!!preselectedExerciseId()"
           >
             <hlm-select-trigger class="w-full">
@@ -44,17 +48,21 @@ export interface ExerciseConfigResult {
           </brn-select>
         </div>
         <div>
-          <span class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-            >Measurement Type</span
-          >
+          <span class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{
+            t('fields.measurementType')
+          }}</span>
           <brn-select [(ngModel)]="measurementType" class="mt-1" hlm>
             <hlm-select-trigger class="w-full">
               <hlm-select-value />
             </hlm-select-trigger>
             <hlm-select-content>
-              <hlm-option value="REP_BASED">Rep Based</hlm-option>
-              <hlm-option value="TIME_BASED">Time Based</hlm-option>
-              <hlm-option value="DISTANCE_BASED">Distance Based</hlm-option>
+              <hlm-option value="REP_BASED">{{ t('enums.measurementType.REP_BASED') }}</hlm-option>
+              <hlm-option value="TIME_BASED">{{
+                t('enums.measurementType.TIME_BASED')
+              }}</hlm-option>
+              <hlm-option value="DISTANCE_BASED">{{
+                t('enums.measurementType.DISTANCE_BASED')
+              }}</hlm-option>
             </hlm-select-content>
           </brn-select>
         </div>
@@ -64,19 +72,19 @@ export interface ExerciseConfigResult {
       @if (measurementType() === 'REP_BASED') {
         <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-            Sets
+            {{ t('fields.sets') }}
             <input type="number" [(ngModel)]="sets" hlmInput class="mt-1" />
           </label>
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-            Reps
+            {{ t('fields.reps') }}
             <input type="number" [(ngModel)]="reps" hlmInput class="mt-1" />
           </label>
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-            Weight (kg)
+            {{ t('fields.weightKg') }}
             <input type="number" [(ngModel)]="weight" hlmInput class="mt-1" />
           </label>
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-            Rest (s)
+            {{ t('fields.restSeconds') }}
             <input type="number" [(ngModel)]="restBetweenSets" hlmInput class="mt-1" />
           </label>
         </div>
@@ -86,11 +94,11 @@ export interface ExerciseConfigResult {
       @if (measurementType() === 'TIME_BASED') {
         <div class="grid grid-cols-2 gap-2">
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-            Duration (s)
+            {{ t('fields.durationSeconds') }}
             <input type="number" [(ngModel)]="duration" hlmInput class="mt-1" />
           </label>
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-            Time Per Rep (s)
+            {{ t('fields.timePerRepSeconds') }}
             <input type="number" [(ngModel)]="timePerRep" hlmInput class="mt-1" />
           </label>
         </div>
@@ -100,11 +108,11 @@ export interface ExerciseConfigResult {
       @if (measurementType() === 'DISTANCE_BASED') {
         <div class="grid grid-cols-2 gap-2">
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-            Distance (m)
+            {{ t('fields.distanceM') }}
             <input type="number" [(ngModel)]="distance" hlmInput class="mt-1" />
           </label>
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-            Target Time (s)
+            {{ t('fields.targetTimeSeconds') }}
             <input type="number" [(ngModel)]="targetTime" hlmInput class="mt-1" />
           </label>
         </div>
