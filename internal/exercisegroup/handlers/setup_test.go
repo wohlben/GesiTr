@@ -10,7 +10,7 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
-	"gesitr/internal/exercise/models"
+	"gesitr/internal/exercisegroup/models"
 	profilemodels "gesitr/internal/profile/models"
 
 	"github.com/gin-gonic/gin"
@@ -33,16 +33,8 @@ func setupTestDB(t *testing.T) {
 	}
 	db.AutoMigrate(
 		&profilemodels.UserProfileEntity{},
-		&models.ExerciseEntity{},
-		&models.ExerciseForce{},
-		&models.ExerciseMuscle{},
-		&models.ExerciseMeasurementParadigm{},
-		&models.ExerciseInstruction{},
-		&models.ExerciseImage{},
-		&models.ExerciseAlternativeName{},
-		&models.ExerciseEquipment{},
-		&models.ExerciseHistoryEntity{},
-		&models.ExerciseSchemeEntity{},
+		&models.ExerciseGroupEntity{},
+		&models.ExerciseGroupMemberEntity{},
 	)
 	db.Create(&profilemodels.UserProfileEntity{ID: "testuser", Name: "testuser"})
 	db.Create(&profilemodels.UserProfileEntity{ID: "bob", Name: "bob"})
@@ -54,22 +46,13 @@ func newRouter() *gin.Engine {
 	api := r.Group("/api")
 	api.Use(auth.UserID())
 
-	exercises := api.Group("/exercises")
-	exercises.GET("", ListExercises)
-	exercises.POST("", CreateExercise)
-	exercises.GET("/:id", GetExercise)
-	exercises.PUT("/:id", UpdateExercise)
-	exercises.DELETE("/:id", DeleteExercise)
-	exercises.GET("/:id/permissions", GetExercisePermissions)
-	exercises.GET("/:id/versions", ListExerciseVersions)
-	exercises.GET("/templates/:templateId/versions/:version", GetExerciseVersion)
-
-	schemes := api.Group("/exercise-schemes")
-	schemes.GET("", ListExerciseSchemes)
-	schemes.POST("", CreateExerciseScheme)
-	schemes.GET("/:id", GetExerciseScheme)
-	schemes.PUT("/:id", UpdateExerciseScheme)
-	schemes.DELETE("/:id", DeleteExerciseScheme)
+	groups := api.Group("/exercise-groups")
+	groups.GET("", ListExerciseGroups)
+	groups.POST("", CreateExerciseGroup)
+	groups.GET("/:id", GetExerciseGroup)
+	groups.PUT("/:id", UpdateExerciseGroup)
+	groups.DELETE("/:id", DeleteExerciseGroup)
+	groups.GET("/:id/permissions", GetExerciseGroupPermissions)
 
 	return r
 }
@@ -105,26 +88,9 @@ func doJSONAs(r *gin.Engine, method, path string, body any, userID string) *http
 	return w
 }
 
-func doRaw(r *gin.Engine, method, path, body string) *httptest.ResponseRecorder {
-	req := httptest.NewRequest(method, path, bytes.NewReader([]byte(body)))
-	req.Header.Set("Content-Type", "application/json")
-	w := httptest.NewRecorder()
-	r.ServeHTTP(w, req)
-	return w
-}
-
 type paginatedJSON struct {
 	Items  json.RawMessage `json:"items"`
 	Total  int             `json:"total"`
 	Limit  int             `json:"limit"`
 	Offset int             `json:"offset"`
-}
-
-func closeDB(t *testing.T) {
-	t.Helper()
-	sqlDB, err := database.DB.DB()
-	if err != nil {
-		t.Fatal(err)
-	}
-	sqlDB.Close()
 }

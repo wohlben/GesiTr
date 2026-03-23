@@ -41,6 +41,39 @@ function setup(userEquipment: Equipment[] = []) {
   const compendiumApi: Partial<CompendiumApiClient> = {
     fetchEquipmentItem: vi.fn().mockResolvedValue(EQUIPMENT),
     fetchEquipmentVersions: vi.fn().mockResolvedValue([EQUIPMENT]),
+    fetchEquipmentPermissions: vi
+      .fn()
+      .mockResolvedValue({ permissions: ['READ', 'MODIFY', 'DELETE'] }),
+    deleteEquipment: vi.fn(),
+  };
+  const userApi: Partial<UserApiClient> = {
+    fetchUserEquipment: vi.fn().mockResolvedValue(userEquipment),
+    createUserEquipment: vi.fn().mockResolvedValue(USER_EQUIPMENT),
+  };
+
+  return {
+    compendiumApi,
+    userApi,
+    providers: [
+      provideRouter([]),
+      provideLocationMocks(),
+      provideTanStackQuery(new QueryClient({ defaultOptions: { queries: { retry: false } } })),
+      {
+        provide: ActivatedRoute,
+        useValue: { paramMap: of(convertToParamMap({ id: '1' })) },
+      },
+      { provide: CompendiumApiClient, useValue: compendiumApi },
+      { provide: UserApiClient, useValue: userApi },
+      provideTranslocoForTest(),
+    ],
+  };
+}
+
+function setupWithPermissions(permissions: string[], userEquipment: Equipment[] = []) {
+  const compendiumApi: Partial<CompendiumApiClient> = {
+    fetchEquipmentItem: vi.fn().mockResolvedValue(EQUIPMENT),
+    fetchEquipmentVersions: vi.fn().mockResolvedValue([EQUIPMENT]),
+    fetchEquipmentPermissions: vi.fn().mockResolvedValue({ permissions }),
     deleteEquipment: vi.fn(),
   };
   const userApi: Partial<UserApiClient> = {
@@ -103,5 +136,43 @@ describe('EquipmentDetail', () => {
       expect(screen.getByText('compendium.equipment.addToMine')).toBeTruthy();
     });
     expect(screen.queryByText('compendium.equipment.alreadyAdded')).toBeNull();
+  });
+
+  it('shows edit button when user has MODIFY permission', async () => {
+    const { providers } = setupWithPermissions(['READ', 'MODIFY', 'DELETE']);
+    await render(EquipmentDetail, { providers });
+
+    await waitFor(() => {
+      expect(screen.getByText('common.edit')).toBeTruthy();
+    });
+  });
+
+  it('hides edit button when user lacks MODIFY permission', async () => {
+    const { providers } = setupWithPermissions(['READ']);
+    await render(EquipmentDetail, { providers });
+
+    await waitFor(() => {
+      expect(screen.getByText('Barbell')).toBeTruthy();
+    });
+    expect(screen.queryByText('common.edit')).toBeNull();
+  });
+
+  it('shows delete button when user has DELETE permission', async () => {
+    const { providers } = setupWithPermissions(['READ', 'MODIFY', 'DELETE']);
+    await render(EquipmentDetail, { providers });
+
+    await waitFor(() => {
+      expect(screen.getByText('common.delete')).toBeTruthy();
+    });
+  });
+
+  it('hides delete button when user lacks DELETE permission', async () => {
+    const { providers } = setupWithPermissions(['READ']);
+    await render(EquipmentDetail, { providers });
+
+    await waitFor(() => {
+      expect(screen.getByText('Barbell')).toBeTruthy();
+    });
+    expect(screen.queryByText('common.delete')).toBeNull();
   });
 });

@@ -11,7 +11,6 @@ const exercise: Exercise = {
   createdAt: '2024-01-15T10:00:00Z',
   updatedAt: '2024-01-15T10:00:00Z',
   name: 'Bench Press',
-  slug: 'bench-press',
   type: 'STRENGTH',
   force: ['PUSH'],
   primaryMuscles: ['CHEST', 'TRICEPS'],

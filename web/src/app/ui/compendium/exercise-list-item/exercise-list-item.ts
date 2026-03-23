@@ -38,9 +38,6 @@ import { SlugifyPipe } from '$ui/pipes/slugify';
       {{ exercise().secondaryMuscles?.join(', ') }}
     </td>
     <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
-      {{ exercise().slug }}
-    </td>
-    <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
       {{ exercise().bodyWeightScaling }}
     </td>
     <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">

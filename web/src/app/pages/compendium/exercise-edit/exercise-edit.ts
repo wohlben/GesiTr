@@ -502,6 +502,12 @@ export class ExerciseEdit {
     enabled: !!this.id() && !this.isCreateMode(),
   }));
 
+  permissionsQuery = injectQuery(() => ({
+    queryKey: exerciseKeys.permissions(this.id()),
+    queryFn: () => this.api.fetchExercisePermissions(this.id()),
+    enabled: !!this.id() && !this.isCreateMode(),
+  }));
+
   mutation = injectMutation(() => ({
     mutationFn: (data: Parameters<typeof this.api.updateExercise>[1]) =>
       this.api.updateExercise(this.id(), data),
@@ -525,6 +531,13 @@ export class ExerciseEdit {
   }));
 
   constructor() {
+    effect(() => {
+      const perms = this.permissionsQuery.data();
+      if (perms && !perms.permissions.includes('MODIFY')) {
+        this.router.navigate(['..'], { relativeTo: this.route });
+      }
+    });
+
     effect(() => {
       const data = this.exerciseQuery.data();
       if (data) {

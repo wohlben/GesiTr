@@ -19,18 +19,22 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
         [errorMessage]="groupQuery.isError() ? groupQuery.error().message : undefined"
       >
         <div actions class="flex gap-2">
-          <a
-            routerLink="./edit"
-            class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-            >{{ t('common.edit') }}</a
-          >
-          <button
-            type="button"
-            (click)="showDeleteDialog.set(true)"
-            class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
-          >
-            {{ t('common.delete') }}
-          </button>
+          @if (canModify()) {
+            <a
+              routerLink="./edit"
+              class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+              >{{ t('common.edit') }}</a
+            >
+          }
+          @if (canDelete()) {
+            <button
+              type="button"
+              (click)="showDeleteDialog.set(true)"
+              class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+            >
+              {{ t('common.delete') }}
+            </button>
+          }
         </div>
         <app-confirm-dialog
           [open]="showDeleteDialog()"
@@ -71,6 +75,23 @@ export class ExerciseGroupDetail {
   private id = computed(() => Number(this.params()?.get('id')));
 
   showDeleteDialog = signal(false);
+
+  permissionsQuery = injectQuery(() => ({
+    queryKey: exerciseGroupKeys.permissions(this.id()),
+    queryFn: () => this.api.fetchExerciseGroupPermissions(this.id()),
+    enabled: !!this.id(),
+  }));
+
+  canModify = computed(
+    () =>
+      this.permissionsQuery.isSuccess() &&
+      (this.permissionsQuery.data()?.permissions?.includes('MODIFY') ?? false),
+  );
+  canDelete = computed(
+    () =>
+      this.permissionsQuery.isSuccess() &&
+      (this.permissionsQuery.data()?.permissions?.includes('DELETE') ?? false),
+  );
 
   groupQuery = injectQuery(() => ({
     queryKey: exerciseGroupKeys.detail(this.id()),

@@ -170,7 +170,6 @@ func seedEquipment() error {
 
 type jsonExercise struct {
 	Name                          string   `json:"name"`
-	Slug                          string   `json:"slug"`
 	Type                          string   `json:"type"`
 	Force                         []string `json:"force"`
 	PrimaryMuscles                []string `json:"primaryMuscles"`
@@ -210,7 +209,6 @@ func seedExercises() error {
 		}
 		e := exerciseModels.ExerciseEntity{
 			Name:                j.Name,
-			Slug:                j.Slug,
 			Type:                exerciseModels.ExerciseType(j.Type),
 			TechnicalDifficulty: exerciseModels.TechnicalDifficulty(j.TechnicalDifficulty),
 			BodyWeightScaling:   j.BodyWeightScaling,

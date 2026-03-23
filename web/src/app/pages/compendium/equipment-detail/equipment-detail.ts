@@ -46,18 +46,22 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
               >{{ t('common.history') }}</a
             >
           }
-          <a
-            routerLink="./edit"
-            class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-            >{{ t('common.edit') }}</a
-          >
-          <button
-            type="button"
-            (click)="showDeleteDialog.set(true)"
-            class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
-          >
-            {{ t('common.delete') }}
-          </button>
+          @if (canModify()) {
+            <a
+              routerLink="./edit"
+              class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+              >{{ t('common.edit') }}</a
+            >
+          }
+          @if (canDelete()) {
+            <button
+              type="button"
+              (click)="showDeleteDialog.set(true)"
+              class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+            >
+              {{ t('common.delete') }}
+            </button>
+          }
         </div>
         <app-confirm-dialog
           [open]="showDeleteDialog()"
@@ -126,6 +130,23 @@ export class EquipmentDetail {
     queryKey: userEquipmentKeys.list(),
     queryFn: () => this.userApi.fetchUserEquipment(),
   }));
+
+  permissionsQuery = injectQuery(() => ({
+    queryKey: equipmentKeys.permissions(this.id()),
+    queryFn: () => this.api.fetchEquipmentPermissions(this.id()),
+    enabled: !!this.id(),
+  }));
+
+  canModify = computed(
+    () =>
+      this.permissionsQuery.isSuccess() &&
+      (this.permissionsQuery.data()?.permissions?.includes('MODIFY') ?? false),
+  );
+  canDelete = computed(
+    () =>
+      this.permissionsQuery.isSuccess() &&
+      (this.permissionsQuery.data()?.permissions?.includes('DELETE') ?? false),
+  );
 
   hasHistory = computed(() => (this.versionsQuery.data()?.length ?? 0) > 1);
 

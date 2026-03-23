@@ -93,7 +93,7 @@ func TestMainFunction(t *testing.T) {
 		"createdBy": "sinon", "createdAt": ts, "equipmentTemplateId": "bar", "fulfillsEquipmentTemplateId": "bar",
 	})
 	writeTempJSON(t, tmpDir, "compendium_exercises", "ex.json", map[string]any{
-		"name": "X", "slug": "x", "type": "STRENGTH", "force": []string{}, "primaryMuscles": []string{},
+		"name": "X", "type": "STRENGTH", "force": []string{}, "primaryMuscles": []string{},
 		"secondaryMuscles": []string{}, "technicalDifficulty": "beginner", "bodyWeightScaling": 0.0,
 		"suggestedMeasurementParadigms": []string{}, "description": "", "instructions": []string{},
 		"images": []string{}, "alternativeNames": []string{}, "authorName": nil, "authorUrl": nil,
@@ -374,7 +374,7 @@ func TestSeedExercises(t *testing.T) {
 		ts := int64(1700000000)
 		updTs := int64(1700001000)
 		writeTempJSON(t, tmpDir, "compendium_exercises", "squat.json", map[string]any{
-			"name": "Squat", "slug": "squat", "type": "STRENGTH",
+			"name": "Squat", "type": "STRENGTH",
 			"force": []string{"PUSH"}, "primaryMuscles": []string{"QUADS"},
 			"secondaryMuscles":    []string{"GLUTES"},
 			"technicalDifficulty": "intermediate", "bodyWeightScaling": 1.0,
@@ -399,7 +399,7 @@ func TestSeedExercises(t *testing.T) {
 
 		// Verify child records
 		var ex exerciseModels.ExerciseEntity
-		database.DB.Where("slug = ?", "squat").First(&ex)
+		database.DB.Where("name = ?", "Squat").First(&ex)
 		var fc, mc, pc, ic, imgc, alc, eqc int64
 		database.DB.Model(&exerciseModels.ExerciseForce{}).Where("exercise_id = ?", ex.ID).Count(&fc)
 		database.DB.Model(&exerciseModels.ExerciseMuscle{}).Where("exercise_id = ?", ex.ID).Count(&mc)
@@ -429,7 +429,7 @@ func TestSeedExercises(t *testing.T) {
 
 		ts := int64(1700000000)
 		writeTempJSON(t, tmpDir, "compendium_exercises", "curl.json", map[string]any{
-			"name": "Curl", "slug": "curl", "type": "STRENGTH",
+			"name": "Curl", "type": "STRENGTH",
 			"force": []string{}, "primaryMuscles": []string{},
 			"secondaryMuscles":    []string{},
 			"technicalDifficulty": "beginner", "bodyWeightScaling": 0.0,
@@ -473,7 +473,7 @@ func TestSeedExercises(t *testing.T) {
 		equipmentIDMap = make(map[string]uint)
 		ts := int64(1700000000)
 		writeTempJSON(t, tmpDir, "compendium_exercises", "x.json", map[string]any{
-			"name": "X", "slug": "x", "type": "STRENGTH",
+			"name": "X", "type": "STRENGTH",
 			"force": []string{}, "primaryMuscles": []string{}, "secondaryMuscles": []string{},
 			"technicalDifficulty": "beginner", "bodyWeightScaling": 0.0,
 			"suggestedMeasurementParadigms": []string{}, "description": "",

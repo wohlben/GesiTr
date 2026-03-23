@@ -9,7 +9,6 @@ import (
 	"gesitr/internal/database"
 	"gesitr/internal/exercise/models"
 	"gesitr/internal/shared"
-	"gesitr/internal/slug"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -102,11 +101,6 @@ func CreateExercise(c *gin.Context) {
 		return
 	}
 
-	// Auto-generate slug from name if not provided
-	if dto.Slug == "" {
-		dto.Slug = slug.Generate(dto.Name)
-	}
-
 	// Default templateId to a UUID if not provided
 	if dto.TemplateID == "" {
 		dto.TemplateID = uuid.New().String()
@@ -135,6 +129,21 @@ func CreateExercise(c *gin.Context) {
 		ChangedBy:  resultDTO.Owner,
 	})
 	c.JSON(http.StatusCreated, resultDTO)
+}
+
+func GetExercisePermissions(c *gin.Context) {
+	var entity models.ExerciseEntity
+	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
+		return
+	}
+	userID := auth.GetUserID(c)
+	perms, visible := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
+	if !visible {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
+		return
+	}
+	c.JSON(http.StatusOK, shared.PermissionsResponse{Permissions: perms})
 }
 
 func GetExercise(c *gin.Context) {

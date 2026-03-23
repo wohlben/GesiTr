@@ -97,6 +97,24 @@ export class CompendiumApiClient {
     );
   }
 
+  fetchExercisePermissions(id: number): Promise<{ permissions: string[] }> {
+    return firstValueFrom(
+      this.http.get<{ permissions: string[] }>(`/api/exercises/${id}/permissions`),
+    );
+  }
+
+  fetchEquipmentPermissions(id: number): Promise<{ permissions: string[] }> {
+    return firstValueFrom(
+      this.http.get<{ permissions: string[] }>(`/api/equipment/${id}/permissions`),
+    );
+  }
+
+  fetchExerciseGroupPermissions(id: number): Promise<{ permissions: string[] }> {
+    return firstValueFrom(
+      this.http.get<{ permissions: string[] }>(`/api/exercise-groups/${id}/permissions`),
+    );
+  }
+
   deleteExercise(id: number): Promise<void> {
     return firstValueFrom(this.http.delete<void>(`/api/exercises/${id}`));
   }

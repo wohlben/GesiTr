@@ -564,3 +564,99 @@ func TestDeleteEquipment(t *testing.T) {
 		}
 	})
 }
+
+func TestGetEquipmentPermissions(t *testing.T) {
+	setupTestDB(t)
+	r := newRouter()
+
+	// Create a public equipment owned by testuser
+	doJSON(r, "POST", "/api/equipment", map[string]any{
+		"name": "barbell", "displayName": "Barbell", "description": "Standard barbell",
+		"category": "free_weights", "templateId": "barbell", "owner": "testuser",
+		"public": true,
+	})
+
+	// Create a private equipment owned by testuser
+	doJSON(r, "POST", "/api/equipment", map[string]any{
+		"name": "custom-band", "displayName": "Custom Band", "description": "Private",
+		"category": "accessories", "templateId": "custom-band", "owner": "testuser",
+		"public": false,
+	})
+
+	t.Run("owner gets full permissions", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/equipment/1/permissions", nil)
+		if w.Code != http.StatusOK {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var resp shared.PermissionsResponse
+		json.Unmarshal(w.Body.Bytes(), &resp)
+		if len(resp.Permissions) != 3 {
+			t.Fatalf("expected 3 permissions, got %d: %v", len(resp.Permissions), resp.Permissions)
+		}
+	})
+
+	t.Run("non-owner on public gets READ only", func(t *testing.T) {
+		w := doJSONAs(r, "GET", "/api/equipment/1/permissions", "system", nil)
+		if w.Code != http.StatusOK {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var resp shared.PermissionsResponse
+		json.Unmarshal(w.Body.Bytes(), &resp)
+		if len(resp.Permissions) != 1 || resp.Permissions[0] != "READ" {
+			t.Fatalf("expected [READ], got %v", resp.Permissions)
+		}
+	})
+
+	t.Run("non-owner on private gets 404", func(t *testing.T) {
+		w := doJSONAs(r, "GET", "/api/equipment/2/permissions", "system", nil)
+		if w.Code != http.StatusNotFound {
+			t.Errorf("expected 404, got %d", w.Code)
+		}
+	})
+
+	t.Run("owner gets READ, MODIFY, DELETE", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/equipment/1/permissions", nil)
+		var resp shared.PermissionsResponse
+		json.Unmarshal(w.Body.Bytes(), &resp)
+		expected := map[shared.Permission]bool{
+			shared.PermissionRead:   false,
+			shared.PermissionModify: false,
+			shared.PermissionDelete: false,
+		}
+		for _, p := range resp.Permissions {
+			expected[p] = true
+		}
+		for perm, found := range expected {
+			if !found {
+				t.Errorf("missing permission: %s", perm)
+			}
+		}
+	})
+
+	t.Run("owner on private still gets full permissions", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/equipment/2/permissions", nil)
+		if w.Code != http.StatusOK {
+			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+		}
+		var resp shared.PermissionsResponse
+		json.Unmarshal(w.Body.Bytes(), &resp)
+		if len(resp.Permissions) != 3 {
+			t.Fatalf("expected 3 permissions for owner on private, got %d: %v", len(resp.Permissions), resp.Permissions)
+		}
+	})
+
+	t.Run("not found", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/equipment/999/permissions", nil)
+		if w.Code != http.StatusNotFound {
+			t.Errorf("expected 404, got %d", w.Code)
+		}
+	})
+
+	t.Run("db error", func(t *testing.T) {
+		closeDB(t)
+		w := doJSON(r, "GET", "/api/equipment/1/permissions", nil)
+		if w.Code != http.StatusNotFound {
+			t.Errorf("expected 404 (db closed), got %d", w.Code)
+		}
+	})
+}

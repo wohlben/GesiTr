@@ -15,7 +15,6 @@ const EXERCISE: Exercise = {
   createdAt: '',
   updatedAt: '',
   name: 'Bench Press',
-  slug: 'bench-press',
   type: 'STRENGTH',
   force: [],
   primaryMuscles: ['CHEST'],
@@ -39,7 +38,6 @@ const USER_EXERCISE: Exercise = {
   createdAt: '',
   updatedAt: '',
   name: 'Bench Press',
-  slug: 'bench-press',
   type: 'STRENGTH',
   force: [],
   primaryMuscles: ['CHEST'],
@@ -62,6 +60,39 @@ function setup(userExercises: Exercise[] = []) {
   const compendiumApi: Partial<CompendiumApiClient> = {
     fetchExercise: vi.fn().mockResolvedValue(EXERCISE),
     fetchExerciseVersions: vi.fn().mockResolvedValue([EXERCISE]),
+    fetchExercisePermissions: vi
+      .fn()
+      .mockResolvedValue({ permissions: ['READ', 'MODIFY', 'DELETE'] }),
+    deleteExercise: vi.fn(),
+  };
+  const userApi: Partial<UserApiClient> = {
+    fetchUserExercises: vi.fn().mockResolvedValue(userExercises),
+    createUserExercise: vi.fn().mockResolvedValue(USER_EXERCISE),
+  };
+
+  return {
+    compendiumApi,
+    userApi,
+    providers: [
+      provideRouter([]),
+      provideLocationMocks(),
+      provideTanStackQuery(new QueryClient({ defaultOptions: { queries: { retry: false } } })),
+      {
+        provide: ActivatedRoute,
+        useValue: { paramMap: of(convertToParamMap({ id: '1' })) },
+      },
+      { provide: CompendiumApiClient, useValue: compendiumApi },
+      { provide: UserApiClient, useValue: userApi },
+      provideTranslocoForTest(),
+    ],
+  };
+}
+
+function setupWithPermissions(permissions: string[], userExercises: Exercise[] = []) {
+  const compendiumApi: Partial<CompendiumApiClient> = {
+    fetchExercise: vi.fn().mockResolvedValue(EXERCISE),
+    fetchExerciseVersions: vi.fn().mockResolvedValue([EXERCISE]),
+    fetchExercisePermissions: vi.fn().mockResolvedValue({ permissions }),
     deleteExercise: vi.fn(),
   };
   const userApi: Partial<UserApiClient> = {
@@ -124,5 +155,43 @@ describe('ExerciseDetail', () => {
       expect(screen.getByText('compendium.exercises.addToMine')).toBeTruthy();
     });
     expect(screen.queryByText('compendium.exercises.alreadyAdded')).toBeNull();
+  });
+
+  it('shows edit button when user has MODIFY permission', async () => {
+    const { providers } = setupWithPermissions(['READ', 'MODIFY', 'DELETE']);
+    await render(ExerciseDetail, { providers });
+
+    await waitFor(() => {
+      expect(screen.getByText('common.edit')).toBeTruthy();
+    });
+  });
+
+  it('hides edit button when user lacks MODIFY permission', async () => {
+    const { providers } = setupWithPermissions(['READ']);
+    await render(ExerciseDetail, { providers });
+
+    await waitFor(() => {
+      expect(screen.getByText('Bench Press')).toBeTruthy();
+    });
+    expect(screen.queryByText('common.edit')).toBeNull();
+  });
+
+  it('shows delete button when user has DELETE permission', async () => {
+    const { providers } = setupWithPermissions(['READ', 'MODIFY', 'DELETE']);
+    await render(ExerciseDetail, { providers });
+
+    await waitFor(() => {
+      expect(screen.getByText('common.delete')).toBeTruthy();
+    });
+  });
+
+  it('hides delete button when user lacks DELETE permission', async () => {
+    const { providers } = setupWithPermissions(['READ']);
+    await render(ExerciseDetail, { providers });
+
+    await waitFor(() => {
+      expect(screen.getByText('Bench Press')).toBeTruthy();
+    });
+    expect(screen.queryByText('common.delete')).toBeNull();
   });
 });

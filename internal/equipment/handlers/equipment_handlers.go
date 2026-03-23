@@ -94,6 +94,21 @@ func CreateEquipment(c *gin.Context) {
 	c.JSON(http.StatusCreated, resultDTO)
 }
 
+func GetEquipmentPermissions(c *gin.Context) {
+	var entity models.EquipmentEntity
+	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Equipment not found"})
+		return
+	}
+	userID := auth.GetUserID(c)
+	perms, visible := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
+	if !visible {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Equipment not found"})
+		return
+	}
+	c.JSON(http.StatusOK, shared.PermissionsResponse{Permissions: perms})
+}
+
 func GetEquipment(c *gin.Context) {
 	var entity models.EquipmentEntity
 	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {

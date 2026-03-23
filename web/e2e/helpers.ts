@@ -1,4 +1,18 @@
-import { APIRequestContext, expect } from '@playwright/test';
+import { APIRequestContext, expect, request } from '@playwright/test';
+
+// The Angular proxy in e2e sets X-User-Id on all /api requests.
+// To create resources as a different user, we need a direct API context
+// that bypasses the proxy and sets its own X-User-Id header.
+// In Docker, there's no proxy — PLAYWRIGHT_TEST_BASE_URL points directly at the API.
+// Locally, the proxy runs on :4200/:4300 and the API on :9876.
+const E2E_API_BASE = process.env['PLAYWRIGHT_TEST_BASE_URL'] ?? 'http://localhost:9876';
+
+export async function createApiContextAs(userId: string): Promise<APIRequestContext> {
+  return request.newContext({
+    baseURL: E2E_API_BASE,
+    extraHTTPHeaders: { 'X-User-Id': userId },
+  });
+}
 
 export function toSlug(name: string): string {
   return name
@@ -30,6 +44,40 @@ export async function createExercise(
   const res = await request.post('/api/exercises', { data });
   expect(res.ok(), `Failed to create exercise: ${await res.text()}`).toBeTruthy();
   return res.json();
+}
+
+export async function createExerciseAs(
+  userId: string,
+  overrides: Record<string, unknown> = {},
+) {
+  const ctx = await createApiContextAs(userId);
+  const data = {
+    name: 'Test Exercise',
+    type: 'STRENGTH',
+    technicalDifficulty: 'beginner',
+    bodyWeightScaling: 0,
+    force: [],
+    primaryMuscles: [],
+    secondaryMuscles: [],
+    suggestedMeasurementParadigms: [],
+    description: '',
+    instructions: [],
+    images: [],
+    alternativeNames: [],
+    equipmentIds: [],
+    ...overrides,
+  };
+  const res = await ctx.post('/api/exercises', { data });
+  expect(res.ok(), `Failed to create exercise as ${userId}: ${await res.text()}`).toBeTruthy();
+  const json = await res.json();
+  await ctx.dispose();
+  return json;
+}
+
+export async function deleteExerciseAs(id: number, userId: string) {
+  const ctx = await createApiContextAs(userId);
+  await ctx.delete(`/api/exercises/${id}`);
+  await ctx.dispose();
 }
 
 export async function updateExercise(

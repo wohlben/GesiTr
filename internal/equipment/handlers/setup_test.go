@@ -52,6 +52,7 @@ func newRouter() *gin.Engine {
 	equipment.GET("/:id", GetEquipment)
 	equipment.PUT("/:id", UpdateEquipment)
 	equipment.DELETE("/:id", DeleteEquipment)
+	equipment.GET("/:id/permissions", GetEquipmentPermissions)
 	equipment.GET("/:id/versions", ListEquipmentVersions)
 	equipment.GET("/templates/:templateId/versions/:version", GetEquipmentVersion)
 

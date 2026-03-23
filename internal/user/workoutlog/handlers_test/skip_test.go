@@ -13,7 +13,7 @@ func TestSkipSet(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -49,7 +49,7 @@ func TestPropagationAllSkipped(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -93,7 +93,7 @@ func TestPropagationMixedSkipFinish(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -141,7 +141,7 @@ func TestAbandonPreservesSkipped(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",

@@ -174,6 +174,12 @@ export class EquipmentEdit {
     enabled: !!this.id() && !this.isCreateMode(),
   }));
 
+  permissionsQuery = injectQuery(() => ({
+    queryKey: equipmentKeys.permissions(this.id()),
+    queryFn: () => this.api.fetchEquipmentPermissions(this.id()),
+    enabled: !!this.id() && !this.isCreateMode(),
+  }));
+
   mutation = injectMutation(() => ({
     mutationFn: (data: Parameters<typeof this.api.updateEquipment>[1]) =>
       this.api.updateEquipment(this.id(), data),
@@ -197,6 +203,13 @@ export class EquipmentEdit {
   }));
 
   constructor() {
+    effect(() => {
+      const perms = this.permissionsQuery.data();
+      if (perms && !perms.permissions.includes('MODIFY')) {
+        this.router.navigate(['..'], { relativeTo: this.route });
+      }
+    });
+
     effect(() => {
       const data = this.equipmentQuery.data();
       if (data) {

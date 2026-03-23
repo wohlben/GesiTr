@@ -14,7 +14,7 @@ func TestListWorkoutSectionExercises(t *testing.T) {
 
 	// Setup: exercise -> scheme -> workout -> section
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Bench Press", "slug": "bench-press", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"name": "Bench Press", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
@@ -94,7 +94,7 @@ func TestCreateWorkoutSectionExercise(t *testing.T) {
 
 	// Setup
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 5, "reps": 5,
@@ -152,7 +152,7 @@ func TestDeleteWorkoutSectionExercise(t *testing.T) {
 
 	// Setup
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Deadlift", "slug": "deadlift", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"name": "Deadlift", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 8,

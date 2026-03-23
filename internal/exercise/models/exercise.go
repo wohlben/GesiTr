@@ -6,7 +6,6 @@ import "gesitr/internal/shared"
 type Exercise struct {
 	shared.BaseModel              `tstype:",extends"`
 	Name                          string                `json:"name"`
-	Slug                          string                `json:"slug"`
 	Type                          ExerciseType          `json:"type"`
 	Force                         []Force               `json:"force" gorm:"-"`
 	PrimaryMuscles                []Muscle              `json:"primaryMuscles" gorm:"-"`

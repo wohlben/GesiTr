@@ -21,7 +21,6 @@ export interface ErrorResponse {
  */
 export interface Exercise extends BaseModel {
   name: string;
-  slug: string;
   type: ExerciseType;
   force: Force[];
   primaryMuscles: Muscle[];

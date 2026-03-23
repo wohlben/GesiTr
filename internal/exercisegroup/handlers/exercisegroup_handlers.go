@@ -65,6 +65,21 @@ func CreateExerciseGroup(c *gin.Context) {
 	c.JSON(http.StatusCreated, entity.ToDTO())
 }
 
+func GetExerciseGroupPermissions(c *gin.Context) {
+	var entity models.ExerciseGroupEntity
+	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "ExerciseGroup not found"})
+		return
+	}
+	userID := auth.GetUserID(c)
+	perms, visible := shared.ResolvePermissions(userID, entity.Owner, false)
+	if !visible {
+		c.JSON(http.StatusNotFound, gin.H{"error": "ExerciseGroup not found"})
+		return
+	}
+	c.JSON(http.StatusOK, shared.PermissionsResponse{Permissions: perms})
+}
+
 func GetExerciseGroup(c *gin.Context) {
 	var entity models.ExerciseGroupEntity
 	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {

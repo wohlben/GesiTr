@@ -174,7 +174,6 @@ export class ExerciseList {
       ],
     },
     { label: 'Secondary muscles', labelKey: 'fields.secondaryMuscles', defaultHidden: true },
-    { label: 'Slug', labelKey: 'fields.slug', defaultHidden: true },
     { label: 'Body weight scaling', labelKey: 'fields.bodyWeightScaling', defaultHidden: true },
     {
       label: 'Measurement paradigms',

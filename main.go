@@ -37,6 +37,19 @@ import (
 //go:embed web/dist/browser/*
 var staticFiles embed.FS
 
+// runMigrations handles manual schema changes that AutoMigrate cannot
+// (e.g., dropping columns or indexes).
+func runMigrations() {
+	// Drop the slug column from exercises if it exists (removed in resource-permissions feature).
+	// AutoMigrate does not drop columns or indexes, so we do it manually.
+	var count int64
+	database.DB.Raw("SELECT COUNT(*) FROM pragma_table_info('exercises') WHERE name = 'slug'").Scan(&count)
+	if count > 0 {
+		database.DB.Exec("DROP INDEX IF EXISTS idx_owner_slug")
+		database.DB.Exec("ALTER TABLE exercises DROP COLUMN slug")
+	}
+}
+
 func autoMigrate() {
 	database.DB.AutoMigrate(
 		&profileModels.UserProfileEntity{},
@@ -82,6 +95,7 @@ func setupRoutes(r *gin.Engine) {
 		exercises.GET("/:id", exerciseHandlers.GetExercise)
 		exercises.PUT("/:id", exerciseHandlers.UpdateExercise)
 		exercises.DELETE("/:id", exerciseHandlers.DeleteExercise)
+		exercises.GET("/:id/permissions", exerciseHandlers.GetExercisePermissions)
 		exercises.GET("/:id/versions", exerciseHandlers.ListExerciseVersions)
 		exercises.GET("/templates/:templateId/versions/:version", exerciseHandlers.GetExerciseVersion)
 	}
@@ -93,6 +107,7 @@ func setupRoutes(r *gin.Engine) {
 		equipment.GET("/:id", equipmentHandlers.GetEquipment)
 		equipment.PUT("/:id", equipmentHandlers.UpdateEquipment)
 		equipment.DELETE("/:id", equipmentHandlers.DeleteEquipment)
+		equipment.GET("/:id/permissions", equipmentHandlers.GetEquipmentPermissions)
 		equipment.GET("/:id/versions", equipmentHandlers.ListEquipmentVersions)
 		equipment.GET("/templates/:templateId/versions/:version", equipmentHandlers.GetEquipmentVersion)
 	}
@@ -127,6 +142,7 @@ func setupRoutes(r *gin.Engine) {
 		exerciseGroups.GET("/:id", exerciseGroupHandlers.GetExerciseGroup)
 		exerciseGroups.PUT("/:id", exerciseGroupHandlers.UpdateExerciseGroup)
 		exerciseGroups.DELETE("/:id", exerciseGroupHandlers.DeleteExerciseGroup)
+		exerciseGroups.GET("/:id/permissions", exerciseGroupHandlers.GetExerciseGroupPermissions)
 	}
 
 	exerciseGroupMembers := api.Group("/exercise-group-members")
@@ -243,6 +259,7 @@ func setupSPA(r *gin.Engine) {
 func buildApp() *gin.Engine {
 	database.Init()
 	autoMigrate()
+	runMigrations()
 
 	r := gin.Default()
 	setupRoutes(r)

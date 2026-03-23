@@ -268,7 +268,7 @@ func TestFinishWorkoutLog(t *testing.T) {
 
 	// Create prerequisite: user exercise + scheme
 	ueW := doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Test Exercise", "slug": "test-ex-1", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"name": "Test Exercise", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	if ueW.Code != http.StatusCreated {
 		t.Fatalf("create exercise: status = %d, body = %s", ueW.Code, ueW.Body.String())

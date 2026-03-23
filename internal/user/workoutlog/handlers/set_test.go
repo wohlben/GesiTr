@@ -14,7 +14,7 @@ func TestListWorkoutLogExerciseSets(t *testing.T) {
 
 	// Setup exercise + scheme + log + section + exercise (auto-creates 3 sets)
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -76,7 +76,7 @@ func TestCreateWorkoutLogExerciseSet(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -134,7 +134,7 @@ func TestUpdateWorkoutLogExerciseSet(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -231,7 +231,7 @@ func TestDeleteWorkoutLogExerciseSet(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 5,

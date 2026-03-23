@@ -9,14 +9,13 @@ import (
 type ExerciseEntity struct {
 	shared.BaseModel
 	Name                string              `gorm:"not null"`
-	Slug                string              `gorm:"not null;uniqueIndex:idx_owner_slug"`
 	Type                ExerciseType        `gorm:"not null"`
 	TechnicalDifficulty TechnicalDifficulty `gorm:"not null"`
 	BodyWeightScaling   float64
 	Description         string
 	AuthorName          *string
 	AuthorUrl           *string
-	Owner               string                           `gorm:"not null;uniqueIndex:idx_owner_slug;uniqueIndex:idx_owner_template;index"`
+	Owner               string                           `gorm:"not null;uniqueIndex:idx_owner_template;index"`
 	OwnerProfile        *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
 	Public              bool                             `gorm:"not null;default:false;index"`
 	Version             int                              `gorm:"not null;default:0"`
@@ -80,7 +79,6 @@ func (e *ExerciseEntity) ToDTO() Exercise {
 	dto := Exercise{
 		BaseModel:           e.BaseModel,
 		Name:                e.Name,
-		Slug:                e.Slug,
 		Type:                e.Type,
 		TechnicalDifficulty: e.TechnicalDifficulty,
 		BodyWeightScaling:   e.BodyWeightScaling,
@@ -127,7 +125,6 @@ func ExerciseFromDTO(dto Exercise) ExerciseEntity {
 	entity := ExerciseEntity{
 		BaseModel:           dto.BaseModel,
 		Name:                dto.Name,
-		Slug:                dto.Slug,
 		Type:                dto.Type,
 		TechnicalDifficulty: dto.TechnicalDifficulty,
 		BodyWeightScaling:   dto.BodyWeightScaling,
