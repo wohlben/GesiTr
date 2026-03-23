@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761466991,
   "fromExerciseTemplateId": "Bent_Over_One-Arm_Long_Bar_Row",
   "toExerciseTemplateId": "Bent_Over_Two-Dumbbell_Row"

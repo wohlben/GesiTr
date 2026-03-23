@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Incline_Barbell_Triceps_Extension",
   "toExerciseTemplateId": "Chain_Handle_Extension"

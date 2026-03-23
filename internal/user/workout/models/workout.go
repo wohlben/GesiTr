@@ -28,8 +28,8 @@ type WorkoutSection struct {
 }
 
 type WorkoutSectionExercise struct {
-	shared.BaseModel     `tstype:",extends"`
-	WorkoutSectionID     uint `json:"workoutSectionId"`
-	UserExerciseSchemeID uint `json:"userExerciseSchemeId"`
-	Position             int  `json:"position"`
+	shared.BaseModel `tstype:",extends"`
+	WorkoutSectionID uint `json:"workoutSectionId"`
+	ExerciseSchemeID uint `json:"exerciseSchemeId"`
+	Position         int  `json:"position"`
 }

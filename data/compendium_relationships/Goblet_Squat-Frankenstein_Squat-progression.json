@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730009000,
   "fromExerciseTemplateId": "Goblet_Squat",
   "toExerciseTemplateId": "Frankenstein_Squat"

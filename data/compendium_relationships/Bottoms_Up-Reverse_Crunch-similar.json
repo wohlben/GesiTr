@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Bottoms_Up",
   "toExerciseTemplateId": "Reverse_Crunch"

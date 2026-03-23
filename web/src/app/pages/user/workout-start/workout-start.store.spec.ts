@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { WorkoutStartStore, formatSchemeSummary } from './workout-start.store';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { WorkoutSection } from '$generated/user-models';
 
 describe('formatSchemeSummary', () => {
@@ -52,25 +51,15 @@ describe('WorkoutStartStore', () => {
     fetchExerciseScheme: ReturnType<typeof vi.fn>;
     fetchUserExercise: ReturnType<typeof vi.fn>;
   };
-  let compendiumApiMock: {
-    fetchExerciseVersion: ReturnType<typeof vi.fn>;
-  };
 
   beforeEach(() => {
     userApiMock = {
       fetchExerciseScheme: vi.fn(),
       fetchUserExercise: vi.fn(),
     };
-    compendiumApiMock = {
-      fetchExerciseVersion: vi.fn(),
-    };
 
     TestBed.configureTestingModule({
-      providers: [
-        WorkoutStartStore,
-        { provide: UserApiClient, useValue: userApiMock },
-        { provide: CompendiumApiClient, useValue: compendiumApiMock },
-      ],
+      providers: [WorkoutStartStore, { provide: UserApiClient, useValue: userApiMock }],
     });
 
     store = TestBed.inject(WorkoutStartStore);
@@ -84,7 +73,7 @@ describe('WorkoutStartStore', () => {
   it('loads exercise display data from sections', async () => {
     userApiMock.fetchExerciseScheme.mockResolvedValue({
       id: 10,
-      userExerciseId: 5,
+      exerciseId: 5,
       measurementType: 'REP_BASED',
       sets: 3,
       reps: 10,
@@ -92,17 +81,14 @@ describe('WorkoutStartStore', () => {
     });
     userApiMock.fetchUserExercise.mockResolvedValue({
       id: 5,
-      compendiumExerciseId: 'tmpl-abc',
-      compendiumVersion: 1,
-    });
-    compendiumApiMock.fetchExerciseVersion.mockResolvedValue({
+      name: 'Bench Press',
+      templateId: 'tmpl-abc',
       version: 1,
-      snapshot: { name: 'Bench Press' },
     });
 
     const sections = [
       {
-        exercises: [{ userExerciseSchemeId: 10 }],
+        exercises: [{ exerciseSchemeId: 10 }],
       },
     ] as WorkoutSection[];
 
@@ -115,9 +101,33 @@ describe('WorkoutStartStore', () => {
         summary: '3x10 @ 60kg',
         measurementType: 'REP_BASED',
         sets: [
-          { setNumber: 1, targetReps: 10, targetWeight: 60, restAfterSeconds: null },
-          { setNumber: 2, targetReps: 10, targetWeight: 60, restAfterSeconds: null },
-          { setNumber: 3, targetReps: 10, targetWeight: 60, restAfterSeconds: null },
+          {
+            setNumber: 1,
+            targetReps: 10,
+            targetWeight: 60,
+            targetDuration: undefined,
+            targetDistance: undefined,
+            targetTime: undefined,
+            restAfterSeconds: null,
+          },
+          {
+            setNumber: 2,
+            targetReps: 10,
+            targetWeight: 60,
+            targetDuration: undefined,
+            targetDistance: undefined,
+            targetTime: undefined,
+            restAfterSeconds: null,
+          },
+          {
+            setNumber: 3,
+            targetReps: 10,
+            targetWeight: 60,
+            targetDuration: undefined,
+            targetDistance: undefined,
+            targetTime: undefined,
+            restAfterSeconds: null,
+          },
         ],
       },
     });
@@ -128,7 +138,7 @@ describe('WorkoutStartStore', () => {
       if (id === 10) {
         return Promise.resolve({
           id: 10,
-          userExerciseId: 5,
+          exerciseId: 5,
           measurementType: 'REP_BASED',
           sets: 5,
           reps: 5,
@@ -137,7 +147,7 @@ describe('WorkoutStartStore', () => {
       }
       return Promise.resolve({
         id: 20,
-        userExerciseId: 6,
+        exerciseId: 6,
         measurementType: 'TIME_BASED',
         duration: 30,
       });
@@ -147,29 +157,22 @@ describe('WorkoutStartStore', () => {
       if (id === 5) {
         return Promise.resolve({
           id: 5,
-          compendiumExerciseId: 'tmpl-a',
-          compendiumVersion: 1,
+          name: 'Squat',
+          templateId: 'tmpl-a',
+          version: 1,
         });
       }
       return Promise.resolve({
         id: 6,
-        compendiumExerciseId: 'tmpl-b',
-        compendiumVersion: 2,
+        name: 'Plank',
+        templateId: 'tmpl-b',
+        version: 2,
       });
     });
 
-    compendiumApiMock.fetchExerciseVersion.mockImplementation(
-      (templateId: string, version: number) => {
-        if (templateId === 'tmpl-a' && version === 1) {
-          return Promise.resolve({ version: 1, snapshot: { name: 'Squat' } });
-        }
-        return Promise.resolve({ version: 2, snapshot: { name: 'Plank' } });
-      },
-    );
-
     const sections = [
-      { exercises: [{ userExerciseSchemeId: 10 }] },
-      { exercises: [{ userExerciseSchemeId: 20 }] },
+      { exercises: [{ exerciseSchemeId: 10 }] },
+      { exercises: [{ exerciseSchemeId: 20 }] },
     ] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
@@ -180,11 +183,51 @@ describe('WorkoutStartStore', () => {
         summary: '5x5 @ 100kg',
         measurementType: 'REP_BASED',
         sets: [
-          { setNumber: 1, targetReps: 5, targetWeight: 100, restAfterSeconds: null },
-          { setNumber: 2, targetReps: 5, targetWeight: 100, restAfterSeconds: null },
-          { setNumber: 3, targetReps: 5, targetWeight: 100, restAfterSeconds: null },
-          { setNumber: 4, targetReps: 5, targetWeight: 100, restAfterSeconds: null },
-          { setNumber: 5, targetReps: 5, targetWeight: 100, restAfterSeconds: null },
+          {
+            setNumber: 1,
+            targetReps: 5,
+            targetWeight: 100,
+            targetDuration: undefined,
+            targetDistance: undefined,
+            targetTime: undefined,
+            restAfterSeconds: null,
+          },
+          {
+            setNumber: 2,
+            targetReps: 5,
+            targetWeight: 100,
+            targetDuration: undefined,
+            targetDistance: undefined,
+            targetTime: undefined,
+            restAfterSeconds: null,
+          },
+          {
+            setNumber: 3,
+            targetReps: 5,
+            targetWeight: 100,
+            targetDuration: undefined,
+            targetDistance: undefined,
+            targetTime: undefined,
+            restAfterSeconds: null,
+          },
+          {
+            setNumber: 4,
+            targetReps: 5,
+            targetWeight: 100,
+            targetDuration: undefined,
+            targetDistance: undefined,
+            targetTime: undefined,
+            restAfterSeconds: null,
+          },
+          {
+            setNumber: 5,
+            targetReps: 5,
+            targetWeight: 100,
+            targetDuration: undefined,
+            targetDistance: undefined,
+            targetTime: undefined,
+            restAfterSeconds: null,
+          },
         ],
       },
       20: {
@@ -199,7 +242,7 @@ describe('WorkoutStartStore', () => {
   it('handles scheme fetch failure gracefully', async () => {
     userApiMock.fetchExerciseScheme.mockRejectedValue(new Error('not found'));
 
-    const sections = [{ exercises: [{ userExerciseSchemeId: 99 }] }] as WorkoutSection[];
+    const sections = [{ exercises: [{ exerciseSchemeId: 99 }] }] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
 
@@ -210,18 +253,13 @@ describe('WorkoutStartStore', () => {
   it('handles exercise name fetch failure with fallback', async () => {
     userApiMock.fetchExerciseScheme.mockResolvedValue({
       id: 10,
-      userExerciseId: 5,
+      exerciseId: 5,
       measurementType: 'REP_BASED',
       reps: 8,
     });
-    userApiMock.fetchUserExercise.mockResolvedValue({
-      id: 5,
-      compendiumExerciseId: 'tmpl-gone',
-      compendiumVersion: 1,
-    });
-    compendiumApiMock.fetchExerciseVersion.mockRejectedValue(new Error('not found'));
+    userApiMock.fetchUserExercise.mockRejectedValue(new Error('not found'));
 
-    const sections = [{ exercises: [{ userExerciseSchemeId: 10 }] }] as WorkoutSection[];
+    const sections = [{ exercises: [{ exerciseSchemeId: 10 }] }] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
 
@@ -243,11 +281,11 @@ describe('WorkoutStartStore', () => {
   });
 
   it('deduplicates user exercise fetches', async () => {
-    // Two schemes pointing to the same userExerciseId
+    // Two schemes pointing to the same exerciseId
     userApiMock.fetchExerciseScheme.mockImplementation((id: number) =>
       Promise.resolve({
         id,
-        userExerciseId: 5,
+        exerciseId: 5,
         measurementType: 'REP_BASED',
         sets: id === 10 ? 3 : 4,
         reps: 10,
@@ -255,16 +293,13 @@ describe('WorkoutStartStore', () => {
     );
     userApiMock.fetchUserExercise.mockResolvedValue({
       id: 5,
-      compendiumExerciseId: 'tmpl-x',
-      compendiumVersion: 1,
-    });
-    compendiumApiMock.fetchExerciseVersion.mockResolvedValue({
+      name: 'Curl',
+      templateId: 'tmpl-x',
       version: 1,
-      snapshot: { name: 'Curl' },
     });
 
     const sections = [
-      { exercises: [{ userExerciseSchemeId: 10 }, { userExerciseSchemeId: 11 }] },
+      { exercises: [{ exerciseSchemeId: 10 }, { exerciseSchemeId: 11 }] },
     ] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
@@ -280,7 +315,7 @@ describe('WorkoutStartStore', () => {
   it('generates set previews with restBetweenSets', async () => {
     userApiMock.fetchExerciseScheme.mockResolvedValue({
       id: 10,
-      userExerciseId: 5,
+      exerciseId: 5,
       measurementType: 'REP_BASED',
       sets: 3,
       reps: 8,
@@ -289,23 +324,44 @@ describe('WorkoutStartStore', () => {
     });
     userApiMock.fetchUserExercise.mockResolvedValue({
       id: 5,
-      compendiumExerciseId: 'tmpl-abc',
-      compendiumVersion: 1,
-    });
-    compendiumApiMock.fetchExerciseVersion.mockResolvedValue({
+      name: 'Row',
+      templateId: 'tmpl-abc',
       version: 1,
-      snapshot: { name: 'Row' },
     });
 
-    const sections = [{ exercises: [{ userExerciseSchemeId: 10 }] }] as WorkoutSection[];
+    const sections = [{ exercises: [{ exerciseSchemeId: 10 }] }] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
 
     const info = store.exerciseDisplay()[10];
     expect(info.sets).toEqual([
-      { setNumber: 1, targetReps: 8, targetWeight: 50, restAfterSeconds: 90 },
-      { setNumber: 2, targetReps: 8, targetWeight: 50, restAfterSeconds: 90 },
-      { setNumber: 3, targetReps: 8, targetWeight: 50, restAfterSeconds: null },
+      {
+        setNumber: 1,
+        targetReps: 8,
+        targetWeight: 50,
+        targetDuration: undefined,
+        targetDistance: undefined,
+        targetTime: undefined,
+        restAfterSeconds: 90,
+      },
+      {
+        setNumber: 2,
+        targetReps: 8,
+        targetWeight: 50,
+        targetDuration: undefined,
+        targetDistance: undefined,
+        targetTime: undefined,
+        restAfterSeconds: 90,
+      },
+      {
+        setNumber: 3,
+        targetReps: 8,
+        targetWeight: 50,
+        targetDuration: undefined,
+        targetDistance: undefined,
+        targetTime: undefined,
+        restAfterSeconds: null,
+      },
     ]);
   });
 });

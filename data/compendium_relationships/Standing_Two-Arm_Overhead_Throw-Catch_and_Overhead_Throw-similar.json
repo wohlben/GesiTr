@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": null,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Standing_Two-Arm_Overhead_Throw",
   "toExerciseTemplateId": "Catch_and_Overhead_Throw"

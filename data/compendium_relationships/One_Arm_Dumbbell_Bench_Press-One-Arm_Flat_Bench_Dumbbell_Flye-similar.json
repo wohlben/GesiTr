@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729973000,
   "fromExerciseTemplateId": "One_Arm_Dumbbell_Bench_Press",
   "toExerciseTemplateId": "One-Arm_Flat_Bench_Dumbbell_Flye"

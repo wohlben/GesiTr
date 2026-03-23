@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.72,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761461533,
   "fromExerciseTemplateId": "Quick_Leap",
   "toExerciseTemplateId": "Alternate_Leg_Diagonal_Bound"

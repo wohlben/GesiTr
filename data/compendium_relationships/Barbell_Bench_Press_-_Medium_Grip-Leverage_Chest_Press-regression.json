@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730051040,
   "fromExerciseTemplateId": "Barbell_Bench_Press_-_Medium_Grip",
   "toExerciseTemplateId": "Leverage_Chest_Press"

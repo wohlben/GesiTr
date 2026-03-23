@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761463810,
   "fromExerciseTemplateId": "Atlas_Stone_Trainer",
   "toExerciseTemplateId": "Tire_Flip"

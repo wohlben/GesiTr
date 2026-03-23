@@ -3,7 +3,7 @@
   "relationshipType": "related",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Squat_with_Plate_Movers",
   "toExerciseTemplateId": "Barbell_Side_Split_Squat"

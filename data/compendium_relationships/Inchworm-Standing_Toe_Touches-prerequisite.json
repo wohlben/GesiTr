@@ -3,7 +3,7 @@
   "relationshipType": "prerequisite",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730016000,
   "fromExerciseTemplateId": "Inchworm",
   "toExerciseTemplateId": "Standing_Toe_Touches"

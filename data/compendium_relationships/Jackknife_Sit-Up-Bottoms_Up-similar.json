@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Jackknife_Sit-Up",
   "toExerciseTemplateId": "Bottoms_Up"

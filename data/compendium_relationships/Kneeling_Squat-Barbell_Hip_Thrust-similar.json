@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730000000,
   "fromExerciseTemplateId": "Kneeling_Squat",
   "toExerciseTemplateId": "Barbell_Hip_Thrust"

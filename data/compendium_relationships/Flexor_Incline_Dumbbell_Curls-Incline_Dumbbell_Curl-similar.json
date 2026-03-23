@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730016000,
   "fromExerciseTemplateId": "Flexor_Incline_Dumbbell_Curls",
   "toExerciseTemplateId": "Incline_Dumbbell_Curl"

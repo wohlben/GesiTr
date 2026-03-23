@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Barbell_Side_Bend",
   "toExerciseTemplateId": "Bottoms-Up_Clean_From_The_Hang_Position"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Side-Lying_Floor_Stretch",
   "toExerciseTemplateId": "Chair_Lower_Back_Stretch"

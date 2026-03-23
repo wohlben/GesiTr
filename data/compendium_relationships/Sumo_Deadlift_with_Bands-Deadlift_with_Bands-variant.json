@@ -3,7 +3,7 @@
   "relationshipType": "variant",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760883050,
   "fromExerciseTemplateId": "Sumo_Deadlift_with_Bands",
   "toExerciseTemplateId": "Deadlift_with_Bands"

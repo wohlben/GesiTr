@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": "Both are standing front raise exercises with extended range of motion, differing in equipment (dumbbell vs barbell) and grip width.",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Single_Dumbbell_Raise",
   "toExerciseTemplateId": "Standing_Front_Barbell_Raise_Over_Head"

@@ -3,7 +3,7 @@
   "relationshipType": "variation",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730000000,
   "fromExerciseTemplateId": "One-Arm_High-Pulley_Cable_Side_Bends",
   "toExerciseTemplateId": "Weighted_Ball_Side_Bend"

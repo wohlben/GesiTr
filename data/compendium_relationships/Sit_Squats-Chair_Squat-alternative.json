@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730073600,
   "fromExerciseTemplateId": "Sit_Squats",
   "toExerciseTemplateId": "Chair_Squat"

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730073600,
   "fromExerciseTemplateId": "Stiff_Leg_Barbell_Good_Morning",
   "toExerciseTemplateId": "Wide_Stance_Stiff_Legs"

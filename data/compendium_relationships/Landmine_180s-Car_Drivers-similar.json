@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": null,
   "description": "Both exercises involve rotational movement with extended arms at shoulder height, though Landmine 180s incorporates more core rotation and trunk movement while Car Drivers focuses on isolated shoulder rotation",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761024000,
   "fromExerciseTemplateId": "Landmine_180s",
   "toExerciseTemplateId": "Car_Drivers"

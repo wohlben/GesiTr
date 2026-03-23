@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Good_Morning",
   "toExerciseTemplateId": "Band_Good_Morning"

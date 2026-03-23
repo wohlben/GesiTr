@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Dumbbell_Raise",
   "toExerciseTemplateId": "One-Arm_Side_Laterals"

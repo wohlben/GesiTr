@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761523200,
   "fromExerciseTemplateId": "Standing_Concentration_Curl",
   "toExerciseTemplateId": "Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench"

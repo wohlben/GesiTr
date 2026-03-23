@@ -7,12 +7,12 @@ import (
 	"testing"
 	"time"
 
-	compEquipment "gesitr/internal/compendium/equipment/models"
-	compFulfillment "gesitr/internal/compendium/equipmentfulfillment/models"
-	compExercise "gesitr/internal/compendium/exercise/models"
-	compGroup "gesitr/internal/compendium/exercisegroup/models"
-	compRelationship "gesitr/internal/compendium/exerciserelationship/models"
 	"gesitr/internal/database"
+	equipmentModels "gesitr/internal/equipment/models"
+	fulfillmentModels "gesitr/internal/equipmentfulfillment/models"
+	exerciseModels "gesitr/internal/exercise/models"
+	groupModels "gesitr/internal/exercisegroup/models"
+	relModels "gesitr/internal/exerciserelationship/models"
 	profileModels "gesitr/internal/profile/models"
 
 	"gorm.io/driver/sqlite"
@@ -27,26 +27,26 @@ func setupSeedTestDB(t *testing.T) {
 	}
 	db.AutoMigrate(
 		&profileModels.UserProfileEntity{},
-		&compExercise.ExerciseEntity{},
-		&compExercise.ExerciseForce{},
-		&compExercise.ExerciseMuscle{},
-		&compExercise.ExerciseMeasurementParadigm{},
-		&compExercise.ExerciseInstruction{},
-		&compExercise.ExerciseImage{},
-		&compExercise.ExerciseAlternativeName{},
-		&compEquipment.EquipmentEntity{},
-		&compExercise.ExerciseEquipment{},
-		&compFulfillment.FulfillmentEntity{},
-		&compRelationship.ExerciseRelationshipEntity{},
-		&compGroup.ExerciseGroupEntity{},
-		&compGroup.ExerciseGroupMemberEntity{},
-		&compExercise.ExerciseHistoryEntity{},
-		&compEquipment.EquipmentHistoryEntity{},
+		&exerciseModels.ExerciseEntity{},
+		&exerciseModels.ExerciseForce{},
+		&exerciseModels.ExerciseMuscle{},
+		&exerciseModels.ExerciseMeasurementParadigm{},
+		&exerciseModels.ExerciseInstruction{},
+		&exerciseModels.ExerciseImage{},
+		&exerciseModels.ExerciseAlternativeName{},
+		&equipmentModels.EquipmentEntity{},
+		&exerciseModels.ExerciseEquipment{},
+		&fulfillmentModels.FulfillmentEntity{},
+		&relModels.ExerciseRelationshipEntity{},
+		&groupModels.ExerciseGroupEntity{},
+		&groupModels.ExerciseGroupMemberEntity{},
+		&exerciseModels.ExerciseHistoryEntity{},
+		&equipmentModels.EquipmentHistoryEntity{},
 	)
 	database.DB = db
 
-	// Create profiles for test createdBy/addedBy values
-	for _, id := range []string{"claude", "system", "user", "s"} {
+	// Create profiles for test owner values
+	for _, id := range []string{"sinon", "s"} {
 		db.Create(&profileModels.UserProfileEntity{ID: id, Name: id})
 	}
 }
@@ -90,25 +90,25 @@ func TestMainFunction(t *testing.T) {
 		"imageUrl": nil, "templateId": "bar",
 	})
 	writeTempJSON(t, tmpDir, "compendium_equipment_fulfillment", "f.json", map[string]any{
-		"createdBy": "claude", "createdAt": ts, "equipmentTemplateId": "a", "fulfillsEquipmentTemplateId": "b",
+		"createdBy": "sinon", "createdAt": ts, "equipmentTemplateId": "bar", "fulfillsEquipmentTemplateId": "bar",
 	})
 	writeTempJSON(t, tmpDir, "compendium_exercises", "ex.json", map[string]any{
 		"name": "X", "slug": "x", "type": "STRENGTH", "force": []string{}, "primaryMuscles": []string{},
 		"secondaryMuscles": []string{}, "technicalDifficulty": "beginner", "bodyWeightScaling": 0.0,
 		"suggestedMeasurementParadigms": []string{}, "description": "", "instructions": []string{},
 		"images": []string{}, "alternativeNames": []string{}, "authorName": nil, "authorUrl": nil,
-		"createdBy": "claude", "createdAt": ts, "updatedAt": nil, "version": 0,
+		"createdBy": "sinon", "createdAt": ts, "updatedAt": nil, "version": 0,
 		"parentExerciseId": nil, "templateId": "x", "equipmentIds": []string{},
 	})
 	writeTempJSON(t, tmpDir, "compendium_relationships", "rel.json", map[string]any{
 		"id": "x-y", "relationshipType": "similar", "strength": 0.5, "description": nil,
-		"createdBy": "claude", "createdAt": ts, "fromExerciseTemplateId": "a", "toExerciseTemplateId": "b",
+		"createdBy": "sinon", "createdAt": ts, "fromExerciseTemplateId": "x", "toExerciseTemplateId": "x",
 	})
 	writeTempJSON(t, tmpDir, "compendium_exercise_groups", "g.json", map[string]any{
-		"id": "g1", "name": "G1", "description": nil, "createdBy": "claude", "createdAt": ts, "updatedAt": nil,
+		"id": "g1", "name": "G1", "description": nil, "createdBy": "sinon", "createdAt": ts, "updatedAt": nil,
 	})
 	writeTempJSON(t, tmpDir, "compendium_exercise_group_members", "m.json", map[string]any{
-		"groupId": "g1", "exerciseTemplateId": "x", "addedBy": "claude", "addedAt": ts,
+		"groupId": "g1", "exerciseTemplateId": "x", "addedBy": "sinon", "addedAt": ts,
 	})
 
 	// main() calls database.Init() which creates gesitr.db in cwd (tmpDir)
@@ -116,12 +116,12 @@ func TestMainFunction(t *testing.T) {
 
 	// Verify all entities were seeded
 	var eqCount, fCount, exCount, relCount, gCount, mCount int64
-	database.DB.Model(&compEquipment.EquipmentEntity{}).Count(&eqCount)
-	database.DB.Model(&compFulfillment.FulfillmentEntity{}).Count(&fCount)
-	database.DB.Model(&compExercise.ExerciseEntity{}).Count(&exCount)
-	database.DB.Model(&compRelationship.ExerciseRelationshipEntity{}).Count(&relCount)
-	database.DB.Model(&compGroup.ExerciseGroupEntity{}).Count(&gCount)
-	database.DB.Model(&compGroup.ExerciseGroupMemberEntity{}).Count(&mCount)
+	database.DB.Model(&equipmentModels.EquipmentEntity{}).Count(&eqCount)
+	database.DB.Model(&fulfillmentModels.FulfillmentEntity{}).Count(&fCount)
+	database.DB.Model(&exerciseModels.ExerciseEntity{}).Count(&exCount)
+	database.DB.Model(&relModels.ExerciseRelationshipEntity{}).Count(&relCount)
+	database.DB.Model(&groupModels.ExerciseGroupEntity{}).Count(&gCount)
+	database.DB.Model(&groupModels.ExerciseGroupMemberEntity{}).Count(&mCount)
 
 	if eqCount != 1 || fCount != 1 || exCount != 1 || relCount != 1 || gCount != 1 || mCount != 1 {
 		t.Errorf("counts: eq=%d f=%d ex=%d rel=%d g=%d m=%d", eqCount, fCount, exCount, relCount, gCount, mCount)
@@ -129,8 +129,8 @@ func TestMainFunction(t *testing.T) {
 
 	// Verify history entries were created
 	var eqHistCount, exHistCount int64
-	database.DB.Model(&compExercise.ExerciseHistoryEntity{}).Count(&exHistCount)
-	database.DB.Model(&compEquipment.EquipmentHistoryEntity{}).Count(&eqHistCount)
+	database.DB.Model(&exerciseModels.ExerciseHistoryEntity{}).Count(&exHistCount)
+	database.DB.Model(&equipmentModels.EquipmentHistoryEntity{}).Count(&eqHistCount)
 	if exHistCount != 1 || eqHistCount != 1 {
 		t.Errorf("history counts: exerciseHistory=%d equipmentHistory=%d", exHistCount, eqHistCount)
 	}
@@ -218,21 +218,26 @@ func TestSeedEquipment(t *testing.T) {
 		}
 
 		var count int64
-		database.DB.Model(&compEquipment.EquipmentEntity{}).Count(&count)
+		database.DB.Model(&equipmentModels.EquipmentEntity{}).Count(&count)
 		if count != 2 {
 			t.Errorf("expected 2, got %d", count)
 		}
 
-		var eq compEquipment.EquipmentEntity
+		var eq equipmentModels.EquipmentEntity
 		database.DB.Where("template_id = ?", "barbell").First(&eq)
-		if eq.Name != "barbell" || eq.Category != "free_weights" || eq.CreatedBy != "claude" {
+		if eq.Name != "barbell" || eq.Category != "free_weights" || eq.Owner != "sinon" || !eq.Public {
 			t.Errorf("field mismatch: %+v", eq)
 		}
 
 		var histCount int64
-		database.DB.Model(&compEquipment.EquipmentHistoryEntity{}).Count(&histCount)
+		database.DB.Model(&equipmentModels.EquipmentHistoryEntity{}).Count(&histCount)
 		if histCount != 2 {
 			t.Errorf("expected 2 equipment history entries, got %d", histCount)
+		}
+
+		// Verify equipmentIDMap was populated
+		if len(equipmentIDMap) != 2 {
+			t.Errorf("expected equipmentIDMap to have 2 entries, got %d", len(equipmentIDMap))
 		}
 	})
 
@@ -284,9 +289,22 @@ func TestSeedFulfillments(t *testing.T) {
 		setupSeedTestDB(t)
 		tmpDir := chdirTemp(t)
 
+		// Seed equipment first so equipmentIDMap is populated
+		writeTempJSON(t, tmpDir, "compendium_equipments", "a.json", map[string]any{
+			"name": "a", "displayName": "A", "description": "",
+			"category": "other", "imageUrl": nil, "templateId": "a",
+		})
+		writeTempJSON(t, tmpDir, "compendium_equipments", "b.json", map[string]any{
+			"name": "b", "displayName": "B", "description": "",
+			"category": "other", "imageUrl": nil, "templateId": "b",
+		})
+		if err := seedEquipment(); err != nil {
+			t.Fatal(err)
+		}
+
 		ts := int64(1700000000)
 		writeTempJSON(t, tmpDir, "compendium_equipment_fulfillment", "a~b.json", map[string]any{
-			"createdBy": "system", "createdAt": ts,
+			"createdBy": "sinon", "createdAt": ts,
 			"equipmentTemplateId": "a", "fulfillsEquipmentTemplateId": "b",
 		})
 
@@ -295,7 +313,7 @@ func TestSeedFulfillments(t *testing.T) {
 		}
 
 		var count int64
-		database.DB.Model(&compFulfillment.FulfillmentEntity{}).Count(&count)
+		database.DB.Model(&fulfillmentModels.FulfillmentEntity{}).Count(&count)
 		if count != 1 {
 			t.Errorf("expected 1, got %d", count)
 		}
@@ -324,8 +342,10 @@ func TestSeedFulfillments(t *testing.T) {
 	t.Run("db error", func(t *testing.T) {
 		setupSeedTestDB(t)
 		tmpDir := chdirTemp(t)
+		// Initialize equipmentIDMap so JSON parsing works
+		equipmentIDMap = map[string]uint{"a": 1, "b": 2}
 		writeTempJSON(t, tmpDir, "compendium_equipment_fulfillment", "a.json", map[string]any{
-			"createdBy": "s", "createdAt": 0, "equipmentTemplateId": "a", "fulfillsEquipmentTemplateId": "b",
+			"createdBy": "sinon", "createdAt": 0, "equipmentTemplateId": "a", "fulfillsEquipmentTemplateId": "b",
 		})
 		sqlDB, _ := database.DB.DB()
 		sqlDB.Close()
@@ -342,6 +362,15 @@ func TestSeedExercises(t *testing.T) {
 		setupSeedTestDB(t)
 		tmpDir := chdirTemp(t)
 
+		// Seed equipment first so equipmentIDMap is populated
+		writeTempJSON(t, tmpDir, "compendium_equipments", "barbell.json", map[string]any{
+			"name": "barbell", "displayName": "Barbell", "description": "",
+			"category": "free_weights", "imageUrl": nil, "templateId": "barbell",
+		})
+		if err := seedEquipment(); err != nil {
+			t.Fatal(err)
+		}
+
 		ts := int64(1700000000)
 		updTs := int64(1700001000)
 		writeTempJSON(t, tmpDir, "compendium_exercises", "squat.json", map[string]any{
@@ -353,7 +382,7 @@ func TestSeedExercises(t *testing.T) {
 			"description":                   "A squat", "instructions": []string{"Go down", "Go up"},
 			"images": []string{"/img/squat.jpg"}, "alternativeNames": []string{"Back Squat"},
 			"authorName": nil, "authorUrl": nil,
-			"createdBy": "system", "createdAt": ts, "updatedAt": updTs,
+			"createdBy": "sinon", "createdAt": ts, "updatedAt": updTs,
 			"version": 0, "parentExerciseId": nil, "templateId": "squat",
 			"equipmentIds": []string{"barbell"},
 		})
@@ -363,29 +392,29 @@ func TestSeedExercises(t *testing.T) {
 		}
 
 		var count int64
-		database.DB.Model(&compExercise.ExerciseEntity{}).Count(&count)
+		database.DB.Model(&exerciseModels.ExerciseEntity{}).Count(&count)
 		if count != 1 {
 			t.Errorf("expected 1, got %d", count)
 		}
 
 		// Verify child records
-		var ex compExercise.ExerciseEntity
+		var ex exerciseModels.ExerciseEntity
 		database.DB.Where("slug = ?", "squat").First(&ex)
 		var fc, mc, pc, ic, imgc, alc, eqc int64
-		database.DB.Model(&compExercise.ExerciseForce{}).Where("exercise_id = ?", ex.ID).Count(&fc)
-		database.DB.Model(&compExercise.ExerciseMuscle{}).Where("exercise_id = ?", ex.ID).Count(&mc)
-		database.DB.Model(&compExercise.ExerciseMeasurementParadigm{}).Where("exercise_id = ?", ex.ID).Count(&pc)
-		database.DB.Model(&compExercise.ExerciseInstruction{}).Where("exercise_id = ?", ex.ID).Count(&ic)
-		database.DB.Model(&compExercise.ExerciseImage{}).Where("exercise_id = ?", ex.ID).Count(&imgc)
-		database.DB.Model(&compExercise.ExerciseAlternativeName{}).Where("exercise_id = ?", ex.ID).Count(&alc)
-		database.DB.Model(&compExercise.ExerciseEquipment{}).Where("exercise_id = ?", ex.ID).Count(&eqc)
+		database.DB.Model(&exerciseModels.ExerciseForce{}).Where("exercise_id = ?", ex.ID).Count(&fc)
+		database.DB.Model(&exerciseModels.ExerciseMuscle{}).Where("exercise_id = ?", ex.ID).Count(&mc)
+		database.DB.Model(&exerciseModels.ExerciseMeasurementParadigm{}).Where("exercise_id = ?", ex.ID).Count(&pc)
+		database.DB.Model(&exerciseModels.ExerciseInstruction{}).Where("exercise_id = ?", ex.ID).Count(&ic)
+		database.DB.Model(&exerciseModels.ExerciseImage{}).Where("exercise_id = ?", ex.ID).Count(&imgc)
+		database.DB.Model(&exerciseModels.ExerciseAlternativeName{}).Where("exercise_id = ?", ex.ID).Count(&alc)
+		database.DB.Model(&exerciseModels.ExerciseEquipment{}).Where("exercise_id = ?", ex.ID).Count(&eqc)
 		if fc != 1 || mc != 2 || pc != 1 || ic != 2 || imgc != 1 || alc != 1 || eqc != 1 {
 			t.Errorf("child counts: forces=%d muscles=%d paradigms=%d instr=%d img=%d alt=%d eq=%d",
 				fc, mc, pc, ic, imgc, alc, eqc)
 		}
 
 		var histCount int64
-		database.DB.Model(&compExercise.ExerciseHistoryEntity{}).Where("exercise_id = ?", ex.ID).Count(&histCount)
+		database.DB.Model(&exerciseModels.ExerciseHistoryEntity{}).Where("exercise_id = ?", ex.ID).Count(&histCount)
 		if histCount != 1 {
 			t.Errorf("expected 1 exercise history entry, got %d", histCount)
 		}
@@ -394,6 +423,9 @@ func TestSeedExercises(t *testing.T) {
 	t.Run("success with nil updatedAt", func(t *testing.T) {
 		setupSeedTestDB(t)
 		tmpDir := chdirTemp(t)
+
+		// Initialize equipmentIDMap (empty, no equipment needed)
+		equipmentIDMap = make(map[string]uint)
 
 		ts := int64(1700000000)
 		writeTempJSON(t, tmpDir, "compendium_exercises", "curl.json", map[string]any{
@@ -404,7 +436,7 @@ func TestSeedExercises(t *testing.T) {
 			"suggestedMeasurementParadigms": []string{}, "description": "",
 			"instructions": []string{}, "images": []string{},
 			"alternativeNames": []string{}, "authorName": nil, "authorUrl": nil,
-			"createdBy": "system", "createdAt": ts, "updatedAt": nil,
+			"createdBy": "sinon", "createdAt": ts, "updatedAt": nil,
 			"version": 0, "parentExerciseId": nil, "templateId": "curl",
 			"equipmentIds": []string{},
 		})
@@ -437,6 +469,8 @@ func TestSeedExercises(t *testing.T) {
 	t.Run("db error", func(t *testing.T) {
 		setupSeedTestDB(t)
 		tmpDir := chdirTemp(t)
+		// Initialize equipmentIDMap
+		equipmentIDMap = make(map[string]uint)
 		ts := int64(1700000000)
 		writeTempJSON(t, tmpDir, "compendium_exercises", "x.json", map[string]any{
 			"name": "X", "slug": "x", "type": "STRENGTH",
@@ -445,7 +479,7 @@ func TestSeedExercises(t *testing.T) {
 			"suggestedMeasurementParadigms": []string{}, "description": "",
 			"instructions": []string{}, "images": []string{},
 			"alternativeNames": []string{}, "authorName": nil, "authorUrl": nil,
-			"createdBy": "system", "createdAt": ts, "updatedAt": nil,
+			"createdBy": "sinon", "createdAt": ts, "updatedAt": nil,
 			"version": 0, "parentExerciseId": nil, "templateId": "x",
 			"equipmentIds": []string{},
 		})
@@ -464,10 +498,13 @@ func TestSeedExerciseRelationships(t *testing.T) {
 		setupSeedTestDB(t)
 		tmpDir := chdirTemp(t)
 
+		// Initialize exerciseIDMap with test data
+		exerciseIDMap = map[string]uint{"a": 1, "b": 2}
+
 		ts := int64(1700000000)
 		writeTempJSON(t, tmpDir, "compendium_relationships", "rel1.json", map[string]any{
 			"id": "a-b-similar", "relationshipType": "similar", "strength": 0.8,
-			"description": nil, "createdBy": "system", "createdAt": ts,
+			"description": nil, "createdBy": "sinon", "createdAt": ts,
 			"fromExerciseTemplateId": "a", "toExerciseTemplateId": "b",
 		})
 
@@ -476,7 +513,7 @@ func TestSeedExerciseRelationships(t *testing.T) {
 		}
 
 		var count int64
-		database.DB.Model(&compRelationship.ExerciseRelationshipEntity{}).Count(&count)
+		database.DB.Model(&relModels.ExerciseRelationshipEntity{}).Count(&count)
 		if count != 1 {
 			t.Errorf("expected 1, got %d", count)
 		}
@@ -504,9 +541,11 @@ func TestSeedExerciseRelationships(t *testing.T) {
 	t.Run("db error", func(t *testing.T) {
 		setupSeedTestDB(t)
 		tmpDir := chdirTemp(t)
+		// Initialize exerciseIDMap
+		exerciseIDMap = map[string]uint{"a": 1, "b": 2}
 		writeTempJSON(t, tmpDir, "compendium_relationships", "r.json", map[string]any{
 			"id": "x", "relationshipType": "similar", "strength": 0.5,
-			"description": nil, "createdBy": "s", "createdAt": 0,
+			"description": nil, "createdBy": "sinon", "createdAt": 0,
 			"fromExerciseTemplateId": "a", "toExerciseTemplateId": "b",
 		})
 		sqlDB, _ := database.DB.DB()
@@ -527,17 +566,22 @@ func TestSeedExerciseGroups(t *testing.T) {
 		ts := int64(1700000000)
 		writeTempJSON(t, tmpDir, "compendium_exercise_groups", "push.json", map[string]any{
 			"id": "push", "name": "Push Day", "description": nil,
-			"createdBy": "user", "createdAt": ts, "updatedAt": ts,
+			"createdBy": "sinon", "createdAt": ts, "updatedAt": ts,
 		})
 
 		if err := seedExerciseGroups(); err != nil {
 			t.Fatal(err)
 		}
 
-		var g compGroup.ExerciseGroupEntity
+		var g groupModels.ExerciseGroupEntity
 		database.DB.Where("template_id = ?", "push").First(&g)
-		if g.Name != "Push Day" || g.CreatedBy != "user" {
+		if g.Name != "Push Day" || g.Owner != "sinon" {
 			t.Errorf("field mismatch: %+v", g)
+		}
+
+		// Verify groupIDMap was populated
+		if len(groupIDMap) != 1 {
+			t.Errorf("expected groupIDMap to have 1 entry, got %d", len(groupIDMap))
 		}
 	})
 
@@ -548,7 +592,7 @@ func TestSeedExerciseGroups(t *testing.T) {
 		ts := int64(1700000000)
 		writeTempJSON(t, tmpDir, "compendium_exercise_groups", "pull.json", map[string]any{
 			"id": "pull", "name": "Pull Day", "description": nil,
-			"createdBy": "user", "createdAt": ts, "updatedAt": nil,
+			"createdBy": "sinon", "createdAt": ts, "updatedAt": nil,
 		})
 
 		if err := seedExerciseGroups(); err != nil {
@@ -580,7 +624,7 @@ func TestSeedExerciseGroups(t *testing.T) {
 		tmpDir := chdirTemp(t)
 		writeTempJSON(t, tmpDir, "compendium_exercise_groups", "g.json", map[string]any{
 			"id": "g", "name": "G", "description": nil,
-			"createdBy": "s", "createdAt": 0, "updatedAt": nil,
+			"createdBy": "sinon", "createdAt": 0, "updatedAt": nil,
 		})
 		sqlDB, _ := database.DB.DB()
 		sqlDB.Close()
@@ -597,12 +641,16 @@ func TestSeedExerciseGroupMembers(t *testing.T) {
 		setupSeedTestDB(t)
 		tmpDir := chdirTemp(t)
 
+		// Initialize ID maps with test data
+		exerciseIDMap = map[string]uint{"ex1": 1, "ex2": 2}
+		groupIDMap = map[string]uint{"g1": 1}
+
 		ts := int64(1700000000)
 		writeTempJSON(t, tmpDir, "compendium_exercise_group_members", "g1-ex1.json", map[string]any{
-			"groupId": "g1", "exerciseTemplateId": "ex1", "addedBy": "user", "addedAt": ts,
+			"groupId": "g1", "exerciseTemplateId": "ex1", "addedBy": "sinon", "addedAt": ts,
 		})
 		writeTempJSON(t, tmpDir, "compendium_exercise_group_members", "g1-ex2.json", map[string]any{
-			"groupId": "g1", "exerciseTemplateId": "ex2", "addedBy": "user", "addedAt": ts,
+			"groupId": "g1", "exerciseTemplateId": "ex2", "addedBy": "sinon", "addedAt": ts,
 		})
 
 		if err := seedExerciseGroupMembers(); err != nil {
@@ -610,14 +658,14 @@ func TestSeedExerciseGroupMembers(t *testing.T) {
 		}
 
 		var count int64
-		database.DB.Model(&compGroup.ExerciseGroupMemberEntity{}).Count(&count)
+		database.DB.Model(&groupModels.ExerciseGroupMemberEntity{}).Count(&count)
 		if count != 2 {
 			t.Errorf("expected 2, got %d", count)
 		}
 
-		var m compGroup.ExerciseGroupMemberEntity
+		var m groupModels.ExerciseGroupMemberEntity
 		database.DB.First(&m)
-		if m.GroupTemplateID != "g1" || m.AddedBy != "user" {
+		if m.GroupID != 1 || m.Owner != "sinon" {
 			t.Errorf("field mismatch: %+v", m)
 		}
 	})
@@ -644,8 +692,11 @@ func TestSeedExerciseGroupMembers(t *testing.T) {
 	t.Run("db error", func(t *testing.T) {
 		setupSeedTestDB(t)
 		tmpDir := chdirTemp(t)
+		// Initialize ID maps
+		exerciseIDMap = map[string]uint{"e": 1}
+		groupIDMap = map[string]uint{"g": 1}
 		writeTempJSON(t, tmpDir, "compendium_exercise_group_members", "m.json", map[string]any{
-			"groupId": "g", "exerciseTemplateId": "e", "addedBy": "s", "addedAt": 0,
+			"groupId": "g", "exerciseTemplateId": "e", "addedBy": "sinon", "addedAt": 0,
 		})
 		sqlDB, _ := database.DB.DB()
 		sqlDB.Close()

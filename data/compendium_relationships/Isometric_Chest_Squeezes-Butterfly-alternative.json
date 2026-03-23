@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": "Both involve squeezing/bringing hands together to contract chest; Butterfly uses machine",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729954800,
   "fromExerciseTemplateId": "Isometric_Chest_Squeezes",
   "toExerciseTemplateId": "Butterfly"

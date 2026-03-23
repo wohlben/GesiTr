@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": "Both bodyweight pushing exercises targeting triceps; dips are more advanced with full bodyweight resistance",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Incline_Push-Up_Reverse_Grip",
   "toExerciseTemplateId": "Dips_-_Triceps_Version"

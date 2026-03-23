@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730073600,
   "fromExerciseTemplateId": "Shoulder_Press_-_With_Bands",
   "toExerciseTemplateId": "Standing_Dumbbell_Press"

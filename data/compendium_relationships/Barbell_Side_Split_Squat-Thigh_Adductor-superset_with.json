@@ -3,7 +3,7 @@
   "relationshipType": "superset_with",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Barbell_Side_Split_Squat",
   "toExerciseTemplateId": "Thigh_Adductor"

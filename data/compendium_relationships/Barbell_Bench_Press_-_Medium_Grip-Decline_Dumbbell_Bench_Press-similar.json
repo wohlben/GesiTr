@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761483992,
   "fromExerciseTemplateId": "Barbell_Bench_Press_-_Medium_Grip",
   "toExerciseTemplateId": "Decline_Dumbbell_Bench_Press"

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761479173,
   "fromExerciseTemplateId": "Cable_Iron_Cross",
   "toExerciseTemplateId": "Band_Pull_Apart"

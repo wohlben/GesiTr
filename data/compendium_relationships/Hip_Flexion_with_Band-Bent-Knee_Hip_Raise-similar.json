@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730073600,
   "fromExerciseTemplateId": "Hip_Flexion_with_Band",
   "toExerciseTemplateId": "Bent-Knee_Hip_Raise"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730040000,
   "fromExerciseTemplateId": "Behind_Head_Chest_Stretch",
   "toExerciseTemplateId": "Chest_And_Front_Of_Shoulder_Stretch"

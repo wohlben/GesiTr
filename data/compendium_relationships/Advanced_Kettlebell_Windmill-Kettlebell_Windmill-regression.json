@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760887364,
   "fromExerciseTemplateId": "Advanced_Kettlebell_Windmill",
   "toExerciseTemplateId": "Kettlebell_Windmill"

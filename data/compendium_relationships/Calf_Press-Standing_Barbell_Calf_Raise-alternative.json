@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761479684,
   "fromExerciseTemplateId": "Calf_Press",
   "toExerciseTemplateId": "Standing_Barbell_Calf_Raise"

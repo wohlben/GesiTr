@@ -11,7 +11,7 @@ type ExerciseLogEntity struct {
 	shared.BaseModel
 	Owner                   string                           `gorm:"not null;index"`
 	OwnerProfile            *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
-	UserExerciseID          uint                             `gorm:"not null;index"`
+	ExerciseID              uint                             `gorm:"not null;index"`
 	MeasurementType         string                           `gorm:"not null"`
 	Reps                    *int
 	Weight                  *float64
@@ -31,7 +31,7 @@ func (e *ExerciseLogEntity) ToDTO() ExerciseLog {
 	return ExerciseLog{
 		BaseModel:               e.BaseModel,
 		Owner:                   e.Owner,
-		UserExerciseID:          e.UserExerciseID,
+		ExerciseID:              e.ExerciseID,
 		MeasurementType:         e.MeasurementType,
 		Reps:                    e.Reps,
 		Weight:                  e.Weight,
@@ -50,7 +50,7 @@ func ExerciseLogFromDTO(dto ExerciseLog) ExerciseLogEntity {
 	return ExerciseLogEntity{
 		BaseModel:               dto.BaseModel,
 		Owner:                   dto.Owner,
-		UserExerciseID:          dto.UserExerciseID,
+		ExerciseID:              dto.ExerciseID,
 		MeasurementType:         dto.MeasurementType,
 		Reps:                    dto.Reps,
 		Weight:                  dto.Weight,

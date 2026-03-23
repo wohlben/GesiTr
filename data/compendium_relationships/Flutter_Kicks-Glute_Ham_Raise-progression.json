@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730080800,
   "fromExerciseTemplateId": "Flutter_Kicks",
   "toExerciseTemplateId": "Glute_Ham_Raise"

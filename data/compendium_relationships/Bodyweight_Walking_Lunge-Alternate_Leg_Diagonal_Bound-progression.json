@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.63,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761461533,
   "fromExerciseTemplateId": "Bodyweight_Walking_Lunge",
   "toExerciseTemplateId": "Alternate_Leg_Diagonal_Bound"

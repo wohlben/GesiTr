@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729940400,
   "fromExerciseTemplateId": "Close-Grip_Push-Up_off_of_a_Dumbbell",
   "toExerciseTemplateId": "Incline_Push-Up_Close-Grip"

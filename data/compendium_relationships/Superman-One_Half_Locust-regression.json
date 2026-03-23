@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": null,
   "description": "Both exercises are performed lying face down with extension, but One Half Locust regresses from Superman by lifting only one leg and the opposite shoulder with a stretch focus, making it easier and more flexibility-focused",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761024000,
   "fromExerciseTemplateId": "Superman",
   "toExerciseTemplateId": "One_Half_Locust"

@@ -3,11 +3,9 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { form, required, applyEach, FormField } from '@angular/forms/signals';
 import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
-import { injectQueries } from '@tanstack/angular-query-experimental/inject-queries-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
-import { userExerciseKeys, exerciseKeys, workoutKeys, exerciseSchemeKeys } from '$core/query-keys';
+import { userExerciseKeys, workoutKeys, exerciseSchemeKeys } from '$core/query-keys';
 import { WorkoutSectionTypeMain, WorkoutSectionTypeSupplementary } from '$generated/user-models';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
@@ -18,7 +16,7 @@ import { HlmTextarea } from '@spartan-ng/helm/textarea';
 
 interface WorkoutExerciseModel {
   existingSchemeId: number | null;
-  userExerciseId: number | null;
+  exerciseId: number | null;
   measurementType: string;
   sets: number | null;
   reps: number | null;
@@ -167,7 +165,7 @@ interface WorkoutModel {
                               >{{ t('ui.exerciseConfig.exerciseLabel') }}</span
                             >
                             <brn-select
-                              [formField]="exercise.userExerciseId"
+                              [formField]="exercise.exerciseId"
                               class="mt-1"
                               hlm
                               [placeholder]="t('common.select')"
@@ -376,7 +374,6 @@ interface WorkoutModel {
 })
 export class WorkoutEdit {
   private userApi = inject(UserApiClient);
-  private compendiumApi = inject(CompendiumApiClient);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private queryClient = inject(QueryClient);
@@ -395,7 +392,7 @@ export class WorkoutEdit {
     required(f.name);
     applyEach(f.sections, (section) => {
       applyEach(section.exercises, (exercise) => {
-        required(exercise.userExerciseId);
+        required(exercise.exerciseId);
       });
     });
   });
@@ -407,30 +404,13 @@ export class WorkoutEdit {
     enabled: !!this.id() && !this.isCreateMode(),
   }));
 
-  // User exercises for the picker dropdown
+  // User exercises for the picker dropdown — exercises are full entities now
   private userExercisesQuery = injectQuery(() => ({
     queryKey: userExerciseKeys.list(),
     queryFn: () => this.userApi.fetchUserExercises(),
   }));
 
-  private snapshotQueries = injectQueries(() => ({
-    queries: (this.userExercisesQuery.data() ?? []).map((ue) => ({
-      queryKey: exerciseKeys.version(ue.compendiumExerciseId, ue.compendiumVersion),
-      queryFn: () =>
-        this.compendiumApi.fetchExerciseVersion(ue.compendiumExerciseId, ue.compendiumVersion),
-      staleTime: Infinity,
-    })),
-  }));
-
-  enrichedUserExercises = computed(() => {
-    const userExercises = this.userExercisesQuery.data();
-    if (!userExercises) return [];
-    const snapshots = this.snapshotQueries();
-    return userExercises.map((ue, i) => {
-      const exercise = snapshots[i]?.data()?.snapshot;
-      return { id: ue.id, name: exercise?.name ?? `Exercise #${ue.id}` };
-    });
-  });
+  enrichedUserExercises = computed(() => this.userExercisesQuery.data() ?? []);
 
   // Track original scheme IDs for cleanup in edit mode
   private originalSchemeIds = signal<number[]>([]);
@@ -468,7 +448,7 @@ export class WorkoutEdit {
           restBetweenExercises: section.restBetweenExercises ?? null,
           exercises: (section.exercises ?? []).map(() => ({
             existingSchemeId: null,
-            userExerciseId: null,
+            exerciseId: null,
             measurementType: 'REP_BASED',
             sets: null,
             reps: null,
@@ -485,7 +465,7 @@ export class WorkoutEdit {
       const schemeIds: number[] = [];
       for (const section of data.sections ?? []) {
         for (const ex of section.exercises ?? []) {
-          schemeIds.push(ex.userExerciseSchemeId);
+          schemeIds.push(ex.exerciseSchemeId);
         }
       }
       this.originalSchemeIds.set(schemeIds);
@@ -501,7 +481,7 @@ export class WorkoutEdit {
       for (let ei = 0; ei < (section.exercises?.length ?? 0); ei++) {
         const ex = section.exercises[ei];
         try {
-          const scheme = await this.userApi.fetchExerciseScheme(ex.userExerciseSchemeId);
+          const scheme = await this.userApi.fetchExerciseScheme(ex.exerciseSchemeId);
           this.model.update((m) => ({
             ...m,
             sections: m.sections.map((s, sIdx) =>
@@ -514,7 +494,7 @@ export class WorkoutEdit {
                         ? e
                         : {
                             existingSchemeId: scheme.id,
-                            userExerciseId: scheme.userExerciseId,
+                            exerciseId: scheme.exerciseId,
                             measurementType: scheme.measurementType || 'REP_BASED',
                             sets: scheme.sets ?? null,
                             reps: scheme.reps ?? null,
@@ -570,7 +550,7 @@ export class WorkoutEdit {
                 ...s.exercises,
                 {
                   existingSchemeId: null,
-                  userExerciseId: null,
+                  exerciseId: null,
                   measurementType: 'REP_BASED',
                   sets: null,
                   reps: null,
@@ -667,7 +647,7 @@ export class WorkoutEdit {
       const schemeIds: number[] = [];
       for (const ex of sectionVal.exercises) {
         const schemeData: Record<string, unknown> = {
-          userExerciseId: ex.userExerciseId,
+          exerciseId: ex.exerciseId,
           measurementType: ex.measurementType,
         };
         if (ex.measurementType === 'REP_BASED') {
@@ -700,7 +680,7 @@ export class WorkoutEdit {
       for (let ei = 0; ei < schemeIds.length; ei++) {
         await this.userApi.createWorkoutSectionExercise({
           workoutSectionId: section.id,
-          userExerciseSchemeId: schemeIds[ei],
+          exerciseSchemeId: schemeIds[ei],
           position: ei,
         });
       }

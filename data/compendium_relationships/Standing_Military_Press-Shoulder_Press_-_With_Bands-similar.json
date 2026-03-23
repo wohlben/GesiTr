@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761545420,
   "fromExerciseTemplateId": "Standing_Military_Press",
   "toExerciseTemplateId": "Shoulder_Press_-_With_Bands"

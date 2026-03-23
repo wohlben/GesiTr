@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730073600,
   "fromExerciseTemplateId": "Hip_Flexion_with_Band",
   "toExerciseTemplateId": "Front_Leg_Raises"

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760883050,
   "fromExerciseTemplateId": "Arm_Circles",
   "toExerciseTemplateId": "Dynamic_Back_Stretch"

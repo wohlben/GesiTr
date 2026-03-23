@@ -115,34 +115,35 @@ export async function deleteExerciseGroup(request: APIRequestContext, id: number
 
 export async function createUserExercise(
   request: APIRequestContext,
-  compendiumExerciseId: string,
-  compendiumVersion: number = 0,
+  templateId: string,
+  version: number = 0,
 ) {
-  const res = await request.post('/api/user/exercises', {
-    data: { compendiumExerciseId, compendiumVersion },
+  // In the unified model, "user exercises" are just exercises.
+  const exercise = await createExercise(request, {
+    name: `User Exercise ${templateId}`,
   });
-  expect(res.ok(), `Failed to create user exercise: ${await res.text()}`).toBeTruthy();
-  return res.json();
+  return exercise;
 }
 
 export async function deleteUserExercise(request: APIRequestContext, id: number) {
-  await request.delete(`/api/user/exercises/${id}`);
+  await request.delete(`/api/exercises/${id}`);
 }
 
 export async function createUserEquipment(
   request: APIRequestContext,
-  compendiumEquipmentId: string,
-  compendiumVersion: number = 0,
+  templateId: string,
+  version: number = 0,
 ) {
-  const res = await request.post('/api/user/equipment', {
-    data: { compendiumEquipmentId, compendiumVersion },
+  // In the unified model, "user equipment" is just equipment.
+  const equipment = await createEquipment(request, {
+    name: `user-equipment-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    displayName: `User Equipment ${templateId}`,
   });
-  expect(res.ok(), `Failed to create user equipment: ${await res.text()}`).toBeTruthy();
-  return res.json();
+  return equipment;
 }
 
 export async function deleteUserEquipment(request: APIRequestContext, id: number) {
-  await request.delete(`/api/user/equipment/${id}`);
+  await request.delete(`/api/equipment/${id}`);
 }
 
 export async function createWorkout(
@@ -175,13 +176,13 @@ export async function createExerciseScheme(
     restBetweenSets: 90,
     ...overrides,
   };
-  const res = await request.post('/api/user/exercise-schemes', { data });
+  const res = await request.post('/api/exercise-schemes', { data });
   expect(res.ok(), `Failed to create exercise scheme: ${await res.text()}`).toBeTruthy();
   return res.json();
 }
 
 export async function deleteExerciseScheme(request: APIRequestContext, id: number) {
-  await request.delete(`/api/user/exercise-schemes/${id}`);
+  await request.delete(`/api/exercise-schemes/${id}`);
 }
 
 export async function createWorkoutSection(

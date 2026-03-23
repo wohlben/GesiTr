@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730000000,
   "fromExerciseTemplateId": "Hurdle_Hops",
   "toExerciseTemplateId": "Lateral_Box_Jump"

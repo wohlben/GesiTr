@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729969200,
   "fromExerciseTemplateId": "Alternating_Kettlebell_Press",
   "toExerciseTemplateId": "One-Arm_Kettlebell_Para_Press"

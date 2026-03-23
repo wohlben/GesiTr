@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761482004,
   "fromExerciseTemplateId": "Dumbbell_Floor_Press",
   "toExerciseTemplateId": "Close-Grip_Dumbbell_Press"

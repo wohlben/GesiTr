@@ -24,7 +24,7 @@ import { SlugifyPipe } from '$ui/pipes/slugify';
     </td>
     <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">{{ group().description }}</td>
     <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
-      {{ group().createdBy }}
+      {{ group().owner }}
     </td>
     <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
       {{ group().createdAt }}

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730014800,
   "fromExerciseTemplateId": "Pallof_Press_With_Rotation",
   "toExerciseTemplateId": "Standing_Cable_Lift"

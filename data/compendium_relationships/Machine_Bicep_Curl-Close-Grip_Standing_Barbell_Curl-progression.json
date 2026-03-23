@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729931400,
   "fromExerciseTemplateId": "Machine_Bicep_Curl",
   "toExerciseTemplateId": "Close-Grip_Standing_Barbell_Curl"

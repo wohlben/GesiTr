@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": "Both incline exercises targeting triceps; cable extension provides isolation with constant tension while push-up is compound movement",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Cable_Incline_Triceps_Extension",
   "toExerciseTemplateId": "Incline_Push-Up_Reverse_Grip"

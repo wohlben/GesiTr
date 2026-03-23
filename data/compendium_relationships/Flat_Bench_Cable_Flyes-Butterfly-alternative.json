@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761478260,
   "fromExerciseTemplateId": "Flat_Bench_Cable_Flyes",
   "toExerciseTemplateId": "Butterfly"

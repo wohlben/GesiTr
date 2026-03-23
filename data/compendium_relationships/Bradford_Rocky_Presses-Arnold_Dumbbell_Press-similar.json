@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761463686,
   "fromExerciseTemplateId": "Bradford_Rocky_Presses",
   "toExerciseTemplateId": "Arnold_Dumbbell_Press"

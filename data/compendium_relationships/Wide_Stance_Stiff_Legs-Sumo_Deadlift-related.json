@@ -3,7 +3,7 @@
   "relationshipType": "related",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730073600,
   "fromExerciseTemplateId": "Wide_Stance_Stiff_Legs",
   "toExerciseTemplateId": "Sumo_Deadlift"

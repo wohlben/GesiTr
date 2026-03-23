@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730051040,
   "fromExerciseTemplateId": "Leverage_Decline_Chest_Press",
   "toExerciseTemplateId": "Leverage_Chest_Press"

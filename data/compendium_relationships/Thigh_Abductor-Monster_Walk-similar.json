@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": "Both exercises target hip abduction but with different equipment (machine vs band)",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730053200,
   "fromExerciseTemplateId": "Thigh_Abductor",
   "toExerciseTemplateId": "Monster_Walk"

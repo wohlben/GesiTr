@@ -3,7 +3,7 @@
   "relationshipType": "variation",
   "strength": 0.7,
   "description": "Standing unsupported variation using a single dumbbell held with both hands, requiring more core stability than the incline bench version.",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Front_Incline_Dumbbell_Raise",
   "toExerciseTemplateId": "Single_Dumbbell_Raise"

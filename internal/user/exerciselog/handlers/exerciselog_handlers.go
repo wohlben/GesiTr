@@ -16,8 +16,8 @@ func ListExerciseLogs(c *gin.Context) {
 	db := database.DB.Model(&models.ExerciseLogEntity{}).
 		Where("owner = ?", auth.GetUserID(c))
 
-	if v := c.Query("userExerciseId"); v != "" {
-		db = db.Where("user_exercise_id = ?", v)
+	if v := c.Query("exerciseId"); v != "" {
+		db = db.Where("exercise_id = ?", v)
 	}
 	if v := c.Query("measurementType"); v != "" {
 		db = db.Where("measurement_type = ?", v)
@@ -71,7 +71,7 @@ func CreateExerciseLog(c *gin.Context) {
 		if err := tx.Create(&entity).Error; err != nil {
 			return err
 		}
-		return RecomputeRecord(tx, entity.UserExerciseID, entity.MeasurementType)
+		return RecomputeRecord(tx, entity.ExerciseID, entity.MeasurementType)
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -144,7 +144,7 @@ func UpdateExerciseLog(c *gin.Context) {
 		if err := tx.Save(&existing).Error; err != nil {
 			return err
 		}
-		return RecomputeRecord(tx, existing.UserExerciseID, existing.MeasurementType)
+		return RecomputeRecord(tx, existing.ExerciseID, existing.MeasurementType)
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -167,14 +167,14 @@ func DeleteExerciseLog(c *gin.Context) {
 		return
 	}
 
-	userExerciseID := existing.UserExerciseID
+	exerciseID := existing.ExerciseID
 	measurementType := existing.MeasurementType
 
 	err := database.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Delete(&existing).Error; err != nil {
 			return err
 		}
-		return RecomputeRecord(tx, userExerciseID, measurementType)
+		return RecomputeRecord(tx, exerciseID, measurementType)
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -185,11 +185,11 @@ func DeleteExerciseLog(c *gin.Context) {
 }
 
 // RecomputeRecord recalculates which ExerciseLog is the record for a given
-// (userExerciseId, measurementType) pair.
-func RecomputeRecord(db *gorm.DB, userExerciseID uint, measurementType string) error {
+// (exerciseId, measurementType) pair.
+func RecomputeRecord(db *gorm.DB, exerciseID uint, measurementType string) error {
 	// Clear all isRecord flags for this combo
 	if err := db.Model(&models.ExerciseLogEntity{}).
-		Where("user_exercise_id = ? AND measurement_type = ?", userExerciseID, measurementType).
+		Where("exercise_id = ? AND measurement_type = ?", exerciseID, measurementType).
 		Update("is_record", false).Error; err != nil {
 		return err
 	}
@@ -197,7 +197,7 @@ func RecomputeRecord(db *gorm.DB, userExerciseID uint, measurementType string) e
 	// Find the entry with highest recordValue
 	var best models.ExerciseLogEntity
 	err := db.
-		Where("user_exercise_id = ? AND measurement_type = ? AND record_value > 0", userExerciseID, measurementType).
+		Where("exercise_id = ? AND measurement_type = ? AND record_value > 0", exerciseID, measurementType).
 		Order("record_value DESC").
 		First(&best).Error
 	if err != nil {

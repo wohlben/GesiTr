@@ -37,7 +37,7 @@ import { PageLayout } from '../../../layout/page-layout';
         <hlm-separator class="my-4" />
 
         <!-- Phase 2: Set preview -->
-        @if (exerciseConfig.model().userExerciseId && exerciseConfig.model().sets) {
+        @if (exerciseConfig.model().exerciseId && exerciseConfig.model().sets) {
           <app-exercise-runner
             [exerciseName]="exerciseConfig.selectedExerciseName()"
             [measurementType]="exerciseConfig.model().measurementType"

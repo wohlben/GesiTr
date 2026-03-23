@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730000000,
   "fromExerciseTemplateId": "Side_to_Side_Box_Shuffle",
   "toExerciseTemplateId": "Carioca_Quick_Step"

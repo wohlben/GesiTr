@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Sled_Drag_-_Harness",
   "toExerciseTemplateId": "Bear_Crawl_Sled_Drags"

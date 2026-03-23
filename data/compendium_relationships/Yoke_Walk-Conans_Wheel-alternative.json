@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729900800,
   "fromExerciseTemplateId": "Yoke_Walk",
   "toExerciseTemplateId": "Conans_Wheel"

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": null,
   "description": "Both exercises share the same quadruped starting position (on hands and knees), making them part of the same movement family and easily combined in mobility routines",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761024000,
   "fromExerciseTemplateId": "Cat_Stretch",
   "toExerciseTemplateId": "All_Fours_Quad_Stretch"

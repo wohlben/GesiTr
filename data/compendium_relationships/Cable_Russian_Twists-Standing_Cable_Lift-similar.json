@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730014800,
   "fromExerciseTemplateId": "Cable_Russian_Twists",
   "toExerciseTemplateId": "Standing_Cable_Lift"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730080800,
   "fromExerciseTemplateId": "Hip_Circles_prone",
   "toExerciseTemplateId": "Flutter_Kicks"

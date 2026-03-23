@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761476051,
   "fromExerciseTemplateId": "Bicycling",
   "toExerciseTemplateId": "Bicycling_Stationary"

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "One-Arm_Incline_Lateral_Raise",
   "toExerciseTemplateId": "Lying_One-Arm_Lateral_Raise"

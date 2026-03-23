@@ -13,14 +13,14 @@ func TestListWorkoutSectionExercises(t *testing.T) {
 	r := newRouter()
 
 	// Setup: exercise -> scheme -> workout -> section
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "bench-press", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Bench Press", "slug": "bench-press", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED", "sets": 5, "reps": 5,
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 5, "reps": 5,
 	})
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
 		"owner": "alice", "name": "Push Day", "date": "2026-03-07T10:00:00Z",
@@ -42,10 +42,10 @@ func TestListWorkoutSectionExercises(t *testing.T) {
 	})
 
 	doJSON(r, "POST", "/api/user/workout-section-exercises", map[string]any{
-		"workoutSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutSectionId": 1, "exerciseSchemeId": 1, "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-section-exercises", map[string]any{
-		"workoutSectionId": 1, "userExerciseSchemeId": 2, "position": 1,
+		"workoutSectionId": 1, "exerciseSchemeId": 2, "position": 1,
 	})
 
 	t.Run("list all", func(t *testing.T) {
@@ -93,11 +93,11 @@ func TestCreateWorkoutSectionExercise(t *testing.T) {
 	r := newRouter()
 
 	// Setup
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED", "sets": 5, "reps": 5,
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 5, "reps": 5,
 	})
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
 		"owner": "alice", "name": "Leg Day", "date": "2026-03-07T10:00:00Z",
@@ -108,21 +108,21 @@ func TestCreateWorkoutSectionExercise(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/user/workout-section-exercises", map[string]any{
-			"workoutSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+			"workoutSectionId": 1, "exerciseSchemeId": 1, "position": 0,
 		})
 		if w.Code != http.StatusCreated {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
 		}
 		var result models.WorkoutSectionExercise
 		json.Unmarshal(w.Body.Bytes(), &result)
-		if result.ID == 0 || result.WorkoutSectionID != 1 || result.UserExerciseSchemeID != 1 {
+		if result.ID == 0 || result.WorkoutSectionID != 1 || result.ExerciseSchemeID != 1 {
 			t.Error("create response mismatch")
 		}
 	})
 
 	t.Run("section not found", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/user/workout-section-exercises", map[string]any{
-			"workoutSectionId": 999, "userExerciseSchemeId": 1, "position": 0,
+			"workoutSectionId": 999, "exerciseSchemeId": 1, "position": 0,
 		})
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
@@ -131,7 +131,7 @@ func TestCreateWorkoutSectionExercise(t *testing.T) {
 
 	t.Run("scheme not found", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/user/workout-section-exercises", map[string]any{
-			"workoutSectionId": 1, "userExerciseSchemeId": 999, "position": 0,
+			"workoutSectionId": 1, "exerciseSchemeId": 999, "position": 0,
 		})
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
@@ -151,11 +151,11 @@ func TestDeleteWorkoutSectionExercise(t *testing.T) {
 	r := newRouter()
 
 	// Setup
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "deadlift", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Deadlift", "slug": "deadlift", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 8,
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 8,
 	})
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
 		"owner": "alice", "name": "Pull Day", "date": "2026-03-07T10:00:00Z",
@@ -164,7 +164,7 @@ func TestDeleteWorkoutSectionExercise(t *testing.T) {
 		"workoutId": 1, "type": "main", "position": 0,
 	})
 	doJSON(r, "POST", "/api/user/workout-section-exercises", map[string]any{
-		"workoutSectionId": 1, "userExerciseSchemeId": 1, "position": 0,
+		"workoutSectionId": 1, "exerciseSchemeId": 1, "position": 0,
 	})
 
 	t.Run("success", func(t *testing.T) {

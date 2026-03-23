@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "On-Your-Back_Quad_Stretch",
   "toExerciseTemplateId": "Intermediate_Hip_Flexor_and_Quad_Stretch"

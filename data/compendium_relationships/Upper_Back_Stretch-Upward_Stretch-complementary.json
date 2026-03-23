@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Upper_Back_Stretch",
   "toExerciseTemplateId": "Upward_Stretch"

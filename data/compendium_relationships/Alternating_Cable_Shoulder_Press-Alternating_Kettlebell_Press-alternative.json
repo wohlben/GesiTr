@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.87,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761461533,
   "fromExerciseTemplateId": "Alternating_Cable_Shoulder_Press",
   "toExerciseTemplateId": "Alternating_Kettlebell_Press"

@@ -3,7 +3,7 @@
   "relationshipType": "antagonist",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Standing_Biceps_Cable_Curl",
   "toExerciseTemplateId": "Reverse_Grip_Triceps_Pushdown"

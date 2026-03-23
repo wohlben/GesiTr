@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": "Both are standing rotational exercises targeting abs with similar casting/swinging motions from side to side. Medicine Ball Full Twist requires a partner.",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730016000,
   "fromExerciseTemplateId": "Spell_Caster",
   "toExerciseTemplateId": "Medicine_Ball_Full_Twist"

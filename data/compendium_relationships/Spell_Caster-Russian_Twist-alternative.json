@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.6,
   "description": "Both are rotational core exercises targeting abs. Russian Twist is performed seated while Spell Caster is standing with a wider range of motion.",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730016000,
   "fromExerciseTemplateId": "Spell_Caster",
   "toExerciseTemplateId": "Russian_Twist"

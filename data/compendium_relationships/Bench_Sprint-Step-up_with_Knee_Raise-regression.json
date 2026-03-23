@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Bench_Sprint",
   "toExerciseTemplateId": "Step-up_with_Knee_Raise"

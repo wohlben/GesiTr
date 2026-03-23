@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761498077,
   "fromExerciseTemplateId": "Lying_Cable_Curl",
   "toExerciseTemplateId": "Lying_Close-Grip_Bar_Curl_On_High_Pulley"

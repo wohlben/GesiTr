@@ -3,7 +3,7 @@
   "relationshipType": "variation",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Plyo_Push-up",
   "toExerciseTemplateId": "Drop_Push"

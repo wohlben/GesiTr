@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Oblique_Crunches_-_On_The_Floor",
   "toExerciseTemplateId": "Alternate_Heel_Touchers"

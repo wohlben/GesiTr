@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Behind_Head_Chest_Stretch",
   "toExerciseTemplateId": "Chest_Stretch_on_Stability_Ball"

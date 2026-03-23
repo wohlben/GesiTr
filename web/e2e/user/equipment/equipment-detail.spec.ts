@@ -83,7 +83,7 @@ test.describe('/user/equipment/:id', () => {
     await Promise.all([
       page.waitForResponse(
         (r) =>
-          r.url().includes(`/api/user/equipment/${userEquipment.id}`) &&
+          r.url().includes(`/api/equipment/${userEquipment.id}`) &&
           r.request().method() === 'DELETE',
       ),
       page.locator('[role="dialog"] button:has-text("Delete")').click(),

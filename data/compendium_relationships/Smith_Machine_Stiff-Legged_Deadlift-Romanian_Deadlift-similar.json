@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761547427,
   "fromExerciseTemplateId": "Smith_Machine_Stiff-Legged_Deadlift",
   "toExerciseTemplateId": "Romanian_Deadlift"

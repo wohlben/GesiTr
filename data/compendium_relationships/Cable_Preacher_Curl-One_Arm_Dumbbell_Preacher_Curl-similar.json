@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761479458,
   "fromExerciseTemplateId": "Cable_Preacher_Curl",
   "toExerciseTemplateId": "One_Arm_Dumbbell_Preacher_Curl"

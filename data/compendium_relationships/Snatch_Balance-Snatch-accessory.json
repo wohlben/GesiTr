@@ -3,7 +3,7 @@
   "relationshipType": "accessory",
   "strength": 0.9,
   "description": "Snatch Balance is a fundamental accessory drill for the full Snatch, developing the speed and confidence to drop into the bottom position while receiving the bar overhead.",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761518400,
   "fromExerciseTemplateId": "Snatch_Balance",
   "toExerciseTemplateId": "Snatch"

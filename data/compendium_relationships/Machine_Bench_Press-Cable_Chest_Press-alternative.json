@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761478645,
   "fromExerciseTemplateId": "Machine_Bench_Press",
   "toExerciseTemplateId": "Cable_Chest_Press"

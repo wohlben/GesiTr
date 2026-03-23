@@ -13,7 +13,7 @@ const group: ExerciseGroup = {
   templateId: '',
   name: 'Push Exercises',
   description: 'All pushing movements including bench press variations',
-  createdBy: 'admin',
+  owner: 'admin',
 };
 
 const columns: DataTableColumn[] = [

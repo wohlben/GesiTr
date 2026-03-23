@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729976400,
   "fromExerciseTemplateId": "Lying_Machine_Squat",
   "toExerciseTemplateId": "Narrow_Stance_Hack_Squats"

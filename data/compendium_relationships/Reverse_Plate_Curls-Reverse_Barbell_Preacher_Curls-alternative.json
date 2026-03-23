@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.6,
   "description": "Barbell version on preacher bench with standard grip and better isolation",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761543970,
   "fromExerciseTemplateId": "Reverse_Plate_Curls",
   "toExerciseTemplateId": "Reverse_Barbell_Preacher_Curls"

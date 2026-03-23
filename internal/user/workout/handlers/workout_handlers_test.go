@@ -127,11 +127,11 @@ func TestGetWorkoutWithSectionsAndExercises(t *testing.T) {
 	r := newRouter()
 
 	// Create prerequisite chain: exercise -> scheme -> workout -> section -> section exercise
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "bench-press", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Bench Press", "slug": "bench-press", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
 	})
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
 		"owner": "alice", "name": "Full Workout", "date": "2026-03-07T10:00:00Z",
@@ -143,7 +143,7 @@ func TestGetWorkoutWithSectionsAndExercises(t *testing.T) {
 		"workoutId": 1, "type": "main", "position": 1,
 	})
 	doJSON(r, "POST", "/api/user/workout-section-exercises", map[string]any{
-		"workoutSectionId": 2, "userExerciseSchemeId": 1, "position": 0,
+		"workoutSectionId": 2, "exerciseSchemeId": 1, "position": 0,
 	})
 
 	w := doJSON(r, "GET", "/api/user/workouts/1", nil)
@@ -167,7 +167,7 @@ func TestGetWorkoutWithSectionsAndExercises(t *testing.T) {
 	if len(result.Sections[1].Exercises) != 1 {
 		t.Fatalf("expected 1 exercise in main section, got %d", len(result.Sections[1].Exercises))
 	}
-	if result.Sections[1].Exercises[0].UserExerciseSchemeID != 1 {
+	if result.Sections[1].Exercises[0].ExerciseSchemeID != 1 {
 		t.Error("exercise scheme ID mismatch")
 	}
 }

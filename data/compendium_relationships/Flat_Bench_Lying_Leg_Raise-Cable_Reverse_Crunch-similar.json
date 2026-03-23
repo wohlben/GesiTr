@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761479425,
   "fromExerciseTemplateId": "Flat_Bench_Lying_Leg_Raise",
   "toExerciseTemplateId": "Cable_Reverse_Crunch"

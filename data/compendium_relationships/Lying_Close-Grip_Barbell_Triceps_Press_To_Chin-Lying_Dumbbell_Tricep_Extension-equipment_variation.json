@@ -3,7 +3,7 @@
   "relationshipType": "equipment_variation",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Lying_Close-Grip_Barbell_Triceps_Press_To_Chin",
   "toExerciseTemplateId": "Lying_Dumbbell_Tricep_Extension"

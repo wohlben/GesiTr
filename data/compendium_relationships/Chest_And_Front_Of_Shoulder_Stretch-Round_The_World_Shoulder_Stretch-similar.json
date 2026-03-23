@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730040000,
   "fromExerciseTemplateId": "Chest_And_Front_Of_Shoulder_Stretch",
   "toExerciseTemplateId": "Round_The_World_Shoulder_Stretch"

@@ -1,20 +1,18 @@
 import { Component, inject, computed, signal, input, effect } from '@angular/core';
 import { form, FormField, disabled } from '@angular/forms/signals';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
-import { injectQueries } from '@tanstack/angular-query-experimental/inject-queries-experimental';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
-import { userExerciseKeys, exerciseKeys, exerciseSchemeKeys } from '$core/query-keys';
-import { UserExerciseScheme } from '$generated/user-models';
+import { userExerciseKeys, exerciseSchemeKeys } from '$core/query-keys';
+import { ExerciseScheme } from '$generated/models';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmInput } from '@spartan-ng/helm/input';
 import { TranslocoDirective } from '@jsverse/transloco';
 
 export interface ExerciseConfigResult {
-  userExerciseId: number;
+  exerciseId: number;
   exerciseName: string;
-  scheme: UserExerciseScheme;
+  scheme: ExerciseScheme;
 }
 
 @Component({
@@ -31,7 +29,7 @@ export interface ExerciseConfigResult {
             t('ui.exerciseConfig.exerciseLabel')
           }}</span>
           <brn-select
-            [formField]="configForm.userExerciseId"
+            [formField]="configForm.exerciseId"
             class="mt-1"
             hlm
             [placeholder]="t('common.select')"
@@ -40,7 +38,7 @@ export interface ExerciseConfigResult {
               <hlm-select-value />
             </hlm-select-trigger>
             <hlm-select-content>
-              @for (ue of enrichedUserExercises(); track ue.id) {
+              @for (ue of userExercises(); track ue.id) {
                 <hlm-option [value]="ue.id">{{ ue.name }}</hlm-option>
               }
             </hlm-select-content>
@@ -121,7 +119,6 @@ export interface ExerciseConfigResult {
 })
 export class ExerciseConfig {
   private userApi = inject(UserApiClient);
-  private compendiumApi = inject(CompendiumApiClient);
   private queryClient = inject(QueryClient);
 
   /** When set, the exercise dropdown is locked to this user exercise. */
@@ -129,7 +126,7 @@ export class ExerciseConfig {
 
   // Form state
   model = signal({
-    userExerciseId: null as number | null,
+    exerciseId: null as number | null,
     measurementType: 'REP_BASED',
     sets: 3 as number | null,
     reps: 10 as number | null,
@@ -141,56 +138,39 @@ export class ExerciseConfig {
     targetTime: null as number | null,
   });
   configForm = form(this.model, (f) => {
-    disabled(f.userExerciseId, () => !!this.preselectedExerciseId());
+    disabled(f.exerciseId, () => !!this.preselectedExerciseId());
   });
 
   constructor() {
     effect(() => {
       const preselected = this.preselectedExerciseId();
       if (preselected != null) {
-        this.model.update((m) => ({ ...m, userExerciseId: preselected }));
+        this.model.update((m) => ({ ...m, exerciseId: preselected }));
       }
     });
   }
 
-  // User exercises query
+  // User exercises query — exercises are now full entities, no second fetch needed
   private userExercisesQuery = injectQuery(() => ({
     queryKey: userExerciseKeys.list(),
     queryFn: () => this.userApi.fetchUserExercises(),
   }));
 
-  private snapshotQueries = injectQueries(() => ({
-    queries: (this.userExercisesQuery.data() ?? []).map((ue) => ({
-      queryKey: exerciseKeys.version(ue.compendiumExerciseId, ue.compendiumVersion),
-      queryFn: () =>
-        this.compendiumApi.fetchExerciseVersion(ue.compendiumExerciseId, ue.compendiumVersion),
-      staleTime: Infinity,
-    })),
-  }));
-
-  enrichedUserExercises = computed(() => {
-    const userExercises = this.userExercisesQuery.data();
-    if (!userExercises) return [];
-    const snapshots = this.snapshotQueries();
-    return userExercises.map((ue, i) => {
-      const exercise = snapshots[i]?.data()?.snapshot;
-      return { id: ue.id, name: exercise?.name ?? `Exercise #${ue.id}` };
-    });
-  });
+  userExercises = computed(() => this.userExercisesQuery.data() ?? []);
 
   selectedExerciseName = computed(() => {
-    const id = this.model().userExerciseId;
+    const id = this.model().exerciseId;
     if (!id) return '';
-    return this.enrichedUserExercises().find((ue) => ue.id === id)?.name ?? '';
+    return this.userExercises().find((ue) => ue.id === id)?.name ?? '';
   });
 
-  canConfirm = computed(() => this.model().userExerciseId != null);
+  canConfirm = computed(() => this.model().exerciseId != null);
 
   /** Creates a scheme from the field values and returns it. */
-  async confirm(): Promise<UserExerciseScheme> {
+  async confirm(): Promise<ExerciseScheme> {
     const m = this.model();
     const data: Record<string, unknown> = {
-      userExerciseId: m.userExerciseId,
+      exerciseId: m.exerciseId,
       measurementType: m.measurementType,
     };
     const mt = m.measurementType;
@@ -215,7 +195,7 @@ export class ExerciseConfig {
 
   reset() {
     this.model.set({
-      userExerciseId: null,
+      exerciseId: null,
       measurementType: 'REP_BASED',
       sets: 3,
       reps: 10,

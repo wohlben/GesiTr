@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761498416,
   "fromExerciseTemplateId": "Hyperextensions_Back_Extensions",
   "toExerciseTemplateId": "Barbell_Deadlift"

@@ -19,7 +19,8 @@ const EQUIPMENT: Equipment = {
   description: 'A standard barbell',
   category: 'free_weights',
   templateId: 'tmpl-barbell',
-  createdBy: 'seed',
+  owner: 'seed',
+  public: true,
   version: 1,
 };
 
@@ -27,9 +28,14 @@ const USER_EQUIPMENT: UserEquipment = {
   id: 10,
   createdAt: '',
   updatedAt: '',
+  name: 'barbell',
+  displayName: 'Barbell',
+  description: 'A standard barbell',
+  category: 'free_weights',
+  templateId: 'tmpl-barbell',
   owner: 'anon',
-  compendiumEquipmentId: 'tmpl-barbell',
-  compendiumVersion: 1,
+  public: false,
+  version: 1,
 };
 
 function setup(userEquipment: UserEquipment[] = []) {
@@ -89,7 +95,7 @@ describe('EquipmentDetail', () => {
     const otherEquipment: UserEquipment = {
       ...USER_EQUIPMENT,
       id: 99,
-      compendiumEquipmentId: 'tmpl-other',
+      templateId: 'tmpl-other',
     };
     const { providers } = setup([otherEquipment]);
     await render(EquipmentDetail, { providers });

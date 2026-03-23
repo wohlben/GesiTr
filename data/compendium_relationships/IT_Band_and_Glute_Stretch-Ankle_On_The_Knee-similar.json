@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.65,
   "description": "Both are supine glute stretches; IT Band uses extended leg across body with band for IT band and glutes, while Figure 4 uses figure-4 position emphasizing piriformis and external rotators",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "IT_Band_and_Glute_Stretch",
   "toExerciseTemplateId": "Ankle_On_The_Knee"

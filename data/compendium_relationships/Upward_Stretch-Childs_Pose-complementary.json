@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.5,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Upward_Stretch",
   "toExerciseTemplateId": "Childs_Pose"

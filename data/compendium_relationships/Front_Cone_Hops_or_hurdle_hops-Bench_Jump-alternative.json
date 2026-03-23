@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761495424,
   "fromExerciseTemplateId": "Front_Cone_Hops_or_hurdle_hops",
   "toExerciseTemplateId": "Bench_Jump"

@@ -78,27 +78,27 @@ func WorkoutSectionFromDTO(dto WorkoutSection) WorkoutSectionEntity {
 
 type WorkoutSectionExerciseEntity struct {
 	shared.BaseModel
-	WorkoutSectionID     uint `gorm:"not null;index"`
-	UserExerciseSchemeID uint `gorm:"not null"`
-	Position             int  `gorm:"not null"`
+	WorkoutSectionID uint `gorm:"not null;index"`
+	ExerciseSchemeID uint `gorm:"not null"`
+	Position         int  `gorm:"not null"`
 }
 
 func (WorkoutSectionExerciseEntity) TableName() string { return "workout_section_exercises" }
 
 func (e *WorkoutSectionExerciseEntity) ToDTO() WorkoutSectionExercise {
 	return WorkoutSectionExercise{
-		BaseModel:            e.BaseModel,
-		WorkoutSectionID:     e.WorkoutSectionID,
-		UserExerciseSchemeID: e.UserExerciseSchemeID,
-		Position:             e.Position,
+		BaseModel:        e.BaseModel,
+		WorkoutSectionID: e.WorkoutSectionID,
+		ExerciseSchemeID: e.ExerciseSchemeID,
+		Position:         e.Position,
 	}
 }
 
 func WorkoutSectionExerciseFromDTO(dto WorkoutSectionExercise) WorkoutSectionExerciseEntity {
 	return WorkoutSectionExerciseEntity{
-		BaseModel:            dto.BaseModel,
-		WorkoutSectionID:     dto.WorkoutSectionID,
-		UserExerciseSchemeID: dto.UserExerciseSchemeID,
-		Position:             dto.Position,
+		BaseModel:        dto.BaseModel,
+		WorkoutSectionID: dto.WorkoutSectionID,
+		ExerciseSchemeID: dto.ExerciseSchemeID,
+		Position:         dto.Position,
 	}
 }

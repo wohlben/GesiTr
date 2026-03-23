@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761482004,
   "fromExerciseTemplateId": "Incline_Push-Up_Close-Grip",
   "toExerciseTemplateId": "Close-Grip_Dumbbell_Press"

@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761511480,
   "fromExerciseTemplateId": "Floor_Glute-Ham_Raise",
   "toExerciseTemplateId": "Prone_Manual_Hamstring"

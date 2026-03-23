@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": "Alternative triceps stretch positions - overhead behind head vs cross-body",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Triceps_Stretch",
   "toExerciseTemplateId": "Tricep_Side_Stretch"

@@ -10,10 +10,10 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
+	equipmentmodels "gesitr/internal/equipment/models"
+	exercisehandlers "gesitr/internal/exercise/handlers"
+	exercisemodels "gesitr/internal/exercise/models"
 	profilemodels "gesitr/internal/profile/models"
-	userequipmentmodels "gesitr/internal/user/equipment/models"
-	userexercisehandlers "gesitr/internal/user/exercise/handlers"
-	userexercisemodels "gesitr/internal/user/exercise/models"
 	"gesitr/internal/user/workout/models"
 
 	"github.com/gin-gonic/gin"
@@ -36,9 +36,17 @@ func setupTestDB(t *testing.T) {
 	}
 	db.AutoMigrate(
 		&profilemodels.UserProfileEntity{},
-		&userexercisemodels.UserExerciseEntity{},
-		&userexercisemodels.UserExerciseSchemeEntity{},
-		&userequipmentmodels.UserEquipmentEntity{},
+		&exercisemodels.ExerciseEntity{},
+		&exercisemodels.ExerciseForce{},
+		&exercisemodels.ExerciseMuscle{},
+		&exercisemodels.ExerciseMeasurementParadigm{},
+		&exercisemodels.ExerciseInstruction{},
+		&exercisemodels.ExerciseImage{},
+		&exercisemodels.ExerciseAlternativeName{},
+		&exercisemodels.ExerciseEquipment{},
+		&exercisemodels.ExerciseHistoryEntity{},
+		&exercisemodels.ExerciseSchemeEntity{},
+		&equipmentmodels.EquipmentEntity{},
 		&models.WorkoutEntity{},
 		&models.WorkoutSectionEntity{},
 		&models.WorkoutSectionExerciseEntity{},
@@ -50,36 +58,36 @@ func setupTestDB(t *testing.T) {
 
 func newRouter() *gin.Engine {
 	r := gin.New()
-	api := r.Group("/api/user")
+	api := r.Group("/api")
 	api.Use(auth.UserID())
 
 	exercises := api.Group("/exercises")
-	exercises.GET("", userexercisehandlers.ListUserExercises)
-	exercises.POST("", userexercisehandlers.CreateUserExercise)
-	exercises.GET("/:id", userexercisehandlers.GetUserExercise)
-	exercises.DELETE("/:id", userexercisehandlers.DeleteUserExercise)
+	exercises.GET("", exercisehandlers.ListExercises)
+	exercises.POST("", exercisehandlers.CreateExercise)
+	exercises.GET("/:id", exercisehandlers.GetExercise)
+	exercises.DELETE("/:id", exercisehandlers.DeleteExercise)
 
 	schemes := api.Group("/exercise-schemes")
-	schemes.GET("", userexercisehandlers.ListUserExerciseSchemes)
-	schemes.POST("", userexercisehandlers.CreateUserExerciseScheme)
-	schemes.GET("/:id", userexercisehandlers.GetUserExerciseScheme)
-	schemes.PUT("/:id", userexercisehandlers.UpdateUserExerciseScheme)
-	schemes.DELETE("/:id", userexercisehandlers.DeleteUserExerciseScheme)
+	schemes.GET("", exercisehandlers.ListExerciseSchemes)
+	schemes.POST("", exercisehandlers.CreateExerciseScheme)
+	schemes.GET("/:id", exercisehandlers.GetExerciseScheme)
+	schemes.PUT("/:id", exercisehandlers.UpdateExerciseScheme)
+	schemes.DELETE("/:id", exercisehandlers.DeleteExerciseScheme)
 
-	workouts := api.Group("/workouts")
+	workouts := api.Group("/user/workouts")
 	workouts.GET("", ListWorkouts)
 	workouts.POST("", CreateWorkout)
 	workouts.GET("/:id", GetWorkout)
 	workouts.PUT("/:id", UpdateWorkout)
 	workouts.DELETE("/:id", DeleteWorkout)
 
-	sections := api.Group("/workout-sections")
+	sections := api.Group("/user/workout-sections")
 	sections.GET("", ListWorkoutSections)
 	sections.POST("", CreateWorkoutSection)
 	sections.GET("/:id", GetWorkoutSection)
 	sections.DELETE("/:id", DeleteWorkoutSection)
 
-	sectionExercises := api.Group("/workout-section-exercises")
+	sectionExercises := api.Group("/user/workout-section-exercises")
 	sectionExercises.GET("", ListWorkoutSectionExercises)
 	sectionExercises.POST("", CreateWorkoutSectionExercise)
 	sectionExercises.DELETE("/:id", DeleteWorkoutSectionExercise)

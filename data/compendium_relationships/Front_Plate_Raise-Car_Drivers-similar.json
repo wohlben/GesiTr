@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": null,
   "description": "Both exercises involve holding a weight plate with extended arms in front of the body at shoulder height, targeting the anterior deltoids through isometric hold and control",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761024000,
   "fromExerciseTemplateId": "Front_Plate_Raise",
   "toExerciseTemplateId": "Car_Drivers"

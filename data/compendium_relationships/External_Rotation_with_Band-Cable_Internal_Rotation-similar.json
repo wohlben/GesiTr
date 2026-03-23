@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761478645,
   "fromExerciseTemplateId": "External_Rotation_with_Band",
   "toExerciseTemplateId": "Cable_Internal_Rotation"

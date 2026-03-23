@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": "Barbell version with pronated (reverse) grip emphasizing brachialis and forearms",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761543970,
   "fromExerciseTemplateId": "Cable_Preacher_Curl",
   "toExerciseTemplateId": "Reverse_Barbell_Preacher_Curls"

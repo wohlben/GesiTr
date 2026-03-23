@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761551538,
   "fromExerciseTemplateId": "Wrist_Circles",
   "toExerciseTemplateId": "Wrist_Rotations_with_Straight_Bar"

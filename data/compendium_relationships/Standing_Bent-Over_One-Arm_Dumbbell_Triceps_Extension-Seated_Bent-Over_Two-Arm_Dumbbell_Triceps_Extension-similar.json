@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730016000,
   "fromExerciseTemplateId": "Standing_Bent-Over_One-Arm_Dumbbell_Triceps_Extension",
   "toExerciseTemplateId": "Seated_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension"

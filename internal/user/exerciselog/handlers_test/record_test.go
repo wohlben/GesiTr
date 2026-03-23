@@ -13,11 +13,11 @@ func TestRecordCreatedOnSetCompletion(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
@@ -42,7 +42,7 @@ func TestRecordCreatedOnSetCompletion(t *testing.T) {
 	}
 
 	// Verify exercise log was created with isRecord=true
-	w = doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1&isRecord=true", nil)
+	w = doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1&isRecord=true", nil)
 	if w.Code != http.StatusOK {
 		t.Fatalf("status = %d", w.Code)
 	}
@@ -67,11 +67,11 @@ func TestRecordUpdatedOnBetterPerformance(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
@@ -96,7 +96,7 @@ func TestRecordUpdatedOnBetterPerformance(t *testing.T) {
 	})
 
 	// Only one should be the record — the better one
-	w := doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1&isRecord=true", nil)
+	w := doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1&isRecord=true", nil)
 	var logs []exerciselogmodels.ExerciseLog
 	json.Unmarshal(w.Body.Bytes(), &logs)
 	if len(logs) != 1 {
@@ -108,7 +108,7 @@ func TestRecordUpdatedOnBetterPerformance(t *testing.T) {
 	}
 
 	// Both exercise logs should exist
-	w = doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1", nil)
+	w = doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1", nil)
 	json.Unmarshal(w.Body.Bytes(), &logs)
 	if len(logs) != 2 {
 		t.Fatalf("expected 2 exercise logs total, got %d", len(logs))
@@ -119,11 +119,11 @@ func TestRecordNotUpdatedOnWorsePerformance(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
@@ -147,7 +147,7 @@ func TestRecordNotUpdatedOnWorsePerformance(t *testing.T) {
 		"status": "finished", "actualReps": 3, "actualWeight": 100.0,
 	})
 
-	w := doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1&isRecord=true", nil)
+	w := doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1&isRecord=true", nil)
 	var logs []exerciselogmodels.ExerciseLog
 	json.Unmarshal(w.Body.Bytes(), &logs)
 	if len(logs) != 1 {
@@ -165,11 +165,11 @@ func TestDifferentMeasurementTypes(t *testing.T) {
 	r := newRouter()
 
 	// TIME_BASED exercise
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "plank", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Plank", "slug": "plank", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "TIME_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "TIME_BASED",
 		"sets": 1, "duration": 60,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
@@ -187,7 +187,7 @@ func TestDifferentMeasurementTypes(t *testing.T) {
 		"status": "finished", "actualDuration": 75,
 	})
 
-	w := doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1&isRecord=true", nil)
+	w := doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1&isRecord=true", nil)
 	var logs []exerciselogmodels.ExerciseLog
 	json.Unmarshal(w.Body.Bytes(), &logs)
 	if len(logs) != 1 {
@@ -205,11 +205,11 @@ func TestDistanceBasedMeasurement(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "run", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Run", "slug": "run", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "DISTANCE_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "DISTANCE_BASED",
 		"sets": 1, "distance": 5.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
@@ -227,7 +227,7 @@ func TestDistanceBasedMeasurement(t *testing.T) {
 		"status": "finished", "actualDistance": 5.5,
 	})
 
-	w := doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1&isRecord=true", nil)
+	w := doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1&isRecord=true", nil)
 	var logs []exerciselogmodels.ExerciseLog
 	json.Unmarshal(w.Body.Bytes(), &logs)
 	if len(logs) != 1 {
@@ -245,11 +245,11 @@ func TestUpdateExerciseLogShiftsRecord(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
@@ -273,7 +273,7 @@ func TestUpdateExerciseLogShiftsRecord(t *testing.T) {
 	})
 
 	// Get the exercise log IDs
-	w := doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1", nil)
+	w := doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1", nil)
 	var logs []exerciselogmodels.ExerciseLog
 	json.Unmarshal(w.Body.Bytes(), &logs)
 	if len(logs) != 2 {
@@ -301,7 +301,7 @@ func TestUpdateExerciseLogShiftsRecord(t *testing.T) {
 	}
 
 	// Verify record shifted to set 1
-	w = doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1&isRecord=true", nil)
+	w = doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1&isRecord=true", nil)
 	json.Unmarshal(w.Body.Bytes(), &logs)
 	if len(logs) != 1 {
 		t.Fatalf("expected 1 record after update, got %d", len(logs))
@@ -316,11 +316,11 @@ func TestDeleteExerciseLogShiftsRecord(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
@@ -344,7 +344,7 @@ func TestDeleteExerciseLogShiftsRecord(t *testing.T) {
 	})
 
 	// Find the record
-	w := doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1&isRecord=true", nil)
+	w := doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1&isRecord=true", nil)
 	var logs []exerciselogmodels.ExerciseLog
 	json.Unmarshal(w.Body.Bytes(), &logs)
 	if len(logs) != 1 {
@@ -359,7 +359,7 @@ func TestDeleteExerciseLogShiftsRecord(t *testing.T) {
 	}
 
 	// The remaining entry should now be the record
-	w = doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1&isRecord=true", nil)
+	w = doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1&isRecord=true", nil)
 	json.Unmarshal(w.Body.Bytes(), &logs)
 	if len(logs) != 1 {
 		t.Fatalf("expected 1 record after delete, got %d", len(logs))
@@ -374,13 +374,13 @@ func TestDeleteLastExerciseLogClearsRecord(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 
 	// Create a single ad-hoc log
 	w := doJSON(r, "POST", "/api/user/exercise-logs", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"reps": 5, "weight": 100.0, "performedAt": "2026-03-10T10:00:00Z",
 	})
 	var log exerciselogmodels.ExerciseLog
@@ -390,7 +390,7 @@ func TestDeleteLastExerciseLogClearsRecord(t *testing.T) {
 	doJSON(r, "DELETE", fmt.Sprintf("/api/user/exercise-logs/%d", log.ID), nil)
 
 	// No records should remain
-	w = doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1&isRecord=true", nil)
+	w = doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1&isRecord=true", nil)
 	var logs []exerciselogmodels.ExerciseLog
 	json.Unmarshal(w.Body.Bytes(), &logs)
 	if len(logs) != 0 {
@@ -402,11 +402,11 @@ func TestNoRecordWhenNotFinished(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
@@ -425,7 +425,7 @@ func TestNoRecordWhenNotFinished(t *testing.T) {
 		"status": "skipped",
 	})
 
-	w := doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1", nil)
+	w := doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1", nil)
 	var logs []exerciselogmodels.ExerciseLog
 	json.Unmarshal(w.Body.Bytes(), &logs)
 	if len(logs) != 0 {
@@ -437,16 +437,16 @@ func TestPerExerciseNotPerScheme(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	// Two schemes for the same exercise
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 1, "reps": 10, "weight": 80.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
@@ -474,7 +474,7 @@ func TestPerExerciseNotPerScheme(t *testing.T) {
 	})
 
 	// Should have only 1 record for the exercise
-	w := doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1&isRecord=true", nil)
+	w := doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1&isRecord=true", nil)
 	var logs []exerciselogmodels.ExerciseLog
 	json.Unmarshal(w.Body.Bytes(), &logs)
 	if len(logs) != 1 {

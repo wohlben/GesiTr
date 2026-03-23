@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729969200,
   "fromExerciseTemplateId": "Neck_Press",
   "toExerciseTemplateId": "Barbell_Bench_Press_-_Medium_Grip"

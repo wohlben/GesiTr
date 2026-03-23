@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761464349,
   "fromExerciseTemplateId": "Band_Leg_Extension",
   "toExerciseTemplateId": "Leg_Extensions"

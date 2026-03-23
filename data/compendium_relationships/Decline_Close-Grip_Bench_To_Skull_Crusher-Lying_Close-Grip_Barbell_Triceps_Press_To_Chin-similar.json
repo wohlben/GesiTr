@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Decline_Close-Grip_Bench_To_Skull_Crusher",
   "toExerciseTemplateId": "Lying_Close-Grip_Barbell_Triceps_Press_To_Chin"

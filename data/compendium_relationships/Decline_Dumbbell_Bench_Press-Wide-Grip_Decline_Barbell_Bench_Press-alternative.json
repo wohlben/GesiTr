@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761551318,
   "fromExerciseTemplateId": "Decline_Dumbbell_Bench_Press",
   "toExerciseTemplateId": "Wide-Grip_Decline_Barbell_Bench_Press"

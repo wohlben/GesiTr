@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "One-Arm_Kettlebell_Split_Snatch",
   "toExerciseTemplateId": "One-Arm_Kettlebell_Snatch"

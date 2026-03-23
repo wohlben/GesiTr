@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761512062,
   "fromExerciseTemplateId": "One-Arm_Flat_Bench_Dumbbell_Flye",
   "toExerciseTemplateId": "Single-Arm_Cable_Crossover"

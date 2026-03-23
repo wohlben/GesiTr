@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761498416,
   "fromExerciseTemplateId": "Hyperextensions_Back_Extensions",
   "toExerciseTemplateId": "Band_Good_Morning_Pull_Through"

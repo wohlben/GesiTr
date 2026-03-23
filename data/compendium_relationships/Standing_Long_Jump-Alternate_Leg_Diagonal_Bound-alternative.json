@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.68,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761461533,
   "fromExerciseTemplateId": "Standing_Long_Jump",
   "toExerciseTemplateId": "Alternate_Leg_Diagonal_Bound"

@@ -1,11 +1,9 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
-import { injectQueries } from '@tanstack/angular-query-experimental/inject-queries-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
-import { userExerciseKeys, exerciseKeys } from '$core/query-keys';
+import { userExerciseKeys } from '$core/query-keys';
 import { PageLayout } from '../../../layout/page-layout';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideListCheck } from '@ng-icons/lucide';
@@ -23,7 +21,7 @@ import { lucideListCheck } from '@ng-icons/lucide';
           userExercisesQuery.isError() ? userExercisesQuery.error().message : undefined
         "
       >
-        @if (enrichedExercises(); as exercises) {
+        @if (userExercisesQuery.data(); as exercises) {
           @if (exercises.length === 0) {
             <p class="text-sm text-gray-500 dark:text-gray-400">
               {{ t('user.exercises.noResults') }}
@@ -65,11 +63,11 @@ import { lucideListCheck } from '@ng-icons/lucide';
                         {{ item.type }}
                       </td>
                       <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
-                        v{{ item.compendiumVersion }}
+                        v{{ item.version }}
                       </td>
                       <td class="px-4 py-3 text-right">
                         <a
-                          [routerLink]="['./', item.userExerciseId, 'track']"
+                          [routerLink]="['./', item.id, 'track']"
                           (click)="$event.stopPropagation()"
                           class="inline-flex items-center rounded-md p-1.5 text-green-600 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-900/30"
                           [title]="t('user.exercises.quickTrack')"
@@ -90,38 +88,9 @@ import { lucideListCheck } from '@ng-icons/lucide';
 })
 export class UserExerciseList {
   private userApi = inject(UserApiClient);
-  private compendiumApi = inject(CompendiumApiClient);
 
   userExercisesQuery = injectQuery(() => ({
     queryKey: userExerciseKeys.list(),
     queryFn: () => this.userApi.fetchUserExercises(),
   }));
-
-  private snapshotQueries = injectQueries(() => ({
-    queries: (this.userExercisesQuery.data() ?? []).map((ue) => ({
-      queryKey: exerciseKeys.version(ue.compendiumExerciseId, ue.compendiumVersion),
-      queryFn: () =>
-        this.compendiumApi.fetchExerciseVersion(ue.compendiumExerciseId, ue.compendiumVersion),
-      staleTime: Infinity,
-    })),
-  }));
-
-  enrichedExercises = computed(() => {
-    const userExercises = this.userExercisesQuery.data();
-    if (!userExercises) return undefined;
-
-    const snapshots = this.snapshotQueries();
-
-    return userExercises.map((ue, i) => {
-      const versionEntry = snapshots[i]?.data();
-      const exercise = versionEntry?.snapshot;
-      return {
-        id: ue.id,
-        userExerciseId: ue.id,
-        compendiumVersion: ue.compendiumVersion,
-        name: exercise?.name ?? '...',
-        type: exercise?.type ?? '',
-      };
-    });
-  });
 }

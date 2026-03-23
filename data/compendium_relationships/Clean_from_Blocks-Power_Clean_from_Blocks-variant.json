@@ -3,7 +3,7 @@
   "relationshipType": "variant",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761511266,
   "fromExerciseTemplateId": "Clean_from_Blocks",
   "toExerciseTemplateId": "Power_Clean_from_Blocks"

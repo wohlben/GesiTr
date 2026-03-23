@@ -1,7 +1,6 @@
 import { inject } from '@angular/core';
 import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { WorkoutLogSection } from '$generated/user-models';
 
 interface WorkoutLogDetailState {
@@ -18,7 +17,6 @@ export const WorkoutLogDetailStore = signalStore(
   withState(initialState),
   withMethods((store) => {
     const userApi = inject(UserApiClient);
-    const compendiumApi = inject(CompendiumApiClient);
 
     return {
       async loadExerciseNames(sections: WorkoutLogSection[]) {
@@ -44,37 +42,24 @@ export const WorkoutLogDetailStore = signalStore(
         );
         const validSchemes = schemes.filter((s): s is NonNullable<typeof s> => s !== null);
 
-        // Fetch unique user exercises
-        const uniqueUserExerciseIds = [
-          ...new Set(validSchemes.map((s) => s.scheme.userExerciseId)),
-        ];
-        const userExercises = await Promise.all(
-          uniqueUserExerciseIds.map((id) => userApi.fetchUserExercise(id).catch(() => null)),
+        // Fetch unique exercises to get names directly
+        const uniqueExerciseIds = [...new Set(validSchemes.map((s) => s.scheme.exerciseId))];
+        const exerciseResults = await Promise.all(
+          uniqueExerciseIds.map((id) => userApi.fetchUserExercise(id).catch(() => null)),
         );
 
-        // Fetch exercise names from compendium
+        // Build exercise name map
         const exerciseNameMap: Record<number, string> = {};
-        await Promise.all(
-          userExercises
-            .filter((ue) => ue !== null)
-            .map(async (ue) => {
-              try {
-                const version = await compendiumApi.fetchExerciseVersion(
-                  ue.compendiumExerciseId,
-                  ue.compendiumVersion,
-                );
-                exerciseNameMap[ue.id] = version.snapshot?.name ?? `Exercise #${ue.id}`;
-              } catch {
-                exerciseNameMap[ue.id] = `Exercise #${ue.id}`;
-              }
-            }),
-        );
+        for (const exercise of exerciseResults) {
+          if (exercise) {
+            exerciseNameMap[exercise.id] = exercise.name;
+          }
+        }
 
         // Map scheme IDs to exercise names
         for (const item of validSchemes) {
           names[item.schemeId] =
-            exerciseNameMap[item.scheme.userExerciseId] ??
-            `Exercise #${item.scheme.userExerciseId}`;
+            exerciseNameMap[item.scheme.exerciseId] ?? `Exercise #${item.scheme.exerciseId}`;
         }
 
         patchState(store, { exerciseNames: names, isLoading: false });

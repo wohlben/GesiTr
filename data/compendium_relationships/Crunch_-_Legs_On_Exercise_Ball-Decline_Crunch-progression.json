@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730027200,
   "fromExerciseTemplateId": "Crunch_-_Legs_On_Exercise_Ball",
   "toExerciseTemplateId": "Decline_Crunch"

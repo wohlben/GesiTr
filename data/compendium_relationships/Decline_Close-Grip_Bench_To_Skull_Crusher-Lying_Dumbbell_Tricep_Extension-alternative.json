@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Decline_Close-Grip_Bench_To_Skull_Crusher",
   "toExerciseTemplateId": "Lying_Dumbbell_Tricep_Extension"

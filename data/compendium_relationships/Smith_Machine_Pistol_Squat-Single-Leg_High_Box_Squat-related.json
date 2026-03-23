@@ -3,7 +3,7 @@
   "relationshipType": "related",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Smith_Machine_Pistol_Squat",
   "toExerciseTemplateId": "Single-Leg_High_Box_Squat"

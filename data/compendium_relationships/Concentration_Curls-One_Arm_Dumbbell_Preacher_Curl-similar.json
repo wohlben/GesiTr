@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": "Both single-arm isolation exercises for biceps with different support methods",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729933200,
   "fromExerciseTemplateId": "Concentration_Curls",
   "toExerciseTemplateId": "One_Arm_Dumbbell_Preacher_Curl"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761493205,
   "fromExerciseTemplateId": "Seated_Bent-Over_Rear_Delt_Raise",
   "toExerciseTemplateId": "Dumbbell_Lying_Rear_Lateral_Raise"

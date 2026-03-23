@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761511019,
   "fromExerciseTemplateId": "Rack_Pull_with_Bands",
   "toExerciseTemplateId": "Deadlift_with_Bands"

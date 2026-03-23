@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761481210,
   "fromExerciseTemplateId": "Dumbbell_One-Arm_Shoulder_Press",
   "toExerciseTemplateId": "Circus_Bell"

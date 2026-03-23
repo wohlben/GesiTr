@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730000000,
   "fromExerciseTemplateId": "Hurdle_Hops",
   "toExerciseTemplateId": "Knee_Tuck_Jump"

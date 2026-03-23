@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Double_Kettlebell_Jerk",
   "toExerciseTemplateId": "Two-Arm_Kettlebell_Clean"

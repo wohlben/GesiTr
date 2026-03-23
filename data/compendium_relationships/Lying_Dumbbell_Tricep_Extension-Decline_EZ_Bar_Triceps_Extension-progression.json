@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729932000,
   "fromExerciseTemplateId": "Lying_Dumbbell_Tricep_Extension",
   "toExerciseTemplateId": "Decline_EZ_Bar_Triceps_Extension"

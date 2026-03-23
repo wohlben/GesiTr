@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Bent_Press",
   "toExerciseTemplateId": "Kettlebell_Turkish_Get-Up_Lunge_style"

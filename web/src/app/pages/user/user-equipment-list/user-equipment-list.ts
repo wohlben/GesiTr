@@ -1,11 +1,9 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
-import { injectQueries } from '@tanstack/angular-query-experimental/inject-queries-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
-import { userEquipmentKeys, equipmentKeys } from '$core/query-keys';
+import { userEquipmentKeys } from '$core/query-keys';
 import { PageLayout } from '../../../layout/page-layout';
 
 @Component({
@@ -20,7 +18,7 @@ import { PageLayout } from '../../../layout/page-layout';
           userEquipmentQuery.isError() ? userEquipmentQuery.error().message : undefined
         "
       >
-        @if (enrichedEquipment(); as equipment) {
+        @if (userEquipmentQuery.data(); as equipment) {
           @if (equipment.length === 0) {
             <p class="text-sm text-gray-500 dark:text-gray-400">
               {{ t('user.equipment.noResults') }}
@@ -61,7 +59,7 @@ import { PageLayout } from '../../../layout/page-layout';
                         {{ item.category }}
                       </td>
                       <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
-                        v{{ item.compendiumVersion }}
+                        v{{ item.version }}
                       </td>
                     </tr>
                   }
@@ -76,37 +74,9 @@ import { PageLayout } from '../../../layout/page-layout';
 })
 export class UserEquipmentList {
   private userApi = inject(UserApiClient);
-  private compendiumApi = inject(CompendiumApiClient);
 
   userEquipmentQuery = injectQuery(() => ({
     queryKey: userEquipmentKeys.list(),
     queryFn: () => this.userApi.fetchUserEquipment(),
   }));
-
-  private snapshotQueries = injectQueries(() => ({
-    queries: (this.userEquipmentQuery.data() ?? []).map((ue) => ({
-      queryKey: equipmentKeys.version(ue.compendiumEquipmentId, ue.compendiumVersion),
-      queryFn: () =>
-        this.compendiumApi.fetchEquipmentVersion(ue.compendiumEquipmentId, ue.compendiumVersion),
-      staleTime: Infinity,
-    })),
-  }));
-
-  enrichedEquipment = computed(() => {
-    const userEquipment = this.userEquipmentQuery.data();
-    if (!userEquipment) return undefined;
-
-    const snapshots = this.snapshotQueries();
-
-    return userEquipment.map((ue, i) => {
-      const versionEntry = snapshots[i]?.data();
-      const equipment = versionEntry?.snapshot;
-      return {
-        id: ue.id,
-        compendiumVersion: ue.compendiumVersion,
-        displayName: equipment?.displayName ?? '...',
-        category: equipment?.category ?? '',
-      };
-    });
-  });
 }

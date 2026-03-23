@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": "Standing reverse barbell curl without preacher bench support",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761543970,
   "fromExerciseTemplateId": "Reverse_Barbell_Preacher_Curls",
   "toExerciseTemplateId": "Reverse_Barbell_Curl"

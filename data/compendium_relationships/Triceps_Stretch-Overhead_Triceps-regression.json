@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.9,
   "description": "Triceps Stretch is simpler self-assisted version without partner or PNF technique",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Triceps_Stretch",
   "toExerciseTemplateId": "Overhead_Triceps"

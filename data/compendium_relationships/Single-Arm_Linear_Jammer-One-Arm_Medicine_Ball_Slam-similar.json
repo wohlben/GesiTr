@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761510517,
   "fromExerciseTemplateId": "Single-Arm_Linear_Jammer",
   "toExerciseTemplateId": "One-Arm_Medicine_Ball_Slam"

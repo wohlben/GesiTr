@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.82,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Barbell_Squat_To_A_Bench",
   "toExerciseTemplateId": "Front_Barbell_Squat"

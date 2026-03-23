@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": null,
   "description": "Both are beginner-level stretches performed from a quadruped position (hands and knees) that target the lower back and spine, promoting spinal flexion and back muscle relaxation",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761024000,
   "fromExerciseTemplateId": "Childs_Pose",
   "toExerciseTemplateId": "Cat_Stretch"

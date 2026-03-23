@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760883050,
   "fromExerciseTemplateId": "Car_Deadlift",
   "toExerciseTemplateId": "Rickshaw_Deadlift"

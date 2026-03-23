@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760883050,
   "fromExerciseTemplateId": "Straight-Arm_Dumbbell_Pullover",
   "toExerciseTemplateId": "Cable_Incline_Pushdown"

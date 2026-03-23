@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729900800,
   "fromExerciseTemplateId": "Rickshaw_Carry",
   "toExerciseTemplateId": "Conans_Wheel"

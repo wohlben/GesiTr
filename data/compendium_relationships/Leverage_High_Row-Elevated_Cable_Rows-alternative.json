@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": "Elevated Cable Rows is a cable machine alternative to Leverage High Row targeting similar back muscles",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761412213,
   "fromExerciseTemplateId": "Leverage_High_Row",
   "toExerciseTemplateId": "Elevated_Cable_Rows"

@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.5,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761476339,
   "fromExerciseTemplateId": "Bodyweight_Flyes",
   "toExerciseTemplateId": "Dumbbell_Flyes"

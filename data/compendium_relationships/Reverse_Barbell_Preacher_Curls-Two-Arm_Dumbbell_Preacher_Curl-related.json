@@ -3,7 +3,7 @@
   "relationshipType": "related",
   "strength": 0.75,
   "description": "Dumbbell version with supinated grip on preacher bench",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761543970,
   "fromExerciseTemplateId": "Reverse_Barbell_Preacher_Curls",
   "toExerciseTemplateId": "Two-Arm_Dumbbell_Preacher_Curl"

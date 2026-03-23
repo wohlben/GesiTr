@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761480085,
   "fromExerciseTemplateId": "Calf_Stretch_Elbows_Against_Wall",
   "toExerciseTemplateId": "Standing_Soleus_And_Achilles_Stretch"

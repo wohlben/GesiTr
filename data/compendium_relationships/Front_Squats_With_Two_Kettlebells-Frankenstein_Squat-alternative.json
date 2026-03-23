@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730009000,
   "fromExerciseTemplateId": "Front_Squats_With_Two_Kettlebells",
   "toExerciseTemplateId": "Frankenstein_Squat"

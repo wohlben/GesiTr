@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Lying_Close-Grip_Barbell_Triceps_Press_To_Chin",
   "toExerciseTemplateId": "EZ-Bar_Skullcrusher"

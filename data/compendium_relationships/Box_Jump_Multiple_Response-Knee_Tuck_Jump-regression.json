@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761477930,
   "fromExerciseTemplateId": "Box_Jump_Multiple_Response",
   "toExerciseTemplateId": "Knee_Tuck_Jump"

@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729933200,
   "fromExerciseTemplateId": "Chest_Push_single_response",
   "toExerciseTemplateId": "Chest_Push_from_3_point_stance"

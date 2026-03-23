@@ -35,11 +35,12 @@ export interface Exercise extends BaseModel {
   alternativeNames: string[];
   authorName?: string;
   authorUrl?: string;
-  createdBy: string;
+  owner: string;
+  public: boolean;
   version: number /* int */;
   parentExerciseId?: number /* uint */;
   templateId: string;
-  equipmentIds: string[];
+  equipmentIds: number /* uint */[];
 }
 export type ExerciseType = string;
 export const ExerciseTypeStrength: ExerciseType = 'STRENGTH';
@@ -89,6 +90,26 @@ export const MeasurementTime: MeasurementParadigm = 'TIME';
 export const MeasurementDistance: MeasurementParadigm = 'DISTANCE';
 
 //////////
+// source: scheme.go
+
+/**
+ * ExerciseScheme is the API DTO for exercise schemes
+ */
+export interface ExerciseScheme extends BaseModel {
+  owner: string;
+  exerciseId: number /* uint */;
+  measurementType: string;
+  sets?: number /* int */;
+  reps?: number /* int */;
+  weight?: number /* float64 */;
+  restBetweenSets?: number /* int */;
+  timePerRep?: number /* int */;
+  duration?: number /* int */;
+  distance?: number /* float64 */;
+  targetTime?: number /* int */;
+}
+
+//////////
 // source: equipment.go
 
 export interface Equipment extends BaseModel {
@@ -98,7 +119,8 @@ export interface Equipment extends BaseModel {
   category: EquipmentCategory;
   imageUrl?: string;
   templateId: string;
-  createdBy: string;
+  owner: string;
+  public: boolean;
   version: number /* int */;
 }
 export type EquipmentCategory = string;
@@ -116,12 +138,12 @@ export interface ExerciseGroup extends BaseModel {
   templateId: string;
   name: string;
   description?: string;
-  createdBy: string;
+  owner: string;
 }
 export interface ExerciseGroupMember extends BaseModel {
-  groupTemplateId: string;
-  exerciseTemplateId: string;
-  addedBy: string;
+  groupId: number /* uint */;
+  exerciseId: number /* uint */;
+  owner: string;
 }
 
 //////////
@@ -131,9 +153,9 @@ export interface ExerciseRelationship extends BaseModel {
   relationshipType: ExerciseRelationshipType;
   strength: number /* float64 */;
   description?: string;
-  createdBy: string;
-  fromExerciseTemplateId: string;
-  toExerciseTemplateId: string;
+  owner: string;
+  fromExerciseId: number /* uint */;
+  toExerciseId: number /* uint */;
 }
 export type ExerciseRelationshipType = string;
 export const ExerciseRelationshipTypeAccessory: ExerciseRelationshipType = 'accessory';
@@ -146,6 +168,7 @@ export const ExerciseRelationshipTypeEasierAlternative: ExerciseRelationshipType
   'easier_alternative';
 export const ExerciseRelationshipTypeEquipmentVariation: ExerciseRelationshipType =
   'equipment_variation';
+export const ExerciseRelationshipTypeEquivalent: ExerciseRelationshipType = 'equivalent';
 export const ExerciseRelationshipTypeHarderAlternative: ExerciseRelationshipType =
   'harder_alternative';
 export const ExerciseRelationshipTypePreparation: ExerciseRelationshipType = 'preparation';
@@ -165,7 +188,20 @@ export const ExerciseRelationshipTypeVariation: ExerciseRelationshipType = 'vari
 // source: fulfillment.go
 
 export interface Fulfillment extends BaseModel {
-  equipmentTemplateId: string;
-  fulfillsEquipmentTemplateId: string;
-  createdBy: string;
+  equipmentId: number /* uint */;
+  fulfillsEquipmentId: number /* uint */;
+  owner: string;
 }
+
+//////////
+// source: relationship.go
+
+export interface EquipmentRelationship extends BaseModel {
+  relationshipType: EquipmentRelationshipType;
+  strength: number /* float64 */;
+  owner: string;
+  fromEquipmentId: number /* uint */;
+  toEquipmentId: number /* uint */;
+}
+export type EquipmentRelationshipType = string;
+export const EquipmentRelationshipTypeEquivalent: EquipmentRelationshipType = 'equivalent';

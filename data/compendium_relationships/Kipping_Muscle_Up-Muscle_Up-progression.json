@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761508980,
   "fromExerciseTemplateId": "Kipping_Muscle_Up",
   "toExerciseTemplateId": "Muscle_Up"

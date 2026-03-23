@@ -3,7 +3,7 @@
   "relationshipType": "variation",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Cable_One_Arm_Tricep_Extension",
   "toExerciseTemplateId": "Standing_Low-Pulley_One-Arm_Triceps_Extension"

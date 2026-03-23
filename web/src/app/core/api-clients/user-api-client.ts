@@ -34,35 +34,35 @@ export class UserApiClient {
   }
 
   fetchUserExercises(): Promise<UserExercise[]> {
-    return firstValueFrom(this.http.get<UserExercise[]>('/api/user/exercises'));
+    return firstValueFrom(this.http.get<UserExercise[]>('/api/exercises?owner=me'));
   }
 
   fetchUserExercise(id: number): Promise<UserExercise> {
-    return firstValueFrom(this.http.get<UserExercise>(`/api/user/exercises/${id}`));
+    return firstValueFrom(this.http.get<UserExercise>(`/api/exercises/${id}`));
   }
 
   createUserExercise(data: Partial<UserExercise>): Promise<UserExercise> {
-    return firstValueFrom(this.http.post<UserExercise>('/api/user/exercises', data));
+    return firstValueFrom(this.http.post<UserExercise>('/api/exercises', data));
   }
 
   deleteUserExercise(id: number): Promise<void> {
-    return firstValueFrom(this.http.delete<void>(`/api/user/exercises/${id}`));
+    return firstValueFrom(this.http.delete<void>(`/api/exercises/${id}`));
   }
 
   fetchUserEquipment(): Promise<UserEquipment[]> {
-    return firstValueFrom(this.http.get<UserEquipment[]>('/api/user/equipment'));
+    return firstValueFrom(this.http.get<UserEquipment[]>('/api/equipment?owner=me'));
   }
 
   fetchUserEquipmentItem(id: number): Promise<UserEquipment> {
-    return firstValueFrom(this.http.get<UserEquipment>(`/api/user/equipment/${id}`));
+    return firstValueFrom(this.http.get<UserEquipment>(`/api/equipment/${id}`));
   }
 
   createUserEquipment(data: Partial<UserEquipment>): Promise<UserEquipment> {
-    return firstValueFrom(this.http.post<UserEquipment>('/api/user/equipment', data));
+    return firstValueFrom(this.http.post<UserEquipment>('/api/equipment', data));
   }
 
   deleteUserEquipment(id: number): Promise<void> {
-    return firstValueFrom(this.http.delete<void>(`/api/user/equipment/${id}`));
+    return firstValueFrom(this.http.delete<void>(`/api/equipment/${id}`));
   }
 
   // Workouts
@@ -109,31 +109,29 @@ export class UserApiClient {
   }
 
   // Exercise Schemes
-  fetchExerciseSchemes(params?: { userExerciseId?: number }): Promise<UserExerciseScheme[]> {
+  fetchExerciseSchemes(params?: { exerciseId?: number }): Promise<UserExerciseScheme[]> {
     const qp = new URLSearchParams();
-    if (params?.userExerciseId != null) qp.set('userExerciseId', String(params.userExerciseId));
+    if (params?.exerciseId != null) qp.set('exerciseId', String(params.exerciseId));
     const qs = qp.toString();
     return firstValueFrom(
-      this.http.get<UserExerciseScheme[]>(`/api/user/exercise-schemes${qs ? '?' + qs : ''}`),
+      this.http.get<UserExerciseScheme[]>(`/api/exercise-schemes${qs ? '?' + qs : ''}`),
     );
   }
 
   fetchExerciseScheme(id: number): Promise<UserExerciseScheme> {
-    return firstValueFrom(this.http.get<UserExerciseScheme>(`/api/user/exercise-schemes/${id}`));
+    return firstValueFrom(this.http.get<UserExerciseScheme>(`/api/exercise-schemes/${id}`));
   }
 
   createExerciseScheme(data: Partial<UserExerciseScheme>): Promise<UserExerciseScheme> {
-    return firstValueFrom(this.http.post<UserExerciseScheme>('/api/user/exercise-schemes', data));
+    return firstValueFrom(this.http.post<UserExerciseScheme>('/api/exercise-schemes', data));
   }
 
   updateExerciseScheme(id: number, data: Partial<UserExerciseScheme>): Promise<UserExerciseScheme> {
-    return firstValueFrom(
-      this.http.put<UserExerciseScheme>(`/api/user/exercise-schemes/${id}`, data),
-    );
+    return firstValueFrom(this.http.put<UserExerciseScheme>(`/api/exercise-schemes/${id}`, data));
   }
 
   deleteExerciseScheme(id: number): Promise<void> {
-    return firstValueFrom(this.http.delete<void>(`/api/user/exercise-schemes/${id}`));
+    return firstValueFrom(this.http.delete<void>(`/api/exercise-schemes/${id}`));
   }
 
   // Workout Logs
@@ -214,14 +212,14 @@ export class UserApiClient {
 
   // Exercise Logs
   fetchExerciseLogs(params?: {
-    userExerciseId?: number;
+    exerciseId?: number;
     measurementType?: string;
     isRecord?: boolean;
     from?: string;
     to?: string;
   }): Promise<ExerciseLog[]> {
     const qp = new URLSearchParams();
-    if (params?.userExerciseId != null) qp.set('userExerciseId', String(params.userExerciseId));
+    if (params?.exerciseId != null) qp.set('exerciseId', String(params.exerciseId));
     if (params?.measurementType) qp.set('measurementType', params.measurementType);
     if (params?.isRecord != null) qp.set('isRecord', String(params.isRecord));
     if (params?.from) qp.set('from', params.from);

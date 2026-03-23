@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": "Both are Bulgarian split squat variations with rear foot elevated, differing in equipment (Smith machine vs barbell)",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761547477,
   "fromExerciseTemplateId": "Smith_Single-Leg_Split_Squat",
   "toExerciseTemplateId": "One_Leg_Barbell_Squat"

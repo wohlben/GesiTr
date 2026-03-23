@@ -3,7 +3,7 @@
   "relationshipType": "antagonist",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761479173,
   "fromExerciseTemplateId": "Cable_Iron_Cross",
   "toExerciseTemplateId": "Cable_Crossover"

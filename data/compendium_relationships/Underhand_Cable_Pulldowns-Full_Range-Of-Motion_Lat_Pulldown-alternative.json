@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729931400,
   "fromExerciseTemplateId": "Underhand_Cable_Pulldowns",
   "toExerciseTemplateId": "Full_Range-Of-Motion_Lat_Pulldown"

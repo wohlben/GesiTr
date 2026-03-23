@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Dumbbell_Side_Bend",
   "toExerciseTemplateId": "Bosu_Ball_Cable_Crunch_With_Side_Bends"

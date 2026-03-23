@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761480085,
   "fromExerciseTemplateId": "Calf_Stretch_Hands_Against_Wall",
   "toExerciseTemplateId": "Seated_Calf_Stretch"

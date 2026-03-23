@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Dumbbell_Shrug",
   "toExerciseTemplateId": "Calf-Machine_Shoulder_Shrug"

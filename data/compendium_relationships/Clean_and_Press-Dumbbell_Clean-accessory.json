@@ -3,7 +3,7 @@
   "relationshipType": "accessory",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Clean_and_Press",
   "toExerciseTemplateId": "Dumbbell_Clean"

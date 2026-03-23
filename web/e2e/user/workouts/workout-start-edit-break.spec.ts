@@ -25,7 +25,7 @@ test.describe('/user/workouts/[id]/start — break time editing', () => {
     const exercise1 = await createExercise(request, { name: 'Break Test Ex A' });
     const userExercise1 = await createUserExercise(request, exercise1.templateId);
     const scheme1 = await createExerciseScheme(request, {
-      userExerciseId: userExercise1.id,
+      exerciseId: exercise1.id,
       sets: 1,
       reps: 5,
       weight: 100,
@@ -34,7 +34,7 @@ test.describe('/user/workouts/[id]/start — break time editing', () => {
     const exercise2 = await createExercise(request, { name: 'Break Test Ex B' });
     const userExercise2 = await createUserExercise(request, exercise2.templateId);
     const scheme2 = await createExerciseScheme(request, {
-      userExerciseId: userExercise2.id,
+      exerciseId: exercise2.id,
       sets: 1,
       reps: 8,
       weight: 50,
@@ -48,12 +48,12 @@ test.describe('/user/workouts/[id]/start — break time editing', () => {
     });
     const sectionEx1 = await createWorkoutSectionExercise(request, {
       workoutSectionId: section.id,
-      userExerciseSchemeId: scheme1.id,
+      exerciseSchemeId: scheme1.id,
       position: 0,
     });
     const sectionEx2 = await createWorkoutSectionExercise(request, {
       workoutSectionId: section.id,
-      userExerciseSchemeId: scheme2.id,
+      exerciseSchemeId: scheme2.id,
       position: 1,
     });
 

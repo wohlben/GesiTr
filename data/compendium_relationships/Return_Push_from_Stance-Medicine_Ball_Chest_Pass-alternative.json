@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": "Both are partner medicine ball catching and throwing drills; chest pass is done from standing position while return push incorporates movement from athletic stance",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Return_Push_from_Stance",
   "toExerciseTemplateId": "Medicine_Ball_Chest_Pass"

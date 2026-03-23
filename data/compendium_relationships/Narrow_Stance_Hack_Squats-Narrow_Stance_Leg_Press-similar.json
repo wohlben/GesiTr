@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729976400,
   "fromExerciseTemplateId": "Narrow_Stance_Hack_Squats",
   "toExerciseTemplateId": "Narrow_Stance_Leg_Press"

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730025600,
   "fromExerciseTemplateId": "Cross_Over_-_With_Bands",
   "toExerciseTemplateId": "Flat_Bench_Cable_Flyes"

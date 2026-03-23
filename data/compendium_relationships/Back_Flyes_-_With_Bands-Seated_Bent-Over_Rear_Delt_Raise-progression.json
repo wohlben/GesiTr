@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Back_Flyes_-_With_Bands",
   "toExerciseTemplateId": "Seated_Bent-Over_Rear_Delt_Raise"

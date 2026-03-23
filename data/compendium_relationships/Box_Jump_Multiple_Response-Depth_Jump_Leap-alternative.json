@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761477930,
   "fromExerciseTemplateId": "Box_Jump_Multiple_Response",
   "toExerciseTemplateId": "Depth_Jump_Leap"

@@ -3,7 +3,7 @@
   "relationshipType": "variation",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Rocking_Standing_Calf_Raise",
   "toExerciseTemplateId": "Seated_Calf_Raise"

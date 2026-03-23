@@ -3,7 +3,7 @@
   "relationshipType": "progresses_to",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761511019,
   "fromExerciseTemplateId": "Rack_Pulls",
   "toExerciseTemplateId": "Rack_Pull_with_Bands"

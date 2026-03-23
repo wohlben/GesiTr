@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730001600,
   "fromExerciseTemplateId": "JM_Press",
   "toExerciseTemplateId": "Reverse_Triceps_Bench_Press"

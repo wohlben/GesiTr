@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761509910,
   "fromExerciseTemplateId": "Machine_Triceps_Extension",
   "toExerciseTemplateId": "Cable_One_Arm_Tricep_Extension"

@@ -3,7 +3,7 @@
   "relationshipType": "easier_alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Shotgun_Row",
   "toExerciseTemplateId": "One-Arm_Kettlebell_Row"

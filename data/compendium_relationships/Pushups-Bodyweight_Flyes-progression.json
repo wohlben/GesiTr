@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761476339,
   "fromExerciseTemplateId": "Pushups",
   "toExerciseTemplateId": "Bodyweight_Flyes"

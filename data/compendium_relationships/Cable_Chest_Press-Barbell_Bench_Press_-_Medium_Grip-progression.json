@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761478645,
   "fromExerciseTemplateId": "Cable_Chest_Press",
   "toExerciseTemplateId": "Barbell_Bench_Press_-_Medium_Grip"

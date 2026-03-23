@@ -52,9 +52,9 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
             </div>
             <div>
               <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                {{ t('fields.createdBy') }}
+                {{ t('fields.owner') }}
               </dt>
-              <dd class="text-sm text-gray-900 dark:text-gray-100">{{ group.createdBy }}</dd>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">{{ group.owner }}</dd>
             </div>
           </dl>
         }

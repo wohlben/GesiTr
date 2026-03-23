@@ -4,11 +4,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { userEquipmentKeys } from '$core/query-keys';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
-import { Equipment } from '$generated/models';
 
 @Component({
   selector: 'app-user-equipment-detail',
@@ -37,7 +35,7 @@ import { Equipment } from '$generated/models';
           (confirmed)="deleteMutation.mutate()"
           (cancelled)="showDeleteDialog.set(false)"
         />
-        @if (snapshot(); as equipment) {
+        @if (detailQuery.data(); as equipment) {
           <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -61,9 +59,7 @@ import { Equipment } from '$generated/models';
               <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
                 {{ t('fields.version') }}
               </dt>
-              <dd class="text-sm text-gray-900 dark:text-gray-100">
-                v{{ detailQuery.data()?.userEquipment?.compendiumVersion }}
-              </dd>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">v{{ equipment.version }}</dd>
             </div>
             <div class="sm:col-span-2">
               <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -79,7 +75,6 @@ import { Equipment } from '$generated/models';
 })
 export class UserEquipmentDetail {
   private userApi = inject(UserApiClient);
-  private compendiumApi = inject(CompendiumApiClient);
   private router = inject(Router);
   private queryClient = inject(QueryClient);
   private transloco = inject(TranslocoService);
@@ -91,24 +86,13 @@ export class UserEquipmentDetail {
 
   detailQuery = injectQuery(() => ({
     queryKey: userEquipmentKeys.detail(this.id()),
-    queryFn: async () => {
-      const userEquipment = await this.userApi.fetchUserEquipmentItem(this.id());
-      const version = await this.compendiumApi.fetchEquipmentVersion(
-        userEquipment.compendiumEquipmentId,
-        userEquipment.compendiumVersion,
-      );
-      return { userEquipment, version };
-    },
+    queryFn: () => this.userApi.fetchUserEquipmentItem(this.id()),
     enabled: !!this.id(),
   }));
 
-  snapshot = computed(() => this.detailQuery.data()?.version.snapshot as Equipment | undefined);
-
   equipmentName = computed(
-    () => this.snapshot()?.displayName ?? this.transloco.translate('common.loading'),
+    () => this.detailQuery.data()?.displayName ?? this.transloco.translate('common.loading'),
   );
-
-  // deleteMessage removed: now using Transloco interpolation directly in template
 
   deleteMutation = injectMutation(() => ({
     mutationFn: () => this.userApi.deleteUserEquipment(this.id()),

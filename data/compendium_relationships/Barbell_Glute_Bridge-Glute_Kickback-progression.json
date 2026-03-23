@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729954800,
   "fromExerciseTemplateId": "Barbell_Glute_Bridge",
   "toExerciseTemplateId": "Glute_Kickback"

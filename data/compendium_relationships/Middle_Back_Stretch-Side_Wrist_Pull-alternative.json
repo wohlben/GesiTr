@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Middle_Back_Stretch",
   "toExerciseTemplateId": "Side_Wrist_Pull"

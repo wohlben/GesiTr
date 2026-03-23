@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.65,
   "description": "Hip circles are a mobility exercise that prepares for Monster Walk resistance work",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730053200,
   "fromExerciseTemplateId": "Monster_Walk",
   "toExerciseTemplateId": "Standing_Hip_Circles"

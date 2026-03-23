@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761463553,
   "fromExerciseTemplateId": "Incline_Bench_Pull",
   "toExerciseTemplateId": "Anti-Gravity_Press"

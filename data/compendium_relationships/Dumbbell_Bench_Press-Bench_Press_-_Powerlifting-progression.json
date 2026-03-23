@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Dumbbell_Bench_Press",
   "toExerciseTemplateId": "Bench_Press_-_Powerlifting"

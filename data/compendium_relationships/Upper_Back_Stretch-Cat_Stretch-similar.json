@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": null,
   "description": "Both exercises involve rounding and flexing the spine to stretch the upper and middle back muscles, creating similar spinal flexion patterns",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761024000,
   "fromExerciseTemplateId": "Upper_Back_Stretch",
   "toExerciseTemplateId": "Cat_Stretch"

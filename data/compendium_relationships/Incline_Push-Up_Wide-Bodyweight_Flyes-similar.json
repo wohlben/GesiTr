@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761499120,
   "fromExerciseTemplateId": "Incline_Push-Up_Wide",
   "toExerciseTemplateId": "Bodyweight_Flyes"

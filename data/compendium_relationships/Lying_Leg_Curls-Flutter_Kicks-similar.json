@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730080800,
   "fromExerciseTemplateId": "Lying_Leg_Curls",
   "toExerciseTemplateId": "Flutter_Kicks"

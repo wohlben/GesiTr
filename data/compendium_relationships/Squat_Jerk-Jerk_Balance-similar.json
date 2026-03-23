@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761510000,
   "fromExerciseTemplateId": "Squat_Jerk",
   "toExerciseTemplateId": "Jerk_Balance"

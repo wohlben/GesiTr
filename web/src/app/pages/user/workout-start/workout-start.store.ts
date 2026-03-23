@@ -1,8 +1,8 @@
 import { inject } from '@angular/core';
 import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
-import { WorkoutSection, WorkoutLogSection, UserExerciseScheme } from '$generated/user-models';
+import { WorkoutSection, WorkoutLogSection } from '$generated/user-models';
+import { ExerciseScheme } from '$generated/models';
 
 export interface SetPreview {
   setNumber: number;
@@ -63,7 +63,6 @@ export const WorkoutStartStore = signalStore(
   withState(initialState),
   withMethods((store) => {
     const userApi = inject(UserApiClient);
-    const compendiumApi = inject(CompendiumApiClient);
 
     return {
       async loadExerciseDisplay(sections: WorkoutSection[]) {
@@ -76,39 +75,29 @@ export const WorkoutStartStore = signalStore(
           sections.flatMap((s) =>
             (s.exercises ?? []).map((ex) =>
               userApi
-                .fetchExerciseScheme(ex.userExerciseSchemeId)
-                .then((scheme) => ({ schemeId: ex.userExerciseSchemeId, scheme }))
+                .fetchExerciseScheme(ex.exerciseSchemeId)
+                .then((scheme) => ({ schemeId: ex.exerciseSchemeId, scheme }))
                 .catch(() => null),
             ),
           ),
         );
         const schemes = schemeResults.filter(
-          (r): r is { schemeId: number; scheme: UserExerciseScheme } => r !== null,
+          (r): r is { schemeId: number; scheme: ExerciseScheme } => r !== null,
         );
 
-        // 2. Fetch unique user exercises to get compendium IDs
-        const uniqueUserExerciseIds = [...new Set(schemes.map((s) => s.scheme.userExerciseId))];
-        const userExerciseResults = await Promise.all(
-          uniqueUserExerciseIds.map((id) => userApi.fetchUserExercise(id).catch(() => null)),
+        // 2. Fetch unique exercises to get names directly
+        const uniqueExerciseIds = [...new Set(schemes.map((s) => s.scheme.exerciseId))];
+        const exerciseResults = await Promise.all(
+          uniqueExerciseIds.map((id) => userApi.fetchUserExercise(id).catch(() => null)),
         );
 
-        // 3. Fetch exercise versions for names in parallel
+        // 3. Build exercise name map
         const exerciseNames: Record<number, string> = {};
-        await Promise.all(
-          userExerciseResults
-            .filter((ue) => ue !== null)
-            .map(async (ue) => {
-              try {
-                const version = await compendiumApi.fetchExerciseVersion(
-                  ue.compendiumExerciseId,
-                  ue.compendiumVersion,
-                );
-                exerciseNames[ue.id] = version.snapshot?.name ?? `Exercise #${ue.id}`;
-              } catch {
-                exerciseNames[ue.id] = `Exercise #${ue.id}`;
-              }
-            }),
-        );
+        for (const exercise of exerciseResults) {
+          if (exercise) {
+            exerciseNames[exercise.id] = exercise.name;
+          }
+        }
 
         // 4. Build display map with set previews
         for (const item of schemes) {
@@ -126,9 +115,7 @@ export const WorkoutStartStore = signalStore(
             });
           }
           display[item.schemeId] = {
-            name:
-              exerciseNames[item.scheme.userExerciseId] ??
-              `Exercise #${item.scheme.userExerciseId}`,
+            name: exerciseNames[item.scheme.exerciseId] ?? `Exercise #${item.scheme.exerciseId}`,
             summary: formatSchemeSummary(item.scheme),
             measurementType: item.scheme.measurementType,
             sets,
@@ -150,7 +137,7 @@ export const WorkoutStartStore = signalStore(
           ),
         ];
 
-        // Fetch schemes to resolve names via userExercise → compendium
+        // Fetch schemes to resolve names via exercise
         const schemeResults = await Promise.all(
           schemeIds.map((id) =>
             userApi
@@ -160,32 +147,22 @@ export const WorkoutStartStore = signalStore(
           ),
         );
         const schemes = schemeResults.filter(
-          (r): r is { schemeId: number; scheme: UserExerciseScheme } => r !== null,
+          (r): r is { schemeId: number; scheme: ExerciseScheme } => r !== null,
         );
 
-        // Fetch unique user exercises to get compendium IDs
-        const uniqueUserExerciseIds = [...new Set(schemes.map((s) => s.scheme.userExerciseId))];
-        const userExerciseResults = await Promise.all(
-          uniqueUserExerciseIds.map((id) => userApi.fetchUserExercise(id).catch(() => null)),
+        // Fetch unique exercises to get names directly
+        const uniqueExerciseIds = [...new Set(schemes.map((s) => s.scheme.exerciseId))];
+        const exerciseResults = await Promise.all(
+          uniqueExerciseIds.map((id) => userApi.fetchUserExercise(id).catch(() => null)),
         );
 
-        // Fetch exercise version names
+        // Build exercise name map
         const exerciseNames: Record<number, string> = {};
-        await Promise.all(
-          userExerciseResults
-            .filter((ue) => ue !== null)
-            .map(async (ue) => {
-              try {
-                const version = await compendiumApi.fetchExerciseVersion(
-                  ue.compendiumExerciseId,
-                  ue.compendiumVersion,
-                );
-                exerciseNames[ue.id] = version.snapshot?.name ?? `Exercise #${ue.id}`;
-              } catch {
-                exerciseNames[ue.id] = `Exercise #${ue.id}`;
-              }
-            }),
-        );
+        for (const exercise of exerciseResults) {
+          if (exercise) {
+            exerciseNames[exercise.id] = exercise.name;
+          }
+        }
 
         // Build display map using log exercise data (already snapshotted)
         for (const section of sections) {
@@ -202,8 +179,8 @@ export const WorkoutStartStore = signalStore(
             }));
             display[ex.id] = {
               name: schemeItem
-                ? (exerciseNames[schemeItem.scheme.userExerciseId] ??
-                  `Exercise #${schemeItem.scheme.userExerciseId}`)
+                ? (exerciseNames[schemeItem.scheme.exerciseId] ??
+                  `Exercise #${schemeItem.scheme.exerciseId}`)
                 : `Exercise #${ex.sourceExerciseSchemeId}`,
               summary: schemeItem
                 ? formatSchemeSummary(schemeItem.scheme)
@@ -220,7 +197,7 @@ export const WorkoutStartStore = signalStore(
       addExerciseDisplay(
         exerciseLogId: number,
         exerciseName: string,
-        scheme: UserExerciseScheme,
+        scheme: ExerciseScheme,
         sets: SetPreview[],
       ) {
         const current = store.exerciseDisplay();

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730080800,
   "fromExerciseTemplateId": "Flutter_Kicks",
   "toExerciseTemplateId": "Superman"

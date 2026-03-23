@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Band_Assisted_Pull-Up",
   "toExerciseTemplateId": "Rocky_Pull-Ups_Pulldowns"

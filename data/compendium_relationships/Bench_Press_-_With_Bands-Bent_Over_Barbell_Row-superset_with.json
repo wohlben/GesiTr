@@ -3,7 +3,7 @@
   "relationshipType": "superset_with",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761472847,
   "fromExerciseTemplateId": "Bench_Press_-_With_Bands",
   "toExerciseTemplateId": "Bent_Over_Barbell_Row"

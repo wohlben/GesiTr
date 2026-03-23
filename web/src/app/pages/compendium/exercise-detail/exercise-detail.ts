@@ -149,7 +149,7 @@ export class ExerciseDetail {
     const templateId = this.exerciseQuery.data()?.templateId;
     const userExercises = this.userExercisesQuery.data();
     if (!templateId || !userExercises) return undefined;
-    return userExercises.find((ue) => ue.compendiumExerciseId === templateId);
+    return userExercises.find((ue) => ue.templateId === templateId);
   });
 
   deleteMutation = injectMutation(() => ({
@@ -164,8 +164,8 @@ export class ExerciseDetail {
     mutationFn: () => {
       const exercise = this.exerciseQuery.data()!;
       return this.userApi.createUserExercise({
-        compendiumExerciseId: exercise.templateId,
-        compendiumVersion: exercise.version,
+        templateId: exercise.templateId,
+        version: exercise.version,
       });
     },
     onSuccess: (created) => {

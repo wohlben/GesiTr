@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761464349,
   "fromExerciseTemplateId": "Weighted_Sissy_Squat",
   "toExerciseTemplateId": "Band_Leg_Extension"

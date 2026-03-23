@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": "Both are machine-based squat variations that support the back against a pad and target quads, glutes, and hamstrings with similar movement patterns. Both reduce stabilization demands while allowing heavy loading of the legs.",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730014000,
   "fromExerciseTemplateId": "Hack_Squat",
   "toExerciseTemplateId": "Lying_Machine_Squat"

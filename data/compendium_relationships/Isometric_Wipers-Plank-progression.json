@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.55,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Isometric_Wipers",
   "toExerciseTemplateId": "Plank"

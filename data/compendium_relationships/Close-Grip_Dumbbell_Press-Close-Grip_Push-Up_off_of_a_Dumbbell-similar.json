@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729940400,
   "fromExerciseTemplateId": "Close-Grip_Dumbbell_Press",
   "toExerciseTemplateId": "Close-Grip_Push-Up_off_of_a_Dumbbell"

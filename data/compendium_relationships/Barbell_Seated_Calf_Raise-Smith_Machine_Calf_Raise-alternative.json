@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Barbell_Seated_Calf_Raise",
   "toExerciseTemplateId": "Smith_Machine_Calf_Raise"

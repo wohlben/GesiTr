@@ -3,7 +3,7 @@
   "relationshipType": "related",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Kettlebell_Pistol_Squat",
   "toExerciseTemplateId": "Single-Leg_High_Box_Squat"

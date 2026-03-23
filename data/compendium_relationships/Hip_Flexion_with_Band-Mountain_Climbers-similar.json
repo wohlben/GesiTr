@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730073600,
   "fromExerciseTemplateId": "Hip_Flexion_with_Band",
   "toExerciseTemplateId": "Mountain_Climbers"

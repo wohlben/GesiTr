@@ -25,7 +25,7 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
     const exercise = await createExercise(request, { name: 'Set Edit Test Ex' });
     const userExercise = await createUserExercise(request, exercise.templateId);
     const scheme = await createExerciseScheme(request, {
-      userExerciseId: userExercise.id,
+      exerciseId: exercise.id,
       sets: 2,
       reps: 10,
       weight: 60,
@@ -39,7 +39,7 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
     });
     const sectionEx = await createWorkoutSectionExercise(request, {
       workoutSectionId: section.id,
-      userExerciseSchemeId: scheme.id,
+      exerciseSchemeId: scheme.id,
       position: 0,
     });
 
@@ -105,7 +105,7 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
     const exercise = await createExercise(request, { name: 'Rest Edit Test Ex' });
     const userExercise = await createUserExercise(request, exercise.templateId);
     const scheme = await createExerciseScheme(request, {
-      userExerciseId: userExercise.id,
+      exerciseId: exercise.id,
       sets: 2,
       reps: 10,
       weight: 60,
@@ -119,7 +119,7 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
     });
     const sectionEx = await createWorkoutSectionExercise(request, {
       workoutSectionId: section.id,
-      userExerciseSchemeId: scheme.id,
+      exerciseSchemeId: scheme.id,
       position: 0,
     });
 

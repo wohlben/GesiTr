@@ -4,11 +4,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { userExerciseKeys } from '$core/query-keys';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
-import { Exercise } from '$generated/models';
 
 @Component({
   selector: 'app-user-exercise-detail',
@@ -37,7 +35,7 @@ import { Exercise } from '$generated/models';
           (confirmed)="deleteMutation.mutate()"
           (cancelled)="showDeleteDialog.set(false)"
         />
-        @if (snapshot(); as exercise) {
+        @if (detailQuery.data(); as exercise) {
           <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -81,9 +79,7 @@ import { Exercise } from '$generated/models';
               <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
                 {{ t('fields.version') }}
               </dt>
-              <dd class="text-sm text-gray-900 dark:text-gray-100">
-                v{{ detailQuery.data()?.userExercise?.compendiumVersion }}
-              </dd>
+              <dd class="text-sm text-gray-900 dark:text-gray-100">v{{ exercise.version }}</dd>
             </div>
             <div class="sm:col-span-2">
               <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -113,7 +109,6 @@ import { Exercise } from '$generated/models';
 })
 export class UserExerciseDetail {
   private userApi = inject(UserApiClient);
-  private compendiumApi = inject(CompendiumApiClient);
   private router = inject(Router);
   private queryClient = inject(QueryClient);
   private transloco = inject(TranslocoService);
@@ -125,24 +120,13 @@ export class UserExerciseDetail {
 
   detailQuery = injectQuery(() => ({
     queryKey: userExerciseKeys.detail(this.id()),
-    queryFn: async () => {
-      const userExercise = await this.userApi.fetchUserExercise(this.id());
-      const version = await this.compendiumApi.fetchExerciseVersion(
-        userExercise.compendiumExerciseId,
-        userExercise.compendiumVersion,
-      );
-      return { userExercise, version };
-    },
+    queryFn: () => this.userApi.fetchUserExercise(this.id()),
     enabled: !!this.id(),
   }));
 
-  snapshot = computed(() => this.detailQuery.data()?.version.snapshot as Exercise | undefined);
-
   exerciseName = computed(
-    () => this.snapshot()?.name ?? this.transloco.translate('common.loading'),
+    () => this.detailQuery.data()?.name ?? this.transloco.translate('common.loading'),
   );
-
-  // deleteMessage removed: now using Transloco interpolation directly in template
 
   deleteMutation = injectMutation(() => ({
     mutationFn: () => this.userApi.deleteUserExercise(this.id()),

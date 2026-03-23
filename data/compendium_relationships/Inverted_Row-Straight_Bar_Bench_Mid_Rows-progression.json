@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.7,
   "description": "Progress from bodyweight inverted rows to loaded barbell rows with elevated support for increased resistance and stability challenge",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730012400,
   "fromExerciseTemplateId": "Inverted_Row",
   "toExerciseTemplateId": "Straight_Bar_Bench_Mid_Rows"

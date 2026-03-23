@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Clean_and_Press",
   "toExerciseTemplateId": "Clean"

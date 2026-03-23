@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730014800,
   "fromExerciseTemplateId": "Standing_Cable_Lift",
   "toExerciseTemplateId": "Landmine_180s"

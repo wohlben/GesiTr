@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761495424,
   "fromExerciseTemplateId": "Lateral_Bound",
   "toExerciseTemplateId": "Front_Cone_Hops_or_hurdle_hops"

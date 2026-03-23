@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760883050,
   "fromExerciseTemplateId": "Bent_Over_Two-Arm_Long_Bar_Row",
   "toExerciseTemplateId": "Bent_Over_One-Arm_Long_Bar_Row"

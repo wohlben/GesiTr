@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Smith_Machine_Behind_the_Back_Shrug",
   "toExerciseTemplateId": "Smith_Machine_Upright_Row"

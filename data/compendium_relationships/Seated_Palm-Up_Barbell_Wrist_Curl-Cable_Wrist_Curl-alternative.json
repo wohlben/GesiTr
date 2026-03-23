@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761479701,
   "fromExerciseTemplateId": "Seated_Palm-Up_Barbell_Wrist_Curl",
   "toExerciseTemplateId": "Cable_Wrist_Curl"

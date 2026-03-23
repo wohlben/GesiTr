@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": "Seated version adds torso movement for increased core engagement",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761509905,
   "fromExerciseTemplateId": "Leg_Pull-In",
   "toExerciseTemplateId": "Seated_Flat_Bench_Leg_Pull-In"

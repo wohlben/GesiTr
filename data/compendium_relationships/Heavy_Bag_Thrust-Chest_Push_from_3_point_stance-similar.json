@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729933200,
   "fromExerciseTemplateId": "Heavy_Bag_Thrust",
   "toExerciseTemplateId": "Chest_Push_from_3_point_stance"

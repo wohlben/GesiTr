@@ -7,7 +7,7 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
-	userexercisemodels "gesitr/internal/user/exercise/models"
+	exercisemodels "gesitr/internal/exercise/models"
 	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciselogmodels "gesitr/internal/user/exerciselog/models"
 	"gesitr/internal/user/workoutlog/models"
@@ -190,7 +190,7 @@ func createOrUpdateExerciseLog(db *gorm.DB, set *models.WorkoutLogExerciseSetEnt
 		return err
 	}
 
-	var scheme userexercisemodels.UserExerciseSchemeEntity
+	var scheme exercisemodels.ExerciseSchemeEntity
 	if err := db.First(&scheme, logExercise.SourceExerciseSchemeID).Error; err != nil {
 		return err
 	}
@@ -208,7 +208,7 @@ func createOrUpdateExerciseLog(db *gorm.DB, set *models.WorkoutLogExerciseSetEnt
 		schemeID := logExercise.SourceExerciseSchemeID
 		exerciseLog := exerciselogmodels.ExerciseLogEntity{
 			Owner:                   log.Owner,
-			UserExerciseID:          scheme.UserExerciseID,
+			ExerciseID:              scheme.ExerciseID,
 			MeasurementType:         logExercise.TargetMeasurementType,
 			Reps:                    reps,
 			Weight:                  weight,
@@ -223,7 +223,7 @@ func createOrUpdateExerciseLog(db *gorm.DB, set *models.WorkoutLogExerciseSetEnt
 		if err := db.Create(&exerciseLog).Error; err != nil {
 			return err
 		}
-		return exerciseloghandlers.RecomputeRecord(db, scheme.UserExerciseID, logExercise.TargetMeasurementType)
+		return exerciseloghandlers.RecomputeRecord(db, scheme.ExerciseID, logExercise.TargetMeasurementType)
 	} else if err != nil {
 		return err
 	}
@@ -249,7 +249,7 @@ func createOrUpdateExerciseLog(db *gorm.DB, set *models.WorkoutLogExerciseSetEnt
 	if err := db.Save(&existing).Error; err != nil {
 		return err
 	}
-	return exerciseloghandlers.RecomputeRecord(db, existing.UserExerciseID, existing.MeasurementType)
+	return exerciseloghandlers.RecomputeRecord(db, existing.ExerciseID, existing.MeasurementType)
 }
 
 func propagateStatus(db *gorm.DB, exerciseID uint) error {

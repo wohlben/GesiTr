@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { WorkoutLogDetailStore } from './workout-log-detail.store';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { WorkoutLogSection } from '$generated/user-models';
 
 describe('WorkoutLogDetailStore', () => {
@@ -10,25 +9,15 @@ describe('WorkoutLogDetailStore', () => {
     fetchExerciseScheme: ReturnType<typeof vi.fn>;
     fetchUserExercise: ReturnType<typeof vi.fn>;
   };
-  let compendiumApiMock: {
-    fetchExerciseVersion: ReturnType<typeof vi.fn>;
-  };
 
   beforeEach(() => {
     userApiMock = {
       fetchExerciseScheme: vi.fn(),
       fetchUserExercise: vi.fn(),
     };
-    compendiumApiMock = {
-      fetchExerciseVersion: vi.fn(),
-    };
 
     TestBed.configureTestingModule({
-      providers: [
-        WorkoutLogDetailStore,
-        { provide: UserApiClient, useValue: userApiMock },
-        { provide: CompendiumApiClient, useValue: compendiumApiMock },
-      ],
+      providers: [WorkoutLogDetailStore, { provide: UserApiClient, useValue: userApiMock }],
     });
 
     store = TestBed.inject(WorkoutLogDetailStore);
@@ -42,17 +31,14 @@ describe('WorkoutLogDetailStore', () => {
   it('loads exercise names from log sections', async () => {
     userApiMock.fetchExerciseScheme.mockResolvedValue({
       id: 10,
-      userExerciseId: 5,
+      exerciseId: 5,
       measurementType: 'REP_BASED',
     });
     userApiMock.fetchUserExercise.mockResolvedValue({
       id: 5,
-      compendiumExerciseId: 'tmpl-abc',
-      compendiumVersion: 1,
-    });
-    compendiumApiMock.fetchExerciseVersion.mockResolvedValue({
+      name: 'Bench Press',
+      templateId: 'tmpl-abc',
       version: 1,
-      snapshot: { name: 'Bench Press' },
     });
 
     const sections = [
@@ -72,26 +58,17 @@ describe('WorkoutLogDetailStore', () => {
   it('handles multiple exercises across sections', async () => {
     userApiMock.fetchExerciseScheme.mockImplementation((id: number) => {
       if (id === 10) {
-        return Promise.resolve({ id: 10, userExerciseId: 5, measurementType: 'REP_BASED' });
+        return Promise.resolve({ id: 10, exerciseId: 5, measurementType: 'REP_BASED' });
       }
-      return Promise.resolve({ id: 20, userExerciseId: 6, measurementType: 'TIME_BASED' });
+      return Promise.resolve({ id: 20, exerciseId: 6, measurementType: 'TIME_BASED' });
     });
 
     userApiMock.fetchUserExercise.mockImplementation((id: number) => {
       if (id === 5) {
-        return Promise.resolve({ id: 5, compendiumExerciseId: 'tmpl-a', compendiumVersion: 1 });
+        return Promise.resolve({ id: 5, name: 'Squat', templateId: 'tmpl-a', version: 1 });
       }
-      return Promise.resolve({ id: 6, compendiumExerciseId: 'tmpl-b', compendiumVersion: 2 });
+      return Promise.resolve({ id: 6, name: 'Plank', templateId: 'tmpl-b', version: 2 });
     });
-
-    compendiumApiMock.fetchExerciseVersion.mockImplementation(
-      (templateId: string, version: number) => {
-        if (templateId === 'tmpl-a' && version === 1) {
-          return Promise.resolve({ version: 1, snapshot: { name: 'Squat' } });
-        }
-        return Promise.resolve({ version: 2, snapshot: { name: 'Plank' } });
-      },
-    );
 
     const sections = [
       { exercises: [{ sourceExerciseSchemeId: 10 }] },
@@ -120,15 +97,10 @@ describe('WorkoutLogDetailStore', () => {
   it('handles exercise name fetch failure with fallback', async () => {
     userApiMock.fetchExerciseScheme.mockResolvedValue({
       id: 10,
-      userExerciseId: 5,
+      exerciseId: 5,
       measurementType: 'REP_BASED',
     });
-    userApiMock.fetchUserExercise.mockResolvedValue({
-      id: 5,
-      compendiumExerciseId: 'tmpl-gone',
-      compendiumVersion: 1,
-    });
-    compendiumApiMock.fetchExerciseVersion.mockRejectedValue(new Error('not found'));
+    userApiMock.fetchUserExercise.mockRejectedValue(new Error('not found'));
 
     const sections = [{ exercises: [{ sourceExerciseSchemeId: 10 }] }] as WorkoutLogSection[];
 
@@ -149,17 +121,14 @@ describe('WorkoutLogDetailStore', () => {
   it('deduplicates scheme fetches for same scheme ID across sections', async () => {
     userApiMock.fetchExerciseScheme.mockResolvedValue({
       id: 10,
-      userExerciseId: 5,
+      exerciseId: 5,
       measurementType: 'REP_BASED',
     });
     userApiMock.fetchUserExercise.mockResolvedValue({
       id: 5,
-      compendiumExerciseId: 'tmpl-x',
-      compendiumVersion: 1,
-    });
-    compendiumApiMock.fetchExerciseVersion.mockResolvedValue({
+      name: 'Curl',
+      templateId: 'tmpl-x',
       version: 1,
-      snapshot: { name: 'Curl' },
     });
 
     const sections = [
@@ -176,16 +145,13 @@ describe('WorkoutLogDetailStore', () => {
 
   it('deduplicates user exercise fetches', async () => {
     userApiMock.fetchExerciseScheme.mockImplementation((id: number) =>
-      Promise.resolve({ id, userExerciseId: 5, measurementType: 'REP_BASED' }),
+      Promise.resolve({ id, exerciseId: 5, measurementType: 'REP_BASED' }),
     );
     userApiMock.fetchUserExercise.mockResolvedValue({
       id: 5,
-      compendiumExerciseId: 'tmpl-x',
-      compendiumVersion: 1,
-    });
-    compendiumApiMock.fetchExerciseVersion.mockResolvedValue({
+      name: 'Curl',
+      templateId: 'tmpl-x',
       version: 1,
-      snapshot: { name: 'Curl' },
     });
 
     const sections = [

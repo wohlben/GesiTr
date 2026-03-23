@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": "Both are seated band-assisted lower leg stretches targeting calf and ankle mobility with similar positioning",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Peroneals_Stretch",
   "toExerciseTemplateId": "Seated_Calf_Stretch"

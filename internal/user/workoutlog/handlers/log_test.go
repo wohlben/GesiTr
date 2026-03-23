@@ -267,14 +267,14 @@ func TestFinishWorkoutLog(t *testing.T) {
 	r := newRouter()
 
 	// Create prerequisite: user exercise + scheme
-	ueW := doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"compendiumExerciseId": "ex-1", "compendiumVersion": 1,
+	ueW := doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Test Exercise", "slug": "test-ex-1", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	if ueW.Code != http.StatusCreated {
 		t.Fatalf("create exercise: status = %d, body = %s", ueW.Code, ueW.Body.String())
 	}
-	schemeW := doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED", "sets": 2, "reps": 10,
+	schemeW := doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 2, "reps": 10,
 	})
 	if schemeW.Code != http.StatusCreated {
 		t.Fatalf("create scheme: status = %d, body = %s", schemeW.Code, schemeW.Body.String())

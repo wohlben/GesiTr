@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730014800,
   "fromExerciseTemplateId": "Standing_Cable_Wood_Chop",
   "toExerciseTemplateId": "Standing_Cable_Lift"

@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Pyramid",
   "toExerciseTemplateId": "Exercise_Ball_Pull-In"

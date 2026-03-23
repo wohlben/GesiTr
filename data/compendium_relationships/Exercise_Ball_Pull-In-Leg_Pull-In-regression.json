@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.8,
   "description": "Floor version removes equipment and plank position for simpler pull-in movement",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761509905,
   "fromExerciseTemplateId": "Exercise_Ball_Pull-In",
   "toExerciseTemplateId": "Leg_Pull-In"

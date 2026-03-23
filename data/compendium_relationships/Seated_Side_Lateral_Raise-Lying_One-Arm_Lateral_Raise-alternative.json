@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Seated_Side_Lateral_Raise",
   "toExerciseTemplateId": "Lying_One-Arm_Lateral_Raise"

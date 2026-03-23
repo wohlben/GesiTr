@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.78,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761461533,
   "fromExerciseTemplateId": "Dumbbell_One-Arm_Shoulder_Press",
   "toExerciseTemplateId": "Alternating_Kettlebell_Press"

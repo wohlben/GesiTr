@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Bent_Press",
   "toExerciseTemplateId": "One-Arm_Kettlebell_Clean_and_Jerk"

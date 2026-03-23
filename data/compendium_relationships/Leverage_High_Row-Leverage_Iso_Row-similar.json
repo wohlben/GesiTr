@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729900800,
   "fromExerciseTemplateId": "Leverage_High_Row",
   "toExerciseTemplateId": "Leverage_Iso_Row"

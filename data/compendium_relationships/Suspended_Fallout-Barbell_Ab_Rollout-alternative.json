@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": "Both are advanced ab rollout exercises extending body forward; Suspended Fallout uses suspension trainer while Barbell Ab Rollout uses barbell",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Suspended_Fallout",
   "toExerciseTemplateId": "Barbell_Ab_Rollout"

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761551546,
   "fromExerciseTemplateId": "Plie_Dumbbell_Squat",
   "toExerciseTemplateId": "Weighted_Squat"

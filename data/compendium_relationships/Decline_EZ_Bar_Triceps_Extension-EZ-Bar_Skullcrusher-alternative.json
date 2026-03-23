@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729932000,
   "fromExerciseTemplateId": "Decline_EZ_Bar_Triceps_Extension",
   "toExerciseTemplateId": "EZ-Bar_Skullcrusher"

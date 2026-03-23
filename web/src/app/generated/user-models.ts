@@ -14,36 +14,6 @@ export interface ErrorResponse {
 }
 
 //////////
-// source: exercise.go
-
-export interface UserExercise extends BaseModel {
-  owner: string;
-  compendiumExerciseId: string;
-  compendiumVersion: number /* int */;
-}
-export interface UserExerciseScheme extends BaseModel {
-  userExerciseId: number /* uint */;
-  measurementType: string;
-  sets?: number /* int */;
-  reps?: number /* int */;
-  weight?: number /* float64 */;
-  restBetweenSets?: number /* int */;
-  timePerRep?: number /* int */;
-  duration?: number /* int */;
-  distance?: number /* float64 */;
-  targetTime?: number /* int */;
-}
-
-//////////
-// source: equipment.go
-
-export interface UserEquipment extends BaseModel {
-  owner: string;
-  compendiumEquipmentId: string;
-  compendiumVersion: number /* int */;
-}
-
-//////////
 // source: workout.go
 
 export interface Workout extends BaseModel {
@@ -65,7 +35,7 @@ export interface WorkoutSection extends BaseModel {
 }
 export interface WorkoutSectionExercise extends BaseModel {
   workoutSectionId: number /* uint */;
-  userExerciseSchemeId: number /* uint */;
+  exerciseSchemeId: number /* uint */;
   position: number /* int */;
 }
 
@@ -74,7 +44,7 @@ export interface WorkoutSectionExercise extends BaseModel {
 
 export interface ExerciseLog extends BaseModel {
   owner: string;
-  userExerciseId: number /* uint */;
+  exerciseId: number /* uint */;
   measurementType: string;
   reps?: number /* int */;
   weight?: number /* float64 */;
@@ -174,3 +144,15 @@ export const WorkoutLogStatusAdhoc: WorkoutLogStatus = 'adhoc';
 export const WorkoutLogStatusFinished: WorkoutLogStatus = 'finished';
 export const WorkoutLogStatusPartiallyFinished: WorkoutLogStatus = 'partially_finished';
 export const WorkoutLogStatusAborted: WorkoutLogStatus = 'aborted';
+
+//////////
+// Compatibility aliases for types that moved to models.ts
+
+import { Exercise, Equipment, ExerciseScheme } from './models';
+
+/** @deprecated Use Exercise from $generated/models */
+export type UserExercise = Exercise;
+/** @deprecated Use Equipment from $generated/models */
+export type UserEquipment = Equipment;
+/** @deprecated Use ExerciseScheme from $generated/models */
+export type UserExerciseScheme = ExerciseScheme;

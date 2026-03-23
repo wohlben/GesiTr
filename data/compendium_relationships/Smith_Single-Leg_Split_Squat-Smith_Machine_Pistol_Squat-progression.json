@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.7,
   "description": "Progress from split squat (beginner, with rear foot support) to pistol squat (advanced, unsupported single-leg) on Smith machine",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761547477,
   "fromExerciseTemplateId": "Smith_Single-Leg_Split_Squat",
   "toExerciseTemplateId": "Smith_Machine_Pistol_Squat"

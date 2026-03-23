@@ -411,7 +411,7 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
               <div class="mt-1 space-y-2">
                 @for (item of exerciseForm.equipmentIds; track $index; let i = $index) {
                   <div class="flex gap-2">
-                    <input hlmInput [formField]="item" />
+                    <input hlmInput type="number" [formField]="item" />
                     <button
                       type="button"
                       (click)="removeEquipmentId(i)"
@@ -487,7 +487,7 @@ export class ExerciseEdit {
     instructions: [] as string[],
     images: [] as string[],
     alternativeNames: [] as string[],
-    equipmentIds: [] as string[],
+    equipmentIds: [] as number[],
   });
 
   exerciseForm = form(this.model, (f) => {
@@ -599,7 +599,7 @@ export class ExerciseEdit {
   }
 
   addEquipmentId() {
-    this.model.update((m) => ({ ...m, equipmentIds: [...m.equipmentIds, ''] }));
+    this.model.update((m) => ({ ...m, equipmentIds: [...m.equipmentIds, 0] }));
   }
   removeEquipmentId(i: number) {
     this.model.update((m) => ({

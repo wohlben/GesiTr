@@ -3,7 +3,7 @@
   "relationshipType": "antagonist",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761479701,
   "fromExerciseTemplateId": "Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench",
   "toExerciseTemplateId": "Cable_Wrist_Curl"

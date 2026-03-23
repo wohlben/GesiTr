@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729954800,
   "fromExerciseTemplateId": "Glute_Kickback",
   "toExerciseTemplateId": "One-Legged_Cable_Kickback"

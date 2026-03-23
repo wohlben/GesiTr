@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "One_Handed_Hang",
   "toExerciseTemplateId": "Standing_Olympic_Plate_Hand_Squeeze"

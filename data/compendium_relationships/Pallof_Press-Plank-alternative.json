@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729940400,
   "fromExerciseTemplateId": "Pallof_Press",
   "toExerciseTemplateId": "Plank"

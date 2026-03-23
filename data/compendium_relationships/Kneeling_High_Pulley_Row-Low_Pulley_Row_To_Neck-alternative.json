@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": "Both pull cable towards neck/upper chest area targeting rear delts and rhomboids; high pulley uses downward angle while low pulley uses upward angle",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Kneeling_High_Pulley_Row",
   "toExerciseTemplateId": "Low_Pulley_Row_To_Neck"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761511059,
   "fromExerciseTemplateId": "Reverse_Band_Box_Squat",
   "toExerciseTemplateId": "Speed_Box_Squat"

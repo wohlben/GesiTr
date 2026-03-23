@@ -3,7 +3,7 @@
   "relationshipType": "variation",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Straight_Raises_on_Incline_Bench",
   "toExerciseTemplateId": "Barbell_Incline_Shoulder_Raise"

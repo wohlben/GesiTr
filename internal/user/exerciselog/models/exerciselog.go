@@ -9,7 +9,7 @@ import (
 type ExerciseLog struct {
 	shared.BaseModel        `tstype:",extends"`
 	Owner                   string    `json:"owner"`
-	UserExerciseID          uint      `json:"userExerciseId"`
+	ExerciseID              uint      `json:"exerciseId"`
 	MeasurementType         string    `json:"measurementType"`
 	Reps                    *int      `json:"reps"`
 	Weight                  *float64  `json:"weight"`

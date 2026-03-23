@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761463686,
   "fromExerciseTemplateId": "Arnold_Dumbbell_Press",
   "toExerciseTemplateId": "Seated_Dumbbell_Press"

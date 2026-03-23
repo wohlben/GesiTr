@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730012400,
   "fromExerciseTemplateId": "Dumbbell_One-Arm_Triceps_Extension",
   "toExerciseTemplateId": "Standing_Towel_Triceps_Extension"

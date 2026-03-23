@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761551538,
   "fromExerciseTemplateId": "Wrist_Roller",
   "toExerciseTemplateId": "Wrist_Rotations_with_Straight_Bar"

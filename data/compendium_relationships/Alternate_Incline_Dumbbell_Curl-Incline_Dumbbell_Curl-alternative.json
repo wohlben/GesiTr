@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.95,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Alternate_Incline_Dumbbell_Curl",
   "toExerciseTemplateId": "Incline_Dumbbell_Curl"

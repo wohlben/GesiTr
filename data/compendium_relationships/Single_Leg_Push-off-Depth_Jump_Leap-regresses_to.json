@@ -3,7 +3,7 @@
   "relationshipType": "regresses_to",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Single_Leg_Push-off",
   "toExerciseTemplateId": "Depth_Jump_Leap"

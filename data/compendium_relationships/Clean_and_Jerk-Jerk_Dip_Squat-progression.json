@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761499778,
   "fromExerciseTemplateId": "Clean_and_Jerk",
   "toExerciseTemplateId": "Jerk_Dip_Squat"

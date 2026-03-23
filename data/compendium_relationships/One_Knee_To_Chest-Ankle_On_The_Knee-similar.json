@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": "Both are beginner-friendly supine stretches targeting glutes and lower back; Figure 4 adds deeper piriformis stretch with crossed ankle",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "One_Knee_To_Chest",
   "toExerciseTemplateId": "Ankle_On_The_Knee"

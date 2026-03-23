@@ -36,7 +36,7 @@ test.describe('/user/workouts/[id]/edit', () => {
         const exercise = await createExercise(request, { name: v.exerciseName });
         const userExercise = await createUserExercise(request, exercise.templateId);
         const scheme = await createExerciseScheme(request, {
-          userExerciseId: userExercise.id,
+          exerciseId: exercise.id,
         });
         const workout = await createWorkout(request, {
           name: v.workoutName,
@@ -47,7 +47,7 @@ test.describe('/user/workouts/[id]/edit', () => {
         });
         const sectionExercise = await createWorkoutSectionExercise(request, {
           workoutSectionId: section.id,
-          userExerciseSchemeId: scheme.id,
+          exerciseSchemeId: scheme.id,
         });
 
         await page.goto(`/user/workouts/${workout.id}/edit`, { waitUntil: 'networkidle' });
@@ -75,7 +75,7 @@ test.describe('/user/workouts/[id]/edit', () => {
         const exercise = await createExercise(request, { name: v.exerciseName });
         const userExercise = await createUserExercise(request, exercise.templateId);
         const scheme = await createExerciseScheme(request, {
-          userExerciseId: userExercise.id,
+          exerciseId: exercise.id,
         });
         const workout = await createWorkout(request, {
           name: v.workoutName,
@@ -87,7 +87,7 @@ test.describe('/user/workouts/[id]/edit', () => {
         });
         const sectionExercise = await createWorkoutSectionExercise(request, {
           workoutSectionId: section.id,
-          userExerciseSchemeId: scheme.id,
+          exerciseSchemeId: scheme.id,
         });
 
         await page.emulateMedia({ colorScheme: 'dark' });

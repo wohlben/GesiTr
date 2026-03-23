@@ -3,7 +3,7 @@
   "relationshipType": "preparation",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Pallof_Press",
   "toExerciseTemplateId": "Stomach_Vacuum"

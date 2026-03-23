@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Reverse_Grip_Triceps_Pushdown",
   "toExerciseTemplateId": "Triceps_Pushdown_-_V-Bar_Attachment"

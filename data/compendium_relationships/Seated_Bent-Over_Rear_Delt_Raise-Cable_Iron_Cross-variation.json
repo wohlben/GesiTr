@@ -3,7 +3,7 @@
   "relationshipType": "variation",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761479173,
   "fromExerciseTemplateId": "Seated_Bent-Over_Rear_Delt_Raise",
   "toExerciseTemplateId": "Cable_Iron_Cross"

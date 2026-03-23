@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729893600,
   "fromExerciseTemplateId": "Decline_Dumbbell_Triceps_Extension",
   "toExerciseTemplateId": "Low_Cable_Triceps_Extension"

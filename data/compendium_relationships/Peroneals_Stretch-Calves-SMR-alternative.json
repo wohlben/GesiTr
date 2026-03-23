@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": "Both target calf muscle flexibility and mobility - one through static stretching with inversion, the other through myofascial release",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Peroneals_Stretch",
   "toExerciseTemplateId": "Calves-SMR"

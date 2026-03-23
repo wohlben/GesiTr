@@ -3,7 +3,7 @@
   "relationshipType": "progresses_to",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "EZ-Bar_Curl",
   "toExerciseTemplateId": "Lying_High_Bench_Barbell_Curl"

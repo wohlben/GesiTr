@@ -3,7 +3,7 @@
   "relationshipType": "antagonist",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730001600,
   "fromExerciseTemplateId": "Reverse_Triceps_Bench_Press",
   "toExerciseTemplateId": "Barbell_Curl"

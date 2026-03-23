@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Barbell_Guillotine_Bench_Press",
   "toExerciseTemplateId": "Wide-Grip_Barbell_Bench_Press"

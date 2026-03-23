@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.98,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760883050,
   "fromExerciseTemplateId": "Close-Grip_EZ_Bar_Curl",
   "toExerciseTemplateId": "Close-Grip_EZ-Bar_Curl_with_Band"

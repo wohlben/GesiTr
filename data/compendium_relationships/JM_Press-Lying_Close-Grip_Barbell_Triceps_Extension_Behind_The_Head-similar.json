@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761499467,
   "fromExerciseTemplateId": "JM_Press",
   "toExerciseTemplateId": "Lying_Close-Grip_Barbell_Triceps_Extension_Behind_The_Head"

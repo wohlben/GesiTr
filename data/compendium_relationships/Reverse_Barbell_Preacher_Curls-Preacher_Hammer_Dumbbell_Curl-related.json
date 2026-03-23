@@ -3,7 +3,7 @@
   "relationshipType": "related",
   "strength": 0.7,
   "description": "Dumbbell version with neutral grip on preacher bench",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761543970,
   "fromExerciseTemplateId": "Reverse_Barbell_Preacher_Curls",
   "toExerciseTemplateId": "Preacher_Hammer_Dumbbell_Curl"

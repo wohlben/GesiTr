@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.85,
   "description": "Svend Press adds dynamic pressing movement to the isometric squeezing pattern",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729954800,
   "fromExerciseTemplateId": "Isometric_Chest_Squeezes",
   "toExerciseTemplateId": "Svend_Press"

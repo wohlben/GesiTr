@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Cable_Rear_Delt_Fly",
   "toExerciseTemplateId": "Dumbbell_Lying_One-Arm_Rear_Lateral_Raise"

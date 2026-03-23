@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.88,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761500440,
   "fromExerciseTemplateId": "Kettlebell_Seesaw_Press",
   "toExerciseTemplateId": "Alternating_Kettlebell_Press"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761464001,
   "fromExerciseTemplateId": "Forward_Drag_with_Press",
   "toExerciseTemplateId": "Backward_Drag"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730001600,
   "fromExerciseTemplateId": "Smith_Machine_Close-Grip_Bench_Press",
   "toExerciseTemplateId": "Reverse_Triceps_Bench_Press"

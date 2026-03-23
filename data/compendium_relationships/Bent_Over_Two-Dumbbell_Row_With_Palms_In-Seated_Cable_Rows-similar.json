@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Bent_Over_Two-Dumbbell_Row_With_Palms_In",
   "toExerciseTemplateId": "Seated_Cable_Rows"

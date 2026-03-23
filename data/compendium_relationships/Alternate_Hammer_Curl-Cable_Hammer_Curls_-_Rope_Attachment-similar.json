@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Alternate_Hammer_Curl",
   "toExerciseTemplateId": "Cable_Hammer_Curls_-_Rope_Attachment"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Seated_Front_Deltoid",
   "toExerciseTemplateId": "Chest_And_Front_Of_Shoulder_Stretch"

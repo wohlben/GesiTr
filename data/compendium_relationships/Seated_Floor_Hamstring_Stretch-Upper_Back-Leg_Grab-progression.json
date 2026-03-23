@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Seated_Floor_Hamstring_Stretch",
   "toExerciseTemplateId": "Upper_Back-Leg_Grab"

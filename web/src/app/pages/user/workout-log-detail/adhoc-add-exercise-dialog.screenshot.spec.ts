@@ -2,11 +2,9 @@ import { render } from '@testing-library/angular';
 import { page } from 'vitest/browser';
 import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
-import { userExerciseKeys, exerciseKeys } from '$core/query-keys';
+import { userExerciseKeys } from '$core/query-keys';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { AdhocAddExerciseDialog } from './adhoc-add-exercise-dialog';
-import { UserExercise } from '$generated/user-models';
 import { Exercise } from '$generated/models';
 
 describe('AdhocAddExerciseDialog screenshots', () => {
@@ -14,29 +12,54 @@ describe('AdhocAddExerciseDialog screenshots', () => {
     document.documentElement.classList.remove('dark');
   });
 
-  const mockUserExercises: UserExercise[] = [
+  const mockUserExercises: Exercise[] = [
     {
       id: 1,
       owner: 'user',
-      compendiumExerciseId: 'bench-press',
-      compendiumVersion: 1,
+      name: 'Bench Press',
+      slug: 'bench-press',
+      type: 'STRENGTH',
+      force: [],
+      primaryMuscles: [],
+      secondaryMuscles: [],
+      technicalDifficulty: 'intermediate',
+      bodyWeightScaling: 0,
+      suggestedMeasurementParadigms: [],
+      description: '',
+      instructions: [],
+      images: [],
+      alternativeNames: [],
+      public: false,
+      version: 1,
+      templateId: 'bench-press',
+      equipmentIds: [],
       createdAt: '2024-01-01T00:00:00Z',
       updatedAt: '2024-01-01T00:00:00Z',
     },
     {
       id: 2,
       owner: 'user',
-      compendiumExerciseId: 'bicep-curl',
-      compendiumVersion: 1,
+      name: 'Bicep Curl',
+      slug: 'bicep-curl',
+      type: 'STRENGTH',
+      force: [],
+      primaryMuscles: [],
+      secondaryMuscles: [],
+      technicalDifficulty: 'beginner',
+      bodyWeightScaling: 0,
+      suggestedMeasurementParadigms: [],
+      description: '',
+      instructions: [],
+      images: [],
+      alternativeNames: [],
+      public: false,
+      version: 1,
+      templateId: 'bicep-curl',
+      equipmentIds: [],
       createdAt: '2024-01-01T00:00:00Z',
       updatedAt: '2024-01-01T00:00:00Z',
     },
   ];
-
-  const mockExerciseVersions: Record<string, { version: number; snapshot: Partial<Exercise> }> = {
-    'bench-press': { version: 1, snapshot: { name: 'Bench Press' } },
-    'bicep-curl': { version: 1, snapshot: { name: 'Bicep Curl' } },
-  };
 
   async function renderDialog() {
     const queryClient = new QueryClient({
@@ -44,12 +67,6 @@ describe('AdhocAddExerciseDialog screenshots', () => {
     });
 
     queryClient.setQueryData(userExerciseKeys.list(), mockUserExercises);
-    for (const ue of mockUserExercises) {
-      queryClient.setQueryData(
-        exerciseKeys.version(ue.compendiumExerciseId, ue.compendiumVersion),
-        mockExerciseVersions[ue.compendiumExerciseId],
-      );
-    }
 
     const result = await render(AdhocAddExerciseDialog, {
       inputs: {
@@ -69,16 +86,6 @@ describe('AdhocAddExerciseDialog screenshots', () => {
             createWorkoutLogExercise: vi.fn(),
           },
         },
-        {
-          provide: CompendiumApiClient,
-          useValue: {
-            fetchExerciseVersion: vi
-              .fn()
-              .mockImplementation((templateId: string) =>
-                Promise.resolve(mockExerciseVersions[templateId]),
-              ),
-          },
-        },
       ],
     });
 
@@ -88,7 +95,7 @@ describe('AdhocAddExerciseDialog screenshots', () => {
     // Set exercise selection to show the runner (Phase 2)
     const configComponent = result.fixture.componentInstance.exerciseConfig();
     configComponent.model.set({
-      userExerciseId: 1,
+      exerciseId: 1,
       measurementType: 'REP_BASED',
       sets: 3,
       reps: 10,

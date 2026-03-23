@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761498134,
   "fromExerciseTemplateId": "One_Knee_To_Chest",
   "toExerciseTemplateId": "Hug_A_Ball"

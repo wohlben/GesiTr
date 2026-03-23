@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.95,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761496103,
   "fromExerciseTemplateId": "Incline_Dumbbell_Bench_With_Palms_Facing_In",
   "toExerciseTemplateId": "Hammer_Grip_Incline_DB_Bench_Press"

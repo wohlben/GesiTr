@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761463686,
   "fromExerciseTemplateId": "Seated_Dumbbell_Press",
   "toExerciseTemplateId": "Arnold_Dumbbell_Press"

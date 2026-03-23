@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": "Both are kneeling high pulley rows; single-arm version adds unilateral challenge and requires more core stability",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Kneeling_High_Pulley_Row",
   "toExerciseTemplateId": "Kneeling_Single-Arm_High_Pulley_Row"

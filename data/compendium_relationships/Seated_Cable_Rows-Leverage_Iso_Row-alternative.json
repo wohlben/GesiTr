@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729900800,
   "fromExerciseTemplateId": "Seated_Cable_Rows",
   "toExerciseTemplateId": "Leverage_Iso_Row"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Kettlebell_One-Legged_Deadlift",
   "toExerciseTemplateId": "One-Arm_Side_Deadlift"

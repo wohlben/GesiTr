@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Decline_Oblique_Crunch",
   "toExerciseTemplateId": "Bosu_Ball_Cable_Crunch_With_Side_Bends"

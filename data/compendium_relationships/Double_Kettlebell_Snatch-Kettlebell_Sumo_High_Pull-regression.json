@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Double_Kettlebell_Snatch",
   "toExerciseTemplateId": "Kettlebell_Sumo_High_Pull"

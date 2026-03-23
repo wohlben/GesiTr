@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.5,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761499591,
   "fromExerciseTemplateId": "Sumo_Deadlift",
   "toExerciseTemplateId": "Jefferson_Squats"

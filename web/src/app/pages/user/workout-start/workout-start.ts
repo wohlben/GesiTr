@@ -13,8 +13,8 @@ import {
   WorkoutSectionTypeMain,
   WorkoutSectionTypeSupplementary,
   WorkoutLog,
-  UserExerciseScheme,
 } from '$generated/user-models';
+import { ExerciseScheme } from '$generated/models';
 import { PageLayout } from '../../../layout/page-layout';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
@@ -669,7 +669,7 @@ export class WorkoutStart {
   onExerciseAdded(event: {
     exerciseLogId: number;
     exerciseName: string;
-    scheme: UserExerciseScheme;
+    scheme: ExerciseScheme;
     exercise: {
       id: number;
       sourceExerciseSchemeId: number;
@@ -889,7 +889,7 @@ export class WorkoutStart {
         const templateEx = templateSection.exercises[ei];
         await this.userApi.createWorkoutLogExercise({
           workoutLogSectionId: section.id,
-          sourceExerciseSchemeId: templateEx.userExerciseSchemeId,
+          sourceExerciseSchemeId: templateEx.exerciseSchemeId,
           position: ei,
         });
       }

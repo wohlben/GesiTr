@@ -3,7 +3,7 @@
   "relationshipType": "prerequisite",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730016000,
   "fromExerciseTemplateId": "Standing_Toe_Touches",
   "toExerciseTemplateId": "90_90_Hamstring"

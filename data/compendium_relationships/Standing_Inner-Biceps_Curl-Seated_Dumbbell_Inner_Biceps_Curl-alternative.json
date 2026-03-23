@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730275200,
   "fromExerciseTemplateId": "Standing_Inner-Biceps_Curl",
   "toExerciseTemplateId": "Seated_Dumbbell_Inner_Biceps_Curl"

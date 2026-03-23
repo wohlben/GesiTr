@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761509910,
   "fromExerciseTemplateId": "Cable_Lying_Triceps_Extension",
   "toExerciseTemplateId": "Machine_Triceps_Extension"

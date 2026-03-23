@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729969200,
   "fromExerciseTemplateId": "One-Arm_Kettlebell_Military_Press_To_The_Side",
   "toExerciseTemplateId": "One-Arm_Kettlebell_Para_Press"

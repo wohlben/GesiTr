@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761510517,
   "fromExerciseTemplateId": "Supine_One-Arm_Overhead_Throw",
   "toExerciseTemplateId": "One-Arm_Medicine_Ball_Slam"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735689600,
   "fromExerciseTemplateId": "Tate_Press",
   "toExerciseTemplateId": "Lying_Dumbbell_Tricep_Extension"

@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Band_Assisted_Pull-Up",
   "toExerciseTemplateId": "Wide-Grip_Rear_Pull-Up"

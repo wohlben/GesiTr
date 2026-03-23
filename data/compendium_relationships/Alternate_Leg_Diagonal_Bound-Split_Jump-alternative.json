@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.82,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761461533,
   "fromExerciseTemplateId": "Alternate_Leg_Diagonal_Bound",
   "toExerciseTemplateId": "Split_Jump"

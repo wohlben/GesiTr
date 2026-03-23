@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761464001,
   "fromExerciseTemplateId": "Sled_Drag_-_Harness",
   "toExerciseTemplateId": "Forward_Drag_with_Press"

@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730000000,
   "fromExerciseTemplateId": "One-Arm_High-Pulley_Cable_Side_Bends",
   "toExerciseTemplateId": "Dumbbell_Side_Bend"

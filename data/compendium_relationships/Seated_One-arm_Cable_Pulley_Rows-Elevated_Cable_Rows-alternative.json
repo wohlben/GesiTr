@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": "Elevated Cable Rows is a bilateral alternative to Seated One-arm Cable Pulley Rows",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761412213,
   "fromExerciseTemplateId": "Seated_One-arm_Cable_Pulley_Rows",
   "toExerciseTemplateId": "Elevated_Cable_Rows"

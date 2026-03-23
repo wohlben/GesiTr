@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761476339,
   "fromExerciseTemplateId": "Bodyweight_Flyes",
   "toExerciseTemplateId": "Around_The_Worlds"

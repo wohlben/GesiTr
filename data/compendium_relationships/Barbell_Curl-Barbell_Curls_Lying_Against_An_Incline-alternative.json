@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Barbell_Curl",
   "toExerciseTemplateId": "Barbell_Curls_Lying_Against_An_Incline"

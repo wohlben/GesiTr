@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761464222,
   "fromExerciseTemplateId": "Balance_Board",
   "toExerciseTemplateId": "Standing_Calf_Raises"

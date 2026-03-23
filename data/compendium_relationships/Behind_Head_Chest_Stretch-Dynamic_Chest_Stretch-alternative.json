@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Behind_Head_Chest_Stretch",
   "toExerciseTemplateId": "Dynamic_Chest_Stretch"

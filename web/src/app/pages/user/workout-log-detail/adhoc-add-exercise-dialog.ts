@@ -34,7 +34,7 @@ import { ExerciseRunner } from '$ui/exercise-runner/exercise-runner';
             <hlm-separator class="my-4" />
 
             <!-- Phase 2: Exercise sets planning -->
-            @if (exerciseConfig.model().userExerciseId && exerciseConfig.model().sets) {
+            @if (exerciseConfig.model().exerciseId && exerciseConfig.model().sets) {
               <app-exercise-runner
                 #runner
                 [exerciseName]="exerciseConfig.selectedExerciseName()"

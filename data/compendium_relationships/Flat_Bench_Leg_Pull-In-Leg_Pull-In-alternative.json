@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": "Floor version requires no equipment and offers stable surface",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761509905,
   "fromExerciseTemplateId": "Flat_Bench_Leg_Pull-In",
   "toExerciseTemplateId": "Leg_Pull-In"

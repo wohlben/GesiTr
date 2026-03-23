@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	userexercisemodels "gesitr/internal/user/exercise/models"
+	exercisemodels "gesitr/internal/exercise/models"
 	workoutmodels "gesitr/internal/user/workout/models"
 	"gesitr/internal/user/workoutlog/models"
 )
@@ -16,17 +16,17 @@ func TestWorkoutStartFlow(t *testing.T) {
 
 	// -- Setup: create user exercises and schemes --
 
-	w := doJSONLog(t, r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "barbell-squat", "compendiumVersion": 1,
+	w := doJSONLog(t, r, "POST", "/api/exercises", map[string]any{
+		"name": "Barbell Squat", "type": "STRENGTH", "technicalDifficulty": "intermediate",
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create user exercise 1: status = %d", w.Code)
 	}
-	var userExercise1 userexercisemodels.UserExercise
+	var userExercise1 exercisemodels.Exercise
 	json.Unmarshal(w.Body.Bytes(), &userExercise1)
 
-	w = doJSONLog(t, r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId":  userExercise1.ID,
+	w = doJSONLog(t, r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId":      userExercise1.ID,
 		"measurementType": "REP_BASED",
 		"sets":            5,
 		"reps":            5,
@@ -36,20 +36,20 @@ func TestWorkoutStartFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create scheme 1: status = %d, body = %s", w.Code, w.Body.String())
 	}
-	var scheme1 userexercisemodels.UserExerciseScheme
+	var scheme1 exercisemodels.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme1)
 
-	w = doJSONLog(t, r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "bench-press", "compendiumVersion": 1,
+	w = doJSONLog(t, r, "POST", "/api/exercises", map[string]any{
+		"name": "Bench Press", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create user exercise 2: status = %d", w.Code)
 	}
-	var userExercise2 userexercisemodels.UserExercise
+	var userExercise2 exercisemodels.Exercise
 	json.Unmarshal(w.Body.Bytes(), &userExercise2)
 
-	w = doJSONLog(t, r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId":  userExercise2.ID,
+	w = doJSONLog(t, r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId":      userExercise2.ID,
 		"measurementType": "REP_BASED",
 		"sets":            4,
 		"reps":            8,
@@ -59,7 +59,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create scheme 2: status = %d, body = %s", w.Code, w.Body.String())
 	}
-	var scheme2 userexercisemodels.UserExerciseScheme
+	var scheme2 exercisemodels.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme2)
 
 	// -- Setup: create workout template with sections and exercises --
@@ -83,14 +83,14 @@ func TestWorkoutStartFlow(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &section)
 
 	w = doJSONLog(t, r, "POST", "/api/user/workout-section-exercises", map[string]any{
-		"workoutSectionId": section.ID, "userExerciseSchemeId": scheme1.ID, "position": 0,
+		"workoutSectionId": section.ID, "exerciseSchemeId": scheme1.ID, "position": 0,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section exercise 1: status = %d", w.Code)
 	}
 
 	w = doJSONLog(t, r, "POST", "/api/user/workout-section-exercises", map[string]any{
-		"workoutSectionId": section.ID, "userExerciseSchemeId": scheme2.ID, "position": 1,
+		"workoutSectionId": section.ID, "exerciseSchemeId": scheme2.ID, "position": 1,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section exercise 2: status = %d", w.Code)
@@ -146,10 +146,10 @@ func TestWorkoutStartFlow(t *testing.T) {
 	t.Log("=== STEP 3: Create workout log exercises ===")
 	var logExercises []models.WorkoutLogExercise
 	for i, templateExercise := range templateSection.Exercises {
-		t.Logf("--- Creating log exercise %d (scheme %d) ---", i, templateExercise.UserExerciseSchemeID)
+		t.Logf("--- Creating log exercise %d (scheme %d) ---", i, templateExercise.ExerciseSchemeID)
 		w = doJSONLog(t, r, "POST", "/api/user/workout-log-exercises", map[string]any{
 			"workoutLogSectionId":    logSection.ID,
-			"sourceExerciseSchemeId": templateExercise.UserExerciseSchemeID,
+			"sourceExerciseSchemeId": templateExercise.ExerciseSchemeID,
 			"position":               templateExercise.Position,
 		})
 		if w.Code != http.StatusCreated {

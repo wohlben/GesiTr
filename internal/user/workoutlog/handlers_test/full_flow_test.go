@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	userexercisemodels "gesitr/internal/user/exercise/models"
+	exercisemodels "gesitr/internal/exercise/models"
 	workoutmodels "gesitr/internal/user/workout/models"
 	"gesitr/internal/user/workoutlog/models"
 )
@@ -14,19 +14,19 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	// 1. Create a user exercise (referencing a compendium exercise template)
-	w := doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "barbell-squat", "compendiumVersion": 1,
+	// 1. Create an exercise
+	w := doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Barbell Squat", "type": "STRENGTH", "technicalDifficulty": "intermediate",
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create user exercise: status = %d, body = %s", w.Code, w.Body.String())
 	}
-	var userExercise userexercisemodels.UserExercise
+	var userExercise exercisemodels.Exercise
 	json.Unmarshal(w.Body.Bytes(), &userExercise)
 
 	// 2. Create an exercise scheme for that user exercise
-	w = doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId":  userExercise.ID,
+	w = doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId":      userExercise.ID,
 		"measurementType": "REP_BASED",
 		"sets":            5,
 		"reps":            5,
@@ -36,21 +36,21 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create scheme: status = %d, body = %s", w.Code, w.Body.String())
 	}
-	var scheme userexercisemodels.UserExerciseScheme
+	var scheme exercisemodels.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme)
 
-	// 3. Create a second user exercise + scheme for variety
-	w = doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "bench-press", "compendiumVersion": 1,
+	// 3. Create a second exercise + scheme for variety
+	w = doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Bench Press", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create second user exercise: status = %d", w.Code)
 	}
-	var userExercise2 userexercisemodels.UserExercise
+	var userExercise2 exercisemodels.Exercise
 	json.Unmarshal(w.Body.Bytes(), &userExercise2)
 
-	w = doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId":  userExercise2.ID,
+	w = doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId":      userExercise2.ID,
 		"measurementType": "REP_BASED",
 		"sets":            4,
 		"reps":            8,
@@ -59,7 +59,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create second scheme: status = %d", w.Code)
 	}
-	var scheme2 userexercisemodels.UserExerciseScheme
+	var scheme2 exercisemodels.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme2)
 
 	// 4. Create a workout template
@@ -91,14 +91,14 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 
 	// 6. Add exercises to the workout template sections
 	w = doJSON(r, "POST", "/api/user/workout-section-exercises", map[string]any{
-		"workoutSectionId": mainSection.ID, "userExerciseSchemeId": scheme.ID, "position": 0,
+		"workoutSectionId": mainSection.ID, "exerciseSchemeId": scheme.ID, "position": 0,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section exercise 1: status = %d", w.Code)
 	}
 
 	w = doJSON(r, "POST", "/api/user/workout-section-exercises", map[string]any{
-		"workoutSectionId": mainSection.ID, "userExerciseSchemeId": scheme2.ID, "position": 1,
+		"workoutSectionId": mainSection.ID, "exerciseSchemeId": scheme2.ID, "position": 1,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section exercise 2: status = %d", w.Code)
@@ -345,11 +345,11 @@ func TestGetWorkoutLogWithSectionsAndExercises(t *testing.T) {
 	r := newRouter()
 
 	// Setup: exercise -> scheme -> workout log -> section -> exercise
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "bench-press", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Bench Press", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
 		"owner": "alice", "name": "Full Session", "date": "2026-03-07T10:00:00Z",

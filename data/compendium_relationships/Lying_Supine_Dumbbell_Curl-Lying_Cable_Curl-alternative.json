@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761498077,
   "fromExerciseTemplateId": "Lying_Supine_Dumbbell_Curl",
   "toExerciseTemplateId": "Lying_Cable_Curl"

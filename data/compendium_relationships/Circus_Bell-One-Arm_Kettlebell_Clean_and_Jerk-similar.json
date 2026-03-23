@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761481210,
   "fromExerciseTemplateId": "Circus_Bell",
   "toExerciseTemplateId": "One-Arm_Kettlebell_Clean_and_Jerk"

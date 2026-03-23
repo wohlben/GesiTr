@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761463686,
   "fromExerciseTemplateId": "Arnold_Dumbbell_Press",
   "toExerciseTemplateId": "Kettlebell_Arnold_Press"

@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.8,
   "description": "Both are partner-assisted PNF stretches for the adductors. Lying Bent Leg Groin uses bent knees in butterfly position (easier), while Adductor/Groin uses legs raised straight with wider abduction (harder, greater range of motion).",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "Lying_Bent_Leg_Groin",
   "toExerciseTemplateId": "Adductor_Groin"

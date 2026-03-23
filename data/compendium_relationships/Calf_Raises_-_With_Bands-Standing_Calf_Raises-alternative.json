@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761412753,
   "fromExerciseTemplateId": "Calf_Raises_-_With_Bands",
   "toExerciseTemplateId": "Standing_Calf_Raises"

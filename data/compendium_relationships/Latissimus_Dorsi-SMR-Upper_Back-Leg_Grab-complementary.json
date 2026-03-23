@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Latissimus_Dorsi-SMR",
   "toExerciseTemplateId": "Upper_Back-Leg_Grab"

@@ -53,7 +53,7 @@
     "author": "Author",
     "authorName": "Author Name",
     "authorUrl": "Author URL",
-    "createdBy": "Created By",
+    "owner": "Owner",
     "createdAt": "Created at",
     "updatedAt": "Updated at",
     "imageUrl": "Image URL",

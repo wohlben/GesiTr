@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729931400,
   "fromExerciseTemplateId": "Full_Range-Of-Motion_Lat_Pulldown",
   "toExerciseTemplateId": "Straight-Arm_Pulldown"

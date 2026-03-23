@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761463810,
   "fromExerciseTemplateId": "Sandbag_Load",
   "toExerciseTemplateId": "Atlas_Stone_Trainer"

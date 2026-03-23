@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Standing_Dumbbell_Reverse_Curl",
   "toExerciseTemplateId": "Reverse_Plate_Curls"

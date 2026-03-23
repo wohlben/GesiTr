@@ -28,7 +28,8 @@ const EXERCISE: Exercise = {
   instructions: [],
   images: [],
   alternativeNames: [],
-  createdBy: 'seed',
+  owner: 'seed',
+  public: true,
   version: 1,
   templateId: 'tmpl-bench',
   equipmentIds: [],
@@ -38,9 +39,24 @@ const USER_EXERCISE: UserExercise = {
   id: 10,
   createdAt: '',
   updatedAt: '',
+  name: 'Bench Press',
+  slug: 'bench-press',
+  type: 'STRENGTH',
+  force: [],
+  primaryMuscles: ['CHEST'],
+  secondaryMuscles: ['TRICEPS'],
+  technicalDifficulty: 'intermediate',
+  bodyWeightScaling: 0,
+  suggestedMeasurementParadigms: [],
+  description: 'A compound exercise',
+  instructions: [],
+  images: [],
+  alternativeNames: [],
   owner: 'anon',
-  compendiumExerciseId: 'tmpl-bench',
-  compendiumVersion: 1,
+  public: false,
+  version: 1,
+  templateId: 'tmpl-bench',
+  equipmentIds: [],
 };
 
 function setup(userExercises: UserExercise[] = []) {
@@ -100,7 +116,7 @@ describe('ExerciseDetail', () => {
     const otherExercise: UserExercise = {
       ...USER_EXERCISE,
       id: 99,
-      compendiumExerciseId: 'tmpl-other',
+      templateId: 'tmpl-other',
     };
     const { providers } = setup([otherExercise]);
     await render(ExerciseDetail, { providers });

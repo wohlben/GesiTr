@@ -33,6 +33,7 @@ func TestAutoMigrate(t *testing.T) {
 		"exercise_images", "exercise_alternative_names",
 		"equipment", "exercise_equipments", "fulfillments",
 		"exercise_relationships", "exercise_groups", "exercise_group_members",
+		"exercise_schemes", "equipment_relationships",
 	}
 	for _, table := range tables {
 		if !database.DB.Migrator().HasTable(table) {
@@ -68,6 +69,11 @@ func TestSetupRoutes(t *testing.T) {
 		"DELETE /api/equipment/:id":                                  false,
 		"GET /api/equipment/:id/versions":                            false,
 		"GET /api/equipment/templates/:templateId/versions/:version": false,
+		"GET /api/exercise-schemes":                                  false,
+		"POST /api/exercise-schemes":                                 false,
+		"GET /api/exercise-schemes/:id":                              false,
+		"PUT /api/exercise-schemes/:id":                              false,
+		"DELETE /api/exercise-schemes/:id":                           false,
 		"GET /api/fulfillments":                                      false,
 		"POST /api/fulfillments":                                     false,
 		"DELETE /api/fulfillments/:id":                               false,
@@ -82,6 +88,9 @@ func TestSetupRoutes(t *testing.T) {
 		"GET /api/exercise-group-members":                            false,
 		"POST /api/exercise-group-members":                           false,
 		"DELETE /api/exercise-group-members/:id":                     false,
+		"GET /api/equipment-relationships":                           false,
+		"POST /api/equipment-relationships":                          false,
+		"DELETE /api/equipment-relationships/:id":                    false,
 	}
 
 	for _, route := range routes {

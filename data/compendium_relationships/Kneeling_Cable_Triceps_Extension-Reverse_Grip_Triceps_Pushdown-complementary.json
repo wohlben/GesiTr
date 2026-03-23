@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.7,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Kneeling_Cable_Triceps_Extension",
   "toExerciseTemplateId": "Reverse_Grip_Triceps_Pushdown"

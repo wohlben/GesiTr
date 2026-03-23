@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.95,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Hammer_Curls",
   "toExerciseTemplateId": "Alternate_Hammer_Curl"

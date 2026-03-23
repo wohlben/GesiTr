@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761499120,
   "fromExerciseTemplateId": "Incline_Push-Up",
   "toExerciseTemplateId": "Incline_Push-Up_Wide"

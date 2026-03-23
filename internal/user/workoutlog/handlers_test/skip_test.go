@@ -12,11 +12,11 @@ func TestSkipSet(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
@@ -48,11 +48,11 @@ func TestPropagationAllSkipped(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
@@ -92,11 +92,11 @@ func TestPropagationMixedSkipFinish(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
@@ -140,11 +140,11 @@ func TestAbandonPreservesSkipped(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{

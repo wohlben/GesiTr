@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Kettlebell_Turkish_Get-Up_Squat_style",
   "toExerciseTemplateId": "Double_Kettlebell_Windmill"

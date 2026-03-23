@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": "Both are close-grip push-up variations emphasizing triceps; incline reduces resistance while dumbbell variant adds grip challenge and range",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Incline_Push-Up_Reverse_Grip",
   "toExerciseTemplateId": "Close-Grip_Push-Up_off_of_a_Dumbbell"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761498134,
   "fromExerciseTemplateId": "Childs_Pose",
   "toExerciseTemplateId": "Hug_A_Ball"

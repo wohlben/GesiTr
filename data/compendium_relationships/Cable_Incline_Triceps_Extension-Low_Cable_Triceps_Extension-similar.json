@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729893600,
   "fromExerciseTemplateId": "Cable_Incline_Triceps_Extension",
   "toExerciseTemplateId": "Low_Cable_Triceps_Extension"

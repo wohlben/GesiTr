@@ -14,11 +14,11 @@ import (
 // createExerciseLogViaWorkflow finishes a set and returns the resulting exercise log ID.
 func createExerciseLogViaWorkflow(t *testing.T, r *gin.Engine) uint {
 	t.Helper()
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
@@ -35,7 +35,7 @@ func createExerciseLogViaWorkflow(t *testing.T, r *gin.Engine) uint {
 		"status": "finished", "actualReps": 5, "actualWeight": 100.0,
 	})
 
-	w := doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1", nil)
+	w := doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1", nil)
 	var logs []exerciselogmodels.ExerciseLog
 	json.Unmarshal(w.Body.Bytes(), &logs)
 	if len(logs) == 0 {
@@ -59,8 +59,8 @@ func TestGetExerciseLog(t *testing.T) {
 		if log.ID != logID {
 			t.Errorf("expected ID %d, got %d", logID, log.ID)
 		}
-		if log.UserExerciseID != 1 {
-			t.Errorf("expected userExerciseId 1, got %d", log.UserExerciseID)
+		if log.ExerciseID != 1 {
+			t.Errorf("expected exerciseId 1, got %d", log.ExerciseID)
 		}
 		if log.MeasurementType != "REP_BASED" {
 			t.Errorf("expected REP_BASED, got %s", log.MeasurementType)
@@ -88,13 +88,13 @@ func TestCreateExerciseLogAdHoc(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 
 	t.Run("ad-hoc creation with record value", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/user/exercise-logs", map[string]any{
-			"userExerciseId":  1,
+			"exerciseId":      1,
 			"measurementType": "REP_BASED",
 			"reps":            10,
 			"weight":          80.0,
@@ -105,8 +105,8 @@ func TestCreateExerciseLogAdHoc(t *testing.T) {
 		}
 		var log exerciselogmodels.ExerciseLog
 		json.Unmarshal(w.Body.Bytes(), &log)
-		if log.UserExerciseID != 1 {
-			t.Errorf("expected userExerciseId 1, got %d", log.UserExerciseID)
+		if log.ExerciseID != 1 {
+			t.Errorf("expected exerciseId 1, got %d", log.ExerciseID)
 		}
 		if log.WorkoutLogExerciseSetID != nil {
 			t.Error("ad-hoc log should have nil workoutLogExerciseSetId")
@@ -125,7 +125,7 @@ func TestCreateExerciseLogAdHoc(t *testing.T) {
 
 	t.Run("default performedAt", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/user/exercise-logs", map[string]any{
-			"userExerciseId":  1,
+			"exerciseId":      1,
 			"measurementType": "REP_BASED",
 			"reps":            5,
 			"weight":          60.0,
@@ -196,7 +196,7 @@ func TestDeleteExerciseLog(t *testing.T) {
 		}
 
 		// Verify list is empty
-		w = doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1", nil)
+		w = doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1", nil)
 		var logs []exerciselogmodels.ExerciseLog
 		json.Unmarshal(w.Body.Bytes(), &logs)
 		if len(logs) != 0 {
@@ -216,28 +216,28 @@ func TestListExerciseLogsFilters(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "squat", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Squat", "slug": "squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercises", map[string]any{
-		"owner": "alice", "compendiumExerciseId": "plank", "compendiumVersion": 1,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"name": "Plank", "slug": "plank", "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 
 	doJSON(r, "POST", "/api/user/exercise-logs", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"reps": 5, "weight": 100.0, "performedAt": "2026-03-10T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/exercise-logs", map[string]any{
-		"userExerciseId": 1, "measurementType": "REP_BASED",
+		"exerciseId": 1, "measurementType": "REP_BASED",
 		"reps": 8, "weight": 100.0, "performedAt": "2026-03-15T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/exercise-logs", map[string]any{
-		"userExerciseId": 2, "measurementType": "TIME_BASED",
+		"exerciseId": 2, "measurementType": "TIME_BASED",
 		"duration": 60, "performedAt": "2026-03-12T10:00:00Z",
 	})
 
-	t.Run("filter by userExerciseId", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1", nil)
+	t.Run("filter by exerciseId", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1", nil)
 		var logs []exerciselogmodels.ExerciseLog
 		json.Unmarshal(w.Body.Bytes(), &logs)
 		if len(logs) != 2 {
@@ -273,13 +273,13 @@ func TestListExerciseLogsFilters(t *testing.T) {
 		if len(logs) != 1 {
 			t.Fatalf("expected 1 log in date range, got %d", len(logs))
 		}
-		if logs[0].UserExerciseID != 2 {
-			t.Errorf("expected exercise 2 in range, got exercise %d", logs[0].UserExerciseID)
+		if logs[0].ExerciseID != 2 {
+			t.Errorf("expected exercise 2 in range, got exercise %d", logs[0].ExerciseID)
 		}
 	})
 
 	t.Run("ordered by performedAt DESC", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/user/exercise-logs?userExerciseId=1", nil)
+		w := doJSON(r, "GET", "/api/user/exercise-logs?exerciseId=1", nil)
 		var logs []exerciselogmodels.ExerciseLog
 		json.Unmarshal(w.Body.Bytes(), &logs)
 		if len(logs) != 2 {

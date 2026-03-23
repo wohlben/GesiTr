@@ -133,7 +133,7 @@ export class EquipmentDetail {
     const templateId = this.equipmentQuery.data()?.templateId;
     const userEquipment = this.userEquipmentQuery.data();
     if (!templateId || !userEquipment) return undefined;
-    return userEquipment.find((ue) => ue.compendiumEquipmentId === templateId);
+    return userEquipment.find((ue) => ue.templateId === templateId);
   });
 
   deleteMutation = injectMutation(() => ({
@@ -148,8 +148,8 @@ export class EquipmentDetail {
     mutationFn: () => {
       const equipment = this.equipmentQuery.data()!;
       return this.userApi.createUserEquipment({
-        compendiumEquipmentId: equipment.templateId,
-        compendiumVersion: equipment.version,
+        templateId: equipment.templateId,
+        version: equipment.version,
       });
     },
     onSuccess: (created) => {

@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.6,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761476051,
   "fromExerciseTemplateId": "Jogging_Treadmill",
   "toExerciseTemplateId": "Bicycling_Stationary"

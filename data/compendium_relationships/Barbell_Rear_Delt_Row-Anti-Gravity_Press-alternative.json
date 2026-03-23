@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761463553,
   "fromExerciseTemplateId": "Barbell_Rear_Delt_Row",
   "toExerciseTemplateId": "Anti-Gravity_Press"

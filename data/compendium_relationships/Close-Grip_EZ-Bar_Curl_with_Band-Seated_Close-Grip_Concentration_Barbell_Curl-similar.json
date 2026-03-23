@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760883050,
   "fromExerciseTemplateId": "Close-Grip_EZ-Bar_Curl_with_Band",
   "toExerciseTemplateId": "Seated_Close-Grip_Concentration_Barbell_Curl"

@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729929600,
   "fromExerciseTemplateId": "Barbell_Squat_To_A_Bench",
   "toExerciseTemplateId": "Banded_Barbell_Squat"

@@ -3,7 +3,7 @@
   "relationshipType": "alternative",
   "strength": 0.75,
   "description": "Both are front raise exercises targeting anterior deltoids with dumbbells, differing in execution (two dumbbells lifted simultaneously vs single dumbbell held with both hands).",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Front_Two-Dumbbell_Raise",
   "toExerciseTemplateId": "Single_Dumbbell_Raise"

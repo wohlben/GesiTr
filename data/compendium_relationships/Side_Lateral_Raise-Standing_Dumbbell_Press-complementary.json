@@ -3,7 +3,7 @@
   "relationshipType": "complementary",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730073600,
   "fromExerciseTemplateId": "Side_Lateral_Raise",
   "toExerciseTemplateId": "Standing_Dumbbell_Press"

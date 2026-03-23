@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "On_Your_Side_Quad_Stretch",
   "toExerciseTemplateId": "All_Fours_Quad_Stretch"

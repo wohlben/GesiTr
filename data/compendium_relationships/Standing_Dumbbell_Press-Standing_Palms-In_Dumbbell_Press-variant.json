@@ -3,7 +3,7 @@
   "relationshipType": "variant",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1730073600,
   "fromExerciseTemplateId": "Standing_Dumbbell_Press",
   "toExerciseTemplateId": "Standing_Palms-In_Dumbbell_Press"

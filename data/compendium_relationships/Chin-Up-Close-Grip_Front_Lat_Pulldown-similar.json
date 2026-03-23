@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729931400,
   "fromExerciseTemplateId": "Chin-Up",
   "toExerciseTemplateId": "Close-Grip_Front_Lat_Pulldown"

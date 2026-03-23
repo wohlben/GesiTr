@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760883050,
   "fromExerciseTemplateId": "Upright_Cable_Row",
   "toExerciseTemplateId": "Dumbbell_One-Arm_Upright_Row"

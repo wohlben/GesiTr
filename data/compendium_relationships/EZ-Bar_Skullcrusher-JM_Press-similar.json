@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.8,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761499467,
   "fromExerciseTemplateId": "EZ-Bar_Skullcrusher",
   "toExerciseTemplateId": "JM_Press"

@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.8,
   "description": "Both are seated solo adductor stretches. The Straddle uses a V-position with forward lean, while Groin and Back Stretch uses butterfly position with curling motion, making it more challenging.",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1760873666,
   "fromExerciseTemplateId": "The_Straddle",
   "toExerciseTemplateId": "Groin_and_Back_Stretch"

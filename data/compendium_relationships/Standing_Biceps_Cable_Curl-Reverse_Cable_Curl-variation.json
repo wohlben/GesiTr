@@ -3,7 +3,7 @@
   "relationshipType": "variation",
   "strength": 0.75,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761543931,
   "fromExerciseTemplateId": "Standing_Biceps_Cable_Curl",
   "toExerciseTemplateId": "Reverse_Cable_Curl"

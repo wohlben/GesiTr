@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.7,
   "description": "Weighted crunch has shorter range of motion and no overhead press component compared to Otis-Up",
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1729980000,
   "fromExerciseTemplateId": "Otis-Up",
   "toExerciseTemplateId": "Weighted_Crunches"

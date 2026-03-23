@@ -88,13 +88,13 @@ async function createFixturesAndStartLog(
     const userExercise = await createUserExercise(request, exercise.templateId);
     cleanup.push(() => deleteUserExercise(request, userExercise.id));
     const scheme = await createExerciseScheme(request, {
-      userExerciseId: userExercise.id,
+      exerciseId: exercise.id,
       ...ex.scheme,
     });
     cleanup.push(() => deleteExerciseScheme(request, scheme.id));
     const sectionExercise = await createWorkoutSectionExercise(request, {
       workoutSectionId: section.id,
-      userExerciseSchemeId: scheme.id,
+      exerciseSchemeId: scheme.id,
       position: i,
     });
     cleanup.push(() => deleteWorkoutSectionExercise(request, sectionExercise.id));

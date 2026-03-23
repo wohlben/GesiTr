@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.85,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Spider_Curl",
   "toExerciseTemplateId": "Barbell_Curls_Lying_Against_An_Incline"

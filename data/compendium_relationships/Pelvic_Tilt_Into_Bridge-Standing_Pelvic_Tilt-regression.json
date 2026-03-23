@@ -3,7 +3,7 @@
   "relationshipType": "regression",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Pelvic_Tilt_Into_Bridge",
   "toExerciseTemplateId": "Standing_Pelvic_Tilt"

@@ -3,7 +3,7 @@
   "relationshipType": "progression",
   "strength": 0.65,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1735243200,
   "fromExerciseTemplateId": "Barbell_Side_Bend",
   "toExerciseTemplateId": "One-Arm_Side_Deadlift"

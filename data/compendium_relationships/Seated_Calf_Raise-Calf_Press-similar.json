@@ -3,7 +3,7 @@
   "relationshipType": "similar",
   "strength": 0.9,
   "description": null,
-  "createdBy": "claude",
+  "createdBy": "sinon",
   "createdAt": 1761479684,
   "fromExerciseTemplateId": "Seated_Calf_Raise",
   "toExerciseTemplateId": "Calf_Press"
