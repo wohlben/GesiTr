@@ -2,8 +2,6 @@ import { expect, test } from '@playwright/test';
 import {
   createExercise,
   deleteExercise,
-  createUserExercise,
-  deleteUserExercise,
   createWorkout,
   deleteWorkout,
   createExerciseScheme,
@@ -23,7 +21,6 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
   }) => {
     // Create fixtures: 1 exercise with 2 sets
     const exercise = await createExercise(request, { name: 'Set Edit Test Ex' });
-    const userExercise = await createUserExercise(request, exercise.templateId);
     const scheme = await createExerciseScheme(request, {
       exerciseId: exercise.id,
       sets: 2,
@@ -96,14 +93,12 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
     await deleteWorkoutSection(request, section.id);
     await deleteWorkout(request, workout.id);
     await deleteExerciseScheme(request, scheme.id);
-    await deleteUserExercise(request, userExercise.id);
     await deleteExercise(request, exercise.id);
   });
 
   test('editing rest between sets persists after page reload', async ({ request, page }) => {
     // Create fixtures: 1 exercise with 2 sets (so there's 1 rest timer between them)
     const exercise = await createExercise(request, { name: 'Rest Edit Test Ex' });
-    const userExercise = await createUserExercise(request, exercise.templateId);
     const scheme = await createExerciseScheme(request, {
       exerciseId: exercise.id,
       sets: 2,
@@ -162,7 +157,6 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
     await deleteWorkoutSection(request, section.id);
     await deleteWorkout(request, workout.id);
     await deleteExerciseScheme(request, scheme.id);
-    await deleteUserExercise(request, userExercise.id);
     await deleteExercise(request, exercise.id);
   });
 });

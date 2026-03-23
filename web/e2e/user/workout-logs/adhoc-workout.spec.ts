@@ -1,10 +1,5 @@
 import { expect, test } from '@playwright/test';
-import {
-  createExercise,
-  deleteExercise,
-  createUserExercise,
-  deleteUserExercise,
-} from '../../helpers';
+import { createExercise, deleteExercise } from '../../helpers';
 
 test.describe('/user/workout-logs — adhoc workflow', () => {
   test('full adhoc workout flow: start, add exercises, complete/skip sets, finish', async ({
@@ -13,16 +8,12 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
   }) => {
     const cleanup: (() => Promise<void>)[] = [];
 
-    // --- Fixtures: create compendium + user exercises via API ---
+    // --- Fixtures: create exercises via API ---
     const exerciseA = await createExercise(request, { name: 'AH Bench Press' });
     cleanup.push(() => deleteExercise(request, exerciseA.id));
-    const userExerciseA = await createUserExercise(request, exerciseA.templateId);
-    cleanup.push(() => deleteUserExercise(request, userExerciseA.id));
 
     const exerciseB = await createExercise(request, { name: 'AH Bicep Curl' });
     cleanup.push(() => deleteExercise(request, exerciseB.id));
-    const userExerciseB = await createUserExercise(request, exerciseB.templateId);
-    cleanup.push(() => deleteUserExercise(request, userExerciseB.id));
 
     // ============================================================
     // Step 1: Start adhoc workout from workout list

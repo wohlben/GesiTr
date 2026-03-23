@@ -2,8 +2,6 @@ import { expect, test } from '@playwright/test';
 import {
   createExercise,
   deleteExercise,
-  createUserExercise,
-  deleteUserExercise,
   createWorkout,
   deleteWorkout,
   createExerciseScheme,
@@ -34,7 +32,6 @@ test.describe('/user/workouts/[id]/edit', () => {
       test('light', async ({ request, page }) => {
         const v = variantData[`${viewport.name}-light`];
         const exercise = await createExercise(request, { name: v.exerciseName });
-        const userExercise = await createUserExercise(request, exercise.templateId);
         const scheme = await createExerciseScheme(request, {
           exerciseId: exercise.id,
         });
@@ -66,14 +63,12 @@ test.describe('/user/workouts/[id]/edit', () => {
         await deleteWorkoutSection(request, section.id);
         await deleteWorkout(request, workout.id);
         await deleteExerciseScheme(request, scheme.id);
-        await deleteUserExercise(request, userExercise.id);
         await deleteExercise(request, exercise.id);
       });
 
       test('dark', async ({ request, page }) => {
         const v = variantData[`${viewport.name}-dark`];
         const exercise = await createExercise(request, { name: v.exerciseName });
-        const userExercise = await createUserExercise(request, exercise.templateId);
         const scheme = await createExerciseScheme(request, {
           exerciseId: exercise.id,
         });
@@ -107,7 +102,6 @@ test.describe('/user/workouts/[id]/edit', () => {
         await deleteWorkoutSection(request, section.id);
         await deleteWorkout(request, workout.id);
         await deleteExerciseScheme(request, scheme.id);
-        await deleteUserExercise(request, userExercise.id);
         await deleteExercise(request, exercise.id);
       });
     });

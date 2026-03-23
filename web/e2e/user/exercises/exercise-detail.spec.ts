@@ -1,10 +1,5 @@
 import { expect, test } from '@playwright/test';
-import {
-  createExercise,
-  deleteExercise,
-  createUserExercise,
-  deleteUserExercise,
-} from '../../helpers';
+import { createExercise, deleteExercise } from '../../helpers';
 
 const viewports = [
   { name: 'desktop', width: 1280, height: 720 },
@@ -30,11 +25,9 @@ test.describe('/user/exercises/:id', () => {
           description: 'A compound strength exercise',
           primaryMuscles: ['CHEST'],
         });
-        const userExercise = await createUserExercise(request, exercise.templateId);
-        await page.goto(`/user/exercises/${userExercise.id}`, { waitUntil: 'networkidle' });
+        await page.goto(`/user/exercises/${exercise.id}`, { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).not.toHaveText('Exercise');
         await expect(page).toHaveScreenshot([viewport.name, 'light', 'user', 'exercises', '[id].png'], { fullPage: true });
-        await deleteUserExercise(request, userExercise.id);
         await deleteExercise(request, exercise.id);
       });
 
@@ -45,12 +38,10 @@ test.describe('/user/exercises/:id', () => {
           description: 'A compound strength exercise',
           primaryMuscles: ['CHEST'],
         });
-        const userExercise = await createUserExercise(request, exercise.templateId);
         await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto(`/user/exercises/${userExercise.id}`, { waitUntil: 'networkidle' });
+        await page.goto(`/user/exercises/${exercise.id}`, { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).not.toHaveText('Exercise');
         await expect(page).toHaveScreenshot([viewport.name, 'dark', 'user', 'exercises', '[id].png'], { fullPage: true });
-        await deleteUserExercise(request, userExercise.id);
         await deleteExercise(request, exercise.id);
       });
     });
@@ -58,8 +49,7 @@ test.describe('/user/exercises/:id', () => {
 
   test('delete dialog cancel closes the dialog', async ({ request, page }) => {
     const exercise = await createExercise(request, { name: 'User Cancel Delete Exercise' });
-    const userExercise = await createUserExercise(request, exercise.templateId);
-    await page.goto(`/user/exercises/${userExercise.id}`, { waitUntil: 'networkidle' });
+    await page.goto(`/user/exercises/${exercise.id}`, { waitUntil: 'networkidle' });
 
     await page.locator('button:has-text("Delete")').click();
     await expect(page.locator('[role="dialog"]')).toBeVisible();
@@ -68,15 +58,13 @@ test.describe('/user/exercises/:id', () => {
     await expect(page.locator('[role="dialog"]')).not.toBeVisible();
 
     await expect(page.locator('h1')).not.toHaveText('Exercise');
-    await deleteUserExercise(request, userExercise.id);
     await deleteExercise(request, exercise.id);
   });
 
   test('delete dialog confirm deletes and navigates to list', async ({ request, page }) => {
     const exercise = await createExercise(request, { name: 'User Confirm Delete Exercise' });
-    const userExercise = await createUserExercise(request, exercise.templateId);
 
-    await page.goto(`/user/exercises/${userExercise.id}`, { waitUntil: 'networkidle' });
+    await page.goto(`/user/exercises/${exercise.id}`, { waitUntil: 'networkidle' });
     await expect(page.locator('h1')).not.toHaveText('Exercise');
 
     await page.locator('button:has-text("Delete")').click();
@@ -85,7 +73,7 @@ test.describe('/user/exercises/:id', () => {
     await Promise.all([
       page.waitForResponse(
         (r) =>
-          r.url().includes(`/api/exercises/${userExercise.id}`) &&
+          r.url().includes(`/api/exercises/${exercise.id}`) &&
           r.request().method() === 'DELETE',
       ),
       page.locator('[role="dialog"] button:has-text("Delete")').click(),
@@ -93,6 +81,5 @@ test.describe('/user/exercises/:id', () => {
 
     await page.waitForURL(/\/user\/exercises$/);
     await expect(page.locator('h1')).toHaveText('My Exercises');
-    await deleteExercise(request, exercise.id);
   });
 });

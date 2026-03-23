@@ -2,8 +2,6 @@ import { expect, test } from '@playwright/test';
 import {
   createExercise,
   deleteExercise,
-  createUserExercise,
-  deleteUserExercise,
   createWorkout,
   deleteWorkout,
   createExerciseScheme,
@@ -46,8 +44,7 @@ test.describe('/user/workouts', () => {
       test('light', async ({ request, page }) => {
         const variant = variantWorkouts[`${viewport.name}-light`];
         const items: {
-          exercise: { id: number; templateId: string };
-          userExercise: { id: number };
+          exercise: { id: number };
           scheme: { id: number };
           workout: { id: number };
           section: { id: number };
@@ -56,7 +53,6 @@ test.describe('/user/workouts', () => {
 
         for (const v of variant) {
           const exercise = await createExercise(request, { name: v.exerciseName });
-          const userExercise = await createUserExercise(request, exercise.templateId);
           const scheme = await createExerciseScheme(request, {
             exerciseId: exercise.id,
           });
@@ -70,7 +66,7 @@ test.describe('/user/workouts', () => {
             workoutSectionId: section.id,
             exerciseSchemeId: scheme.id,
           });
-          items.push({ exercise, userExercise, scheme, workout, section, sectionExercise });
+          items.push({ exercise, scheme, workout, section, sectionExercise });
         }
 
         await page.goto('/user/workouts', { waitUntil: 'networkidle' });
@@ -84,7 +80,6 @@ test.describe('/user/workouts', () => {
           await deleteWorkoutSection(request, item.section.id);
           await deleteWorkout(request, item.workout.id);
           await deleteExerciseScheme(request, item.scheme.id);
-          await deleteUserExercise(request, item.userExercise.id);
           await deleteExercise(request, item.exercise.id);
         }
       });
@@ -92,8 +87,7 @@ test.describe('/user/workouts', () => {
       test('dark', async ({ request, page }) => {
         const variant = variantWorkouts[`${viewport.name}-dark`];
         const items: {
-          exercise: { id: number; templateId: string };
-          userExercise: { id: number };
+          exercise: { id: number };
           scheme: { id: number };
           workout: { id: number };
           section: { id: number };
@@ -102,7 +96,6 @@ test.describe('/user/workouts', () => {
 
         for (const v of variant) {
           const exercise = await createExercise(request, { name: v.exerciseName });
-          const userExercise = await createUserExercise(request, exercise.templateId);
           const scheme = await createExerciseScheme(request, {
             exerciseId: exercise.id,
           });
@@ -116,7 +109,7 @@ test.describe('/user/workouts', () => {
             workoutSectionId: section.id,
             exerciseSchemeId: scheme.id,
           });
-          items.push({ exercise, userExercise, scheme, workout, section, sectionExercise });
+          items.push({ exercise, scheme, workout, section, sectionExercise });
         }
 
         await page.emulateMedia({ colorScheme: 'dark' });
@@ -131,7 +124,6 @@ test.describe('/user/workouts', () => {
           await deleteWorkoutSection(request, item.section.id);
           await deleteWorkout(request, item.workout.id);
           await deleteExerciseScheme(request, item.scheme.id);
-          await deleteUserExercise(request, item.userExercise.id);
           await deleteExercise(request, item.exercise.id);
         }
       });

@@ -2,8 +2,6 @@ import { expect, test } from '@playwright/test';
 import {
   createExercise,
   deleteExercise,
-  createUserExercise,
-  deleteUserExercise,
   createWorkout,
   deleteWorkout,
   createExerciseScheme,
@@ -23,7 +21,6 @@ test.describe('/user/workouts/[id]/start — break time editing', () => {
   }) => {
     // Create fixtures: workout with 2 exercises in one section, default rest = 90s
     const exercise1 = await createExercise(request, { name: 'Break Test Ex A' });
-    const userExercise1 = await createUserExercise(request, exercise1.templateId);
     const scheme1 = await createExerciseScheme(request, {
       exerciseId: exercise1.id,
       sets: 1,
@@ -32,7 +29,6 @@ test.describe('/user/workouts/[id]/start — break time editing', () => {
     });
 
     const exercise2 = await createExercise(request, { name: 'Break Test Ex B' });
-    const userExercise2 = await createUserExercise(request, exercise2.templateId);
     const scheme2 = await createExerciseScheme(request, {
       exerciseId: exercise2.id,
       sets: 1,
@@ -108,10 +104,8 @@ test.describe('/user/workouts/[id]/start — break time editing', () => {
     await deleteWorkoutSection(request, section.id);
     await deleteWorkout(request, workout.id);
     await deleteExerciseScheme(request, scheme2.id);
-    await deleteUserExercise(request, userExercise2.id);
     await deleteExercise(request, exercise2.id);
     await deleteExerciseScheme(request, scheme1.id);
-    await deleteUserExercise(request, userExercise1.id);
     await deleteExercise(request, exercise1.id);
   });
 });

@@ -1,10 +1,5 @@
 import { expect, test } from '@playwright/test';
-import {
-  createEquipment,
-  deleteEquipment,
-  createUserEquipment,
-  deleteUserEquipment,
-} from '../../helpers';
+import { createEquipment, deleteEquipment } from '../../helpers';
 
 const viewports = [
   { name: 'desktop', width: 1280, height: 720 },
@@ -41,11 +36,10 @@ test.describe('/user/equipment', () => {
 
       test('light', async ({ request, page }) => {
         const eqList = variantEquipment[`${viewport.name}-light`];
-        const items: { equipment: { id: number; templateId: string }; userEquipment: { id: number } }[] = [];
+        const items: { id: number }[] = [];
         for (const eq of eqList) {
           const equipment = await createEquipment(request, eq);
-          const userEquipment = await createUserEquipment(request, equipment.templateId);
-          items.push({ equipment, userEquipment });
+          items.push(equipment);
         }
         await page.goto('/user/equipment', { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toHaveText('My Equipment');
@@ -53,18 +47,16 @@ test.describe('/user/equipment', () => {
         await expect(page.locator('table')).toContainText(eqList[0].displayName);
         await expect(page).toHaveScreenshot([viewport.name, 'light', 'user', 'equipment.png'], { fullPage: true });
         for (const item of items) {
-          await deleteUserEquipment(request, item.userEquipment.id);
-          await deleteEquipment(request, item.equipment.id);
+          await deleteEquipment(request, item.id);
         }
       });
 
       test('dark', async ({ request, page }) => {
         const eqList = variantEquipment[`${viewport.name}-dark`];
-        const items: { equipment: { id: number; templateId: string }; userEquipment: { id: number } }[] = [];
+        const items: { id: number }[] = [];
         for (const eq of eqList) {
           const equipment = await createEquipment(request, eq);
-          const userEquipment = await createUserEquipment(request, equipment.templateId);
-          items.push({ equipment, userEquipment });
+          items.push(equipment);
         }
         await page.emulateMedia({ colorScheme: 'dark' });
         await page.goto('/user/equipment', { waitUntil: 'networkidle' });
@@ -73,8 +65,7 @@ test.describe('/user/equipment', () => {
         await expect(page.locator('table')).toContainText(eqList[0].displayName);
         await expect(page).toHaveScreenshot([viewport.name, 'dark', 'user', 'equipment.png'], { fullPage: true });
         for (const item of items) {
-          await deleteUserEquipment(request, item.userEquipment.id);
-          await deleteEquipment(request, item.equipment.id);
+          await deleteEquipment(request, item.id);
         }
       });
     });
