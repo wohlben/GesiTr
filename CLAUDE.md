@@ -6,9 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 GesiTr is a resistance training tracker with a Go backend (Gin + GORM + SQLite) and Angular frontend. The Go binary embeds the compiled Angular SPA and serves it as a single binary.
 
-Two data domains:
-- **Compendium** — public, curated exercise/equipment library at `/api/exercises`, `/api/equipment`, etc.
-- **User** — private per-user entities (exercises, equipment, workouts, logs, records) at `/api/user/*`
+Unified data model — exercises and equipment are single entities with an `owner` field and `public` visibility toggle. The "compendium" is a filtered view over all public exercises/equipment. User-scoped entities (workouts, logs) live under `/api/user/*`.
 
 ## Development Commands
 
@@ -48,10 +46,17 @@ make docker
 ### Backend (Go)
 
 - **Entry point**: `main.go` — sets up Gin routes, GORM auto-migration, embeds SPA via `//go:embed`
-- **`internal/compendium/`** — models (GORM entities + API response types) and handlers for public compendium
-- **`internal/user/`** — models and handlers for per-user entities, scoped by `UserID` from auth middleware
+- **`internal/exercise/`** — exercise models and handlers (`/api/exercises`)
+- **`internal/equipment/`** — equipment models and handlers (`/api/equipment`)
+- **`internal/exercisegroup/`** — exercise group models and handlers
+- **`internal/exerciserelationship/`** — exercise relationship models and handlers
+- **`internal/equipmentfulfillment/`** — equipment fulfillment models and handlers
+- **`internal/equipmentrelationship/`** — equipment relationship models and handlers
+- **`internal/user/`** — user-scoped entities: workouts, workout logs, exercise logs
+- **`internal/profile/`** — user profile models and handlers
 - **`internal/auth/`** — middleware extracting UserID (falls back to `AUTH_FALLBACK_USER` env var in dev)
 - **`internal/database/`** — SQLite init via GORM
+- **`internal/shared/`** — shared types and utilities
 - **`cmd/seed/`** — database seeder loading CSV/JSON from `data/`
 - **DEV mode** (`DEV=true`): exposes `POST /api/ci/reset-db` to wipe all tables (used by e2e tests)
 - **`DATABASE_PATH`** env var overrides the default `gesitr.db` (used by `make test-e2e` to isolate test data)
@@ -112,5 +117,5 @@ Output files:
 ## Conventions
 
 - **Commits**: conventional commits (`feat:`, `fix:`, `chore:`, `refactor:`, `docs:`)
-- **Enum values**: Go backend uses lowercase (e.g., `'free_weights'`, not `'FREE_WEIGHTS'`). Check `internal/compendium/models/enums.go` for canonical values.
+- **Enum values**: Go backend uses lowercase for some enums (e.g., `'free_weights'`, `'beginner'`) and uppercase for others (e.g., `'STRENGTH'`, `'CHEST'`). Check `internal/exercise/models/exercise.go` and `internal/equipment/models/equipment.go` for canonical values.
 - **Issue tracking**: uses `bd` (beads) — see `AGENTS.md` for workflow

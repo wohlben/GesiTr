@@ -54,4 +54,4 @@ To run e2e tests without updating screenshots: `make test-e2e` (also starts the 
 
 ## Data Values
 
-When creating test data via API helpers, use the **exact casing** the backend expects. The Go backend uses lowercase enum values (e.g., `'free_weights'`, not `'FREE_WEIGHTS'`). Check `internal/compendium/models/enums.go` for canonical values.
+When creating test data via API helpers, use the **exact casing** the backend expects. The Go backend uses lowercase enum values for some types (e.g., `'free_weights'`, `'beginner'`) and uppercase for others (e.g., `'STRENGTH'`, `'CHEST'`). Check `internal/exercise/models/exercise.go` and `internal/equipment/models/equipment.go` for canonical values.

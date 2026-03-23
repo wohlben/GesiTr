@@ -1,10 +1,5 @@
 import { expect, test } from '@playwright/test';
-import {
-  createEquipment,
-  deleteEquipment,
-  createUserEquipment,
-  deleteUserEquipment,
-} from '../../helpers';
+import { createEquipment, deleteEquipment } from '../../helpers';
 
 const viewports = [
   { name: 'desktop', width: 1280, height: 720 },
@@ -26,23 +21,19 @@ test.describe('/user/equipment/:id', () => {
       test('light', async ({ request, page }) => {
         const variantKey = `${viewport.name}-light`;
         const equipment = await createEquipment(request, variantEquipment[variantKey]);
-        const userEquipment = await createUserEquipment(request, equipment.templateId);
-        await page.goto(`/user/equipment/${userEquipment.id}`, { waitUntil: 'networkidle' });
+        await page.goto(`/user/equipment/${equipment.id}`, { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).not.toHaveText('Equipment');
         await expect(page).toHaveScreenshot([viewport.name, 'light', 'user', 'equipment', '[id].png'], { fullPage: true });
-        await deleteUserEquipment(request, userEquipment.id);
         await deleteEquipment(request, equipment.id);
       });
 
       test('dark', async ({ request, page }) => {
         const variantKey = `${viewport.name}-dark`;
         const equipment = await createEquipment(request, variantEquipment[variantKey]);
-        const userEquipment = await createUserEquipment(request, equipment.templateId);
         await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto(`/user/equipment/${userEquipment.id}`, { waitUntil: 'networkidle' });
+        await page.goto(`/user/equipment/${equipment.id}`, { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).not.toHaveText('Equipment');
         await expect(page).toHaveScreenshot([viewport.name, 'dark', 'user', 'equipment', '[id].png'], { fullPage: true });
-        await deleteUserEquipment(request, userEquipment.id);
         await deleteEquipment(request, equipment.id);
       });
     });
@@ -53,8 +44,7 @@ test.describe('/user/equipment/:id', () => {
       name: 'user-cancel-delete-equip',
       displayName: 'User Cancel Delete Equipment',
     });
-    const userEquipment = await createUserEquipment(request, equipment.templateId);
-    await page.goto(`/user/equipment/${userEquipment.id}`, { waitUntil: 'networkidle' });
+    await page.goto(`/user/equipment/${equipment.id}`, { waitUntil: 'networkidle' });
 
     await page.locator('button:has-text("Delete")').click();
     await expect(page.locator('[role="dialog"]')).toBeVisible();
@@ -63,7 +53,6 @@ test.describe('/user/equipment/:id', () => {
     await expect(page.locator('[role="dialog"]')).not.toBeVisible();
 
     await expect(page.locator('h1')).not.toHaveText('Equipment');
-    await deleteUserEquipment(request, userEquipment.id);
     await deleteEquipment(request, equipment.id);
   });
 
@@ -72,9 +61,8 @@ test.describe('/user/equipment/:id', () => {
       name: 'user-confirm-delete-equip',
       displayName: 'User Confirm Delete Equipment',
     });
-    const userEquipment = await createUserEquipment(request, equipment.templateId);
 
-    await page.goto(`/user/equipment/${userEquipment.id}`, { waitUntil: 'networkidle' });
+    await page.goto(`/user/equipment/${equipment.id}`, { waitUntil: 'networkidle' });
     await expect(page.locator('h1')).not.toHaveText('Equipment');
 
     await page.locator('button:has-text("Delete")').click();
@@ -83,7 +71,7 @@ test.describe('/user/equipment/:id', () => {
     await Promise.all([
       page.waitForResponse(
         (r) =>
-          r.url().includes(`/api/equipment/${userEquipment.id}`) &&
+          r.url().includes(`/api/equipment/${equipment.id}`) &&
           r.request().method() === 'DELETE',
       ),
       page.locator('[role="dialog"] button:has-text("Delete")').click(),
@@ -91,6 +79,5 @@ test.describe('/user/equipment/:id', () => {
 
     await page.waitForURL(/\/user\/equipment$/);
     await expect(page.locator('h1')).toHaveText('My Equipment');
-    await deleteEquipment(request, equipment.id);
   });
 });

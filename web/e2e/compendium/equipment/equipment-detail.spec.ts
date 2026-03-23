@@ -16,7 +16,7 @@ test.describe('/compendium/equipment/:id', () => {
           name: 'medicine-ball',
           displayName: 'Medicine Ball',
           description: 'A weighted ball for core and strength training',
-          category: 'FREE_WEIGHTS',
+          category: 'free_weights',
         });
         await page.goto(`/compendium/equipment/${equipment.id}/${equipment.name}`, {
           waitUntil: 'networkidle',
@@ -31,7 +31,7 @@ test.describe('/compendium/equipment/:id', () => {
           name: 'medicine-ball',
           displayName: 'Medicine Ball',
           description: 'A weighted ball for core and strength training',
-          category: 'FREE_WEIGHTS',
+          category: 'free_weights',
         });
         await page.emulateMedia({ colorScheme: 'dark' });
         await page.goto(`/compendium/equipment/${equipment.id}/${equipment.name}`, {

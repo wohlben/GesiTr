@@ -2,8 +2,6 @@ import { expect, test } from '@playwright/test';
 import {
   createExercise,
   deleteExercise,
-  createUserExercise,
-  deleteUserExercise,
   createWorkout,
   deleteWorkout,
   createExerciseScheme,
@@ -85,8 +83,6 @@ async function createFixturesAndStartLog(
     const ex = v.exercises[i];
     const exercise = await createExercise(request, { name: ex.name });
     cleanup.push(() => deleteExercise(request, exercise.id));
-    const userExercise = await createUserExercise(request, exercise.templateId);
-    cleanup.push(() => deleteUserExercise(request, userExercise.id));
     const scheme = await createExerciseScheme(request, {
       exerciseId: exercise.id,
       ...ex.scheme,

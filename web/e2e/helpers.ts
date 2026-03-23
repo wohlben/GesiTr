@@ -14,7 +14,7 @@ export async function createExercise(
   const data = {
     name: 'Test Exercise',
     type: 'STRENGTH',
-    technicalDifficulty: 'BEGINNER',
+    technicalDifficulty: 'beginner',
     bodyWeightScaling: 0,
     force: [],
     primaryMuscles: [],
@@ -111,39 +111,6 @@ export async function updateExerciseGroup(
 
 export async function deleteExerciseGroup(request: APIRequestContext, id: number) {
   await request.delete(`/api/exercise-groups/${id}`);
-}
-
-export async function createUserExercise(
-  request: APIRequestContext,
-  templateId: string,
-  version: number = 0,
-) {
-  // In the unified model, "user exercises" are just exercises.
-  const exercise = await createExercise(request, {
-    name: `User Exercise ${templateId}`,
-  });
-  return exercise;
-}
-
-export async function deleteUserExercise(request: APIRequestContext, id: number) {
-  await request.delete(`/api/exercises/${id}`);
-}
-
-export async function createUserEquipment(
-  request: APIRequestContext,
-  templateId: string,
-  version: number = 0,
-) {
-  // In the unified model, "user equipment" is just equipment.
-  const equipment = await createEquipment(request, {
-    name: `user-equipment-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-    displayName: `User Equipment ${templateId}`,
-  });
-  return equipment;
-}
-
-export async function deleteUserEquipment(request: APIRequestContext, id: number) {
-  await request.delete(`/api/equipment/${id}`);
 }
 
 export async function createWorkout(

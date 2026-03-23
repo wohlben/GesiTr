@@ -1,10 +1,5 @@
 import { expect, test } from '@playwright/test';
-import {
-  createExercise,
-  deleteExercise,
-  createUserExercise,
-  deleteUserExercise,
-} from '../../helpers';
+import { createExercise, deleteExercise } from '../../helpers';
 
 const viewports = [
   { name: 'desktop', width: 1280, height: 720 },
@@ -25,30 +20,27 @@ test.describe('/user/exercises', () => {
 
       test('light', async ({ request, page }) => {
         const names = variantExercises[`${viewport.name}-light`];
-        const items: { exercise: { id: number; templateId: string }; userExercise: { id: number } }[] = [];
+        const exercises: { id: number }[] = [];
         for (const name of names) {
           const exercise = await createExercise(request, { name });
-          const userExercise = await createUserExercise(request, exercise.templateId);
-          items.push({ exercise, userExercise });
+          exercises.push(exercise);
         }
         await page.goto('/user/exercises', { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toHaveText('My Exercises');
         await expect(page.locator('table tbody tr')).toHaveCount(names.length);
         await expect(page.locator('table')).toContainText(names[0]);
         await expect(page).toHaveScreenshot([viewport.name, 'light', 'user', 'exercises.png'], { fullPage: true });
-        for (const item of items) {
-          await deleteUserExercise(request, item.userExercise.id);
-          await deleteExercise(request, item.exercise.id);
+        for (const exercise of exercises) {
+          await deleteExercise(request, exercise.id);
         }
       });
 
       test('dark', async ({ request, page }) => {
         const names = variantExercises[`${viewport.name}-dark`];
-        const items: { exercise: { id: number; templateId: string }; userExercise: { id: number } }[] = [];
+        const exercises: { id: number }[] = [];
         for (const name of names) {
           const exercise = await createExercise(request, { name });
-          const userExercise = await createUserExercise(request, exercise.templateId);
-          items.push({ exercise, userExercise });
+          exercises.push(exercise);
         }
         await page.emulateMedia({ colorScheme: 'dark' });
         await page.goto('/user/exercises', { waitUntil: 'networkidle' });
@@ -56,9 +48,8 @@ test.describe('/user/exercises', () => {
         await expect(page.locator('table tbody tr')).toHaveCount(names.length);
         await expect(page.locator('table')).toContainText(names[0]);
         await expect(page).toHaveScreenshot([viewport.name, 'dark', 'user', 'exercises.png'], { fullPage: true });
-        for (const item of items) {
-          await deleteUserExercise(request, item.userExercise.id);
-          await deleteExercise(request, item.exercise.id);
+        for (const exercise of exercises) {
+          await deleteExercise(request, exercise.id);
         }
       });
     });
