@@ -14,6 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 var exercisePreloads = []string{
@@ -329,7 +330,7 @@ func GetExerciseVersion(c *gin.Context) {
 	}
 
 	var entity models.ExerciseEntity
-	if err := database.DB.Unscoped().Where("template_id = ?", c.Param("templateId")).First(&entity).Error; err != nil {
+	if err := database.DB.Where("template_id = ?", c.Param("templateId")).First(&entity).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
 		return
 	}
@@ -353,7 +354,7 @@ func DeleteExercise(c *gin.Context) {
 		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
 		return
 	}
-	if err := database.DB.Delete(&entity).Error; err != nil {
+	if err := database.DB.Unscoped().Select(clause.Associations).Delete(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

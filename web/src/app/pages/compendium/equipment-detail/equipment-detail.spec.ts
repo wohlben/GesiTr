@@ -8,7 +8,6 @@ import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { Equipment } from '$generated/models';
-import { UserEquipment } from '$generated/user-models';
 
 const EQUIPMENT: Equipment = {
   id: 1,
@@ -24,7 +23,7 @@ const EQUIPMENT: Equipment = {
   version: 1,
 };
 
-const USER_EQUIPMENT: UserEquipment = {
+const USER_EQUIPMENT: Equipment = {
   id: 10,
   createdAt: '',
   updatedAt: '',
@@ -38,7 +37,7 @@ const USER_EQUIPMENT: UserEquipment = {
   version: 1,
 };
 
-function setup(userEquipment: UserEquipment[] = []) {
+function setup(userEquipment: Equipment[] = []) {
   const compendiumApi: Partial<CompendiumApiClient> = {
     fetchEquipmentItem: vi.fn().mockResolvedValue(EQUIPMENT),
     fetchEquipmentVersions: vi.fn().mockResolvedValue([EQUIPMENT]),
@@ -92,7 +91,7 @@ describe('EquipmentDetail', () => {
   });
 
   it('shows "compendium.equipment.addToMine" when user has other equipment but not this one', async () => {
-    const otherEquipment: UserEquipment = {
+    const otherEquipment: Equipment = {
       ...USER_EQUIPMENT,
       id: 99,
       templateId: 'tmpl-other',

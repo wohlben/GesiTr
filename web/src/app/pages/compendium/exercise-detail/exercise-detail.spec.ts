@@ -9,7 +9,6 @@ import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { Exercise } from '$generated/models';
-import { UserExercise } from '$generated/user-models';
 
 const EXERCISE: Exercise = {
   id: 1,
@@ -35,7 +34,7 @@ const EXERCISE: Exercise = {
   equipmentIds: [],
 };
 
-const USER_EXERCISE: UserExercise = {
+const USER_EXERCISE: Exercise = {
   id: 10,
   createdAt: '',
   updatedAt: '',
@@ -59,7 +58,7 @@ const USER_EXERCISE: UserExercise = {
   equipmentIds: [],
 };
 
-function setup(userExercises: UserExercise[] = []) {
+function setup(userExercises: Exercise[] = []) {
   const compendiumApi: Partial<CompendiumApiClient> = {
     fetchExercise: vi.fn().mockResolvedValue(EXERCISE),
     fetchExerciseVersions: vi.fn().mockResolvedValue([EXERCISE]),
@@ -113,7 +112,7 @@ describe('ExerciseDetail', () => {
   });
 
   it('shows "compendium.exercises.addToMine" when user has other exercises but not this one', async () => {
-    const otherExercise: UserExercise = {
+    const otherExercise: Exercise = {
       ...USER_EXERCISE,
       id: 99,
       templateId: 'tmpl-other',

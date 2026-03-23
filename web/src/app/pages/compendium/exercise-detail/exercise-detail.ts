@@ -164,8 +164,25 @@ export class ExerciseDetail {
     mutationFn: () => {
       const exercise = this.exerciseQuery.data()!;
       return this.userApi.createUserExercise({
-        templateId: exercise.templateId,
+        name: exercise.name,
+        type: exercise.type,
+        force: exercise.force,
+        primaryMuscles: exercise.primaryMuscles,
+        secondaryMuscles: exercise.secondaryMuscles,
+        technicalDifficulty: exercise.technicalDifficulty,
+        bodyWeightScaling: exercise.bodyWeightScaling,
+        suggestedMeasurementParadigms: exercise.suggestedMeasurementParadigms,
+        description: exercise.description,
+        instructions: exercise.instructions,
+        images: exercise.images,
+        alternativeNames: exercise.alternativeNames,
+        authorName: exercise.authorName,
+        authorUrl: exercise.authorUrl,
         version: exercise.version,
+        parentExerciseId: exercise.parentExerciseId,
+        templateId: exercise.templateId,
+        equipmentIds: exercise.equipmentIds,
+        public: false,
       });
     },
     onSuccess: (created) => {

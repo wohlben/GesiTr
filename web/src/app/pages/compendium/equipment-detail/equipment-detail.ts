@@ -148,8 +148,14 @@ export class EquipmentDetail {
     mutationFn: () => {
       const equipment = this.equipmentQuery.data()!;
       return this.userApi.createUserEquipment({
+        name: equipment.name,
+        displayName: equipment.displayName,
+        description: equipment.description,
+        category: equipment.category,
+        imageUrl: equipment.imageUrl,
         templateId: equipment.templateId,
         version: equipment.version,
+        public: false,
       });
     },
     onSuccess: (created) => {

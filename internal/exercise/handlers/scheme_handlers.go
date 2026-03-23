@@ -109,7 +109,7 @@ func DeleteExerciseScheme(c *gin.Context) {
 		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
 		return
 	}
-	if err := database.DB.Delete(&entity).Error; err != nil {
+	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

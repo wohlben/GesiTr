@@ -61,7 +61,7 @@ func DeleteFulfillment(c *gin.Context) {
 		return
 	}
 
-	if err := database.DB.Delete(&entity).Error; err != nil {
+	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

@@ -144,15 +144,3 @@ export const WorkoutLogStatusAdhoc: WorkoutLogStatus = 'adhoc';
 export const WorkoutLogStatusFinished: WorkoutLogStatus = 'finished';
 export const WorkoutLogStatusPartiallyFinished: WorkoutLogStatus = 'partially_finished';
 export const WorkoutLogStatusAborted: WorkoutLogStatus = 'aborted';
-
-//////////
-// Compatibility aliases for types that moved to models.ts
-
-import { Exercise, Equipment, ExerciseScheme } from './models';
-
-/** @deprecated Use Exercise from $generated/models */
-export type UserExercise = Exercise;
-/** @deprecated Use Equipment from $generated/models */
-export type UserEquipment = Equipment;
-/** @deprecated Use ExerciseScheme from $generated/models */
-export type UserExerciseScheme = ExerciseScheme;

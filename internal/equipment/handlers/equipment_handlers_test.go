@@ -497,14 +497,6 @@ func TestGetEquipmentVersion(t *testing.T) {
 		}
 	})
 
-	t.Run("works for soft-deleted equipment", func(t *testing.T) {
-		doJSON(r, "DELETE", "/api/equipment/1", nil)
-		w := doJSON(r, "GET", "/api/equipment/templates/plate/versions/0", nil)
-		if w.Code != http.StatusOK {
-			t.Errorf("expected 200 for soft-deleted equipment version, got %d", w.Code)
-		}
-	})
-
 	t.Run("template not found", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/equipment/templates/nonexistent/versions/0", nil)
 		if w.Code != http.StatusNotFound {

@@ -183,7 +183,7 @@ func GetEquipmentVersion(c *gin.Context) {
 	}
 
 	var entity models.EquipmentEntity
-	if err := database.DB.Unscoped().Where("template_id = ?", c.Param("templateId")).First(&entity).Error; err != nil {
+	if err := database.DB.Where("template_id = ?", c.Param("templateId")).First(&entity).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Equipment not found"})
 		return
 	}
@@ -210,7 +210,7 @@ func DeleteEquipment(c *gin.Context) {
 		return
 	}
 
-	if err := database.DB.Delete(&entity).Error; err != nil {
+	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
