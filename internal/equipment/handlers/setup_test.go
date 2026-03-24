@@ -11,6 +11,7 @@ import (
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	"gesitr/internal/equipment/models"
+	"gesitr/internal/humaconfig"
 	profilemodels "gesitr/internal/profile/models"
 
 	"github.com/gin-gonic/gin"
@@ -46,15 +47,8 @@ func newRouter() *gin.Engine {
 	api := r.Group("/api")
 	api.Use(auth.UserID())
 
-	equipment := api.Group("/equipment")
-	equipment.GET("", ListEquipment)
-	equipment.POST("", CreateEquipment)
-	equipment.GET("/:id", GetEquipment)
-	equipment.PUT("/:id", UpdateEquipment)
-	equipment.DELETE("/:id", DeleteEquipment)
-	equipment.GET("/:id/permissions", GetEquipmentPermissions)
-	equipment.GET("/:id/versions", ListEquipmentVersions)
-	equipment.GET("/templates/:templateId/versions/:version", GetEquipmentVersion)
+	humaAPI := humaconfig.NewAPI(r, api)
+	RegisterRoutes(humaAPI)
 
 	return r
 }

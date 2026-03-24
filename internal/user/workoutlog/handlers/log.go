@@ -1,16 +1,17 @@
 package handlers
 
 import (
-	"net/http"
+	"context"
+	"encoding/json"
 	"reflect"
 	"time"
 
-	"gesitr/internal/auth"
 	"gesitr/internal/database"
+	"gesitr/internal/humaconfig"
 	workoutmodels "gesitr/internal/user/workout/models"
 	"gesitr/internal/user/workoutlog/models"
 
-	"github.com/gin-gonic/gin"
+	"github.com/danielgtaylor/huma/v2"
 	"gorm.io/gorm"
 )
 
@@ -24,42 +25,39 @@ func preloadWorkoutLog(db *gorm.DB) *gorm.DB {
 	}).Preload("Sections.Exercises.Sets.ExerciseLog")
 }
 
-func ListWorkoutLogs(c *gin.Context) {
+func ListWorkoutLogs(ctx context.Context, input *ListWorkoutLogsInput) (*ListWorkoutLogsOutput, error) {
 	db := database.DB.Model(&models.WorkoutLogEntity{}).
-		Where("owner = ?", auth.GetUserID(c))
+		Where("owner = ?", humaconfig.GetUserID(ctx))
 
-	if v := c.Query("workoutId"); v != "" {
-		db = db.Where("workout_id = ?", v)
+	if input.WorkoutID != "" {
+		db = db.Where("workout_id = ?", input.WorkoutID)
 	}
-	if v := c.Query("status"); v != "" {
-		db = db.Where("status = ?", v)
+	if input.Status != "" {
+		db = db.Where("status = ?", input.Status)
 	}
 
 	var entities []models.WorkoutLogEntity
 	if err := preloadWorkoutLog(db).Find(&entities).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	dtos := make([]models.WorkoutLog, len(entities))
 	for i := range entities {
 		dtos[i] = entities[i].ToDTO()
 	}
-	c.JSON(http.StatusOK, dtos)
+	return &ListWorkoutLogsOutput{Body: dtos}, nil
 }
 
-func CreateWorkoutLog(c *gin.Context) {
+func CreateWorkoutLog(ctx context.Context, input *CreateWorkoutLogInput) (*CreateWorkoutLogOutput, error) {
 	var dto models.WorkoutLog
-	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
 	if dto.WorkoutID != nil {
 		var w workoutmodels.WorkoutEntity
 		if err := database.DB.First(&w, *dto.WorkoutID).Error; err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": "Workout not found"})
-			return
+			return nil, huma.Error404NotFound("Workout not found")
 		}
 
 		// Uniqueness: only one planning log per workout
@@ -68,55 +66,49 @@ func CreateWorkoutLog(c *gin.Context) {
 			Where("workout_id = ? AND status = ?", *dto.WorkoutID, models.WorkoutLogStatusPlanning).
 			Count(&count)
 		if count > 0 {
-			c.JSON(http.StatusConflict, gin.H{"error": "A planning log already exists for this workout"})
-			return
+			return nil, huma.Error409Conflict("A planning log already exists for this workout")
 		}
 	}
 
 	entity := models.WorkoutLogFromDTO(dto)
-	entity.Owner = auth.GetUserID(c)
+	entity.Owner = humaconfig.GetUserID(ctx)
 	entity.Status = models.WorkoutLogStatusPlanning
 	if err := database.DB.Create(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusCreated, entity.ToDTO())
+	return &CreateWorkoutLogOutput{Body: entity.ToDTO()}, nil
 }
 
-func GetWorkoutLog(c *gin.Context) {
+func GetWorkoutLog(ctx context.Context, input *GetWorkoutLogInput) (*GetWorkoutLogOutput, error) {
 	var entity models.WorkoutLogEntity
-	if err := preloadWorkoutLog(database.DB).First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log not found"})
-		return
+	if err := preloadWorkoutLog(database.DB).First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout log not found")
 	}
-	if !requireOwner(c, entity.Owner) {
-		return
+	if err := requireOwner(ctx, entity.Owner); err != nil {
+		return nil, err
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &GetWorkoutLogOutput{Body: entity.ToDTO()}, nil
 }
 
-func UpdateWorkoutLog(c *gin.Context) {
+func UpdateWorkoutLog(ctx context.Context, input *UpdateWorkoutLogInput) (*UpdateWorkoutLogOutput, error) {
 	var existing models.WorkoutLogEntity
-	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log not found"})
-		return
+	if err := database.DB.First(&existing, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout log not found")
 	}
-	if !requireOwner(c, existing.Owner) {
-		return
+	if err := requireOwner(ctx, existing.Owner); err != nil {
+		return nil, err
 	}
 
 	var patch struct {
 		Name  *string `json:"name"`
 		Notes *string `json:"notes"`
 	}
-	if err := c.ShouldBindJSON(&patch); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &patch); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
 	if reflect.ValueOf(patch).IsZero() {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "patch body contains no updatable fields"})
-		return
+		return nil, huma.Error400BadRequest("patch body contains no updatable fields")
 	}
 
 	if patch.Name != nil {
@@ -127,50 +119,43 @@ func UpdateWorkoutLog(c *gin.Context) {
 	}
 
 	if err := database.DB.Save(&existing).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	if err := preloadWorkoutLog(database.DB).First(&existing, existing.ID).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusOK, existing.ToDTO())
+	return &UpdateWorkoutLogOutput{Body: existing.ToDTO()}, nil
 }
 
-func DeleteWorkoutLog(c *gin.Context) {
+func DeleteWorkoutLog(ctx context.Context, input *DeleteWorkoutLogInput) (*DeleteWorkoutLogOutput, error) {
 	var existing models.WorkoutLogEntity
-	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log not found"})
-		return
+	if err := database.DB.First(&existing, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout log not found")
 	}
-	if !requireOwner(c, existing.Owner) {
-		return
+	if err := requireOwner(ctx, existing.Owner); err != nil {
+		return nil, err
 	}
 	if existing.Status != models.WorkoutLogStatusPlanning {
-		c.JSON(http.StatusConflict, gin.H{"error": "can only delete logs in planning status"})
-		return
+		return nil, huma.Error409Conflict("can only delete logs in planning status")
 	}
 	if err := database.DB.Delete(&existing).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusNoContent, nil)
+	return nil, nil
 }
 
-func StartWorkoutLog(c *gin.Context) {
+func StartWorkoutLog(ctx context.Context, input *StartWorkoutLogInput) (*StartWorkoutLogOutput, error) {
 	var entity models.WorkoutLogEntity
-	if err := preloadWorkoutLog(database.DB).First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log not found"})
-		return
+	if err := preloadWorkoutLog(database.DB).First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout log not found")
 	}
-	if !requireOwner(c, entity.Owner) {
-		return
+	if err := requireOwner(ctx, entity.Owner); err != nil {
+		return nil, err
 	}
 
 	if err := entity.Status.TransitionTo(models.WorkoutLogStatusInProgress); err != nil {
-		c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error409Conflict(err.Error())
 	}
 
 	now := time.Now()
@@ -218,24 +203,22 @@ func StartWorkoutLog(c *gin.Context) {
 	})
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	// Reload
 	if err := preloadWorkoutLog(database.DB).First(&entity, entity.ID).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &StartWorkoutLogOutput{Body: entity.ToDTO()}, nil
 }
 
-func StartAdhocWorkoutLog(c *gin.Context) {
+func StartAdhocWorkoutLog(ctx context.Context, input *StartAdhocWorkoutLogInput) (*StartAdhocWorkoutLogOutput, error) {
 	now := time.Now()
 	adhocLabel := "Adhoc"
 
 	entity := models.WorkoutLogEntity{
-		Owner:  auth.GetUserID(c),
+		Owner:  humaconfig.GetUserID(ctx),
 		Status: models.WorkoutLogStatusAdhoc,
 		Name:   "Ad-hoc Workout",
 		Date:   &now,
@@ -260,31 +243,27 @@ func StartAdhocWorkoutLog(c *gin.Context) {
 	})
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	// Reload with preloading
 	if err := preloadWorkoutLog(database.DB).First(&entity, entity.ID).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusCreated, entity.ToDTO())
+	return &StartAdhocWorkoutLogOutput{Body: entity.ToDTO()}, nil
 }
 
-func FinishWorkoutLog(c *gin.Context) {
+func FinishWorkoutLog(ctx context.Context, input *FinishWorkoutLogInput) (*FinishWorkoutLogOutput, error) {
 	var entity models.WorkoutLogEntity
-	if err := preloadWorkoutLog(database.DB).First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log not found"})
-		return
+	if err := preloadWorkoutLog(database.DB).First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout log not found")
 	}
-	if !requireOwner(c, entity.Owner) {
-		return
+	if err := requireOwner(ctx, entity.Owner); err != nil {
+		return nil, err
 	}
 
 	if entity.Status != models.WorkoutLogStatusAdhoc {
-		c.JSON(http.StatusConflict, gin.H{"error": "can only finish adhoc workout logs"})
-		return
+		return nil, huma.Error409Conflict("can only finish adhoc workout logs")
 	}
 
 	now := time.Now()
@@ -355,16 +334,14 @@ func FinishWorkoutLog(c *gin.Context) {
 	})
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	// Reload
 	if err := preloadWorkoutLog(database.DB).First(&entity, entity.ID).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &FinishWorkoutLogOutput{Body: entity.ToDTO()}, nil
 }
 
 // deriveStatusFromChildren derives the aggregate status from a list of item statuses.
@@ -456,19 +433,17 @@ func deriveLogStatusFromSections(sections []models.WorkoutLogSectionEntity) mode
 	}
 }
 
-func AbandonWorkoutLog(c *gin.Context) {
+func AbandonWorkoutLog(ctx context.Context, input *AbandonWorkoutLogInput) (*AbandonWorkoutLogOutput, error) {
 	var entity models.WorkoutLogEntity
-	if err := preloadWorkoutLog(database.DB).First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log not found"})
-		return
+	if err := preloadWorkoutLog(database.DB).First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout log not found")
 	}
-	if !requireOwner(c, entity.Owner) {
-		return
+	if err := requireOwner(ctx, entity.Owner); err != nil {
+		return nil, err
 	}
 
 	if err := entity.Status.TransitionTo(models.WorkoutLogStatusAborted); err != nil {
-		c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error409Conflict(err.Error())
 	}
 
 	now := time.Now()
@@ -522,14 +497,12 @@ func AbandonWorkoutLog(c *gin.Context) {
 	})
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	// Reload
 	if err := preloadWorkoutLog(database.DB).First(&entity, entity.ID).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &AbandonWorkoutLogOutput{Body: entity.ToDTO()}, nil
 }

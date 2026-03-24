@@ -10,6 +10,7 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
+	"gesitr/internal/humaconfig"
 	"gesitr/internal/profile/models"
 
 	"github.com/gin-gonic/gin"
@@ -39,11 +40,8 @@ func newRouter() *gin.Engine {
 	api := r.Group("/api")
 	api.Use(auth.UserID())
 
-	api.GET("/profiles/:id", GetProfile)
-
-	user := api.Group("/user")
-	user.GET("/profile", GetMyProfile)
-	user.PUT("/profile", UpdateMyProfile)
+	humaAPI := humaconfig.NewAPI(r, api)
+	RegisterRoutes(humaAPI)
 
 	return r
 }

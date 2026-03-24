@@ -1,14 +1,14 @@
 package handlers
 
 import (
-	"net/http"
+	"context"
 	"strconv"
 
-	"gesitr/internal/auth"
 	"gesitr/internal/database"
+	"gesitr/internal/humaconfig"
 	"gesitr/internal/user/workoutlog/models"
 
-	"github.com/gin-gonic/gin"
+	"github.com/danielgtaylor/huma/v2"
 )
 
 // parseUint converts a string to uint, returning 0 on failure.
@@ -18,40 +18,36 @@ func parseUint(s string) uint {
 }
 
 // requireOwner checks that the authenticated user matches the given owner.
-func requireOwner(c *gin.Context, owner string) bool {
-	if owner != auth.GetUserID(c) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
-		return false
+func requireOwner(ctx context.Context, owner string) error {
+	if owner != humaconfig.GetUserID(ctx) {
+		return huma.Error403Forbidden("access denied")
 	}
-	return true
+	return nil
 }
 
 // requireLogOwner fetches the log by ID and checks that the authenticated user owns it.
-func requireLogOwner(c *gin.Context, logID uint) bool {
+func requireLogOwner(ctx context.Context, logID uint) error {
 	var log models.WorkoutLogEntity
 	if err := database.DB.Select("owner").First(&log, logID).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log not found"})
-		return false
+		return huma.Error404NotFound("Workout log not found")
 	}
-	return requireOwner(c, log.Owner)
+	return requireOwner(ctx, log.Owner)
 }
 
 // requireLogStatus fetches the log by ID, checks ownership, and checks its status is in the allowed set.
-// Returns the log entity and true if OK, otherwise writes an error response and returns false.
-func requireLogStatus(c *gin.Context, logID uint, allowed ...models.WorkoutLogStatus) (models.WorkoutLogEntity, bool) {
+// Returns the log entity or an error.
+func requireLogStatus(ctx context.Context, logID uint, allowed ...models.WorkoutLogStatus) (models.WorkoutLogEntity, error) {
 	var log models.WorkoutLogEntity
 	if err := database.DB.First(&log, logID).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log not found"})
-		return log, false
+		return log, huma.Error404NotFound("Workout log not found")
 	}
-	if !requireOwner(c, log.Owner) {
-		return log, false
+	if err := requireOwner(ctx, log.Owner); err != nil {
+		return log, err
 	}
 	for _, s := range allowed {
 		if log.Status == s {
-			return log, true
+			return log, nil
 		}
 	}
-	c.JSON(http.StatusConflict, gin.H{"error": "Workout log status is " + string(log.Status) + ", operation not allowed"})
-	return log, false
+	return log, huma.Error409Conflict("Workout log status is " + string(log.Status) + ", operation not allowed")
 }

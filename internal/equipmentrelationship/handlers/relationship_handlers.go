@@ -1,75 +1,77 @@
 package handlers
 
 import (
-	"net/http"
+	"context"
+	"encoding/json"
 
-	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	"gesitr/internal/equipmentrelationship/models"
+	"gesitr/internal/humaconfig"
 
-	"github.com/gin-gonic/gin"
+	"github.com/danielgtaylor/huma/v2"
 )
 
-func ListEquipmentRelationships(c *gin.Context) {
+// ListEquipmentRelationships returns equipment relationships, optionally filtered
+// by owner, fromEquipmentId, toEquipmentId, or relationshipType.
+// GET /api/equipment-relationships
+func ListEquipmentRelationships(ctx context.Context, input *ListEquipmentRelationshipsInput) (*ListEquipmentRelationshipsOutput, error) {
 	db := database.DB.Model(&models.EquipmentRelationshipEntity{})
 
-	if v := c.Query("owner"); v != "" {
-		db = db.Where("owner = ?", v)
+	if input.Owner != "" {
+		db = db.Where("owner = ?", input.Owner)
 	}
-	if v := c.Query("fromEquipmentId"); v != "" {
-		db = db.Where("from_equipment_id = ?", v)
+	if input.FromEquipmentID != "" {
+		db = db.Where("from_equipment_id = ?", input.FromEquipmentID)
 	}
-	if v := c.Query("toEquipmentId"); v != "" {
-		db = db.Where("to_equipment_id = ?", v)
+	if input.ToEquipmentID != "" {
+		db = db.Where("to_equipment_id = ?", input.ToEquipmentID)
 	}
-	if v := c.Query("relationshipType"); v != "" {
-		db = db.Where("relationship_type = ?", v)
+	if input.RelationshipType != "" {
+		db = db.Where("relationship_type = ?", input.RelationshipType)
 	}
 
 	var entities []models.EquipmentRelationshipEntity
 	if err := db.Find(&entities).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	dtos := make([]models.EquipmentRelationship, len(entities))
 	for i := range entities {
 		dtos[i] = entities[i].ToDTO()
 	}
-	c.JSON(http.StatusOK, dtos)
+	return &ListEquipmentRelationshipsOutput{Body: dtos}, nil
 }
 
-func CreateEquipmentRelationship(c *gin.Context) {
+// CreateEquipmentRelationship creates an equipment relationship owned by the current user.
+// POST /api/equipment-relationships
+func CreateEquipmentRelationship(ctx context.Context, input *CreateEquipmentRelationshipInput) (*CreateEquipmentRelationshipOutput, error) {
 	var dto models.EquipmentRelationship
-	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
 	entity := models.EquipmentRelationshipFromDTO(dto)
-	entity.Owner = auth.GetUserID(c)
+	entity.Owner = humaconfig.GetUserID(ctx)
 	if err := database.DB.Create(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusCreated, entity.ToDTO())
+	return &CreateEquipmentRelationshipOutput{Body: entity.ToDTO()}, nil
 }
 
-func DeleteEquipmentRelationship(c *gin.Context) {
+// DeleteEquipmentRelationship deletes an equipment relationship. Owner only.
+// DELETE /api/equipment-relationships/:id
+func DeleteEquipmentRelationship(ctx context.Context, input *DeleteEquipmentRelationshipInput) (*DeleteEquipmentRelationshipOutput, error) {
 	var entity models.EquipmentRelationshipEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "EquipmentRelationship not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("EquipmentRelationship not found")
 	}
 
-	if entity.Owner != auth.GetUserID(c) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "not the owner of this relationship"})
-		return
+	if entity.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("not the owner of this relationship")
 	}
 
 	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusNoContent, nil)
+	return nil, nil
 }

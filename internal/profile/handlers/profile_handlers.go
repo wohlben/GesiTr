@@ -1,59 +1,62 @@
 package handlers
 
 import (
-	"net/http"
+	"context"
+	"encoding/json"
 
-	"gesitr/internal/auth"
 	"gesitr/internal/database"
+	"gesitr/internal/humaconfig"
 	"gesitr/internal/profile/models"
 
-	"github.com/gin-gonic/gin"
+	"github.com/danielgtaylor/huma/v2"
 )
 
-func GetMyProfile(c *gin.Context) {
-	userID := auth.GetUserID(c)
+// GetMyProfile returns the current user's profile.
+// GET /api/user/profile
+func GetMyProfile(ctx context.Context, input *GetMyProfileInput) (*GetMyProfileOutput, error) {
+	userID := humaconfig.GetUserID(ctx)
 
 	var entity models.UserProfileEntity
 	if err := database.DB.First(&entity, "id = ?", userID).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "profile not found"})
-		return
+		return nil, huma.Error404NotFound("profile not found")
 	}
 
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &GetMyProfileOutput{Body: entity.ToDTO()}, nil
 }
 
-func UpdateMyProfile(c *gin.Context) {
-	userID := auth.GetUserID(c)
+// UpdateMyProfile updates the current user's profile.
+// PATCH /api/user/profile
+func UpdateMyProfile(ctx context.Context, input *UpdateMyProfileInput) (*UpdateMyProfileOutput, error) {
+	userID := humaconfig.GetUserID(ctx)
 
 	var req models.UpdateProfileRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &req); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
+	}
+	if req.Name == "" {
+		return nil, huma.Error400BadRequest("name is required")
 	}
 
 	var entity models.UserProfileEntity
 	if err := database.DB.First(&entity, "id = ?", userID).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "profile not found"})
-		return
+		return nil, huma.Error404NotFound("profile not found")
 	}
 
 	entity.Name = req.Name
 	if err := database.DB.Save(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to update profile"})
-		return
+		return nil, huma.Error500InternalServerError("failed to update profile")
 	}
 
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &UpdateMyProfileOutput{Body: entity.ToDTO()}, nil
 }
 
-func GetProfile(c *gin.Context) {
-	id := c.Param("id")
-
+// GetProfile returns a user's profile by ID. Public endpoint.
+// GET /api/profiles/{id}
+func GetProfile(ctx context.Context, input *GetProfileInput) (*GetProfileOutput, error) {
 	var entity models.UserProfileEntity
-	if err := database.DB.First(&entity, "id = ?", id).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "profile not found"})
-		return
+	if err := database.DB.First(&entity, "id = ?", input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("profile not found")
 	}
 
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &GetProfileOutput{Body: entity.ToDTO()}, nil
 }

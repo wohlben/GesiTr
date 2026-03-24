@@ -1,62 +1,67 @@
 package handlers
 
 import (
-	"net/http"
+	"context"
+	"encoding/json"
 	"time"
 
-	"gesitr/internal/auth"
 	"gesitr/internal/database"
+	"gesitr/internal/humaconfig"
 	"gesitr/internal/user/exerciselog/models"
 
-	"github.com/gin-gonic/gin"
+	"github.com/danielgtaylor/huma/v2"
 	"gorm.io/gorm"
 )
 
-func ListExerciseLogs(c *gin.Context) {
+// ListExerciseLogs returns exercise logs owned by the current user, ordered
+// by performedAt DESC. Supports filtering by exerciseId, measurementType,
+// isRecord, from, and to. GET /api/user/exercise-logs
+func ListExerciseLogs(ctx context.Context, input *ListExerciseLogsInput) (*ListExerciseLogsOutput, error) {
 	db := database.DB.Model(&models.ExerciseLogEntity{}).
-		Where("owner = ?", auth.GetUserID(c))
+		Where("owner = ?", humaconfig.GetUserID(ctx))
 
-	if v := c.Query("exerciseId"); v != "" {
-		db = db.Where("exercise_id = ?", v)
+	if input.ExerciseID != "" {
+		db = db.Where("exercise_id = ?", input.ExerciseID)
 	}
-	if v := c.Query("measurementType"); v != "" {
-		db = db.Where("measurement_type = ?", v)
+	if input.MeasurementType != "" {
+		db = db.Where("measurement_type = ?", input.MeasurementType)
 	}
-	if v := c.Query("isRecord"); v == "true" {
+	if input.IsRecord == "true" {
 		db = db.Where("is_record = ?", true)
 	}
-	if v := c.Query("from"); v != "" {
-		db = db.Where("performed_at >= ?", v)
+	if input.From != "" {
+		db = db.Where("performed_at >= ?", input.From)
 	}
-	if v := c.Query("to"); v != "" {
-		db = db.Where("performed_at <= ?", v)
+	if input.To != "" {
+		db = db.Where("performed_at <= ?", input.To)
 	}
 
 	var entities []models.ExerciseLogEntity
 	if err := db.Order("performed_at DESC").Find(&entities).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	dtos := make([]models.ExerciseLog, len(entities))
 	for i := range entities {
 		dtos[i] = entities[i].ToDTO()
 	}
-	c.JSON(http.StatusOK, dtos)
+	return &ListExerciseLogsOutput{Body: dtos}, nil
 }
 
-func CreateExerciseLog(c *gin.Context) {
+// CreateExerciseLog creates an exercise log entry. Sets owner, computes
+// RecordValue, and recomputes which entry is the record for the
+// (exerciseId, measurementType) pair. POST /api/user/exercise-logs
+func CreateExerciseLog(ctx context.Context, input *CreateExerciseLogInput) (*CreateExerciseLogOutput, error) {
 	var dto models.ExerciseLog
-	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
 	entity := models.ExerciseLogFromDTO(dto)
 	entity.ID = 0
 	entity.CreatedAt = time.Time{}
 	entity.UpdatedAt = time.Time{}
-	entity.Owner = auth.GetUserID(c)
+	entity.Owner = humaconfig.GetUserID(ctx)
 
 	if entity.PerformedAt.IsZero() {
 		entity.PerformedAt = time.Now()
@@ -74,37 +79,37 @@ func CreateExerciseLog(c *gin.Context) {
 		return RecomputeRecord(tx, entity.ExerciseID, entity.MeasurementType)
 	})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	// Reload to get recomputed isRecord
 	database.DB.First(&entity, entity.ID)
-	c.JSON(http.StatusCreated, entity.ToDTO())
+	return &CreateExerciseLogOutput{Body: entity.ToDTO()}, nil
 }
 
-func GetExerciseLog(c *gin.Context) {
+// GetExerciseLog returns a single exercise log entry.
+// GET /api/user/exercise-logs/{id}
+func GetExerciseLog(ctx context.Context, input *GetExerciseLogInput) (*GetExerciseLogOutput, error) {
 	var entity models.ExerciseLogEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise log not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Exercise log not found")
 	}
-	if entity.Owner != auth.GetUserID(c) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
-		return
+	if entity.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("access denied")
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &GetExerciseLogOutput{Body: entity.ToDTO()}, nil
 }
 
-func UpdateExerciseLog(c *gin.Context) {
+// UpdateExerciseLog partially updates an exercise log entry (PATCH).
+// Recomputes RecordValue and recomputes which entry is the record.
+// PATCH /api/user/exercise-logs/{id}
+func UpdateExerciseLog(ctx context.Context, input *UpdateExerciseLogInput) (*UpdateExerciseLogOutput, error) {
 	var existing models.ExerciseLogEntity
-	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise log not found"})
-		return
+	if err := database.DB.First(&existing, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Exercise log not found")
 	}
-	if existing.Owner != auth.GetUserID(c) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
-		return
+	if existing.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("access denied")
 	}
 
 	var patch struct {
@@ -114,9 +119,8 @@ func UpdateExerciseLog(c *gin.Context) {
 		Distance *float64 `json:"distance"`
 		Time     *int     `json:"time"`
 	}
-	if err := c.ShouldBindJSON(&patch); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &patch); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
 	if patch.Reps != nil {
@@ -147,24 +151,23 @@ func UpdateExerciseLog(c *gin.Context) {
 		return RecomputeRecord(tx, existing.ExerciseID, existing.MeasurementType)
 	})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	// Reload to get recomputed isRecord
 	database.DB.First(&existing, existing.ID)
-	c.JSON(http.StatusOK, existing.ToDTO())
+	return &UpdateExerciseLogOutput{Body: existing.ToDTO()}, nil
 }
 
-func DeleteExerciseLog(c *gin.Context) {
+// DeleteExerciseLog deletes an exercise log entry. Recomputes record
+// afterwards. DELETE /api/user/exercise-logs/{id}
+func DeleteExerciseLog(ctx context.Context, input *DeleteExerciseLogInput) (*DeleteExerciseLogOutput, error) {
 	var existing models.ExerciseLogEntity
-	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise log not found"})
-		return
+	if err := database.DB.First(&existing, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Exercise log not found")
 	}
-	if existing.Owner != auth.GetUserID(c) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
-		return
+	if existing.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("access denied")
 	}
 
 	exerciseID := existing.ExerciseID
@@ -177,11 +180,10 @@ func DeleteExerciseLog(c *gin.Context) {
 		return RecomputeRecord(tx, exerciseID, measurementType)
 	})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
-	c.JSON(http.StatusNoContent, nil)
+	return nil, nil
 }
 
 // RecomputeRecord recalculates which ExerciseLog is the record for a given

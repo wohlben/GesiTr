@@ -1,16 +1,16 @@
 package handlers
 
 import (
-	"net/http"
-	"strconv"
+	"context"
+	"encoding/json"
 	"time"
 
-	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	"gesitr/internal/equipment/models"
+	"gesitr/internal/humaconfig"
 	"gesitr/internal/shared"
 
-	"github.com/gin-gonic/gin"
+	"github.com/danielgtaylor/huma/v2"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -18,64 +18,58 @@ import (
 // ListEquipment returns equipment visible to the current user: their own
 // equipment plus all public equipment. Filter by owner, public, or category
 // query params. GET /api/equipment
-func ListEquipment(c *gin.Context) {
+func ListEquipment(ctx context.Context, input *ListEquipmentInput) (*ListEquipmentOutput, error) {
 	db := database.DB.Model(&models.EquipmentEntity{})
 
-	userID := auth.GetUserID(c)
-	if owner := c.Query("owner"); owner != "" {
-		if owner == "me" || owner == userID {
+	userID := humaconfig.GetUserID(ctx)
+	if input.Owner != "" {
+		if input.Owner == "me" || input.Owner == userID {
 			db = db.Where("owner = ?", userID)
 		} else {
-			db = db.Where("owner = ? AND public = ?", owner, true)
+			db = db.Where("owner = ? AND public = ?", input.Owner, true)
 		}
 	} else {
 		db = db.Where("owner = ? OR public = ?", userID, true)
 	}
-	if pub := c.Query("public"); pub == "true" {
+	if input.Public == "true" {
 		db = db.Where("public = ?", true)
 	}
 
-	if q := c.Query("q"); q != "" {
-		pattern := "%" + q + "%"
+	if input.Q != "" {
+		pattern := "%" + input.Q + "%"
 		db = db.Where("name LIKE ? OR display_name LIKE ?", pattern, pattern)
 	}
-	if v := c.Query("category"); v != "" {
-		db = db.Where("category = ?", v)
+	if input.Category != "" {
+		db = db.Where("category = ?", input.Category)
 	}
 
 	var total int64
 	if err := db.Count(&total).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
-	p := shared.ParsePagination(c)
+	p := input.ToPaginationParams()
 	var entities []models.EquipmentEntity
 	if err := shared.ApplyPagination(db, p).Find(&entities).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	dtos := make([]models.Equipment, len(entities))
 	for i := range entities {
 		dtos[i] = entities[i].ToDTO()
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"items":  dtos,
-		"total":  total,
-		"limit":  p.Limit,
-		"offset": p.Offset,
-	})
+	return &ListEquipmentOutput{Body: humaconfig.PaginatedBody[models.Equipment]{
+		Items: dtos, Total: total, Limit: p.Limit, Offset: p.Offset,
+	}}, nil
 }
 
 // CreateEquipment creates equipment owned by the current user. Equipment can
 // be referenced by exercises via their equipmentIds field — see
 // [gesitr/internal/exercise/handlers.CreateExercise]. POST /api/equipment
-func CreateEquipment(c *gin.Context) {
+func CreateEquipment(ctx context.Context, input *CreateEquipmentInput) (*CreateEquipmentOutput, error) {
 	var dto models.Equipment
-	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
 	if dto.TemplateID == "" {
@@ -83,10 +77,9 @@ func CreateEquipment(c *gin.Context) {
 	}
 
 	entity := models.EquipmentFromDTO(dto)
-	entity.Owner = auth.GetUserID(c)
+	entity.Owner = humaconfig.GetUserID(ctx)
 	if err := database.DB.Create(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	resultDTO := entity.ToDTO()
@@ -97,70 +90,62 @@ func CreateEquipment(c *gin.Context) {
 		ChangedAt:   time.Now(),
 		ChangedBy:   resultDTO.Owner,
 	})
-	c.JSON(http.StatusCreated, resultDTO)
+	return &CreateEquipmentOutput{Body: resultDTO}, nil
 }
 
 // GetEquipmentPermissions returns the current user's permissions on equipment.
 // See [gesitr/internal/shared.ResolvePermissions] for the permission model.
 // GET /api/equipment/:id/permissions
-func GetEquipmentPermissions(c *gin.Context) {
+func GetEquipmentPermissions(ctx context.Context, input *GetEquipmentPermissionsInput) (*GetEquipmentPermissionsOutput, error) {
 	var entity models.EquipmentEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Equipment not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Equipment not found")
 	}
-	userID := auth.GetUserID(c)
+	userID := humaconfig.GetUserID(ctx)
 	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
 	if perms == nil {
 		perms = []shared.Permission{}
 	}
-	c.JSON(http.StatusOK, shared.PermissionsResponse{Permissions: perms})
+	return &GetEquipmentPermissionsOutput{Body: shared.PermissionsResponse{Permissions: perms}}, nil
 }
 
 // GetEquipment returns a single equipment item. Public equipment is visible
 // to all users; private equipment is visible only to its owner.
 // GET /api/equipment/:id
-func GetEquipment(c *gin.Context) {
+func GetEquipment(ctx context.Context, input *GetEquipmentInput) (*GetEquipmentOutput, error) {
 	var entity models.EquipmentEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Equipment not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Equipment not found")
 	}
-	userID := auth.GetUserID(c)
+	userID := humaconfig.GetUserID(ctx)
 	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
 	if len(perms) == 0 {
-		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
-		return
+		return nil, huma.Error403Forbidden("access denied")
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &GetEquipmentOutput{Body: entity.ToDTO()}, nil
 }
 
 // UpdateEquipment updates equipment. Creates a version history entry.
-// Owner only. PUT /api/equipment/:id
-func UpdateEquipment(c *gin.Context) {
+// Owner only — returns 403 for non-owners. PUT /api/equipment/:id
+func UpdateEquipment(ctx context.Context, input *UpdateEquipmentInput) (*UpdateEquipmentOutput, error) {
 	var existing models.EquipmentEntity
-	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Equipment not found"})
-		return
+	if err := database.DB.First(&existing, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Equipment not found")
 	}
 
-	userID := auth.GetUserID(c)
-	if existing.Owner != userID {
-		c.JSON(http.StatusForbidden, gin.H{"error": "Not the owner"})
-		return
+	if existing.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("access denied")
 	}
 
 	var dto models.Equipment
-	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
 	oldDTO := existing.ToDTO()
 
 	if !models.EquipmentChanged(oldDTO, dto) {
-		c.JSON(http.StatusOK, oldDTO)
-		return
+		return &UpdateEquipmentOutput{Body: oldDTO}, nil
 	}
 
 	entity := models.EquipmentFromDTO(dto)
@@ -183,78 +168,64 @@ func UpdateEquipment(c *gin.Context) {
 	})
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &UpdateEquipmentOutput{Body: entity.ToDTO()}, nil
 }
 
 // ListEquipmentVersions returns the version history for equipment. Each
 // update via [UpdateEquipment] creates a new version entry.
 // GET /api/equipment/:id/versions
-func ListEquipmentVersions(c *gin.Context) {
+func ListEquipmentVersions(ctx context.Context, input *ListEquipmentVersionsInput) (*ListEquipmentVersionsOutput, error) {
 	var entity models.EquipmentEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Equipment not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Equipment not found")
 	}
 
 	var history []models.EquipmentHistoryEntity
 	if err := database.DB.Where("equipment_id = ?", entity.ID).Order("version ASC").Find(&history).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	entries := make([]shared.VersionEntry, len(history))
 	for i := range history {
 		entries[i] = history[i].ToVersionEntry()
 	}
-	c.JSON(http.StatusOK, entries)
+	return &ListEquipmentVersionsOutput{Body: entries}, nil
 }
 
 // GetEquipmentVersion returns a specific historical version of equipment
 // by templateId and version number.
 // GET /api/equipment/templates/:templateId/versions/:version
-func GetEquipmentVersion(c *gin.Context) {
-	version, err := strconv.Atoi(c.Param("version"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid version"})
-		return
-	}
-
-	var entity models.EquipmentEntity
-	if err := database.DB.Where("template_id = ?", c.Param("templateId")).First(&entity).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Equipment not found"})
-		return
-	}
-
+func GetEquipmentVersion(ctx context.Context, input *GetEquipmentVersionInput) (*GetEquipmentVersionOutput, error) {
 	var history models.EquipmentHistoryEntity
-	if err := database.DB.Where("equipment_id = ? AND version = ?", entity.ID, version).First(&history).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Version not found"})
-		return
+	if err := database.DB.Where("json_extract(snapshot, '$.templateId') = ? AND version = ?", input.TemplateID, input.Version).First(&history).Error; err != nil {
+		return nil, huma.Error404NotFound("Version not found")
 	}
 
-	c.JSON(http.StatusOK, history.ToVersionEntry())
+	var snap models.Equipment
+	json.Unmarshal([]byte(history.Snapshot), &snap)
+	userID := humaconfig.GetUserID(ctx)
+	perms, _ := shared.ResolvePermissions(userID, snap.Owner, snap.Public)
+	if len(perms) == 0 {
+		return nil, huma.Error403Forbidden("access denied")
+	}
+
+	return &GetEquipmentVersionOutput{Body: history.ToVersionEntry()}, nil
 }
 
 // DeleteEquipment deletes equipment. Owner only.
 // DELETE /api/equipment/:id
-func DeleteEquipment(c *gin.Context) {
+func DeleteEquipment(ctx context.Context, input *DeleteEquipmentInput) (*DeleteEquipmentOutput, error) {
 	var entity models.EquipmentEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Equipment not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Equipment not found")
 	}
-
-	userID := auth.GetUserID(c)
-	if entity.Owner != userID {
-		c.JSON(http.StatusForbidden, gin.H{"error": "Not the owner"})
-		return
+	if entity.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("access denied")
 	}
-
 	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusNoContent, nil)
+	return nil, nil
 }

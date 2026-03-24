@@ -1,69 +1,71 @@
 package handlers
 
 import (
-	"net/http"
+	"context"
+	"encoding/json"
 
-	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	"gesitr/internal/equipmentfulfillment/models"
+	"gesitr/internal/humaconfig"
 
-	"github.com/gin-gonic/gin"
+	"github.com/danielgtaylor/huma/v2"
 )
 
-func ListFulfillments(c *gin.Context) {
+// ListFulfillments returns equipment fulfillments, optionally filtered by
+// equipmentId or fulfillsEquipmentId.
+// GET /api/fulfillments
+func ListFulfillments(ctx context.Context, input *ListFulfillmentsInput) (*ListFulfillmentsOutput, error) {
 	db := database.DB.Model(&models.FulfillmentEntity{})
 
-	if v := c.Query("equipmentId"); v != "" {
-		db = db.Where("equipment_id = ?", v)
+	if input.EquipmentID != "" {
+		db = db.Where("equipment_id = ?", input.EquipmentID)
 	}
-	if v := c.Query("fulfillsEquipmentId"); v != "" {
-		db = db.Where("fulfills_equipment_id = ?", v)
+	if input.FulfillsEquipmentID != "" {
+		db = db.Where("fulfills_equipment_id = ?", input.FulfillsEquipmentID)
 	}
 
 	var entities []models.FulfillmentEntity
 	if err := db.Find(&entities).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	dtos := make([]models.Fulfillment, len(entities))
 	for i := range entities {
 		dtos[i] = entities[i].ToDTO()
 	}
-	c.JSON(http.StatusOK, dtos)
+	return &ListFulfillmentsOutput{Body: dtos}, nil
 }
 
-func CreateFulfillment(c *gin.Context) {
+// CreateFulfillment creates a fulfillment owned by the current user.
+// POST /api/fulfillments
+func CreateFulfillment(ctx context.Context, input *CreateFulfillmentInput) (*CreateFulfillmentOutput, error) {
 	var dto models.Fulfillment
-	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
 	entity := models.FulfillmentFromDTO(dto)
-	entity.Owner = auth.GetUserID(c)
+	entity.Owner = humaconfig.GetUserID(ctx)
 	if err := database.DB.Create(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusCreated, entity.ToDTO())
+	return &CreateFulfillmentOutput{Body: entity.ToDTO()}, nil
 }
 
-func DeleteFulfillment(c *gin.Context) {
+// DeleteFulfillment deletes a fulfillment. Owner only.
+// DELETE /api/fulfillments/:id
+func DeleteFulfillment(ctx context.Context, input *DeleteFulfillmentInput) (*DeleteFulfillmentOutput, error) {
 	var entity models.FulfillmentEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Fulfillment not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Fulfillment not found")
 	}
 
-	if entity.Owner != auth.GetUserID(c) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "not the owner of this fulfillment"})
-		return
+	if entity.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("not the owner of this fulfillment")
 	}
 
 	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusNoContent, nil)
+	return nil, nil
 }

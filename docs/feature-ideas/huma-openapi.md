@@ -106,18 +106,18 @@ if os.Getenv("DEV") == "true" {
 
 Huma's Gin adapter allows both Gin handlers and huma handlers on the same router. Migrate one resource group at a time:
 
-1. ~~exercises~~ ✓ (pilot complete)
-2. equipment
-3. fulfillments, relationships
-4. exercise-groups
-5. user/* (workouts, workout-logs, exercise-logs)
+1. ~~exercises~~ ✓
+2. ~~equipment~~ ✓
+3. ~~fulfillments, relationships~~ ✓
+4. ~~exercise-groups~~ ✓
+5. ~~user/* (workouts, workout-logs, exercise-logs)~~ ✓
 
 ### Rollout order
 
 1. ~~Add `huma` dependency, set up the adapter alongside existing Gin router.~~ ✓
 2. ~~Migrate `exercises` as the pilot — it's the most representative CRUD resource.~~ ✓
-3. Verify the generated OpenAPI spec matches the actual API behavior.
-4. Migrate remaining resources group by group.
+3. ~~Verify the generated OpenAPI spec matches the actual API behavior.~~ ✓
+4. ~~Migrate remaining resources group by group.~~ ✓
 5. Add `make docs-api` target to serve Swagger UI locally.
 
 ## What was learned during the pilot
@@ -132,6 +132,6 @@ Huma's Gin adapter allows both Gin handlers and huma handlers on the same router
 
 ## Considerations
 
-- **Scope**: 84 handlers total, 13 migrated. Each follows the same mechanical pattern (extract params into input struct, return output instead of calling `c.JSON`).
+- **Scope**: All 84 handlers migrated. Each follows the same mechanical pattern (extract params into input struct, return output instead of calling `c.JSON`).
 - **Complements doc.go**: huma documents the HTTP API contract (endpoints, schemas). `doc.go` documents domain concepts (entity model, relationships, visibility rules). They serve different audiences and don't overlap.
 - **Testing**: handler tests use `httptest` with Gin's test router. This continues to work with huma since routes go through the same Gin engine.

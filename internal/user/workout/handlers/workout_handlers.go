@@ -1,13 +1,14 @@
 package handlers
 
 import (
-	"net/http"
+	"context"
+	"encoding/json"
 
-	"gesitr/internal/auth"
 	"gesitr/internal/database"
+	"gesitr/internal/humaconfig"
 	"gesitr/internal/user/workout/models"
 
-	"github.com/gin-gonic/gin"
+	"github.com/danielgtaylor/huma/v2"
 	"gorm.io/gorm"
 )
 
@@ -21,74 +22,66 @@ func preloadWorkout(db *gorm.DB) *gorm.DB {
 
 // ListWorkouts returns all workouts owned by the current user, each
 // including its sections and section exercises. GET /api/user/workouts
-func ListWorkouts(c *gin.Context) {
-	userID := auth.GetUserID(c)
+func ListWorkouts(ctx context.Context, input *ListWorkoutsInput) (*ListWorkoutsOutput, error) {
+	userID := humaconfig.GetUserID(ctx)
 	db := database.DB.Model(&models.WorkoutEntity{}).Where("owner = ?", userID)
 
 	var entities []models.WorkoutEntity
 	if err := preloadWorkout(db).Find(&entities).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	dtos := make([]models.Workout, len(entities))
 	for i := range entities {
 		dtos[i] = entities[i].ToDTO()
 	}
-	c.JSON(http.StatusOK, dtos)
+	return &ListWorkoutsOutput{Body: dtos}, nil
 }
 
 // CreateWorkout creates an empty workout. Add sections via
 // [CreateWorkoutSection] and exercises via [CreateWorkoutSectionExercise].
 // POST /api/user/workouts
-func CreateWorkout(c *gin.Context) {
+func CreateWorkout(ctx context.Context, input *CreateWorkoutInput) (*CreateWorkoutOutput, error) {
 	var dto models.Workout
-	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
 	entity := models.WorkoutFromDTO(dto)
-	entity.Owner = auth.GetUserID(c)
+	entity.Owner = humaconfig.GetUserID(ctx)
 	if err := database.DB.Create(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusCreated, entity.ToDTO())
+	return &CreateWorkoutOutput{Body: entity.ToDTO()}, nil
 }
 
 // GetWorkout returns a workout with its full section and exercise tree.
-// Returns 403 if the caller is not the owner. GET /api/user/workouts/:id
-func GetWorkout(c *gin.Context) {
+// Returns 403 if the caller is not the owner. GET /api/user/workouts/{id}
+func GetWorkout(ctx context.Context, input *GetWorkoutInput) (*GetWorkoutOutput, error) {
 	var entity models.WorkoutEntity
-	if err := preloadWorkout(database.DB).First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout not found"})
-		return
+	if err := preloadWorkout(database.DB).First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout not found")
 	}
-	if entity.Owner != auth.GetUserID(c) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
-		return
+	if entity.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("access denied")
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &GetWorkoutOutput{Body: entity.ToDTO()}, nil
 }
 
 // UpdateWorkout updates workout metadata (name, notes). Sections and exercises
-// are managed via their own endpoints. PUT /api/user/workouts/:id
-func UpdateWorkout(c *gin.Context) {
+// are managed via their own endpoints. PUT /api/user/workouts/{id}
+func UpdateWorkout(ctx context.Context, input *UpdateWorkoutInput) (*UpdateWorkoutOutput, error) {
 	var existing models.WorkoutEntity
-	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout not found"})
-		return
+	if err := database.DB.First(&existing, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout not found")
 	}
-	if existing.Owner != auth.GetUserID(c) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
-		return
+	if existing.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("access denied")
 	}
 
 	var dto models.Workout
-	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
 	entity := models.WorkoutFromDTO(dto)
@@ -96,31 +89,26 @@ func UpdateWorkout(c *gin.Context) {
 	entity.Owner = existing.Owner
 
 	if err := database.DB.Save(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	if err := preloadWorkout(database.DB).First(&entity, entity.ID).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &UpdateWorkoutOutput{Body: entity.ToDTO()}, nil
 }
 
-// DeleteWorkout deletes a workout. DELETE /api/user/workouts/:id
-func DeleteWorkout(c *gin.Context) {
+// DeleteWorkout deletes a workout. DELETE /api/user/workouts/{id}
+func DeleteWorkout(ctx context.Context, input *DeleteWorkoutInput) (*DeleteWorkoutOutput, error) {
 	var entity models.WorkoutEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout not found")
 	}
-	if entity.Owner != auth.GetUserID(c) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
-		return
+	if entity.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("access denied")
 	}
 	if err := database.DB.Delete(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusNoContent, nil)
+	return nil, nil
 }

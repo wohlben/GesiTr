@@ -53,7 +53,7 @@ func TestUpdateMyProfile(t *testing.T) {
 	database.DB.Create(&models.UserProfileEntity{ID: "alice", Name: "Alice"})
 
 	r := newRouter()
-	w := doJSON(r, "PUT", "/api/user/profile", models.UpdateProfileRequest{Name: "Alice Smith"})
+	w := doJSON(r, "PATCH", "/api/user/profile", models.UpdateProfileRequest{Name: "Alice Smith"})
 
 	if w.Code != http.StatusOK {
 		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
@@ -74,7 +74,7 @@ func TestUpdateMyProfile_BadRequest(t *testing.T) {
 	database.DB.Create(&models.UserProfileEntity{ID: "alice", Name: "Alice"})
 
 	r := newRouter()
-	w := doJSON(r, "PUT", "/api/user/profile", map[string]string{})
+	w := doJSON(r, "PATCH", "/api/user/profile", map[string]string{})
 
 	if w.Code != http.StatusBadRequest {
 		t.Fatalf("expected 400, got %d", w.Code)

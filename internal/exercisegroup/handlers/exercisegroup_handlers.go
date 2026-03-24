@@ -1,55 +1,54 @@
 package handlers
 
 import (
-	"net/http"
+	"context"
+	"encoding/json"
 
-	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	"gesitr/internal/exercisegroup/models"
+	"gesitr/internal/humaconfig"
 	"gesitr/internal/shared"
 
-	"github.com/gin-gonic/gin"
+	"github.com/danielgtaylor/huma/v2"
 	"github.com/google/uuid"
 )
 
-func ListExerciseGroups(c *gin.Context) {
+// ListExerciseGroups returns exercise groups, optionally filtered by name search.
+// GET /api/exercise-groups
+func ListExerciseGroups(ctx context.Context, input *ListExerciseGroupsInput) (*ListExerciseGroupsOutput, error) {
 	db := database.DB.Model(&models.ExerciseGroupEntity{})
 
-	if q := c.Query("q"); q != "" {
-		pattern := "%" + q + "%"
+	if input.Q != "" {
+		pattern := "%" + input.Q + "%"
 		db = db.Where("name LIKE ?", pattern)
 	}
 
 	var total int64
 	if err := db.Count(&total).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
-	p := shared.ParsePagination(c)
+	p := input.ToPaginationParams()
 	var entities []models.ExerciseGroupEntity
 	if err := shared.ApplyPagination(db, p).Find(&entities).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	dtos := make([]models.ExerciseGroup, len(entities))
 	for i := range entities {
 		dtos[i] = entities[i].ToDTO()
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"items":  dtos,
-		"total":  total,
-		"limit":  p.Limit,
-		"offset": p.Offset,
-	})
+	return &ListExerciseGroupsOutput{Body: humaconfig.PaginatedBody[models.ExerciseGroup]{
+		Items: dtos, Total: total, Limit: p.Limit, Offset: p.Offset,
+	}}, nil
 }
 
-func CreateExerciseGroup(c *gin.Context) {
+// CreateExerciseGroup creates an exercise group owned by the current user.
+// POST /api/exercise-groups
+func CreateExerciseGroup(ctx context.Context, input *CreateExerciseGroupInput) (*CreateExerciseGroupOutput, error) {
 	var dto models.ExerciseGroup
-	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
 	if dto.TemplateID == "" {
@@ -57,53 +56,53 @@ func CreateExerciseGroup(c *gin.Context) {
 	}
 
 	entity := models.ExerciseGroupFromDTO(dto)
-	entity.Owner = auth.GetUserID(c)
+	entity.Owner = humaconfig.GetUserID(ctx)
 	if err := database.DB.Create(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusCreated, entity.ToDTO())
+	return &CreateExerciseGroupOutput{Body: entity.ToDTO()}, nil
 }
 
-func GetExerciseGroupPermissions(c *gin.Context) {
+// GetExerciseGroupPermissions returns the current user's permissions on an exercise group.
+// GET /api/exercise-groups/:id/permissions
+func GetExerciseGroupPermissions(ctx context.Context, input *GetExerciseGroupPermissionsInput) (*GetExerciseGroupPermissionsOutput, error) {
 	var entity models.ExerciseGroupEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "ExerciseGroup not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("ExerciseGroup not found")
 	}
-	userID := auth.GetUserID(c)
+	userID := humaconfig.GetUserID(ctx)
 	perms, _ := shared.ResolvePermissions(userID, entity.Owner, false)
 	if perms == nil {
 		perms = []shared.Permission{}
 	}
-	c.JSON(http.StatusOK, shared.PermissionsResponse{Permissions: perms})
+	return &GetExerciseGroupPermissionsOutput{Body: shared.PermissionsResponse{Permissions: perms}}, nil
 }
 
-func GetExerciseGroup(c *gin.Context) {
+// GetExerciseGroup returns a single exercise group.
+// GET /api/exercise-groups/:id
+func GetExerciseGroup(ctx context.Context, input *GetExerciseGroupInput) (*GetExerciseGroupOutput, error) {
 	var entity models.ExerciseGroupEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "ExerciseGroup not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("ExerciseGroup not found")
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &GetExerciseGroupOutput{Body: entity.ToDTO()}, nil
 }
 
-func UpdateExerciseGroup(c *gin.Context) {
+// UpdateExerciseGroup updates an exercise group. Owner only.
+// PUT /api/exercise-groups/:id
+func UpdateExerciseGroup(ctx context.Context, input *UpdateExerciseGroupInput) (*UpdateExerciseGroupOutput, error) {
 	var existing models.ExerciseGroupEntity
-	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "ExerciseGroup not found"})
-		return
+	if err := database.DB.First(&existing, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("ExerciseGroup not found")
 	}
 
-	if existing.Owner != auth.GetUserID(c) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "not the owner of this exercise group"})
-		return
+	if existing.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("not the owner of this exercise group")
 	}
 
 	var dto models.ExerciseGroup
-	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
 	entity := models.ExerciseGroupFromDTO(dto)
@@ -111,27 +110,25 @@ func UpdateExerciseGroup(c *gin.Context) {
 	entity.Owner = existing.Owner
 
 	if err := database.DB.Save(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &UpdateExerciseGroupOutput{Body: entity.ToDTO()}, nil
 }
 
-func DeleteExerciseGroup(c *gin.Context) {
+// DeleteExerciseGroup deletes an exercise group. Owner only.
+// DELETE /api/exercise-groups/:id
+func DeleteExerciseGroup(ctx context.Context, input *DeleteExerciseGroupInput) (*DeleteExerciseGroupOutput, error) {
 	var entity models.ExerciseGroupEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "ExerciseGroup not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("ExerciseGroup not found")
 	}
 
-	if entity.Owner != auth.GetUserID(c) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "not the owner of this exercise group"})
-		return
+	if entity.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("not the owner of this exercise group")
 	}
 
 	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusNoContent, nil)
+	return nil, nil
 }

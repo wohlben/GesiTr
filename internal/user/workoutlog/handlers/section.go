@@ -1,29 +1,30 @@
 package handlers
 
 import (
-	"net/http"
+	"context"
+	"encoding/json"
 	"reflect"
 
-	"gesitr/internal/auth"
 	"gesitr/internal/database"
+	"gesitr/internal/humaconfig"
 	workoutmodels "gesitr/internal/user/workout/models"
 	"gesitr/internal/user/workoutlog/models"
 
-	"github.com/gin-gonic/gin"
+	"github.com/danielgtaylor/huma/v2"
 	"gorm.io/gorm"
 )
 
-func ListWorkoutLogSections(c *gin.Context) {
+func ListWorkoutLogSections(ctx context.Context, input *ListWorkoutLogSectionsInput) (*ListWorkoutLogSectionsOutput, error) {
 	db := database.DB.Model(&models.WorkoutLogSectionEntity{})
 
-	if v := c.Query("workoutLogId"); v != "" {
-		if !requireLogOwner(c, parseUint(v)) {
-			return
+	if input.WorkoutLogID != "" {
+		if err := requireLogOwner(ctx, parseUint(input.WorkoutLogID)); err != nil {
+			return nil, err
 		}
-		db = db.Where("workout_log_id = ?", v)
+		db = db.Where("workout_log_id = ?", input.WorkoutLogID)
 	} else {
 		db = db.Joins("JOIN workout_logs ON workout_logs.id = workout_log_sections.workout_log_id").
-			Where("workout_logs.owner = ?", auth.GetUserID(c))
+			Where("workout_logs.owner = ?", humaconfig.GetUserID(ctx))
 	}
 
 	var entities []models.WorkoutLogSectionEntity
@@ -32,27 +33,25 @@ func ListWorkoutLogSections(c *gin.Context) {
 	}).Preload("Exercises.Sets", func(db *gorm.DB) *gorm.DB {
 		return db.Order("set_number")
 	}).Order("position").Find(&entities).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	dtos := make([]models.WorkoutLogSection, len(entities))
 	for i := range entities {
 		dtos[i] = entities[i].ToDTO()
 	}
-	c.JSON(http.StatusOK, dtos)
+	return &ListWorkoutLogSectionsOutput{Body: dtos}, nil
 }
 
-func CreateWorkoutLogSection(c *gin.Context) {
+func CreateWorkoutLogSection(ctx context.Context, input *CreateWorkoutLogSectionInput) (*CreateWorkoutLogSectionOutput, error) {
 	var dto models.WorkoutLogSection
-	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
-	log, ok := requireLogStatus(c, dto.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc)
-	if !ok {
-		return
+	log, err := requireLogStatus(ctx, dto.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc)
+	if err != nil {
+		return nil, err
 	}
 
 	entity := models.WorkoutLogSectionFromDTO(dto)
@@ -61,37 +60,34 @@ func CreateWorkoutLogSection(c *gin.Context) {
 		entity.Status = models.WorkoutLogItemStatusInProgress
 	}
 	if err := database.DB.Create(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusCreated, entity.ToDTO())
+	return &CreateWorkoutLogSectionOutput{Body: entity.ToDTO()}, nil
 }
 
-func GetWorkoutLogSection(c *gin.Context) {
+func GetWorkoutLogSection(ctx context.Context, input *GetWorkoutLogSectionInput) (*GetWorkoutLogSectionOutput, error) {
 	var entity models.WorkoutLogSectionEntity
 	if err := database.DB.Preload("Exercises", func(db *gorm.DB) *gorm.DB {
 		return db.Order("position")
 	}).Preload("Exercises.Sets", func(db *gorm.DB) *gorm.DB {
 		return db.Order("set_number")
-	}).First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log section not found"})
-		return
+	}).First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout log section not found")
 	}
-	if !requireLogOwner(c, entity.WorkoutLogID) {
-		return
+	if err := requireLogOwner(ctx, entity.WorkoutLogID); err != nil {
+		return nil, err
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &GetWorkoutLogSectionOutput{Body: entity.ToDTO()}, nil
 }
 
-func UpdateWorkoutLogSection(c *gin.Context) {
+func UpdateWorkoutLogSection(ctx context.Context, input *UpdateWorkoutLogSectionInput) (*UpdateWorkoutLogSectionOutput, error) {
 	var existing models.WorkoutLogSectionEntity
-	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log section not found"})
-		return
+	if err := database.DB.First(&existing, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout log section not found")
 	}
 
-	if !requireLogOwner(c, existing.WorkoutLogID) {
-		return
+	if err := requireLogOwner(ctx, existing.WorkoutLogID); err != nil {
+		return nil, err
 	}
 
 	var patch struct {
@@ -100,14 +96,12 @@ func UpdateWorkoutLogSection(c *gin.Context) {
 		RestBetweenExercises *int                              `json:"restBetweenExercises"`
 		Position             *int                              `json:"position"`
 	}
-	if err := c.ShouldBindJSON(&patch); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &patch); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
 	if reflect.ValueOf(patch).IsZero() {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "patch body contains no updatable fields"})
-		return
+		return nil, huma.Error400BadRequest("patch body contains no updatable fields")
 	}
 
 	if patch.Type != nil {
@@ -124,8 +118,7 @@ func UpdateWorkoutLogSection(c *gin.Context) {
 	}
 
 	if err := database.DB.Save(&existing).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	// Reload with exercises and sets
@@ -135,23 +128,21 @@ func UpdateWorkoutLogSection(c *gin.Context) {
 		return db.Order("set_number")
 	}).First(&existing, existing.ID)
 
-	c.JSON(http.StatusOK, existing.ToDTO())
+	return &UpdateWorkoutLogSectionOutput{Body: existing.ToDTO()}, nil
 }
 
-func DeleteWorkoutLogSection(c *gin.Context) {
+func DeleteWorkoutLogSection(ctx context.Context, input *DeleteWorkoutLogSectionInput) (*DeleteWorkoutLogSectionOutput, error) {
 	var existing models.WorkoutLogSectionEntity
-	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout log section not found"})
-		return
+	if err := database.DB.First(&existing, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout log section not found")
 	}
 
-	if _, ok := requireLogStatus(c, existing.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc); !ok {
-		return
+	if _, err := requireLogStatus(ctx, existing.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc); err != nil {
+		return nil, err
 	}
 
 	if err := database.DB.Delete(&existing).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusNoContent, nil)
+	return nil, nil
 }

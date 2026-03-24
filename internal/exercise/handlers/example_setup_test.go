@@ -10,6 +10,7 @@ import (
 	equipmenthandlers "gesitr/internal/equipment/handlers"
 	equipmentmodels "gesitr/internal/equipment/models"
 	"gesitr/internal/exercise/models"
+	"gesitr/internal/humaconfig"
 	profilemodels "gesitr/internal/profile/models"
 
 	"github.com/gin-gonic/gin"
@@ -47,13 +48,13 @@ func setupExampleDB() {
 // newExampleRouter registers both exercise and equipment routes, so examples
 // can demonstrate cross-API flows.
 func newExampleRouter() *gin.Engine {
-	r := newRouter()
+	r := gin.New()
 	api := r.Group("/api")
 	api.Use(auth.UserID())
 
-	// Equipment routes still use Gin handlers (not yet migrated)
-	equipment := api.Group("/equipment")
-	equipment.POST("", equipmenthandlers.CreateEquipment)
+	humaAPI := humaconfig.NewAPI(r, api)
+	RegisterRoutes(humaAPI)
+	equipmenthandlers.RegisterRoutes(humaAPI)
 
 	return r
 }

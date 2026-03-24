@@ -1,75 +1,77 @@
 package handlers
 
 import (
-	"net/http"
+	"context"
+	"encoding/json"
 
-	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	"gesitr/internal/exerciserelationship/models"
+	"gesitr/internal/humaconfig"
 
-	"github.com/gin-gonic/gin"
+	"github.com/danielgtaylor/huma/v2"
 )
 
-func ListExerciseRelationships(c *gin.Context) {
+// ListExerciseRelationships returns exercise relationships, optionally filtered
+// by owner, fromExerciseId, toExerciseId, or relationshipType.
+// GET /api/exercise-relationships
+func ListExerciseRelationships(ctx context.Context, input *ListExerciseRelationshipsInput) (*ListExerciseRelationshipsOutput, error) {
 	db := database.DB.Model(&models.ExerciseRelationshipEntity{})
 
-	if v := c.Query("owner"); v != "" {
-		db = db.Where("owner = ?", v)
+	if input.Owner != "" {
+		db = db.Where("owner = ?", input.Owner)
 	}
-	if v := c.Query("fromExerciseId"); v != "" {
-		db = db.Where("from_exercise_id = ?", v)
+	if input.FromExerciseID != "" {
+		db = db.Where("from_exercise_id = ?", input.FromExerciseID)
 	}
-	if v := c.Query("toExerciseId"); v != "" {
-		db = db.Where("to_exercise_id = ?", v)
+	if input.ToExerciseID != "" {
+		db = db.Where("to_exercise_id = ?", input.ToExerciseID)
 	}
-	if v := c.Query("relationshipType"); v != "" {
-		db = db.Where("relationship_type = ?", v)
+	if input.RelationshipType != "" {
+		db = db.Where("relationship_type = ?", input.RelationshipType)
 	}
 
 	var entities []models.ExerciseRelationshipEntity
 	if err := db.Find(&entities).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	dtos := make([]models.ExerciseRelationship, len(entities))
 	for i := range entities {
 		dtos[i] = entities[i].ToDTO()
 	}
-	c.JSON(http.StatusOK, dtos)
+	return &ListExerciseRelationshipsOutput{Body: dtos}, nil
 }
 
-func CreateExerciseRelationship(c *gin.Context) {
+// CreateExerciseRelationship creates an exercise relationship owned by the current user.
+// POST /api/exercise-relationships
+func CreateExerciseRelationship(ctx context.Context, input *CreateExerciseRelationshipInput) (*CreateExerciseRelationshipOutput, error) {
 	var dto models.ExerciseRelationship
-	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
 	entity := models.ExerciseRelationshipFromDTO(dto)
-	entity.Owner = auth.GetUserID(c)
+	entity.Owner = humaconfig.GetUserID(ctx)
 	if err := database.DB.Create(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusCreated, entity.ToDTO())
+	return &CreateExerciseRelationshipOutput{Body: entity.ToDTO()}, nil
 }
 
-func DeleteExerciseRelationship(c *gin.Context) {
+// DeleteExerciseRelationship deletes an exercise relationship. Owner only.
+// DELETE /api/exercise-relationships/:id
+func DeleteExerciseRelationship(ctx context.Context, input *DeleteExerciseRelationshipInput) (*DeleteExerciseRelationshipOutput, error) {
 	var entity models.ExerciseRelationshipEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "ExerciseRelationship not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("ExerciseRelationship not found")
 	}
 
-	if entity.Owner != auth.GetUserID(c) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "not the owner of this relationship"})
-		return
+	if entity.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("not the owner of this relationship")
 	}
 
 	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusNoContent, nil)
+	return nil, nil
 }

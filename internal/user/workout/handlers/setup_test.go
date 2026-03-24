@@ -64,24 +64,7 @@ func newRouter() *gin.Engine {
 
 	humaAPI := humaconfig.NewAPI(r, api)
 	exercisehandlers.RegisterRoutes(humaAPI)
-
-	workouts := api.Group("/user/workouts")
-	workouts.GET("", ListWorkouts)
-	workouts.POST("", CreateWorkout)
-	workouts.GET("/:id", GetWorkout)
-	workouts.PUT("/:id", UpdateWorkout)
-	workouts.DELETE("/:id", DeleteWorkout)
-
-	sections := api.Group("/user/workout-sections")
-	sections.GET("", ListWorkoutSections)
-	sections.POST("", CreateWorkoutSection)
-	sections.GET("/:id", GetWorkoutSection)
-	sections.DELETE("/:id", DeleteWorkoutSection)
-
-	sectionExercises := api.Group("/user/workout-section-exercises")
-	sectionExercises.GET("", ListWorkoutSectionExercises)
-	sectionExercises.POST("", CreateWorkoutSectionExercise)
-	sectionExercises.DELETE("/:id", DeleteWorkoutSectionExercise)
+	RegisterRoutes(humaAPI)
 
 	return r
 }

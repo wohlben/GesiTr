@@ -46,7 +46,32 @@ Workouts do not have a dedicated /permissions endpoint. Instead, all endpoints e
 - [func ListWorkoutSectionExercises\(c \*gin.Context\)](<#ListWorkoutSectionExercises>)
 - [func ListWorkoutSections\(c \*gin.Context\)](<#ListWorkoutSections>)
 - [func ListWorkouts\(c \*gin.Context\)](<#ListWorkouts>)
+- [func RegisterRoutes\(api huma.API\)](<#RegisterRoutes>)
 - [func UpdateWorkout\(c \*gin.Context\)](<#UpdateWorkout>)
+- [type CreateWorkoutInput](<#CreateWorkoutInput>)
+- [type CreateWorkoutOutput](<#CreateWorkoutOutput>)
+- [type CreateWorkoutSectionExerciseInput](<#CreateWorkoutSectionExerciseInput>)
+- [type CreateWorkoutSectionExerciseOutput](<#CreateWorkoutSectionExerciseOutput>)
+- [type CreateWorkoutSectionInput](<#CreateWorkoutSectionInput>)
+- [type CreateWorkoutSectionOutput](<#CreateWorkoutSectionOutput>)
+- [type DeleteWorkoutInput](<#DeleteWorkoutInput>)
+- [type DeleteWorkoutOutput](<#DeleteWorkoutOutput>)
+- [type DeleteWorkoutSectionExerciseInput](<#DeleteWorkoutSectionExerciseInput>)
+- [type DeleteWorkoutSectionExerciseOutput](<#DeleteWorkoutSectionExerciseOutput>)
+- [type DeleteWorkoutSectionInput](<#DeleteWorkoutSectionInput>)
+- [type DeleteWorkoutSectionOutput](<#DeleteWorkoutSectionOutput>)
+- [type GetWorkoutInput](<#GetWorkoutInput>)
+- [type GetWorkoutOutput](<#GetWorkoutOutput>)
+- [type GetWorkoutSectionInput](<#GetWorkoutSectionInput>)
+- [type GetWorkoutSectionOutput](<#GetWorkoutSectionOutput>)
+- [type ListWorkoutSectionExercisesInput](<#ListWorkoutSectionExercisesInput>)
+- [type ListWorkoutSectionExercisesOutput](<#ListWorkoutSectionExercisesOutput>)
+- [type ListWorkoutSectionsInput](<#ListWorkoutSectionsInput>)
+- [type ListWorkoutSectionsOutput](<#ListWorkoutSectionsOutput>)
+- [type ListWorkoutsInput](<#ListWorkoutsInput>)
+- [type ListWorkoutsOutput](<#ListWorkoutsOutput>)
+- [type UpdateWorkoutInput](<#UpdateWorkoutInput>)
+- [type UpdateWorkoutOutput](<#UpdateWorkoutOutput>)
 
 
 <a name="CreateWorkout"></a>
@@ -943,6 +968,15 @@ Pull Day
 </p>
 </details>
 
+<a name="RegisterRoutes"></a>
+## func [RegisterRoutes](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/routes.go#L10>)
+
+```go
+func RegisterRoutes(api huma.API)
+```
+
+RegisterRoutes registers all workout, section, and section\-exercise endpoints on the huma API.
+
 <a name="UpdateWorkout"></a>
 ## func [UpdateWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L77>)
 
@@ -1011,5 +1045,262 @@ Upper Body Push
 
 </p>
 </details>
+
+<a name="CreateWorkoutInput"></a>
+## type [CreateWorkoutInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L15-L17>)
+
+
+
+```go
+type CreateWorkoutInput struct {
+    RawBody []byte
+}
+```
+
+<a name="CreateWorkoutOutput"></a>
+## type [CreateWorkoutOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L19-L21>)
+
+
+
+```go
+type CreateWorkoutOutput struct {
+    Body models.Workout
+}
+```
+
+<a name="CreateWorkoutSectionExerciseInput"></a>
+## type [CreateWorkoutSectionExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L88-L90>)
+
+
+
+```go
+type CreateWorkoutSectionExerciseInput struct {
+    RawBody []byte
+}
+```
+
+<a name="CreateWorkoutSectionExerciseOutput"></a>
+## type [CreateWorkoutSectionExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L92-L94>)
+
+
+
+```go
+type CreateWorkoutSectionExerciseOutput struct {
+    Body models.WorkoutSectionExercise
+}
+```
+
+<a name="CreateWorkoutSectionInput"></a>
+## type [CreateWorkoutSectionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L56-L58>)
+
+
+
+```go
+type CreateWorkoutSectionInput struct {
+    RawBody []byte
+}
+```
+
+<a name="CreateWorkoutSectionOutput"></a>
+## type [CreateWorkoutSectionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L60-L62>)
+
+
+
+```go
+type CreateWorkoutSectionOutput struct {
+    Body models.WorkoutSection
+}
+```
+
+<a name="DeleteWorkoutInput"></a>
+## type [DeleteWorkoutInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L40-L42>)
+
+
+
+```go
+type DeleteWorkoutInput struct {
+    ID uint `path:"id"`
+}
+```
+
+<a name="DeleteWorkoutOutput"></a>
+## type [DeleteWorkoutOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L44>)
+
+
+
+```go
+type DeleteWorkoutOutput struct{}
+```
+
+<a name="DeleteWorkoutSectionExerciseInput"></a>
+## type [DeleteWorkoutSectionExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L96-L98>)
+
+
+
+```go
+type DeleteWorkoutSectionExerciseInput struct {
+    ID uint `path:"id"`
+}
+```
+
+<a name="DeleteWorkoutSectionExerciseOutput"></a>
+## type [DeleteWorkoutSectionExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L100>)
+
+
+
+```go
+type DeleteWorkoutSectionExerciseOutput struct{}
+```
+
+<a name="DeleteWorkoutSectionInput"></a>
+## type [DeleteWorkoutSectionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L72-L74>)
+
+
+
+```go
+type DeleteWorkoutSectionInput struct {
+    ID uint `path:"id"`
+}
+```
+
+<a name="DeleteWorkoutSectionOutput"></a>
+## type [DeleteWorkoutSectionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L76>)
+
+
+
+```go
+type DeleteWorkoutSectionOutput struct{}
+```
+
+<a name="GetWorkoutInput"></a>
+## type [GetWorkoutInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L23-L25>)
+
+
+
+```go
+type GetWorkoutInput struct {
+    ID uint `path:"id"`
+}
+```
+
+<a name="GetWorkoutOutput"></a>
+## type [GetWorkoutOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L27-L29>)
+
+
+
+```go
+type GetWorkoutOutput struct {
+    Body models.Workout
+}
+```
+
+<a name="GetWorkoutSectionInput"></a>
+## type [GetWorkoutSectionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L64-L66>)
+
+
+
+```go
+type GetWorkoutSectionInput struct {
+    ID uint `path:"id"`
+}
+```
+
+<a name="GetWorkoutSectionOutput"></a>
+## type [GetWorkoutSectionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L68-L70>)
+
+
+
+```go
+type GetWorkoutSectionOutput struct {
+    Body models.WorkoutSection
+}
+```
+
+<a name="ListWorkoutSectionExercisesInput"></a>
+## type [ListWorkoutSectionExercisesInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L80-L82>)
+
+
+
+```go
+type ListWorkoutSectionExercisesInput struct {
+    WorkoutSectionID string `query:"workoutSectionId" doc:"Filter by workout section ID"`
+}
+```
+
+<a name="ListWorkoutSectionExercisesOutput"></a>
+## type [ListWorkoutSectionExercisesOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L84-L86>)
+
+
+
+```go
+type ListWorkoutSectionExercisesOutput struct {
+    Body []models.WorkoutSectionExercise
+}
+```
+
+<a name="ListWorkoutSectionsInput"></a>
+## type [ListWorkoutSectionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L48-L50>)
+
+
+
+```go
+type ListWorkoutSectionsInput struct {
+    WorkoutID string `query:"workoutId" doc:"Filter by workout ID"`
+}
+```
+
+<a name="ListWorkoutSectionsOutput"></a>
+## type [ListWorkoutSectionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L52-L54>)
+
+
+
+```go
+type ListWorkoutSectionsOutput struct {
+    Body []models.WorkoutSection
+}
+```
+
+<a name="ListWorkoutsInput"></a>
+## type [ListWorkoutsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L9>)
+
+
+
+```go
+type ListWorkoutsInput struct{}
+```
+
+<a name="ListWorkoutsOutput"></a>
+## type [ListWorkoutsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L11-L13>)
+
+
+
+```go
+type ListWorkoutsOutput struct {
+    Body []models.Workout
+}
+```
+
+<a name="UpdateWorkoutInput"></a>
+## type [UpdateWorkoutInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L31-L34>)
+
+
+
+```go
+type UpdateWorkoutInput struct {
+    ID      uint `path:"id"`
+    RawBody []byte
+}
+```
+
+<a name="UpdateWorkoutOutput"></a>
+## type [UpdateWorkoutOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L36-L38>)
+
+
+
+```go
+type UpdateWorkoutOutput struct {
+    Body models.Workout
+}
+```
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)

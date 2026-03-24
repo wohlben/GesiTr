@@ -74,68 +74,10 @@ func newRouter() *gin.Engine {
 
 	humaAPI := humaconfig.NewAPI(r, api)
 	exercisehandlers.RegisterRoutes(humaAPI)
-
-	equipment := api.Group("/equipment")
-	equipment.GET("", equipmenthandlers.ListEquipment)
-	equipment.POST("", equipmenthandlers.CreateEquipment)
-	equipment.GET("/:id", equipmenthandlers.GetEquipment)
-	equipment.DELETE("/:id", equipmenthandlers.DeleteEquipment)
-
-	user := api.Group("/user")
-
-	workouts := user.Group("/workouts")
-	workouts.GET("", workouthandlers.ListWorkouts)
-	workouts.POST("", workouthandlers.CreateWorkout)
-	workouts.GET("/:id", workouthandlers.GetWorkout)
-	workouts.PUT("/:id", workouthandlers.UpdateWorkout)
-	workouts.DELETE("/:id", workouthandlers.DeleteWorkout)
-
-	sections := user.Group("/workout-sections")
-	sections.GET("", workouthandlers.ListWorkoutSections)
-	sections.POST("", workouthandlers.CreateWorkoutSection)
-	sections.GET("/:id", workouthandlers.GetWorkoutSection)
-	sections.DELETE("/:id", workouthandlers.DeleteWorkoutSection)
-
-	sectionExercises := user.Group("/workout-section-exercises")
-	sectionExercises.GET("", workouthandlers.ListWorkoutSectionExercises)
-	sectionExercises.POST("", workouthandlers.CreateWorkoutSectionExercise)
-	sectionExercises.DELETE("/:id", workouthandlers.DeleteWorkoutSectionExercise)
-
-	workoutLogs := user.Group("/workout-logs")
-	workoutLogs.GET("", ListWorkoutLogs)
-	workoutLogs.POST("", CreateWorkoutLog)
-	workoutLogs.GET("/:id", GetWorkoutLog)
-	workoutLogs.PATCH("/:id", UpdateWorkoutLog)
-	workoutLogs.DELETE("/:id", DeleteWorkoutLog)
-	workoutLogs.POST("/adhoc", StartAdhocWorkoutLog)
-	workoutLogs.POST("/:id/start", StartWorkoutLog)
-	workoutLogs.POST("/:id/abandon", AbandonWorkoutLog)
-	workoutLogs.POST("/:id/finish", FinishWorkoutLog)
-
-	logSections := user.Group("/workout-log-sections")
-	logSections.GET("", ListWorkoutLogSections)
-	logSections.POST("", CreateWorkoutLogSection)
-	logSections.GET("/:id", GetWorkoutLogSection)
-	logSections.DELETE("/:id", DeleteWorkoutLogSection)
-
-	logExercises := user.Group("/workout-log-exercises")
-	logExercises.GET("", ListWorkoutLogExercises)
-	logExercises.POST("", CreateWorkoutLogExercise)
-	logExercises.PATCH("/:id", UpdateWorkoutLogExercise)
-	logExercises.DELETE("/:id", DeleteWorkoutLogExercise)
-
-	logExerciseSets := user.Group("/workout-log-exercise-sets")
-	logExerciseSets.GET("", ListWorkoutLogExerciseSets)
-	logExerciseSets.POST("", CreateWorkoutLogExerciseSet)
-	logExerciseSets.PATCH("/:id", UpdateWorkoutLogExerciseSet)
-	logExerciseSets.DELETE("/:id", DeleteWorkoutLogExerciseSet)
-
-	exerciseLogs := user.Group("/exercise-logs")
-	exerciseLogs.GET("", exerciseloghandlers.ListExerciseLogs)
-	exerciseLogs.POST("", exerciseloghandlers.CreateExerciseLog)
-	exerciseLogs.GET("/:id", exerciseloghandlers.GetExerciseLog)
-	exerciseLogs.PATCH("/:id", exerciseloghandlers.UpdateExerciseLog)
-	exerciseLogs.DELETE("/:id", exerciseloghandlers.DeleteExerciseLog)
+	equipmenthandlers.RegisterRoutes(humaAPI)
+	workouthandlers.RegisterRoutes(humaAPI)
+	RegisterRoutes(humaAPI)
+	exerciseloghandlers.RegisterRoutes(humaAPI)
 
 	return r
 }

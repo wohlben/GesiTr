@@ -94,134 +94,15 @@ func setupRoutes(r *gin.Engine) {
 	// Huma API — shares the /api group so Gin auth/profile middleware applies.
 	humaAPI := humaconfig.NewAPI(r, api)
 	exerciseHandlers.RegisterRoutes(humaAPI)
-
-	api.GET("/profiles/:id", profileHandlers.GetProfile)
-
-	equipment := api.Group("/equipment")
-	{
-		equipment.GET("", equipmentHandlers.ListEquipment)
-		equipment.POST("", equipmentHandlers.CreateEquipment)
-		equipment.GET("/:id", equipmentHandlers.GetEquipment)
-		equipment.PUT("/:id", equipmentHandlers.UpdateEquipment)
-		equipment.DELETE("/:id", equipmentHandlers.DeleteEquipment)
-		equipment.GET("/:id/permissions", equipmentHandlers.GetEquipmentPermissions)
-		equipment.GET("/:id/versions", equipmentHandlers.ListEquipmentVersions)
-		equipment.GET("/templates/:templateId/versions/:version", equipmentHandlers.GetEquipmentVersion)
-	}
-
-	fulfillments := api.Group("/fulfillments")
-	{
-		fulfillments.GET("", fulfillmentHandlers.ListFulfillments)
-		fulfillments.POST("", fulfillmentHandlers.CreateFulfillment)
-		fulfillments.DELETE("/:id", fulfillmentHandlers.DeleteFulfillment)
-	}
-
-	exerciseRelationships := api.Group("/exercise-relationships")
-	{
-		exerciseRelationships.GET("", exerciseRelHandlers.ListExerciseRelationships)
-		exerciseRelationships.POST("", exerciseRelHandlers.CreateExerciseRelationship)
-		exerciseRelationships.DELETE("/:id", exerciseRelHandlers.DeleteExerciseRelationship)
-	}
-
-	exerciseGroups := api.Group("/exercise-groups")
-	{
-		exerciseGroups.GET("", exerciseGroupHandlers.ListExerciseGroups)
-		exerciseGroups.POST("", exerciseGroupHandlers.CreateExerciseGroup)
-		exerciseGroups.GET("/:id", exerciseGroupHandlers.GetExerciseGroup)
-		exerciseGroups.PUT("/:id", exerciseGroupHandlers.UpdateExerciseGroup)
-		exerciseGroups.DELETE("/:id", exerciseGroupHandlers.DeleteExerciseGroup)
-		exerciseGroups.GET("/:id/permissions", exerciseGroupHandlers.GetExerciseGroupPermissions)
-	}
-
-	exerciseGroupMembers := api.Group("/exercise-group-members")
-	{
-		exerciseGroupMembers.GET("", exerciseGroupHandlers.ListExerciseGroupMembers)
-		exerciseGroupMembers.POST("", exerciseGroupHandlers.CreateExerciseGroupMember)
-		exerciseGroupMembers.DELETE("/:id", exerciseGroupHandlers.DeleteExerciseGroupMember)
-	}
-
-	equipmentRelationships := api.Group("/equipment-relationships")
-	{
-		equipmentRelationships.GET("", equipmentRelHandlers.ListEquipmentRelationships)
-		equipmentRelationships.POST("", equipmentRelHandlers.CreateEquipmentRelationship)
-		equipmentRelationships.DELETE("/:id", equipmentRelHandlers.DeleteEquipmentRelationship)
-	}
-
-	user := api.Group("/user")
-
-	user.GET("/profile", profileHandlers.GetMyProfile)
-	user.PUT("/profile", profileHandlers.UpdateMyProfile)
-
-	workouts := user.Group("/workouts")
-	{
-		workouts.GET("", workoutHandlers.ListWorkouts)
-		workouts.POST("", workoutHandlers.CreateWorkout)
-		workouts.GET("/:id", workoutHandlers.GetWorkout)
-		workouts.PUT("/:id", workoutHandlers.UpdateWorkout)
-		workouts.DELETE("/:id", workoutHandlers.DeleteWorkout)
-	}
-
-	workoutSections := user.Group("/workout-sections")
-	{
-		workoutSections.GET("", workoutHandlers.ListWorkoutSections)
-		workoutSections.POST("", workoutHandlers.CreateWorkoutSection)
-		workoutSections.GET("/:id", workoutHandlers.GetWorkoutSection)
-		workoutSections.DELETE("/:id", workoutHandlers.DeleteWorkoutSection)
-	}
-
-	workoutSectionExercises := user.Group("/workout-section-exercises")
-	{
-		workoutSectionExercises.GET("", workoutHandlers.ListWorkoutSectionExercises)
-		workoutSectionExercises.POST("", workoutHandlers.CreateWorkoutSectionExercise)
-		workoutSectionExercises.DELETE("/:id", workoutHandlers.DeleteWorkoutSectionExercise)
-	}
-
-	workoutLogs := user.Group("/workout-logs")
-	{
-		workoutLogs.GET("", workoutloghandlers.ListWorkoutLogs)
-		workoutLogs.POST("", workoutloghandlers.CreateWorkoutLog)
-		workoutLogs.GET("/:id", workoutloghandlers.GetWorkoutLog)
-		workoutLogs.PATCH("/:id", workoutloghandlers.UpdateWorkoutLog)
-		workoutLogs.DELETE("/:id", workoutloghandlers.DeleteWorkoutLog)
-		workoutLogs.POST("/adhoc", workoutloghandlers.StartAdhocWorkoutLog)
-		workoutLogs.POST("/:id/start", workoutloghandlers.StartWorkoutLog)
-		workoutLogs.POST("/:id/abandon", workoutloghandlers.AbandonWorkoutLog)
-		workoutLogs.POST("/:id/finish", workoutloghandlers.FinishWorkoutLog)
-	}
-
-	workoutLogSections := user.Group("/workout-log-sections")
-	{
-		workoutLogSections.GET("", workoutloghandlers.ListWorkoutLogSections)
-		workoutLogSections.POST("", workoutloghandlers.CreateWorkoutLogSection)
-		workoutLogSections.GET("/:id", workoutloghandlers.GetWorkoutLogSection)
-		workoutLogSections.PATCH("/:id", workoutloghandlers.UpdateWorkoutLogSection)
-		workoutLogSections.DELETE("/:id", workoutloghandlers.DeleteWorkoutLogSection)
-	}
-
-	workoutLogExercises := user.Group("/workout-log-exercises")
-	{
-		workoutLogExercises.GET("", workoutloghandlers.ListWorkoutLogExercises)
-		workoutLogExercises.POST("", workoutloghandlers.CreateWorkoutLogExercise)
-		workoutLogExercises.PATCH("/:id", workoutloghandlers.UpdateWorkoutLogExercise)
-		workoutLogExercises.DELETE("/:id", workoutloghandlers.DeleteWorkoutLogExercise)
-	}
-
-	workoutLogExerciseSets := user.Group("/workout-log-exercise-sets")
-	{
-		workoutLogExerciseSets.GET("", workoutloghandlers.ListWorkoutLogExerciseSets)
-		workoutLogExerciseSets.POST("", workoutloghandlers.CreateWorkoutLogExerciseSet)
-		workoutLogExerciseSets.PATCH("/:id", workoutloghandlers.UpdateWorkoutLogExerciseSet)
-		workoutLogExerciseSets.DELETE("/:id", workoutloghandlers.DeleteWorkoutLogExerciseSet)
-	}
-
-	exerciseLogs := user.Group("/exercise-logs")
-	{
-		exerciseLogs.GET("", exerciseLogHandlers.ListExerciseLogs)
-		exerciseLogs.POST("", exerciseLogHandlers.CreateExerciseLog)
-		exerciseLogs.GET("/:id", exerciseLogHandlers.GetExerciseLog)
-		exerciseLogs.PATCH("/:id", exerciseLogHandlers.UpdateExerciseLog)
-		exerciseLogs.DELETE("/:id", exerciseLogHandlers.DeleteExerciseLog)
-	}
+	equipmentHandlers.RegisterRoutes(humaAPI)
+	fulfillmentHandlers.RegisterRoutes(humaAPI)
+	exerciseRelHandlers.RegisterRoutes(humaAPI)
+	equipmentRelHandlers.RegisterRoutes(humaAPI)
+	exerciseGroupHandlers.RegisterRoutes(humaAPI)
+	profileHandlers.RegisterRoutes(humaAPI)
+	workoutHandlers.RegisterRoutes(humaAPI)
+	workoutloghandlers.RegisterRoutes(humaAPI)
+	exerciseLogHandlers.RegisterRoutes(humaAPI)
 }
 
 func setupSPA(r *gin.Engine) {
