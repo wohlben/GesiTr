@@ -9,6 +9,7 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
+	"gesitr/internal/docs"
 	equipmentHandlers "gesitr/internal/equipment/handlers"
 	equipmentModels "gesitr/internal/equipment/models"
 	fulfillmentHandlers "gesitr/internal/equipmentfulfillment/handlers"
@@ -263,6 +264,7 @@ func buildApp() *gin.Engine {
 
 	r := gin.Default()
 	setupRoutes(r)
+	docs.SetupRoutes(r)
 
 	if os.Getenv("DEV") == "true" {
 		r.POST("/api/ci/reset-db", func(c *gin.Context) {

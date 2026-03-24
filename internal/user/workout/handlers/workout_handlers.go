@@ -19,6 +19,8 @@ func preloadWorkout(db *gorm.DB) *gorm.DB {
 	})
 }
 
+// ListWorkouts returns all workouts owned by the current user, each
+// including its sections and section exercises. GET /api/user/workouts
 func ListWorkouts(c *gin.Context) {
 	userID := auth.GetUserID(c)
 	db := database.DB.Model(&models.WorkoutEntity{}).Where("owner = ?", userID)
@@ -36,6 +38,9 @@ func ListWorkouts(c *gin.Context) {
 	c.JSON(http.StatusOK, dtos)
 }
 
+// CreateWorkout creates an empty workout. Add sections via
+// [CreateWorkoutSection] and exercises via [CreateWorkoutSectionExercise].
+// POST /api/user/workouts
 func CreateWorkout(c *gin.Context) {
 	var dto models.Workout
 	if err := c.ShouldBindJSON(&dto); err != nil {
@@ -52,6 +57,8 @@ func CreateWorkout(c *gin.Context) {
 	c.JSON(http.StatusCreated, entity.ToDTO())
 }
 
+// GetWorkout returns a workout with its full section and exercise tree.
+// Returns 403 if the caller is not the owner. GET /api/user/workouts/:id
 func GetWorkout(c *gin.Context) {
 	var entity models.WorkoutEntity
 	if err := preloadWorkout(database.DB).First(&entity, c.Param("id")).Error; err != nil {
@@ -65,6 +72,8 @@ func GetWorkout(c *gin.Context) {
 	c.JSON(http.StatusOK, entity.ToDTO())
 }
 
+// UpdateWorkout updates workout metadata (name, notes). Sections and exercises
+// are managed via their own endpoints. PUT /api/user/workouts/:id
 func UpdateWorkout(c *gin.Context) {
 	var existing models.WorkoutEntity
 	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
@@ -98,6 +107,7 @@ func UpdateWorkout(c *gin.Context) {
 	c.JSON(http.StatusOK, entity.ToDTO())
 }
 
+// DeleteWorkout deletes a workout. DELETE /api/user/workouts/:id
 func DeleteWorkout(c *gin.Context) {
 	var entity models.WorkoutEntity
 	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {

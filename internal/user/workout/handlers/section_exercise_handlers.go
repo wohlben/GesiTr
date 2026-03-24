@@ -21,6 +21,9 @@ func requireSectionOwner(c *gin.Context, sectionID uint) bool {
 	return requireWorkoutOwner(c, section.WorkoutID)
 }
 
+// ListWorkoutSectionExercises returns section exercises owned by the current
+// user. Filter by workoutSectionId query param.
+// GET /api/user/workout-section-exercises
 func ListWorkoutSectionExercises(c *gin.Context) {
 	db := database.DB.Model(&models.WorkoutSectionExerciseEntity{})
 
@@ -44,6 +47,12 @@ func ListWorkoutSectionExercises(c *gin.Context) {
 	c.JSON(http.StatusOK, dtos)
 }
 
+// CreateWorkoutSectionExercise adds an exercise to a section. Requires a
+// workoutSectionId (whose parent workout must be owned by the current user)
+// and an exerciseSchemeId referencing an existing exercise scheme — see
+// [gesitr/internal/exercise/handlers.CreateExerciseScheme].
+// A workout and section must exist first — see [CreateWorkout] and
+// [CreateWorkoutSection]. POST /api/user/workout-section-exercises
 func CreateWorkoutSectionExercise(c *gin.Context) {
 	var dto models.WorkoutSectionExercise
 	if err := c.ShouldBindJSON(&dto); err != nil {
@@ -69,6 +78,8 @@ func CreateWorkoutSectionExercise(c *gin.Context) {
 	c.JSON(http.StatusCreated, entity.ToDTO())
 }
 
+// DeleteWorkoutSectionExercise removes an exercise from a section.
+// DELETE /api/user/workout-section-exercises/:id
 func DeleteWorkoutSectionExercise(c *gin.Context) {
 	var entity models.WorkoutSectionExerciseEntity
 	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {

@@ -15,6 +15,9 @@ import (
 	"gorm.io/gorm"
 )
 
+// ListEquipment returns equipment visible to the current user: their own
+// equipment plus all public equipment. Filter by owner, public, or category
+// query params. GET /api/equipment
 func ListEquipment(c *gin.Context) {
 	db := database.DB.Model(&models.EquipmentEntity{})
 
@@ -65,6 +68,9 @@ func ListEquipment(c *gin.Context) {
 	})
 }
 
+// CreateEquipment creates equipment owned by the current user. Equipment can
+// be referenced by exercises via their equipmentIds field — see
+// [gesitr/internal/exercise/handlers.CreateExercise]. POST /api/equipment
 func CreateEquipment(c *gin.Context) {
 	var dto models.Equipment
 	if err := c.ShouldBindJSON(&dto); err != nil {
@@ -94,6 +100,9 @@ func CreateEquipment(c *gin.Context) {
 	c.JSON(http.StatusCreated, resultDTO)
 }
 
+// GetEquipmentPermissions returns the current user's permissions on equipment.
+// See [gesitr/internal/shared.ResolvePermissions] for the permission model.
+// GET /api/equipment/:id/permissions
 func GetEquipmentPermissions(c *gin.Context) {
 	var entity models.EquipmentEntity
 	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
@@ -101,23 +110,33 @@ func GetEquipmentPermissions(c *gin.Context) {
 		return
 	}
 	userID := auth.GetUserID(c)
-	perms, visible := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
-	if !visible {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Equipment not found"})
-		return
+	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
+	if perms == nil {
+		perms = []shared.Permission{}
 	}
 	c.JSON(http.StatusOK, shared.PermissionsResponse{Permissions: perms})
 }
 
+// GetEquipment returns a single equipment item. Public equipment is visible
+// to all users; private equipment is visible only to its owner.
+// GET /api/equipment/:id
 func GetEquipment(c *gin.Context) {
 	var entity models.EquipmentEntity
 	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Equipment not found"})
 		return
 	}
+	userID := auth.GetUserID(c)
+	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
+	if len(perms) == 0 {
+		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
+		return
+	}
 	c.JSON(http.StatusOK, entity.ToDTO())
 }
 
+// UpdateEquipment updates equipment. Creates a version history entry.
+// Owner only. PUT /api/equipment/:id
 func UpdateEquipment(c *gin.Context) {
 	var existing models.EquipmentEntity
 	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
@@ -170,6 +189,9 @@ func UpdateEquipment(c *gin.Context) {
 	c.JSON(http.StatusOK, entity.ToDTO())
 }
 
+// ListEquipmentVersions returns the version history for equipment. Each
+// update via [UpdateEquipment] creates a new version entry.
+// GET /api/equipment/:id/versions
 func ListEquipmentVersions(c *gin.Context) {
 	var entity models.EquipmentEntity
 	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
@@ -190,6 +212,9 @@ func ListEquipmentVersions(c *gin.Context) {
 	c.JSON(http.StatusOK, entries)
 }
 
+// GetEquipmentVersion returns a specific historical version of equipment
+// by templateId and version number.
+// GET /api/equipment/templates/:templateId/versions/:version
 func GetEquipmentVersion(c *gin.Context) {
 	version, err := strconv.Atoi(c.Param("version"))
 	if err != nil {
@@ -212,6 +237,8 @@ func GetEquipmentVersion(c *gin.Context) {
 	c.JSON(http.StatusOK, history.ToVersionEntry())
 }
 
+// DeleteEquipment deletes equipment. Owner only.
+// DELETE /api/equipment/:id
 func DeleteEquipment(c *gin.Context) {
 	var entity models.EquipmentEntity
 	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {

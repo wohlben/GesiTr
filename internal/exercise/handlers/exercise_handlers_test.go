@@ -871,10 +871,15 @@ func TestGetExercisePermissions(t *testing.T) {
 		}
 	})
 
-	t.Run("non-owner on private gets 404", func(t *testing.T) {
+	t.Run("non-owner on private gets empty permissions", func(t *testing.T) {
 		w := doJSONAs(r, "GET", "/api/exercises/2/permissions", nil, "bob")
-		if w.Code != http.StatusNotFound {
-			t.Errorf("expected 404, got %d", w.Code)
+		if w.Code != http.StatusOK {
+			t.Fatalf("expected 200, got %d", w.Code)
+		}
+		var resp shared.PermissionsResponse
+		json.Unmarshal(w.Body.Bytes(), &resp)
+		if len(resp.Permissions) != 0 {
+			t.Errorf("expected empty permissions, got %v", resp.Permissions)
 		}
 	})
 

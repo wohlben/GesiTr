@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 	"time"
@@ -27,6 +28,9 @@ func preloadExercise(db *gorm.DB) *gorm.DB {
 	return db
 }
 
+// ListExercises returns exercises visible to the current user: their own
+// exercises plus all public exercises. Filter by owner or public query params.
+// GET /api/exercises
 func ListExercises(c *gin.Context) {
 	db := database.DB.Model(&models.ExerciseEntity{})
 
@@ -94,6 +98,11 @@ func ListExercises(c *gin.Context) {
 	})
 }
 
+// CreateExercise creates an exercise owned by the current user. The exercise
+// can reference equipment via equipmentIds — equipment must already exist
+// (see [gesitr/internal/equipment/handlers.CreateEquipment]). To use this
+// exercise in a workout, create an exercise scheme via [CreateExerciseScheme].
+// POST /api/exercises
 func CreateExercise(c *gin.Context) {
 	var dto models.Exercise
 	if err := c.ShouldBindJSON(&dto); err != nil {
@@ -131,6 +140,9 @@ func CreateExercise(c *gin.Context) {
 	c.JSON(http.StatusCreated, resultDTO)
 }
 
+// GetExercisePermissions returns the current user's permissions on an exercise.
+// See [gesitr/internal/shared.ResolvePermissions] for the permission model.
+// GET /api/exercises/:id/permissions
 func GetExercisePermissions(c *gin.Context) {
 	var entity models.ExerciseEntity
 	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
@@ -138,23 +150,33 @@ func GetExercisePermissions(c *gin.Context) {
 		return
 	}
 	userID := auth.GetUserID(c)
-	perms, visible := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
-	if !visible {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
-		return
+	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
+	if perms == nil {
+		perms = []shared.Permission{}
 	}
 	c.JSON(http.StatusOK, shared.PermissionsResponse{Permissions: perms})
 }
 
+// GetExercise returns a single exercise. Public exercises are visible to all
+// users; private exercises are visible only to their owner.
+// GET /api/exercises/:id
 func GetExercise(c *gin.Context) {
 	var entity models.ExerciseEntity
 	if err := preloadExercise(database.DB).First(&entity, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
 		return
 	}
+	userID := auth.GetUserID(c)
+	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
+	if len(perms) == 0 {
+		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
+		return
+	}
 	c.JSON(http.StatusOK, entity.ToDTO())
 }
 
+// UpdateExercise updates an exercise. Creates a version history entry.
+// Owner only — returns 403 for non-owners. PUT /api/exercises/:id
 func UpdateExercise(c *gin.Context) {
 	var existing models.ExerciseEntity
 	if err := preloadExercise(database.DB).First(&existing, c.Param("id")).Error; err != nil {
@@ -311,6 +333,9 @@ func UpdateExercise(c *gin.Context) {
 	c.JSON(http.StatusOK, entity.ToDTO())
 }
 
+// ListExerciseVersions returns the version history for an exercise. Each
+// update via [UpdateExercise] creates a new version entry.
+// GET /api/exercises/:id/versions
 func ListExerciseVersions(c *gin.Context) {
 	var entity models.ExerciseEntity
 	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
@@ -331,6 +356,9 @@ func ListExerciseVersions(c *gin.Context) {
 	c.JSON(http.StatusOK, entries)
 }
 
+// GetExerciseVersion returns a specific historical version of an exercise
+// by templateId and version number.
+// GET /api/exercises/templates/:templateId/versions/:version
 func GetExerciseVersion(c *gin.Context) {
 	version, err := strconv.Atoi(c.Param("version"))
 	if err != nil {
@@ -338,21 +366,29 @@ func GetExerciseVersion(c *gin.Context) {
 		return
 	}
 
-	var entity models.ExerciseEntity
-	if err := database.DB.Where("template_id = ?", c.Param("templateId")).First(&entity).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
+	// Query the history table directly — the snapshot contains the full
+	// exercise, so this works even after the exercise has been deleted.
+	var history models.ExerciseHistoryEntity
+	if err := database.DB.Where("json_extract(snapshot, '$.templateId') = ? AND version = ?", c.Param("templateId"), version).First(&history).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Version not found"})
 		return
 	}
 
-	var history models.ExerciseHistoryEntity
-	if err := database.DB.Where("exercise_id = ? AND version = ?", entity.ID, version).First(&history).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Version not found"})
+	// Parse snapshot for permission check.
+	var snap models.Exercise
+	json.Unmarshal([]byte(history.Snapshot), &snap)
+	userID := auth.GetUserID(c)
+	perms, _ := shared.ResolvePermissions(userID, snap.Owner, snap.Public)
+	if len(perms) == 0 {
+		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
 		return
 	}
 
 	c.JSON(http.StatusOK, history.ToVersionEntry())
 }
 
+// DeleteExercise deletes an exercise. Owner only.
+// DELETE /api/exercises/:id
 func DeleteExercise(c *gin.Context) {
 	var entity models.ExerciseEntity
 	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {

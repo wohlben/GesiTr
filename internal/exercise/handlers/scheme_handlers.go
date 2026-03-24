@@ -6,13 +6,19 @@ import (
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	"gesitr/internal/exercise/models"
+	"gesitr/internal/shared"
 
 	"github.com/gin-gonic/gin"
 )
 
+// ListExerciseSchemes returns schemes the current user has access to: their
+// own schemes plus schemes linked to public exercises. Filter by exerciseId
+// or measurementType query params. GET /api/exercise-schemes
 func ListExerciseSchemes(c *gin.Context) {
+	userID := auth.GetUserID(c)
+	// FIXME: subquery doesn't scale — replace with a join or denormalize visibility
 	db := database.DB.Model(&models.ExerciseSchemeEntity{}).
-		Where("owner = ?", auth.GetUserID(c))
+		Where("owner = ? OR exercise_id IN (SELECT id FROM exercises WHERE public = ? AND deleted_at IS NULL)", userID, true)
 
 	if v := c.Query("exerciseId"); v != "" {
 		db = db.Where("exercise_id = ?", v)
@@ -34,6 +40,12 @@ func ListExerciseSchemes(c *gin.Context) {
 	c.JSON(http.StatusOK, dtos)
 }
 
+// CreateExerciseScheme creates an exercise scheme — a user-specific
+// configuration of an exercise (sets, reps, measurement type). Requires
+// an exerciseId referencing an existing exercise (see [CreateExercise]).
+// Schemes are referenced when adding exercises to workouts via
+// [gesitr/internal/user/workout/handlers.CreateWorkoutSectionExercise].
+// POST /api/exercise-schemes
 func CreateExerciseScheme(c *gin.Context) {
 	var dto models.ExerciseScheme
 	if err := c.ShouldBindJSON(&dto); err != nil {
@@ -57,19 +69,31 @@ func CreateExerciseScheme(c *gin.Context) {
 	c.JSON(http.StatusCreated, entity.ToDTO())
 }
 
+// GetExerciseScheme returns a single exercise scheme. Access is determined by
+// the linked exercise's visibility — if the user can see the exercise, they
+// can see its schemes. GET /api/exercise-schemes/:id
 func GetExerciseScheme(c *gin.Context) {
 	var entity models.ExerciseSchemeEntity
 	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise scheme not found"})
 		return
 	}
-	if entity.Owner != auth.GetUserID(c) {
+	var exercise models.ExerciseEntity
+	if err := database.DB.First(&exercise, entity.ExerciseID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
+		return
+	}
+	userID := auth.GetUserID(c)
+	perms, _ := shared.ResolvePermissions(userID, exercise.Owner, exercise.Public)
+	if len(perms) == 0 {
 		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
 		return
 	}
 	c.JSON(http.StatusOK, entity.ToDTO())
 }
 
+// UpdateExerciseScheme updates a scheme's configuration. The exerciseId
+// cannot be changed. PUT /api/exercise-schemes/:id
 func UpdateExerciseScheme(c *gin.Context) {
 	var existing models.ExerciseSchemeEntity
 	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
@@ -99,6 +123,8 @@ func UpdateExerciseScheme(c *gin.Context) {
 	c.JSON(http.StatusOK, entity.ToDTO())
 }
 
+// DeleteExerciseScheme deletes an exercise scheme. Owner only.
+// DELETE /api/exercise-schemes/:id
 func DeleteExerciseScheme(c *gin.Context) {
 	var entity models.ExerciseSchemeEntity
 	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {

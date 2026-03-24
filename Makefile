@@ -1,4 +1,4 @@
-.PHONY: build build-web build-go dev dev-api dev-web docker clean dolt generate seed test test-go test-web test-e2e lint lint-go lint-web update-screenshots update-screenshots-web update-screenshots-e2e
+.PHONY: build build-web build-go dev dev-api dev-web docker clean dolt generate seed test test-go test-web test-e2e lint lint-go lint-web update-screenshots update-screenshots-web update-screenshots-e2e docs
 
 # Generate TypeScript types from Go structs
 # Tygo generates per-domain files, then we assemble them into the two barrel files
@@ -134,3 +134,6 @@ clean:
 	rm -f gesitr gesitr.db
 	rm -rf web/dist
 	rm -f web/src/app/generated/models.ts
+
+docs:
+	./scripts/docs.sh

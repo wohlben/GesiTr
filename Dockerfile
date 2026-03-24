@@ -26,6 +26,9 @@ COPY . .
 COPY --from=web-builder /app/web/dist ./web/dist
 ARG CACHEBUST
 RUN test -z "$(gofmt -l .)" || (echo "Go files not formatted:" && gofmt -l . && exit 1)
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    make docs
 RUN chown -R tester:tester /app
 USER tester
 RUN --mount=type=cache,target=/home/tester/.cache/go-build,uid=1000 \

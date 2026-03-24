@@ -72,10 +72,9 @@ func GetExerciseGroupPermissions(c *gin.Context) {
 		return
 	}
 	userID := auth.GetUserID(c)
-	perms, visible := shared.ResolvePermissions(userID, entity.Owner, false)
-	if !visible {
-		c.JSON(http.StatusNotFound, gin.H{"error": "ExerciseGroup not found"})
-		return
+	perms, _ := shared.ResolvePermissions(userID, entity.Owner, false)
+	if perms == nil {
+		perms = []shared.Permission{}
 	}
 	c.JSON(http.StatusOK, shared.PermissionsResponse{Permissions: perms})
 }

@@ -24,6 +24,9 @@ func requireWorkoutOwner(c *gin.Context, workoutID uint) bool {
 	return true
 }
 
+// ListWorkoutSections returns sections owned by the current user. Filter by
+// workoutId query param to get sections for a specific workout.
+// GET /api/user/workout-sections
 func ListWorkoutSections(c *gin.Context) {
 	db := database.DB.Model(&models.WorkoutSectionEntity{})
 
@@ -47,6 +50,10 @@ func ListWorkoutSections(c *gin.Context) {
 	c.JSON(http.StatusOK, dtos)
 }
 
+// CreateWorkoutSection adds a section to a workout. Requires a workoutId
+// referencing a workout owned by the current user. A workout must exist
+// before sections can be added — see [CreateWorkout].
+// POST /api/user/workout-sections
 func CreateWorkoutSection(c *gin.Context) {
 	var dto models.WorkoutSection
 	if err := c.ShouldBindJSON(&dto); err != nil {
@@ -66,6 +73,8 @@ func CreateWorkoutSection(c *gin.Context) {
 	c.JSON(http.StatusCreated, entity.ToDTO())
 }
 
+// GetWorkoutSection returns a single section with its exercises.
+// GET /api/user/workout-sections/:id
 func GetWorkoutSection(c *gin.Context) {
 	var entity models.WorkoutSectionEntity
 	if err := database.DB.Preload("Exercises").First(&entity, c.Param("id")).Error; err != nil {
@@ -78,6 +87,8 @@ func GetWorkoutSection(c *gin.Context) {
 	c.JSON(http.StatusOK, entity.ToDTO())
 }
 
+// DeleteWorkoutSection removes a section from its workout.
+// DELETE /api/user/workout-sections/:id
 func DeleteWorkoutSection(c *gin.Context) {
 	var entity models.WorkoutSectionEntity
 	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
