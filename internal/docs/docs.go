@@ -3,11 +3,9 @@ package docs
 
 import (
 	"bytes"
-	"embed"
 	"html/template"
 	"io/fs"
 	"net/http"
-	"path/filepath"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -15,9 +13,6 @@ import (
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/renderer/html"
 )
-
-//go:embed all:generated
-var docsFS embed.FS
 
 type docPage struct {
 	Title   string
@@ -37,16 +32,14 @@ func init() {
 	)
 }
 
-func loadPages() {
-	if len(pages) > 0 {
-		return
-	}
-	entries, _ := fs.ReadDir(docsFS, "generated")
+func loadPages(docsFS fs.FS) {
+	pages = nil
+	entries, _ := fs.ReadDir(docsFS, ".")
 	for _, e := range entries {
 		if e.IsDir() || !strings.HasSuffix(e.Name(), ".md") {
 			continue
 		}
-		data, _ := fs.ReadFile(docsFS, "generated/"+e.Name())
+		data, _ := fs.ReadFile(docsFS, e.Name())
 		var buf bytes.Buffer
 		md.Convert(data, &buf)
 
@@ -114,8 +107,9 @@ var pageTmpl = template.Must(template.New("page").Parse(`<!DOCTYPE html>
 </html>`))
 
 // SetupRoutes registers the /docs routes on the given engine.
-func SetupRoutes(r *gin.Engine) {
-	loadPages()
+// docsFS should contain the generated markdown files at its root.
+func SetupRoutes(r *gin.Engine, docsFS fs.FS) {
+	loadPages(docsFS)
 
 	r.GET("/docs", func(c *gin.Context) {
 		var buf bytes.Buffer
@@ -137,5 +131,4 @@ func SetupRoutes(r *gin.Engine) {
 		c.Redirect(http.StatusMovedPermanently, "/docs")
 	})
 
-	_ = filepath.Base // silence import if unused
 }

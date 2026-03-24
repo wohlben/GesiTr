@@ -38,6 +38,9 @@ import (
 //go:embed web/dist/browser/*
 var staticFiles embed.FS
 
+//go:embed docs/generated/*
+var docsFiles embed.FS
+
 // runMigrations handles manual schema changes that AutoMigrate cannot
 // (e.g., dropping columns or indexes).
 func runMigrations() {
@@ -264,7 +267,8 @@ func buildApp() *gin.Engine {
 
 	r := gin.Default()
 	setupRoutes(r)
-	docs.SetupRoutes(r)
+	docsFS, _ := fs.Sub(docsFiles, "docs/generated")
+	docs.SetupRoutes(r, docsFS)
 
 	if os.Getenv("DEV") == "true" {
 		r.POST("/api/ci/reset-db", func(c *gin.Context) {

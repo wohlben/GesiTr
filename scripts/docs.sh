@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-OUT_DIR="internal/docs/generated"
+OUT_DIR="docs/generated"
 GOMARKDOC="go run github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest"
 
 rm -rf "$OUT_DIR"
