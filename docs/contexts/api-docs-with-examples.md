@@ -124,9 +124,11 @@ If setup gets repetitive, extract a helper (e.g., `createExerciseSchemeForExampl
 
 ## Rendering
 
-- `make docs` generates markdown from `doc.go` + examples via `gomarkdoc`, then embeds them into the binary
-- Docs are served as HTML at `/docs` using goldmark for markdown→HTML conversion
-- `scripts/docs.sh` auto-discovers all packages with `doc.go` files
+- `make docs` generates markdown into `docs/generated/` via `gomarkdoc` (`scripts/docs.sh` auto-discovers all packages with `doc.go` files)
+- Generated markdown is **committed to VCS** — changes to doc comments or examples produce visible diffs in `docs/generated/*.md`
+- Generated markdown is **embedded into the binary** via `//go:embed docs/generated/*` in `main.go` and **served as HTML** at `/docs` using goldmark for markdown→HTML conversion
+- The Dockerfile runs `make docs` before building, so the production image always serves up-to-date docs
+- After changing docs or examples, always run `make docs` and commit the regenerated files alongside the code changes
 
 ## When behavior changes break examples
 
@@ -143,3 +145,4 @@ This is the point — if a handler's behavior changes, the Example test fails be
 7. Run `go test -v -run Example ./<package>/` to verify
 8. Run `make test-go` to verify nothing broke
 9. Run `make docs` to regenerate — check `/docs` renders correctly
+10. Commit the regenerated `docs/generated/*.md` files alongside your code changes
