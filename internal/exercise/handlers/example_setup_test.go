@@ -10,7 +10,6 @@ import (
 	equipmenthandlers "gesitr/internal/equipment/handlers"
 	equipmentmodels "gesitr/internal/equipment/models"
 	"gesitr/internal/exercise/models"
-
 	profilemodels "gesitr/internal/profile/models"
 
 	"github.com/gin-gonic/gin"
@@ -52,6 +51,7 @@ func newExampleRouter() *gin.Engine {
 	api := r.Group("/api")
 	api.Use(auth.UserID())
 
+	// Equipment routes still use Gin handlers (not yet migrated)
 	equipment := api.Group("/equipment")
 	equipment.POST("", equipmenthandlers.CreateEquipment)
 

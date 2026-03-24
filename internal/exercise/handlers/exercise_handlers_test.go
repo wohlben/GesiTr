@@ -790,8 +790,9 @@ func TestGetExerciseVersion(t *testing.T) {
 
 	t.Run("invalid version", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/exercises/templates/press/versions/abc", nil)
-		if w.Code != http.StatusBadRequest {
-			t.Errorf("expected 400, got %d", w.Code)
+		// Huma returns 422 for path parameter validation errors
+		if w.Code != http.StatusUnprocessableEntity {
+			t.Errorf("expected 422, got %d", w.Code)
 		}
 	})
 }

@@ -11,6 +11,7 @@ import (
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	"gesitr/internal/exercise/models"
+	"gesitr/internal/humaconfig"
 	profilemodels "gesitr/internal/profile/models"
 
 	"github.com/gin-gonic/gin"
@@ -54,22 +55,8 @@ func newRouter() *gin.Engine {
 	api := r.Group("/api")
 	api.Use(auth.UserID())
 
-	exercises := api.Group("/exercises")
-	exercises.GET("", ListExercises)
-	exercises.POST("", CreateExercise)
-	exercises.GET("/:id", GetExercise)
-	exercises.PUT("/:id", UpdateExercise)
-	exercises.DELETE("/:id", DeleteExercise)
-	exercises.GET("/:id/permissions", GetExercisePermissions)
-	exercises.GET("/:id/versions", ListExerciseVersions)
-	exercises.GET("/templates/:templateId/versions/:version", GetExerciseVersion)
-
-	schemes := api.Group("/exercise-schemes")
-	schemes.GET("", ListExerciseSchemes)
-	schemes.POST("", CreateExerciseScheme)
-	schemes.GET("/:id", GetExerciseScheme)
-	schemes.PUT("/:id", UpdateExerciseScheme)
-	schemes.DELETE("/:id", DeleteExerciseScheme)
+	humaAPI := humaconfig.NewAPI(r, api)
+	RegisterRoutes(humaAPI)
 
 	return r
 }

@@ -22,6 +22,7 @@ import (
 	exerciseGroupModels "gesitr/internal/exercisegroup/models"
 	exerciseRelHandlers "gesitr/internal/exerciserelationship/handlers"
 	exerciseRelModels "gesitr/internal/exerciserelationship/models"
+	"gesitr/internal/humaconfig"
 	"gesitr/internal/profile"
 	profileHandlers "gesitr/internal/profile/handlers"
 	profileModels "gesitr/internal/profile/models"
@@ -90,19 +91,11 @@ func setupRoutes(r *gin.Engine) {
 	api.Use(auth.UserID())
 	api.Use(profile.EnsureProfile())
 
-	api.GET("/profiles/:id", profileHandlers.GetProfile)
+	// Huma API — shares the /api group so Gin auth/profile middleware applies.
+	humaAPI := humaconfig.NewAPI(r, api)
+	exerciseHandlers.RegisterRoutes(humaAPI)
 
-	exercises := api.Group("/exercises")
-	{
-		exercises.GET("", exerciseHandlers.ListExercises)
-		exercises.POST("", exerciseHandlers.CreateExercise)
-		exercises.GET("/:id", exerciseHandlers.GetExercise)
-		exercises.PUT("/:id", exerciseHandlers.UpdateExercise)
-		exercises.DELETE("/:id", exerciseHandlers.DeleteExercise)
-		exercises.GET("/:id/permissions", exerciseHandlers.GetExercisePermissions)
-		exercises.GET("/:id/versions", exerciseHandlers.ListExerciseVersions)
-		exercises.GET("/templates/:templateId/versions/:version", exerciseHandlers.GetExerciseVersion)
-	}
+	api.GET("/profiles/:id", profileHandlers.GetProfile)
 
 	equipment := api.Group("/equipment")
 	{
@@ -114,15 +107,6 @@ func setupRoutes(r *gin.Engine) {
 		equipment.GET("/:id/permissions", equipmentHandlers.GetEquipmentPermissions)
 		equipment.GET("/:id/versions", equipmentHandlers.ListEquipmentVersions)
 		equipment.GET("/templates/:templateId/versions/:version", equipmentHandlers.GetEquipmentVersion)
-	}
-
-	exerciseSchemes := api.Group("/exercise-schemes")
-	{
-		exerciseSchemes.GET("", exerciseHandlers.ListExerciseSchemes)
-		exerciseSchemes.POST("", exerciseHandlers.CreateExerciseScheme)
-		exerciseSchemes.GET("/:id", exerciseHandlers.GetExerciseScheme)
-		exerciseSchemes.PUT("/:id", exerciseHandlers.UpdateExerciseScheme)
-		exerciseSchemes.DELETE("/:id", exerciseHandlers.DeleteExerciseScheme)
 	}
 
 	fulfillments := api.Group("/fulfillments")

@@ -1,8 +1,11 @@
 package auth
 
 import (
+	"context"
 	"net/http"
 	"os"
+
+	"gesitr/internal/humaconfig"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,6 +29,7 @@ func UserID() gin.HandlerFunc {
 			return
 		}
 		c.Set(userIDKey, id)
+		c.Request = c.Request.WithContext(context.WithValue(c.Request.Context(), humaconfig.UserIDContextKey, id))
 		c.Next()
 	}
 }

@@ -15,6 +15,7 @@ import (
 	equipmentmodels "gesitr/internal/equipment/models"
 	exercisehandlers "gesitr/internal/exercise/handlers"
 	exercisemodels "gesitr/internal/exercise/models"
+	"gesitr/internal/humaconfig"
 	profilemodels "gesitr/internal/profile/models"
 	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciselogmodels "gesitr/internal/user/exerciselog/models"
@@ -73,24 +74,14 @@ func newRouter() *gin.Engine {
 	api := r.Group("/api")
 	api.Use(auth.UserID())
 
-	exercises := api.Group("/exercises")
-	exercises.GET("", exercisehandlers.ListExercises)
-	exercises.POST("", exercisehandlers.CreateExercise)
-	exercises.GET("/:id", exercisehandlers.GetExercise)
-	exercises.DELETE("/:id", exercisehandlers.DeleteExercise)
+	humaAPI := humaconfig.NewAPI(r, api)
+	exercisehandlers.RegisterRoutes(humaAPI)
 
 	equipment := api.Group("/equipment")
 	equipment.GET("", equipmenthandlers.ListEquipment)
 	equipment.POST("", equipmenthandlers.CreateEquipment)
 	equipment.GET("/:id", equipmenthandlers.GetEquipment)
 	equipment.DELETE("/:id", equipmenthandlers.DeleteEquipment)
-
-	schemes := api.Group("/exercise-schemes")
-	schemes.GET("", exercisehandlers.ListExerciseSchemes)
-	schemes.POST("", exercisehandlers.CreateExerciseScheme)
-	schemes.GET("/:id", exercisehandlers.GetExerciseScheme)
-	schemes.PUT("/:id", exercisehandlers.UpdateExerciseScheme)
-	schemes.DELETE("/:id", exercisehandlers.DeleteExerciseScheme)
 
 	user := api.Group("/user")
 

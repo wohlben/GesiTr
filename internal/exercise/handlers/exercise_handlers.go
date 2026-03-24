@@ -1,17 +1,16 @@
 package handlers
 
 import (
+	"context"
 	"encoding/json"
-	"net/http"
-	"strconv"
 	"time"
 
-	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	"gesitr/internal/exercise/models"
+	"gesitr/internal/humaconfig"
 	"gesitr/internal/shared"
 
-	"github.com/gin-gonic/gin"
+	"github.com/danielgtaylor/huma/v2"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -31,71 +30,64 @@ func preloadExercise(db *gorm.DB) *gorm.DB {
 // ListExercises returns exercises visible to the current user: their own
 // exercises plus all public exercises. Filter by owner or public query params.
 // GET /api/exercises
-func ListExercises(c *gin.Context) {
+func ListExercises(ctx context.Context, input *ListExercisesInput) (*ListExercisesOutput, error) {
 	db := database.DB.Model(&models.ExerciseEntity{})
 
-	userID := auth.GetUserID(c)
-	if owner := c.Query("owner"); owner != "" {
-		if owner == "me" {
-			db = db.Where("owner = ?", userID)
-		} else if owner == userID {
+	userID := humaconfig.GetUserID(ctx)
+	if input.Owner != "" {
+		if input.Owner == "me" || input.Owner == userID {
 			db = db.Where("owner = ?", userID)
 		} else {
-			db = db.Where("owner = ? AND public = ?", owner, true)
+			db = db.Where("owner = ? AND public = ?", input.Owner, true)
 		}
 	} else {
 		db = db.Where("owner = ? OR public = ?", userID, true)
 	}
-	if pub := c.Query("public"); pub == "true" {
+	if input.Public == "true" {
 		db = db.Where("public = ?", true)
 	}
 
-	if q := c.Query("q"); q != "" {
-		pattern := "%" + q + "%"
+	if input.Q != "" {
+		pattern := "%" + input.Q + "%"
 		db = db.Where(
 			"exercises.id IN (SELECT exercises.id FROM exercises LEFT JOIN exercise_alternative_names ON exercise_alternative_names.exercise_id = exercises.id WHERE exercises.name LIKE ? OR exercise_alternative_names.name LIKE ?)",
 			pattern, pattern,
 		)
 	}
-	if v := c.Query("type"); v != "" {
-		db = db.Where("exercises.type = ?", v)
+	if input.Type != "" {
+		db = db.Where("exercises.type = ?", input.Type)
 	}
-	if v := c.Query("difficulty"); v != "" {
-		db = db.Where("exercises.technical_difficulty = ?", v)
+	if input.Difficulty != "" {
+		db = db.Where("exercises.technical_difficulty = ?", input.Difficulty)
 	}
-	if v := c.Query("force"); v != "" {
-		db = db.Where("exercises.id IN (SELECT exercise_id FROM exercise_forces WHERE force = ?)", v)
+	if input.Force != "" {
+		db = db.Where("exercises.id IN (SELECT exercise_id FROM exercise_forces WHERE force = ?)", input.Force)
 	}
-	if v := c.Query("muscle"); v != "" {
-		db = db.Where("exercises.id IN (SELECT exercise_id FROM exercise_muscles WHERE muscle = ?)", v)
+	if input.Muscle != "" {
+		db = db.Where("exercises.id IN (SELECT exercise_id FROM exercise_muscles WHERE muscle = ?)", input.Muscle)
 	}
-	if v := c.Query("primaryMuscle"); v != "" {
-		db = db.Where("exercises.id IN (SELECT exercise_id FROM exercise_muscles WHERE muscle = ? AND is_primary = true)", v)
+	if input.PrimaryMuscle != "" {
+		db = db.Where("exercises.id IN (SELECT exercise_id FROM exercise_muscles WHERE muscle = ? AND is_primary = true)", input.PrimaryMuscle)
 	}
 
 	var total int64
 	if err := db.Count(&total).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
-	p := shared.ParsePagination(c)
+	p := input.ToPaginationParams()
 	var entities []models.ExerciseEntity
 	if err := preloadExercise(shared.ApplyPagination(db, p)).Find(&entities).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	dtos := make([]models.Exercise, len(entities))
 	for i := range entities {
 		dtos[i] = entities[i].ToDTO()
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"items":  dtos,
-		"total":  total,
-		"limit":  p.Limit,
-		"offset": p.Offset,
-	})
+	return &ListExercisesOutput{Body: humaconfig.PaginatedBody[models.Exercise]{
+		Items: dtos, Total: total, Limit: p.Limit, Offset: p.Offset,
+	}}, nil
 }
 
 // CreateExercise creates an exercise owned by the current user. The exercise
@@ -103,30 +95,25 @@ func ListExercises(c *gin.Context) {
 // (see [gesitr/internal/equipment/handlers.CreateEquipment]). To use this
 // exercise in a workout, create an exercise scheme via [CreateExerciseScheme].
 // POST /api/exercises
-func CreateExercise(c *gin.Context) {
+func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExerciseOutput, error) {
 	var dto models.Exercise
-	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
 
-	// Default templateId to a UUID if not provided
 	if dto.TemplateID == "" {
 		dto.TemplateID = uuid.New().String()
 	}
 
 	entity := models.ExerciseFromDTO(dto)
-	entity.Owner = auth.GetUserID(c)
+	entity.Owner = humaconfig.GetUserID(ctx)
 	entity.Public = dto.Public
 	if err := database.DB.Create(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
-	// Reload with associations
 	if err := preloadExercise(database.DB).First(&entity, entity.ID).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	resultDTO := entity.ToDTO()
@@ -137,70 +124,61 @@ func CreateExercise(c *gin.Context) {
 		ChangedAt:  time.Now(),
 		ChangedBy:  resultDTO.Owner,
 	})
-	c.JSON(http.StatusCreated, resultDTO)
+	return &CreateExerciseOutput{Body: resultDTO}, nil
 }
 
 // GetExercisePermissions returns the current user's permissions on an exercise.
 // See [gesitr/internal/shared.ResolvePermissions] for the permission model.
 // GET /api/exercises/:id/permissions
-func GetExercisePermissions(c *gin.Context) {
+func GetExercisePermissions(ctx context.Context, input *GetExercisePermissionsInput) (*GetExercisePermissionsOutput, error) {
 	var entity models.ExerciseEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Exercise not found")
 	}
-	userID := auth.GetUserID(c)
+	userID := humaconfig.GetUserID(ctx)
 	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
 	if perms == nil {
 		perms = []shared.Permission{}
 	}
-	c.JSON(http.StatusOK, shared.PermissionsResponse{Permissions: perms})
+	return &GetExercisePermissionsOutput{Body: shared.PermissionsResponse{Permissions: perms}}, nil
 }
 
 // GetExercise returns a single exercise. Public exercises are visible to all
 // users; private exercises are visible only to their owner.
 // GET /api/exercises/:id
-func GetExercise(c *gin.Context) {
+func GetExercise(ctx context.Context, input *GetExerciseInput) (*GetExerciseOutput, error) {
 	var entity models.ExerciseEntity
-	if err := preloadExercise(database.DB).First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
-		return
+	if err := preloadExercise(database.DB).First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Exercise not found")
 	}
-	userID := auth.GetUserID(c)
+	userID := humaconfig.GetUserID(ctx)
 	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
 	if len(perms) == 0 {
-		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
-		return
+		return nil, huma.Error403Forbidden("access denied")
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &GetExerciseOutput{Body: entity.ToDTO()}, nil
 }
 
 // UpdateExercise updates an exercise. Creates a version history entry.
 // Owner only — returns 403 for non-owners. PUT /api/exercises/:id
-func UpdateExercise(c *gin.Context) {
+func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExerciseOutput, error) {
 	var existing models.ExerciseEntity
-	if err := preloadExercise(database.DB).First(&existing, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
-		return
+	if err := preloadExercise(database.DB).First(&existing, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Exercise not found")
 	}
 
-	if existing.Owner != auth.GetUserID(c) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
-		return
+	if existing.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("access denied")
 	}
 
 	var dto models.Exercise
-	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
+		return nil, huma.Error400BadRequest(err.Error())
 	}
-
 	oldDTO := existing.ToDTO()
 
-	// If nothing changed, return the existing entity without bumping version
 	if !models.ExerciseChanged(oldDTO, dto) {
-		c.JSON(http.StatusOK, oldDTO)
-		return
+		return &UpdateExerciseOutput{Body: oldDTO}, nil
 	}
 
 	entity := models.ExerciseFromDTO(dto)
@@ -208,7 +186,6 @@ func UpdateExercise(c *gin.Context) {
 	entity.Owner = existing.Owner
 	entity.Version = existing.Version + 1
 
-	// Stash child records and clear from entity so Save doesn't try to upsert them
 	forces := entity.Forces
 	muscles := entity.Muscles
 	paradigms := entity.Paradigms
@@ -225,7 +202,6 @@ func UpdateExercise(c *gin.Context) {
 	entity.Equipment = nil
 
 	err := database.DB.Transaction(func(tx *gorm.DB) error {
-		// Delete old child records
 		if err := tx.Where("exercise_id = ?", entity.ID).Delete(&models.ExerciseForce{}).Error; err != nil {
 			return err
 		}
@@ -248,12 +224,10 @@ func UpdateExercise(c *gin.Context) {
 			return err
 		}
 
-		// Save entity
 		if err := tx.Save(&entity).Error; err != nil {
 			return err
 		}
 
-		// Insert new child records
 		for i := range forces {
 			forces[i].ExerciseID = entity.ID
 			if err := tx.Create(&forces[i]).Error; err != nil {
@@ -297,7 +271,6 @@ func UpdateExercise(c *gin.Context) {
 			}
 		}
 
-		// Reconstruct entity for snapshot
 		entity.Forces = forces
 		entity.Muscles = muscles
 		entity.Paradigms = paradigms
@@ -321,87 +294,68 @@ func UpdateExercise(c *gin.Context) {
 	})
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
-	// Reload with associations
 	if err := preloadExercise(database.DB).First(&entity, entity.ID).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusOK, entity.ToDTO())
+	return &UpdateExerciseOutput{Body: entity.ToDTO()}, nil
 }
 
 // ListExerciseVersions returns the version history for an exercise. Each
 // update via [UpdateExercise] creates a new version entry.
 // GET /api/exercises/:id/versions
-func ListExerciseVersions(c *gin.Context) {
+func ListExerciseVersions(ctx context.Context, input *ListExerciseVersionsInput) (*ListExerciseVersionsOutput, error) {
 	var entity models.ExerciseEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Exercise not found")
 	}
 
 	var history []models.ExerciseHistoryEntity
 	if err := database.DB.Where("exercise_id = ?", entity.ID).Order("version ASC").Find(&history).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
 	entries := make([]shared.VersionEntry, len(history))
 	for i := range history {
 		entries[i] = history[i].ToVersionEntry()
 	}
-	c.JSON(http.StatusOK, entries)
+	return &ListExerciseVersionsOutput{Body: entries}, nil
 }
 
 // GetExerciseVersion returns a specific historical version of an exercise
 // by templateId and version number.
 // GET /api/exercises/templates/:templateId/versions/:version
-func GetExerciseVersion(c *gin.Context) {
-	version, err := strconv.Atoi(c.Param("version"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid version"})
-		return
-	}
-
-	// Query the history table directly — the snapshot contains the full
-	// exercise, so this works even after the exercise has been deleted.
+func GetExerciseVersion(ctx context.Context, input *GetExerciseVersionInput) (*GetExerciseVersionOutput, error) {
 	var history models.ExerciseHistoryEntity
-	if err := database.DB.Where("json_extract(snapshot, '$.templateId') = ? AND version = ?", c.Param("templateId"), version).First(&history).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Version not found"})
-		return
+	if err := database.DB.Where("json_extract(snapshot, '$.templateId') = ? AND version = ?", input.TemplateID, input.Version).First(&history).Error; err != nil {
+		return nil, huma.Error404NotFound("Version not found")
 	}
 
-	// Parse snapshot for permission check.
 	var snap models.Exercise
 	json.Unmarshal([]byte(history.Snapshot), &snap)
-	userID := auth.GetUserID(c)
+	userID := humaconfig.GetUserID(ctx)
 	perms, _ := shared.ResolvePermissions(userID, snap.Owner, snap.Public)
 	if len(perms) == 0 {
-		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
-		return
+		return nil, huma.Error403Forbidden("access denied")
 	}
 
-	c.JSON(http.StatusOK, history.ToVersionEntry())
+	return &GetExerciseVersionOutput{Body: history.ToVersionEntry()}, nil
 }
 
 // DeleteExercise deletes an exercise. Owner only.
 // DELETE /api/exercises/:id
-func DeleteExercise(c *gin.Context) {
+func DeleteExercise(ctx context.Context, input *DeleteExerciseInput) (*DeleteExerciseOutput, error) {
 	var entity models.ExerciseEntity
-	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise not found"})
-		return
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Exercise not found")
 	}
-	if entity.Owner != auth.GetUserID(c) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
-		return
+	if entity.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("access denied")
 	}
 	if err := database.DB.Unscoped().Select(clause.Associations).Delete(&entity).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	c.JSON(http.StatusNoContent, nil)
+	return nil, nil
 }
