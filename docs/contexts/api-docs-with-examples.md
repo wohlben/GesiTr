@@ -1,5 +1,7 @@
 # API Documentation with Go Example Tests
 
+> **Keep this file in sync.** If conventions change (file naming, test patterns, rendering pipeline, etc.), update this context so future sessions don't follow stale guidance.
+
 ## How it works
 
 Each handler package has:
