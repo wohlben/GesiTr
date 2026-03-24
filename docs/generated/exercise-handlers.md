@@ -100,13 +100,15 @@ type CreateExerciseOutput struct {
 ```
 
 <a name="CreateExercise"></a>
-### func [CreateExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L98>)
+### func [CreateExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L102>)
 
 ```go
 func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExerciseOutput, error)
 ```
 
 CreateExercise creates an exercise owned by the current user. The exercise can reference equipment via equipmentIds — equipment must already exist \(see [gesitr/internal/equipment/handlers.CreateEquipment](<https://pkg.go.dev/gesitr/internal/equipment/handlers/#CreateEquipment>)\). To use this exercise in a workout, create an exercise scheme via [CreateExerciseScheme](<#CreateExerciseScheme>). POST /api/exercises
+
+[OpenAPI docs](/api/docs#/operations/create-exercise)
 
 <details><summary>Example (Simple)</summary>
 <p>
@@ -227,13 +229,15 @@ type CreateExerciseSchemeOutput struct {
 ```
 
 <a name="CreateExerciseScheme"></a>
-### func [CreateExerciseScheme](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/scheme_handlers.go#L49>)
+### func [CreateExerciseScheme](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/scheme_handlers.go#L53>)
 
 ```go
 func CreateExerciseScheme(ctx context.Context, input *CreateExerciseSchemeInput) (*CreateExerciseSchemeOutput, error)
 ```
 
 CreateExerciseScheme creates an exercise scheme — a user\-specific configuration of an exercise \(sets, reps, measurement type\). Requires an exerciseId referencing an existing exercise \(see [CreateExercise](<#CreateExercise>)\). Schemes are referenced when adding exercises to workouts via [gesitr/internal/user/workout/handlers.CreateWorkoutSectionExercise](<https://pkg.go.dev/gesitr/internal/user/workout/handlers/#CreateWorkoutSectionExercise>). POST /api/exercise\-schemes
+
+[OpenAPI docs](/api/docs#/operations/create-exercise-scheme)
 
 <details><summary>Example (Rep Based)</summary>
 <p>
@@ -360,13 +364,15 @@ type DeleteExerciseOutput struct{}
 ```
 
 <a name="DeleteExercise"></a>
-### func [DeleteExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L349>)
+### func [DeleteExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L365>)
 
 ```go
 func DeleteExercise(ctx context.Context, input *DeleteExerciseInput) (*DeleteExerciseOutput, error)
 ```
 
 DeleteExercise deletes an exercise. Owner only. DELETE /api/exercises/:id
+
+[OpenAPI docs](/api/docs#/operations/delete-exercise)
 
 <a name="DeleteExerciseSchemeInput"></a>
 ## type [DeleteExerciseSchemeInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L122-L124>)
@@ -389,13 +395,15 @@ type DeleteExerciseSchemeOutput struct{}
 ```
 
 <a name="DeleteExerciseScheme"></a>
-### func [DeleteExerciseScheme](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/scheme_handlers.go#L116>)
+### func [DeleteExerciseScheme](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/scheme_handlers.go#L126>)
 
 ```go
 func DeleteExerciseScheme(ctx context.Context, input *DeleteExerciseSchemeInput) (*DeleteExerciseSchemeOutput, error)
 ```
 
 DeleteExerciseScheme deletes an exercise scheme. Owner only. DELETE /api/exercise\-schemes/:id
+
+[OpenAPI docs](/api/docs#/operations/delete-exercise-scheme)
 
 <a name="GetExerciseInput"></a>
 ## type [GetExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L38-L40>)
@@ -420,13 +428,15 @@ type GetExerciseOutput struct {
 ```
 
 <a name="GetExercise"></a>
-### func [GetExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L149>)
+### func [GetExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L157>)
 
 ```go
 func GetExercise(ctx context.Context, input *GetExerciseInput) (*GetExerciseOutput, error)
 ```
 
 GetExercise returns a single exercise. Public exercises are visible to all users; private exercises are visible only to their owner. GET /api/exercises/:id
+
+[OpenAPI docs](/api/docs#/operations/get-exercise)
 
 <details><summary>Example (Non Owner Private)</summary>
 <p>
@@ -568,13 +578,15 @@ type GetExercisePermissionsOutput struct {
 ```
 
 <a name="GetExercisePermissions"></a>
-### func [GetExercisePermissions](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L133>)
+### func [GetExercisePermissions](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L139>)
 
 ```go
 func GetExercisePermissions(ctx context.Context, input *GetExercisePermissionsInput) (*GetExercisePermissionsOutput, error)
 ```
 
 GetExercisePermissions returns the current user's permissions on an exercise. See [gesitr/internal/shared.ResolvePermissions](<https://pkg.go.dev/gesitr/internal/shared/#ResolvePermissions>) for the permission model. GET /api/exercises/:id/permissions
+
+[OpenAPI docs](/api/docs#/operations/get-exercise-permissions)
 
 <details><summary>Example (Non Owner Private)</summary>
 <p>
@@ -714,13 +726,15 @@ type GetExerciseSchemeOutput struct {
 ```
 
 <a name="GetExerciseScheme"></a>
-### func [GetExerciseScheme](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/scheme_handlers.go#L71>)
+### func [GetExerciseScheme](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/scheme_handlers.go#L77>)
 
 ```go
 func GetExerciseScheme(ctx context.Context, input *GetExerciseSchemeInput) (*GetExerciseSchemeOutput, error)
 ```
 
 GetExerciseScheme returns a single exercise scheme. Access is determined by the linked exercise's visibility — if the user can see the exercise, they can see its schemes. GET /api/exercise\-schemes/:id
+
+[OpenAPI docs](/api/docs#/operations/get-exercise-scheme)
 
 <details><summary>Example (Non Owner Private Exercise)</summary>
 <p>
@@ -885,13 +899,15 @@ type GetExerciseVersionOutput struct {
 ```
 
 <a name="GetExerciseVersion"></a>
-### func [GetExerciseVersion](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L330>)
+### func [GetExerciseVersion](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L344>)
 
 ```go
 func GetExerciseVersion(ctx context.Context, input *GetExerciseVersionInput) (*GetExerciseVersionOutput, error)
 ```
 
 GetExerciseVersion returns a specific historical version of an exercise by templateId and version number. GET /api/exercises/templates/:templateId/versions/:version
+
+[OpenAPI docs](/api/docs#/operations/get-exercise-version)
 
 <details><summary>Example (After Delete)</summary>
 <p>
@@ -1152,13 +1168,15 @@ type ListExerciseSchemesOutput struct {
 ```
 
 <a name="ListExerciseSchemes"></a>
-### func [ListExerciseSchemes](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/scheme_handlers.go#L18>)
+### func [ListExerciseSchemes](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/scheme_handlers.go#L20>)
 
 ```go
 func ListExerciseSchemes(ctx context.Context, input *ListExerciseSchemesInput) (*ListExerciseSchemesOutput, error)
 ```
 
 ListExerciseSchemes returns schemes the current user has access to: their own schemes plus schemes linked to public exercises. Filter by exerciseId or measurementType query params. GET /api/exercise\-schemes
+
+[OpenAPI docs](/api/docs#/operations/list-exercise-schemes)
 
 <details><summary>Example (Non Owner Private Exercise)</summary>
 <p>
@@ -1330,13 +1348,15 @@ type ListExerciseVersionsOutput struct {
 ```
 
 <a name="ListExerciseVersions"></a>
-### func [ListExerciseVersions](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L309>)
+### func [ListExerciseVersions](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L321>)
 
 ```go
 func ListExerciseVersions(ctx context.Context, input *ListExerciseVersionsInput) (*ListExerciseVersionsOutput, error)
 ```
 
 ListExerciseVersions returns the version history for an exercise. Each update via [UpdateExercise](<#UpdateExercise>) creates a new version entry. GET /api/exercises/:id/versions
+
+[OpenAPI docs](/api/docs#/operations/list-exercise-versions)
 
 <a name="ListExercisesInput"></a>
 ## type [ListExercisesInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L11-L21>)
@@ -1369,13 +1389,15 @@ type ListExercisesOutput struct {
 ```
 
 <a name="ListExercises"></a>
-### func [ListExercises](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L33>)
+### func [ListExercises](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L35>)
 
 ```go
 func ListExercises(ctx context.Context, input *ListExercisesInput) (*ListExercisesOutput, error)
 ```
 
 ListExercises returns exercises visible to the current user: their own exercises plus all public exercises. Filter by owner or public query params. GET /api/exercises
+
+[OpenAPI docs](/api/docs#/operations/list-exercises)
 
 <details><summary>Example (Non Owner Private)</summary>
 <p>
@@ -1544,13 +1566,15 @@ type UpdateExerciseOutput struct {
 ```
 
 <a name="UpdateExercise"></a>
-### func [UpdateExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L164>)
+### func [UpdateExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L174>)
 
 ```go
 func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExerciseOutput, error)
 ```
 
 UpdateExercise updates an exercise. Creates a version history entry. Owner only — returns 403 for non\-owners. PUT /api/exercises/:id
+
+[OpenAPI docs](/api/docs#/operations/update-exercise)
 
 <details><summary>Example (Non Owner Private)</summary>
 <p>
@@ -1778,13 +1802,15 @@ type UpdateExerciseSchemeOutput struct {
 ```
 
 <a name="UpdateExerciseScheme"></a>
-### func [UpdateExerciseScheme](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/scheme_handlers.go#L90>)
+### func [UpdateExerciseScheme](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/scheme_handlers.go#L98>)
 
 ```go
 func UpdateExerciseScheme(ctx context.Context, input *UpdateExerciseSchemeInput) (*UpdateExerciseSchemeOutput, error)
 ```
 
 UpdateExerciseScheme updates a scheme's configuration. The exerciseId cannot be changed. PUT /api/exercise\-schemes/:id
+
+[OpenAPI docs](/api/docs#/operations/update-exercise-scheme)
 
 <details><summary>Example (Non Owner Private Exercise)</summary>
 <p>

@@ -24,6 +24,8 @@ func requireSectionOwner(ctx context.Context, sectionID uint) error {
 // ListWorkoutSectionExercises returns section exercises owned by the current
 // user. Filter by workoutSectionId query param.
 // GET /api/user/workout-section-exercises
+//
+// OpenAPI: /api/docs#/operations/list-workout-section-exercises
 func ListWorkoutSectionExercises(ctx context.Context, input *ListWorkoutSectionExercisesInput) (*ListWorkoutSectionExercisesOutput, error) {
 	db := database.DB.Model(&models.WorkoutSectionExerciseEntity{})
 
@@ -52,6 +54,8 @@ func ListWorkoutSectionExercises(ctx context.Context, input *ListWorkoutSectionE
 // [gesitr/internal/exercise/handlers.CreateExerciseScheme].
 // A workout and section must exist first — see [CreateWorkout] and
 // [CreateWorkoutSection]. POST /api/user/workout-section-exercises
+//
+// OpenAPI: /api/docs#/operations/create-workout-section-exercise
 func CreateWorkoutSectionExercise(ctx context.Context, input *CreateWorkoutSectionExerciseInput) (*CreateWorkoutSectionExerciseOutput, error) {
 	var dto models.WorkoutSectionExercise
 	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
@@ -76,6 +80,8 @@ func CreateWorkoutSectionExercise(ctx context.Context, input *CreateWorkoutSecti
 
 // DeleteWorkoutSectionExercise removes an exercise from a section.
 // DELETE /api/user/workout-section-exercises/{id}
+//
+// OpenAPI: /api/docs#/operations/delete-workout-section-exercise
 func DeleteWorkoutSectionExercise(ctx context.Context, input *DeleteWorkoutSectionExerciseInput) (*DeleteWorkoutSectionExerciseOutput, error) {
 	var entity models.WorkoutSectionExerciseEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {

@@ -13,6 +13,12 @@ for docfile in $(find internal -name doc.go -not -path '*/docs/*'); do
   # Derive a slug from the package path: internal/exercise/handlers -> exercise-handlers
   slug=$(echo "$pkg" | sed 's|^internal/||; s|/|-|g; s|^user-||')
   $GOMARKDOC -o "$OUT_DIR/$slug.md" "./$pkg/"
+
+  # Convert escaped "OpenAPI: /api/docs\#/operations/op\-id" lines into
+  # clickable markdown links: [OpenAPI docs](/api/docs#/operations/op-id)
+  perl -pi -e 's{OpenAPI: /api/docs\\#/operations/([\w\\-]+)}{
+    my $id = $1; $id =~ s/\\-/-/g; "[OpenAPI docs](/api/docs#/operations/$id)"
+  }ge' "$OUT_DIR/$slug.md"
 done
 
 echo "Generated:"

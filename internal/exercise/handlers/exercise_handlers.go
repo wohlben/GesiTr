@@ -30,6 +30,8 @@ func preloadExercise(db *gorm.DB) *gorm.DB {
 // ListExercises returns exercises visible to the current user: their own
 // exercises plus all public exercises. Filter by owner or public query params.
 // GET /api/exercises
+//
+// OpenAPI: /api/docs#/operations/list-exercises
 func ListExercises(ctx context.Context, input *ListExercisesInput) (*ListExercisesOutput, error) {
 	db := database.DB.Model(&models.ExerciseEntity{})
 
@@ -95,6 +97,8 @@ func ListExercises(ctx context.Context, input *ListExercisesInput) (*ListExercis
 // (see [gesitr/internal/equipment/handlers.CreateEquipment]). To use this
 // exercise in a workout, create an exercise scheme via [CreateExerciseScheme].
 // POST /api/exercises
+//
+// OpenAPI: /api/docs#/operations/create-exercise
 func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExerciseOutput, error) {
 	var dto models.Exercise
 	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
@@ -130,6 +134,8 @@ func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExe
 // GetExercisePermissions returns the current user's permissions on an exercise.
 // See [gesitr/internal/shared.ResolvePermissions] for the permission model.
 // GET /api/exercises/:id/permissions
+//
+// OpenAPI: /api/docs#/operations/get-exercise-permissions
 func GetExercisePermissions(ctx context.Context, input *GetExercisePermissionsInput) (*GetExercisePermissionsOutput, error) {
 	var entity models.ExerciseEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
@@ -146,6 +152,8 @@ func GetExercisePermissions(ctx context.Context, input *GetExercisePermissionsIn
 // GetExercise returns a single exercise. Public exercises are visible to all
 // users; private exercises are visible only to their owner.
 // GET /api/exercises/:id
+//
+// OpenAPI: /api/docs#/operations/get-exercise
 func GetExercise(ctx context.Context, input *GetExerciseInput) (*GetExerciseOutput, error) {
 	var entity models.ExerciseEntity
 	if err := preloadExercise(database.DB).First(&entity, input.ID).Error; err != nil {
@@ -161,6 +169,8 @@ func GetExercise(ctx context.Context, input *GetExerciseInput) (*GetExerciseOutp
 
 // UpdateExercise updates an exercise. Creates a version history entry.
 // Owner only — returns 403 for non-owners. PUT /api/exercises/:id
+//
+// OpenAPI: /api/docs#/operations/update-exercise
 func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExerciseOutput, error) {
 	var existing models.ExerciseEntity
 	if err := preloadExercise(database.DB).First(&existing, input.ID).Error; err != nil {
@@ -306,6 +316,8 @@ func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExe
 // ListExerciseVersions returns the version history for an exercise. Each
 // update via [UpdateExercise] creates a new version entry.
 // GET /api/exercises/:id/versions
+//
+// OpenAPI: /api/docs#/operations/list-exercise-versions
 func ListExerciseVersions(ctx context.Context, input *ListExerciseVersionsInput) (*ListExerciseVersionsOutput, error) {
 	var entity models.ExerciseEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
@@ -327,6 +339,8 @@ func ListExerciseVersions(ctx context.Context, input *ListExerciseVersionsInput)
 // GetExerciseVersion returns a specific historical version of an exercise
 // by templateId and version number.
 // GET /api/exercises/templates/:templateId/versions/:version
+//
+// OpenAPI: /api/docs#/operations/get-exercise-version
 func GetExerciseVersion(ctx context.Context, input *GetExerciseVersionInput) (*GetExerciseVersionOutput, error) {
 	var history models.ExerciseHistoryEntity
 	if err := database.DB.Where("json_extract(snapshot, '$.templateId') = ? AND version = ?", input.TemplateID, input.Version).First(&history).Error; err != nil {
@@ -346,6 +360,8 @@ func GetExerciseVersion(ctx context.Context, input *GetExerciseVersionInput) (*G
 
 // DeleteExercise deletes an exercise. Owner only.
 // DELETE /api/exercises/:id
+//
+// OpenAPI: /api/docs#/operations/delete-exercise
 func DeleteExercise(ctx context.Context, input *DeleteExerciseInput) (*DeleteExerciseOutput, error) {
 	var entity models.ExerciseEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {

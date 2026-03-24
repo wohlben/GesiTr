@@ -15,6 +15,8 @@ import (
 
 // ListExerciseGroups returns exercise groups, optionally filtered by name search.
 // GET /api/exercise-groups
+//
+// OpenAPI: /api/docs#/operations/list-exercise-groups
 func ListExerciseGroups(ctx context.Context, input *ListExerciseGroupsInput) (*ListExerciseGroupsOutput, error) {
 	db := database.DB.Model(&models.ExerciseGroupEntity{})
 
@@ -45,6 +47,8 @@ func ListExerciseGroups(ctx context.Context, input *ListExerciseGroupsInput) (*L
 
 // CreateExerciseGroup creates an exercise group owned by the current user.
 // POST /api/exercise-groups
+//
+// OpenAPI: /api/docs#/operations/create-exercise-group
 func CreateExerciseGroup(ctx context.Context, input *CreateExerciseGroupInput) (*CreateExerciseGroupOutput, error) {
 	var dto models.ExerciseGroup
 	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
@@ -65,6 +69,8 @@ func CreateExerciseGroup(ctx context.Context, input *CreateExerciseGroupInput) (
 
 // GetExerciseGroupPermissions returns the current user's permissions on an exercise group.
 // GET /api/exercise-groups/:id/permissions
+//
+// OpenAPI: /api/docs#/operations/get-exercise-group-permissions
 func GetExerciseGroupPermissions(ctx context.Context, input *GetExerciseGroupPermissionsInput) (*GetExerciseGroupPermissionsOutput, error) {
 	var entity models.ExerciseGroupEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
@@ -80,6 +86,8 @@ func GetExerciseGroupPermissions(ctx context.Context, input *GetExerciseGroupPer
 
 // GetExerciseGroup returns a single exercise group.
 // GET /api/exercise-groups/:id
+//
+// OpenAPI: /api/docs#/operations/get-exercise-group
 func GetExerciseGroup(ctx context.Context, input *GetExerciseGroupInput) (*GetExerciseGroupOutput, error) {
 	var entity models.ExerciseGroupEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
@@ -90,6 +98,8 @@ func GetExerciseGroup(ctx context.Context, input *GetExerciseGroupInput) (*GetEx
 
 // UpdateExerciseGroup updates an exercise group. Owner only.
 // PUT /api/exercise-groups/:id
+//
+// OpenAPI: /api/docs#/operations/update-exercise-group
 func UpdateExerciseGroup(ctx context.Context, input *UpdateExerciseGroupInput) (*UpdateExerciseGroupOutput, error) {
 	var existing models.ExerciseGroupEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {
@@ -117,6 +127,8 @@ func UpdateExerciseGroup(ctx context.Context, input *UpdateExerciseGroupInput) (
 
 // DeleteExerciseGroup deletes an exercise group. Owner only.
 // DELETE /api/exercise-groups/:id
+//
+// OpenAPI: /api/docs#/operations/delete-exercise-group
 func DeleteExerciseGroup(ctx context.Context, input *DeleteExerciseGroupInput) (*DeleteExerciseGroupOutput, error) {
 	var entity models.ExerciseGroupEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {

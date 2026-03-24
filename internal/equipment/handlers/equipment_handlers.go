@@ -18,6 +18,8 @@ import (
 // ListEquipment returns equipment visible to the current user: their own
 // equipment plus all public equipment. Filter by owner, public, or category
 // query params. GET /api/equipment
+//
+// OpenAPI: /api/docs#/operations/list-equipment
 func ListEquipment(ctx context.Context, input *ListEquipmentInput) (*ListEquipmentOutput, error) {
 	db := database.DB.Model(&models.EquipmentEntity{})
 
@@ -66,6 +68,8 @@ func ListEquipment(ctx context.Context, input *ListEquipmentInput) (*ListEquipme
 // CreateEquipment creates equipment owned by the current user. Equipment can
 // be referenced by exercises via their equipmentIds field — see
 // [gesitr/internal/exercise/handlers.CreateExercise]. POST /api/equipment
+//
+// OpenAPI: /api/docs#/operations/create-equipment
 func CreateEquipment(ctx context.Context, input *CreateEquipmentInput) (*CreateEquipmentOutput, error) {
 	var dto models.Equipment
 	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
@@ -96,6 +100,8 @@ func CreateEquipment(ctx context.Context, input *CreateEquipmentInput) (*CreateE
 // GetEquipmentPermissions returns the current user's permissions on equipment.
 // See [gesitr/internal/shared.ResolvePermissions] for the permission model.
 // GET /api/equipment/:id/permissions
+//
+// OpenAPI: /api/docs#/operations/get-equipment-permissions
 func GetEquipmentPermissions(ctx context.Context, input *GetEquipmentPermissionsInput) (*GetEquipmentPermissionsOutput, error) {
 	var entity models.EquipmentEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
@@ -112,6 +118,8 @@ func GetEquipmentPermissions(ctx context.Context, input *GetEquipmentPermissions
 // GetEquipment returns a single equipment item. Public equipment is visible
 // to all users; private equipment is visible only to its owner.
 // GET /api/equipment/:id
+//
+// OpenAPI: /api/docs#/operations/get-equipment
 func GetEquipment(ctx context.Context, input *GetEquipmentInput) (*GetEquipmentOutput, error) {
 	var entity models.EquipmentEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
@@ -127,6 +135,8 @@ func GetEquipment(ctx context.Context, input *GetEquipmentInput) (*GetEquipmentO
 
 // UpdateEquipment updates equipment. Creates a version history entry.
 // Owner only — returns 403 for non-owners. PUT /api/equipment/:id
+//
+// OpenAPI: /api/docs#/operations/update-equipment
 func UpdateEquipment(ctx context.Context, input *UpdateEquipmentInput) (*UpdateEquipmentOutput, error) {
 	var existing models.EquipmentEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {
@@ -176,6 +186,8 @@ func UpdateEquipment(ctx context.Context, input *UpdateEquipmentInput) (*UpdateE
 // ListEquipmentVersions returns the version history for equipment. Each
 // update via [UpdateEquipment] creates a new version entry.
 // GET /api/equipment/:id/versions
+//
+// OpenAPI: /api/docs#/operations/list-equipment-versions
 func ListEquipmentVersions(ctx context.Context, input *ListEquipmentVersionsInput) (*ListEquipmentVersionsOutput, error) {
 	var entity models.EquipmentEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
@@ -197,6 +209,8 @@ func ListEquipmentVersions(ctx context.Context, input *ListEquipmentVersionsInpu
 // GetEquipmentVersion returns a specific historical version of equipment
 // by templateId and version number.
 // GET /api/equipment/templates/:templateId/versions/:version
+//
+// OpenAPI: /api/docs#/operations/get-equipment-version
 func GetEquipmentVersion(ctx context.Context, input *GetEquipmentVersionInput) (*GetEquipmentVersionOutput, error) {
 	var history models.EquipmentHistoryEntity
 	if err := database.DB.Where("json_extract(snapshot, '$.templateId') = ? AND version = ?", input.TemplateID, input.Version).First(&history).Error; err != nil {
@@ -216,6 +230,8 @@ func GetEquipmentVersion(ctx context.Context, input *GetEquipmentVersionInput) (
 
 // DeleteEquipment deletes equipment. Owner only.
 // DELETE /api/equipment/:id
+//
+// OpenAPI: /api/docs#/operations/delete-equipment
 func DeleteEquipment(ctx context.Context, input *DeleteEquipmentInput) (*DeleteEquipmentOutput, error) {
 	var entity models.EquipmentEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {

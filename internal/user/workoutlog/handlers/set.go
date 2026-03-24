@@ -17,6 +17,10 @@ import (
 	"gorm.io/gorm"
 )
 
+// ListWorkoutLogExerciseSets returns workout log exercise sets owned by the current user.
+// GET /api/user/workout-log-exercise-sets
+//
+// OpenAPI: /api/docs#/operations/list-workout-log-exercise-sets
 func ListWorkoutLogExerciseSets(ctx context.Context, input *ListWorkoutLogExerciseSetsInput) (*ListWorkoutLogExerciseSetsOutput, error) {
 	db := database.DB.Model(&models.WorkoutLogExerciseSetEntity{})
 
@@ -46,6 +50,10 @@ func ListWorkoutLogExerciseSets(ctx context.Context, input *ListWorkoutLogExerci
 	return &ListWorkoutLogExerciseSetsOutput{Body: dtos}, nil
 }
 
+// CreateWorkoutLogExerciseSet adds a set to a workout log exercise.
+// POST /api/user/workout-log-exercise-sets
+//
+// OpenAPI: /api/docs#/operations/create-workout-log-exercise-set
 func CreateWorkoutLogExerciseSet(ctx context.Context, input *CreateWorkoutLogExerciseSetInput) (*CreateWorkoutLogExerciseSetOutput, error) {
 	var dto models.WorkoutLogExerciseSet
 	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
@@ -81,6 +89,10 @@ func CreateWorkoutLogExerciseSet(ctx context.Context, input *CreateWorkoutLogExe
 	return &CreateWorkoutLogExerciseSetOutput{Body: entity.ToDTO()}, nil
 }
 
+// UpdateWorkoutLogExerciseSet partially updates a workout log exercise set.
+// PATCH /api/user/workout-log-exercise-sets/{id}
+//
+// OpenAPI: /api/docs#/operations/update-workout-log-exercise-set
 func UpdateWorkoutLogExerciseSet(ctx context.Context, input *UpdateWorkoutLogExerciseSetInput) (*UpdateWorkoutLogExerciseSetOutput, error) {
 	var existing models.WorkoutLogExerciseSetEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {
@@ -439,6 +451,10 @@ func propagateSectionStatus(db *gorm.DB, sectionID uint) error {
 	return nil
 }
 
+// DeleteWorkoutLogExerciseSet deletes a workout log exercise set.
+// DELETE /api/user/workout-log-exercise-sets/{id}
+//
+// OpenAPI: /api/docs#/operations/delete-workout-log-exercise-set
 func DeleteWorkoutLogExerciseSet(ctx context.Context, input *DeleteWorkoutLogExerciseSetInput) (*DeleteWorkoutLogExerciseSetOutput, error) {
 	var existing models.WorkoutLogExerciseSetEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {

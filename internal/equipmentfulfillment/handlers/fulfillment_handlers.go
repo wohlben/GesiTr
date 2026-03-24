@@ -14,6 +14,8 @@ import (
 // ListFulfillments returns equipment fulfillments, optionally filtered by
 // equipmentId or fulfillsEquipmentId.
 // GET /api/fulfillments
+//
+// OpenAPI: /api/docs#/operations/list-fulfillments
 func ListFulfillments(ctx context.Context, input *ListFulfillmentsInput) (*ListFulfillmentsOutput, error) {
 	db := database.DB.Model(&models.FulfillmentEntity{})
 
@@ -38,6 +40,8 @@ func ListFulfillments(ctx context.Context, input *ListFulfillmentsInput) (*ListF
 
 // CreateFulfillment creates a fulfillment owned by the current user.
 // POST /api/fulfillments
+//
+// OpenAPI: /api/docs#/operations/create-fulfillment
 func CreateFulfillment(ctx context.Context, input *CreateFulfillmentInput) (*CreateFulfillmentOutput, error) {
 	var dto models.Fulfillment
 	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
@@ -54,6 +58,8 @@ func CreateFulfillment(ctx context.Context, input *CreateFulfillmentInput) (*Cre
 
 // DeleteFulfillment deletes a fulfillment. Owner only.
 // DELETE /api/fulfillments/:id
+//
+// OpenAPI: /api/docs#/operations/delete-fulfillment
 func DeleteFulfillment(ctx context.Context, input *DeleteFulfillmentInput) (*DeleteFulfillmentOutput, error) {
 	var entity models.FulfillmentEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {

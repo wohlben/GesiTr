@@ -25,6 +25,10 @@ func preloadWorkoutLog(db *gorm.DB) *gorm.DB {
 	}).Preload("Sections.Exercises.Sets.ExerciseLog")
 }
 
+// ListWorkoutLogs returns workout logs owned by the current user.
+// GET /api/user/workout-logs
+//
+// OpenAPI: /api/docs#/operations/list-workout-logs
 func ListWorkoutLogs(ctx context.Context, input *ListWorkoutLogsInput) (*ListWorkoutLogsOutput, error) {
 	db := database.DB.Model(&models.WorkoutLogEntity{}).
 		Where("owner = ?", humaconfig.GetUserID(ctx))
@@ -48,6 +52,10 @@ func ListWorkoutLogs(ctx context.Context, input *ListWorkoutLogsInput) (*ListWor
 	return &ListWorkoutLogsOutput{Body: dtos}, nil
 }
 
+// CreateWorkoutLog creates a workout log in planning status.
+// POST /api/user/workout-logs
+//
+// OpenAPI: /api/docs#/operations/create-workout-log
 func CreateWorkoutLog(ctx context.Context, input *CreateWorkoutLogInput) (*CreateWorkoutLogOutput, error) {
 	var dto models.WorkoutLog
 	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
@@ -79,6 +87,10 @@ func CreateWorkoutLog(ctx context.Context, input *CreateWorkoutLogInput) (*Creat
 	return &CreateWorkoutLogOutput{Body: entity.ToDTO()}, nil
 }
 
+// GetWorkoutLog returns a single workout log with its full tree.
+// GET /api/user/workout-logs/{id}
+//
+// OpenAPI: /api/docs#/operations/get-workout-log
 func GetWorkoutLog(ctx context.Context, input *GetWorkoutLogInput) (*GetWorkoutLogOutput, error) {
 	var entity models.WorkoutLogEntity
 	if err := preloadWorkoutLog(database.DB).First(&entity, input.ID).Error; err != nil {
@@ -90,6 +102,10 @@ func GetWorkoutLog(ctx context.Context, input *GetWorkoutLogInput) (*GetWorkoutL
 	return &GetWorkoutLogOutput{Body: entity.ToDTO()}, nil
 }
 
+// UpdateWorkoutLog partially updates a workout log (name, notes).
+// PATCH /api/user/workout-logs/{id}
+//
+// OpenAPI: /api/docs#/operations/update-workout-log
 func UpdateWorkoutLog(ctx context.Context, input *UpdateWorkoutLogInput) (*UpdateWorkoutLogOutput, error) {
 	var existing models.WorkoutLogEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {
@@ -128,6 +144,10 @@ func UpdateWorkoutLog(ctx context.Context, input *UpdateWorkoutLogInput) (*Updat
 	return &UpdateWorkoutLogOutput{Body: existing.ToDTO()}, nil
 }
 
+// DeleteWorkoutLog deletes a workout log. Only planning logs can be deleted.
+// DELETE /api/user/workout-logs/{id}
+//
+// OpenAPI: /api/docs#/operations/delete-workout-log
 func DeleteWorkoutLog(ctx context.Context, input *DeleteWorkoutLogInput) (*DeleteWorkoutLogOutput, error) {
 	var existing models.WorkoutLogEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {
@@ -145,6 +165,10 @@ func DeleteWorkoutLog(ctx context.Context, input *DeleteWorkoutLogInput) (*Delet
 	return nil, nil
 }
 
+// StartWorkoutLog transitions a workout log from planning to in-progress.
+// POST /api/user/workout-logs/{id}/start
+//
+// OpenAPI: /api/docs#/operations/start-workout-log
 func StartWorkoutLog(ctx context.Context, input *StartWorkoutLogInput) (*StartWorkoutLogOutput, error) {
 	var entity models.WorkoutLogEntity
 	if err := preloadWorkoutLog(database.DB).First(&entity, input.ID).Error; err != nil {
@@ -213,6 +237,10 @@ func StartWorkoutLog(ctx context.Context, input *StartWorkoutLogInput) (*StartWo
 	return &StartWorkoutLogOutput{Body: entity.ToDTO()}, nil
 }
 
+// StartAdhocWorkoutLog creates and immediately starts an ad-hoc workout log.
+// POST /api/user/workout-logs/adhoc
+//
+// OpenAPI: /api/docs#/operations/start-adhoc-workout-log
 func StartAdhocWorkoutLog(ctx context.Context, input *StartAdhocWorkoutLogInput) (*StartAdhocWorkoutLogOutput, error) {
 	now := time.Now()
 	adhocLabel := "Adhoc"
@@ -253,6 +281,10 @@ func StartAdhocWorkoutLog(ctx context.Context, input *StartAdhocWorkoutLogInput)
 	return &StartAdhocWorkoutLogOutput{Body: entity.ToDTO()}, nil
 }
 
+// FinishWorkoutLog finishes an adhoc workout log, deriving statuses.
+// POST /api/user/workout-logs/{id}/finish
+//
+// OpenAPI: /api/docs#/operations/finish-workout-log
 func FinishWorkoutLog(ctx context.Context, input *FinishWorkoutLogInput) (*FinishWorkoutLogOutput, error) {
 	var entity models.WorkoutLogEntity
 	if err := preloadWorkoutLog(database.DB).First(&entity, input.ID).Error; err != nil {
@@ -433,6 +465,10 @@ func deriveLogStatusFromSections(sections []models.WorkoutLogSectionEntity) mode
 	}
 }
 
+// AbandonWorkoutLog aborts a workout log and cascades to children.
+// POST /api/user/workout-logs/{id}/abandon
+//
+// OpenAPI: /api/docs#/operations/abandon-workout-log
 func AbandonWorkoutLog(ctx context.Context, input *AbandonWorkoutLogInput) (*AbandonWorkoutLogOutput, error) {
 	var entity models.WorkoutLogEntity
 	if err := preloadWorkoutLog(database.DB).First(&entity, input.ID).Error; err != nil {

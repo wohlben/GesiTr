@@ -14,6 +14,8 @@ import (
 // ListEquipmentRelationships returns equipment relationships, optionally filtered
 // by owner, fromEquipmentId, toEquipmentId, or relationshipType.
 // GET /api/equipment-relationships
+//
+// OpenAPI: /api/docs#/operations/list-equipment-relationships
 func ListEquipmentRelationships(ctx context.Context, input *ListEquipmentRelationshipsInput) (*ListEquipmentRelationshipsOutput, error) {
 	db := database.DB.Model(&models.EquipmentRelationshipEntity{})
 
@@ -44,6 +46,8 @@ func ListEquipmentRelationships(ctx context.Context, input *ListEquipmentRelatio
 
 // CreateEquipmentRelationship creates an equipment relationship owned by the current user.
 // POST /api/equipment-relationships
+//
+// OpenAPI: /api/docs#/operations/create-equipment-relationship
 func CreateEquipmentRelationship(ctx context.Context, input *CreateEquipmentRelationshipInput) (*CreateEquipmentRelationshipOutput, error) {
 	var dto models.EquipmentRelationship
 	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
@@ -60,6 +64,8 @@ func CreateEquipmentRelationship(ctx context.Context, input *CreateEquipmentRela
 
 // DeleteEquipmentRelationship deletes an equipment relationship. Owner only.
 // DELETE /api/equipment-relationships/:id
+//
+// OpenAPI: /api/docs#/operations/delete-equipment-relationship
 func DeleteEquipmentRelationship(ctx context.Context, input *DeleteEquipmentRelationshipInput) (*DeleteEquipmentRelationshipOutput, error) {
 	var entity models.EquipmentRelationshipEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {

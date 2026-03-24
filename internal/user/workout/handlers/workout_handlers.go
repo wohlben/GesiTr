@@ -22,6 +22,8 @@ func preloadWorkout(db *gorm.DB) *gorm.DB {
 
 // ListWorkouts returns all workouts owned by the current user, each
 // including its sections and section exercises. GET /api/user/workouts
+//
+// OpenAPI: /api/docs#/operations/list-workouts
 func ListWorkouts(ctx context.Context, input *ListWorkoutsInput) (*ListWorkoutsOutput, error) {
 	userID := humaconfig.GetUserID(ctx)
 	db := database.DB.Model(&models.WorkoutEntity{}).Where("owner = ?", userID)
@@ -41,6 +43,8 @@ func ListWorkouts(ctx context.Context, input *ListWorkoutsInput) (*ListWorkoutsO
 // CreateWorkout creates an empty workout. Add sections via
 // [CreateWorkoutSection] and exercises via [CreateWorkoutSectionExercise].
 // POST /api/user/workouts
+//
+// OpenAPI: /api/docs#/operations/create-workout
 func CreateWorkout(ctx context.Context, input *CreateWorkoutInput) (*CreateWorkoutOutput, error) {
 	var dto models.Workout
 	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
@@ -57,6 +61,8 @@ func CreateWorkout(ctx context.Context, input *CreateWorkoutInput) (*CreateWorko
 
 // GetWorkout returns a workout with its full section and exercise tree.
 // Returns 403 if the caller is not the owner. GET /api/user/workouts/{id}
+//
+// OpenAPI: /api/docs#/operations/get-workout
 func GetWorkout(ctx context.Context, input *GetWorkoutInput) (*GetWorkoutOutput, error) {
 	var entity models.WorkoutEntity
 	if err := preloadWorkout(database.DB).First(&entity, input.ID).Error; err != nil {
@@ -70,6 +76,8 @@ func GetWorkout(ctx context.Context, input *GetWorkoutInput) (*GetWorkoutOutput,
 
 // UpdateWorkout updates workout metadata (name, notes). Sections and exercises
 // are managed via their own endpoints. PUT /api/user/workouts/{id}
+//
+// OpenAPI: /api/docs#/operations/update-workout
 func UpdateWorkout(ctx context.Context, input *UpdateWorkoutInput) (*UpdateWorkoutOutput, error) {
 	var existing models.WorkoutEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {
@@ -99,6 +107,8 @@ func UpdateWorkout(ctx context.Context, input *UpdateWorkoutInput) (*UpdateWorko
 }
 
 // DeleteWorkout deletes a workout. DELETE /api/user/workouts/{id}
+//
+// OpenAPI: /api/docs#/operations/delete-workout
 func DeleteWorkout(ctx context.Context, input *DeleteWorkoutInput) (*DeleteWorkoutOutput, error) {
 	var entity models.WorkoutEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {

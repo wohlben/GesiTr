@@ -14,6 +14,10 @@ import (
 	"gorm.io/gorm"
 )
 
+// ListWorkoutLogSections returns workout log sections owned by the current user.
+// GET /api/user/workout-log-sections
+//
+// OpenAPI: /api/docs#/operations/list-workout-log-sections
 func ListWorkoutLogSections(ctx context.Context, input *ListWorkoutLogSectionsInput) (*ListWorkoutLogSectionsOutput, error) {
 	db := database.DB.Model(&models.WorkoutLogSectionEntity{})
 
@@ -43,6 +47,10 @@ func ListWorkoutLogSections(ctx context.Context, input *ListWorkoutLogSectionsIn
 	return &ListWorkoutLogSectionsOutput{Body: dtos}, nil
 }
 
+// CreateWorkoutLogSection adds a section to a workout log.
+// POST /api/user/workout-log-sections
+//
+// OpenAPI: /api/docs#/operations/create-workout-log-section
 func CreateWorkoutLogSection(ctx context.Context, input *CreateWorkoutLogSectionInput) (*CreateWorkoutLogSectionOutput, error) {
 	var dto models.WorkoutLogSection
 	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
@@ -65,6 +73,10 @@ func CreateWorkoutLogSection(ctx context.Context, input *CreateWorkoutLogSection
 	return &CreateWorkoutLogSectionOutput{Body: entity.ToDTO()}, nil
 }
 
+// GetWorkoutLogSection returns a single workout log section.
+// GET /api/user/workout-log-sections/{id}
+//
+// OpenAPI: /api/docs#/operations/get-workout-log-section
 func GetWorkoutLogSection(ctx context.Context, input *GetWorkoutLogSectionInput) (*GetWorkoutLogSectionOutput, error) {
 	var entity models.WorkoutLogSectionEntity
 	if err := database.DB.Preload("Exercises", func(db *gorm.DB) *gorm.DB {
@@ -80,6 +92,10 @@ func GetWorkoutLogSection(ctx context.Context, input *GetWorkoutLogSectionInput)
 	return &GetWorkoutLogSectionOutput{Body: entity.ToDTO()}, nil
 }
 
+// UpdateWorkoutLogSection partially updates a workout log section.
+// PATCH /api/user/workout-log-sections/{id}
+//
+// OpenAPI: /api/docs#/operations/update-workout-log-section
 func UpdateWorkoutLogSection(ctx context.Context, input *UpdateWorkoutLogSectionInput) (*UpdateWorkoutLogSectionOutput, error) {
 	var existing models.WorkoutLogSectionEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {
@@ -131,6 +147,10 @@ func UpdateWorkoutLogSection(ctx context.Context, input *UpdateWorkoutLogSection
 	return &UpdateWorkoutLogSectionOutput{Body: existing.ToDTO()}, nil
 }
 
+// DeleteWorkoutLogSection deletes a workout log section.
+// DELETE /api/user/workout-log-sections/{id}
+//
+// OpenAPI: /api/docs#/operations/delete-workout-log-section
 func DeleteWorkoutLogSection(ctx context.Context, input *DeleteWorkoutLogSectionInput) (*DeleteWorkoutLogSectionOutput, error) {
 	var existing models.WorkoutLogSectionEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {

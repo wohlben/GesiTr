@@ -16,6 +16,8 @@ import (
 // ListExerciseLogs returns exercise logs owned by the current user, ordered
 // by performedAt DESC. Supports filtering by exerciseId, measurementType,
 // isRecord, from, and to. GET /api/user/exercise-logs
+//
+// OpenAPI: /api/docs#/operations/list-exercise-logs
 func ListExerciseLogs(ctx context.Context, input *ListExerciseLogsInput) (*ListExerciseLogsOutput, error) {
 	db := database.DB.Model(&models.ExerciseLogEntity{}).
 		Where("owner = ?", humaconfig.GetUserID(ctx))
@@ -51,6 +53,8 @@ func ListExerciseLogs(ctx context.Context, input *ListExerciseLogsInput) (*ListE
 // CreateExerciseLog creates an exercise log entry. Sets owner, computes
 // RecordValue, and recomputes which entry is the record for the
 // (exerciseId, measurementType) pair. POST /api/user/exercise-logs
+//
+// OpenAPI: /api/docs#/operations/create-exercise-log
 func CreateExerciseLog(ctx context.Context, input *CreateExerciseLogInput) (*CreateExerciseLogOutput, error) {
 	var dto models.ExerciseLog
 	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
@@ -89,6 +93,8 @@ func CreateExerciseLog(ctx context.Context, input *CreateExerciseLogInput) (*Cre
 
 // GetExerciseLog returns a single exercise log entry.
 // GET /api/user/exercise-logs/{id}
+//
+// OpenAPI: /api/docs#/operations/get-exercise-log
 func GetExerciseLog(ctx context.Context, input *GetExerciseLogInput) (*GetExerciseLogOutput, error) {
 	var entity models.ExerciseLogEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
@@ -103,6 +109,8 @@ func GetExerciseLog(ctx context.Context, input *GetExerciseLogInput) (*GetExerci
 // UpdateExerciseLog partially updates an exercise log entry (PATCH).
 // Recomputes RecordValue and recomputes which entry is the record.
 // PATCH /api/user/exercise-logs/{id}
+//
+// OpenAPI: /api/docs#/operations/update-exercise-log
 func UpdateExerciseLog(ctx context.Context, input *UpdateExerciseLogInput) (*UpdateExerciseLogOutput, error) {
 	var existing models.ExerciseLogEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {
@@ -161,6 +169,8 @@ func UpdateExerciseLog(ctx context.Context, input *UpdateExerciseLogInput) (*Upd
 
 // DeleteExerciseLog deletes an exercise log entry. Recomputes record
 // afterwards. DELETE /api/user/exercise-logs/{id}
+//
+// OpenAPI: /api/docs#/operations/delete-exercise-log
 func DeleteExerciseLog(ctx context.Context, input *DeleteExerciseLogInput) (*DeleteExerciseLogOutput, error) {
 	var existing models.ExerciseLogEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {

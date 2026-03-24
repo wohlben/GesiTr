@@ -14,6 +14,8 @@ import (
 // ListExerciseRelationships returns exercise relationships, optionally filtered
 // by owner, fromExerciseId, toExerciseId, or relationshipType.
 // GET /api/exercise-relationships
+//
+// OpenAPI: /api/docs#/operations/list-exercise-relationships
 func ListExerciseRelationships(ctx context.Context, input *ListExerciseRelationshipsInput) (*ListExerciseRelationshipsOutput, error) {
 	db := database.DB.Model(&models.ExerciseRelationshipEntity{})
 
@@ -44,6 +46,8 @@ func ListExerciseRelationships(ctx context.Context, input *ListExerciseRelations
 
 // CreateExerciseRelationship creates an exercise relationship owned by the current user.
 // POST /api/exercise-relationships
+//
+// OpenAPI: /api/docs#/operations/create-exercise-relationship
 func CreateExerciseRelationship(ctx context.Context, input *CreateExerciseRelationshipInput) (*CreateExerciseRelationshipOutput, error) {
 	var dto models.ExerciseRelationship
 	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
@@ -60,6 +64,8 @@ func CreateExerciseRelationship(ctx context.Context, input *CreateExerciseRelati
 
 // DeleteExerciseRelationship deletes an exercise relationship. Owner only.
 // DELETE /api/exercise-relationships/:id
+//
+// OpenAPI: /api/docs#/operations/delete-exercise-relationship
 func DeleteExerciseRelationship(ctx context.Context, input *DeleteExerciseRelationshipInput) (*DeleteExerciseRelationshipOutput, error) {
 	var entity models.ExerciseRelationshipEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {

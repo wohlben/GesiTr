@@ -15,6 +15,8 @@ import (
 // ListExerciseSchemes returns schemes the current user has access to: their
 // own schemes plus schemes linked to public exercises. Filter by exerciseId
 // or measurementType query params. GET /api/exercise-schemes
+//
+// OpenAPI: /api/docs#/operations/list-exercise-schemes
 func ListExerciseSchemes(ctx context.Context, input *ListExerciseSchemesInput) (*ListExerciseSchemesOutput, error) {
 	userID := humaconfig.GetUserID(ctx)
 	// FIXME: subquery doesn't scale — replace with a join or denormalize visibility
@@ -46,6 +48,8 @@ func ListExerciseSchemes(ctx context.Context, input *ListExerciseSchemesInput) (
 // Schemes are referenced when adding exercises to workouts via
 // [gesitr/internal/user/workout/handlers.CreateWorkoutSectionExercise].
 // POST /api/exercise-schemes
+//
+// OpenAPI: /api/docs#/operations/create-exercise-scheme
 func CreateExerciseScheme(ctx context.Context, input *CreateExerciseSchemeInput) (*CreateExerciseSchemeOutput, error) {
 	var dto models.ExerciseScheme
 	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
@@ -68,6 +72,8 @@ func CreateExerciseScheme(ctx context.Context, input *CreateExerciseSchemeInput)
 // GetExerciseScheme returns a single exercise scheme. Access is determined by
 // the linked exercise's visibility — if the user can see the exercise, they
 // can see its schemes. GET /api/exercise-schemes/:id
+//
+// OpenAPI: /api/docs#/operations/get-exercise-scheme
 func GetExerciseScheme(ctx context.Context, input *GetExerciseSchemeInput) (*GetExerciseSchemeOutput, error) {
 	var entity models.ExerciseSchemeEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
@@ -87,6 +93,8 @@ func GetExerciseScheme(ctx context.Context, input *GetExerciseSchemeInput) (*Get
 
 // UpdateExerciseScheme updates a scheme's configuration. The exerciseId
 // cannot be changed. PUT /api/exercise-schemes/:id
+//
+// OpenAPI: /api/docs#/operations/update-exercise-scheme
 func UpdateExerciseScheme(ctx context.Context, input *UpdateExerciseSchemeInput) (*UpdateExerciseSchemeOutput, error) {
 	var existing models.ExerciseSchemeEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {
@@ -113,6 +121,8 @@ func UpdateExerciseScheme(ctx context.Context, input *UpdateExerciseSchemeInput)
 
 // DeleteExerciseScheme deletes an exercise scheme. Owner only.
 // DELETE /api/exercise-schemes/:id
+//
+// OpenAPI: /api/docs#/operations/delete-exercise-scheme
 func DeleteExerciseScheme(ctx context.Context, input *DeleteExerciseSchemeInput) (*DeleteExerciseSchemeOutput, error) {
 	var entity models.ExerciseSchemeEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
