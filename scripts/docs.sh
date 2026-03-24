@@ -6,7 +6,6 @@ GOMARKDOC="go run github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest"
 
 rm -rf "$OUT_DIR"
 mkdir -p "$OUT_DIR"
-touch "$OUT_DIR/.gitkeep"
 
 # Find all packages that have a doc.go and generate markdown for each.
 for docfile in $(find internal -name doc.go -not -path '*/docs/*'); do

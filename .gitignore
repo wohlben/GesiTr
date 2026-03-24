@@ -22,7 +22,3 @@ web/dist/*
 
 # Dependencies
 node_modules/
-
-# Generated docs (make docs)
-internal/docs/generated/*
-!internal/docs/generated/.gitkeep
