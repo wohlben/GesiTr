@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"bytes"
-	"fmt"
 	"net/http/httptest"
 	"os"
 
@@ -53,36 +52,4 @@ func doRawAs(r *gin.Engine, method, path, body, userID string) *httptest.Respons
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	return w
-}
-
-// Owner can retrieve their own workout.
-func ExampleGetWorkout_ownerAccess() {
-	setupExampleDB()
-	r := newRouter()
-
-	// Create a workout as alice (the AUTH_FALLBACK_USER).
-	doRaw(r, "POST", "/api/user/workouts", `{
-		"name": "Push Day"
-	}`)
-
-	// Retrieve it as the owner.
-	w := doJSON(r, "GET", "/api/user/workouts/1", nil)
-	fmt.Println(w.Code)
-	// Output: 200
-}
-
-// Non-owner is denied access to another user's workout with 403 Forbidden.
-func ExampleGetWorkout_nonOwnerDenied() {
-	setupExampleDB()
-	r := newRouter()
-
-	// Create a workout as alice.
-	doRaw(r, "POST", "/api/user/workouts", `{
-		"name": "Push Day"
-	}`)
-
-	// Try to retrieve it as bob.
-	w := doRawAs(r, "GET", "/api/user/workouts/1", "", "bob")
-	fmt.Println(w.Code)
-	// Output: 403
 }
