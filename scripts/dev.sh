@@ -60,6 +60,13 @@ PIDS+=($!)
 cd ..
 
 # Wait for any child to exit — that means something crashed
-wait -n "${PIDS[@]}" 2>/dev/null || true
-echo "A child process exited unexpectedly."
-exit 1
+# Use a polling loop for compatibility with bash < 4.3 (macOS default) which lacks wait -n
+while true; do
+  for pid in "${PIDS[@]}"; do
+    if ! kill -0 "$pid" 2>/dev/null; then
+      echo "A child process exited unexpectedly."
+      exit 1
+    fi
+  done
+  sleep 1
+done

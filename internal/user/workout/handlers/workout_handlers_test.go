@@ -28,23 +28,22 @@ func TestListWorkouts(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
 		"name": "Push Day",
 	})
-	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Pull Day"})
+	doJSON(r, "POST", "/api/user/workouts", map[string]any{
+		"name": "Pull Day",
+	})
+	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
 
-	t.Run("list all", func(t *testing.T) {
+	t.Run("lists only own workouts", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/user/workouts", nil)
 		var result []models.Workout
 		json.Unmarshal(w.Body.Bytes(), &result)
 		if len(result) != 2 {
 			t.Errorf("expected 2, got %d", len(result))
 		}
-	})
-
-	t.Run("filter by owner", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/user/workouts?owner=alice", nil)
-		var result []models.Workout
-		json.Unmarshal(w.Body.Bytes(), &result)
-		if len(result) != 1 || result[0].Owner != "alice" {
-			t.Errorf("owner filter: got %d results", len(result))
+		for _, wo := range result {
+			if wo.Owner != "alice" {
+				t.Errorf("expected owner alice, got %q", wo.Owner)
+			}
 		}
 	})
 
@@ -101,6 +100,7 @@ func TestGetWorkout(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
 		"owner": "alice", "name": "Push Day", "date": "2026-03-07T10:00:00Z",
 	})
+	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
 
 	t.Run("found", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/user/workouts/1", nil)
@@ -118,6 +118,13 @@ func TestGetWorkout(t *testing.T) {
 		w := doJSON(r, "GET", "/api/user/workouts/999", nil)
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
+		}
+	})
+
+	t.Run("forbidden for other owner", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/user/workouts/2", nil)
+		if w.Code != http.StatusForbidden {
+			t.Errorf("expected 403, got %d", w.Code)
 		}
 	})
 }
@@ -179,6 +186,7 @@ func TestUpdateWorkout(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
 		"owner": "alice", "name": "Push Day", "date": "2026-03-07T10:00:00Z",
 	})
+	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
 
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/user/workouts/1", map[string]any{
@@ -203,6 +211,15 @@ func TestUpdateWorkout(t *testing.T) {
 		}
 	})
 
+	t.Run("forbidden for other owner", func(t *testing.T) {
+		w := doJSON(r, "PUT", "/api/user/workouts/2", map[string]any{
+			"name": "Hijacked",
+		})
+		if w.Code != http.StatusForbidden {
+			t.Errorf("expected 403, got %d", w.Code)
+		}
+	})
+
 	t.Run("bad json", func(t *testing.T) {
 		w := doRaw(r, "PUT", "/api/user/workouts/1", "{bad")
 		if w.Code != http.StatusBadRequest {
@@ -218,6 +235,14 @@ func TestDeleteWorkout(t *testing.T) {
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
 		"owner": "alice", "name": "Push Day", "date": "2026-03-07T10:00:00Z",
 	})
+	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
+
+	t.Run("forbidden for other owner", func(t *testing.T) {
+		w := doJSON(r, "DELETE", "/api/user/workouts/2", nil)
+		if w.Code != http.StatusForbidden {
+			t.Errorf("expected 403, got %d", w.Code)
+		}
+	})
 
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "DELETE", "/api/user/workouts/1", nil)
@@ -226,11 +251,10 @@ func TestDeleteWorkout(t *testing.T) {
 		}
 	})
 
-	t.Run("db error", func(t *testing.T) {
-		closeDB(t)
-		w := doJSON(r, "DELETE", "/api/user/workouts/1", nil)
+	t.Run("not found", func(t *testing.T) {
+		w := doJSON(r, "DELETE", "/api/user/workouts/999", nil)
 		if w.Code != http.StatusNotFound {
-			t.Errorf("expected 404 (db closed), got %d", w.Code)
+			t.Errorf("expected 404, got %d", w.Code)
 		}
 	})
 }

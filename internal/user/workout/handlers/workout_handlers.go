@@ -20,11 +20,8 @@ func preloadWorkout(db *gorm.DB) *gorm.DB {
 }
 
 func ListWorkouts(c *gin.Context) {
-	db := database.DB.Model(&models.WorkoutEntity{})
-
-	if v := c.Query("owner"); v != "" {
-		db = db.Where("owner = ?", v)
-	}
+	userID := auth.GetUserID(c)
+	db := database.DB.Model(&models.WorkoutEntity{}).Where("owner = ?", userID)
 
 	var entities []models.WorkoutEntity
 	if err := preloadWorkout(db).Find(&entities).Error; err != nil {
@@ -61,6 +58,10 @@ func GetWorkout(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Workout not found"})
 		return
 	}
+	if entity.Owner != auth.GetUserID(c) {
+		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
+		return
+	}
 	c.JSON(http.StatusOK, entity.ToDTO())
 }
 
@@ -68,6 +69,10 @@ func UpdateWorkout(c *gin.Context) {
 	var existing models.WorkoutEntity
 	if err := database.DB.First(&existing, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Workout not found"})
+		return
+	}
+	if existing.Owner != auth.GetUserID(c) {
+		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
 		return
 	}
 
@@ -79,6 +84,7 @@ func UpdateWorkout(c *gin.Context) {
 
 	entity := models.WorkoutFromDTO(dto)
 	entity.ID = existing.ID
+	entity.Owner = existing.Owner
 
 	if err := database.DB.Save(&entity).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -93,8 +99,17 @@ func UpdateWorkout(c *gin.Context) {
 }
 
 func DeleteWorkout(c *gin.Context) {
-	if err := database.DB.Delete(&models.WorkoutEntity{}, c.Param("id")).Error; err != nil {
+	var entity models.WorkoutEntity
+	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Workout not found"})
+		return
+	}
+	if entity.Owner != auth.GetUserID(c) {
+		c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
+		return
+	}
+	if err := database.DB.Delete(&entity).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusNoContent, nil)

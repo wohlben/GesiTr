@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"gesitr/internal/auth"
 	"gesitr/internal/database"
 	exercisemodels "gesitr/internal/exercise/models"
 	"gesitr/internal/user/workout/models"
@@ -10,12 +11,25 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// requireSectionOwner fetches the section, then checks workout ownership.
+func requireSectionOwner(c *gin.Context, sectionID uint) bool {
+	var section models.WorkoutSectionEntity
+	if err := database.DB.First(&section, sectionID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Workout section not found"})
+		return false
+	}
+	return requireWorkoutOwner(c, section.WorkoutID)
+}
+
 func ListWorkoutSectionExercises(c *gin.Context) {
 	db := database.DB.Model(&models.WorkoutSectionExerciseEntity{})
 
 	if v := c.Query("workoutSectionId"); v != "" {
 		db = db.Where("workout_section_id = ?", v)
 	}
+
+	// Enforce ownership through workout section -> workout
+	db = db.Where("workout_section_id IN (SELECT id FROM workout_sections WHERE workout_id IN (SELECT id FROM workouts WHERE owner = ? AND deleted_at IS NULL))", auth.GetUserID(c))
 
 	var entities []models.WorkoutSectionExerciseEntity
 	if err := db.Order("position").Find(&entities).Error; err != nil {
@@ -37,9 +51,7 @@ func CreateWorkoutSectionExercise(c *gin.Context) {
 		return
 	}
 
-	var section models.WorkoutSectionEntity
-	if err := database.DB.First(&section, dto.WorkoutSectionID).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Workout section not found"})
+	if !requireSectionOwner(c, dto.WorkoutSectionID) {
 		return
 	}
 
@@ -58,8 +70,16 @@ func CreateWorkoutSectionExercise(c *gin.Context) {
 }
 
 func DeleteWorkoutSectionExercise(c *gin.Context) {
-	if err := database.DB.Delete(&models.WorkoutSectionExerciseEntity{}, c.Param("id")).Error; err != nil {
+	var entity models.WorkoutSectionExerciseEntity
+	if err := database.DB.First(&entity, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Workout section exercise not found"})
+		return
+	}
+	if !requireSectionOwner(c, entity.WorkoutSectionID) {
+		return
+	}
+	if err := database.DB.Delete(&entity).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusNoContent, nil)
