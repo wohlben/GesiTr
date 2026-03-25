@@ -3,6 +3,9 @@ gesitr
 .gesitr-e2e
 /seed
 
+# Dev server state
+.dev-server
+
 # Database
 *.db
 

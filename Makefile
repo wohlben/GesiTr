@@ -47,7 +47,7 @@ build-go: build-web
 	go build -o gesitr .
 
 # Development: start Go API + Angular dev server together
-dev: generate
+dev: generate docs
 	./scripts/dev.sh
 
 dev-api:
