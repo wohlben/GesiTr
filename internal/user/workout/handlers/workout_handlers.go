@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
@@ -46,12 +45,10 @@ func ListWorkouts(ctx context.Context, input *ListWorkoutsInput) (*ListWorkoutsO
 //
 // OpenAPI: /api/docs#/operations/create-workout
 func CreateWorkout(ctx context.Context, input *CreateWorkoutInput) (*CreateWorkoutOutput, error) {
-	var dto models.Workout
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
+	entity := models.WorkoutEntity{
+		Name:  input.Body.Name,
+		Notes: input.Body.Notes,
 	}
-
-	entity := models.WorkoutFromDTO(dto)
 	entity.Owner = humaconfig.GetUserID(ctx)
 	if err := database.DB.Create(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
@@ -87,12 +84,10 @@ func UpdateWorkout(ctx context.Context, input *UpdateWorkoutInput) (*UpdateWorko
 		return nil, huma.Error403Forbidden("access denied")
 	}
 
-	var dto models.Workout
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
+	entity := models.WorkoutEntity{
+		Name:  input.Body.Name,
+		Notes: input.Body.Notes,
 	}
-
-	entity := models.WorkoutFromDTO(dto)
 	entity.ID = existing.ID
 	entity.Owner = existing.Owner
 

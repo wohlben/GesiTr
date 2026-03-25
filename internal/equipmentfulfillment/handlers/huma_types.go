@@ -13,11 +13,13 @@ type ListFulfillmentsOutput struct {
 	Body []models.Fulfillment
 }
 
-// RawBody skips huma's automatic validation — the Fulfillment DTO is shared
-// between request and response and has server-set fields (id, createdAt, etc.)
-// that aren't present in create requests.
+type FulfillmentBody struct {
+	EquipmentID         uint `json:"equipmentId" required:"true"`
+	FulfillsEquipmentID uint `json:"fulfillsEquipmentId" required:"true"`
+}
+
 type CreateFulfillmentInput struct {
-	RawBody []byte
+	Body FulfillmentBody
 }
 
 type CreateFulfillmentOutput struct {

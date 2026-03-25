@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 
 	"gesitr/internal/database"
 	"gesitr/internal/exerciserelationship/models"
@@ -49,9 +48,12 @@ func ListExerciseRelationships(ctx context.Context, input *ListExerciseRelations
 //
 // OpenAPI: /api/docs#/operations/create-exercise-relationship
 func CreateExerciseRelationship(ctx context.Context, input *CreateExerciseRelationshipInput) (*CreateExerciseRelationshipOutput, error) {
-	var dto models.ExerciseRelationship
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
+	dto := models.ExerciseRelationship{
+		RelationshipType: input.Body.RelationshipType,
+		Strength:         input.Body.Strength,
+		Description:      input.Body.Description,
+		FromExerciseID:   input.Body.FromExerciseID,
+		ToExerciseID:     input.Body.ToExerciseID,
 	}
 
 	entity := models.ExerciseRelationshipFromDTO(dto)

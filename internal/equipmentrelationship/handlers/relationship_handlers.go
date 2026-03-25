@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 
 	"gesitr/internal/database"
 	"gesitr/internal/equipmentrelationship/models"
@@ -49,9 +48,11 @@ func ListEquipmentRelationships(ctx context.Context, input *ListEquipmentRelatio
 //
 // OpenAPI: /api/docs#/operations/create-equipment-relationship
 func CreateEquipmentRelationship(ctx context.Context, input *CreateEquipmentRelationshipInput) (*CreateEquipmentRelationshipOutput, error) {
-	var dto models.EquipmentRelationship
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
+	dto := models.EquipmentRelationship{
+		RelationshipType: input.Body.RelationshipType,
+		Strength:         input.Body.Strength,
+		FromEquipmentID:  input.Body.FromEquipmentID,
+		ToEquipmentID:    input.Body.ToEquipmentID,
 	}
 
 	entity := models.EquipmentRelationshipFromDTO(dto)

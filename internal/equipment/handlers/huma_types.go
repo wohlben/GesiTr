@@ -6,6 +6,16 @@ import (
 	"gesitr/internal/shared"
 )
 
+type EquipmentBody struct {
+	Name        string                   `json:"name" required:"true"`
+	DisplayName string                   `json:"displayName" required:"true"`
+	Description string                   `json:"description" required:"false"`
+	Category    models.EquipmentCategory `json:"category" required:"true"`
+	ImageUrl    *string                  `json:"imageUrl,omitempty"`
+	TemplateID  string                   `json:"templateId" required:"false"`
+	Public      bool                     `json:"public" required:"false"`
+}
+
 type ListEquipmentInput struct {
 	humaconfig.PaginationInput
 	Owner    string `query:"owner" doc:"Filter by owner ('me' for current user)"`
@@ -18,11 +28,8 @@ type ListEquipmentOutput struct {
 	Body humaconfig.PaginatedBody[models.Equipment]
 }
 
-// RawBody skips huma's automatic validation — the Equipment DTO is shared
-// between request and response and has server-set fields (id, createdAt, etc.)
-// that aren't present in create requests.
 type CreateEquipmentInput struct {
-	RawBody []byte
+	Body EquipmentBody
 }
 
 type CreateEquipmentOutput struct {
@@ -38,8 +45,8 @@ type GetEquipmentOutput struct {
 }
 
 type UpdateEquipmentInput struct {
-	ID      uint `path:"id"`
-	RawBody []byte
+	ID   uint `path:"id"`
+	Body EquipmentBody
 }
 
 type UpdateEquipmentOutput struct {

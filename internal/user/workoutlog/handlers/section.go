@@ -2,12 +2,10 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 	"reflect"
 
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	workoutmodels "gesitr/internal/user/workout/models"
 	"gesitr/internal/user/workoutlog/models"
 
 	"github.com/danielgtaylor/huma/v2"
@@ -52,17 +50,18 @@ func ListWorkoutLogSections(ctx context.Context, input *ListWorkoutLogSectionsIn
 //
 // OpenAPI: /api/docs#/operations/create-workout-log-section
 func CreateWorkoutLogSection(ctx context.Context, input *CreateWorkoutLogSectionInput) (*CreateWorkoutLogSectionOutput, error) {
-	var dto models.WorkoutLogSection
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
-
-	log, err := requireLogStatus(ctx, dto.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc)
+	log, err := requireLogStatus(ctx, input.Body.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc)
 	if err != nil {
 		return nil, err
 	}
 
-	entity := models.WorkoutLogSectionFromDTO(dto)
+	entity := models.WorkoutLogSectionEntity{
+		WorkoutLogID:         input.Body.WorkoutLogID,
+		Type:                 input.Body.Type,
+		Label:                input.Body.Label,
+		Position:             input.Body.Position,
+		RestBetweenExercises: input.Body.RestBetweenExercises,
+	}
 	// For adhoc logs, sections start in_progress immediately
 	if log.Status == models.WorkoutLogStatusAdhoc {
 		entity.Status = models.WorkoutLogItemStatusInProgress
@@ -106,15 +105,7 @@ func UpdateWorkoutLogSection(ctx context.Context, input *UpdateWorkoutLogSection
 		return nil, err
 	}
 
-	var patch struct {
-		Type                 *workoutmodels.WorkoutSectionType `json:"type"`
-		Label                *string                           `json:"label"`
-		RestBetweenExercises *int                              `json:"restBetweenExercises"`
-		Position             *int                              `json:"position"`
-	}
-	if err := json.Unmarshal(input.RawBody, &patch); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
+	patch := input.Body
 
 	if reflect.ValueOf(patch).IsZero() {
 		return nil, huma.Error400BadRequest("patch body contains no updatable fields")

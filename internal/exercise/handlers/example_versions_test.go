@@ -22,8 +22,7 @@ func ExampleGetExerciseVersion_owner() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
-		"description": "Barbell squat",
-		"version": 0
+		"description": "Barbell squat"
 	}`)
 
 	// Verify version 0 exists.
@@ -79,7 +78,6 @@ func ExampleGetExerciseVersion_nonOwnerPublic() {
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
 		"description": "Bodyweight push-up",
-		"version": 0,
 		"public": true
 	}`)
 
@@ -129,8 +127,7 @@ func ExampleGetExerciseVersion_nonOwnerPrivate() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
-		"description": "A private exercise",
-		"version": 0
+		"description": "A private exercise"
 	}`)
 
 	w := doRawAs(r, "GET", "/api/exercises/templates/secret-move/versions/0", "", "other")
@@ -151,8 +148,7 @@ func ExampleGetExerciseVersion_afterDelete() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "intermediate",
 		"bodyWeightScaling": 0,
-		"description": "Standing overhead press",
-		"version": 0
+		"description": "Standing overhead press"
 	}`)
 
 	// Verify it exists.

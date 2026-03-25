@@ -199,7 +199,6 @@ export class ExerciseDetail {
         alternativeNames: exercise.alternativeNames,
         authorName: exercise.authorName,
         authorUrl: exercise.authorUrl,
-        version: exercise.version,
         parentExerciseId: exercise.parentExerciseId,
         templateId: exercise.templateId,
         equipmentIds: exercise.equipmentIds,

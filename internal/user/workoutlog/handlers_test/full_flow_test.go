@@ -64,7 +64,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 
 	// 4. Create a workout template
 	w = doJSON(r, "POST", "/api/user/workouts", map[string]any{
-		"owner": "alice", "name": "Strength Day", "date": "2026-03-07T10:00:00Z",
+		"name": "Strength Day",
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create workout: status = %d", w.Code)
@@ -122,7 +122,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 
 	// 8. Create a workout log referencing the template
 	w = doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Strength Day - March 7", "date": "2026-03-07T18:00:00Z",
+		"name": "Strength Day - March 7", "date": "2026-03-07T18:00:00Z",
 		"workoutId": wkt.ID,
 	})
 	if w.Code != http.StatusCreated {
@@ -312,7 +312,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 
 	// 13. Also create an ad-hoc log (no workout template)
 	w = doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Quick Session", "date": "2026-03-08T10:00:00Z",
+		"name": "Quick Session", "date": "2026-03-08T10:00:00Z",
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create ad-hoc log: status = %d", w.Code)
@@ -352,7 +352,7 @@ func TestGetWorkoutLogWithSectionsAndExercises(t *testing.T) {
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Full Session", "date": "2026-03-07T10:00:00Z",
+		"name": "Full Session", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "supplementary", "label": "Warmup", "position": 0,

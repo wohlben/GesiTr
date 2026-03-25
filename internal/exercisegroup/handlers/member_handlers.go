@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 
 	"gesitr/internal/database"
 	"gesitr/internal/exercisegroup/models"
@@ -43,9 +42,9 @@ func ListExerciseGroupMembers(ctx context.Context, input *ListExerciseGroupMembe
 //
 // OpenAPI: /api/docs#/operations/create-exercise-group-member
 func CreateExerciseGroupMember(ctx context.Context, input *CreateExerciseGroupMemberInput) (*CreateExerciseGroupMemberOutput, error) {
-	var dto models.ExerciseGroupMember
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
+	dto := models.ExerciseGroupMember{
+		GroupID:    input.Body.GroupID,
+		ExerciseID: input.Body.ExerciseID,
 	}
 
 	entity := models.ExerciseGroupMemberFromDTO(dto)

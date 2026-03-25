@@ -21,7 +21,7 @@ func TestStartCascade(t *testing.T) {
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test",
+		"name": "Test",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -76,7 +76,7 @@ func TestStartWhenNotPlanning(t *testing.T) {
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test",
+		"name": "Test",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -107,7 +107,7 @@ func TestAbandonCascade(t *testing.T) {
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test",
+		"name": "Test",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -162,7 +162,7 @@ func TestAbandonWhenTerminal(t *testing.T) {
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test",
+		"name": "Test",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -190,12 +190,12 @@ func TestUniquePlanningLog(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
-		"owner": "alice", "name": "Template",
+		"name": "Template",
 	})
 
 	// First planning log — should succeed
 	w := doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Log 1", "workoutId": 1,
+		"name": "Log 1", "workoutId": 1,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("first log: status = %d", w.Code)
@@ -203,7 +203,7 @@ func TestUniquePlanningLog(t *testing.T) {
 
 	// Second planning log for same workout — should 409
 	w = doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Log 2", "workoutId": 1,
+		"name": "Log 2", "workoutId": 1,
 	})
 	if w.Code != http.StatusConflict {
 		t.Errorf("expected 409 for duplicate planning log, got %d", w.Code)
@@ -227,7 +227,7 @@ func TestUniquePlanningLog(t *testing.T) {
 
 	// Now a new planning log should be allowed
 	w = doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Log 2", "workoutId": 1,
+		"name": "Log 2", "workoutId": 1,
 	})
 	if w.Code != http.StatusCreated {
 		t.Errorf("expected 201 after first log started, got %d", w.Code)
@@ -246,7 +246,7 @@ func TestGuardCreateSectionWhenInProgress(t *testing.T) {
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test",
+		"name": "Test",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -278,7 +278,7 @@ func TestGuardDeleteExerciseWhenInProgress(t *testing.T) {
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test",
+		"name": "Test",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -308,7 +308,7 @@ func TestPropagationAllFinished(t *testing.T) {
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test",
+		"name": "Test",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -354,7 +354,7 @@ func TestPropagationAnyAborted(t *testing.T) {
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test",
+		"name": "Test",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -401,7 +401,7 @@ func TestDeleteInProgressLog(t *testing.T) {
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test",
+		"name": "Test",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -431,7 +431,7 @@ func TestMultiSectionPropagation(t *testing.T) {
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test",
+		"name": "Test",
 	})
 	// Section 1
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
@@ -497,7 +497,7 @@ func TestUpdateLogPreservesStatus(t *testing.T) {
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test",
+		"name": "Test",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -508,9 +508,17 @@ func TestUpdateLogPreservesStatus(t *testing.T) {
 
 	doJSON(r, "POST", "/api/user/workout-logs/1/start", nil)
 
-	// Try to change status via generic PATCH — should be ignored
+	// Try to change status via generic PATCH — huma rejects the unknown field
 	w := doJSON(r, "PATCH", "/api/user/workout-logs/1", map[string]any{
 		"name": "Updated", "status": "planning",
+	})
+	if w.Code != http.StatusUnprocessableEntity {
+		t.Fatalf("expected 422 (status not allowed in update body), got %d, body = %s", w.Code, w.Body.String())
+	}
+
+	// Verify a clean PATCH without status works and preserves status
+	w = doJSON(r, "PATCH", "/api/user/workout-logs/1", map[string]any{
+		"name": "Updated",
 	})
 	if w.Code != http.StatusOK {
 		t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
@@ -539,10 +547,10 @@ func TestListWorkoutLogsStatusFilter(t *testing.T) {
 
 	// Create two logs
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Log 1",
+		"name": "Log 1",
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Log 2",
+		"name": "Log 2",
 	})
 
 	// Start log 1
@@ -656,7 +664,7 @@ func TestDeleteExercisePropagatesStatus(t *testing.T) {
 	})
 
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+		"name": "Test", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -697,7 +705,7 @@ func TestProgressiveCompletion(t *testing.T) {
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+		"name": "Test", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,

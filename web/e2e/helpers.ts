@@ -1,5 +1,11 @@
 import { APIRequestContext, expect, request } from '@playwright/test';
 
+/** Strip server-set fields (BaseModel + owner/version) before sending an update payload. */
+function stripServerFields(obj: Record<string, unknown>): Record<string, unknown> {
+  const { id, createdAt, updatedAt, deletedAt, owner, version, ...rest } = obj;
+  return rest;
+}
+
 // The Angular proxy in e2e sets X-User-Id on all /api requests.
 // To create resources as a different user, we need a direct API context
 // that bypasses the proxy and sets its own X-User-Id header.
@@ -87,7 +93,7 @@ export async function updateExercise(
 ) {
   const getRes = await request.get(`/api/exercises/${id}`);
   const current = await getRes.json();
-  const merged = { ...current, ...data };
+  const merged = { ...stripServerFields(current), ...data };
   const res = await request.put(`/api/exercises/${id}`, { data: merged });
   expect(res.ok(), `Failed to update exercise: ${await res.text()}`).toBeTruthy();
   return res.json();
@@ -120,7 +126,7 @@ export async function updateEquipment(
 ) {
   const getRes = await request.get(`/api/equipment/${id}`);
   const current = await getRes.json();
-  const merged = { ...current, ...data };
+  const merged = { ...stripServerFields(current), ...data };
   const res = await request.put(`/api/equipment/${id}`, { data: merged });
   expect(res.ok(), `Failed to update equipment: ${await res.text()}`).toBeTruthy();
   return res.json();
@@ -151,7 +157,7 @@ export async function updateExerciseGroup(
 ) {
   const getRes = await request.get(`/api/exercise-groups/${id}`);
   const current = await getRes.json();
-  const merged = { ...current, ...data };
+  const merged = { ...stripServerFields(current), ...data };
   const res = await request.put(`/api/exercise-groups/${id}`, { data: merged });
   expect(res.ok(), `Failed to update exercise group: ${await res.text()}`).toBeTruthy();
   return res.json();

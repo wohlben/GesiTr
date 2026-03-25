@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
@@ -33,20 +32,12 @@ func GetMyProfile(ctx context.Context, input *GetMyProfileInput) (*GetMyProfileO
 func UpdateMyProfile(ctx context.Context, input *UpdateMyProfileInput) (*UpdateMyProfileOutput, error) {
 	userID := humaconfig.GetUserID(ctx)
 
-	var req models.UpdateProfileRequest
-	if err := json.Unmarshal(input.RawBody, &req); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
-	if req.Name == "" {
-		return nil, huma.Error400BadRequest("name is required")
-	}
-
 	var entity models.UserProfileEntity
 	if err := database.DB.First(&entity, "id = ?", userID).Error; err != nil {
 		return nil, huma.Error404NotFound("profile not found")
 	}
 
-	entity.Name = req.Name
+	entity.Name = input.Body.Name
 	if err := database.DB.Save(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError("failed to update profile")
 	}

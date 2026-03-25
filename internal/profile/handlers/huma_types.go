@@ -14,8 +14,12 @@ type GetMyProfileOutput struct {
 
 // --- UpdateMyProfile ---
 
+type UpdateMyProfileBody struct {
+	Name string `json:"name" required:"true"`
+}
+
 type UpdateMyProfileInput struct {
-	RawBody []byte
+	Body UpdateMyProfileBody
 }
 
 type UpdateMyProfileOutput struct {

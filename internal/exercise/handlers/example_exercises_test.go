@@ -20,8 +20,7 @@ func ExampleListExercises_owner() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
-		"description": "A private exercise",
-		"version": 0
+		"description": "A private exercise"
 	}`)
 
 	// Create a public exercise.
@@ -32,7 +31,6 @@ func ExampleListExercises_owner() {
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
 		"description": "Bodyweight push-up",
-		"version": 0,
 		"public": true
 	}`)
 
@@ -60,7 +58,6 @@ func ExampleListExercises_nonOwnerPublic() {
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
 		"description": "Bodyweight push-up",
-		"version": 0,
 		"public": true
 	}`)
 
@@ -92,8 +89,7 @@ func ExampleListExercises_nonOwnerPrivate() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
-		"description": "A private exercise",
-		"version": 0
+		"description": "A private exercise"
 	}`)
 
 	// Another user sees an empty list.
@@ -120,8 +116,7 @@ func ExampleCreateExercise_simple() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
-		"description": "Bodyweight push-up",
-		"version": 0
+		"description": "Bodyweight push-up"
 	}`)
 
 	var exercise models.Exercise
@@ -160,7 +155,6 @@ func ExampleCreateExercise_withEquipment() {
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
 		"description": "Barbell bench press",
-		"version": 0,
 		"equipmentIds": [1]
 	}`)
 
@@ -186,8 +180,7 @@ func ExampleGetExercise_owner() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
-		"description": "Barbell bench press",
-		"version": 0
+		"description": "Barbell bench press"
 	}`)
 
 	w := doJSON(r, "GET", "/api/exercises/1", nil)
@@ -215,7 +208,6 @@ func ExampleGetExercise_nonOwnerPublic() {
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
 		"description": "Barbell squat",
-		"version": 0,
 		"public": true
 	}`)
 
@@ -241,8 +233,7 @@ func ExampleGetExercise_nonOwnerPrivate() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
-		"description": "A private exercise",
-		"version": 0
+		"description": "A private exercise"
 	}`)
 
 	w := doRawAs(r, "GET", "/api/exercises/1", "", "other")
@@ -261,8 +252,7 @@ func ExampleUpdateExercise_owner() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
-		"description": "Barbell squat",
-		"version": 0
+		"description": "Barbell squat"
 	}`)
 
 	w := doRaw(r, "PUT", "/api/exercises/1", `{
@@ -300,8 +290,7 @@ func ExampleUpdateExercise_versioning() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
-		"description": "Barbell squat",
-		"version": 0
+		"description": "Barbell squat"
 	}`)
 
 	// Update it — version bumps to 1.
@@ -354,7 +343,6 @@ func ExampleUpdateExercise_nonOwnerPublic() {
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
 		"description": "Bodyweight push-up",
-		"version": 0,
 		"public": true
 	}`)
 
@@ -381,8 +369,7 @@ func ExampleUpdateExercise_nonOwnerPrivate() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
-		"description": "A private exercise",
-		"version": 0
+		"description": "A private exercise"
 	}`)
 
 	w := doRawAs(r, "PUT", "/api/exercises/1", `{

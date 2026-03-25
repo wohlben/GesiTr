@@ -228,6 +228,7 @@ func TestUpdateExerciseScheme(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/exercise-schemes/1", map[string]any{
+			"exerciseId":      1,
 			"measurementType": "REP_BASED",
 			"sets":            5, "reps": 5, "weight": 80.0, "restBetweenSets": 180,
 		})
@@ -247,6 +248,7 @@ func TestUpdateExerciseScheme(t *testing.T) {
 
 	t.Run("forbidden for non-owner", func(t *testing.T) {
 		w := doJSONAs(r, "PUT", "/api/exercise-schemes/1", map[string]any{
+			"exerciseId":      1,
 			"measurementType": "REP_BASED",
 		}, "bob")
 		if w.Code != http.StatusForbidden {
@@ -256,6 +258,7 @@ func TestUpdateExerciseScheme(t *testing.T) {
 
 	t.Run("not found", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/exercise-schemes/999", map[string]any{
+			"exerciseId":      1,
 			"measurementType": "REP_BASED",
 		})
 		if w.Code != http.StatusNotFound {

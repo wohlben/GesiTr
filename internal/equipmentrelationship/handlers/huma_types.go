@@ -15,11 +15,15 @@ type ListEquipmentRelationshipsOutput struct {
 	Body []models.EquipmentRelationship
 }
 
-// RawBody skips huma's automatic validation — the EquipmentRelationship DTO is shared
-// between request and response and has server-set fields (id, createdAt, etc.)
-// that aren't present in create requests.
+type EquipmentRelationshipBody struct {
+	RelationshipType models.EquipmentRelationshipType `json:"relationshipType" required:"true"`
+	Strength         float64                          `json:"strength" required:"false"`
+	FromEquipmentID  uint                             `json:"fromEquipmentId" required:"true"`
+	ToEquipmentID    uint                             `json:"toEquipmentId" required:"true"`
+}
+
 type CreateEquipmentRelationshipInput struct {
-	RawBody []byte
+	Body EquipmentRelationshipBody
 }
 
 type CreateEquipmentRelationshipOutput struct {

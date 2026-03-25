@@ -15,6 +15,18 @@ import (
 	"gorm.io/gorm"
 )
 
+func equipmentDTOFromBody(body EquipmentBody) models.Equipment {
+	return models.Equipment{
+		Name:        body.Name,
+		DisplayName: body.DisplayName,
+		Description: body.Description,
+		Category:    body.Category,
+		ImageUrl:    body.ImageUrl,
+		TemplateID:  body.TemplateID,
+		Public:      body.Public,
+	}
+}
+
 // ListEquipment returns equipment visible to the current user: their own
 // equipment plus all public equipment. Filter by owner, public, or category
 // query params. GET /api/equipment
@@ -71,10 +83,7 @@ func ListEquipment(ctx context.Context, input *ListEquipmentInput) (*ListEquipme
 //
 // OpenAPI: /api/docs#/operations/create-equipment
 func CreateEquipment(ctx context.Context, input *CreateEquipmentInput) (*CreateEquipmentOutput, error) {
-	var dto models.Equipment
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
+	dto := equipmentDTOFromBody(input.Body)
 
 	if dto.TemplateID == "" {
 		dto.TemplateID = uuid.New().String()
@@ -147,10 +156,8 @@ func UpdateEquipment(ctx context.Context, input *UpdateEquipmentInput) (*UpdateE
 		return nil, huma.Error403Forbidden("access denied")
 	}
 
-	var dto models.Equipment
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
+	dto := equipmentDTOFromBody(input.Body)
+	dto.Owner = existing.Owner
 
 	oldDTO := existing.ToDTO()
 

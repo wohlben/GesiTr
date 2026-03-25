@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 	"time"
 
 	"gesitr/internal/database"
@@ -56,15 +55,18 @@ func ListExerciseLogs(ctx context.Context, input *ListExerciseLogsInput) (*ListE
 //
 // OpenAPI: /api/docs#/operations/create-exercise-log
 func CreateExerciseLog(ctx context.Context, input *CreateExerciseLogInput) (*CreateExerciseLogOutput, error) {
-	var dto models.ExerciseLog
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
+	entity := models.ExerciseLogEntity{
+		ExerciseID:              input.Body.ExerciseID,
+		MeasurementType:         input.Body.MeasurementType,
+		Reps:                    input.Body.Reps,
+		Weight:                  input.Body.Weight,
+		Duration:                input.Body.Duration,
+		Distance:                input.Body.Distance,
+		Time:                    input.Body.Time,
+		PerformedAt:             input.Body.PerformedAt,
+		WorkoutLogExerciseSetID: input.Body.WorkoutLogExerciseSetID,
+		SourceExerciseSchemeID:  input.Body.SourceExerciseSchemeID,
 	}
-
-	entity := models.ExerciseLogFromDTO(dto)
-	entity.ID = 0
-	entity.CreatedAt = time.Time{}
-	entity.UpdatedAt = time.Time{}
 	entity.Owner = humaconfig.GetUserID(ctx)
 
 	if entity.PerformedAt.IsZero() {
@@ -120,16 +122,7 @@ func UpdateExerciseLog(ctx context.Context, input *UpdateExerciseLogInput) (*Upd
 		return nil, huma.Error403Forbidden("access denied")
 	}
 
-	var patch struct {
-		Reps     *int     `json:"reps"`
-		Weight   *float64 `json:"weight"`
-		Duration *int     `json:"duration"`
-		Distance *float64 `json:"distance"`
-		Time     *int     `json:"time"`
-	}
-	if err := json.Unmarshal(input.RawBody, &patch); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
+	patch := input.Body
 
 	if patch.Reps != nil {
 		existing.Reps = patch.Reps

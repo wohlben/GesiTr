@@ -4,6 +4,15 @@ import (
 	"gesitr/internal/exerciserelationship/models"
 )
 
+// ExerciseRelationshipBody contains the client-provided fields for creating an exercise relationship.
+type ExerciseRelationshipBody struct {
+	RelationshipType models.ExerciseRelationshipType `json:"relationshipType" required:"true"`
+	Strength         float64                         `json:"strength"`
+	Description      *string                         `json:"description"`
+	FromExerciseID   uint                            `json:"fromExerciseId" required:"true"`
+	ToExerciseID     uint                            `json:"toExerciseId" required:"true"`
+}
+
 type ListExerciseRelationshipsInput struct {
 	Owner            string `query:"owner" doc:"Filter by owner"`
 	FromExerciseID   string `query:"fromExerciseId" doc:"Filter by source exercise ID"`
@@ -15,11 +24,8 @@ type ListExerciseRelationshipsOutput struct {
 	Body []models.ExerciseRelationship
 }
 
-// RawBody skips huma's automatic validation — the ExerciseRelationship DTO is shared
-// between request and response and has server-set fields (id, createdAt, etc.)
-// that aren't present in create requests.
 type CreateExerciseRelationshipInput struct {
-	RawBody []byte
+	Body ExerciseRelationshipBody
 }
 
 type CreateExerciseRelationshipOutput struct {

@@ -13,7 +13,6 @@ func newGroupPayload(name, templateID string) map[string]any {
 		"name":        name,
 		"templateId":  templateID,
 		"description": "test group",
-		"owner":       "testuser",
 	}
 }
 

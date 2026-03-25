@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"time"
+
 	"gesitr/internal/user/exerciselog/models"
 )
 
@@ -18,8 +20,21 @@ type ListExerciseLogsOutput struct {
 	Body []models.ExerciseLog
 }
 
+type ExerciseLogBody struct {
+	ExerciseID              uint      `json:"exerciseId" required:"true"`
+	MeasurementType         string    `json:"measurementType" required:"true"`
+	Reps                    *int      `json:"reps,omitempty"`
+	Weight                  *float64  `json:"weight,omitempty"`
+	Duration                *int      `json:"duration,omitempty"`
+	Distance                *float64  `json:"distance,omitempty"`
+	Time                    *int      `json:"time,omitempty"`
+	PerformedAt             time.Time `json:"performedAt,omitempty"`
+	WorkoutLogExerciseSetID *uint     `json:"workoutLogExerciseSetId,omitempty"`
+	SourceExerciseSchemeID  *uint     `json:"sourceExerciseSchemeId,omitempty"`
+}
+
 type CreateExerciseLogInput struct {
-	RawBody []byte
+	Body ExerciseLogBody
 }
 
 type CreateExerciseLogOutput struct {
@@ -34,9 +49,17 @@ type GetExerciseLogOutput struct {
 	Body models.ExerciseLog
 }
 
+type UpdateExerciseLogBody struct {
+	Reps     *int     `json:"reps,omitempty"`
+	Weight   *float64 `json:"weight,omitempty"`
+	Duration *int     `json:"duration,omitempty"`
+	Distance *float64 `json:"distance,omitempty"`
+	Time     *int     `json:"time,omitempty"`
+}
+
 type UpdateExerciseLogInput struct {
-	ID      uint `path:"id"`
-	RawBody []byte
+	ID   uint `path:"id"`
+	Body UpdateExerciseLogBody
 }
 
 type UpdateExerciseLogOutput struct {

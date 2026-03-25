@@ -23,7 +23,7 @@ func TestListWorkoutSectionExercises(t *testing.T) {
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 5, "reps": 5,
 	})
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
-		"owner": "alice", "name": "Push Day", "date": "2026-03-07T10:00:00Z",
+		"name": "Push Day",
 	})
 	doJSON(r, "POST", "/api/user/workout-sections", map[string]any{
 		"workoutId": 1, "type": "main", "position": 0,
@@ -100,7 +100,7 @@ func TestCreateWorkoutSectionExercise(t *testing.T) {
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 5, "reps": 5,
 	})
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
-		"owner": "alice", "name": "Leg Day", "date": "2026-03-07T10:00:00Z",
+		"name": "Leg Day",
 	})
 	doJSON(r, "POST", "/api/user/workout-sections", map[string]any{
 		"workoutId": 1, "type": "main", "position": 0,
@@ -158,7 +158,7 @@ func TestDeleteWorkoutSectionExercise(t *testing.T) {
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 8,
 	})
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
-		"owner": "alice", "name": "Pull Day", "date": "2026-03-07T10:00:00Z",
+		"name": "Pull Day",
 	})
 	doJSON(r, "POST", "/api/user/workout-sections", map[string]any{
 		"workoutId": 1, "type": "main", "position": 0,

@@ -13,7 +13,7 @@ func TestListWorkoutLogSections(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Session", "date": "2026-03-07T10:00:00Z",
+		"name": "Session", "date": "2026-03-07T10:00:00Z",
 	})
 
 	t.Run("empty list", func(t *testing.T) {
@@ -76,7 +76,7 @@ func TestCreateWorkoutLogSection(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Session", "date": "2026-03-07T10:00:00Z",
+		"name": "Session", "date": "2026-03-07T10:00:00Z",
 	})
 
 	t.Run("success main", func(t *testing.T) {
@@ -130,7 +130,7 @@ func TestGetWorkoutLogSection(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Session", "date": "2026-03-07T10:00:00Z",
+		"name": "Session", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -161,7 +161,7 @@ func TestDeleteWorkoutLogSection(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Session", "date": "2026-03-07T10:00:00Z",
+		"name": "Session", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,

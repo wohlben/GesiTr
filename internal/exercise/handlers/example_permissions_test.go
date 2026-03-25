@@ -19,8 +19,7 @@ func ExampleGetExercisePermissions_owner() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
-		"description": "Barbell bench press",
-		"version": 0
+		"description": "Barbell bench press"
 	}`)
 
 	// Query permissions as the owner.
@@ -45,7 +44,6 @@ func ExampleGetExercisePermissions_nonOwnerPublic() {
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
 		"description": "Barbell squat",
-		"version": 0,
 		"public": true
 	}`)
 
@@ -70,8 +68,7 @@ func ExampleGetExercisePermissions_nonOwnerPrivate() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
-		"description": "Barbell deadlift",
-		"version": 0
+		"description": "Barbell deadlift"
 	}`)
 
 	// Query permissions as a different user.

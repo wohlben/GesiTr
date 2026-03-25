@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 
 	"gesitr/internal/database"
 	"gesitr/internal/exercisegroup/models"
@@ -50,9 +49,10 @@ func ListExerciseGroups(ctx context.Context, input *ListExerciseGroupsInput) (*L
 //
 // OpenAPI: /api/docs#/operations/create-exercise-group
 func CreateExerciseGroup(ctx context.Context, input *CreateExerciseGroupInput) (*CreateExerciseGroupOutput, error) {
-	var dto models.ExerciseGroup
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
+	dto := models.ExerciseGroup{
+		TemplateID:  input.Body.TemplateID,
+		Name:        input.Body.Name,
+		Description: input.Body.Description,
 	}
 
 	if dto.TemplateID == "" {
@@ -110,9 +110,10 @@ func UpdateExerciseGroup(ctx context.Context, input *UpdateExerciseGroupInput) (
 		return nil, huma.Error403Forbidden("not the owner of this exercise group")
 	}
 
-	var dto models.ExerciseGroup
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
+	dto := models.ExerciseGroup{
+		TemplateID:  input.Body.TemplateID,
+		Name:        input.Body.Name,
+		Description: input.Body.Description,
 	}
 
 	entity := models.ExerciseGroupFromDTO(dto)

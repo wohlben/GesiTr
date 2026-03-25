@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 	"reflect"
 
 	"gesitr/internal/database"
@@ -54,13 +53,8 @@ func ListWorkoutLogExercises(ctx context.Context, input *ListWorkoutLogExercises
 //
 // OpenAPI: /api/docs#/operations/create-workout-log-exercise
 func CreateWorkoutLogExercise(ctx context.Context, input *CreateWorkoutLogExerciseInput) (*CreateWorkoutLogExerciseOutput, error) {
-	var dto models.WorkoutLogExercise
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
-
 	var section models.WorkoutLogSectionEntity
-	if err := database.DB.First(&section, dto.WorkoutLogSectionID).Error; err != nil {
+	if err := database.DB.First(&section, input.Body.WorkoutLogSectionID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout log section not found")
 	}
 
@@ -71,13 +65,13 @@ func CreateWorkoutLogExercise(ctx context.Context, input *CreateWorkoutLogExerci
 	}
 
 	var scheme exercisemodels.ExerciseSchemeEntity
-	if err := database.DB.First(&scheme, dto.SourceExerciseSchemeID).Error; err != nil {
+	if err := database.DB.First(&scheme, input.Body.SourceExerciseSchemeID).Error; err != nil {
 		return nil, huma.Error404NotFound("Exercise scheme not found")
 	}
 
 	breakAfter := section.RestBetweenExercises
-	if dto.BreakAfterSeconds != nil {
-		breakAfter = dto.BreakAfterSeconds
+	if input.Body.BreakAfterSeconds != nil {
+		breakAfter = input.Body.BreakAfterSeconds
 	}
 
 	// For adhoc logs, exercises start in_progress immediately
@@ -87,10 +81,10 @@ func CreateWorkoutLogExercise(ctx context.Context, input *CreateWorkoutLogExerci
 	}
 
 	entity := models.WorkoutLogExerciseEntity{
-		WorkoutLogSectionID:    dto.WorkoutLogSectionID,
+		WorkoutLogSectionID:    input.Body.WorkoutLogSectionID,
 		WorkoutLogID:           section.WorkoutLogID,
-		SourceExerciseSchemeID: dto.SourceExerciseSchemeID,
-		Position:               dto.Position,
+		SourceExerciseSchemeID: input.Body.SourceExerciseSchemeID,
+		Position:               input.Body.Position,
 		Status:                 exerciseStatus,
 		BreakAfterSeconds:      breakAfter,
 		TargetMeasurementType:  scheme.MeasurementType,
@@ -151,13 +145,7 @@ func UpdateWorkoutLogExercise(ctx context.Context, input *UpdateWorkoutLogExerci
 		return nil, err
 	}
 
-	var patch struct {
-		Position          *int `json:"position"`
-		BreakAfterSeconds *int `json:"breakAfterSeconds"`
-	}
-	if err := json.Unmarshal(input.RawBody, &patch); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
+	patch := input.Body
 
 	if reflect.ValueOf(patch).IsZero() {
 		return nil, huma.Error400BadRequest("patch body contains no updatable fields")

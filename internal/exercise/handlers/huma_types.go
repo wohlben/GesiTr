@@ -6,6 +6,42 @@ import (
 	"gesitr/internal/shared"
 )
 
+// ExerciseBody contains the client-provided fields for creating or updating an exercise.
+type ExerciseBody struct {
+	Name                          string                       `json:"name" required:"true"`
+	Type                          models.ExerciseType          `json:"type" required:"true"`
+	Force                         []models.Force               `json:"force,omitempty"`
+	PrimaryMuscles                []models.Muscle              `json:"primaryMuscles,omitempty"`
+	SecondaryMuscles              []models.Muscle              `json:"secondaryMuscles,omitempty"`
+	TechnicalDifficulty           models.TechnicalDifficulty   `json:"technicalDifficulty,omitempty"`
+	BodyWeightScaling             float64                      `json:"bodyWeightScaling,omitempty"`
+	SuggestedMeasurementParadigms []models.MeasurementParadigm `json:"suggestedMeasurementParadigms,omitempty"`
+	Description                   string                       `json:"description,omitempty"`
+	Instructions                  []string                     `json:"instructions,omitempty"`
+	Images                        []string                     `json:"images,omitempty"`
+	AlternativeNames              []string                     `json:"alternativeNames,omitempty"`
+	AuthorName                    *string                      `json:"authorName,omitempty"`
+	AuthorUrl                     *string                      `json:"authorUrl,omitempty"`
+	Public                        bool                         `json:"public,omitempty"`
+	ParentExerciseID              *uint                        `json:"parentExerciseId,omitempty"`
+	TemplateID                    string                       `json:"templateId,omitempty"`
+	EquipmentIDs                  []uint                       `json:"equipmentIds,omitempty"`
+}
+
+// ExerciseSchemeBody contains the client-provided fields for creating or updating an exercise scheme.
+type ExerciseSchemeBody struct {
+	ExerciseID      uint     `json:"exerciseId" required:"true"`
+	MeasurementType string   `json:"measurementType" required:"true"`
+	Sets            *int     `json:"sets,omitempty"`
+	Reps            *int     `json:"reps,omitempty"`
+	Weight          *float64 `json:"weight,omitempty"`
+	RestBetweenSets *int     `json:"restBetweenSets,omitempty"`
+	TimePerRep      *int     `json:"timePerRep,omitempty"`
+	Duration        *int     `json:"duration,omitempty"`
+	Distance        *float64 `json:"distance,omitempty"`
+	TargetTime      *int     `json:"targetTime,omitempty"`
+}
+
 // --- Exercise handlers ---
 
 type ListExercisesInput struct {
@@ -24,11 +60,8 @@ type ListExercisesOutput struct {
 	Body humaconfig.PaginatedBody[models.Exercise]
 }
 
-// RawBody skips huma's automatic validation — the Exercise DTO is shared
-// between request and response and has server-set fields (id, createdAt, etc.)
-// that aren't present in create requests.
 type CreateExerciseInput struct {
-	RawBody []byte
+	Body ExerciseBody
 }
 
 type CreateExerciseOutput struct {
@@ -44,8 +77,8 @@ type GetExerciseOutput struct {
 }
 
 type UpdateExerciseInput struct {
-	ID      uint `path:"id"`
-	RawBody []byte
+	ID   uint `path:"id"`
+	Body ExerciseBody
 }
 
 type UpdateExerciseOutput struct {
@@ -95,7 +128,7 @@ type ListExerciseSchemesOutput struct {
 }
 
 type CreateExerciseSchemeInput struct {
-	RawBody []byte
+	Body ExerciseSchemeBody
 }
 
 type CreateExerciseSchemeOutput struct {
@@ -111,8 +144,8 @@ type GetExerciseSchemeOutput struct {
 }
 
 type UpdateExerciseSchemeInput struct {
-	ID      uint `path:"id"`
-	RawBody []byte
+	ID   uint `path:"id"`
+	Body ExerciseSchemeBody
 }
 
 type UpdateExerciseSchemeOutput struct {

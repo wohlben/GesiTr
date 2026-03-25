@@ -18,8 +18,7 @@ func createExerciseSchemeForExample(r *gin.Engine) {
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
-		"description": "Barbell bench press",
-		"version": 0
+		"description": "Barbell bench press"
 	}`)
 	doRaw(r, "POST", "/api/exercise-schemes", `{
 		"exerciseId": 1,

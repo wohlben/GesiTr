@@ -175,7 +175,6 @@ export class EquipmentDetail {
         category: equipment.category,
         imageUrl: equipment.imageUrl,
         templateId: equipment.templateId,
-        version: equipment.version,
         public: false,
       });
     },

@@ -12,8 +12,13 @@ type ListWorkoutsOutput struct {
 	Body []models.Workout
 }
 
+type WorkoutBody struct {
+	Name  string  `json:"name" required:"true"`
+	Notes *string `json:"notes,omitempty"`
+}
+
 type CreateWorkoutInput struct {
-	RawBody []byte
+	Body WorkoutBody
 }
 
 type CreateWorkoutOutput struct {
@@ -29,8 +34,8 @@ type GetWorkoutOutput struct {
 }
 
 type UpdateWorkoutInput struct {
-	ID      uint `path:"id"`
-	RawBody []byte
+	ID   uint `path:"id"`
+	Body WorkoutBody
 }
 
 type UpdateWorkoutOutput struct {
@@ -53,8 +58,16 @@ type ListWorkoutSectionsOutput struct {
 	Body []models.WorkoutSection
 }
 
+type WorkoutSectionBody struct {
+	WorkoutID            uint                      `json:"workoutId" required:"true"`
+	Type                 models.WorkoutSectionType `json:"type" required:"true"`
+	Label                *string                   `json:"label,omitempty"`
+	Position             int                       `json:"position"`
+	RestBetweenExercises *int                      `json:"restBetweenExercises,omitempty"`
+}
+
 type CreateWorkoutSectionInput struct {
-	RawBody []byte
+	Body WorkoutSectionBody
 }
 
 type CreateWorkoutSectionOutput struct {
@@ -85,8 +98,14 @@ type ListWorkoutSectionExercisesOutput struct {
 	Body []models.WorkoutSectionExercise
 }
 
+type WorkoutSectionExerciseBody struct {
+	WorkoutSectionID uint `json:"workoutSectionId" required:"true"`
+	ExerciseSchemeID uint `json:"exerciseSchemeId" required:"true"`
+	Position         int  `json:"position"`
+}
+
 type CreateWorkoutSectionExerciseInput struct {
-	RawBody []byte
+	Body WorkoutSectionExerciseBody
 }
 
 type CreateWorkoutSectionExerciseOutput struct {

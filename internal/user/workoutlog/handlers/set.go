@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 	"reflect"
 	"time"
 
@@ -55,13 +54,8 @@ func ListWorkoutLogExerciseSets(ctx context.Context, input *ListWorkoutLogExerci
 //
 // OpenAPI: /api/docs#/operations/create-workout-log-exercise-set
 func CreateWorkoutLogExerciseSet(ctx context.Context, input *CreateWorkoutLogExerciseSetInput) (*CreateWorkoutLogExerciseSetOutput, error) {
-	var dto models.WorkoutLogExerciseSet
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
-
 	var exercise models.WorkoutLogExerciseEntity
-	if err := database.DB.First(&exercise, dto.WorkoutLogExerciseID).Error; err != nil {
+	if err := database.DB.First(&exercise, input.Body.WorkoutLogExerciseID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout log exercise not found")
 	}
 
@@ -77,12 +71,18 @@ func CreateWorkoutLogExerciseSet(ctx context.Context, input *CreateWorkoutLogExe
 		setStatus = models.WorkoutLogItemStatusInProgress
 	}
 
-	entity := models.WorkoutLogExerciseSetFromDTO(dto)
-	entity.ID = 0
-	entity.CreatedAt = time.Time{}
-	entity.UpdatedAt = time.Time{}
-	entity.WorkoutLogID = exercise.WorkoutLogID
-	entity.Status = setStatus
+	entity := models.WorkoutLogExerciseSetEntity{
+		WorkoutLogExerciseID: input.Body.WorkoutLogExerciseID,
+		WorkoutLogID:         exercise.WorkoutLogID,
+		SetNumber:            input.Body.SetNumber,
+		Status:               setStatus,
+		BreakAfterSeconds:    input.Body.BreakAfterSeconds,
+		TargetReps:           input.Body.TargetReps,
+		TargetWeight:         input.Body.TargetWeight,
+		TargetDuration:       input.Body.TargetDuration,
+		TargetDistance:       input.Body.TargetDistance,
+		TargetTime:           input.Body.TargetTime,
+	}
 	if err := database.DB.Create(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
@@ -104,23 +104,7 @@ func UpdateWorkoutLogExerciseSet(ctx context.Context, input *UpdateWorkoutLogExe
 		return nil, err
 	}
 
-	var patch struct {
-		Status            models.WorkoutLogItemStatus `json:"status"`
-		BreakAfterSeconds *int                        `json:"breakAfterSeconds"`
-		TargetReps        *int                        `json:"targetReps"`
-		TargetWeight      *float64                    `json:"targetWeight"`
-		TargetDuration    *int                        `json:"targetDuration"`
-		TargetDistance    *float64                    `json:"targetDistance"`
-		TargetTime        *int                        `json:"targetTime"`
-		ActualReps        *int                        `json:"actualReps"`
-		ActualWeight      *float64                    `json:"actualWeight"`
-		ActualDuration    *int                        `json:"actualDuration"`
-		ActualDistance    *float64                    `json:"actualDistance"`
-		ActualTime        *int                        `json:"actualTime"`
-	}
-	if err := json.Unmarshal(input.RawBody, &patch); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
+	patch := input.Body
 
 	if reflect.ValueOf(patch).IsZero() {
 		return nil, huma.Error400BadRequest("patch body contains no updatable fields")

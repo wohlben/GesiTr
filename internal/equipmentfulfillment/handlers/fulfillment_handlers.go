@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 
 	"gesitr/internal/database"
 	"gesitr/internal/equipmentfulfillment/models"
@@ -43,9 +42,9 @@ func ListFulfillments(ctx context.Context, input *ListFulfillmentsInput) (*ListF
 //
 // OpenAPI: /api/docs#/operations/create-fulfillment
 func CreateFulfillment(ctx context.Context, input *CreateFulfillmentInput) (*CreateFulfillmentOutput, error) {
-	var dto models.Fulfillment
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
+	dto := models.Fulfillment{
+		EquipmentID:         input.Body.EquipmentID,
+		FulfillsEquipmentID: input.Body.FulfillsEquipmentID,
 	}
 
 	entity := models.FulfillmentFromDTO(dto)

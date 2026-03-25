@@ -21,8 +21,7 @@ func ExampleCreateExerciseScheme_repBased() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0,
-		"description": "Dumbbell bicep curl",
-		"version": 0
+		"description": "Dumbbell bicep curl"
 	}`)
 
 	// Create a rep-based scheme for this exercise.
@@ -59,8 +58,7 @@ func ExampleCreateExerciseScheme_timeBased() {
 		"type": "CARDIO",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0,
-		"description": "Rowing ergometer",
-		"version": 0
+		"description": "Rowing ergometer"
 	}`)
 
 	// Create a time-based scheme for this exercise.
@@ -95,8 +93,7 @@ func ExampleGetExerciseScheme_owner() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
-		"description": "Barbell squat",
-		"version": 0
+		"description": "Barbell squat"
 	}`)
 	doRaw(r, "POST", "/api/exercise-schemes", `{
 		"exerciseId": 1,
@@ -131,7 +128,6 @@ func ExampleGetExerciseScheme_nonOwnerPublicExercise() {
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
 		"description": "Bodyweight push-up",
-		"version": 0,
 		"public": true
 	}`)
 	doRaw(r, "POST", "/api/exercise-schemes", `{
@@ -165,8 +161,7 @@ func ExampleGetExerciseScheme_nonOwnerPrivateExercise() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
-		"description": "A private exercise",
-		"version": 0
+		"description": "A private exercise"
 	}`)
 	doRaw(r, "POST", "/api/exercise-schemes", `{
 		"exerciseId": 1,
@@ -192,8 +187,7 @@ func ExampleUpdateExerciseScheme_owner() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0,
-		"description": "Dumbbell bicep curl",
-		"version": 0
+		"description": "Dumbbell bicep curl"
 	}`)
 	doRaw(r, "POST", "/api/exercise-schemes", `{
 		"exerciseId": 1,
@@ -235,7 +229,6 @@ func ExampleUpdateExerciseScheme_nonOwnerPublicExercise() {
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
 		"description": "Bodyweight push-up",
-		"version": 0,
 		"public": true
 	}`)
 	doRaw(r, "POST", "/api/exercise-schemes", `{
@@ -266,8 +259,7 @@ func ExampleUpdateExerciseScheme_nonOwnerPrivateExercise() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
-		"description": "A private exercise",
-		"version": 0
+		"description": "A private exercise"
 	}`)
 	doRaw(r, "POST", "/api/exercise-schemes", `{
 		"exerciseId": 1,
@@ -298,8 +290,7 @@ func ExampleListExerciseSchemes_owner() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
-		"description": "Barbell squat",
-		"version": 0
+		"description": "Barbell squat"
 	}`)
 	doRaw(r, "POST", "/api/exercise-schemes", `{
 		"exerciseId": 1,
@@ -334,7 +325,6 @@ func ExampleListExerciseSchemes_nonOwnerPublicExercise() {
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
 		"description": "Bodyweight push-up",
-		"version": 0,
 		"public": true
 	}`)
 	doRaw(r, "POST", "/api/exercise-schemes", `{
@@ -368,8 +358,7 @@ func ExampleListExerciseSchemes_nonOwnerPrivateExercise() {
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
-		"description": "A private exercise",
-		"version": 0
+		"description": "A private exercise"
 	}`)
 	doRaw(r, "POST", "/api/exercise-schemes", `{
 		"exerciseId": 1,

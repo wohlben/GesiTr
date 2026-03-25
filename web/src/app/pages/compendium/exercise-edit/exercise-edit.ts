@@ -624,8 +624,15 @@ export class ExerciseEdit {
   onSubmit() {
     if (this.exerciseForm().valid()) {
       const val = this.model();
+      const data = this.exerciseQuery.data();
       const payload = {
-        ...(this.isCreateMode() ? {} : this.exerciseQuery.data()!),
+        ...(this.isCreateMode()
+          ? {}
+          : {
+              templateId: data!.templateId,
+              public: data!.public,
+              parentExerciseId: data!.parentExerciseId,
+            }),
         name: val.name,
         description: val.description,
         type: val.type,

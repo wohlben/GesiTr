@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 
 	"gesitr/internal/database"
 	"gesitr/internal/exercise/models"
@@ -11,6 +10,21 @@ import (
 
 	"github.com/danielgtaylor/huma/v2"
 )
+
+func exerciseSchemeDTOFromBody(b ExerciseSchemeBody) models.ExerciseScheme {
+	return models.ExerciseScheme{
+		ExerciseID:      b.ExerciseID,
+		MeasurementType: b.MeasurementType,
+		Sets:            b.Sets,
+		Reps:            b.Reps,
+		Weight:          b.Weight,
+		RestBetweenSets: b.RestBetweenSets,
+		TimePerRep:      b.TimePerRep,
+		Duration:        b.Duration,
+		Distance:        b.Distance,
+		TargetTime:      b.TargetTime,
+	}
+}
 
 // ListExerciseSchemes returns schemes the current user has access to: their
 // own schemes plus schemes linked to public exercises. Filter by exerciseId
@@ -51,10 +65,7 @@ func ListExerciseSchemes(ctx context.Context, input *ListExerciseSchemesInput) (
 //
 // OpenAPI: /api/docs#/operations/create-exercise-scheme
 func CreateExerciseScheme(ctx context.Context, input *CreateExerciseSchemeInput) (*CreateExerciseSchemeOutput, error) {
-	var dto models.ExerciseScheme
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
+	dto := exerciseSchemeDTOFromBody(input.Body)
 
 	var exercise models.ExerciseEntity
 	if err := database.DB.First(&exercise, dto.ExerciseID).Error; err != nil {
@@ -104,10 +115,7 @@ func UpdateExerciseScheme(ctx context.Context, input *UpdateExerciseSchemeInput)
 		return nil, huma.Error403Forbidden("access denied")
 	}
 
-	var dto models.ExerciseScheme
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
+	dto := exerciseSchemeDTOFromBody(input.Body)
 	entity := models.ExerciseSchemeFromDTO(dto)
 	entity.ID = existing.ID
 	entity.Owner = existing.Owner

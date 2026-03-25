@@ -51,10 +51,10 @@ func TestListWorkoutLogs(t *testing.T) {
 	t.Run("filter by workoutId", func(t *testing.T) {
 		// Create a workout and a log referencing it
 		doJSON(r, "POST", "/api/user/workouts", map[string]any{
-			"owner": "alice", "name": "Template", "date": "2026-03-07T10:00:00Z",
+			"name": "Template",
 		})
 		doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-			"owner": "alice", "name": "From Template", "date": "2026-03-09T10:00:00Z", "workoutId": 1,
+			"name": "From Template", "date": "2026-03-09T10:00:00Z", "workoutId": 1,
 		})
 		w := doJSON(r, "GET", "/api/user/workout-logs?workoutId=1", nil)
 		var result []models.WorkoutLog
@@ -79,7 +79,7 @@ func TestCreateWorkoutLog(t *testing.T) {
 
 	t.Run("ad-hoc (no workoutId)", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-			"owner": "alice", "name": "Ad-hoc Session", "date": "2026-03-07T10:00:00Z",
+			"name": "Ad-hoc Session", "date": "2026-03-07T10:00:00Z",
 		})
 		if w.Code != http.StatusCreated {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
@@ -93,10 +93,10 @@ func TestCreateWorkoutLog(t *testing.T) {
 
 	t.Run("with workoutId", func(t *testing.T) {
 		doJSON(r, "POST", "/api/user/workouts", map[string]any{
-			"owner": "alice", "name": "Template", "date": "2026-03-07T10:00:00Z",
+			"name": "Template",
 		})
 		w := doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-			"owner": "alice", "name": "From Template", "date": "2026-03-07T10:00:00Z", "workoutId": 1,
+			"name": "From Template", "date": "2026-03-07T10:00:00Z", "workoutId": 1,
 		})
 		if w.Code != http.StatusCreated {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
@@ -110,7 +110,7 @@ func TestCreateWorkoutLog(t *testing.T) {
 
 	t.Run("workout not found", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-			"owner": "alice", "name": "Bad", "date": "2026-03-07T10:00:00Z", "workoutId": 999,
+			"name": "Bad", "date": "2026-03-07T10:00:00Z", "workoutId": 999,
 		})
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
@@ -127,7 +127,7 @@ func TestCreateWorkoutLog(t *testing.T) {
 	t.Run("db error", func(t *testing.T) {
 		closeDB(t)
 		w := doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-			"owner": "x", "name": "X", "date": "2026-03-07T10:00:00Z",
+			"name": "X", "date": "2026-03-07T10:00:00Z",
 		})
 		if w.Code != http.StatusInternalServerError {
 			t.Errorf("expected 500, got %d", w.Code)
@@ -140,7 +140,7 @@ func TestGetWorkoutLog(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Session", "date": "2026-03-07T10:00:00Z",
+		"name": "Session", "date": "2026-03-07T10:00:00Z",
 	})
 
 	t.Run("found", func(t *testing.T) {
@@ -168,12 +168,12 @@ func TestUpdateWorkoutLog(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Session", "date": "2026-03-07T10:00:00Z",
+		"name": "Session", "date": "2026-03-07T10:00:00Z",
 	})
 
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "PATCH", "/api/user/workout-logs/1", map[string]any{
-			"owner": "alice", "name": "Updated Session", "date": "2026-03-07T10:00:00Z",
+			"name": "Updated Session",
 		})
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
@@ -187,7 +187,7 @@ func TestUpdateWorkoutLog(t *testing.T) {
 
 	t.Run("not found", func(t *testing.T) {
 		w := doJSON(r, "PATCH", "/api/user/workout-logs/999", map[string]any{
-			"owner": "x", "name": "X", "date": "2026-03-07T10:00:00Z",
+			"name": "X",
 		})
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
@@ -207,7 +207,7 @@ func TestDeleteWorkoutLog(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Session", "date": "2026-03-07T10:00:00Z",
+		"name": "Session", "date": "2026-03-07T10:00:00Z",
 	})
 
 	t.Run("success", func(t *testing.T) {

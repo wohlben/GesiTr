@@ -65,7 +65,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	// -- Setup: create workout template with sections and exercises --
 
 	w = doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{
-		"owner": "alice", "name": "Strength Day",
+		"name": "Strength Day",
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create workout: status = %d", w.Code)
@@ -109,7 +109,6 @@ func TestWorkoutStartFlow(t *testing.T) {
 
 	t.Log("=== STEP 1: Create workout log (no date during planning) ===")
 	w = doJSONLog(t, r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner":     "alice",
 		"name":      "Strength Day - March 14",
 		"workoutId": wkt.ID,
 	})

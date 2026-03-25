@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 	"reflect"
 	"time"
 
@@ -57,28 +56,28 @@ func ListWorkoutLogs(ctx context.Context, input *ListWorkoutLogsInput) (*ListWor
 //
 // OpenAPI: /api/docs#/operations/create-workout-log
 func CreateWorkoutLog(ctx context.Context, input *CreateWorkoutLogInput) (*CreateWorkoutLogOutput, error) {
-	var dto models.WorkoutLog
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
-
-	if dto.WorkoutID != nil {
+	if input.Body.WorkoutID != nil {
 		var w workoutmodels.WorkoutEntity
-		if err := database.DB.First(&w, *dto.WorkoutID).Error; err != nil {
+		if err := database.DB.First(&w, *input.Body.WorkoutID).Error; err != nil {
 			return nil, huma.Error404NotFound("Workout not found")
 		}
 
 		// Uniqueness: only one planning log per workout
 		var count int64
 		database.DB.Model(&models.WorkoutLogEntity{}).
-			Where("workout_id = ? AND status = ?", *dto.WorkoutID, models.WorkoutLogStatusPlanning).
+			Where("workout_id = ? AND status = ?", *input.Body.WorkoutID, models.WorkoutLogStatusPlanning).
 			Count(&count)
 		if count > 0 {
 			return nil, huma.Error409Conflict("A planning log already exists for this workout")
 		}
 	}
 
-	entity := models.WorkoutLogFromDTO(dto)
+	entity := models.WorkoutLogEntity{
+		WorkoutID: input.Body.WorkoutID,
+		Name:      input.Body.Name,
+		Notes:     input.Body.Notes,
+		Date:      input.Body.Date,
+	}
 	entity.Owner = humaconfig.GetUserID(ctx)
 	entity.Status = models.WorkoutLogStatusPlanning
 	if err := database.DB.Create(&entity).Error; err != nil {
@@ -115,13 +114,7 @@ func UpdateWorkoutLog(ctx context.Context, input *UpdateWorkoutLogInput) (*Updat
 		return nil, err
 	}
 
-	var patch struct {
-		Name  *string `json:"name"`
-		Notes *string `json:"notes"`
-	}
-	if err := json.Unmarshal(input.RawBody, &patch); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
+	patch := input.Body
 
 	if reflect.ValueOf(patch).IsZero() {
 		return nil, huma.Error400BadRequest("patch body contains no updatable fields")

@@ -22,7 +22,7 @@ func createExerciseLogViaWorkflow(t *testing.T, r *gin.Engine) uint {
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+		"name": "Test", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,

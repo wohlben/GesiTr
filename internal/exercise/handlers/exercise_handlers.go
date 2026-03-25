@@ -16,6 +16,29 @@ import (
 	"gorm.io/gorm/clause"
 )
 
+func exerciseDTOFromBody(b ExerciseBody) models.Exercise {
+	return models.Exercise{
+		Name:                          b.Name,
+		Type:                          b.Type,
+		Force:                         b.Force,
+		PrimaryMuscles:                b.PrimaryMuscles,
+		SecondaryMuscles:              b.SecondaryMuscles,
+		TechnicalDifficulty:           b.TechnicalDifficulty,
+		BodyWeightScaling:             b.BodyWeightScaling,
+		SuggestedMeasurementParadigms: b.SuggestedMeasurementParadigms,
+		Description:                   b.Description,
+		Instructions:                  b.Instructions,
+		Images:                        b.Images,
+		AlternativeNames:              b.AlternativeNames,
+		AuthorName:                    b.AuthorName,
+		AuthorUrl:                     b.AuthorUrl,
+		Public:                        b.Public,
+		ParentExerciseID:              b.ParentExerciseID,
+		TemplateID:                    b.TemplateID,
+		EquipmentIDs:                  b.EquipmentIDs,
+	}
+}
+
 var exercisePreloads = []string{
 	"Forces", "Muscles", "Paradigms", "Instructions", "Images", "AlternativeNames", "Equipment",
 }
@@ -100,10 +123,7 @@ func ListExercises(ctx context.Context, input *ListExercisesInput) (*ListExercis
 //
 // OpenAPI: /api/docs#/operations/create-exercise
 func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExerciseOutput, error) {
-	var dto models.Exercise
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
+	dto := exerciseDTOFromBody(input.Body)
 
 	if dto.TemplateID == "" {
 		dto.TemplateID = uuid.New().String()
@@ -181,10 +201,8 @@ func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExe
 		return nil, huma.Error403Forbidden("access denied")
 	}
 
-	var dto models.Exercise
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
+	dto := exerciseDTOFromBody(input.Body)
+	dto.Owner = existing.Owner
 	oldDTO := existing.ToDTO()
 
 	if !models.ExerciseChanged(oldDTO, dto) {

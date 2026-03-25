@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
@@ -58,16 +57,17 @@ func ListWorkoutSections(ctx context.Context, input *ListWorkoutSectionsInput) (
 //
 // OpenAPI: /api/docs#/operations/create-workout-section
 func CreateWorkoutSection(ctx context.Context, input *CreateWorkoutSectionInput) (*CreateWorkoutSectionOutput, error) {
-	var dto models.WorkoutSection
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
-
-	if err := requireWorkoutOwner(ctx, dto.WorkoutID); err != nil {
+	if err := requireWorkoutOwner(ctx, input.Body.WorkoutID); err != nil {
 		return nil, err
 	}
 
-	entity := models.WorkoutSectionFromDTO(dto)
+	entity := models.WorkoutSectionEntity{
+		WorkoutID:            input.Body.WorkoutID,
+		Type:                 input.Body.Type,
+		Label:                input.Body.Label,
+		Position:             input.Body.Position,
+		RestBetweenExercises: input.Body.RestBetweenExercises,
+	}
 	if err := database.DB.Create(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}

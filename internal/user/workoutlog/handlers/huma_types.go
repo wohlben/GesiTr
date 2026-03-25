@@ -1,6 +1,9 @@
 package handlers
 
 import (
+	"time"
+
+	workoutmodels "gesitr/internal/user/workout/models"
 	"gesitr/internal/user/workoutlog/models"
 )
 
@@ -15,8 +18,15 @@ type ListWorkoutLogsOutput struct {
 	Body []models.WorkoutLog
 }
 
+type WorkoutLogBody struct {
+	WorkoutID *uint      `json:"workoutId,omitempty"`
+	Name      string     `json:"name" required:"true"`
+	Notes     *string    `json:"notes,omitempty"`
+	Date      *time.Time `json:"date,omitempty"`
+}
+
 type CreateWorkoutLogInput struct {
-	RawBody []byte
+	Body WorkoutLogBody
 }
 
 type CreateWorkoutLogOutput struct {
@@ -31,9 +41,14 @@ type GetWorkoutLogOutput struct {
 	Body models.WorkoutLog
 }
 
+type UpdateWorkoutLogBody struct {
+	Name  *string `json:"name,omitempty"`
+	Notes *string `json:"notes,omitempty"`
+}
+
 type UpdateWorkoutLogInput struct {
-	ID      uint `path:"id"`
-	RawBody []byte
+	ID   uint `path:"id"`
+	Body UpdateWorkoutLogBody
 }
 
 type UpdateWorkoutLogOutput struct {
@@ -86,8 +101,16 @@ type ListWorkoutLogSectionsOutput struct {
 	Body []models.WorkoutLogSection
 }
 
+type WorkoutLogSectionBody struct {
+	WorkoutLogID         uint                             `json:"workoutLogId" required:"true"`
+	Type                 workoutmodels.WorkoutSectionType `json:"type" required:"true"`
+	Label                *string                          `json:"label,omitempty"`
+	Position             int                              `json:"position"`
+	RestBetweenExercises *int                             `json:"restBetweenExercises,omitempty"`
+}
+
 type CreateWorkoutLogSectionInput struct {
-	RawBody []byte
+	Body WorkoutLogSectionBody
 }
 
 type CreateWorkoutLogSectionOutput struct {
@@ -102,9 +125,16 @@ type GetWorkoutLogSectionOutput struct {
 	Body models.WorkoutLogSection
 }
 
+type UpdateWorkoutLogSectionBody struct {
+	Type                 *workoutmodels.WorkoutSectionType `json:"type,omitempty"`
+	Label                *string                           `json:"label,omitempty"`
+	RestBetweenExercises *int                              `json:"restBetweenExercises,omitempty"`
+	Position             *int                              `json:"position,omitempty"`
+}
+
 type UpdateWorkoutLogSectionInput struct {
-	ID      uint `path:"id"`
-	RawBody []byte
+	ID   uint `path:"id"`
+	Body UpdateWorkoutLogSectionBody
 }
 
 type UpdateWorkoutLogSectionOutput struct {
@@ -127,17 +157,29 @@ type ListWorkoutLogExercisesOutput struct {
 	Body []models.WorkoutLogExercise
 }
 
+type WorkoutLogExerciseBody struct {
+	WorkoutLogSectionID    uint `json:"workoutLogSectionId" required:"true"`
+	SourceExerciseSchemeID uint `json:"sourceExerciseSchemeId" required:"true"`
+	Position               int  `json:"position"`
+	BreakAfterSeconds      *int `json:"breakAfterSeconds,omitempty"`
+}
+
 type CreateWorkoutLogExerciseInput struct {
-	RawBody []byte
+	Body WorkoutLogExerciseBody
 }
 
 type CreateWorkoutLogExerciseOutput struct {
 	Body models.WorkoutLogExercise
 }
 
+type UpdateWorkoutLogExerciseBody struct {
+	Position          *int `json:"position,omitempty"`
+	BreakAfterSeconds *int `json:"breakAfterSeconds,omitempty"`
+}
+
 type UpdateWorkoutLogExerciseInput struct {
-	ID      uint `path:"id"`
-	RawBody []byte
+	ID   uint `path:"id"`
+	Body UpdateWorkoutLogExerciseBody
 }
 
 type UpdateWorkoutLogExerciseOutput struct {
@@ -160,17 +202,43 @@ type ListWorkoutLogExerciseSetsOutput struct {
 	Body []models.WorkoutLogExerciseSet
 }
 
+type WorkoutLogExerciseSetBody struct {
+	WorkoutLogExerciseID uint     `json:"workoutLogExerciseId" required:"true"`
+	SetNumber            int      `json:"setNumber" required:"true"`
+	BreakAfterSeconds    *int     `json:"breakAfterSeconds,omitempty"`
+	TargetReps           *int     `json:"targetReps,omitempty"`
+	TargetWeight         *float64 `json:"targetWeight,omitempty"`
+	TargetDuration       *int     `json:"targetDuration,omitempty"`
+	TargetDistance       *float64 `json:"targetDistance,omitempty"`
+	TargetTime           *int     `json:"targetTime,omitempty"`
+}
+
 type CreateWorkoutLogExerciseSetInput struct {
-	RawBody []byte
+	Body WorkoutLogExerciseSetBody
 }
 
 type CreateWorkoutLogExerciseSetOutput struct {
 	Body models.WorkoutLogExerciseSet
 }
 
+type UpdateWorkoutLogExerciseSetBody struct {
+	Status            models.WorkoutLogItemStatus `json:"status,omitempty"`
+	BreakAfterSeconds *int                        `json:"breakAfterSeconds,omitempty"`
+	TargetReps        *int                        `json:"targetReps,omitempty"`
+	TargetWeight      *float64                    `json:"targetWeight,omitempty"`
+	TargetDuration    *int                        `json:"targetDuration,omitempty"`
+	TargetDistance    *float64                    `json:"targetDistance,omitempty"`
+	TargetTime        *int                        `json:"targetTime,omitempty"`
+	ActualReps        *int                        `json:"actualReps,omitempty"`
+	ActualWeight      *float64                    `json:"actualWeight,omitempty"`
+	ActualDuration    *int                        `json:"actualDuration,omitempty"`
+	ActualDistance    *float64                    `json:"actualDistance,omitempty"`
+	ActualTime        *int                        `json:"actualTime,omitempty"`
+}
+
 type UpdateWorkoutLogExerciseSetInput struct {
-	ID      uint `path:"id"`
-	RawBody []byte
+	ID   uint `path:"id"`
+	Body UpdateWorkoutLogExerciseSetBody
 }
 
 type UpdateWorkoutLogExerciseSetOutput struct {

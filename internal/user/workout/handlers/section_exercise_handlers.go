@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 
 	"gesitr/internal/database"
 	exercisemodels "gesitr/internal/exercise/models"
@@ -57,21 +56,20 @@ func ListWorkoutSectionExercises(ctx context.Context, input *ListWorkoutSectionE
 //
 // OpenAPI: /api/docs#/operations/create-workout-section-exercise
 func CreateWorkoutSectionExercise(ctx context.Context, input *CreateWorkoutSectionExerciseInput) (*CreateWorkoutSectionExerciseOutput, error) {
-	var dto models.WorkoutSectionExercise
-	if err := json.Unmarshal(input.RawBody, &dto); err != nil {
-		return nil, huma.Error400BadRequest(err.Error())
-	}
-
-	if err := requireSectionOwner(ctx, dto.WorkoutSectionID); err != nil {
+	if err := requireSectionOwner(ctx, input.Body.WorkoutSectionID); err != nil {
 		return nil, err
 	}
 
 	var scheme exercisemodels.ExerciseSchemeEntity
-	if err := database.DB.First(&scheme, dto.ExerciseSchemeID).Error; err != nil {
+	if err := database.DB.First(&scheme, input.Body.ExerciseSchemeID).Error; err != nil {
 		return nil, huma.Error404NotFound("Exercise scheme not found")
 	}
 
-	entity := models.WorkoutSectionExerciseFromDTO(dto)
+	entity := models.WorkoutSectionExerciseEntity{
+		WorkoutSectionID: input.Body.WorkoutSectionID,
+		ExerciseSchemeID: input.Body.ExerciseSchemeID,
+		Position:         input.Body.Position,
+	}
 	if err := database.DB.Create(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}

@@ -23,7 +23,7 @@ func TestListWorkoutLogExercises(t *testing.T) {
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 5, "reps": 5,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Session", "date": "2026-03-07T10:00:00Z",
+		"name": "Session", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -108,7 +108,7 @@ func TestCreateWorkoutLogExercise(t *testing.T) {
 		"sets": 5, "reps": 5, "weight": 100.0, "restBetweenSets": 180,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Leg Day Log", "date": "2026-03-07T10:00:00Z",
+		"name": "Leg Day Log", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0, "restBetweenExercises": 90,
@@ -218,7 +218,7 @@ func TestUpdateWorkoutLogExercise(t *testing.T) {
 		"sets": 5, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Leg Day Log", "date": "2026-03-07T10:00:00Z",
+		"name": "Leg Day Log", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -229,10 +229,7 @@ func TestUpdateWorkoutLogExercise(t *testing.T) {
 
 	t.Run("update preserves target fields and returns sets", func(t *testing.T) {
 		w := doJSON(r, "PATCH", "/api/user/workout-log-exercises/1", map[string]any{
-			"position":               2,
-			"targetMeasurementType":  "CHANGED",
-			"workoutLogSectionId":    999,
-			"sourceExerciseSchemeId": 999,
+			"position": 2,
 		})
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
@@ -289,7 +286,7 @@ func TestDeleteWorkoutLogExercise(t *testing.T) {
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 8,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Pull Day Log", "date": "2026-03-07T10:00:00Z",
+		"name": "Pull Day Log", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,

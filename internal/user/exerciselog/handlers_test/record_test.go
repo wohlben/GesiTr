@@ -21,7 +21,7 @@ func TestRecordCreatedOnSetCompletion(t *testing.T) {
 		"sets": 3, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+		"name": "Test", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -75,7 +75,7 @@ func TestRecordUpdatedOnBetterPerformance(t *testing.T) {
 		"sets": 3, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+		"name": "Test", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -127,7 +127,7 @@ func TestRecordNotUpdatedOnWorsePerformance(t *testing.T) {
 		"sets": 3, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+		"name": "Test", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -173,7 +173,7 @@ func TestDifferentMeasurementTypes(t *testing.T) {
 		"sets": 1, "duration": 60,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+		"name": "Test", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -213,7 +213,7 @@ func TestDistanceBasedMeasurement(t *testing.T) {
 		"sets": 1, "distance": 5.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+		"name": "Test", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -253,7 +253,7 @@ func TestUpdateExerciseLogShiftsRecord(t *testing.T) {
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+		"name": "Test", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -324,7 +324,7 @@ func TestDeleteExerciseLogShiftsRecord(t *testing.T) {
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+		"name": "Test", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -410,7 +410,7 @@ func TestNoRecordWhenNotFinished(t *testing.T) {
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+		"name": "Test", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,
@@ -450,7 +450,7 @@ func TestPerExerciseNotPerScheme(t *testing.T) {
 		"sets": 1, "reps": 10, "weight": 80.0,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
-		"owner": "alice", "name": "Test", "date": "2026-03-07T10:00:00Z",
+		"name": "Test", "date": "2026-03-07T10:00:00Z",
 	})
 	doJSON(r, "POST", "/api/user/workout-log-sections", map[string]any{
 		"workoutLogId": 1, "type": "main", "position": 0,

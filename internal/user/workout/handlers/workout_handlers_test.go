@@ -63,7 +63,7 @@ func TestCreateWorkout(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		notes := "First workout"
 		w := doJSON(r, "POST", "/api/user/workouts", map[string]any{
-			"owner": "alice", "name": "Leg Day", "notes": notes, "date": "2026-03-07T10:00:00Z",
+			"name": "Leg Day", "notes": notes,
 		})
 		if w.Code != http.StatusCreated {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
@@ -85,7 +85,7 @@ func TestCreateWorkout(t *testing.T) {
 	t.Run("db error", func(t *testing.T) {
 		closeDB(t)
 		w := doJSON(r, "POST", "/api/user/workouts", map[string]any{
-			"owner": "x", "name": "X", "date": "2026-03-07T10:00:00Z",
+			"name": "X",
 		})
 		if w.Code != http.StatusInternalServerError {
 			t.Errorf("expected 500, got %d", w.Code)
@@ -98,7 +98,7 @@ func TestGetWorkout(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
-		"owner": "alice", "name": "Push Day", "date": "2026-03-07T10:00:00Z",
+		"name": "Push Day",
 	})
 	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
 
@@ -141,7 +141,7 @@ func TestGetWorkoutWithSectionsAndExercises(t *testing.T) {
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
 	})
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
-		"owner": "alice", "name": "Full Workout", "date": "2026-03-07T10:00:00Z",
+		"name": "Full Workout",
 	})
 	doJSON(r, "POST", "/api/user/workout-sections", map[string]any{
 		"workoutId": 1, "type": "supplementary", "label": "Warmup", "position": 0,
@@ -184,13 +184,13 @@ func TestUpdateWorkout(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
-		"owner": "alice", "name": "Push Day", "date": "2026-03-07T10:00:00Z",
+		"name": "Push Day",
 	})
 	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
 
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/user/workouts/1", map[string]any{
-			"owner": "alice", "name": "Heavy Push Day", "date": "2026-03-07T10:00:00Z",
+			"name": "Heavy Push Day",
 		})
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
@@ -204,7 +204,7 @@ func TestUpdateWorkout(t *testing.T) {
 
 	t.Run("not found", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/user/workouts/999", map[string]any{
-			"owner": "x", "name": "X", "date": "2026-03-07T10:00:00Z",
+			"name": "X",
 		})
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
@@ -233,7 +233,7 @@ func TestDeleteWorkout(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/user/workouts", map[string]any{
-		"owner": "alice", "name": "Push Day", "date": "2026-03-07T10:00:00Z",
+		"name": "Push Day",
 	})
 	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
 

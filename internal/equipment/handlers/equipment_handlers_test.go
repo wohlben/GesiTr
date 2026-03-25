@@ -32,12 +32,10 @@ func TestListEquipment(t *testing.T) {
 	// Seed data for filter tests
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "barbell", "displayName": "Barbell", "description": "A bar",
-		"category": "free_weights", "templateId": "barbell", "owner": "testuser",
-	})
+		"category": "free_weights", "templateId": "barbell"})
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "bench", "displayName": "Flat Bench", "description": "A bench",
-		"category": "benches", "templateId": "bench", "owner": "testuser",
-	})
+		"category": "benches", "templateId": "bench"})
 
 	t.Run("list all own equipment", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/equipment", nil)
@@ -100,27 +98,22 @@ func TestListEquipmentVisibility(t *testing.T) {
 	// testuser creates private equipment
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "private-bar", "displayName": "Private Bar", "description": "",
-		"category": "free_weights", "templateId": "priv-bar", "owner": "testuser",
-	})
+		"category": "free_weights", "templateId": "priv-bar"})
 	// testuser creates public equipment
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "public-bar", "displayName": "Public Bar", "description": "",
-		"category": "free_weights", "templateId": "pub-bar", "owner": "testuser", "public": true,
+		"category": "free_weights", "templateId": "pub-bar", "public": true,
 	})
-	// Mark the second one as public (handler sets owner from auth, so we update directly)
-	database.DB.Model(&models.EquipmentEntity{}).Where("template_id = ?", "pub-bar").Update("public", true)
 
 	// otheruser creates private equipment
 	doJSONAs(r, "POST", "/api/equipment", "otheruser", map[string]any{
 		"name": "other-private", "displayName": "Other Private", "description": "",
-		"category": "free_weights", "templateId": "other-priv", "owner": "otheruser",
-	})
+		"category": "free_weights", "templateId": "other-priv"})
 	// otheruser creates public equipment
 	doJSONAs(r, "POST", "/api/equipment", "otheruser", map[string]any{
 		"name": "other-public", "displayName": "Other Public", "description": "",
-		"category": "free_weights", "templateId": "other-pub", "owner": "otheruser", "public": true,
+		"category": "free_weights", "templateId": "other-pub", "public": true,
 	})
-	database.DB.Model(&models.EquipmentEntity{}).Where("template_id = ?", "other-pub").Update("public", true)
 
 	t.Run("default shows own + public", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/equipment", nil)
@@ -190,8 +183,7 @@ func TestCreateEquipment(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/equipment", map[string]any{
 			"name": "dumbbell", "displayName": "Dumbbell", "description": "A weight",
-			"category": "free_weights", "templateId": "dumbbell", "owner": "testuser",
-		})
+			"category": "free_weights", "templateId": "dumbbell"})
 		if w.Code != http.StatusCreated {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
 		}
@@ -205,8 +197,7 @@ func TestCreateEquipment(t *testing.T) {
 	t.Run("owner set from auth", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/equipment", map[string]any{
 			"name": "cable", "displayName": "Cable", "description": "",
-			"category": "machines", "templateId": "cable", "owner": "someone-else",
-		})
+			"category": "machines", "templateId": "cable"})
 		if w.Code != http.StatusCreated {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
 		}
@@ -228,8 +219,7 @@ func TestCreateEquipment(t *testing.T) {
 		closeDB(t)
 		w := doJSON(r, "POST", "/api/equipment", map[string]any{
 			"name": "x", "displayName": "X", "description": "",
-			"category": "other", "templateId": "x", "owner": "testuser",
-		})
+			"category": "other", "templateId": "x"})
 		if w.Code != http.StatusInternalServerError {
 			t.Errorf("expected 500, got %d", w.Code)
 		}
@@ -243,8 +233,7 @@ func TestGetEquipment(t *testing.T) {
 	// Create one
 	w := doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "kettlebell", "displayName": "Kettlebell", "description": "",
-		"category": "free_weights", "templateId": "kb", "owner": "testuser",
-	})
+		"category": "free_weights", "templateId": "kb"})
 	var created models.Equipment
 	json.Unmarshal(w.Body.Bytes(), &created)
 
@@ -274,14 +263,12 @@ func TestUpdateEquipment(t *testing.T) {
 
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "band", "displayName": "Band", "description": "",
-		"category": "accessories", "templateId": "band", "owner": "testuser",
-	})
+		"category": "accessories", "templateId": "band"})
 
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/equipment/1", map[string]any{
 			"name": "resistance-band", "displayName": "Resistance Band", "description": "elastic",
-			"category": "accessories", "templateId": "band", "owner": "testuser",
-		})
+			"category": "accessories", "templateId": "band"})
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
 		}
@@ -295,8 +282,7 @@ func TestUpdateEquipment(t *testing.T) {
 	t.Run("no version bump when unchanged", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/equipment/1", map[string]any{
 			"name": "resistance-band", "displayName": "Resistance Band", "description": "elastic",
-			"category": "accessories", "templateId": "band", "owner": "testuser",
-		})
+			"category": "accessories", "templateId": "band"})
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d", w.Code)
 		}
@@ -318,8 +304,7 @@ func TestUpdateEquipment(t *testing.T) {
 	t.Run("successive updates accumulate history", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/equipment/1", map[string]any{
 			"name": "super-band", "displayName": "Super Band", "description": "v2",
-			"category": "accessories", "templateId": "band", "owner": "testuser",
-		})
+			"category": "accessories", "templateId": "band"})
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d", w.Code)
 		}
@@ -339,8 +324,7 @@ func TestUpdateEquipment(t *testing.T) {
 		database.DB.Create(&profilemodels.UserProfileEntity{ID: "otheruser", Name: "otheruser"})
 		w := doJSONAs(r, "PUT", "/api/equipment/1", "otheruser", map[string]any{
 			"name": "hijack", "displayName": "Hijack", "description": "",
-			"category": "accessories", "templateId": "band", "owner": "otheruser",
-		})
+			"category": "accessories", "templateId": "band"})
 		if w.Code != http.StatusForbidden {
 			t.Errorf("expected 403, got %d", w.Code)
 		}
@@ -349,8 +333,7 @@ func TestUpdateEquipment(t *testing.T) {
 	t.Run("not found", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/equipment/999", map[string]any{
 			"name": "x", "displayName": "X", "description": "",
-			"category": "other", "templateId": "x", "owner": "testuser",
-		})
+			"category": "other", "templateId": "x"})
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
 		}
@@ -367,13 +350,11 @@ func TestUpdateEquipment(t *testing.T) {
 		// Create a second equipment
 		doJSON(r, "POST", "/api/equipment", map[string]any{
 			"name": "other", "displayName": "Other", "description": "",
-			"category": "other", "templateId": "other-tid", "owner": "testuser",
-		})
+			"category": "other", "templateId": "other-tid"})
 		// Update second equipment with first's templateId -> unique violation on Save
 		w := doJSON(r, "PUT", "/api/equipment/2", map[string]any{
 			"name": "conflict", "displayName": "Conflict", "description": "",
-			"category": "other", "templateId": "band", "owner": "testuser",
-		})
+			"category": "other", "templateId": "band"})
 		if w.Code != http.StatusInternalServerError {
 			t.Errorf("expected 500 for unique violation, got %d", w.Code)
 		}
@@ -383,8 +364,7 @@ func TestUpdateEquipment(t *testing.T) {
 		closeDB(t)
 		w := doJSON(r, "PUT", "/api/equipment/1", map[string]any{
 			"name": "x", "displayName": "X", "description": "",
-			"category": "other", "templateId": "x", "owner": "testuser",
-		})
+			"category": "other", "templateId": "x"})
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404 (db closed), got %d", w.Code)
 		}
@@ -398,12 +378,10 @@ func TestListEquipmentVersions(t *testing.T) {
 	// Create equipment (v0) and update it (v1)
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "plate", "displayName": "Plate", "description": "A weight plate",
-		"category": "free_weights", "templateId": "plate", "owner": "testuser",
-	})
+		"category": "free_weights", "templateId": "plate"})
 	doJSON(r, "PUT", "/api/equipment/1", map[string]any{
 		"name": "bumper-plate", "displayName": "Bumper Plate", "description": "Rubber coated",
-		"category": "free_weights", "templateId": "plate", "owner": "testuser",
-	})
+		"category": "free_weights", "templateId": "plate"})
 
 	t.Run("returns all versions ordered", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/equipment/1/versions", nil)
@@ -461,12 +439,10 @@ func TestGetEquipmentVersion(t *testing.T) {
 	// Create equipment (v0) and update it (v1)
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "plate", "displayName": "Plate", "description": "A weight plate",
-		"category": "free_weights", "templateId": "plate", "owner": "testuser",
-	})
+		"category": "free_weights", "templateId": "plate"})
 	doJSON(r, "PUT", "/api/equipment/1", map[string]any{
 		"name": "bumper-plate", "displayName": "Bumper Plate", "description": "Rubber coated",
-		"category": "free_weights", "templateId": "plate", "owner": "testuser",
-	})
+		"category": "free_weights", "templateId": "plate"})
 
 	t.Run("returns specific version", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/equipment/templates/plate/versions/0", nil)
@@ -525,8 +501,7 @@ func TestDeleteEquipment(t *testing.T) {
 
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "rope", "displayName": "Rope", "description": "",
-		"category": "accessories", "templateId": "rope", "owner": "testuser",
-	})
+		"category": "accessories", "templateId": "rope"})
 
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "DELETE", "/api/equipment/1", nil)
@@ -541,8 +516,7 @@ func TestDeleteEquipment(t *testing.T) {
 		r := newRouter()
 		doJSON(r, "POST", "/api/equipment", map[string]any{
 			"name": "rope2", "displayName": "Rope2", "description": "",
-			"category": "accessories", "templateId": "rope2", "owner": "testuser",
-		})
+			"category": "accessories", "templateId": "rope2"})
 		w := doJSONAs(r, "DELETE", "/api/equipment/1", "otheruser", nil)
 		if w.Code != http.StatusForbidden {
 			t.Errorf("expected 403, got %d", w.Code)
@@ -572,15 +546,13 @@ func TestGetEquipmentPermissions(t *testing.T) {
 	// Create a public equipment owned by testuser
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "barbell", "displayName": "Barbell", "description": "Standard barbell",
-		"category": "free_weights", "templateId": "barbell", "owner": "testuser",
-		"public": true,
+		"category": "free_weights", "templateId": "barbell", "public": true,
 	})
 
 	// Create a private equipment owned by testuser
 	doJSON(r, "POST", "/api/equipment", map[string]any{
 		"name": "custom-band", "displayName": "Custom Band", "description": "Private",
-		"category": "accessories", "templateId": "custom-band", "owner": "testuser",
-		"public": false,
+		"category": "accessories", "templateId": "custom-band", "public": false,
 	})
 
 	t.Run("owner gets full permissions", func(t *testing.T) {

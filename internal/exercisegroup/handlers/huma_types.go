@@ -6,6 +6,19 @@ import (
 	"gesitr/internal/shared"
 )
 
+// ExerciseGroupBody contains the client-provided fields for creating or updating an exercise group.
+type ExerciseGroupBody struct {
+	TemplateID  string  `json:"templateId,omitempty"`
+	Name        string  `json:"name" required:"true"`
+	Description *string `json:"description,omitempty"`
+}
+
+// ExerciseGroupMemberBody contains the client-provided fields for creating an exercise group member.
+type ExerciseGroupMemberBody struct {
+	GroupID    uint `json:"groupId" required:"true"`
+	ExerciseID uint `json:"exerciseId" required:"true"`
+}
+
 // --- Exercise group handlers ---
 
 type ListExerciseGroupsInput struct {
@@ -17,11 +30,8 @@ type ListExerciseGroupsOutput struct {
 	Body humaconfig.PaginatedBody[models.ExerciseGroup]
 }
 
-// RawBody skips huma's automatic validation — the ExerciseGroup DTO is shared
-// between request and response and has server-set fields (id, createdAt, etc.)
-// that aren't present in create requests.
 type CreateExerciseGroupInput struct {
-	RawBody []byte
+	Body ExerciseGroupBody
 }
 
 type CreateExerciseGroupOutput struct {
@@ -45,8 +55,8 @@ type GetExerciseGroupOutput struct {
 }
 
 type UpdateExerciseGroupInput struct {
-	ID      uint `path:"id"`
-	RawBody []byte
+	ID   uint `path:"id"`
+	Body ExerciseGroupBody
 }
 
 type UpdateExerciseGroupOutput struct {
@@ -70,11 +80,8 @@ type ListExerciseGroupMembersOutput struct {
 	Body []models.ExerciseGroupMember
 }
 
-// RawBody skips huma's automatic validation — the ExerciseGroupMember DTO is shared
-// between request and response and has server-set fields (id, createdAt, etc.)
-// that aren't present in create requests.
 type CreateExerciseGroupMemberInput struct {
-	RawBody []byte
+	Body ExerciseGroupMemberBody
 }
 
 type CreateExerciseGroupMemberOutput struct {

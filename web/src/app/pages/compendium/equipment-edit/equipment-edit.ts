@@ -227,8 +227,9 @@ export class EquipmentEdit {
   onSubmit() {
     if (this.equipmentForm().valid()) {
       const val = this.model();
+      const data = this.equipmentQuery.data();
       const payload = {
-        ...(this.isCreateMode() ? {} : this.equipmentQuery.data()!),
+        ...(this.isCreateMode() ? {} : { templateId: data!.templateId, public: data!.public }),
         name: val.name,
         displayName: val.displayName,
         description: val.description,
