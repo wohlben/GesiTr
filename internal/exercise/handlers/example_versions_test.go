@@ -18,7 +18,6 @@ func ExampleGetExerciseVersion_owner() {
 	// Create an exercise (version 0).
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Squat",
-		"templateId": "squat",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
@@ -26,7 +25,7 @@ func ExampleGetExerciseVersion_owner() {
 	}`)
 
 	// Verify version 0 exists.
-	w0 := doJSON(r, "GET", "/api/exercises/templates/squat/versions/0", nil)
+	w0 := doJSON(r, "GET", "/api/exercises/1/versions/0", nil)
 	var v0 shared.VersionEntry
 	json.Unmarshal(w0.Body.Bytes(), &v0)
 	fmt.Println("v0:", w0.Code, "version", v0.Version)
@@ -39,7 +38,6 @@ func ExampleGetExerciseVersion_owner() {
 	// Update the exercise (creates version 1).
 	doRaw(r, "PUT", "/api/exercises/1", `{
 		"name": "Back Squat",
-		"templateId": "squat",
 		"type": "STRENGTH",
 		"technicalDifficulty": "intermediate",
 		"bodyWeightScaling": 0.5,
@@ -49,7 +47,7 @@ func ExampleGetExerciseVersion_owner() {
 	}`)
 
 	// Verify version 1 exists with the updated name.
-	w1 := doJSON(r, "GET", "/api/exercises/templates/squat/versions/1", nil)
+	w1 := doJSON(r, "GET", "/api/exercises/1/versions/1", nil)
 	var v1 shared.VersionEntry
 	json.Unmarshal(w1.Body.Bytes(), &v1)
 	fmt.Println("v1:", w1.Code, "version", v1.Version)
@@ -73,7 +71,6 @@ func ExampleGetExerciseVersion_nonOwnerPublic() {
 	// Create a public exercise (version 0).
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Push-up",
-		"templateId": "push-up",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
@@ -84,7 +81,6 @@ func ExampleGetExerciseVersion_nonOwnerPublic() {
 	// Update it (version 1).
 	doRaw(r, "PUT", "/api/exercises/1", `{
 		"name": "Push-up",
-		"templateId": "push-up",
 		"type": "STRENGTH",
 		"technicalDifficulty": "intermediate",
 		"bodyWeightScaling": 1.0,
@@ -95,12 +91,12 @@ func ExampleGetExerciseVersion_nonOwnerPublic() {
 	}`)
 
 	// Another user can access both versions.
-	w0 := doRawAs(r, "GET", "/api/exercises/templates/push-up/versions/0", "", "other")
+	w0 := doRawAs(r, "GET", "/api/exercises/1/versions/0", "", "other")
 	var v0 shared.VersionEntry
 	json.Unmarshal(w0.Body.Bytes(), &v0)
 	fmt.Println("v0:", w0.Code, "version", v0.Version)
 
-	w1 := doRawAs(r, "GET", "/api/exercises/templates/push-up/versions/1", "", "other")
+	w1 := doRawAs(r, "GET", "/api/exercises/1/versions/1", "", "other")
 	var v1 shared.VersionEntry
 	json.Unmarshal(w1.Body.Bytes(), &v1)
 	fmt.Println("v1:", w1.Code, "version", v1.Version)
@@ -123,20 +119,19 @@ func ExampleGetExerciseVersion_nonOwnerPrivate() {
 	// Create a private exercise.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Secret Move",
-		"templateId": "secret-move",
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
 		"description": "A private exercise"
 	}`)
 
-	w := doRawAs(r, "GET", "/api/exercises/templates/secret-move/versions/0", "", "other")
+	w := doRawAs(r, "GET", "/api/exercises/1/versions/0", "", "other")
 	fmt.Println(w.Code)
 	// Output: 403
 }
 
 // Version history survives exercise deletion. The exercise is hard-deleted
-// but the history snapshots remain accessible via the templateId.
+// but the history snapshots remain accessible via the exercise ID.
 func ExampleGetExerciseVersion_afterDelete() {
 	setupExampleDB()
 	r := newRouter()
@@ -144,7 +139,6 @@ func ExampleGetExerciseVersion_afterDelete() {
 	// Create an exercise (version 0).
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Overhead Press",
-		"templateId": "ohp",
 		"type": "STRENGTH",
 		"technicalDifficulty": "intermediate",
 		"bodyWeightScaling": 0,
@@ -164,7 +158,7 @@ func ExampleGetExerciseVersion_afterDelete() {
 	fmt.Println("after delete:", wg.Code)
 
 	// Version history is still accessible.
-	wv := doJSON(r, "GET", "/api/exercises/templates/ohp/versions/0", nil)
+	wv := doJSON(r, "GET", "/api/exercises/1/versions/0", nil)
 	var v0 shared.VersionEntry
 	json.Unmarshal(wv.Body.Bytes(), &v0)
 	fmt.Println("version:", wv.Code, "version", v0.Version)

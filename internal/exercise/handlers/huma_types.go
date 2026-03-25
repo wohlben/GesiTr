@@ -24,8 +24,8 @@ type ExerciseBody struct {
 	AuthorUrl                     *string                      `json:"authorUrl,omitempty"`
 	Public                        bool                         `json:"public,omitempty"`
 	ParentExerciseID              *uint                        `json:"parentExerciseId,omitempty"`
-	TemplateID                    string                       `json:"templateId,omitempty"`
 	EquipmentIDs                  []uint                       `json:"equipmentIds,omitempty"`
+	SourceExerciseID              *uint                        `json:"sourceExerciseId,omitempty" doc:"Source exercise ID for imports (creates forked+equivalent relationships)"`
 }
 
 // ExerciseSchemeBody contains the client-provided fields for creating or updating an exercise scheme.
@@ -108,13 +108,26 @@ type ListExerciseVersionsOutput struct {
 }
 
 type GetExerciseVersionInput struct {
-	TemplateID string `path:"templateId"`
-	Version    int    `path:"version"`
+	ID      uint `path:"id"`
+	Version int  `path:"version"`
 }
 
 type GetExerciseVersionOutput struct {
 	Body shared.VersionEntry
 }
+
+type DeleteExerciseVersionInput struct {
+	ID      uint `path:"id"`
+	Version int  `path:"version"`
+}
+
+type DeleteExerciseVersionOutput struct{}
+
+type DeleteAllExerciseVersionsInput struct {
+	ID uint `path:"id"`
+}
+
+type DeleteAllExerciseVersionsOutput struct{}
 
 // --- Exercise scheme handlers ---
 

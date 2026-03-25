@@ -629,7 +629,6 @@ export class ExerciseEdit {
         ...(this.isCreateMode()
           ? {}
           : {
-              templateId: data!.templateId,
               public: data!.public,
               parentExerciseId: data!.parentExerciseId,
             }),

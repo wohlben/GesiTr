@@ -23,6 +23,7 @@ const (
 	ExerciseRelationshipTypeEasierAlternative   ExerciseRelationshipType = "easier_alternative"
 	ExerciseRelationshipTypeEquipmentVariation  ExerciseRelationshipType = "equipment_variation"
 	ExerciseRelationshipTypeEquivalent          ExerciseRelationshipType = "equivalent"
+	ExerciseRelationshipTypeForked              ExerciseRelationshipType = "forked"
 	ExerciseRelationshipTypeHarderAlternative   ExerciseRelationshipType = "harder_alternative"
 	ExerciseRelationshipTypePreparation         ExerciseRelationshipType = "preparation"
 	ExerciseRelationshipTypePrerequisite        ExerciseRelationshipType = "prerequisite"

@@ -19,7 +19,11 @@ func ListExerciseRelationships(ctx context.Context, input *ListExerciseRelations
 	db := database.DB.Model(&models.ExerciseRelationshipEntity{})
 
 	if input.Owner != "" {
-		db = db.Where("owner = ?", input.Owner)
+		owner := input.Owner
+		if owner == "me" {
+			owner = humaconfig.GetUserID(ctx)
+		}
+		db = db.Where("owner = ?", owner)
 	}
 	if input.FromExerciseID != "" {
 		db = db.Where("from_exercise_id = ?", input.FromExerciseID)

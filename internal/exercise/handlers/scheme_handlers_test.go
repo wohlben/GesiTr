@@ -13,7 +13,7 @@ func TestListExerciseSchemes(t *testing.T) {
 	r := newRouter()
 
 	// Create an exercise to link schemes to
-	doJSON(r, "POST", "/api/exercises", newExercisePayload("Bench Press", "bench-press"))
+	doJSON(r, "POST", "/api/exercises", newExercisePayload("Bench Press"))
 
 	t.Run("empty list", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/exercise-schemes", nil)
@@ -102,7 +102,7 @@ func TestCreateExerciseScheme(t *testing.T) {
 	r := newRouter()
 
 	// Create an exercise first
-	doJSON(r, "POST", "/api/exercises", newExercisePayload("Squat", "squat"))
+	doJSON(r, "POST", "/api/exercises", newExercisePayload("Squat"))
 
 	t.Run("success with rep-based fields", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
@@ -183,7 +183,7 @@ func TestGetExerciseScheme(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/exercises", newExercisePayload("Deadlift", "deadlift"))
+	doJSON(r, "POST", "/api/exercises", newExercisePayload("Deadlift"))
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 8,
@@ -220,7 +220,7 @@ func TestUpdateExerciseScheme(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/exercises", newExercisePayload("Bench Press", "bench-press"))
+	doJSON(r, "POST", "/api/exercises", newExercisePayload("Bench Press"))
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 10, "weight": 60.0,
@@ -278,7 +278,7 @@ func TestDeleteExerciseScheme(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/exercises", newExercisePayload("Row", "row"))
+	doJSON(r, "POST", "/api/exercises", newExercisePayload("Row"))
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 4, "reps": 12,
 	})

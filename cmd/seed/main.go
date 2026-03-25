@@ -198,6 +198,7 @@ func seedExercises() error {
 		return err
 	}
 	var entities []exerciseModels.ExerciseEntity
+	var templateIDs []string
 	for _, data := range files {
 		var j jsonExercise
 		if err := json.Unmarshal(data, &j); err != nil {
@@ -207,6 +208,7 @@ func seedExercises() error {
 		if j.TemplateID != nil {
 			templateID = *j.TemplateID
 		}
+		templateIDs = append(templateIDs, templateID)
 		e := exerciseModels.ExerciseEntity{
 			Name:                j.Name,
 			Type:                exerciseModels.ExerciseType(j.Type),
@@ -219,7 +221,6 @@ func seedExercises() error {
 			Public:              true,
 			Version:             j.Version,
 			ParentExerciseID:    j.ParentExerciseID,
-			TemplateID:          templateID,
 		}
 		e.CreatedAt = unixToTime(j.CreatedAt)
 		if j.UpdatedAt != nil {
@@ -276,12 +277,12 @@ func seedExercises() error {
 		return fmt.Errorf("insert exercise history: %w", err)
 	}
 
-	// Build exerciseIDMap for downstream seeders
-	var allExercises []exerciseModels.ExerciseEntity
-	database.DB.Where("owner = ?", "sinon").Find(&allExercises)
+	// Build exerciseIDMap for downstream seeders (templateID from seed JSON → DB ID)
 	exerciseIDMap = make(map[string]uint)
-	for _, ex := range allExercises {
-		exerciseIDMap[ex.TemplateID] = ex.ID
+	for i, ex := range entities {
+		if templateIDs[i] != "" {
+			exerciseIDMap[templateIDs[i]] = ex.ID
+		}
 	}
 
 	log.Printf("Exercises: %d", len(entities))

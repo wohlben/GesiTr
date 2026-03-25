@@ -25,7 +25,6 @@ const exercise: Exercise = {
   owner: 'admin',
   public: true,
   version: 1,
-  templateId: 'bench-press',
   equipmentIds: [],
 };
 

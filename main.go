@@ -53,6 +53,14 @@ func runMigrations() {
 		database.DB.Exec("DROP INDEX IF EXISTS idx_owner_slug")
 		database.DB.Exec("ALTER TABLE exercises DROP COLUMN slug")
 	}
+
+	// Drop the template_id column from exercises if it exists (replaced by forked relationships).
+	var templateCount int64
+	database.DB.Raw("SELECT COUNT(*) FROM pragma_table_info('exercises') WHERE name = 'template_id'").Scan(&templateCount)
+	if templateCount > 0 {
+		database.DB.Exec("DROP INDEX IF EXISTS idx_owner_template")
+		database.DB.Exec("ALTER TABLE exercises DROP COLUMN template_id")
+	}
 }
 
 func autoMigrate() {

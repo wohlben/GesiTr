@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { Exercise, Equipment, ExerciseGroup } from '$generated/models';
+import { Exercise, Equipment, ExerciseGroup, ExerciseRelationship } from '$generated/models';
 import { PaginatedResponse } from './paginated-response';
 import { VersionEntry } from './version-entry';
 
@@ -81,11 +81,9 @@ export class CompendiumApiClient {
     );
   }
 
-  fetchExerciseVersion(templateId: string, version: number): Promise<VersionEntry<Exercise>> {
+  fetchExerciseVersion(id: number, version: number): Promise<VersionEntry<Exercise>> {
     return firstValueFrom(
-      this.http.get<VersionEntry<Exercise>>(
-        `/api/exercises/templates/${templateId}/versions/${version}`,
-      ),
+      this.http.get<VersionEntry<Exercise>>(`/api/exercises/${id}/versions/${version}`),
     );
   }
 
@@ -137,5 +135,23 @@ export class CompendiumApiClient {
 
   createExerciseGroup(data: Partial<ExerciseGroup>): Promise<ExerciseGroup> {
     return firstValueFrom(this.http.post<ExerciseGroup>('/api/exercise-groups', data));
+  }
+
+  deleteExerciseVersion(id: number, version: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/exercises/${id}/versions/${version}`));
+  }
+
+  deleteAllExerciseVersions(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/exercises/${id}/versions`));
+  }
+
+  fetchExerciseRelationships(
+    filters: Record<string, string | number | undefined>,
+  ): Promise<ExerciseRelationship[]> {
+    return firstValueFrom(
+      this.http.get<ExerciseRelationship[]>('/api/exercise-relationships', {
+        params: buildParams(filters),
+      }),
+    );
   }
 }

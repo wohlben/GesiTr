@@ -70,10 +70,26 @@ func RegisterRoutes(api huma.API) {
 	huma.Register(api, huma.Operation{
 		OperationID: "get-exercise-version",
 		Method:      http.MethodGet,
-		Path:        "/exercises/templates/{templateId}/versions/{version}",
+		Path:        "/exercises/{id}/versions/{version}",
 		Tags:        []string{"exercises"},
 		Summary:     "Get exercise version",
 	}, GetExerciseVersion)
+
+	huma.Register(api, huma.Operation{
+		OperationID: "delete-exercise-version",
+		Method:      http.MethodDelete,
+		Path:        "/exercises/{id}/versions/{version}",
+		Tags:        []string{"exercises"},
+		Summary:     "Delete exercise version",
+	}, DeleteExerciseVersion)
+
+	huma.Register(api, huma.Operation{
+		OperationID: "delete-all-exercise-versions",
+		Method:      http.MethodDelete,
+		Path:        "/exercises/{id}/versions",
+		Tags:        []string{"exercises"},
+		Summary:     "Delete all exercise versions",
+	}, DeleteAllExerciseVersions)
 
 	// --- Exercise schemes ---
 

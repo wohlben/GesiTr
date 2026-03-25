@@ -8,7 +8,7 @@ import { ExerciseDetail } from './exercise-detail';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
-import { Exercise } from '$generated/models';
+import { Exercise, ExerciseRelationship } from '$generated/models';
 
 const EXERCISE: Exercise = {
   id: 1,
@@ -29,45 +29,32 @@ const EXERCISE: Exercise = {
   owner: 'seed',
   public: true,
   version: 1,
-  templateId: 'tmpl-bench',
   equipmentIds: [],
 };
 
-const USER_EXERCISE: Exercise = {
-  id: 10,
+const FORKED_RELATIONSHIP: ExerciseRelationship = {
+  id: 1,
   createdAt: '',
   updatedAt: '',
-  name: 'Bench Press',
-  type: 'STRENGTH',
-  force: [],
-  primaryMuscles: ['CHEST'],
-  secondaryMuscles: ['TRICEPS'],
-  technicalDifficulty: 'intermediate',
-  bodyWeightScaling: 0,
-  suggestedMeasurementParadigms: [],
-  description: 'A compound exercise',
-  instructions: [],
-  images: [],
-  alternativeNames: [],
+  fromExerciseId: 10,
+  toExerciseId: 1,
+  relationshipType: 'forked',
+  strength: 0,
   owner: 'anon',
-  public: false,
-  version: 1,
-  templateId: 'tmpl-bench',
-  equipmentIds: [],
 };
 
-function setup(userExercises: Exercise[] = []) {
+function setup(forkedRelationships: ExerciseRelationship[] = []) {
   const compendiumApi: Partial<CompendiumApiClient> = {
     fetchExercise: vi.fn().mockResolvedValue(EXERCISE),
     fetchExerciseVersions: vi.fn().mockResolvedValue([EXERCISE]),
     fetchExercisePermissions: vi
       .fn()
       .mockResolvedValue({ permissions: ['READ', 'MODIFY', 'DELETE'] }),
+    fetchExerciseRelationships: vi.fn().mockResolvedValue(forkedRelationships),
     deleteExercise: vi.fn(),
   };
   const userApi: Partial<UserApiClient> = {
-    fetchUserExercises: vi.fn().mockResolvedValue(userExercises),
-    createUserExercise: vi.fn().mockResolvedValue(USER_EXERCISE),
+    createUserExercise: vi.fn().mockResolvedValue({ id: 10 }),
   };
 
   return {
@@ -88,16 +75,16 @@ function setup(userExercises: Exercise[] = []) {
   };
 }
 
-function setupWithPermissions(permissions: string[], userExercises: Exercise[] = []) {
+function setupWithPermissions(permissions: string[]) {
   const compendiumApi: Partial<CompendiumApiClient> = {
     fetchExercise: vi.fn().mockResolvedValue(EXERCISE),
     fetchExerciseVersions: vi.fn().mockResolvedValue([EXERCISE]),
     fetchExercisePermissions: vi.fn().mockResolvedValue({ permissions }),
+    fetchExerciseRelationships: vi.fn().mockResolvedValue([]),
     deleteExercise: vi.fn(),
   };
   const userApi: Partial<UserApiClient> = {
-    fetchUserExercises: vi.fn().mockResolvedValue(userExercises),
-    createUserExercise: vi.fn().mockResolvedValue(USER_EXERCISE),
+    createUserExercise: vi.fn().mockResolvedValue({ id: 10 }),
   };
 
   return {
@@ -129,8 +116,8 @@ describe('ExerciseDetail', () => {
     expect(screen.queryByText('compendium.exercises.alreadyAdded')).toBeNull();
   });
 
-  it('shows "compendium.exercises.alreadyAdded" link when exercise is already imported', async () => {
-    const { providers } = setup([USER_EXERCISE]);
+  it('shows "compendium.exercises.alreadyAdded" link when exercise is already forked', async () => {
+    const { providers } = setup([FORKED_RELATIONSHIP]);
     await render(ExerciseDetail, { providers });
 
     await waitFor(() => {
@@ -140,21 +127,6 @@ describe('ExerciseDetail', () => {
 
     const link = screen.getByText('compendium.exercises.alreadyAdded');
     expect(link.getAttribute('href')).toBe('/user/exercises/10');
-  });
-
-  it('shows "compendium.exercises.addToMine" when user has other exercises but not this one', async () => {
-    const otherExercise: Exercise = {
-      ...USER_EXERCISE,
-      id: 99,
-      templateId: 'tmpl-other',
-    };
-    const { providers } = setup([otherExercise]);
-    await render(ExerciseDetail, { providers });
-
-    await waitFor(() => {
-      expect(screen.getByText('compendium.exercises.addToMine')).toBeTruthy();
-    });
-    expect(screen.queryByText('compendium.exercises.alreadyAdded')).toBeNull();
   });
 
   it('shows edit button when user has MODIFY permission', async () => {

@@ -17,7 +17,6 @@ func ExampleCreateExerciseScheme_repBased() {
 	// Create the exercise first.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Bicep Curl",
-		"templateId": "bicep-curl",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0,
@@ -54,7 +53,6 @@ func ExampleCreateExerciseScheme_timeBased() {
 	// Create the exercise first.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Ergometer",
-		"templateId": "ergometer",
 		"type": "CARDIO",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0,
@@ -89,7 +87,6 @@ func ExampleGetExerciseScheme_owner() {
 	// Create the exercise and a scheme.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Squat",
-		"templateId": "squat",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
@@ -123,7 +120,6 @@ func ExampleGetExerciseScheme_nonOwnerPublicExercise() {
 	// Create a public exercise and a scheme for it.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Push-up",
-		"templateId": "push-up",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
@@ -157,7 +153,6 @@ func ExampleGetExerciseScheme_nonOwnerPrivateExercise() {
 	// Create a private exercise and a scheme for it.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Secret Move",
-		"templateId": "secret-move",
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
@@ -183,7 +178,6 @@ func ExampleUpdateExerciseScheme_owner() {
 
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Bicep Curl",
-		"templateId": "bicep-curl",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0,
@@ -224,7 +218,6 @@ func ExampleUpdateExerciseScheme_nonOwnerPublicExercise() {
 
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Push-up",
-		"templateId": "push-up",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
@@ -255,7 +248,6 @@ func ExampleUpdateExerciseScheme_nonOwnerPrivateExercise() {
 
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Secret Move",
-		"templateId": "secret-move",
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
@@ -286,7 +278,6 @@ func ExampleListExerciseSchemes_owner() {
 	// Create a private exercise and a scheme.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Squat",
-		"templateId": "squat",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
@@ -320,7 +311,6 @@ func ExampleListExerciseSchemes_nonOwnerPublicExercise() {
 	// Create a public exercise and a scheme.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Push-up",
-		"templateId": "push-up",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
@@ -354,7 +344,6 @@ func ExampleListExerciseSchemes_nonOwnerPrivateExercise() {
 	// Create a private exercise and a scheme.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Secret Move",
-		"templateId": "secret-move",
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,

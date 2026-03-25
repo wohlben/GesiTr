@@ -4,7 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { exerciseKeys, userExerciseKeys } from '$core/query-keys';
+import { exerciseKeys, exerciseRelationshipKeys, userExerciseKeys } from '$core/query-keys';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
@@ -142,9 +142,19 @@ export class ExerciseDetail {
     enabled: !!this.id(),
   }));
 
-  userExercisesQuery = injectQuery(() => ({
-    queryKey: userExerciseKeys.list(),
-    queryFn: () => this.userApi.fetchUserExercises(),
+  forkedRelationshipsQuery = injectQuery(() => ({
+    queryKey: exerciseRelationshipKeys.list({
+      toExerciseId: this.id(),
+      relationshipType: 'forked',
+      owner: 'me',
+    }),
+    queryFn: () =>
+      this.api.fetchExerciseRelationships({
+        toExerciseId: this.id(),
+        relationshipType: 'forked',
+        owner: 'me',
+      }),
+    enabled: !!this.id(),
   }));
 
   permissionsQuery = injectQuery(() => ({
@@ -167,10 +177,9 @@ export class ExerciseDetail {
   hasHistory = computed(() => (this.versionsQuery.data()?.length ?? 0) > 1);
 
   alreadyAdded = computed(() => {
-    const templateId = this.exerciseQuery.data()?.templateId;
-    const userExercises = this.userExercisesQuery.data();
-    if (!templateId || !userExercises) return undefined;
-    return userExercises.find((ue) => ue.templateId === templateId);
+    const rels = this.forkedRelationshipsQuery.data();
+    if (!rels || rels.length === 0) return undefined;
+    return { id: rels[0].fromExerciseId };
   });
 
   deleteMutation = injectMutation(() => ({
@@ -200,13 +209,16 @@ export class ExerciseDetail {
         authorName: exercise.authorName,
         authorUrl: exercise.authorUrl,
         parentExerciseId: exercise.parentExerciseId,
-        templateId: exercise.templateId,
         equipmentIds: exercise.equipmentIds,
         public: false,
-      });
+        sourceExerciseId: exercise.id,
+      } as Record<string, unknown>);
     },
     onSuccess: (created) => {
       this.queryClient.invalidateQueries({ queryKey: userExerciseKeys.all() });
+      this.queryClient.invalidateQueries({
+        queryKey: exerciseRelationshipKeys.all(),
+      });
       this.router.navigate(['/user/exercises', created.id]);
     },
   }));

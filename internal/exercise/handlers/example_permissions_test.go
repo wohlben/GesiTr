@@ -15,7 +15,6 @@ func ExampleGetExercisePermissions_owner() {
 	// Create a private exercise owned by testuser.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Bench Press",
-		"templateId": "bench-press",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
@@ -39,7 +38,6 @@ func ExampleGetExercisePermissions_nonOwnerPublic() {
 	// Create a public exercise owned by testuser.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Squat",
-		"templateId": "squat",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
@@ -64,7 +62,6 @@ func ExampleGetExercisePermissions_nonOwnerPrivate() {
 	// Create a private exercise owned by testuser.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Deadlift",
-		"templateId": "deadlift",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,

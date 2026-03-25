@@ -14,7 +14,6 @@ import (
 func createExerciseSchemeForExample(r *gin.Engine) {
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Bench Press",
-		"templateId": "bench-press",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,

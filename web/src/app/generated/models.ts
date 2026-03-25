@@ -38,7 +38,6 @@ export interface Exercise extends BaseModel {
   public: boolean;
   version: number /* int */;
   parentExerciseId?: number /* uint */;
-  templateId: string;
   equipmentIds: number /* uint */[];
 }
 export type ExerciseType = string;
@@ -168,6 +167,7 @@ export const ExerciseRelationshipTypeEasierAlternative: ExerciseRelationshipType
 export const ExerciseRelationshipTypeEquipmentVariation: ExerciseRelationshipType =
   'equipment_variation';
 export const ExerciseRelationshipTypeEquivalent: ExerciseRelationshipType = 'equivalent';
+export const ExerciseRelationshipTypeForked: ExerciseRelationshipType = 'forked';
 export const ExerciseRelationshipTypeHarderAlternative: ExerciseRelationshipType =
   'harder_alternative';
 export const ExerciseRelationshipTypePreparation: ExerciseRelationshipType = 'preparation';

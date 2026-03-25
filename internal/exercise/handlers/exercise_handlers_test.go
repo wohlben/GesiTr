@@ -13,9 +13,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func newExercisePayload(name, templateID string) map[string]any {
+func newExercisePayload(name string) map[string]any {
 	return map[string]any{
-		"name": name, "templateId": templateID, "type": "STRENGTH",
+		"name": name, "type": "STRENGTH",
 		"technicalDifficulty": "beginner", "bodyWeightScaling": 0.5,
 		"description": "test",
 		"force":       []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
@@ -50,10 +50,10 @@ func TestListExercises(t *testing.T) {
 	})
 
 	// Seed exercises for filter tests
-	doJSON(r, "POST", "/api/exercises", newExercisePayload("Bench Press", "bench-press"))
+	doJSON(r, "POST", "/api/exercises", newExercisePayload("Bench Press"))
 
 	cardio := map[string]any{
-		"name": "Running", "templateId": "running", "type": "CARDIO",
+		"name": "Running", "type": "CARDIO",
 		"technicalDifficulty": "intermediate", "bodyWeightScaling": 1.0,
 		"description": "run",
 		"force":       []string{"DYNAMIC"}, "primaryMuscles": []string{"QUADS"},
@@ -200,7 +200,7 @@ func TestListExercises(t *testing.T) {
 
 	t.Run("public exercises visible to other users", func(t *testing.T) {
 		// Create a public exercise as testuser
-		publicPayload := newExercisePayload("Public Exercise", "public-ex")
+		publicPayload := newExercisePayload("Public Exercise")
 		publicPayload["public"] = true
 		doJSON(r, "POST", "/api/exercises", publicPayload)
 
@@ -268,7 +268,7 @@ func TestCreateExercise(t *testing.T) {
 	r := newRouter()
 
 	t.Run("success with associations", func(t *testing.T) {
-		w := doJSON(r, "POST", "/api/exercises", newExercisePayload("Squat", "squat"))
+		w := doJSON(r, "POST", "/api/exercises", newExercisePayload("Squat"))
 		if w.Code != http.StatusCreated {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
 		}
@@ -304,7 +304,7 @@ func TestCreateExercise(t *testing.T) {
 	})
 
 	t.Run("owner set from auth, not request body", func(t *testing.T) {
-		payload := newExercisePayload("Bob Exercise", "bob-ex")
+		payload := newExercisePayload("Bob Exercise")
 		w := doJSON(r, "POST", "/api/exercises", payload)
 		if w.Code != http.StatusCreated {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
@@ -313,26 +313,6 @@ func TestCreateExercise(t *testing.T) {
 		json.Unmarshal(w.Body.Bytes(), &result)
 		if result.Owner != "testuser" {
 			t.Errorf("Owner = %q, want testuser (auth override)", result.Owner)
-		}
-	})
-
-	t.Run("defaults templateId to UUID when not provided", func(t *testing.T) {
-		payload := map[string]any{
-			"name": "No Template", "type": "STRENGTH",
-			"technicalDifficulty": "beginner", "bodyWeightScaling": 0.0,
-			"description": "test",
-		}
-		w := doJSON(r, "POST", "/api/exercises", payload)
-		if w.Code != http.StatusCreated {
-			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
-		}
-		var result models.Exercise
-		json.Unmarshal(w.Body.Bytes(), &result)
-		if result.TemplateID == "" {
-			t.Error("expected auto-generated templateId, got empty string")
-		}
-		if len(result.TemplateID) != 36 {
-			t.Errorf("expected UUID-length templateId, got %q (len %d)", result.TemplateID, len(result.TemplateID))
 		}
 	})
 
@@ -345,7 +325,7 @@ func TestCreateExercise(t *testing.T) {
 
 	t.Run("db error on create", func(t *testing.T) {
 		closeDB(t)
-		w := doJSON(r, "POST", "/api/exercises", newExercisePayload("X", "x"))
+		w := doJSON(r, "POST", "/api/exercises", newExercisePayload("X"))
 		if w.Code != http.StatusInternalServerError {
 			t.Errorf("expected 500, got %d", w.Code)
 		}
@@ -359,7 +339,7 @@ func TestCreateExercise(t *testing.T) {
 			// All queries fail - create doesn't use Query callbacks, but reload does
 			_ = tx.AddError(fmt.Errorf("injected reload error"))
 		})
-		w := doJSON(r, "POST", "/api/exercises", newExercisePayload("ReloadFail", "reload-fail"))
+		w := doJSON(r, "POST", "/api/exercises", newExercisePayload("ReloadFail"))
 		if w.Code != http.StatusInternalServerError {
 			t.Errorf("expected 500 for reload error, got %d", w.Code)
 		}
@@ -371,7 +351,7 @@ func TestGetExercise(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/exercises", newExercisePayload("Deadlift", "deadlift"))
+	doJSON(r, "POST", "/api/exercises", newExercisePayload("Deadlift"))
 
 	t.Run("found", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/exercises/1", nil)
@@ -401,11 +381,11 @@ func TestUpdateExercise(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/exercises", newExercisePayload("OHP", "ohp"))
+	doJSON(r, "POST", "/api/exercises", newExercisePayload("OHP"))
 
 	t.Run("success", func(t *testing.T) {
 		updated := map[string]any{
-			"name": "Overhead Press", "templateId": "ohp", "type": "STRENGTH",
+			"name": "Overhead Press", "type": "STRENGTH",
 			"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
 			"description": "updated",
 			"force":       []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
@@ -443,7 +423,7 @@ func TestUpdateExercise(t *testing.T) {
 	})
 
 	t.Run("forbidden for non-owner", func(t *testing.T) {
-		w := doJSONAs(r, "PUT", "/api/exercises/1", newExercisePayload("Hacked", "ohp"), "bob")
+		w := doJSONAs(r, "PUT", "/api/exercises/1", newExercisePayload("Hacked"), "bob")
 		if w.Code != http.StatusForbidden {
 			t.Errorf("expected 403, got %d", w.Code)
 		}
@@ -452,7 +432,7 @@ func TestUpdateExercise(t *testing.T) {
 	t.Run("no version bump when unchanged", func(t *testing.T) {
 		// Re-PUT the same data that's currently in the DB (from the "success" test above)
 		same := map[string]any{
-			"name": "Overhead Press", "templateId": "ohp", "type": "STRENGTH",
+			"name": "Overhead Press", "type": "STRENGTH",
 			"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
 			"description": "updated",
 			"force":       []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
@@ -486,7 +466,7 @@ func TestUpdateExercise(t *testing.T) {
 	t.Run("successive updates accumulate history", func(t *testing.T) {
 		// Second real update -> version 2
 		w := doJSON(r, "PUT", "/api/exercises/1", map[string]any{
-			"name": "OHP v2", "templateId": "ohp", "type": "STRENGTH",
+			"name": "OHP v2", "type": "STRENGTH",
 			"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
 			"description": "v2",
 			"force":       []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
@@ -515,7 +495,7 @@ func TestUpdateExercise(t *testing.T) {
 			}
 		})
 		w := doJSON(r, "PUT", "/api/exercises/1", map[string]any{
-			"name": "OHP v3 fail", "templateId": "ohp", "type": "STRENGTH",
+			"name": "OHP v3 fail", "type": "STRENGTH",
 			"technicalDifficulty": "advanced", "bodyWeightScaling": 0.0,
 			"description": "v3 fail",
 			"force":       []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
@@ -533,7 +513,7 @@ func TestUpdateExercise(t *testing.T) {
 	})
 
 	t.Run("not found", func(t *testing.T) {
-		w := doJSON(r, "PUT", "/api/exercises/999", newExercisePayload("X", "x"))
+		w := doJSON(r, "PUT", "/api/exercises/999", newExercisePayload("X"))
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
 		}
@@ -543,17 +523,6 @@ func TestUpdateExercise(t *testing.T) {
 		w := doRaw(r, "PUT", "/api/exercises/1", "{bad")
 		if w.Code != http.StatusBadRequest {
 			t.Errorf("expected 400, got %d", w.Code)
-		}
-	})
-
-	t.Run("db error on update (templateId conflict)", func(t *testing.T) {
-		// Create a second exercise
-		doJSON(r, "POST", "/api/exercises", newExercisePayload("Other", "other"))
-		// Try to update it with the templateId of the first exercise
-		conflict := newExercisePayload("Conflict", "ohp")
-		w := doJSON(r, "PUT", "/api/exercises/2", conflict)
-		if w.Code != http.StatusInternalServerError {
-			t.Errorf("expected 500 for templateId conflict, got %d", w.Code)
 		}
 	})
 
@@ -579,7 +548,7 @@ func TestUpdateExercise(t *testing.T) {
 					_ = tx.AddError(fmt.Errorf("injected delete error"))
 				}
 			})
-			w := doJSON(r, "PUT", "/api/exercises/1", newExercisePayload("U", "ohp"))
+			w := doJSON(r, "PUT", "/api/exercises/1", newExercisePayload("U"))
 			if w.Code != http.StatusInternalServerError {
 				t.Errorf("expected 500, got %d", w.Code)
 			}
@@ -609,7 +578,7 @@ func TestUpdateExercise(t *testing.T) {
 					_ = tx.AddError(fmt.Errorf("injected error"))
 				}
 			})
-			w := doJSON(r, "PUT", "/api/exercises/1", newExercisePayload("U2", "ohp"))
+			w := doJSON(r, "PUT", "/api/exercises/1", newExercisePayload("U2"))
 			if w.Code != http.StatusInternalServerError {
 				t.Errorf("expected 500, got %d", w.Code)
 			}
@@ -629,7 +598,7 @@ func TestUpdateExercise(t *testing.T) {
 				_ = tx.AddError(fmt.Errorf("injected reload error"))
 			}
 		})
-		w := doJSON(r, "PUT", "/api/exercises/1", newExercisePayload("Reload", "ohp"))
+		w := doJSON(r, "PUT", "/api/exercises/1", newExercisePayload("Reload"))
 		if w.Code != http.StatusInternalServerError {
 			t.Errorf("expected 500 for reload error, got %d", w.Code)
 		}
@@ -638,7 +607,7 @@ func TestUpdateExercise(t *testing.T) {
 
 	t.Run("db error first lookup", func(t *testing.T) {
 		closeDB(t)
-		w := doJSON(r, "PUT", "/api/exercises/1", newExercisePayload("X", "x"))
+		w := doJSON(r, "PUT", "/api/exercises/1", newExercisePayload("X"))
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404 (db closed), got %d", w.Code)
 		}
@@ -650,15 +619,15 @@ func TestListExerciseVersions(t *testing.T) {
 	r := newRouter()
 
 	// Create exercise (v0) and update it twice (v1, v2)
-	doJSON(r, "POST", "/api/exercises", newExercisePayload("Press", "press"))
+	doJSON(r, "POST", "/api/exercises", newExercisePayload("Press"))
 	doJSON(r, "PUT", "/api/exercises/1", map[string]any{
-		"name": "Press v1", "templateId": "press", "type": "STRENGTH",
+		"name": "Press v1", "type": "STRENGTH",
 		"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
 		"description": "v1",
 		"force":       []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
 	})
 	doJSON(r, "PUT", "/api/exercises/1", map[string]any{
-		"name": "Press v2", "templateId": "press", "type": "STRENGTH",
+		"name": "Press v2", "type": "STRENGTH",
 		"technicalDifficulty": "advanced", "bodyWeightScaling": 0.0,
 		"description": "v2",
 		"force":       []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
@@ -731,16 +700,16 @@ func TestGetExerciseVersion(t *testing.T) {
 	r := newRouter()
 
 	// Create exercise (v0) and update it (v1)
-	doJSON(r, "POST", "/api/exercises", newExercisePayload("Press", "press"))
+	doJSON(r, "POST", "/api/exercises", newExercisePayload("Press"))
 	doJSON(r, "PUT", "/api/exercises/1", map[string]any{
-		"name": "Press v1", "templateId": "press", "type": "STRENGTH",
+		"name": "Press v1", "type": "STRENGTH",
 		"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
 		"description": "v1",
 		"force":       []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
 	})
 
 	t.Run("returns specific version", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/exercises/templates/press/versions/0", nil)
+		w := doJSON(r, "GET", "/api/exercises/1/versions/0", nil)
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
 		}
@@ -757,7 +726,7 @@ func TestGetExerciseVersion(t *testing.T) {
 	})
 
 	t.Run("returns v1", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/exercises/templates/press/versions/1", nil)
+		w := doJSON(r, "GET", "/api/exercises/1/versions/1", nil)
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
 		}
@@ -773,22 +742,22 @@ func TestGetExerciseVersion(t *testing.T) {
 		}
 	})
 
-	t.Run("template not found", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/exercises/templates/nonexistent/versions/0", nil)
+	t.Run("exercise not found", func(t *testing.T) {
+		w := doJSON(r, "GET", "/api/exercises/999/versions/0", nil)
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
 		}
 	})
 
 	t.Run("version not found", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/exercises/templates/press/versions/999", nil)
+		w := doJSON(r, "GET", "/api/exercises/1/versions/999", nil)
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
 		}
 	})
 
 	t.Run("invalid version", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/exercises/templates/press/versions/abc", nil)
+		w := doJSON(r, "GET", "/api/exercises/1/versions/abc", nil)
 		// Huma returns 422 for path parameter validation errors
 		if w.Code != http.StatusUnprocessableEntity {
 			t.Errorf("expected 422, got %d", w.Code)
@@ -800,7 +769,7 @@ func TestDeleteExercise(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/exercises", newExercisePayload("Curl", "curl"))
+	doJSON(r, "POST", "/api/exercises", newExercisePayload("Curl"))
 
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "DELETE", "/api/exercises/1", nil)
@@ -810,7 +779,7 @@ func TestDeleteExercise(t *testing.T) {
 	})
 
 	t.Run("forbidden for non-owner", func(t *testing.T) {
-		doJSON(r, "POST", "/api/exercises", newExercisePayload("Bob Target", "bob-target"))
+		doJSON(r, "POST", "/api/exercises", newExercisePayload("Bob Target"))
 		w := doJSONAs(r, "DELETE", "/api/exercises/2", nil, "bob")
 		if w.Code != http.StatusForbidden {
 			t.Errorf("expected 403, got %d", w.Code)
@@ -838,12 +807,12 @@ func TestGetExercisePermissions(t *testing.T) {
 	r := newRouter()
 
 	// Create a public exercise owned by testuser
-	payload := newExercisePayload("Squat", "squat")
+	payload := newExercisePayload("Squat")
 	payload["public"] = true
 	doJSON(r, "POST", "/api/exercises", payload)
 
 	// Create a private exercise owned by testuser
-	payload2 := newExercisePayload("Secret Move", "secret-move")
+	payload2 := newExercisePayload("Secret Move")
 	payload2["public"] = false
 	doJSON(r, "POST", "/api/exercises", payload2)
 

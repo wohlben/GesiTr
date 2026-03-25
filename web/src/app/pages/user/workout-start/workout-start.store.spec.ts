@@ -82,7 +82,6 @@ describe('WorkoutStartStore', () => {
     userApiMock.fetchUserExercise.mockResolvedValue({
       id: 5,
       name: 'Bench Press',
-      templateId: 'tmpl-abc',
       version: 1,
     });
 
@@ -158,14 +157,12 @@ describe('WorkoutStartStore', () => {
         return Promise.resolve({
           id: 5,
           name: 'Squat',
-          templateId: 'tmpl-a',
           version: 1,
         });
       }
       return Promise.resolve({
         id: 6,
         name: 'Plank',
-        templateId: 'tmpl-b',
         version: 2,
       });
     });
@@ -294,7 +291,6 @@ describe('WorkoutStartStore', () => {
     userApiMock.fetchUserExercise.mockResolvedValue({
       id: 5,
       name: 'Curl',
-      templateId: 'tmpl-x',
       version: 1,
     });
 
@@ -325,7 +321,6 @@ describe('WorkoutStartStore', () => {
     userApiMock.fetchUserExercise.mockResolvedValue({
       id: 5,
       name: 'Row',
-      templateId: 'tmpl-abc',
       version: 1,
     });
 

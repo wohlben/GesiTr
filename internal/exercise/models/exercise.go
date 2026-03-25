@@ -23,7 +23,6 @@ type Exercise struct {
 	Public                        bool                  `json:"public"`
 	Version                       int                   `json:"version"`
 	ParentExerciseID              *uint                 `json:"parentExerciseId"`
-	TemplateID                    string                `json:"templateId"`
 	EquipmentIDs                  []uint                `json:"equipmentIds" gorm:"-"`
 }
 

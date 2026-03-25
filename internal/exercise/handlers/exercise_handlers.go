@@ -7,11 +7,11 @@ import (
 
 	"gesitr/internal/database"
 	"gesitr/internal/exercise/models"
+	relModels "gesitr/internal/exerciserelationship/models"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/shared"
 
 	"github.com/danielgtaylor/huma/v2"
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -34,7 +34,6 @@ func exerciseDTOFromBody(b ExerciseBody) models.Exercise {
 		AuthorUrl:                     b.AuthorUrl,
 		Public:                        b.Public,
 		ParentExerciseID:              b.ParentExerciseID,
-		TemplateID:                    b.TemplateID,
 		EquipmentIDs:                  b.EquipmentIDs,
 	}
 }
@@ -125,30 +124,62 @@ func ListExercises(ctx context.Context, input *ListExercisesInput) (*ListExercis
 func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExerciseOutput, error) {
 	dto := exerciseDTOFromBody(input.Body)
 
-	if dto.TemplateID == "" {
-		dto.TemplateID = uuid.New().String()
-	}
-
 	entity := models.ExerciseFromDTO(dto)
 	entity.Owner = humaconfig.GetUserID(ctx)
 	entity.Public = dto.Public
-	if err := database.DB.Create(&entity).Error; err != nil {
-		return nil, huma.Error500InternalServerError(err.Error())
-	}
 
-	if err := preloadExercise(database.DB).First(&entity, entity.ID).Error; err != nil {
-		return nil, huma.Error500InternalServerError(err.Error())
-	}
+	err := database.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&entity).Error; err != nil {
+			return err
+		}
 
-	resultDTO := entity.ToDTO()
-	database.DB.Create(&models.ExerciseHistoryEntity{
-		ExerciseID: entity.ID,
-		Version:    resultDTO.Version,
-		Snapshot:   shared.SnapshotJSON(resultDTO),
-		ChangedAt:  time.Now(),
-		ChangedBy:  resultDTO.Owner,
+		if err := preloadExercise(tx).First(&entity, entity.ID).Error; err != nil {
+			return err
+		}
+
+		resultDTO := entity.ToDTO()
+		if err := tx.Create(&models.ExerciseHistoryEntity{
+			ExerciseID: entity.ID,
+			Version:    resultDTO.Version,
+			Snapshot:   shared.SnapshotJSON(resultDTO),
+			ChangedAt:  time.Now(),
+			ChangedBy:  resultDTO.Owner,
+		}).Error; err != nil {
+			return err
+		}
+
+		if input.Body.SourceExerciseID != nil {
+			sourceID := *input.Body.SourceExerciseID
+			forked := relModels.ExerciseRelationshipEntity{
+				RelationshipType: relModels.ExerciseRelationshipTypeForked,
+				Strength:         1.0,
+				Owner:            entity.Owner,
+				FromExerciseID:   entity.ID,
+				ToExerciseID:     sourceID,
+			}
+			if err := tx.Create(&forked).Error; err != nil {
+				return err
+			}
+			equivalent := relModels.ExerciseRelationshipEntity{
+				RelationshipType: relModels.ExerciseRelationshipTypeEquivalent,
+				Strength:         1.0,
+				Owner:            entity.Owner,
+				FromExerciseID:   entity.ID,
+				ToExerciseID:     sourceID,
+			}
+			if err := tx.Create(&equivalent).Error; err != nil {
+				return err
+			}
+		}
+
+		return nil
 	})
-	return &CreateExerciseOutput{Body: resultDTO}, nil
+
+	if err != nil {
+		return nil, huma.Error500InternalServerError(err.Error())
+	}
+
+	return &CreateExerciseOutput{Body: entity.ToDTO()}, nil
 }
 
 // GetExercisePermissions returns the current user's permissions on an exercise.
@@ -361,7 +392,7 @@ func ListExerciseVersions(ctx context.Context, input *ListExerciseVersionsInput)
 // OpenAPI: /api/docs#/operations/get-exercise-version
 func GetExerciseVersion(ctx context.Context, input *GetExerciseVersionInput) (*GetExerciseVersionOutput, error) {
 	var history models.ExerciseHistoryEntity
-	if err := database.DB.Where("json_extract(snapshot, '$.templateId') = ? AND version = ?", input.TemplateID, input.Version).First(&history).Error; err != nil {
+	if err := database.DB.Where("exercise_id = ? AND version = ?", input.ID, input.Version).First(&history).Error; err != nil {
 		return nil, huma.Error404NotFound("Version not found")
 	}
 
@@ -389,6 +420,46 @@ func DeleteExercise(ctx context.Context, input *DeleteExerciseInput) (*DeleteExe
 		return nil, huma.Error403Forbidden("access denied")
 	}
 	if err := database.DB.Unscoped().Select(clause.Associations).Delete(&entity).Error; err != nil {
+		return nil, huma.Error500InternalServerError(err.Error())
+	}
+	return nil, nil
+}
+
+// DeleteExerciseVersion deletes a specific version from exercise history. Owner only.
+// DELETE /api/exercises/:id/versions/:version
+//
+// OpenAPI: /api/docs#/operations/delete-exercise-version
+func DeleteExerciseVersion(ctx context.Context, input *DeleteExerciseVersionInput) (*DeleteExerciseVersionOutput, error) {
+	var entity models.ExerciseEntity
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Exercise not found")
+	}
+	if entity.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("access denied")
+	}
+	result := database.DB.Where("exercise_id = ? AND version = ?", input.ID, input.Version).Delete(&models.ExerciseHistoryEntity{})
+	if result.Error != nil {
+		return nil, huma.Error500InternalServerError(result.Error.Error())
+	}
+	if result.RowsAffected == 0 {
+		return nil, huma.Error404NotFound("Version not found")
+	}
+	return nil, nil
+}
+
+// DeleteAllExerciseVersions deletes all version history for an exercise. Owner only.
+// DELETE /api/exercises/:id/versions
+//
+// OpenAPI: /api/docs#/operations/delete-all-exercise-versions
+func DeleteAllExerciseVersions(ctx context.Context, input *DeleteAllExerciseVersionsInput) (*DeleteAllExerciseVersionsOutput, error) {
+	var entity models.ExerciseEntity
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Exercise not found")
+	}
+	if entity.Owner != humaconfig.GetUserID(ctx) {
+		return nil, huma.Error403Forbidden("access denied")
+	}
+	if err := database.DB.Where("exercise_id = ?", input.ID).Delete(&models.ExerciseHistoryEntity{}).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 	return nil, nil

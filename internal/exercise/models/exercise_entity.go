@@ -15,12 +15,11 @@ type ExerciseEntity struct {
 	Description         string
 	AuthorName          *string
 	AuthorUrl           *string
-	Owner               string                           `gorm:"not null;uniqueIndex:idx_owner_template;index"`
+	Owner               string                           `gorm:"not null;index"`
 	OwnerProfile        *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
 	Public              bool                             `gorm:"not null;default:false;index"`
 	Version             int                              `gorm:"not null;default:0"`
 	ParentExerciseID    *uint
-	TemplateID          string `gorm:"not null;uniqueIndex:idx_owner_template"`
 
 	Forces           []ExerciseForce               `gorm:"foreignKey:ExerciseID"`
 	Muscles          []ExerciseMuscle              `gorm:"foreignKey:ExerciseID"`
@@ -89,7 +88,6 @@ func (e *ExerciseEntity) ToDTO() Exercise {
 		Public:              e.Public,
 		Version:             e.Version,
 		ParentExerciseID:    e.ParentExerciseID,
-		TemplateID:          e.TemplateID,
 	}
 
 	for _, f := range e.Forces {
@@ -135,7 +133,6 @@ func ExerciseFromDTO(dto Exercise) ExerciseEntity {
 		Public:              dto.Public,
 		Version:             dto.Version,
 		ParentExerciseID:    dto.ParentExerciseID,
-		TemplateID:          dto.TemplateID,
 	}
 
 	for _, f := range dto.Force {

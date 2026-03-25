@@ -16,7 +16,6 @@ func ExampleListExercises_owner() {
 	// Create a private exercise.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Secret Move",
-		"templateId": "secret-move",
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
@@ -26,7 +25,6 @@ func ExampleListExercises_owner() {
 	// Create a public exercise.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Push-up",
-		"templateId": "push-up",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
@@ -53,7 +51,6 @@ func ExampleListExercises_nonOwnerPublic() {
 	// Create a public exercise.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Push-up",
-		"templateId": "push-up",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
@@ -85,7 +82,6 @@ func ExampleListExercises_nonOwnerPrivate() {
 	// Create a private exercise.
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Secret Move",
-		"templateId": "secret-move",
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
@@ -112,7 +108,6 @@ func ExampleCreateExercise_simple() {
 
 	w := doRaw(r, "POST", "/api/exercises", `{
 		"name": "Push-up",
-		"templateId": "push-up",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
@@ -150,7 +145,6 @@ func ExampleCreateExercise_withEquipment() {
 	// Create an exercise referencing the equipment by ID.
 	w := doRaw(r, "POST", "/api/exercises", `{
 		"name": "Bench Press",
-		"templateId": "bench-press",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
@@ -176,7 +170,6 @@ func ExampleGetExercise_owner() {
 
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Bench Press",
-		"templateId": "bench-press",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
@@ -203,7 +196,6 @@ func ExampleGetExercise_nonOwnerPublic() {
 
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Squat",
-		"templateId": "squat",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
@@ -229,7 +221,6 @@ func ExampleGetExercise_nonOwnerPrivate() {
 
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Secret Move",
-		"templateId": "secret-move",
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
@@ -248,7 +239,6 @@ func ExampleUpdateExercise_owner() {
 
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Squat",
-		"templateId": "squat",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
@@ -257,7 +247,6 @@ func ExampleUpdateExercise_owner() {
 
 	w := doRaw(r, "PUT", "/api/exercises/1", `{
 		"name": "Back Squat",
-		"templateId": "squat",
 		"type": "STRENGTH",
 		"technicalDifficulty": "intermediate",
 		"bodyWeightScaling": 0.5,
@@ -286,7 +275,6 @@ func ExampleUpdateExercise_versioning() {
 	// Create an exercise (version 0).
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Squat",
-		"templateId": "squat",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
@@ -296,7 +284,6 @@ func ExampleUpdateExercise_versioning() {
 	// Update it — version bumps to 1.
 	w := doRaw(r, "PUT", "/api/exercises/1", `{
 		"name": "Back Squat",
-		"templateId": "squat",
 		"type": "STRENGTH",
 		"technicalDifficulty": "intermediate",
 		"bodyWeightScaling": 0.5,
@@ -310,7 +297,7 @@ func ExampleUpdateExercise_versioning() {
 	fmt.Println("current version:", exercise.Version)
 
 	// Version 0 preserves the original name.
-	wv0 := doJSON(r, "GET", "/api/exercises/templates/squat/versions/0", nil)
+	wv0 := doJSON(r, "GET", "/api/exercises/1/versions/0", nil)
 	var v0 shared.VersionEntry
 	json.Unmarshal(wv0.Body.Bytes(), &v0)
 	var snap0 models.Exercise
@@ -318,7 +305,7 @@ func ExampleUpdateExercise_versioning() {
 	fmt.Println("v0 name:", snap0.Name)
 
 	// Version 1 has the updated name.
-	wv1 := doJSON(r, "GET", "/api/exercises/templates/squat/versions/1", nil)
+	wv1 := doJSON(r, "GET", "/api/exercises/1/versions/1", nil)
 	var v1 shared.VersionEntry
 	json.Unmarshal(wv1.Body.Bytes(), &v1)
 	var snap1 models.Exercise
@@ -338,7 +325,6 @@ func ExampleUpdateExercise_nonOwnerPublic() {
 
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Push-up",
-		"templateId": "push-up",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
@@ -348,7 +334,6 @@ func ExampleUpdateExercise_nonOwnerPublic() {
 
 	w := doRawAs(r, "PUT", "/api/exercises/1", `{
 		"name": "Modified Push-up",
-		"templateId": "push-up",
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
@@ -365,7 +350,6 @@ func ExampleUpdateExercise_nonOwnerPrivate() {
 
 	doRaw(r, "POST", "/api/exercises", `{
 		"name": "Secret Move",
-		"templateId": "secret-move",
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
@@ -374,7 +358,6 @@ func ExampleUpdateExercise_nonOwnerPrivate() {
 
 	w := doRawAs(r, "PUT", "/api/exercises/1", `{
 		"name": "Stolen Move",
-		"templateId": "secret-move",
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
