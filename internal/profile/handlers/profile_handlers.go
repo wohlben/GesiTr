@@ -13,7 +13,7 @@ import (
 // GetMyProfile returns the current user's profile.
 // GET /api/user/profile
 //
-// OpenAPI: /api/docs#/operations/get-my-profile
+// OpenAPI: /api/docs#/operations/GetMyProfile
 func GetMyProfile(ctx context.Context, input *GetMyProfileInput) (*GetMyProfileOutput, error) {
 	userID := humaconfig.GetUserID(ctx)
 
@@ -28,7 +28,7 @@ func GetMyProfile(ctx context.Context, input *GetMyProfileInput) (*GetMyProfileO
 // UpdateMyProfile updates the current user's profile.
 // PATCH /api/user/profile
 //
-// OpenAPI: /api/docs#/operations/update-my-profile
+// OpenAPI: /api/docs#/operations/UpdateMyProfile
 func UpdateMyProfile(ctx context.Context, input *UpdateMyProfileInput) (*UpdateMyProfileOutput, error) {
 	userID := humaconfig.GetUserID(ctx)
 
@@ -48,7 +48,7 @@ func UpdateMyProfile(ctx context.Context, input *UpdateMyProfileInput) (*UpdateM
 // GetProfile returns a user's profile by ID. Public endpoint.
 // GET /api/profiles/{id}
 //
-// OpenAPI: /api/docs#/operations/get-profile
+// OpenAPI: /api/docs#/operations/GetProfile
 func GetProfile(ctx context.Context, input *GetProfileInput) (*GetProfileOutput, error) {
 	var entity models.UserProfileEntity
 	if err := database.DB.First(&entity, "id = ?", input.ID).Error; err != nil {

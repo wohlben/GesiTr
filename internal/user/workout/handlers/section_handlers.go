@@ -27,7 +27,7 @@ func requireWorkoutOwner(ctx context.Context, workoutID uint) error {
 // workoutId query param to get sections for a specific workout.
 // GET /api/user/workout-sections
 //
-// OpenAPI: /api/docs#/operations/list-workout-sections
+// OpenAPI: /api/docs#/operations/ListWorkoutSections
 func ListWorkoutSections(ctx context.Context, input *ListWorkoutSectionsInput) (*ListWorkoutSectionsOutput, error) {
 	db := database.DB.Model(&models.WorkoutSectionEntity{})
 
@@ -55,7 +55,7 @@ func ListWorkoutSections(ctx context.Context, input *ListWorkoutSectionsInput) (
 // before sections can be added — see [CreateWorkout].
 // POST /api/user/workout-sections
 //
-// OpenAPI: /api/docs#/operations/create-workout-section
+// OpenAPI: /api/docs#/operations/CreateWorkoutSection
 func CreateWorkoutSection(ctx context.Context, input *CreateWorkoutSectionInput) (*CreateWorkoutSectionOutput, error) {
 	if err := requireWorkoutOwner(ctx, input.Body.WorkoutID); err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func CreateWorkoutSection(ctx context.Context, input *CreateWorkoutSectionInput)
 // GetWorkoutSection returns a single section with its exercises.
 // GET /api/user/workout-sections/{id}
 //
-// OpenAPI: /api/docs#/operations/get-workout-section
+// OpenAPI: /api/docs#/operations/GetWorkoutSection
 func GetWorkoutSection(ctx context.Context, input *GetWorkoutSectionInput) (*GetWorkoutSectionOutput, error) {
 	var entity models.WorkoutSectionEntity
 	if err := database.DB.Preload("Exercises").First(&entity, input.ID).Error; err != nil {
@@ -92,7 +92,7 @@ func GetWorkoutSection(ctx context.Context, input *GetWorkoutSectionInput) (*Get
 // DeleteWorkoutSection removes a section from its workout.
 // DELETE /api/user/workout-sections/{id}
 //
-// OpenAPI: /api/docs#/operations/delete-workout-section
+// OpenAPI: /api/docs#/operations/DeleteWorkoutSection
 func DeleteWorkoutSection(ctx context.Context, input *DeleteWorkoutSectionInput) (*DeleteWorkoutSectionOutput, error) {
 	var entity models.WorkoutSectionEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {

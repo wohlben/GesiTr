@@ -9,7 +9,7 @@ import (
 // RegisterRoutes registers all exercise relationship endpoints on the huma API.
 func RegisterRoutes(api huma.API) {
 	huma.Register(api, huma.Operation{
-		OperationID: "list-exercise-relationships",
+		OperationID: "ListExerciseRelationships",
 		Method:      http.MethodGet,
 		Path:        "/exercise-relationships",
 		Tags:        []string{"exercise-relationships"},
@@ -17,7 +17,7 @@ func RegisterRoutes(api huma.API) {
 	}, ListExerciseRelationships)
 
 	huma.Register(api, huma.Operation{
-		OperationID:   "create-exercise-relationship",
+		OperationID:   "CreateExerciseRelationship",
 		Method:        http.MethodPost,
 		Path:          "/exercise-relationships",
 		Tags:          []string{"exercise-relationships"},
@@ -26,7 +26,7 @@ func RegisterRoutes(api huma.API) {
 	}, CreateExerciseRelationship)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "delete-exercise-relationship",
+		OperationID: "DeleteExerciseRelationship",
 		Method:      http.MethodDelete,
 		Path:        "/exercise-relationships/{id}",
 		Tags:        []string{"exercise-relationships"},

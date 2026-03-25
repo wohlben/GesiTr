@@ -14,7 +14,7 @@ import (
 // by groupId or exerciseId.
 // GET /api/exercise-group-members
 //
-// OpenAPI: /api/docs#/operations/list-exercise-group-members
+// OpenAPI: /api/docs#/operations/ListExerciseGroupMembers
 func ListExerciseGroupMembers(ctx context.Context, input *ListExerciseGroupMembersInput) (*ListExerciseGroupMembersOutput, error) {
 	db := database.DB.Model(&models.ExerciseGroupMemberEntity{})
 
@@ -40,7 +40,7 @@ func ListExerciseGroupMembers(ctx context.Context, input *ListExerciseGroupMembe
 // CreateExerciseGroupMember creates an exercise group member owned by the current user.
 // POST /api/exercise-group-members
 //
-// OpenAPI: /api/docs#/operations/create-exercise-group-member
+// OpenAPI: /api/docs#/operations/CreateExerciseGroupMember
 func CreateExerciseGroupMember(ctx context.Context, input *CreateExerciseGroupMemberInput) (*CreateExerciseGroupMemberOutput, error) {
 	dto := models.ExerciseGroupMember{
 		GroupID:    input.Body.GroupID,
@@ -58,7 +58,7 @@ func CreateExerciseGroupMember(ctx context.Context, input *CreateExerciseGroupMe
 // DeleteExerciseGroupMember deletes an exercise group member. Owner only.
 // DELETE /api/exercise-group-members/:id
 //
-// OpenAPI: /api/docs#/operations/delete-exercise-group-member
+// OpenAPI: /api/docs#/operations/DeleteExerciseGroupMember
 func DeleteExerciseGroupMember(ctx context.Context, input *DeleteExerciseGroupMemberInput) (*DeleteExerciseGroupMemberOutput, error) {
 	var entity models.ExerciseGroupMemberEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {

@@ -9,7 +9,7 @@ import (
 // RegisterRoutes registers all equipment relationship endpoints on the huma API.
 func RegisterRoutes(api huma.API) {
 	huma.Register(api, huma.Operation{
-		OperationID: "list-equipment-relationships",
+		OperationID: "ListEquipmentRelationships",
 		Method:      http.MethodGet,
 		Path:        "/equipment-relationships",
 		Tags:        []string{"equipment-relationships"},
@@ -17,7 +17,7 @@ func RegisterRoutes(api huma.API) {
 	}, ListEquipmentRelationships)
 
 	huma.Register(api, huma.Operation{
-		OperationID:   "create-equipment-relationship",
+		OperationID:   "CreateEquipmentRelationship",
 		Method:        http.MethodPost,
 		Path:          "/equipment-relationships",
 		Tags:          []string{"equipment-relationships"},
@@ -26,7 +26,7 @@ func RegisterRoutes(api huma.API) {
 	}, CreateEquipmentRelationship)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "delete-equipment-relationship",
+		OperationID: "DeleteEquipmentRelationship",
 		Method:      http.MethodDelete,
 		Path:        "/equipment-relationships/{id}",
 		Tags:        []string{"equipment-relationships"},

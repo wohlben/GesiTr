@@ -9,7 +9,7 @@ import (
 // RegisterRoutes registers all equipment fulfillment endpoints on the huma API.
 func RegisterRoutes(api huma.API) {
 	huma.Register(api, huma.Operation{
-		OperationID: "list-fulfillments",
+		OperationID: "ListFulfillments",
 		Method:      http.MethodGet,
 		Path:        "/fulfillments",
 		Tags:        []string{"fulfillments"},
@@ -17,7 +17,7 @@ func RegisterRoutes(api huma.API) {
 	}, ListFulfillments)
 
 	huma.Register(api, huma.Operation{
-		OperationID:   "create-fulfillment",
+		OperationID:   "CreateFulfillment",
 		Method:        http.MethodPost,
 		Path:          "/fulfillments",
 		Tags:          []string{"fulfillments"},
@@ -26,7 +26,7 @@ func RegisterRoutes(api huma.API) {
 	}, CreateFulfillment)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "delete-fulfillment",
+		OperationID: "DeleteFulfillment",
 		Method:      http.MethodDelete,
 		Path:        "/fulfillments/{id}",
 		Tags:        []string{"fulfillments"},

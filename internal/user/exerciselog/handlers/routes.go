@@ -9,7 +9,7 @@ import (
 // RegisterRoutes registers all exercise log endpoints on the huma API.
 func RegisterRoutes(api huma.API) {
 	huma.Register(api, huma.Operation{
-		OperationID: "list-exercise-logs",
+		OperationID: "ListExerciseLogs",
 		Method:      http.MethodGet,
 		Path:        "/user/exercise-logs",
 		Tags:        []string{"exercise-logs"},
@@ -17,7 +17,7 @@ func RegisterRoutes(api huma.API) {
 	}, ListExerciseLogs)
 
 	huma.Register(api, huma.Operation{
-		OperationID:   "create-exercise-log",
+		OperationID:   "CreateExerciseLog",
 		Method:        http.MethodPost,
 		Path:          "/user/exercise-logs",
 		Tags:          []string{"exercise-logs"},
@@ -26,7 +26,7 @@ func RegisterRoutes(api huma.API) {
 	}, CreateExerciseLog)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "get-exercise-log",
+		OperationID: "GetExerciseLog",
 		Method:      http.MethodGet,
 		Path:        "/user/exercise-logs/{id}",
 		Tags:        []string{"exercise-logs"},
@@ -34,7 +34,7 @@ func RegisterRoutes(api huma.API) {
 	}, GetExerciseLog)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "update-exercise-log",
+		OperationID: "UpdateExerciseLog",
 		Method:      http.MethodPatch,
 		Path:        "/user/exercise-logs/{id}",
 		Tags:        []string{"exercise-logs"},
@@ -42,7 +42,7 @@ func RegisterRoutes(api huma.API) {
 	}, UpdateExerciseLog)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "delete-exercise-log",
+		OperationID: "DeleteExerciseLog",
 		Method:      http.MethodDelete,
 		Path:        "/user/exercise-logs/{id}",
 		Tags:        []string{"exercise-logs"},

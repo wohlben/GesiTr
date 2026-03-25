@@ -31,6 +31,7 @@ Equipment maintains version history — each [UpdateEquipment](<#UpdateEquipment
 - [type DeleteEquipmentInput](<#DeleteEquipmentInput>)
 - [type DeleteEquipmentOutput](<#DeleteEquipmentOutput>)
   - [func DeleteEquipment\(ctx context.Context, input \*DeleteEquipmentInput\) \(\*DeleteEquipmentOutput, error\)](<#DeleteEquipment>)
+- [type EquipmentBody](<#EquipmentBody>)
 - [type GetEquipmentInput](<#GetEquipmentInput>)
 - [type GetEquipmentOutput](<#GetEquipmentOutput>)
   - [func GetEquipment\(ctx context.Context, input \*GetEquipmentInput\) \(\*GetEquipmentOutput, error\)](<#GetEquipment>)
@@ -61,18 +62,18 @@ func RegisterRoutes(api huma.API)
 RegisterRoutes registers all equipment endpoints on the huma API.
 
 <a name="CreateEquipmentInput"></a>
-## type [CreateEquipmentInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L24-L26>)
+## type [CreateEquipmentInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L31-L33>)
 
-RawBody skips huma's automatic validation — the Equipment DTO is shared between request and response and has server\-set fields \(id, createdAt, etc.\) that aren't present in create requests.
+
 
 ```go
 type CreateEquipmentInput struct {
-    RawBody []byte
+    Body EquipmentBody
 }
 ```
 
 <a name="CreateEquipmentOutput"></a>
-## type [CreateEquipmentOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L28-L30>)
+## type [CreateEquipmentOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L35-L37>)
 
 
 
@@ -83,7 +84,7 @@ type CreateEquipmentOutput struct {
 ```
 
 <a name="CreateEquipment"></a>
-### func [CreateEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L73>)
+### func [CreateEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L84>)
 
 ```go
 func CreateEquipment(ctx context.Context, input *CreateEquipmentInput) (*CreateEquipmentOutput, error)
@@ -91,10 +92,10 @@ func CreateEquipment(ctx context.Context, input *CreateEquipmentInput) (*CreateE
 
 CreateEquipment creates equipment owned by the current user. Equipment can be referenced by exercises via their equipmentIds field — see [gesitr/internal/exercise/handlers.CreateExercise](<https://pkg.go.dev/gesitr/internal/exercise/handlers/#CreateExercise>). POST /api/equipment
 
-[OpenAPI docs](/api/docs#/operations/create-equipment)
+[OpenAPI docs](/api/docs#/operations/CreateEquipment)
 
 <a name="DeleteEquipmentInput"></a>
-## type [DeleteEquipmentInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L49-L51>)
+## type [DeleteEquipmentInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L56-L58>)
 
 
 
@@ -105,7 +106,7 @@ type DeleteEquipmentInput struct {
 ```
 
 <a name="DeleteEquipmentOutput"></a>
-## type [DeleteEquipmentOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L53>)
+## type [DeleteEquipmentOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L60>)
 
 
 
@@ -114,7 +115,7 @@ type DeleteEquipmentOutput struct{}
 ```
 
 <a name="DeleteEquipment"></a>
-### func [DeleteEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L235>)
+### func [DeleteEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L271>)
 
 ```go
 func DeleteEquipment(ctx context.Context, input *DeleteEquipmentInput) (*DeleteEquipmentOutput, error)
@@ -122,10 +123,27 @@ func DeleteEquipment(ctx context.Context, input *DeleteEquipmentInput) (*DeleteE
 
 DeleteEquipment deletes equipment. Owner only. DELETE /api/equipment/:id
 
-[OpenAPI docs](/api/docs#/operations/delete-equipment)
+[OpenAPI docs](/api/docs#/operations/DeleteEquipment)
+
+<a name="EquipmentBody"></a>
+## type [EquipmentBody](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L9-L17>)
+
+
+
+```go
+type EquipmentBody struct {
+    Name              string                   `json:"name" required:"true"`
+    DisplayName       string                   `json:"displayName" required:"true"`
+    Description       string                   `json:"description" required:"false"`
+    Category          models.EquipmentCategory `json:"category" required:"true"`
+    ImageUrl          *string                  `json:"imageUrl,omitempty"`
+    Public            bool                     `json:"public" required:"false"`
+    SourceEquipmentID *uint                    `json:"sourceEquipmentId,omitempty" doc:"Source equipment ID for imports (creates forked+equivalent relationships)"`
+}
+```
 
 <a name="GetEquipmentInput"></a>
-## type [GetEquipmentInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L32-L34>)
+## type [GetEquipmentInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L39-L41>)
 
 
 
@@ -136,7 +154,7 @@ type GetEquipmentInput struct {
 ```
 
 <a name="GetEquipmentOutput"></a>
-## type [GetEquipmentOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L36-L38>)
+## type [GetEquipmentOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L43-L45>)
 
 
 
@@ -147,7 +165,7 @@ type GetEquipmentOutput struct {
 ```
 
 <a name="GetEquipment"></a>
-### func [GetEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L123>)
+### func [GetEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L161>)
 
 ```go
 func GetEquipment(ctx context.Context, input *GetEquipmentInput) (*GetEquipmentOutput, error)
@@ -155,10 +173,10 @@ func GetEquipment(ctx context.Context, input *GetEquipmentInput) (*GetEquipmentO
 
 GetEquipment returns a single equipment item. Public equipment is visible to all users; private equipment is visible only to its owner. GET /api/equipment/:id
 
-[OpenAPI docs](/api/docs#/operations/get-equipment)
+[OpenAPI docs](/api/docs#/operations/GetEquipment)
 
 <a name="GetEquipmentPermissionsInput"></a>
-## type [GetEquipmentPermissionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L55-L57>)
+## type [GetEquipmentPermissionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L62-L64>)
 
 
 
@@ -169,7 +187,7 @@ type GetEquipmentPermissionsInput struct {
 ```
 
 <a name="GetEquipmentPermissionsOutput"></a>
-## type [GetEquipmentPermissionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L59-L61>)
+## type [GetEquipmentPermissionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L66-L68>)
 
 
 
@@ -180,7 +198,7 @@ type GetEquipmentPermissionsOutput struct {
 ```
 
 <a name="GetEquipmentPermissions"></a>
-### func [GetEquipmentPermissions](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L105>)
+### func [GetEquipmentPermissions](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L143>)
 
 ```go
 func GetEquipmentPermissions(ctx context.Context, input *GetEquipmentPermissionsInput) (*GetEquipmentPermissionsOutput, error)
@@ -188,7 +206,7 @@ func GetEquipmentPermissions(ctx context.Context, input *GetEquipmentPermissions
 
 GetEquipmentPermissions returns the current user's permissions on equipment. See [gesitr/internal/shared.ResolvePermissions](<https://pkg.go.dev/gesitr/internal/shared/#ResolvePermissions>) for the permission model. GET /api/equipment/:id/permissions
 
-[OpenAPI docs](/api/docs#/operations/get-equipment-permissions)
+[OpenAPI docs](/api/docs#/operations/GetEquipmentPermissions)
 
 <details><summary>Example (Non Owner Private)</summary>
 <p>
@@ -204,8 +222,7 @@ doRaw(r, "POST", "/api/equipment", `{
 	"name": "custom-bar",
 	"displayName": "Custom Bar",
 	"description": "Private",
-	"category": "free_weights",
-	"templateId": "custom-bar"
+	"category": "free_weights"
 }`)
 
 // Query permissions as a different user.
@@ -241,7 +258,6 @@ doRaw(r, "POST", "/api/equipment", `{
 	"displayName": "Dumbbell",
 	"description": "Adjustable dumbbell",
 	"category": "free_weights",
-	"templateId": "dumbbell",
 	"public": true
 }`)
 
@@ -277,8 +293,7 @@ doRaw(r, "POST", "/api/equipment", `{
 	"name": "barbell",
 	"displayName": "Barbell",
 	"description": "Standard barbell",
-	"category": "free_weights",
-	"templateId": "barbell"
+	"category": "free_weights"
 }`)
 
 // Query permissions as the owner.
@@ -300,19 +315,19 @@ fmt.Println(resp.Permissions)
 </details>
 
 <a name="GetEquipmentVersionInput"></a>
-## type [GetEquipmentVersionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L71-L74>)
+## type [GetEquipmentVersionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L78-L81>)
 
 
 
 ```go
 type GetEquipmentVersionInput struct {
-    TemplateID string `path:"templateId"`
-    Version    int    `path:"version"`
+    ID      uint `path:"id"`
+    Version int  `path:"version"`
 }
 ```
 
 <a name="GetEquipmentVersionOutput"></a>
-## type [GetEquipmentVersionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L76-L78>)
+## type [GetEquipmentVersionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L83-L85>)
 
 
 
@@ -323,7 +338,7 @@ type GetEquipmentVersionOutput struct {
 ```
 
 <a name="GetEquipmentVersion"></a>
-### func [GetEquipmentVersion](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L214>)
+### func [GetEquipmentVersion](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L250>)
 
 ```go
 func GetEquipmentVersion(ctx context.Context, input *GetEquipmentVersionInput) (*GetEquipmentVersionOutput, error)
@@ -331,10 +346,10 @@ func GetEquipmentVersion(ctx context.Context, input *GetEquipmentVersionInput) (
 
 GetEquipmentVersion returns a specific historical version of equipment by templateId and version number. GET /api/equipment/templates/:templateId/versions/:version
 
-[OpenAPI docs](/api/docs#/operations/get-equipment-version)
+[OpenAPI docs](/api/docs#/operations/GetEquipmentVersion)
 
 <a name="ListEquipmentInput"></a>
-## type [ListEquipmentInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L9-L15>)
+## type [ListEquipmentInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L19-L25>)
 
 
 
@@ -349,7 +364,7 @@ type ListEquipmentInput struct {
 ```
 
 <a name="ListEquipmentOutput"></a>
-## type [ListEquipmentOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L17-L19>)
+## type [ListEquipmentOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L27-L29>)
 
 
 
@@ -360,7 +375,7 @@ type ListEquipmentOutput struct {
 ```
 
 <a name="ListEquipment"></a>
-### func [ListEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L23>)
+### func [ListEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L34>)
 
 ```go
 func ListEquipment(ctx context.Context, input *ListEquipmentInput) (*ListEquipmentOutput, error)
@@ -368,10 +383,10 @@ func ListEquipment(ctx context.Context, input *ListEquipmentInput) (*ListEquipme
 
 ListEquipment returns equipment visible to the current user: their own equipment plus all public equipment. Filter by owner, public, or category query params. GET /api/equipment
 
-[OpenAPI docs](/api/docs#/operations/list-equipment)
+[OpenAPI docs](/api/docs#/operations/ListEquipment)
 
 <a name="ListEquipmentVersionsInput"></a>
-## type [ListEquipmentVersionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L63-L65>)
+## type [ListEquipmentVersionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L70-L72>)
 
 
 
@@ -382,7 +397,7 @@ type ListEquipmentVersionsInput struct {
 ```
 
 <a name="ListEquipmentVersionsOutput"></a>
-## type [ListEquipmentVersionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L67-L69>)
+## type [ListEquipmentVersionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L74-L76>)
 
 
 
@@ -393,7 +408,7 @@ type ListEquipmentVersionsOutput struct {
 ```
 
 <a name="ListEquipmentVersions"></a>
-### func [ListEquipmentVersions](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L191>)
+### func [ListEquipmentVersions](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L227>)
 
 ```go
 func ListEquipmentVersions(ctx context.Context, input *ListEquipmentVersionsInput) (*ListEquipmentVersionsOutput, error)
@@ -401,22 +416,22 @@ func ListEquipmentVersions(ctx context.Context, input *ListEquipmentVersionsInpu
 
 ListEquipmentVersions returns the version history for equipment. Each update via [UpdateEquipment](<#UpdateEquipment>) creates a new version entry. GET /api/equipment/:id/versions
 
-[OpenAPI docs](/api/docs#/operations/list-equipment-versions)
+[OpenAPI docs](/api/docs#/operations/ListEquipmentVersions)
 
 <a name="UpdateEquipmentInput"></a>
-## type [UpdateEquipmentInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L40-L43>)
+## type [UpdateEquipmentInput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L47-L50>)
 
 
 
 ```go
 type UpdateEquipmentInput struct {
-    ID      uint `path:"id"`
-    RawBody []byte
+    ID   uint `path:"id"`
+    Body EquipmentBody
 }
 ```
 
 <a name="UpdateEquipmentOutput"></a>
-## type [UpdateEquipmentOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L45-L47>)
+## type [UpdateEquipmentOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/huma_types.go#L52-L54>)
 
 
 
@@ -427,7 +442,7 @@ type UpdateEquipmentOutput struct {
 ```
 
 <a name="UpdateEquipment"></a>
-### func [UpdateEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L140>)
+### func [UpdateEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/equipment/handlers/equipment_handlers.go#L178>)
 
 ```go
 func UpdateEquipment(ctx context.Context, input *UpdateEquipmentInput) (*UpdateEquipmentOutput, error)
@@ -435,6 +450,6 @@ func UpdateEquipment(ctx context.Context, input *UpdateEquipmentInput) (*UpdateE
 
 UpdateEquipment updates equipment. Creates a version history entry. Owner only — returns 403 for non\-owners. PUT /api/equipment/:id
 
-[OpenAPI docs](/api/docs#/operations/update-equipment)
+[OpenAPI docs](/api/docs#/operations/UpdateEquipment)
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)

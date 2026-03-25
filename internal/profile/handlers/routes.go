@@ -9,7 +9,7 @@ import (
 // RegisterRoutes registers all profile endpoints on the huma API.
 func RegisterRoutes(api huma.API) {
 	huma.Register(api, huma.Operation{
-		OperationID: "get-my-profile",
+		OperationID: "GetMyProfile",
 		Method:      http.MethodGet,
 		Path:        "/user/profile",
 		Tags:        []string{"profiles"},
@@ -17,7 +17,7 @@ func RegisterRoutes(api huma.API) {
 	}, GetMyProfile)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "update-my-profile",
+		OperationID: "UpdateMyProfile",
 		Method:      http.MethodPatch,
 		Path:        "/user/profile",
 		Tags:        []string{"profiles"},
@@ -25,7 +25,7 @@ func RegisterRoutes(api huma.API) {
 	}, UpdateMyProfile)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "get-profile",
+		OperationID: "GetProfile",
 		Method:      http.MethodGet,
 		Path:        "/profiles/{id}",
 		Tags:        []string{"profiles"},

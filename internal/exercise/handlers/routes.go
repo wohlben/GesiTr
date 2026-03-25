@@ -11,7 +11,7 @@ func RegisterRoutes(api huma.API) {
 	// --- Exercises ---
 
 	huma.Register(api, huma.Operation{
-		OperationID: "list-exercises",
+		OperationID: "ListExercises",
 		Method:      http.MethodGet,
 		Path:        "/exercises",
 		Tags:        []string{"exercises"},
@@ -19,7 +19,7 @@ func RegisterRoutes(api huma.API) {
 	}, ListExercises)
 
 	huma.Register(api, huma.Operation{
-		OperationID:   "create-exercise",
+		OperationID:   "CreateExercise",
 		Method:        http.MethodPost,
 		Path:          "/exercises",
 		Tags:          []string{"exercises"},
@@ -28,7 +28,7 @@ func RegisterRoutes(api huma.API) {
 	}, CreateExercise)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "get-exercise",
+		OperationID: "GetExercise",
 		Method:      http.MethodGet,
 		Path:        "/exercises/{id}",
 		Tags:        []string{"exercises"},
@@ -36,7 +36,7 @@ func RegisterRoutes(api huma.API) {
 	}, GetExercise)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "update-exercise",
+		OperationID: "UpdateExercise",
 		Method:      http.MethodPut,
 		Path:        "/exercises/{id}",
 		Tags:        []string{"exercises"},
@@ -44,7 +44,7 @@ func RegisterRoutes(api huma.API) {
 	}, UpdateExercise)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "delete-exercise",
+		OperationID: "DeleteExercise",
 		Method:      http.MethodDelete,
 		Path:        "/exercises/{id}",
 		Tags:        []string{"exercises"},
@@ -52,7 +52,7 @@ func RegisterRoutes(api huma.API) {
 	}, DeleteExercise)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "get-exercise-permissions",
+		OperationID: "GetExercisePermissions",
 		Method:      http.MethodGet,
 		Path:        "/exercises/{id}/permissions",
 		Tags:        []string{"exercises"},
@@ -60,7 +60,7 @@ func RegisterRoutes(api huma.API) {
 	}, GetExercisePermissions)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "list-exercise-versions",
+		OperationID: "ListExerciseVersions",
 		Method:      http.MethodGet,
 		Path:        "/exercises/{id}/versions",
 		Tags:        []string{"exercises"},
@@ -68,7 +68,7 @@ func RegisterRoutes(api huma.API) {
 	}, ListExerciseVersions)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "get-exercise-version",
+		OperationID: "GetExerciseVersion",
 		Method:      http.MethodGet,
 		Path:        "/exercises/{id}/versions/{version}",
 		Tags:        []string{"exercises"},
@@ -76,7 +76,7 @@ func RegisterRoutes(api huma.API) {
 	}, GetExerciseVersion)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "delete-exercise-version",
+		OperationID: "DeleteExerciseVersion",
 		Method:      http.MethodDelete,
 		Path:        "/exercises/{id}/versions/{version}",
 		Tags:        []string{"exercises"},
@@ -84,7 +84,7 @@ func RegisterRoutes(api huma.API) {
 	}, DeleteExerciseVersion)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "delete-all-exercise-versions",
+		OperationID: "DeleteAllExerciseVersions",
 		Method:      http.MethodDelete,
 		Path:        "/exercises/{id}/versions",
 		Tags:        []string{"exercises"},
@@ -94,7 +94,7 @@ func RegisterRoutes(api huma.API) {
 	// --- Exercise schemes ---
 
 	huma.Register(api, huma.Operation{
-		OperationID: "list-exercise-schemes",
+		OperationID: "ListExerciseSchemes",
 		Method:      http.MethodGet,
 		Path:        "/exercise-schemes",
 		Tags:        []string{"exercise-schemes"},
@@ -102,7 +102,7 @@ func RegisterRoutes(api huma.API) {
 	}, ListExerciseSchemes)
 
 	huma.Register(api, huma.Operation{
-		OperationID:   "create-exercise-scheme",
+		OperationID:   "CreateExerciseScheme",
 		Method:        http.MethodPost,
 		Path:          "/exercise-schemes",
 		Tags:          []string{"exercise-schemes"},
@@ -111,7 +111,7 @@ func RegisterRoutes(api huma.API) {
 	}, CreateExerciseScheme)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "get-exercise-scheme",
+		OperationID: "GetExerciseScheme",
 		Method:      http.MethodGet,
 		Path:        "/exercise-schemes/{id}",
 		Tags:        []string{"exercise-schemes"},
@@ -119,7 +119,7 @@ func RegisterRoutes(api huma.API) {
 	}, GetExerciseScheme)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "update-exercise-scheme",
+		OperationID: "UpdateExerciseScheme",
 		Method:      http.MethodPut,
 		Path:        "/exercise-schemes/{id}",
 		Tags:        []string{"exercise-schemes"},
@@ -127,7 +127,7 @@ func RegisterRoutes(api huma.API) {
 	}, UpdateExerciseScheme)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "delete-exercise-scheme",
+		OperationID: "DeleteExerciseScheme",
 		Method:      http.MethodDelete,
 		Path:        "/exercise-schemes/{id}",
 		Tags:        []string{"exercise-schemes"},

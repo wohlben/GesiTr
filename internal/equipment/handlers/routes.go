@@ -9,7 +9,7 @@ import (
 // RegisterRoutes registers all equipment endpoints on the huma API.
 func RegisterRoutes(api huma.API) {
 	huma.Register(api, huma.Operation{
-		OperationID: "list-equipment",
+		OperationID: "ListEquipment",
 		Method:      http.MethodGet,
 		Path:        "/equipment",
 		Tags:        []string{"equipment"},
@@ -17,7 +17,7 @@ func RegisterRoutes(api huma.API) {
 	}, ListEquipment)
 
 	huma.Register(api, huma.Operation{
-		OperationID:   "create-equipment",
+		OperationID:   "CreateEquipment",
 		Method:        http.MethodPost,
 		Path:          "/equipment",
 		Tags:          []string{"equipment"},
@@ -26,7 +26,7 @@ func RegisterRoutes(api huma.API) {
 	}, CreateEquipment)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "get-equipment",
+		OperationID: "GetEquipment",
 		Method:      http.MethodGet,
 		Path:        "/equipment/{id}",
 		Tags:        []string{"equipment"},
@@ -34,7 +34,7 @@ func RegisterRoutes(api huma.API) {
 	}, GetEquipment)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "update-equipment",
+		OperationID: "UpdateEquipment",
 		Method:      http.MethodPut,
 		Path:        "/equipment/{id}",
 		Tags:        []string{"equipment"},
@@ -42,7 +42,7 @@ func RegisterRoutes(api huma.API) {
 	}, UpdateEquipment)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "delete-equipment",
+		OperationID: "DeleteEquipment",
 		Method:      http.MethodDelete,
 		Path:        "/equipment/{id}",
 		Tags:        []string{"equipment"},
@@ -50,7 +50,7 @@ func RegisterRoutes(api huma.API) {
 	}, DeleteEquipment)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "get-equipment-permissions",
+		OperationID: "GetEquipmentPermissions",
 		Method:      http.MethodGet,
 		Path:        "/equipment/{id}/permissions",
 		Tags:        []string{"equipment"},
@@ -58,7 +58,7 @@ func RegisterRoutes(api huma.API) {
 	}, GetEquipmentPermissions)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "list-equipment-versions",
+		OperationID: "ListEquipmentVersions",
 		Method:      http.MethodGet,
 		Path:        "/equipment/{id}/versions",
 		Tags:        []string{"equipment"},
@@ -66,7 +66,7 @@ func RegisterRoutes(api huma.API) {
 	}, ListEquipmentVersions)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "get-equipment-version",
+		OperationID: "GetEquipmentVersion",
 		Method:      http.MethodGet,
 		Path:        "/equipment/{id}/versions/{version}",
 		Tags:        []string{"equipment"},

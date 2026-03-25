@@ -15,7 +15,7 @@ import (
 // ListWorkoutLogSections returns workout log sections owned by the current user.
 // GET /api/user/workout-log-sections
 //
-// OpenAPI: /api/docs#/operations/list-workout-log-sections
+// OpenAPI: /api/docs#/operations/ListWorkoutLogSections
 func ListWorkoutLogSections(ctx context.Context, input *ListWorkoutLogSectionsInput) (*ListWorkoutLogSectionsOutput, error) {
 	db := database.DB.Model(&models.WorkoutLogSectionEntity{})
 
@@ -48,7 +48,7 @@ func ListWorkoutLogSections(ctx context.Context, input *ListWorkoutLogSectionsIn
 // CreateWorkoutLogSection adds a section to a workout log.
 // POST /api/user/workout-log-sections
 //
-// OpenAPI: /api/docs#/operations/create-workout-log-section
+// OpenAPI: /api/docs#/operations/CreateWorkoutLogSection
 func CreateWorkoutLogSection(ctx context.Context, input *CreateWorkoutLogSectionInput) (*CreateWorkoutLogSectionOutput, error) {
 	log, err := requireLogStatus(ctx, input.Body.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc)
 	if err != nil {
@@ -75,7 +75,7 @@ func CreateWorkoutLogSection(ctx context.Context, input *CreateWorkoutLogSection
 // GetWorkoutLogSection returns a single workout log section.
 // GET /api/user/workout-log-sections/{id}
 //
-// OpenAPI: /api/docs#/operations/get-workout-log-section
+// OpenAPI: /api/docs#/operations/GetWorkoutLogSection
 func GetWorkoutLogSection(ctx context.Context, input *GetWorkoutLogSectionInput) (*GetWorkoutLogSectionOutput, error) {
 	var entity models.WorkoutLogSectionEntity
 	if err := database.DB.Preload("Exercises", func(db *gorm.DB) *gorm.DB {
@@ -94,7 +94,7 @@ func GetWorkoutLogSection(ctx context.Context, input *GetWorkoutLogSectionInput)
 // UpdateWorkoutLogSection partially updates a workout log section.
 // PATCH /api/user/workout-log-sections/{id}
 //
-// OpenAPI: /api/docs#/operations/update-workout-log-section
+// OpenAPI: /api/docs#/operations/UpdateWorkoutLogSection
 func UpdateWorkoutLogSection(ctx context.Context, input *UpdateWorkoutLogSectionInput) (*UpdateWorkoutLogSectionOutput, error) {
 	var existing models.WorkoutLogSectionEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {
@@ -141,7 +141,7 @@ func UpdateWorkoutLogSection(ctx context.Context, input *UpdateWorkoutLogSection
 // DeleteWorkoutLogSection deletes a workout log section.
 // DELETE /api/user/workout-log-sections/{id}
 //
-// OpenAPI: /api/docs#/operations/delete-workout-log-section
+// OpenAPI: /api/docs#/operations/DeleteWorkoutLogSection
 func DeleteWorkoutLogSection(ctx context.Context, input *DeleteWorkoutLogSectionInput) (*DeleteWorkoutLogSectionOutput, error) {
 	var existing models.WorkoutLogSectionEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {
