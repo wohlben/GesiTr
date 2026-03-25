@@ -1,7 +1,10 @@
+FROM node:24-slim as node
+FROM golang:1.25 as golang
+FROM debian:bookworm-slim as debian
+
 # Stage 1: Build + test Angular
-FROM node:22-slim AS web-builder
-RUN npm install -g npm@11 && \
-    apt-get update && apt-get install -y --no-install-recommends \
+FROM node AS web-builder
+RUN apt-get update && apt-get install -y --no-install-recommends \
     libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 \
     libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libpango-1.0-0 \
     libcairo2 libasound2 libxshmfence1 && rm -rf /var/lib/apt/lists/*
@@ -16,7 +19,7 @@ RUN npm test
 RUN npx ng build --configuration=production
 
 # Stage 2: Build + test Go
-FROM golang:1.25 AS go-builder
+FROM golang AS go-builder
 RUN apt-get update && apt-get install -y gcc libc6-dev && rm -rf /var/lib/apt/lists/*
 RUN useradd -m tester
 WORKDIR /app
@@ -42,8 +45,7 @@ RUN --mount=type=cache,target=/home/tester/.cache/go-build,uid=1000 \
     CGO_ENABLED=1 go build -o seed ./cmd/seed
 
 # Stage 3: E2E tests — Playwright against the production binary
-FROM node:22 AS e2e-tester
-RUN npm install -g npm@11
+FROM node AS e2e-tester
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 \
     libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libpango-1.0-0 \
@@ -69,7 +71,7 @@ RUN date -u '+%Y-%m-%dT%H:%M:%SZ' > /tmp/.e2e-passed
 
 # Stage 4: Runtime
 # COPY --from=e2e-tester forces BuildKit to run the e2e stage before finalizing
-FROM debian:bookworm-slim
+FROM debian
 RUN useradd -m app
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
