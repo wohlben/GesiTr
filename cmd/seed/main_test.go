@@ -575,7 +575,7 @@ func TestSeedExerciseGroups(t *testing.T) {
 
 		var g groupModels.ExerciseGroupEntity
 		database.DB.Where("name = ?", "Push Day").First(&g)
-		if g.Name != "Push Day" || g.Owner != "sinon" {
+		if g.Name == nil || *g.Name != "Push Day" || g.Owner != "sinon" {
 			t.Errorf("field mismatch: %+v", g)
 		}
 

@@ -10,21 +10,21 @@ Package handlers implements the HTTP handlers for user workout management.
 
 ### Overview
 
-A workout is a user\-owned template that organizes exercises into sections. The hierarchy is: Workout → Sections → Section Exercises. Each section exercise references an exercise scheme from [gesitr/internal/exercise/handlers](<https://pkg.go.dev/gesitr/internal/exercise/handlers/>) \(which defines sets, reps, and rest\).
+A workout is a user\-owned template that organizes exercises into sections. The hierarchy is: Workout → Sections → Section Items. Each section item has a type discriminator: "exercise" items reference an exercise scheme, while "exercise\_group" items reference an exercise group.
 
 All endpoints are scoped to the authenticated user — there is no public visibility for workouts.
 
 ### Workouts
 
-[ListWorkouts](<#ListWorkouts>) returns only workouts owned by the current user. [CreateWorkout](<#CreateWorkout>) creates a new empty workout — add sections and exercises via the section and section\-exercise endpoints below. [GetWorkout](<#GetWorkout>) returns the full workout tree \(sections and their exercises\). [UpdateWorkout](<#UpdateWorkout>) and [DeleteWorkout](<#DeleteWorkout>) require ownership.
+[ListWorkouts](<#ListWorkouts>) returns only workouts owned by the current user. [CreateWorkout](<#CreateWorkout>) creates a new empty workout — add sections and items via the section and section\-item endpoints below. [GetWorkout](<#GetWorkout>) returns the full workout tree \(sections and their items\). [UpdateWorkout](<#UpdateWorkout>) and [DeleteWorkout](<#DeleteWorkout>) require ownership.
 
 ### Sections
 
-A section belongs to a workout and groups exercises \(e.g. "Warm\-up", "Main Sets", "Superset A"\). Sections are ordered by position. [CreateWorkoutSection](<#CreateWorkoutSection>) requires a valid workoutId owned by the current user. [ListWorkoutSections](<#ListWorkoutSections>) can be filtered by workoutId.
+A section belongs to a workout and groups items \(e.g. "Warm\-up", "Main Sets", "Superset A"\). Sections are ordered by position. [CreateWorkoutSection](<#CreateWorkoutSection>) requires a valid workoutId owned by the current user. [ListWorkoutSections](<#ListWorkoutSections>) can be filtered by workoutId.
 
-### Section Exercises
+### Section Items
 
-A section exercise links an exercise scheme to a section. The exercise scheme is created via [gesitr/internal/exercise/handlers.CreateExerciseScheme](<https://pkg.go.dev/gesitr/internal/exercise/handlers/#CreateExerciseScheme>) and defines which exercise to perform and how \(sets, reps, rest\). [CreateWorkoutSectionExercise](<#CreateWorkoutSectionExercise>) requires a valid workoutSectionId whose parent workout is owned by the current user, and a valid exerciseSchemeId.
+A section item links either an exercise scheme or an exercise group to a section. For "exercise" type items, the scheme defines which exercise to perform and how \(sets, reps, rest\). For "exercise\_group" type items, the user selects a specific exercise when starting the workout. [CreateWorkoutSectionItem](<#CreateWorkoutSectionItem>) requires a valid workoutSectionId whose parent workout is owned by the current user, plus a valid exerciseSchemeId or exerciseGroupId depending on the item type.
 
 ### Permissions
 
@@ -39,19 +39,19 @@ Workouts do not have a dedicated /permissions endpoint. Instead, all endpoints e
 - [type CreateWorkoutInput](<#CreateWorkoutInput>)
 - [type CreateWorkoutOutput](<#CreateWorkoutOutput>)
   - [func CreateWorkout\(ctx context.Context, input \*CreateWorkoutInput\) \(\*CreateWorkoutOutput, error\)](<#CreateWorkout>)
-- [type CreateWorkoutSectionExerciseInput](<#CreateWorkoutSectionExerciseInput>)
-- [type CreateWorkoutSectionExerciseOutput](<#CreateWorkoutSectionExerciseOutput>)
-  - [func CreateWorkoutSectionExercise\(ctx context.Context, input \*CreateWorkoutSectionExerciseInput\) \(\*CreateWorkoutSectionExerciseOutput, error\)](<#CreateWorkoutSectionExercise>)
 - [type CreateWorkoutSectionInput](<#CreateWorkoutSectionInput>)
+- [type CreateWorkoutSectionItemInput](<#CreateWorkoutSectionItemInput>)
+- [type CreateWorkoutSectionItemOutput](<#CreateWorkoutSectionItemOutput>)
+  - [func CreateWorkoutSectionItem\(ctx context.Context, input \*CreateWorkoutSectionItemInput\) \(\*CreateWorkoutSectionItemOutput, error\)](<#CreateWorkoutSectionItem>)
 - [type CreateWorkoutSectionOutput](<#CreateWorkoutSectionOutput>)
   - [func CreateWorkoutSection\(ctx context.Context, input \*CreateWorkoutSectionInput\) \(\*CreateWorkoutSectionOutput, error\)](<#CreateWorkoutSection>)
 - [type DeleteWorkoutInput](<#DeleteWorkoutInput>)
 - [type DeleteWorkoutOutput](<#DeleteWorkoutOutput>)
   - [func DeleteWorkout\(ctx context.Context, input \*DeleteWorkoutInput\) \(\*DeleteWorkoutOutput, error\)](<#DeleteWorkout>)
-- [type DeleteWorkoutSectionExerciseInput](<#DeleteWorkoutSectionExerciseInput>)
-- [type DeleteWorkoutSectionExerciseOutput](<#DeleteWorkoutSectionExerciseOutput>)
-  - [func DeleteWorkoutSectionExercise\(ctx context.Context, input \*DeleteWorkoutSectionExerciseInput\) \(\*DeleteWorkoutSectionExerciseOutput, error\)](<#DeleteWorkoutSectionExercise>)
 - [type DeleteWorkoutSectionInput](<#DeleteWorkoutSectionInput>)
+- [type DeleteWorkoutSectionItemInput](<#DeleteWorkoutSectionItemInput>)
+- [type DeleteWorkoutSectionItemOutput](<#DeleteWorkoutSectionItemOutput>)
+  - [func DeleteWorkoutSectionItem\(ctx context.Context, input \*DeleteWorkoutSectionItemInput\) \(\*DeleteWorkoutSectionItemOutput, error\)](<#DeleteWorkoutSectionItem>)
 - [type DeleteWorkoutSectionOutput](<#DeleteWorkoutSectionOutput>)
   - [func DeleteWorkoutSection\(ctx context.Context, input \*DeleteWorkoutSectionInput\) \(\*DeleteWorkoutSectionOutput, error\)](<#DeleteWorkoutSection>)
 - [type GetWorkoutInput](<#GetWorkoutInput>)
@@ -60,9 +60,9 @@ Workouts do not have a dedicated /permissions endpoint. Instead, all endpoints e
 - [type GetWorkoutSectionInput](<#GetWorkoutSectionInput>)
 - [type GetWorkoutSectionOutput](<#GetWorkoutSectionOutput>)
   - [func GetWorkoutSection\(ctx context.Context, input \*GetWorkoutSectionInput\) \(\*GetWorkoutSectionOutput, error\)](<#GetWorkoutSection>)
-- [type ListWorkoutSectionExercisesInput](<#ListWorkoutSectionExercisesInput>)
-- [type ListWorkoutSectionExercisesOutput](<#ListWorkoutSectionExercisesOutput>)
-  - [func ListWorkoutSectionExercises\(ctx context.Context, input \*ListWorkoutSectionExercisesInput\) \(\*ListWorkoutSectionExercisesOutput, error\)](<#ListWorkoutSectionExercises>)
+- [type ListWorkoutSectionItemsInput](<#ListWorkoutSectionItemsInput>)
+- [type ListWorkoutSectionItemsOutput](<#ListWorkoutSectionItemsOutput>)
+  - [func ListWorkoutSectionItems\(ctx context.Context, input \*ListWorkoutSectionItemsInput\) \(\*ListWorkoutSectionItemsOutput, error\)](<#ListWorkoutSectionItems>)
 - [type ListWorkoutSectionsInput](<#ListWorkoutSectionsInput>)
 - [type ListWorkoutSectionsOutput](<#ListWorkoutSectionsOutput>)
   - [func ListWorkoutSections\(ctx context.Context, input \*ListWorkoutSectionsInput\) \(\*ListWorkoutSectionsOutput, error\)](<#ListWorkoutSections>)
@@ -74,7 +74,7 @@ Workouts do not have a dedicated /permissions endpoint. Instead, all endpoints e
   - [func UpdateWorkout\(ctx context.Context, input \*UpdateWorkoutInput\) \(\*UpdateWorkoutOutput, error\)](<#UpdateWorkout>)
 - [type WorkoutBody](<#WorkoutBody>)
 - [type WorkoutSectionBody](<#WorkoutSectionBody>)
-- [type WorkoutSectionExerciseBody](<#WorkoutSectionExerciseBody>)
+- [type WorkoutSectionItemBody](<#WorkoutSectionItemBody>)
 
 
 <a name="RegisterRoutes"></a>
@@ -115,7 +115,7 @@ type CreateWorkoutOutput struct {
 func CreateWorkout(ctx context.Context, input *CreateWorkoutInput) (*CreateWorkoutOutput, error)
 ```
 
-CreateWorkout creates an empty workout. Add sections via [CreateWorkoutSection](<#CreateWorkoutSection>) and exercises via [CreateWorkoutSectionExercise](<#CreateWorkoutSectionExercise>). POST /api/user/workouts
+CreateWorkout creates an empty workout. Add sections via [CreateWorkoutSection](<#CreateWorkoutSection>) and items via [CreateWorkoutSectionItem](<#CreateWorkoutSectionItem>). POST /api/user/workouts
 
 [OpenAPI docs](/api/docs#/operations/CreateWorkout)
 
@@ -158,43 +158,59 @@ Chest, shoulders, triceps
 </p>
 </details>
 
-<a name="CreateWorkoutSectionExerciseInput"></a>
-## type [CreateWorkoutSectionExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L107-L109>)
+<a name="CreateWorkoutSectionInput"></a>
+## type [CreateWorkoutSectionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L69-L71>)
 
 
 
 ```go
-type CreateWorkoutSectionExerciseInput struct {
-    Body WorkoutSectionExerciseBody
+type CreateWorkoutSectionInput struct {
+    Body WorkoutSectionBody
 }
 ```
 
-<a name="CreateWorkoutSectionExerciseOutput"></a>
-## type [CreateWorkoutSectionExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L111-L113>)
+<a name="CreateWorkoutSectionItemInput"></a>
+## type [CreateWorkoutSectionItemInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L110-L112>)
 
 
 
 ```go
-type CreateWorkoutSectionExerciseOutput struct {
-    Body models.WorkoutSectionExercise
+type CreateWorkoutSectionItemInput struct {
+    Body WorkoutSectionItemBody
 }
 ```
 
-<a name="CreateWorkoutSectionExercise"></a>
-### func [CreateWorkoutSectionExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_exercise_handlers.go#L58>)
+<a name="CreateWorkoutSectionItemOutput"></a>
+## type [CreateWorkoutSectionItemOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L114-L116>)
+
+
 
 ```go
-func CreateWorkoutSectionExercise(ctx context.Context, input *CreateWorkoutSectionExerciseInput) (*CreateWorkoutSectionExerciseOutput, error)
+type CreateWorkoutSectionItemOutput struct {
+    Body models.WorkoutSectionItem
+}
 ```
 
-CreateWorkoutSectionExercise adds an exercise to a section. Requires a workoutSectionId \(whose parent workout must be owned by the current user\) and an exerciseSchemeId referencing an existing exercise scheme — see [gesitr/internal/exercise/handlers.CreateExerciseScheme](<https://pkg.go.dev/gesitr/internal/exercise/handlers/#CreateExerciseScheme>). A workout and section must exist first — see [CreateWorkout](<#CreateWorkout>) and [CreateWorkoutSection](<#CreateWorkoutSection>). POST /api/user/workout\-section\-exercises
+<a name="CreateWorkoutSectionItem"></a>
+### func [CreateWorkoutSectionItem](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_item_handlers.go#L59>)
 
-[OpenAPI docs](/api/docs#/operations/CreateWorkoutSectionExercise)
+```go
+func CreateWorkoutSectionItem(ctx context.Context, input *CreateWorkoutSectionItemInput) (*CreateWorkoutSectionItemOutput, error)
+```
+
+CreateWorkoutSectionItem adds an item to a section. The item type determines which reference field is required:
+
+- "exercise": exerciseSchemeId is required
+- "exercise\_group": exerciseGroupId is required
+
+POST /api/user/workout\-section\-items
+
+[OpenAPI docs](/api/docs#/operations/CreateWorkoutSectionItem)
 
 <details><summary>Example</summary>
 <p>
 
-Creating a section exercise requires a workout, a section, and an exercise scheme. The full hierarchy: Workout → Section → SectionExercise → ExerciseScheme.
+Creating a section item requires a workout, a section, and an exercise scheme. The full hierarchy: Workout → Section → SectionItem → ExerciseScheme.
 
 ```go
 setupExampleDB()
@@ -210,20 +226,23 @@ doRaw(r, "POST", "/api/user/workout-sections", `{
 }`)
 
 // Add the exercise scheme to the section.
-w := doRaw(r, "POST", "/api/user/workout-section-exercises", `{
+w := doRaw(r, "POST", "/api/user/workout-section-items", `{
 	"workoutSectionId": 1,
+	"type": "exercise",
 	"exerciseSchemeId": 1,
 	"position": 0
 }`)
 
-var se models.WorkoutSectionExercise
-json.Unmarshal(w.Body.Bytes(), &se)
+var item models.WorkoutSectionItem
+json.Unmarshal(w.Body.Bytes(), &item)
 fmt.Println(w.Code)
-fmt.Println(se.WorkoutSectionID)
-fmt.Println(se.ExerciseSchemeID)
+fmt.Println(item.WorkoutSectionID)
+fmt.Println(item.Type)
+fmt.Println(*item.ExerciseSchemeID)
 // Output:
 // 201
 // 1
+// exercise
 // 1
 ```
 
@@ -232,6 +251,7 @@ fmt.Println(se.ExerciseSchemeID)
 ```
 201
 1
+exercise
 1
 ```
 
@@ -241,7 +261,7 @@ fmt.Println(se.ExerciseSchemeID)
 <details><summary>Example (Non Owner Denied)</summary>
 <p>
 
-Non\-owner cannot add exercises to another user's section.
+Non\-owner cannot add items to another user's section.
 
 ```go
 setupExampleDB()
@@ -253,8 +273,9 @@ doRaw(r, "POST", "/api/user/workout-sections", `{
 	"workoutId": 1, "type": "main", "position": 0
 }`)
 
-w := doRawAs(r, "POST", "/api/user/workout-section-exercises", `{
+w := doRawAs(r, "POST", "/api/user/workout-section-items", `{
 	"workoutSectionId": 1,
+	"type": "exercise",
 	"exerciseSchemeId": 1,
 	"position": 0
 }`, "bob")
@@ -270,17 +291,6 @@ fmt.Println(w.Code)
 
 </p>
 </details>
-
-<a name="CreateWorkoutSectionInput"></a>
-## type [CreateWorkoutSectionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L69-L71>)
-
-
-
-```go
-type CreateWorkoutSectionInput struct {
-    Body WorkoutSectionBody
-}
-```
 
 <a name="CreateWorkoutSectionOutput"></a>
 ## type [CreateWorkoutSectionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L73-L75>)
@@ -467,41 +477,52 @@ fmt.Println(wg.Code)
 </p>
 </details>
 
-<a name="DeleteWorkoutSectionExerciseInput"></a>
-## type [DeleteWorkoutSectionExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L115-L117>)
+<a name="DeleteWorkoutSectionInput"></a>
+## type [DeleteWorkoutSectionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L85-L87>)
 
 
 
 ```go
-type DeleteWorkoutSectionExerciseInput struct {
+type DeleteWorkoutSectionInput struct {
     ID uint `path:"id"`
 }
 ```
 
-<a name="DeleteWorkoutSectionExerciseOutput"></a>
-## type [DeleteWorkoutSectionExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L119>)
+<a name="DeleteWorkoutSectionItemInput"></a>
+## type [DeleteWorkoutSectionItemInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L118-L120>)
 
 
 
 ```go
-type DeleteWorkoutSectionExerciseOutput struct{}
+type DeleteWorkoutSectionItemInput struct {
+    ID uint `path:"id"`
+}
 ```
 
-<a name="DeleteWorkoutSectionExercise"></a>
-### func [DeleteWorkoutSectionExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_exercise_handlers.go#L83>)
+<a name="DeleteWorkoutSectionItemOutput"></a>
+## type [DeleteWorkoutSectionItemOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L122>)
+
+
 
 ```go
-func DeleteWorkoutSectionExercise(ctx context.Context, input *DeleteWorkoutSectionExerciseInput) (*DeleteWorkoutSectionExerciseOutput, error)
+type DeleteWorkoutSectionItemOutput struct{}
 ```
 
-DeleteWorkoutSectionExercise removes an exercise from a section. DELETE /api/user/workout\-section\-exercises/\{id\}
+<a name="DeleteWorkoutSectionItem"></a>
+### func [DeleteWorkoutSectionItem](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_item_handlers.go#L105>)
 
-[OpenAPI docs](/api/docs#/operations/DeleteWorkoutSectionExercise)
+```go
+func DeleteWorkoutSectionItem(ctx context.Context, input *DeleteWorkoutSectionItemInput) (*DeleteWorkoutSectionItemOutput, error)
+```
+
+DeleteWorkoutSectionItem removes an item from a section. DELETE /api/user/workout\-section\-items/\{id\}
+
+[OpenAPI docs](/api/docs#/operations/DeleteWorkoutSectionItem)
 
 <details><summary>Example (Non Owner Denied)</summary>
 <p>
 
-Non\-owner cannot delete exercises from another user's section.
+Non\-owner cannot delete items from another user's section.
 
 ```go
 setupExampleDB()
@@ -512,11 +533,11 @@ doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
 doRaw(r, "POST", "/api/user/workout-sections", `{
 	"workoutId": 1, "type": "main", "position": 0
 }`)
-doRaw(r, "POST", "/api/user/workout-section-exercises", `{
-	"workoutSectionId": 1, "exerciseSchemeId": 1, "position": 0
+doRaw(r, "POST", "/api/user/workout-section-items", `{
+	"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
 }`)
 
-w := doRawAs(r, "DELETE", "/api/user/workout-section-exercises/1", "", "bob")
+w := doRawAs(r, "DELETE", "/api/user/workout-section-items/1", "", "bob")
 fmt.Println(w.Code)
 // Output: 403
 ```
@@ -533,7 +554,7 @@ fmt.Println(w.Code)
 <details><summary>Example (Owner)</summary>
 <p>
 
-Owner can delete an exercise from their section.
+Owner can delete an item from their section.
 
 ```go
 setupExampleDB()
@@ -544,18 +565,18 @@ doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
 doRaw(r, "POST", "/api/user/workout-sections", `{
 	"workoutId": 1, "type": "main", "position": 0
 }`)
-doRaw(r, "POST", "/api/user/workout-section-exercises", `{
-	"workoutSectionId": 1, "exerciseSchemeId": 1, "position": 0
+doRaw(r, "POST", "/api/user/workout-section-items", `{
+	"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
 }`)
 
-w := doJSON(r, "DELETE", "/api/user/workout-section-exercises/1", nil)
+w := doJSON(r, "DELETE", "/api/user/workout-section-items/1", nil)
 fmt.Println(w.Code)
 
-// Section exercise is gone.
-wl := doRaw(r, "GET", "/api/user/workout-section-exercises?workoutSectionId=1", "")
-var exercises []models.WorkoutSectionExercise
-json.Unmarshal(wl.Body.Bytes(), &exercises)
-fmt.Println(len(exercises))
+// Section item is gone.
+wl := doRaw(r, "GET", "/api/user/workout-section-items?workoutSectionId=1", "")
+var items []models.WorkoutSectionItem
+json.Unmarshal(wl.Body.Bytes(), &items)
+fmt.Println(len(items))
 // Output:
 // 204
 // 0
@@ -570,17 +591,6 @@ fmt.Println(len(exercises))
 
 </p>
 </details>
-
-<a name="DeleteWorkoutSectionInput"></a>
-## type [DeleteWorkoutSectionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L85-L87>)
-
-
-
-```go
-type DeleteWorkoutSectionInput struct {
-    ID uint `path:"id"`
-}
-```
 
 <a name="DeleteWorkoutSectionOutput"></a>
 ## type [DeleteWorkoutSectionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L89>)
@@ -700,7 +710,7 @@ GetWorkout returns a workout with its full section and exercise tree. Returns 40
 <details><summary>Example (Full Hierarchy)</summary>
 <p>
 
-Full hierarchy: create a workout with sections and exercises, then retrieve the complete tree via GetWorkout.
+Full hierarchy: create a workout with sections and items, then retrieve the complete tree via GetWorkout.
 
 ```go
 setupExampleDB()
@@ -714,8 +724,8 @@ doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
 doRaw(r, "POST", "/api/user/workout-sections", `{
 	"workoutId": 1, "type": "main", "label": "Compound", "position": 0
 }`)
-doRaw(r, "POST", "/api/user/workout-section-exercises", `{
-	"workoutSectionId": 1, "exerciseSchemeId": 1, "position": 0
+doRaw(r, "POST", "/api/user/workout-section-items", `{
+	"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
 }`)
 
 // GetWorkout returns the full tree.
@@ -727,14 +737,14 @@ fmt.Println(w.Code)
 fmt.Println(workout.Name)
 fmt.Println(len(workout.Sections), "section(s)")
 fmt.Println(*workout.Sections[0].Label)
-fmt.Println(len(workout.Sections[0].Exercises), "exercise(s)")
-fmt.Println(workout.Sections[0].Exercises[0].ExerciseSchemeID)
+fmt.Println(len(workout.Sections[0].Items), "item(s)")
+fmt.Println(*workout.Sections[0].Items[0].ExerciseSchemeID)
 // Output:
 // 200
 // Push Day
 // 1 section(s)
 // Compound
-// 1 exercise(s)
+// 1 item(s)
 // 1
 ```
 
@@ -745,7 +755,7 @@ fmt.Println(workout.Sections[0].Exercises[0].ExerciseSchemeID)
 Push Day
 1 section(s)
 Compound
-1 exercise(s)
+1 item(s)
 1
 ```
 
@@ -908,43 +918,43 @@ main
 </p>
 </details>
 
-<a name="ListWorkoutSectionExercisesInput"></a>
-## type [ListWorkoutSectionExercisesInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L93-L95>)
+<a name="ListWorkoutSectionItemsInput"></a>
+## type [ListWorkoutSectionItemsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L93-L95>)
 
 
 
 ```go
-type ListWorkoutSectionExercisesInput struct {
+type ListWorkoutSectionItemsInput struct {
     WorkoutSectionID string `query:"workoutSectionId" doc:"Filter by workout section ID"`
 }
 ```
 
-<a name="ListWorkoutSectionExercisesOutput"></a>
-## type [ListWorkoutSectionExercisesOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L97-L99>)
+<a name="ListWorkoutSectionItemsOutput"></a>
+## type [ListWorkoutSectionItemsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L97-L99>)
 
 
 
 ```go
-type ListWorkoutSectionExercisesOutput struct {
-    Body []models.WorkoutSectionExercise
+type ListWorkoutSectionItemsOutput struct {
+    Body []models.WorkoutSectionItem
 }
 ```
 
-<a name="ListWorkoutSectionExercises"></a>
-### func [ListWorkoutSectionExercises](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_exercise_handlers.go#L28>)
+<a name="ListWorkoutSectionItems"></a>
+### func [ListWorkoutSectionItems](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_item_handlers.go#L29>)
 
 ```go
-func ListWorkoutSectionExercises(ctx context.Context, input *ListWorkoutSectionExercisesInput) (*ListWorkoutSectionExercisesOutput, error)
+func ListWorkoutSectionItems(ctx context.Context, input *ListWorkoutSectionItemsInput) (*ListWorkoutSectionItemsOutput, error)
 ```
 
-ListWorkoutSectionExercises returns section exercises owned by the current user. Filter by workoutSectionId query param. GET /api/user/workout\-section\-exercises
+ListWorkoutSectionItems returns section items owned by the current user. Filter by workoutSectionId query param. GET /api/user/workout\-section\-items
 
-[OpenAPI docs](/api/docs#/operations/ListWorkoutSectionExercises)
+[OpenAPI docs](/api/docs#/operations/ListWorkoutSectionItems)
 
 <details><summary>Example (Non Owner)</summary>
 <p>
 
-Non\-owner sees an empty list for another user's section exercises.
+Non\-owner sees an empty list for another user's section items.
 
 ```go
 setupExampleDB()
@@ -955,16 +965,16 @@ doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
 doRaw(r, "POST", "/api/user/workout-sections", `{
 	"workoutId": 1, "type": "main", "position": 0
 }`)
-doRaw(r, "POST", "/api/user/workout-section-exercises", `{
-	"workoutSectionId": 1, "exerciseSchemeId": 1, "position": 0
+doRaw(r, "POST", "/api/user/workout-section-items", `{
+	"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
 }`)
 
-w := doRawAs(r, "GET", "/api/user/workout-section-exercises?workoutSectionId=1", "", "bob")
+w := doRawAs(r, "GET", "/api/user/workout-section-items?workoutSectionId=1", "", "bob")
 
-var exercises []models.WorkoutSectionExercise
-json.Unmarshal(w.Body.Bytes(), &exercises)
+var items []models.WorkoutSectionItem
+json.Unmarshal(w.Body.Bytes(), &items)
 fmt.Println(w.Code)
-fmt.Println(len(exercises))
+fmt.Println(len(items))
 // Output:
 // 200
 // 0
@@ -983,7 +993,7 @@ fmt.Println(len(exercises))
 <details><summary>Example (Owner)</summary>
 <p>
 
-ListWorkoutSectionExercises returns exercises in sections owned by the current user. Filter by workoutSectionId.
+ListWorkoutSectionItems returns items in sections owned by the current user. Filter by workoutSectionId.
 
 ```go
 setupExampleDB()
@@ -994,17 +1004,17 @@ doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
 doRaw(r, "POST", "/api/user/workout-sections", `{
 	"workoutId": 1, "type": "main", "position": 0
 }`)
-doRaw(r, "POST", "/api/user/workout-section-exercises", `{
-	"workoutSectionId": 1, "exerciseSchemeId": 1, "position": 0
+doRaw(r, "POST", "/api/user/workout-section-items", `{
+	"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
 }`)
 
-w := doRaw(r, "GET", "/api/user/workout-section-exercises?workoutSectionId=1", "")
+w := doRaw(r, "GET", "/api/user/workout-section-items?workoutSectionId=1", "")
 
-var exercises []models.WorkoutSectionExercise
-json.Unmarshal(w.Body.Bytes(), &exercises)
+var items []models.WorkoutSectionItem
+json.Unmarshal(w.Body.Bytes(), &items)
 fmt.Println(w.Code)
-fmt.Println(len(exercises))
-fmt.Println(exercises[0].ExerciseSchemeID)
+fmt.Println(len(items))
+fmt.Println(*items[0].ExerciseSchemeID)
 // Output:
 // 200
 // 1
@@ -1357,16 +1367,19 @@ type WorkoutSectionBody struct {
 }
 ```
 
-<a name="WorkoutSectionExerciseBody"></a>
-## type [WorkoutSectionExerciseBody](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L101-L105>)
+<a name="WorkoutSectionItemBody"></a>
+## type [WorkoutSectionItemBody](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L101-L108>)
 
 
 
 ```go
-type WorkoutSectionExerciseBody struct {
-    WorkoutSectionID uint `json:"workoutSectionId" required:"true"`
-    ExerciseSchemeID uint `json:"exerciseSchemeId" required:"true"`
-    Position         int  `json:"position"`
+type WorkoutSectionItemBody struct {
+    WorkoutSectionID uint                          `json:"workoutSectionId" required:"true"`
+    Type             models.WorkoutSectionItemType `json:"type" required:"true"`
+    ExerciseSchemeID *uint                         `json:"exerciseSchemeId,omitempty"`
+    ExerciseGroupID  *uint                         `json:"exerciseGroupId,omitempty"`
+    Data             *string                       `json:"data,omitempty"`
+    Position         int                           `json:"position"`
 }
 ```
 

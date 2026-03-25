@@ -12,6 +12,15 @@ import (
 
 var knownProfiles sync.Map
 
+// ResetProfileCache clears the in-memory profile cache. Must be called
+// after wiping the database so that profiles are re-created on next request.
+func ResetProfileCache() {
+	knownProfiles.Range(func(key, _ any) bool {
+		knownProfiles.Delete(key)
+		return true
+	})
+}
+
 // EnsureProfile returns a Gin middleware that creates a user profile
 // on first request from an unknown user ID. It caches known IDs in
 // memory to avoid a DB query on every request.

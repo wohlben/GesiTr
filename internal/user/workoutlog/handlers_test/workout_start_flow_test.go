@@ -82,15 +82,15 @@ func TestWorkoutStartFlow(t *testing.T) {
 	var section workoutmodels.WorkoutSection
 	json.Unmarshal(w.Body.Bytes(), &section)
 
-	w = doJSONLog(t, r, "POST", "/api/user/workout-section-exercises", map[string]any{
-		"workoutSectionId": section.ID, "exerciseSchemeId": scheme1.ID, "position": 0,
+	w = doJSONLog(t, r, "POST", "/api/user/workout-section-items", map[string]any{
+		"workoutSectionId": section.ID, "type": "exercise", "exerciseSchemeId": scheme1.ID, "position": 0,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section exercise 1: status = %d", w.Code)
 	}
 
-	w = doJSONLog(t, r, "POST", "/api/user/workout-section-exercises", map[string]any{
-		"workoutSectionId": section.ID, "exerciseSchemeId": scheme2.ID, "position": 1,
+	w = doJSONLog(t, r, "POST", "/api/user/workout-section-items", map[string]any{
+		"workoutSectionId": section.ID, "type": "exercise", "exerciseSchemeId": scheme2.ID, "position": 1,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section exercise 2: status = %d", w.Code)
@@ -102,8 +102,8 @@ func TestWorkoutStartFlow(t *testing.T) {
 		t.Fatalf("get workout template: status = %d", w.Code)
 	}
 	json.Unmarshal(w.Body.Bytes(), &wkt)
-	t.Logf("=== Workout template loaded: %d section(s), %d exercise(s) in section 0 ===",
-		len(wkt.Sections), len(wkt.Sections[0].Exercises))
+	t.Logf("=== Workout template loaded: %d section(s), %d item(s) in section 0 ===",
+		len(wkt.Sections), len(wkt.Sections[0].Items))
 
 	// -- Step 1: POST /api/user/workout-logs -- create the log --
 
@@ -144,12 +144,12 @@ func TestWorkoutStartFlow(t *testing.T) {
 
 	t.Log("=== STEP 3: Create workout log exercises ===")
 	var logExercises []models.WorkoutLogExercise
-	for i, templateExercise := range templateSection.Exercises {
-		t.Logf("--- Creating log exercise %d (scheme %d) ---", i, templateExercise.ExerciseSchemeID)
+	for i, templateItem := range templateSection.Items {
+		t.Logf("--- Creating log exercise %d (scheme %d) ---", i, *templateItem.ExerciseSchemeID)
 		w = doJSONLog(t, r, "POST", "/api/user/workout-log-exercises", map[string]any{
 			"workoutLogSectionId":    logSection.ID,
-			"sourceExerciseSchemeId": templateExercise.ExerciseSchemeID,
-			"position":               templateExercise.Position,
+			"sourceExerciseSchemeId": *templateItem.ExerciseSchemeID,
+			"position":               templateItem.Position,
 		})
 		if w.Code != http.StatusCreated {
 			t.Fatalf("STEP 3 FAILED: create log exercise %d: status = %d, body = %s", i, w.Code, w.Body.String())

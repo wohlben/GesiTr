@@ -31,11 +31,17 @@ export interface WorkoutSection extends BaseModel {
   label?: string;
   position: number /* int */;
   restBetweenExercises?: number /* int */;
-  exercises: WorkoutSectionExercise[];
+  items: WorkoutSectionItem[];
 }
-export interface WorkoutSectionExercise extends BaseModel {
+export type WorkoutSectionItemType = string;
+export const WorkoutSectionItemTypeExercise: WorkoutSectionItemType = 'exercise';
+export const WorkoutSectionItemTypeExerciseGroup: WorkoutSectionItemType = 'exercise_group';
+export interface WorkoutSectionItem extends BaseModel {
   workoutSectionId: number /* uint */;
-  exerciseSchemeId: number /* uint */;
+  type: WorkoutSectionItemType;
+  exerciseSchemeId?: number /* uint */;
+  exerciseGroupId?: number /* uint */;
+  data?: string;
   position: number /* int */;
 }
 
@@ -65,6 +71,7 @@ export interface WorkoutLogExercise extends BaseModel {
   workoutLogSectionId: number /* uint */;
   workoutLogId: number /* uint */;
   sourceExerciseSchemeId: number /* uint */;
+  sourceExerciseGroupId?: number /* uint */;
   position: number /* int */;
   status: WorkoutLogItemStatus;
   statusChangedAt?: string;

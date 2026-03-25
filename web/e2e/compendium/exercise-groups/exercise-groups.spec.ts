@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../base-test';
 import { createExerciseGroup, deleteExerciseGroup } from '../../helpers';
 
 const viewports = [

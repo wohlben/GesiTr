@@ -91,7 +91,6 @@ export class ExerciseGroupList {
 
   groupColumns: DataTableColumn[] = [
     { label: 'Name', labelKey: 'fields.name', searchParam: 'q' },
-    { label: 'Description', labelKey: 'fields.description' },
     { label: 'Owner', labelKey: 'fields.owner', defaultHidden: true },
     { label: 'Created at', labelKey: 'fields.createdAt', defaultHidden: true },
     { label: 'Updated at', labelKey: 'fields.updatedAt', defaultHidden: true },

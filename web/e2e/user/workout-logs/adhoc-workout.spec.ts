@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../base-test';
 import { createExercise, deleteExercise } from '../../helpers';
 
 test.describe('/user/workout-logs — adhoc workflow', () => {

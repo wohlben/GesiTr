@@ -126,7 +126,6 @@ export class MainLayout {
   compendiumLinks = [
     { path: '/compendium/exercises', labelKey: 'nav.exercises' },
     { path: '/compendium/equipment', labelKey: 'nav.equipment' },
-    { path: '/compendium/exercise-groups', labelKey: 'nav.exerciseGroups' },
   ];
 
   userLinks = [

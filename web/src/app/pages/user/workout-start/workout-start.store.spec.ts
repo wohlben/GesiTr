@@ -87,7 +87,7 @@ describe('WorkoutStartStore', () => {
 
     const sections = [
       {
-        exercises: [{ exerciseSchemeId: 10 }],
+        items: [{ type: 'exercise', exerciseSchemeId: 10 }],
       },
     ] as WorkoutSection[];
 
@@ -168,8 +168,8 @@ describe('WorkoutStartStore', () => {
     });
 
     const sections = [
-      { exercises: [{ exerciseSchemeId: 10 }] },
-      { exercises: [{ exerciseSchemeId: 20 }] },
+      { items: [{ type: 'exercise', exerciseSchemeId: 10 }] },
+      { items: [{ type: 'exercise', exerciseSchemeId: 20 }] },
     ] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
@@ -239,7 +239,7 @@ describe('WorkoutStartStore', () => {
   it('handles scheme fetch failure gracefully', async () => {
     userApiMock.fetchExerciseScheme.mockRejectedValue(new Error('not found'));
 
-    const sections = [{ exercises: [{ exerciseSchemeId: 99 }] }] as WorkoutSection[];
+    const sections = [{ items: [{ type: 'exercise', exerciseSchemeId: 99 }] }] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
 
@@ -256,7 +256,7 @@ describe('WorkoutStartStore', () => {
     });
     userApiMock.fetchUserExercise.mockRejectedValue(new Error('not found'));
 
-    const sections = [{ exercises: [{ exerciseSchemeId: 10 }] }] as WorkoutSection[];
+    const sections = [{ items: [{ type: 'exercise', exerciseSchemeId: 10 }] }] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
 
@@ -295,7 +295,12 @@ describe('WorkoutStartStore', () => {
     });
 
     const sections = [
-      { exercises: [{ exerciseSchemeId: 10 }, { exerciseSchemeId: 11 }] },
+      {
+        items: [
+          { type: 'exercise', exerciseSchemeId: 10 },
+          { type: 'exercise', exerciseSchemeId: 11 },
+        ],
+      },
     ] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
@@ -324,7 +329,7 @@ describe('WorkoutStartStore', () => {
       version: 1,
     });
 
-    const sections = [{ exercises: [{ exerciseSchemeId: 10 }] }] as WorkoutSection[];
+    const sections = [{ items: [{ type: 'exercise', exerciseSchemeId: 10 }] }] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
 

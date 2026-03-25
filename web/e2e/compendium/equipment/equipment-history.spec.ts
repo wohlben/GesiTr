@@ -1,4 +1,4 @@
-import { expect, test, Page } from '@playwright/test';
+import { expect, test, Page } from '../../base-test';
 import { createEquipment, updateEquipment, deleteEquipment } from '../../helpers';
 
 const viewports = [

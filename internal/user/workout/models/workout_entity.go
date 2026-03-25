@@ -45,7 +45,7 @@ type WorkoutSectionEntity struct {
 	Label                *string
 	Position             int `gorm:"not null"`
 	RestBetweenExercises *int
-	Exercises            []WorkoutSectionExerciseEntity `gorm:"foreignKey:WorkoutSectionID"`
+	Items                []WorkoutSectionItemEntity `gorm:"foreignKey:WorkoutSectionID"`
 }
 
 func (WorkoutSectionEntity) TableName() string { return "workout_sections" }
@@ -59,8 +59,8 @@ func (e *WorkoutSectionEntity) ToDTO() WorkoutSection {
 		Position:             e.Position,
 		RestBetweenExercises: e.RestBetweenExercises,
 	}
-	for _, ex := range e.Exercises {
-		dto.Exercises = append(dto.Exercises, ex.ToDTO())
+	for _, item := range e.Items {
+		dto.Items = append(dto.Items, item.ToDTO())
 	}
 	return dto
 }
@@ -76,29 +76,38 @@ func WorkoutSectionFromDTO(dto WorkoutSection) WorkoutSectionEntity {
 	}
 }
 
-type WorkoutSectionExerciseEntity struct {
+type WorkoutSectionItemEntity struct {
 	shared.BaseModel
-	WorkoutSectionID uint `gorm:"not null;index"`
-	ExerciseSchemeID uint `gorm:"not null"`
-	Position         int  `gorm:"not null"`
+	WorkoutSectionID uint                   `gorm:"not null;index"`
+	Type             WorkoutSectionItemType `gorm:"not null;default:'exercise'"`
+	ExerciseSchemeID *uint
+	ExerciseGroupID  *uint
+	Data             *string
+	Position         int `gorm:"not null"`
 }
 
-func (WorkoutSectionExerciseEntity) TableName() string { return "workout_section_exercises" }
+func (WorkoutSectionItemEntity) TableName() string { return "workout_section_items" }
 
-func (e *WorkoutSectionExerciseEntity) ToDTO() WorkoutSectionExercise {
-	return WorkoutSectionExercise{
+func (e *WorkoutSectionItemEntity) ToDTO() WorkoutSectionItem {
+	return WorkoutSectionItem{
 		BaseModel:        e.BaseModel,
 		WorkoutSectionID: e.WorkoutSectionID,
+		Type:             e.Type,
 		ExerciseSchemeID: e.ExerciseSchemeID,
+		ExerciseGroupID:  e.ExerciseGroupID,
+		Data:             e.Data,
 		Position:         e.Position,
 	}
 }
 
-func WorkoutSectionExerciseFromDTO(dto WorkoutSectionExercise) WorkoutSectionExerciseEntity {
-	return WorkoutSectionExerciseEntity{
+func WorkoutSectionItemFromDTO(dto WorkoutSectionItem) WorkoutSectionItemEntity {
+	return WorkoutSectionItemEntity{
 		BaseModel:        dto.BaseModel,
 		WorkoutSectionID: dto.WorkoutSectionID,
+		Type:             dto.Type,
 		ExerciseSchemeID: dto.ExerciseSchemeID,
+		ExerciseGroupID:  dto.ExerciseGroupID,
+		Data:             dto.Data,
 		Position:         dto.Position,
 	}
 }

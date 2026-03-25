@@ -14,7 +14,7 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
-        [header]="groupQuery.data()?.name ?? t('compendium.exerciseGroups.fallbackHeader')"
+        [header]="groupQuery.data()?.name || t('compendium.exerciseGroups.fallbackHeader')"
         [isPending]="groupQuery.isPending()"
         [errorMessage]="groupQuery.isError() ? groupQuery.error().message : undefined"
       >
@@ -40,7 +40,7 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
           [open]="showDeleteDialog()"
           [title]="t('compendium.exerciseGroups.deleteTitle')"
           [message]="
-            t('compendium.exerciseGroups.deleteMessage', { name: groupQuery.data()?.name ?? '' })
+            t('compendium.exerciseGroups.deleteMessage', { name: groupQuery.data()?.name || '' })
           "
           [isPending]="deleteMutation.isPending()"
           (confirmed)="deleteMutation.mutate()"
@@ -48,12 +48,6 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
         />
         @if (groupQuery.data(); as group) {
           <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div class="sm:col-span-2">
-              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                {{ t('fields.description') }}
-              </dt>
-              <dd class="text-sm text-gray-900 dark:text-gray-100">{{ group.description }}</dd>
-            </div>
             <div>
               <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
                 {{ t('fields.owner') }}

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../base-test';
 import {
   createExercise,
   deleteExercise,
@@ -8,8 +8,8 @@ import {
   deleteExerciseScheme,
   createWorkoutSection,
   deleteWorkoutSection,
-  createWorkoutSectionExercise,
-  deleteWorkoutSectionExercise,
+  createWorkoutSectionItem,
+  deleteWorkoutSectionItem,
   fetchWorkoutLogs,
   deleteWorkoutLog,
 } from '../../helpers';
@@ -34,7 +34,7 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
       workoutId: workout.id,
       label: 'Main',
     });
-    const sectionEx = await createWorkoutSectionExercise(request, {
+    const sectionEx = await createWorkoutSectionItem(request, {
       workoutSectionId: section.id,
       exerciseSchemeId: scheme.id,
       position: 0,
@@ -89,7 +89,7 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
     for (const log of logs) {
       await deleteWorkoutLog(request, log.id);
     }
-    await deleteWorkoutSectionExercise(request, sectionEx.id);
+    await deleteWorkoutSectionItem(request, sectionEx.id);
     await deleteWorkoutSection(request, section.id);
     await deleteWorkout(request, workout.id);
     await deleteExerciseScheme(request, scheme.id);
@@ -112,7 +112,7 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
       workoutId: workout.id,
       label: 'Main',
     });
-    const sectionEx = await createWorkoutSectionExercise(request, {
+    const sectionEx = await createWorkoutSectionItem(request, {
       workoutSectionId: section.id,
       exerciseSchemeId: scheme.id,
       position: 0,
@@ -153,7 +153,7 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
     for (const log of logs) {
       await deleteWorkoutLog(request, log.id);
     }
-    await deleteWorkoutSectionExercise(request, sectionEx.id);
+    await deleteWorkoutSectionItem(request, sectionEx.id);
     await deleteWorkoutSection(request, section.id);
     await deleteWorkout(request, workout.id);
     await deleteExerciseScheme(request, scheme.id);

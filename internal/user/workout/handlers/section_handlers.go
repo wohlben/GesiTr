@@ -39,7 +39,7 @@ func ListWorkoutSections(ctx context.Context, input *ListWorkoutSectionsInput) (
 	db = db.Where("workout_id IN (SELECT id FROM workouts WHERE owner = ? AND deleted_at IS NULL)", humaconfig.GetUserID(ctx))
 
 	var entities []models.WorkoutSectionEntity
-	if err := db.Preload("Exercises").Order("position").Find(&entities).Error; err != nil {
+	if err := db.Preload("Items").Order("position").Find(&entities).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
@@ -80,7 +80,7 @@ func CreateWorkoutSection(ctx context.Context, input *CreateWorkoutSectionInput)
 // OpenAPI: /api/docs#/operations/GetWorkoutSection
 func GetWorkoutSection(ctx context.Context, input *GetWorkoutSectionInput) (*GetWorkoutSectionOutput, error) {
 	var entity models.WorkoutSectionEntity
-	if err := database.DB.Preload("Exercises").First(&entity, input.ID).Error; err != nil {
+	if err := database.DB.Preload("Items").First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout section not found")
 	}
 	if err := requireWorkoutOwner(ctx, entity.WorkoutID); err != nil {

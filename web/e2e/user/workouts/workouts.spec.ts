@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../base-test';
 import {
   createExercise,
   deleteExercise,
@@ -8,8 +8,8 @@ import {
   deleteExerciseScheme,
   createWorkoutSection,
   deleteWorkoutSection,
-  createWorkoutSectionExercise,
-  deleteWorkoutSectionExercise,
+  createWorkoutSectionItem,
+  deleteWorkoutSectionItem,
 } from '../../helpers';
 
 const viewports = [
@@ -62,7 +62,7 @@ test.describe('/user/workouts', () => {
           const section = await createWorkoutSection(request, {
             workoutId: workout.id,
           });
-          const sectionExercise = await createWorkoutSectionExercise(request, {
+          const sectionExercise = await createWorkoutSectionItem(request, {
             workoutSectionId: section.id,
             exerciseSchemeId: scheme.id,
           });
@@ -76,7 +76,7 @@ test.describe('/user/workouts', () => {
         await expect(page).toHaveScreenshot([viewport.name, 'light', 'user', 'workouts.png'], { fullPage: true });
 
         for (const item of items) {
-          await deleteWorkoutSectionExercise(request, item.sectionExercise.id);
+          await deleteWorkoutSectionItem(request, item.sectionExercise.id);
           await deleteWorkoutSection(request, item.section.id);
           await deleteWorkout(request, item.workout.id);
           await deleteExerciseScheme(request, item.scheme.id);
@@ -105,7 +105,7 @@ test.describe('/user/workouts', () => {
           const section = await createWorkoutSection(request, {
             workoutId: workout.id,
           });
-          const sectionExercise = await createWorkoutSectionExercise(request, {
+          const sectionExercise = await createWorkoutSectionItem(request, {
             workoutSectionId: section.id,
             exerciseSchemeId: scheme.id,
           });
@@ -120,7 +120,7 @@ test.describe('/user/workouts', () => {
         await expect(page).toHaveScreenshot([viewport.name, 'dark', 'user', 'workouts.png'], { fullPage: true });
 
         for (const item of items) {
-          await deleteWorkoutSectionExercise(request, item.sectionExercise.id);
+          await deleteWorkoutSectionItem(request, item.sectionExercise.id);
           await deleteWorkoutSection(request, item.section.id);
           await deleteWorkout(request, item.workout.id);
           await deleteExerciseScheme(request, item.scheme.id);

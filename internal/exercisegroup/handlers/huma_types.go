@@ -8,8 +8,7 @@ import (
 
 // ExerciseGroupBody contains the client-provided fields for creating or updating an exercise group.
 type ExerciseGroupBody struct {
-	Name        string  `json:"name" required:"true"`
-	Description *string `json:"description,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // ExerciseGroupMemberBody contains the client-provided fields for creating an exercise group member.

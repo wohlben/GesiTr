@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../base-test';
 import {
   createExercise,
   deleteExercise,
@@ -8,8 +8,8 @@ import {
   deleteExerciseScheme,
   createWorkoutSection,
   deleteWorkoutSection,
-  createWorkoutSectionExercise,
-  deleteWorkoutSectionExercise,
+  createWorkoutSectionItem,
+  deleteWorkoutSectionItem,
   deleteWorkoutLog,
 } from '../../helpers';
 
@@ -88,12 +88,12 @@ async function createFixturesAndStartLog(
       ...ex.scheme,
     });
     cleanup.push(() => deleteExerciseScheme(request, scheme.id));
-    const sectionExercise = await createWorkoutSectionExercise(request, {
+    const sectionExercise = await createWorkoutSectionItem(request, {
       workoutSectionId: section.id,
       exerciseSchemeId: scheme.id,
       position: i,
     });
-    cleanup.push(() => deleteWorkoutSectionExercise(request, sectionExercise.id));
+    cleanup.push(() => deleteWorkoutSectionItem(request, sectionExercise.id));
   }
 
   // Navigate to start page, wait for planning log creation, click Start

@@ -76,6 +76,22 @@ func runMigrations() {
 	if groupTemplateCount > 0 {
 		database.DB.Exec("ALTER TABLE exercise_groups DROP COLUMN template_id")
 	}
+
+	// Drop the description column from exercise_groups if it exists.
+	var groupDescCount int64
+	database.DB.Raw("SELECT COUNT(*) FROM pragma_table_info('exercise_groups') WHERE name = 'description'").Scan(&groupDescCount)
+	if groupDescCount > 0 {
+		database.DB.Exec("ALTER TABLE exercise_groups DROP COLUMN description")
+	}
+
+	// Migrate workout_section_exercises → workout_section_items if old table still exists.
+	var oldTableCount int64
+	database.DB.Raw("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='workout_section_exercises'").Scan(&oldTableCount)
+	if oldTableCount > 0 {
+		database.DB.Exec(`INSERT INTO workout_section_items (id, created_at, updated_at, deleted_at, workout_section_id, type, exercise_scheme_id, position)
+			SELECT id, created_at, updated_at, deleted_at, workout_section_id, 'exercise', exercise_scheme_id, position FROM workout_section_exercises`)
+		database.DB.Exec("DROP TABLE workout_section_exercises")
+	}
 }
 
 func autoMigrate() {
@@ -100,7 +116,7 @@ func autoMigrate() {
 		&equipmentRelModels.EquipmentRelationshipEntity{},
 		&workoutModels.WorkoutEntity{},
 		&workoutModels.WorkoutSectionEntity{},
-		&workoutModels.WorkoutSectionExerciseEntity{},
+		&workoutModels.WorkoutSectionItemEntity{},
 		&workoutlogmodels.WorkoutLogEntity{},
 		&workoutlogmodels.WorkoutLogSectionEntity{},
 		&workoutlogmodels.WorkoutLogExerciseEntity{},
@@ -168,6 +184,7 @@ func buildApp() *gin.Engine {
 			}
 			database.DB.Exec("DELETE FROM sqlite_sequence")
 			database.DB.Exec("PRAGMA foreign_keys = ON")
+			profile.ResetProfileCache()
 			c.JSON(http.StatusOK, gin.H{"status": "reset"})
 		})
 	} else {

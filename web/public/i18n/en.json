@@ -20,7 +20,8 @@
     "all": "All",
     "skip": "Skip",
     "done": "Done",
-    "unitSeconds": "s"
+    "unitSeconds": "s",
+    "unnamedGroup": "Group #{{id}}"
   },
   "nav": {
     "exercises": "Exercises",
@@ -79,7 +80,9 @@
     "instructions": "Instructions",
     "images": "Images",
     "equipmentIds": "Equipment IDs",
-    "suggestedMeasurementParadigms": "Suggested Measurement Paradigms"
+    "suggestedMeasurementParadigms": "Suggested Measurement Paradigms",
+    "itemType": "Item Type",
+    "exerciseGroup": "Exercise Group"
   },
   "enums": {
     "exerciseType": {
@@ -145,6 +148,10 @@
       "main": "Main",
       "supplementary": "Supplementary"
     },
+    "workoutSectionItemType": {
+      "exercise": "Exercise",
+      "exercise_group": "Exercise Group"
+    },
     "workoutLogItemStatus": {
       "planning": "Planning",
       "in_progress": "In Progress",
@@ -200,6 +207,12 @@
     "exerciseConfig": {
       "exerciseLabel": "Exercise *",
       "measurementType": "Measurement Type"
+    },
+    "exerciseGroupConfig": {
+      "newGroup": "New Group",
+      "namePlaceholder": "Group name (optional)",
+      "addMember": "Add Exercise to Group",
+      "members": "Group Members"
     }
   },
   "compendium": {
@@ -269,11 +282,13 @@
       "sectionLabel": "Section {{n}}",
       "exerciseLabel": "Exercise {{n}}",
       "addExercise": "+ Add Exercise",
+      "addExerciseGroup": "+ Add Exercise Group",
       "addSection": "+ Add Section"
     },
     "workoutStart": {
       "title": "Plan Workout",
-      "startWorkout": "Start Workout"
+      "startWorkout": "Start Workout",
+      "pickExercise": "Pick an exercise from this group"
     },
     "exerciseTrack": {
       "title": "Quick Track",

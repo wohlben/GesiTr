@@ -8,6 +8,7 @@ import (
 	"gesitr/internal/database"
 	equipmentmodels "gesitr/internal/equipment/models"
 	exercisemodels "gesitr/internal/exercise/models"
+	exercisegroupmodels "gesitr/internal/exercisegroup/models"
 	profilemodels "gesitr/internal/profile/models"
 	"gesitr/internal/user/workout/models"
 
@@ -36,9 +37,11 @@ func setupExampleDB() {
 		&exercisemodels.ExerciseHistoryEntity{},
 		&exercisemodels.ExerciseSchemeEntity{},
 		&equipmentmodels.EquipmentEntity{},
+		&exercisegroupmodels.ExerciseGroupEntity{},
+		&exercisegroupmodels.ExerciseGroupMemberEntity{},
 		&models.WorkoutEntity{},
 		&models.WorkoutSectionEntity{},
-		&models.WorkoutSectionExerciseEntity{},
+		&models.WorkoutSectionItemEntity{},
 	)
 	db.Create(&profilemodels.UserProfileEntity{ID: "alice", Name: "alice"})
 	db.Create(&profilemodels.UserProfileEntity{ID: "bob", Name: "bob"})

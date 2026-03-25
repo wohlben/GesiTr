@@ -6,6 +6,7 @@ import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-quer
 import { CdkDragDrop, CdkDrag, CdkDropList, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
+import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { formatBreak } from '$core/format-utils';
 import { workoutKeys, workoutLogKeys } from '$core/query-keys';
 import {
@@ -40,11 +41,19 @@ interface StartExerciseModel {
   sets: StartSetModel[];
 }
 
+interface PendingGroupModel {
+  groupId: number;
+  groupName: string;
+  members: { id: number; name: string }[];
+  position: number;
+}
+
 interface StartSectionModel {
   id: number | null;
   type: string;
   label: string;
   exercises: StartExerciseModel[];
+  pendingGroups: PendingGroupModel[];
 }
 
 interface StartModel {
@@ -401,6 +410,34 @@ interface StartModel {
                     }
                   </div>
 
+                  <!-- Pending exercise groups -->
+                  @for (group of section.pendingGroups; track $index; let gi = $index) {
+                    <div
+                      class="mt-2 rounded-md border-2 border-dashed border-amber-300 bg-amber-50 p-3 dark:border-amber-600 dark:bg-amber-950/30"
+                      data-testid="pending-group"
+                    >
+                      <div class="mb-2 text-sm font-semibold text-amber-800 dark:text-amber-300">
+                        {{
+                          group.groupName().value() ||
+                            t('common.unnamedGroup', { id: group.groupId().value() })
+                        }}
+                      </div>
+                      <div class="mb-1 text-xs text-gray-600 dark:text-gray-400">
+                        {{ t('user.workoutStart.pickExercise') }}
+                      </div>
+                      <select
+                        hlmInput
+                        class="w-full"
+                        (change)="onGroupExercisePicked(si, gi, $event)"
+                      >
+                        <option value="">{{ t('common.select') }}</option>
+                        @for (member of group.members().value(); track member.id) {
+                          <option [value]="member.id">{{ member.name }}</option>
+                        }
+                      </select>
+                    </div>
+                  }
+
                   <!-- Add Exercise button -->
                   <button
                     type="button"
@@ -426,7 +463,7 @@ interface StartModel {
             <div class="flex gap-2">
               <button
                 type="submit"
-                [disabled]="startMutation.isPending()"
+                [disabled]="startMutation.isPending() || hasPendingGroups()"
                 class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
               >
                 @if (startMutation.isPending()) {
@@ -450,6 +487,7 @@ interface StartModel {
           [sectionId]="addDialogSectionId()"
           [logId]="currentLogId() ?? 0"
           [exerciseCount]="addDialogExerciseCount()"
+          [preselectedExerciseId]="addDialogPreselectedExerciseId()"
           (exerciseAdded)="onExerciseAdded($event)"
           (cancelled)="addDialogOpen.set(false)"
         />
@@ -497,6 +535,7 @@ interface StartModel {
 })
 export class WorkoutStart {
   private userApi = inject(UserApiClient);
+  private compendiumApi = inject(CompendiumApiClient);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private queryClient = inject(QueryClient);
@@ -515,11 +554,15 @@ export class WorkoutStart {
     () => this.workoutQuery.isPending() || this.planningLogQuery.isPending() || this.creating(),
   );
 
+  hasPendingGroups = computed(() => this.model().sections.some((s) => s.pendingGroups.length > 0));
+
   // Add exercise dialog state
   addDialogOpen = signal(false);
   addDialogSectionIndex = signal(0);
   addDialogSectionId = signal(0);
   addDialogExerciseCount = signal(0);
+  addDialogPreselectedExerciseId = signal<number | null>(null);
+  addDialogPendingGroupIndex = signal<number | null>(null);
 
   model = signal<StartModel>({ name: '', notes: '', sections: [] });
   startForm = form(this.model);
@@ -648,12 +691,31 @@ export class WorkoutStart {
             type: WorkoutSectionTypeMain,
             label: '',
             exercises: [],
+            pendingGroups: [],
           },
         ],
       }));
     } catch (err) {
       console.error('Failed to add section:', err);
     }
+  }
+
+  async onGroupExercisePicked(sectionIndex: number, groupIndex: number, event: Event) {
+    const exerciseId = Number((event.target as HTMLSelectElement).value);
+    if (!exerciseId || isNaN(exerciseId)) return;
+
+    const m = this.model();
+    const section = m.sections[sectionIndex];
+    const sectionId = section.id;
+    if (!sectionId) return;
+
+    // Open the add exercise dialog with this exercise pre-selected
+    this.addDialogSectionIndex.set(sectionIndex);
+    this.addDialogSectionId.set(sectionId);
+    this.addDialogExerciseCount.set(section.exercises.length);
+    this.addDialogPreselectedExerciseId.set(exerciseId);
+    this.addDialogPendingGroupIndex.set(groupIndex);
+    this.addDialogOpen.set(true);
   }
 
   openAddExerciseDialog(sectionIndex: number) {
@@ -663,6 +725,8 @@ export class WorkoutStart {
     this.addDialogSectionIndex.set(sectionIndex);
     this.addDialogSectionId.set(sectionId);
     this.addDialogExerciseCount.set(m.sections[sectionIndex].exercises.length);
+    this.addDialogPreselectedExerciseId.set(null);
+    this.addDialogPendingGroupIndex.set(null);
     this.addDialogOpen.set(true);
   }
 
@@ -702,6 +766,7 @@ export class WorkoutStart {
       })),
     };
 
+    const pendingGroupIndex = this.addDialogPendingGroupIndex();
     this.model.update((m) => ({
       ...m,
       sections: m.sections.map((s, i) =>
@@ -710,6 +775,10 @@ export class WorkoutStart {
           : {
               ...s,
               exercises: [...s.exercises, newExercise],
+              pendingGroups:
+                pendingGroupIndex != null
+                  ? s.pendingGroups.filter((_, j) => j !== pendingGroupIndex)
+                  : s.pendingGroups,
             },
       ),
     }));
@@ -859,6 +928,7 @@ export class WorkoutStart {
             restAfterSeconds: set.breakAfterSeconds ?? null,
           })),
         })),
+        pendingGroups: [],
       })),
     });
 
@@ -885,13 +955,51 @@ export class WorkoutStart {
         restBetweenExercises: templateSection.restBetweenExercises ?? undefined,
       });
 
-      for (let ei = 0; ei < (templateSection.exercises ?? []).length; ei++) {
-        const templateEx = templateSection.exercises[ei];
-        await this.userApi.createWorkoutLogExercise({
-          workoutLogSectionId: section.id,
-          sourceExerciseSchemeId: templateEx.exerciseSchemeId,
-          position: ei,
-        });
+      for (let ei = 0; ei < (templateSection.items ?? []).length; ei++) {
+        const templateItem = templateSection.items[ei];
+        // Only create log exercises for exercise-type items;
+        // exercise_group items are resolved on the start page
+        if (templateItem.type === 'exercise' && templateItem.exerciseSchemeId) {
+          await this.userApi.createWorkoutLogExercise({
+            workoutLogSectionId: section.id,
+            sourceExerciseSchemeId: templateItem.exerciseSchemeId,
+            position: ei,
+          });
+        }
+      }
+    }
+
+    // Collect pending exercise groups and resolve their members
+    const pendingGroupsBySection = new Map<number, PendingGroupModel[]>();
+    const userExercises = await this.userApi.fetchUserExercises();
+    const exerciseNameMap = new Map(userExercises.map((e) => [e.id, e.name]));
+
+    for (let si = 0; si < (workout.sections ?? []).length; si++) {
+      const templateSection = workout.sections[si];
+      const groups: PendingGroupModel[] = [];
+
+      for (let ei = 0; ei < (templateSection.items ?? []).length; ei++) {
+        const templateItem = templateSection.items[ei];
+        if (templateItem.type === 'exercise_group' && templateItem.exerciseGroupId) {
+          const [group, members] = await Promise.all([
+            this.compendiumApi.fetchExerciseGroup(templateItem.exerciseGroupId),
+            this.compendiumApi.fetchExerciseGroupMembers({
+              groupId: templateItem.exerciseGroupId,
+            }),
+          ]);
+          groups.push({
+            groupId: templateItem.exerciseGroupId,
+            groupName: group.name ?? '',
+            members: members.map((m) => ({
+              id: m.exerciseId,
+              name: exerciseNameMap.get(m.exerciseId) ?? `Exercise #${m.exerciseId}`,
+            })),
+            position: ei,
+          });
+        }
+      }
+      if (groups.length > 0) {
+        pendingGroupsBySection.set(si, groups);
       }
     }
 
@@ -899,6 +1007,17 @@ export class WorkoutStart {
     const fullLog = await this.userApi.fetchWorkoutLog(log.id);
     this.creating.set(false);
     this.populateFromLog(fullLog);
+
+    // Inject pending groups into the model sections
+    if (pendingGroupsBySection.size > 0) {
+      this.model.update((m) => ({
+        ...m,
+        sections: m.sections.map((s, i) => ({
+          ...s,
+          pendingGroups: pendingGroupsBySection.get(i) ?? [],
+        })),
+      }));
+    }
 
     // Invalidate planning log query so it reflects the new log
     this.queryClient.invalidateQueries({

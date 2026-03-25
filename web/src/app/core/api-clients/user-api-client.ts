@@ -6,7 +6,7 @@ import { Exercise, Equipment, ExerciseScheme } from '$generated/models';
 import {
   Workout,
   WorkoutSection,
-  WorkoutSectionExercise,
+  WorkoutSectionItem,
   WorkoutLog,
   WorkoutLogSection,
   WorkoutLogExercise,
@@ -102,17 +102,15 @@ export class UserApiClient {
     return firstValueFrom(this.http.delete<void>(`/api/user/workout-sections/${id}`));
   }
 
-  // Workout Section Exercises
-  createWorkoutSectionExercise(
-    data: Partial<WorkoutSectionExercise>,
-  ): Promise<WorkoutSectionExercise> {
+  // Workout Section Items
+  createWorkoutSectionItem(data: Partial<WorkoutSectionItem>): Promise<WorkoutSectionItem> {
     return firstValueFrom(
-      this.http.post<WorkoutSectionExercise>('/api/user/workout-section-exercises', data),
+      this.http.post<WorkoutSectionItem>('/api/user/workout-section-items', data),
     );
   }
 
-  deleteWorkoutSectionExercise(id: number): Promise<void> {
-    return firstValueFrom(this.http.delete<void>(`/api/user/workout-section-exercises/${id}`));
+  deleteWorkoutSectionItem(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/user/workout-section-items/${id}`));
   }
 
   // Exercise Schemes

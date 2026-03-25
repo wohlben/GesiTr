@@ -88,32 +88,35 @@ type DeleteWorkoutSectionInput struct {
 
 type DeleteWorkoutSectionOutput struct{}
 
-// --- Workout section exercise handlers ---
+// --- Workout section item handlers ---
 
-type ListWorkoutSectionExercisesInput struct {
+type ListWorkoutSectionItemsInput struct {
 	WorkoutSectionID string `query:"workoutSectionId" doc:"Filter by workout section ID"`
 }
 
-type ListWorkoutSectionExercisesOutput struct {
-	Body []models.WorkoutSectionExercise
+type ListWorkoutSectionItemsOutput struct {
+	Body []models.WorkoutSectionItem
 }
 
-type WorkoutSectionExerciseBody struct {
-	WorkoutSectionID uint `json:"workoutSectionId" required:"true"`
-	ExerciseSchemeID uint `json:"exerciseSchemeId" required:"true"`
-	Position         int  `json:"position"`
+type WorkoutSectionItemBody struct {
+	WorkoutSectionID uint                          `json:"workoutSectionId" required:"true"`
+	Type             models.WorkoutSectionItemType `json:"type" required:"true"`
+	ExerciseSchemeID *uint                         `json:"exerciseSchemeId,omitempty"`
+	ExerciseGroupID  *uint                         `json:"exerciseGroupId,omitempty"`
+	Data             *string                       `json:"data,omitempty"`
+	Position         int                           `json:"position"`
 }
 
-type CreateWorkoutSectionExerciseInput struct {
-	Body WorkoutSectionExerciseBody
+type CreateWorkoutSectionItemInput struct {
+	Body WorkoutSectionItemBody
 }
 
-type CreateWorkoutSectionExerciseOutput struct {
-	Body models.WorkoutSectionExercise
+type CreateWorkoutSectionItemOutput struct {
+	Body models.WorkoutSectionItem
 }
 
-type DeleteWorkoutSectionExerciseInput struct {
+type DeleteWorkoutSectionItemInput struct {
 	ID uint `path:"id"`
 }
 
-type DeleteWorkoutSectionExerciseOutput struct{}
+type DeleteWorkoutSectionItemOutput struct{}

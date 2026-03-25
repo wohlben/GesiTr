@@ -13,7 +13,6 @@ const GROUP: ExerciseGroup = {
   createdAt: '',
   updatedAt: '',
   name: 'Push Exercises',
-  description: 'All push exercises',
   owner: 'seed',
 };
 

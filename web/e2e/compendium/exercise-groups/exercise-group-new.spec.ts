@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../base-test';
 
 const viewports = [
   { name: 'desktop', width: 1280, height: 720 },
@@ -31,7 +31,6 @@ test.describe('/compendium/exercise-groups/new', () => {
 
     const testName = `E2E Test Group ${Date.now()}`;
     await page.locator('#name').fill(testName);
-    await page.locator('#description').fill('Created by e2e test');
 
     // Submit and wait for POST response
     const [response] = await Promise.all([

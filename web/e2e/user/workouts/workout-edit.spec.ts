@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../base-test';
 import {
   createExercise,
   deleteExercise,
@@ -8,8 +8,8 @@ import {
   deleteExerciseScheme,
   createWorkoutSection,
   deleteWorkoutSection,
-  createWorkoutSectionExercise,
-  deleteWorkoutSectionExercise,
+  createWorkoutSectionItem,
+  deleteWorkoutSectionItem,
 } from '../../helpers';
 
 const viewports = [
@@ -42,7 +42,7 @@ test.describe('/user/workouts/[id]/edit', () => {
           workoutId: workout.id,
           label: 'Main Lifts',
         });
-        const sectionExercise = await createWorkoutSectionExercise(request, {
+        const sectionExercise = await createWorkoutSectionItem(request, {
           workoutSectionId: section.id,
           exerciseSchemeId: scheme.id,
         });
@@ -59,7 +59,7 @@ test.describe('/user/workouts/[id]/edit', () => {
           'edit.png',
         ], { fullPage: true });
 
-        await deleteWorkoutSectionExercise(request, sectionExercise.id);
+        await deleteWorkoutSectionItem(request, sectionExercise.id);
         await deleteWorkoutSection(request, section.id);
         await deleteWorkout(request, workout.id);
         await deleteExerciseScheme(request, scheme.id);
@@ -80,7 +80,7 @@ test.describe('/user/workouts/[id]/edit', () => {
           label: 'Accessories',
           type: 'supplementary',
         });
-        const sectionExercise = await createWorkoutSectionExercise(request, {
+        const sectionExercise = await createWorkoutSectionItem(request, {
           workoutSectionId: section.id,
           exerciseSchemeId: scheme.id,
         });
@@ -98,7 +98,7 @@ test.describe('/user/workouts/[id]/edit', () => {
           'edit.png',
         ], { fullPage: true });
 
-        await deleteWorkoutSectionExercise(request, sectionExercise.id);
+        await deleteWorkoutSectionItem(request, sectionExercise.id);
         await deleteWorkoutSection(request, section.id);
         await deleteWorkout(request, workout.id);
         await deleteExerciseScheme(request, scheme.id);

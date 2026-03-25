@@ -86,30 +86,30 @@ func RegisterRoutes(api huma.API) {
 		Summary:     "Delete workout section",
 	}, DeleteWorkoutSection)
 
-	// --- Workout section exercises ---
+	// --- Workout section items ---
 
 	huma.Register(api, huma.Operation{
-		OperationID: "ListWorkoutSectionExercises",
+		OperationID: "ListWorkoutSectionItems",
 		Method:      http.MethodGet,
-		Path:        "/user/workout-section-exercises",
-		Tags:        []string{"workout-section-exercises"},
-		Summary:     "List workout section exercises",
-	}, ListWorkoutSectionExercises)
+		Path:        "/user/workout-section-items",
+		Tags:        []string{"workout-section-items"},
+		Summary:     "List workout section items",
+	}, ListWorkoutSectionItems)
 
 	huma.Register(api, huma.Operation{
-		OperationID:   "CreateWorkoutSectionExercise",
+		OperationID:   "CreateWorkoutSectionItem",
 		Method:        http.MethodPost,
-		Path:          "/user/workout-section-exercises",
-		Tags:          []string{"workout-section-exercises"},
-		Summary:       "Create workout section exercise",
+		Path:          "/user/workout-section-items",
+		Tags:          []string{"workout-section-items"},
+		Summary:       "Create workout section item",
 		DefaultStatus: 201,
-	}, CreateWorkoutSectionExercise)
+	}, CreateWorkoutSectionItem)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "DeleteWorkoutSectionExercise",
+		OperationID: "DeleteWorkoutSectionItem",
 		Method:      http.MethodDelete,
-		Path:        "/user/workout-section-exercises/{id}",
-		Tags:        []string{"workout-section-exercises"},
-		Summary:     "Delete workout section exercise",
-	}, DeleteWorkoutSectionExercise)
+		Path:        "/user/workout-section-items/{id}",
+		Tags:        []string{"workout-section-items"},
+		Summary:     "Delete workout section item",
+	}, DeleteWorkoutSectionItem)
 }

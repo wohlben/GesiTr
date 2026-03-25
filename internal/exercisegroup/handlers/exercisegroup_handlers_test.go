@@ -10,8 +10,7 @@ import (
 
 func newGroupPayload(name string) map[string]any {
 	return map[string]any{
-		"name":        name,
-		"description": "test group",
+		"name": name,
 	}
 }
 

@@ -369,12 +369,11 @@ func seedExerciseRelationships() error {
 // --- Exercise Groups ---
 
 type jsonExerciseGroup struct {
-	ID          string  `json:"id"`
-	Name        string  `json:"name"`
-	Description *string `json:"description"`
-	CreatedBy   string  `json:"createdBy"`
-	CreatedAt   *int64  `json:"createdAt"`
-	UpdatedAt   *int64  `json:"updatedAt"`
+	ID        string  `json:"id"`
+	Name      *string `json:"name"`
+	CreatedBy string  `json:"createdBy"`
+	CreatedAt *int64  `json:"createdAt"`
+	UpdatedAt *int64  `json:"updatedAt"`
 }
 
 func seedExerciseGroups() error {
@@ -391,9 +390,8 @@ func seedExerciseGroups() error {
 		}
 		groupTemplateIDs = append(groupTemplateIDs, j.ID)
 		e := groupModels.ExerciseGroupEntity{
-			Name:        j.Name,
-			Description: j.Description,
-			Owner:       "sinon",
+			Name:  j.Name,
+			Owner: "sinon",
 		}
 		e.CreatedAt = unixToTime(j.CreatedAt)
 		if j.UpdatedAt != nil {

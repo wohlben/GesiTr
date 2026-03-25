@@ -14,7 +14,7 @@ Exercises are the core building blocks of workouts. They can be public \(visible
 
 ### Exercise Schemes
 
-An exercise scheme is a user\-specific configuration of an exercise that defines how it should be performed \(measurement type, sets, reps, rest\). Schemes bridge exercises and workouts: to add an exercise to a workout section, first create a scheme via [CreateExerciseScheme](<#CreateExerciseScheme>), then reference it via [gesitr/internal/user/workout/handlers.CreateWorkoutSectionExercise](<https://pkg.go.dev/gesitr/internal/user/workout/handlers/#CreateWorkoutSectionExercise>).
+An exercise scheme is a user\-specific configuration of an exercise that defines how it should be performed \(measurement type, sets, reps, rest\). Schemes bridge exercises and workouts: to add an exercise to a workout section, first create a scheme via [CreateExerciseScheme](<#CreateExerciseScheme>), then reference it via [gesitr/internal/user/workout/handlers.CreateWorkoutSectionItem](<https://pkg.go.dev/gesitr/internal/user/workout/handlers/#CreateWorkoutSectionItem>).
 
 ### Version History
 
@@ -239,7 +239,7 @@ type CreateExerciseSchemeOutput struct {
 func CreateExerciseScheme(ctx context.Context, input *CreateExerciseSchemeInput) (*CreateExerciseSchemeOutput, error)
 ```
 
-CreateExerciseScheme creates an exercise scheme — a user\-specific configuration of an exercise \(sets, reps, measurement type\). Requires an exerciseId referencing an existing exercise \(see [CreateExercise](<#CreateExercise>)\). Schemes are referenced when adding exercises to workouts via [gesitr/internal/user/workout/handlers.CreateWorkoutSectionExercise](<https://pkg.go.dev/gesitr/internal/user/workout/handlers/#CreateWorkoutSectionExercise>). POST /api/exercise\-schemes
+CreateExerciseScheme creates an exercise scheme — a user\-specific configuration of an exercise \(sets, reps, measurement type\). Requires an exerciseId referencing an existing exercise \(see [CreateExercise](<#CreateExercise>)\). Schemes are referenced when adding exercises to workouts via [gesitr/internal/user/workout/handlers.CreateWorkoutSectionItem](<https://pkg.go.dev/gesitr/internal/user/workout/handlers/#CreateWorkoutSectionItem>). POST /api/exercise\-schemes
 
 [OpenAPI docs](/api/docs#/operations/CreateExerciseScheme)
 

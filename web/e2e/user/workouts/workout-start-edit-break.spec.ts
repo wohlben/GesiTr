@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../base-test';
 import {
   createExercise,
   deleteExercise,
@@ -8,8 +8,8 @@ import {
   deleteExerciseScheme,
   createWorkoutSection,
   deleteWorkoutSection,
-  createWorkoutSectionExercise,
-  deleteWorkoutSectionExercise,
+  createWorkoutSectionItem,
+  deleteWorkoutSectionItem,
   fetchWorkoutLogs,
   deleteWorkoutLog,
 } from '../../helpers';
@@ -42,12 +42,12 @@ test.describe('/user/workouts/[id]/start — break time editing', () => {
       label: 'Main',
       restBetweenExercises: 90,
     });
-    const sectionEx1 = await createWorkoutSectionExercise(request, {
+    const sectionEx1 = await createWorkoutSectionItem(request, {
       workoutSectionId: section.id,
       exerciseSchemeId: scheme1.id,
       position: 0,
     });
-    const sectionEx2 = await createWorkoutSectionExercise(request, {
+    const sectionEx2 = await createWorkoutSectionItem(request, {
       workoutSectionId: section.id,
       exerciseSchemeId: scheme2.id,
       position: 1,
@@ -99,8 +99,8 @@ test.describe('/user/workouts/[id]/start — break time editing', () => {
     for (const log of logs) {
       await deleteWorkoutLog(request, log.id);
     }
-    await deleteWorkoutSectionExercise(request, sectionEx2.id);
-    await deleteWorkoutSectionExercise(request, sectionEx1.id);
+    await deleteWorkoutSectionItem(request, sectionEx2.id);
+    await deleteWorkoutSectionItem(request, sectionEx1.id);
     await deleteWorkoutSection(request, section.id);
     await deleteWorkout(request, workout.id);
     await deleteExerciseScheme(request, scheme2.id);

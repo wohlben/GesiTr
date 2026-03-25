@@ -132,8 +132,7 @@ export const EquipmentCategoryOther: EquipmentCategory = 'other';
 // source: exercisegroup.go
 
 export interface ExerciseGroup extends BaseModel {
-  name: string;
-  description?: string;
+  name?: string;
   owner: string;
 }
 export interface ExerciseGroupMember extends BaseModel {

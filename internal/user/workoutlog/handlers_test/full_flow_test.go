@@ -90,15 +90,15 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &mainSection)
 
 	// 6. Add exercises to the workout template sections
-	w = doJSON(r, "POST", "/api/user/workout-section-exercises", map[string]any{
-		"workoutSectionId": mainSection.ID, "exerciseSchemeId": scheme.ID, "position": 0,
+	w = doJSON(r, "POST", "/api/user/workout-section-items", map[string]any{
+		"workoutSectionId": mainSection.ID, "type": "exercise", "exerciseSchemeId": scheme.ID, "position": 0,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section exercise 1: status = %d", w.Code)
 	}
 
-	w = doJSON(r, "POST", "/api/user/workout-section-exercises", map[string]any{
-		"workoutSectionId": mainSection.ID, "exerciseSchemeId": scheme2.ID, "position": 1,
+	w = doJSON(r, "POST", "/api/user/workout-section-items", map[string]any{
+		"workoutSectionId": mainSection.ID, "type": "exercise", "exerciseSchemeId": scheme2.ID, "position": 1,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section exercise 2: status = %d", w.Code)
@@ -113,8 +113,8 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	if len(wkt.Sections) != 2 {
 		t.Fatalf("expected 2 sections, got %d", len(wkt.Sections))
 	}
-	if len(wkt.Sections[1].Exercises) != 2 {
-		t.Fatalf("expected 2 exercises in main section, got %d", len(wkt.Sections[1].Exercises))
+	if len(wkt.Sections[1].Items) != 2 {
+		t.Fatalf("expected 2 items in main section, got %d", len(wkt.Sections[1].Items))
 	}
 	if wkt.Sections[1].RestBetweenExercises == nil || *wkt.Sections[1].RestBetweenExercises != 120 {
 		t.Error("workout section restBetweenExercises mismatch")

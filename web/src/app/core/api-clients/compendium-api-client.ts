@@ -5,6 +5,7 @@ import {
   Exercise,
   Equipment,
   ExerciseGroup,
+  ExerciseGroupMember,
   ExerciseRelationship,
   EquipmentRelationship,
 } from '$generated/models';
@@ -147,6 +148,27 @@ export class CompendiumApiClient {
 
   deleteAllExerciseVersions(id: number): Promise<void> {
     return firstValueFrom(this.http.delete<void>(`/api/exercises/${id}/versions`));
+  }
+
+  fetchExerciseGroupMembers(
+    filters: Record<string, string | number | undefined>,
+  ): Promise<ExerciseGroupMember[]> {
+    return firstValueFrom(
+      this.http.get<ExerciseGroupMember[]>('/api/exercise-group-members', {
+        params: buildParams(filters),
+      }),
+    );
+  }
+
+  createExerciseGroupMember(data: {
+    groupId: number;
+    exerciseId: number;
+  }): Promise<ExerciseGroupMember> {
+    return firstValueFrom(this.http.post<ExerciseGroupMember>('/api/exercise-group-members', data));
+  }
+
+  deleteExerciseGroupMember(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/exercise-group-members/${id}`));
   }
 
   fetchExerciseRelationships(

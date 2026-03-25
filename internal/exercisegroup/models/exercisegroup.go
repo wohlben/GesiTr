@@ -4,8 +4,7 @@ import "gesitr/internal/shared"
 
 type ExerciseGroup struct {
 	shared.BaseModel `tstype:",extends"`
-	Name             string  `json:"name"`
-	Description      *string `json:"description"`
+	Name             *string `json:"name"`
 	Owner            string  `json:"owner"`
 }
 

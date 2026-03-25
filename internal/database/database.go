@@ -13,8 +13,14 @@ import (
 var DB *gorm.DB
 
 func InitDB(path string) error {
+	var dsn string
+	if path == ":memory:" {
+		dsn = "file::memory:?_foreign_keys=on&mode=memory&cache=shared"
+	} else {
+		dsn = "file:" + path + "?_foreign_keys=on&mode=rwc"
+	}
 	var err error
-	DB, err = gorm.Open(sqlite.Open("file:"+path+"?_foreign_keys=on&mode=rwc"), &gorm.Config{
+	DB, err = gorm.Open(sqlite.Open(dsn), &gorm.Config{
 		Logger: gormlog.New(log.Default(), gormlog.Config{
 			IgnoreRecordNotFoundError: true,
 		}),

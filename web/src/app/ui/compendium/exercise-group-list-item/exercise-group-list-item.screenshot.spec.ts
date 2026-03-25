@@ -11,13 +11,11 @@ const group: ExerciseGroup = {
   createdAt: '2024-01-15T10:00:00Z',
   updatedAt: '2024-01-15T10:00:00Z',
   name: 'Push Exercises',
-  description: 'All pushing movements including bench press variations',
   owner: 'admin',
 };
 
 const columns: DataTableColumn[] = [
   { label: 'Name' },
-  { label: 'Description' },
   { label: 'Created by', defaultHidden: true },
   { label: 'Created at', defaultHidden: true },
   { label: 'Updated at', defaultHidden: true },

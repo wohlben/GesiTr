@@ -14,7 +14,7 @@ import (
 func preloadWorkout(db *gorm.DB) *gorm.DB {
 	return db.Preload("Sections", func(db *gorm.DB) *gorm.DB {
 		return db.Order("position")
-	}).Preload("Sections.Exercises", func(db *gorm.DB) *gorm.DB {
+	}).Preload("Sections.Items", func(db *gorm.DB) *gorm.DB {
 		return db.Order("position")
 	})
 }
@@ -40,7 +40,7 @@ func ListWorkouts(ctx context.Context, input *ListWorkoutsInput) (*ListWorkoutsO
 }
 
 // CreateWorkout creates an empty workout. Add sections via
-// [CreateWorkoutSection] and exercises via [CreateWorkoutSectionExercise].
+// [CreateWorkoutSection] and items via [CreateWorkoutSectionItem].
 // POST /api/user/workouts
 //
 // OpenAPI: /api/docs#/operations/CreateWorkout

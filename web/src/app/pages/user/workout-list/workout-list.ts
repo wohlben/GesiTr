@@ -147,7 +147,7 @@ export class WorkoutList {
       id: w.id,
       name: w.name,
       sectionCount: w.sections?.length ?? 0,
-      exerciseCount: w.sections?.reduce((sum, s) => sum + (s.exercises?.length ?? 0), 0) ?? 0,
+      exerciseCount: w.sections?.reduce((sum, s) => sum + (s.items?.length ?? 0), 0) ?? 0,
     }));
   });
 

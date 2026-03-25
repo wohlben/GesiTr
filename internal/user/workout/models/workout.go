@@ -19,17 +19,27 @@ const (
 
 type WorkoutSection struct {
 	shared.BaseModel     `tstype:",extends"`
-	WorkoutID            uint                     `json:"workoutId"`
-	Type                 WorkoutSectionType       `json:"type"`
-	Label                *string                  `json:"label"`
-	Position             int                      `json:"position"`
-	RestBetweenExercises *int                     `json:"restBetweenExercises"`
-	Exercises            []WorkoutSectionExercise `json:"exercises" gorm:"-"`
+	WorkoutID            uint                 `json:"workoutId"`
+	Type                 WorkoutSectionType   `json:"type"`
+	Label                *string              `json:"label"`
+	Position             int                  `json:"position"`
+	RestBetweenExercises *int                 `json:"restBetweenExercises"`
+	Items                []WorkoutSectionItem `json:"items" gorm:"-"`
 }
 
-type WorkoutSectionExercise struct {
+type WorkoutSectionItemType string
+
+const (
+	WorkoutSectionItemTypeExercise      WorkoutSectionItemType = "exercise"
+	WorkoutSectionItemTypeExerciseGroup WorkoutSectionItemType = "exercise_group"
+)
+
+type WorkoutSectionItem struct {
 	shared.BaseModel `tstype:",extends"`
-	WorkoutSectionID uint `json:"workoutSectionId"`
-	ExerciseSchemeID uint `json:"exerciseSchemeId"`
-	Position         int  `json:"position"`
+	WorkoutSectionID uint                   `json:"workoutSectionId"`
+	Type             WorkoutSectionItemType `json:"type"`
+	ExerciseSchemeID *uint                  `json:"exerciseSchemeId"`
+	ExerciseGroupID  *uint                  `json:"exerciseGroupId"`
+	Data             *string                `json:"data"`
+	Position         int                    `json:"position"`
 }

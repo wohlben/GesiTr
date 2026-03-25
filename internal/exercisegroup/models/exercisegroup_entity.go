@@ -7,8 +7,7 @@ import (
 
 type ExerciseGroupEntity struct {
 	shared.BaseModel
-	Name         string `gorm:"not null"`
-	Description  *string
+	Name         *string
 	Owner        string                           `gorm:"not null"`
 	OwnerProfile *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
 }
@@ -17,19 +16,17 @@ func (ExerciseGroupEntity) TableName() string { return "exercise_groups" }
 
 func (e *ExerciseGroupEntity) ToDTO() ExerciseGroup {
 	return ExerciseGroup{
-		BaseModel:   e.BaseModel,
-		Name:        e.Name,
-		Description: e.Description,
-		Owner:       e.Owner,
+		BaseModel: e.BaseModel,
+		Name:      e.Name,
+		Owner:     e.Owner,
 	}
 }
 
 func ExerciseGroupFromDTO(dto ExerciseGroup) ExerciseGroupEntity {
 	return ExerciseGroupEntity{
-		BaseModel:   dto.BaseModel,
-		Name:        dto.Name,
-		Description: dto.Description,
-		Owner:       dto.Owner,
+		BaseModel: dto.BaseModel,
+		Name:      dto.Name,
+		Owner:     dto.Owner,
 	}
 }
 

@@ -142,7 +142,6 @@ export async function createExerciseGroup(
 ) {
   const data = {
     name: 'Test Exercise Group',
-    description: '',
     ...overrides,
   };
   const res = await request.post('/api/exercise-groups', { data });
@@ -224,27 +223,28 @@ export async function deleteWorkoutSection(request: APIRequestContext, id: numbe
   await request.delete(`/api/user/workout-sections/${id}`);
 }
 
-export async function createWorkoutSectionExercise(
+export async function createWorkoutSectionItem(
   request: APIRequestContext,
   overrides: Record<string, unknown> = {},
 ) {
   const data = {
+    type: 'exercise',
     position: 0,
     ...overrides,
   };
-  const res = await request.post('/api/user/workout-section-exercises', { data });
+  const res = await request.post('/api/user/workout-section-items', { data });
   expect(
     res.ok(),
-    `Failed to create workout section exercise: ${await res.text()}`,
+    `Failed to create workout section item: ${await res.text()}`,
   ).toBeTruthy();
   return res.json();
 }
 
-export async function deleteWorkoutSectionExercise(
+export async function deleteWorkoutSectionItem(
   request: APIRequestContext,
   id: number,
 ) {
-  await request.delete(`/api/user/workout-section-exercises/${id}`);
+  await request.delete(`/api/user/workout-section-items/${id}`);
 }
 
 export async function fetchWorkoutLogs(

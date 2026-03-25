@@ -19,7 +19,10 @@ import { ExerciseConfig } from '$ui/exercise-config/exercise-config';
               <h3 hlmDialogTitle>{{ t('user.workoutLog.addExerciseTitle') }}</h3>
             </hlm-dialog-header>
 
-            <app-exercise-config #exerciseConfig />
+            <app-exercise-config
+              #exerciseConfig
+              [preselectedExerciseId]="preselectedExerciseId()"
+            />
 
             <!-- Actions -->
             <hlm-dialog-footer>
@@ -52,6 +55,7 @@ export class AddExerciseDialog {
   sectionId = input.required<number>();
   logId = input.required<number>();
   exerciseCount = input(0);
+  preselectedExerciseId = input<number | null>(null);
 
   exerciseAdded = output<{
     exerciseLogId: number;

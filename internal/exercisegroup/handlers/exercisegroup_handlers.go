@@ -20,7 +20,7 @@ func ListExerciseGroups(ctx context.Context, input *ListExerciseGroupsInput) (*L
 
 	if input.Q != "" {
 		pattern := "%" + input.Q + "%"
-		db = db.Where("name LIKE ?", pattern)
+		db = db.Where("name IS NOT NULL AND name LIKE ?", pattern)
 	}
 
 	var total int64
@@ -49,8 +49,7 @@ func ListExerciseGroups(ctx context.Context, input *ListExerciseGroupsInput) (*L
 // OpenAPI: /api/docs#/operations/CreateExerciseGroup
 func CreateExerciseGroup(ctx context.Context, input *CreateExerciseGroupInput) (*CreateExerciseGroupOutput, error) {
 	dto := models.ExerciseGroup{
-		Name:        input.Body.Name,
-		Description: input.Body.Description,
+		Name: input.Body.Name,
 	}
 
 	entity := models.ExerciseGroupFromDTO(dto)
@@ -105,8 +104,7 @@ func UpdateExerciseGroup(ctx context.Context, input *UpdateExerciseGroupInput) (
 	}
 
 	dto := models.ExerciseGroup{
-		Name:        input.Body.Name,
-		Description: input.Body.Description,
+		Name: input.Body.Name,
 	}
 
 	entity := models.ExerciseGroupFromDTO(dto)

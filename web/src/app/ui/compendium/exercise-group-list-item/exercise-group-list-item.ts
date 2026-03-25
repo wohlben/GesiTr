@@ -15,14 +15,17 @@ import { SlugifyPipe } from '$ui/pipes/slugify';
       <span class="inline-flex items-center gap-1">
         {{ group().name }}
         <a
-          [routerLink]="['/compendium/exercise-groups', group().id, group().name | slugify]"
+          [routerLink]="[
+            '/compendium/exercise-groups',
+            group().id,
+            group().name || 'group' | slugify,
+          ]"
           class="inline-flex items-center justify-center rounded-full p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
         >
           <ng-icon hlm name="lucideExternalLink" size="sm" />
         </a>
       </span>
     </td>
-    <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">{{ group().description }}</td>
     <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
       {{ group().owner }}
     </td>

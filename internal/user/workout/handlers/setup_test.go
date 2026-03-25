@@ -13,6 +13,8 @@ import (
 	equipmentmodels "gesitr/internal/equipment/models"
 	exercisehandlers "gesitr/internal/exercise/handlers"
 	exercisemodels "gesitr/internal/exercise/models"
+	exercisegrouphandlers "gesitr/internal/exercisegroup/handlers"
+	exercisegroupmodels "gesitr/internal/exercisegroup/models"
 	"gesitr/internal/humaconfig"
 	profilemodels "gesitr/internal/profile/models"
 	"gesitr/internal/user/workout/models"
@@ -48,9 +50,11 @@ func setupTestDB(t *testing.T) {
 		&exercisemodels.ExerciseHistoryEntity{},
 		&exercisemodels.ExerciseSchemeEntity{},
 		&equipmentmodels.EquipmentEntity{},
+		&exercisegroupmodels.ExerciseGroupEntity{},
+		&exercisegroupmodels.ExerciseGroupMemberEntity{},
 		&models.WorkoutEntity{},
 		&models.WorkoutSectionEntity{},
-		&models.WorkoutSectionExerciseEntity{},
+		&models.WorkoutSectionItemEntity{},
 	)
 	db.Create(&profilemodels.UserProfileEntity{ID: "alice", Name: "alice"})
 	db.Create(&profilemodels.UserProfileEntity{ID: "bob", Name: "bob"})
@@ -64,6 +68,7 @@ func newRouter() *gin.Engine {
 
 	humaAPI := humaconfig.NewAPI(r, api)
 	exercisehandlers.RegisterRoutes(humaAPI)
+	exercisegrouphandlers.RegisterRoutes(humaAPI)
 	RegisterRoutes(humaAPI)
 
 	return r

@@ -73,12 +73,14 @@ export const WorkoutStartStore = signalStore(
         // 1. Fetch all schemes in parallel
         const schemeResults = await Promise.all(
           sections.flatMap((s) =>
-            (s.exercises ?? []).map((ex) =>
-              userApi
-                .fetchExerciseScheme(ex.exerciseSchemeId)
-                .then((scheme) => ({ schemeId: ex.exerciseSchemeId, scheme }))
-                .catch(() => null),
-            ),
+            (s.items ?? [])
+              .filter((item) => item.type === 'exercise' && item.exerciseSchemeId != null)
+              .map((item) =>
+                userApi
+                  .fetchExerciseScheme(item.exerciseSchemeId!)
+                  .then((scheme) => ({ schemeId: item.exerciseSchemeId!, scheme }))
+                  .catch(() => null),
+              ),
           ),
         );
         const schemes = schemeResults.filter(

@@ -1,7 +1,7 @@
 import { Component, inject, computed, effect, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { form, required, FormField } from '@angular/forms/signals';
+import { form, FormField } from '@angular/forms/signals';
 import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { exerciseGroupKeys } from '$core/query-keys';
@@ -9,11 +9,10 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { SlugifyPipe } from '$ui/pipes/slugify';
 import { PageLayout } from '../../../layout/page-layout';
 import { HlmInput } from '@spartan-ng/helm/input';
-import { HlmTextarea } from '@spartan-ng/helm/textarea';
 
 @Component({
   selector: 'app-exercise-group-edit',
-  imports: [PageLayout, FormField, RouterLink, HlmInput, HlmTextarea, TranslocoDirective],
+  imports: [PageLayout, FormField, RouterLink, HlmInput, TranslocoDirective],
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
@@ -30,25 +29,12 @@ import { HlmTextarea } from '@spartan-ng/helm/textarea';
         @if (isCreateMode() || groupQuery.data()) {
           <form (submit)="onSubmit(); $event.preventDefault()" class="space-y-4">
             <div>
-              <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >{{ t('fields.name') }} *</label
+              <label
+                for="name"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >{{ t('fields.name') }}</label
               >
               <input id="name" [formField]="groupForm.name" hlmInput class="mt-1" />
-            </div>
-
-            <div>
-              <label
-                for="description"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >{{ t('fields.description') }}</label
-              >
-              <textarea
-                id="description"
-                [formField]="groupForm.description"
-                rows="4"
-                hlmTextarea
-                class="mt-1"
-              ></textarea>
             </div>
 
             <div class="flex gap-2">
@@ -85,10 +71,8 @@ export class ExerciseGroupEdit {
   private id = computed(() => Number(this.params()?.get('id')));
   isCreateMode = computed(() => !this.params()?.get('id'));
 
-  model = signal({ name: '', description: '' });
-  groupForm = form(this.model, (f) => {
-    required(f.name);
-  });
+  model = signal({ name: '' });
+  groupForm = form(this.model);
 
   groupQuery = injectQuery(() => ({
     queryKey: exerciseGroupKeys.detail(this.id()),
@@ -119,7 +103,7 @@ export class ExerciseGroupEdit {
       this.router.navigate([
         '/compendium/exercise-groups',
         result.id,
-        this.slugify.transform(result.name),
+        this.slugify.transform(result.name ?? 'group'),
       ]);
     },
   }));
@@ -136,8 +120,7 @@ export class ExerciseGroupEdit {
       const data = this.groupQuery.data();
       if (data) {
         this.model.set({
-          name: data.name,
-          description: data.description ?? '',
+          name: data.name ?? '',
         });
       }
     });
@@ -147,8 +130,7 @@ export class ExerciseGroupEdit {
     if (this.groupForm().valid()) {
       const val = this.model();
       const payload = {
-        name: val.name,
-        description: val.description || undefined,
+        name: val.name || undefined,
       };
       if (this.isCreateMode()) {
         this.createMutation.mutate(payload);

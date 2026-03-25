@@ -56,7 +56,7 @@ func setupTestDB(t *testing.T) {
 		&equipmentmodels.EquipmentEntity{},
 		&workoutmodels.WorkoutEntity{},
 		&workoutmodels.WorkoutSectionEntity{},
-		&workoutmodels.WorkoutSectionExerciseEntity{},
+		&workoutmodels.WorkoutSectionItemEntity{},
 		&workoutlogmodels.WorkoutLogEntity{},
 		&workoutlogmodels.WorkoutLogSectionEntity{},
 		&workoutlogmodels.WorkoutLogExerciseEntity{},

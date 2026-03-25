@@ -11,6 +11,7 @@ type WorkoutLogExercise struct {
 	WorkoutLogSectionID    uint                 `json:"workoutLogSectionId"`
 	WorkoutLogID           uint                 `json:"workoutLogId"`
 	SourceExerciseSchemeID uint                 `json:"sourceExerciseSchemeId"`
+	SourceExerciseGroupID  *uint                `json:"sourceExerciseGroupId"`
 	Position               int                  `json:"position"`
 	Status                 WorkoutLogItemStatus `json:"status"`
 	StatusChangedAt        *time.Time           `json:"statusChangedAt"`

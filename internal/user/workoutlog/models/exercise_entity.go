@@ -8,9 +8,10 @@ import (
 
 type WorkoutLogExerciseEntity struct {
 	shared.BaseModel
-	WorkoutLogSectionID    uint                 `gorm:"not null;index"`
-	WorkoutLogID           uint                 `gorm:"not null;index"`
-	SourceExerciseSchemeID uint                 `gorm:"not null"`
+	WorkoutLogSectionID    uint `gorm:"not null;index"`
+	WorkoutLogID           uint `gorm:"not null;index"`
+	SourceExerciseSchemeID uint `gorm:"not null"`
+	SourceExerciseGroupID  *uint
 	Position               int                  `gorm:"not null"`
 	Status                 WorkoutLogItemStatus `gorm:"not null;default:'planning'"`
 	StatusChangedAt        *time.Time
@@ -31,6 +32,7 @@ func (e *WorkoutLogExerciseEntity) ToDTO() WorkoutLogExercise {
 		WorkoutLogSectionID:    e.WorkoutLogSectionID,
 		WorkoutLogID:           e.WorkoutLogID,
 		SourceExerciseSchemeID: e.SourceExerciseSchemeID,
+		SourceExerciseGroupID:  e.SourceExerciseGroupID,
 		Position:               e.Position,
 		Status:                 e.Status,
 		StatusChangedAt:        e.StatusChangedAt,
@@ -50,6 +52,7 @@ func WorkoutLogExerciseFromDTO(dto WorkoutLogExercise) WorkoutLogExerciseEntity 
 		WorkoutLogSectionID:    dto.WorkoutLogSectionID,
 		WorkoutLogID:           dto.WorkoutLogID,
 		SourceExerciseSchemeID: dto.SourceExerciseSchemeID,
+		SourceExerciseGroupID:  dto.SourceExerciseGroupID,
 		Position:               dto.Position,
 		Status:                 dto.Status,
 		StatusChangedAt:        dto.StatusChangedAt,

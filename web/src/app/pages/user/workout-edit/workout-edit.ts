@@ -1,20 +1,34 @@
 import { Component, inject, computed, effect, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { form, required, applyEach, FormField } from '@angular/forms/signals';
+import { form, required, FormField } from '@angular/forms/signals';
 import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { userExerciseKeys, workoutKeys, exerciseSchemeKeys } from '$core/query-keys';
-import { WorkoutSectionTypeMain, WorkoutSectionTypeSupplementary } from '$generated/user-models';
+import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
+import {
+  userExerciseKeys,
+  workoutKeys,
+  exerciseSchemeKeys,
+  exerciseGroupKeys,
+} from '$core/query-keys';
+import {
+  WorkoutSectionTypeMain,
+  WorkoutSectionTypeSupplementary,
+  WorkoutSectionItemTypeExercise,
+  WorkoutSectionItemTypeExerciseGroup,
+} from '$generated/user-models';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmInput } from '@spartan-ng/helm/input';
 import { HlmTextarea } from '@spartan-ng/helm/textarea';
+import { ExerciseGroupConfig } from '$ui/exercise-group-config/exercise-group-config';
 
-interface WorkoutExerciseModel {
+interface WorkoutItemModel {
+  itemType: string;
+  // exercise fields (used when itemType === 'exercise')
   existingSchemeId: number | null;
   exerciseId: number | null;
   measurementType: string;
@@ -26,13 +40,17 @@ interface WorkoutExerciseModel {
   duration: number | null;
   distance: number | null;
   targetTime: number | null;
+  // exercise_group fields (used when itemType === 'exercise_group')
+  exerciseGroupId: number | null;
+  newGroupName: string;
+  newGroupMembers: number[];
 }
 
 interface WorkoutSectionModel {
   type: string;
   label: string;
   restBetweenExercises: number | null;
-  exercises: WorkoutExerciseModel[];
+  items: WorkoutItemModel[];
 }
 
 interface WorkoutModel {
@@ -40,6 +58,42 @@ interface WorkoutModel {
   notes: string;
   sections: WorkoutSectionModel[];
 }
+
+const EMPTY_EXERCISE_ITEM: WorkoutItemModel = {
+  itemType: 'exercise',
+  existingSchemeId: null,
+  exerciseId: null,
+  measurementType: 'REP_BASED',
+  sets: null,
+  reps: null,
+  weight: null,
+  restBetweenSets: null,
+  timePerRep: null,
+  duration: null,
+  distance: null,
+  targetTime: null,
+  exerciseGroupId: null,
+  newGroupName: '',
+  newGroupMembers: [],
+};
+
+const EMPTY_GROUP_ITEM: WorkoutItemModel = {
+  itemType: 'exercise_group',
+  existingSchemeId: null,
+  exerciseId: null,
+  measurementType: 'REP_BASED',
+  sets: null,
+  reps: null,
+  weight: null,
+  restBetweenSets: null,
+  timePerRep: null,
+  duration: null,
+  distance: null,
+  targetTime: null,
+  exerciseGroupId: null,
+  newGroupName: '',
+  newGroupMembers: [],
+};
 
 @Component({
   selector: 'app-workout-edit',
@@ -53,6 +107,7 @@ interface WorkoutModel {
     HlmInput,
     HlmTextarea,
     TranslocoDirective,
+    ExerciseGroupConfig,
   ],
   template: `
     <ng-container *transloco="let t">
@@ -139,9 +194,9 @@ interface WorkoutModel {
                     </label>
                   </div>
 
-                  <!-- Exercises in section -->
+                  <!-- Items in section -->
                   <div class="space-y-3">
-                    @for (exercise of section.exercises; track $index; let ei = $index) {
+                    @for (item of section.items; track $index; let ei = $index) {
                       <div
                         class="rounded-md border border-gray-100 bg-gray-50 p-3 dark:border-gray-600 dark:bg-gray-800/50"
                       >
@@ -151,175 +206,221 @@ interface WorkoutModel {
                           </span>
                           <button
                             type="button"
-                            (click)="removeExercise(si, ei)"
+                            (click)="removeItem(si, ei)"
                             class="text-xs text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
                           >
                             {{ t('common.remove') }}
                           </button>
                         </div>
 
-                        <div class="mb-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                          <div>
-                            <span
-                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                              >{{ t('ui.exerciseConfig.exerciseLabel') }}</span
-                            >
-                            <brn-select
-                              [formField]="exercise.exerciseId"
-                              class="mt-1"
-                              hlm
-                              [placeholder]="t('common.select')"
-                            >
-                              <hlm-select-trigger class="w-full">
-                                <hlm-select-value />
-                              </hlm-select-trigger>
-                              <hlm-select-content>
-                                @for (ue of enrichedUserExercises(); track ue.id) {
-                                  <hlm-option [value]="ue.id">{{ ue.name }}</hlm-option>
-                                }
-                              </hlm-select-content>
-                            </brn-select>
-                          </div>
-                          <div>
-                            <span
-                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                              >{{ t('fields.measurementType') }}</span
-                            >
-                            <brn-select [formField]="exercise.measurementType" class="mt-1" hlm>
-                              <hlm-select-trigger class="w-full">
-                                <hlm-select-value />
-                              </hlm-select-trigger>
-                              <hlm-select-content>
-                                <hlm-option value="REP_BASED">{{
-                                  t('enums.measurementType.REP_BASED')
-                                }}</hlm-option>
-                                <hlm-option value="TIME_BASED">{{
-                                  t('enums.measurementType.TIME_BASED')
-                                }}</hlm-option>
-                                <hlm-option value="DISTANCE_BASED">{{
-                                  t('enums.measurementType.DISTANCE_BASED')
-                                }}</hlm-option>
-                              </hlm-select-content>
-                            </brn-select>
-                          </div>
+                        <!-- Item type selector -->
+                        <div class="mb-2">
+                          <span
+                            class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                            >{{ t('fields.itemType') }}</span
+                          >
+                          <brn-select [formField]="item.itemType" class="mt-1" hlm>
+                            <hlm-select-trigger class="w-full">
+                              <hlm-select-value />
+                            </hlm-select-trigger>
+                            <hlm-select-content>
+                              <hlm-option [value]="ITEM_TYPE_EXERCISE">{{
+                                t('enums.workoutSectionItemType.exercise')
+                              }}</hlm-option>
+                              <hlm-option [value]="ITEM_TYPE_GROUP">{{
+                                t('enums.workoutSectionItemType.exercise_group')
+                              }}</hlm-option>
+                            </hlm-select-content>
+                          </brn-select>
                         </div>
 
-                        <!-- REP_BASED fields -->
-                        @if (exercise.measurementType().value() === 'REP_BASED') {
-                          <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                            <label
-                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                            >
-                              {{ t('fields.sets') }}
-                              <input
-                                type="number"
-                                [formField]="exercise.sets"
-                                hlmInput
+                        @if (item.itemType().value() === 'exercise') {
+                          <!-- Exercise type: exercise picker + scheme fields -->
+                          <div class="mb-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                            <div>
+                              <span
+                                class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                                >{{ t('ui.exerciseConfig.exerciseLabel') }}</span
+                              >
+                              <brn-select
+                                [formField]="item.exerciseId"
                                 class="mt-1"
-                              />
-                            </label>
-                            <label
-                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                            >
-                              {{ t('fields.reps') }}
-                              <input
-                                type="number"
-                                [formField]="exercise.reps"
-                                hlmInput
-                                class="mt-1"
-                              />
-                            </label>
-                            <label
-                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                            >
-                              {{ t('fields.weightKg') }}
-                              <input
-                                type="number"
-                                [formField]="exercise.weight"
-                                hlmInput
-                                class="mt-1"
-                              />
-                            </label>
-                            <label
-                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                            >
-                              {{ t('fields.restSeconds') }}
-                              <input
-                                type="number"
-                                [formField]="exercise.restBetweenSets"
-                                hlmInput
-                                class="mt-1"
-                              />
-                            </label>
+                                hlm
+                                [placeholder]="t('common.select')"
+                              >
+                                <hlm-select-trigger class="w-full">
+                                  <hlm-select-value />
+                                </hlm-select-trigger>
+                                <hlm-select-content>
+                                  @for (ue of enrichedUserExercises(); track ue.id) {
+                                    <hlm-option [value]="ue.id">{{ ue.name }}</hlm-option>
+                                  }
+                                </hlm-select-content>
+                              </brn-select>
+                            </div>
+                            <div>
+                              <span
+                                class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                                >{{ t('fields.measurementType') }}</span
+                              >
+                              <brn-select [formField]="item.measurementType" class="mt-1" hlm>
+                                <hlm-select-trigger class="w-full">
+                                  <hlm-select-value />
+                                </hlm-select-trigger>
+                                <hlm-select-content>
+                                  <hlm-option value="REP_BASED">{{
+                                    t('enums.measurementType.REP_BASED')
+                                  }}</hlm-option>
+                                  <hlm-option value="TIME_BASED">{{
+                                    t('enums.measurementType.TIME_BASED')
+                                  }}</hlm-option>
+                                  <hlm-option value="DISTANCE_BASED">{{
+                                    t('enums.measurementType.DISTANCE_BASED')
+                                  }}</hlm-option>
+                                </hlm-select-content>
+                              </brn-select>
+                            </div>
                           </div>
+
+                          <!-- REP_BASED fields -->
+                          @if (item.measurementType().value() === 'REP_BASED') {
+                            <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                              <label
+                                class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                              >
+                                {{ t('fields.sets') }}
+                                <input
+                                  type="number"
+                                  [formField]="item.sets"
+                                  hlmInput
+                                  class="mt-1"
+                                />
+                              </label>
+                              <label
+                                class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                              >
+                                {{ t('fields.reps') }}
+                                <input
+                                  type="number"
+                                  [formField]="item.reps"
+                                  hlmInput
+                                  class="mt-1"
+                                />
+                              </label>
+                              <label
+                                class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                              >
+                                {{ t('fields.weightKg') }}
+                                <input
+                                  type="number"
+                                  [formField]="item.weight"
+                                  hlmInput
+                                  class="mt-1"
+                                />
+                              </label>
+                              <label
+                                class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                              >
+                                {{ t('fields.restSeconds') }}
+                                <input
+                                  type="number"
+                                  [formField]="item.restBetweenSets"
+                                  hlmInput
+                                  class="mt-1"
+                                />
+                              </label>
+                            </div>
+                          }
+
+                          <!-- TIME_BASED fields -->
+                          @if (item.measurementType().value() === 'TIME_BASED') {
+                            <div class="grid grid-cols-2 gap-2">
+                              <label
+                                class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                              >
+                                {{ t('fields.durationSeconds') }}
+                                <input
+                                  type="number"
+                                  [formField]="item.duration"
+                                  hlmInput
+                                  class="mt-1"
+                                />
+                              </label>
+                              <label
+                                class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                              >
+                                {{ t('fields.timePerRepSeconds') }}
+                                <input
+                                  type="number"
+                                  [formField]="item.timePerRep"
+                                  hlmInput
+                                  class="mt-1"
+                                />
+                              </label>
+                            </div>
+                          }
+
+                          <!-- DISTANCE_BASED fields -->
+                          @if (item.measurementType().value() === 'DISTANCE_BASED') {
+                            <div class="grid grid-cols-2 gap-2">
+                              <label
+                                class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                              >
+                                {{ t('fields.distanceM') }}
+                                <input
+                                  type="number"
+                                  [formField]="item.distance"
+                                  hlmInput
+                                  class="mt-1"
+                                />
+                              </label>
+                              <label
+                                class="block text-xs font-medium text-gray-700 dark:text-gray-300"
+                              >
+                                {{ t('fields.targetTimeSeconds') }}
+                                <input
+                                  type="number"
+                                  [formField]="item.targetTime"
+                                  hlmInput
+                                  class="mt-1"
+                                />
+                              </label>
+                            </div>
+                          }
                         }
 
-                        <!-- TIME_BASED fields -->
-                        @if (exercise.measurementType().value() === 'TIME_BASED') {
-                          <div class="grid grid-cols-2 gap-2">
-                            <label
-                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                            >
-                              {{ t('fields.durationSeconds') }}
-                              <input
-                                type="number"
-                                [formField]="exercise.duration"
-                                hlmInput
-                                class="mt-1"
-                              />
-                            </label>
-                            <label
-                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                            >
-                              {{ t('fields.timePerRepSeconds') }}
-                              <input
-                                type="number"
-                                [formField]="exercise.timePerRep"
-                                hlmInput
-                                class="mt-1"
-                              />
-                            </label>
-                          </div>
-                        }
-
-                        <!-- DISTANCE_BASED fields -->
-                        @if (exercise.measurementType().value() === 'DISTANCE_BASED') {
-                          <div class="grid grid-cols-2 gap-2">
-                            <label
-                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                            >
-                              {{ t('fields.distanceM') }}
-                              <input
-                                type="number"
-                                [formField]="exercise.distance"
-                                hlmInput
-                                class="mt-1"
-                              />
-                            </label>
-                            <label
-                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                            >
-                              {{ t('fields.targetTimeSeconds') }}
-                              <input
-                                type="number"
-                                [formField]="exercise.targetTime"
-                                hlmInput
-                                class="mt-1"
-                              />
-                            </label>
-                          </div>
+                        @if (item.itemType().value() === 'exercise_group') {
+                          <app-exercise-group-config
+                            [existingGroups]="exerciseGroups()"
+                            [exercises]="enrichedUserExercises()"
+                            [value]="{
+                              exerciseGroupId: item.exerciseGroupId().value(),
+                              newGroupName: item.newGroupName().value(),
+                              newGroupMembers: item.newGroupMembers().value(),
+                            }"
+                            (valueChange)="onGroupConfigChange(si, ei, $event)"
+                          />
                         }
                       </div>
                     }
                   </div>
 
-                  <button
-                    type="button"
-                    (click)="addExercise(si)"
-                    class="mt-2 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-                  >
-                    {{ t('user.workouts.addExercise') }}
-                  </button>
+                  <div class="mt-2 flex gap-2">
+                    <button
+                      type="button"
+                      (click)="addItem(si, 'exercise')"
+                      class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                    >
+                      {{ t('user.workouts.addExercise') }}
+                    </button>
+                    <button
+                      type="button"
+                      (click)="addItem(si, 'exercise_group')"
+                      class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                    >
+                      {{ t('user.workouts.addExerciseGroup') }}
+                    </button>
+                  </div>
                 </div>
               }
             </div>
@@ -374,6 +475,7 @@ interface WorkoutModel {
 })
 export class WorkoutEdit {
   private userApi = inject(UserApiClient);
+  private compendiumApi = inject(CompendiumApiClient);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private queryClient = inject(QueryClient);
@@ -381,6 +483,8 @@ export class WorkoutEdit {
 
   readonly SECTION_TYPE_MAIN = WorkoutSectionTypeMain;
   readonly SECTION_TYPE_SUPPLEMENTARY = WorkoutSectionTypeSupplementary;
+  readonly ITEM_TYPE_EXERCISE = WorkoutSectionItemTypeExercise;
+  readonly ITEM_TYPE_GROUP = WorkoutSectionItemTypeExerciseGroup;
 
   private id = computed(() => Number(this.params()?.get('id')));
   isCreateMode = computed(() => !this.params()?.get('id'));
@@ -390,11 +494,6 @@ export class WorkoutEdit {
   model = signal<WorkoutModel>({ name: '', notes: '', sections: [] });
   workoutForm = form(this.model, (f) => {
     required(f.name);
-    applyEach(f.sections, (section) => {
-      applyEach(section.exercises, (exercise) => {
-        required(exercise.exerciseId);
-      });
-    });
   });
 
   // Existing workout data for edit mode
@@ -404,13 +503,21 @@ export class WorkoutEdit {
     enabled: !!this.id() && !this.isCreateMode(),
   }));
 
-  // User exercises for the picker dropdown — exercises are full entities now
+  // User exercises for the picker dropdown
   private userExercisesQuery = injectQuery(() => ({
     queryKey: userExerciseKeys.list(),
     queryFn: () => this.userApi.fetchUserExercises(),
   }));
 
   enrichedUserExercises = computed(() => this.userExercisesQuery.data() ?? []);
+
+  // Exercise groups for the group picker
+  private exerciseGroupsQuery = injectQuery(() => ({
+    queryKey: exerciseGroupKeys.list({}),
+    queryFn: () => this.compendiumApi.fetchExerciseGroups({}),
+  }));
+
+  exerciseGroups = computed(() => this.exerciseGroupsQuery.data()?.items ?? []);
 
   // Track original scheme IDs for cleanup in edit mode
   private originalSchemeIds = signal<number[]>([]);
@@ -446,7 +553,8 @@ export class WorkoutEdit {
           type: section.type,
           label: section.label ?? '',
           restBetweenExercises: section.restBetweenExercises ?? null,
-          exercises: (section.exercises ?? []).map(() => ({
+          items: (section.items ?? []).map((item) => ({
+            itemType: item.type ?? 'exercise',
             existingSchemeId: null,
             exerciseId: null,
             measurementType: 'REP_BASED',
@@ -458,59 +566,98 @@ export class WorkoutEdit {
             duration: null,
             distance: null,
             targetTime: null,
+            exerciseGroupId: item.exerciseGroupId ?? null,
+            newGroupName: '',
+            newGroupMembers: [],
           })),
         })),
       });
 
       const schemeIds: number[] = [];
       for (const section of data.sections ?? []) {
-        for (const ex of section.exercises ?? []) {
-          schemeIds.push(ex.exerciseSchemeId);
+        for (const item of section.items ?? []) {
+          if (item.exerciseSchemeId) schemeIds.push(item.exerciseSchemeId);
         }
       }
       this.originalSchemeIds.set(schemeIds);
-      this.loadSchemes(data.sections ?? []);
+      this.loadItemDetails(data.sections ?? []);
     });
   }
 
-  private async loadSchemes(
+  private async loadItemDetails(
     sections: NonNullable<ReturnType<typeof this.workoutQuery.data>>['sections'],
   ) {
     for (let si = 0; si < sections.length; si++) {
       const section = sections[si];
-      for (let ei = 0; ei < (section.exercises?.length ?? 0); ei++) {
-        const ex = section.exercises[ei];
-        try {
-          const scheme = await this.userApi.fetchExerciseScheme(ex.exerciseSchemeId);
-          this.model.update((m) => ({
-            ...m,
-            sections: m.sections.map((s, sIdx) =>
-              sIdx !== si
-                ? s
-                : {
-                    ...s,
-                    exercises: s.exercises.map((e, eIdx) =>
-                      eIdx !== ei
-                        ? e
-                        : {
-                            existingSchemeId: scheme.id,
-                            exerciseId: scheme.exerciseId,
-                            measurementType: scheme.measurementType || 'REP_BASED',
-                            sets: scheme.sets ?? null,
-                            reps: scheme.reps ?? null,
-                            weight: scheme.weight ?? null,
-                            restBetweenSets: scheme.restBetweenSets ?? null,
-                            timePerRep: scheme.timePerRep ?? null,
-                            duration: scheme.duration ?? null,
-                            distance: scheme.distance ?? null,
-                            targetTime: scheme.targetTime ?? null,
-                          },
-                    ),
-                  },
-            ),
-          }));
-        } catch {
-          // scheme may have been deleted
+      for (let ei = 0; ei < (section.items?.length ?? 0); ei++) {
+        const item = section.items[ei];
+
+        if (item.exerciseSchemeId) {
+          // Load scheme details for exercise items
+          try {
+            const scheme = await this.userApi.fetchExerciseScheme(item.exerciseSchemeId);
+            this.model.update((m) => ({
+              ...m,
+              sections: m.sections.map((s, sIdx) =>
+                sIdx !== si
+                  ? s
+                  : {
+                      ...s,
+                      items: s.items.map((e, eIdx) =>
+                        eIdx !== ei
+                          ? e
+                          : {
+                              ...e,
+                              existingSchemeId: scheme.id,
+                              exerciseId: scheme.exerciseId,
+                              measurementType: scheme.measurementType || 'REP_BASED',
+                              sets: scheme.sets ?? null,
+                              reps: scheme.reps ?? null,
+                              weight: scheme.weight ?? null,
+                              restBetweenSets: scheme.restBetweenSets ?? null,
+                              timePerRep: scheme.timePerRep ?? null,
+                              duration: scheme.duration ?? null,
+                              distance: scheme.distance ?? null,
+                              targetTime: scheme.targetTime ?? null,
+                            },
+                      ),
+                    },
+              ),
+            }));
+          } catch {
+            // scheme may have been deleted
+          }
+        }
+
+        if (item.exerciseGroupId) {
+          // Load group details (name + members) for exercise_group items
+          try {
+            const [group, members] = await Promise.all([
+              this.compendiumApi.fetchExerciseGroup(item.exerciseGroupId),
+              this.compendiumApi.fetchExerciseGroupMembers({ groupId: item.exerciseGroupId }),
+            ]);
+            this.model.update((m) => ({
+              ...m,
+              sections: m.sections.map((s, sIdx) =>
+                sIdx !== si
+                  ? s
+                  : {
+                      ...s,
+                      items: s.items.map((e, eIdx) =>
+                        eIdx !== ei
+                          ? e
+                          : {
+                              ...e,
+                              newGroupName: group.name ?? '',
+                              newGroupMembers: members.map((mem) => mem.exerciseId),
+                            },
+                      ),
+                    },
+              ),
+            }));
+          } catch {
+            // group may have been deleted
+          }
         }
       }
     }
@@ -525,7 +672,7 @@ export class WorkoutEdit {
           type: WorkoutSectionTypeMain,
           label: '',
           restBetweenExercises: null,
-          exercises: [],
+          items: [],
         },
       ],
     }));
@@ -538,7 +685,7 @@ export class WorkoutEdit {
     }));
   }
 
-  addExercise(sectionIndex: number) {
+  addItem(sectionIndex: number, itemType: 'exercise' | 'exercise_group') {
     this.model.update((m) => ({
       ...m,
       sections: m.sections.map((s, i) =>
@@ -546,28 +693,16 @@ export class WorkoutEdit {
           ? s
           : {
               ...s,
-              exercises: [
-                ...s.exercises,
-                {
-                  existingSchemeId: null,
-                  exerciseId: null,
-                  measurementType: 'REP_BASED',
-                  sets: null,
-                  reps: null,
-                  weight: null,
-                  restBetweenSets: null,
-                  timePerRep: null,
-                  duration: null,
-                  distance: null,
-                  targetTime: null,
-                },
+              items: [
+                ...s.items,
+                itemType === 'exercise' ? { ...EMPTY_EXERCISE_ITEM } : { ...EMPTY_GROUP_ITEM },
               ],
             },
       ),
     }));
   }
 
-  removeExercise(sectionIndex: number, exerciseIndex: number) {
+  removeItem(sectionIndex: number, itemIndex: number) {
     this.model.update((m) => ({
       ...m,
       sections: m.sections.map((s, i) =>
@@ -575,7 +710,34 @@ export class WorkoutEdit {
           ? s
           : {
               ...s,
-              exercises: s.exercises.filter((_, j) => j !== exerciseIndex),
+              items: s.items.filter((_, j) => j !== itemIndex),
+            },
+      ),
+    }));
+  }
+
+  onGroupConfigChange(
+    sectionIndex: number,
+    itemIndex: number,
+    value: { exerciseGroupId: number | null; newGroupName: string; newGroupMembers: number[] },
+  ) {
+    this.model.update((m) => ({
+      ...m,
+      sections: m.sections.map((s, i) =>
+        i !== sectionIndex
+          ? s
+          : {
+              ...s,
+              items: s.items.map((item, j) =>
+                j !== itemIndex
+                  ? item
+                  : {
+                      ...item,
+                      exerciseGroupId: value.exerciseGroupId,
+                      newGroupName: value.newGroupName,
+                      newGroupMembers: value.newGroupMembers,
+                    },
+              ),
             },
       ),
     }));
@@ -603,7 +765,7 @@ export class WorkoutEdit {
       notes: val.notes || undefined,
     });
 
-    await this.createSectionsAndExercises(workout.id, val.sections);
+    await this.createSectionsAndItems(workout.id, val.sections);
   }
 
   private async editFlow(val: WorkoutModel) {
@@ -615,10 +777,10 @@ export class WorkoutEdit {
       notes: val.notes || undefined,
     });
 
-    // Delete existing section exercises, then sections
+    // Delete existing section items, then sections
     for (const section of existingWorkout.sections ?? []) {
-      for (const ex of section.exercises ?? []) {
-        await this.userApi.deleteWorkoutSectionExercise(ex.id);
+      for (const item of section.items ?? []) {
+        await this.userApi.deleteWorkoutSectionItem(item.id);
       }
       await this.userApi.deleteWorkoutSection(section.id);
     }
@@ -626,8 +788,8 @@ export class WorkoutEdit {
     // Delete orphaned schemes
     const newSchemeIds = new Set<number>();
     for (const section of val.sections) {
-      for (const ex of section.exercises) {
-        if (ex.existingSchemeId) newSchemeIds.add(ex.existingSchemeId);
+      for (const item of section.items) {
+        if (item.existingSchemeId) newSchemeIds.add(item.existingSchemeId);
       }
     }
     for (const oldId of this.originalSchemeIds()) {
@@ -636,36 +798,12 @@ export class WorkoutEdit {
       }
     }
 
-    await this.createSectionsAndExercises(workoutId, val.sections);
+    await this.createSectionsAndItems(workoutId, val.sections);
   }
 
-  private async createSectionsAndExercises(workoutId: number, sections: WorkoutSectionModel[]) {
+  private async createSectionsAndItems(workoutId: number, sections: WorkoutSectionModel[]) {
     for (let si = 0; si < sections.length; si++) {
       const sectionVal = sections[si];
-
-      // Create schemes for each exercise
-      const schemeIds: number[] = [];
-      for (const ex of sectionVal.exercises) {
-        const schemeData: Record<string, unknown> = {
-          exerciseId: ex.exerciseId,
-          measurementType: ex.measurementType,
-        };
-        if (ex.measurementType === 'REP_BASED') {
-          if (ex.sets != null) schemeData['sets'] = ex.sets;
-          if (ex.reps != null) schemeData['reps'] = ex.reps;
-          if (ex.weight != null) schemeData['weight'] = ex.weight;
-          if (ex.restBetweenSets != null) schemeData['restBetweenSets'] = ex.restBetweenSets;
-        } else if (ex.measurementType === 'TIME_BASED') {
-          if (ex.duration != null) schemeData['duration'] = ex.duration;
-          if (ex.timePerRep != null) schemeData['timePerRep'] = ex.timePerRep;
-        } else if (ex.measurementType === 'DISTANCE_BASED') {
-          if (ex.distance != null) schemeData['distance'] = ex.distance;
-          if (ex.targetTime != null) schemeData['targetTime'] = ex.targetTime;
-        }
-
-        const scheme = await this.userApi.createExerciseScheme(schemeData);
-        schemeIds.push(scheme.id);
-      }
 
       // Create section
       const section = await this.userApi.createWorkoutSection({
@@ -676,13 +814,83 @@ export class WorkoutEdit {
         restBetweenExercises: sectionVal.restBetweenExercises ?? undefined,
       });
 
-      // Create section exercises
-      for (let ei = 0; ei < schemeIds.length; ei++) {
-        await this.userApi.createWorkoutSectionExercise({
-          workoutSectionId: section.id,
-          exerciseSchemeId: schemeIds[ei],
-          position: ei,
-        });
+      for (let ei = 0; ei < sectionVal.items.length; ei++) {
+        const item = sectionVal.items[ei];
+
+        if (item.itemType === 'exercise') {
+          // Create scheme for exercise items
+          const schemeData: Record<string, unknown> = {
+            exerciseId: item.exerciseId,
+            measurementType: item.measurementType,
+          };
+          if (item.measurementType === 'REP_BASED') {
+            if (item.sets != null) schemeData['sets'] = item.sets;
+            if (item.reps != null) schemeData['reps'] = item.reps;
+            if (item.weight != null) schemeData['weight'] = item.weight;
+            if (item.restBetweenSets != null) schemeData['restBetweenSets'] = item.restBetweenSets;
+          } else if (item.measurementType === 'TIME_BASED') {
+            if (item.duration != null) schemeData['duration'] = item.duration;
+            if (item.timePerRep != null) schemeData['timePerRep'] = item.timePerRep;
+          } else if (item.measurementType === 'DISTANCE_BASED') {
+            if (item.distance != null) schemeData['distance'] = item.distance;
+            if (item.targetTime != null) schemeData['targetTime'] = item.targetTime;
+          }
+
+          const scheme = await this.userApi.createExerciseScheme(schemeData);
+          await this.userApi.createWorkoutSectionItem({
+            workoutSectionId: section.id,
+            type: 'exercise',
+            exerciseSchemeId: scheme.id,
+            position: ei,
+          });
+        } else {
+          // Exercise group items — create or update group
+          let groupId = item.exerciseGroupId;
+          if (groupId == null) {
+            // Create new group
+            const group = await this.compendiumApi.createExerciseGroup({
+              name: item.newGroupName || undefined,
+            });
+            groupId = group.id;
+            for (const exerciseId of item.newGroupMembers) {
+              await this.compendiumApi.createExerciseGroupMember({
+                groupId: group.id,
+                exerciseId,
+              });
+            }
+          } else {
+            // Update existing group: sync name and members
+            await this.compendiumApi.updateExerciseGroup(groupId, {
+              name: item.newGroupName || undefined,
+            });
+            const existingMembers = await this.compendiumApi.fetchExerciseGroupMembers({
+              groupId,
+            });
+            const wantedSet = new Set(item.newGroupMembers);
+            const existingMap = new Map(existingMembers.map((m) => [m.exerciseId, m.id]));
+            // Delete removed members
+            for (const m of existingMembers) {
+              if (!wantedSet.has(m.exerciseId)) {
+                await this.compendiumApi.deleteExerciseGroupMember(m.id);
+              }
+            }
+            // Add new members
+            for (const exerciseId of item.newGroupMembers) {
+              if (!existingMap.has(exerciseId)) {
+                await this.compendiumApi.createExerciseGroupMember({
+                  groupId,
+                  exerciseId,
+                });
+              }
+            }
+          }
+          await this.userApi.createWorkoutSectionItem({
+            workoutSectionId: section.id,
+            type: 'exercise_group',
+            exerciseGroupId: groupId,
+            position: ei,
+          });
+        }
       }
     }
   }
@@ -694,10 +902,10 @@ export class WorkoutEdit {
   private async deleteWorkout() {
     const workout = this.workoutQuery.data()!;
 
-    // Delete section exercises and sections
+    // Delete section items and sections
     for (const section of workout.sections ?? []) {
-      for (const ex of section.exercises ?? []) {
-        await this.userApi.deleteWorkoutSectionExercise(ex.id);
+      for (const item of section.items ?? []) {
+        await this.userApi.deleteWorkoutSectionItem(item.id);
       }
       await this.userApi.deleteWorkoutSection(section.id);
     }
