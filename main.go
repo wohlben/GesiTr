@@ -61,6 +61,21 @@ func runMigrations() {
 		database.DB.Exec("DROP INDEX IF EXISTS idx_owner_template")
 		database.DB.Exec("ALTER TABLE exercises DROP COLUMN template_id")
 	}
+
+	// Drop the template_id column from equipment if it exists.
+	var equipTemplateCount int64
+	database.DB.Raw("SELECT COUNT(*) FROM pragma_table_info('equipment') WHERE name = 'template_id'").Scan(&equipTemplateCount)
+	if equipTemplateCount > 0 {
+		database.DB.Exec("DROP INDEX IF EXISTS idx_equip_owner_template")
+		database.DB.Exec("ALTER TABLE equipment DROP COLUMN template_id")
+	}
+
+	// Drop the template_id column from exercise_groups if it exists.
+	var groupTemplateCount int64
+	database.DB.Raw("SELECT COUNT(*) FROM pragma_table_info('exercise_groups') WHERE name = 'template_id'").Scan(&groupTemplateCount)
+	if groupTemplateCount > 0 {
+		database.DB.Exec("ALTER TABLE exercise_groups DROP COLUMN template_id")
+	}
 }
 
 func autoMigrate() {

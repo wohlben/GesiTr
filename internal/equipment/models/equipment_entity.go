@@ -12,8 +12,7 @@ type EquipmentEntity struct {
 	Description  string
 	Category     EquipmentCategory `gorm:"not null"`
 	ImageUrl     *string
-	TemplateID   string                           `gorm:"not null;uniqueIndex:idx_equip_owner_template"`
-	Owner        string                           `gorm:"not null;index;uniqueIndex:idx_equip_owner_template"`
+	Owner        string                           `gorm:"not null;index"`
 	OwnerProfile *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
 	Public       bool                             `gorm:"not null;default:false;index"`
 	Version      int                              `gorm:"not null;default:0"`
@@ -29,7 +28,6 @@ func (e *EquipmentEntity) ToDTO() Equipment {
 		Description: e.Description,
 		Category:    e.Category,
 		ImageUrl:    e.ImageUrl,
-		TemplateID:  e.TemplateID,
 		Owner:       e.Owner,
 		Public:      e.Public,
 		Version:     e.Version,
@@ -44,7 +42,6 @@ func EquipmentFromDTO(dto Equipment) EquipmentEntity {
 		Description: dto.Description,
 		Category:    dto.Category,
 		ImageUrl:    dto.ImageUrl,
-		TemplateID:  dto.TemplateID,
 		Owner:       dto.Owner,
 		Public:      dto.Public,
 		Version:     dto.Version,

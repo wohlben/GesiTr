@@ -68,7 +68,7 @@ func RegisterRoutes(api huma.API) {
 	huma.Register(api, huma.Operation{
 		OperationID: "get-equipment-version",
 		Method:      http.MethodGet,
-		Path:        "/equipment/templates/{templateId}/versions/{version}",
+		Path:        "/equipment/{id}/versions/{version}",
 		Tags:        []string{"equipment"},
 		Summary:     "Get equipment version",
 	}, GetEquipmentVersion)

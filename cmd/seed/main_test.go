@@ -224,7 +224,7 @@ func TestSeedEquipment(t *testing.T) {
 		}
 
 		var eq equipmentModels.EquipmentEntity
-		database.DB.Where("template_id = ?", "barbell").First(&eq)
+		database.DB.Where("name = ?", "barbell").First(&eq)
 		if eq.Name != "barbell" || eq.Category != "free_weights" || eq.Owner != "sinon" || !eq.Public {
 			t.Errorf("field mismatch: %+v", eq)
 		}
@@ -574,7 +574,7 @@ func TestSeedExerciseGroups(t *testing.T) {
 		}
 
 		var g groupModels.ExerciseGroupEntity
-		database.DB.Where("template_id = ?", "push").First(&g)
+		database.DB.Where("name = ?", "Push Day").First(&g)
 		if g.Name != "Push Day" || g.Owner != "sinon" {
 			t.Errorf("field mismatch: %+v", g)
 		}

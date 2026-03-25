@@ -22,8 +22,8 @@ export const equipmentKeys = {
   detail: (id: number) => [...equipmentKeys.all(), 'detail', id] as const,
   permissions: (id: number) => [...equipmentKeys.all(), 'permissions', id] as const,
   versions: (id: number) => [...equipmentKeys.all(), 'versions', id] as const,
-  version: (templateId: string, version: number) =>
-    [...equipmentKeys.all(), 'version', templateId, version] as const,
+  version: (id: number, version: number) =>
+    [...equipmentKeys.all(), 'version', id, version] as const,
 };
 
 export const exerciseGroupKeys = {
@@ -36,6 +36,11 @@ export const exerciseGroupKeys = {
 export const exerciseRelationshipKeys = {
   all: () => ['exercise-relationships'] as const,
   list: (filters?: Filters) => [...exerciseRelationshipKeys.all(), 'list', filters] as const,
+};
+
+export const equipmentRelationshipKeys = {
+  all: () => ['equipment-relationships'] as const,
+  list: (filters?: Filters) => [...equipmentRelationshipKeys.all(), 'list', filters] as const,
 };
 
 export const userExerciseKeys = {

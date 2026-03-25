@@ -7,13 +7,13 @@ import (
 )
 
 type EquipmentBody struct {
-	Name        string                   `json:"name" required:"true"`
-	DisplayName string                   `json:"displayName" required:"true"`
-	Description string                   `json:"description" required:"false"`
-	Category    models.EquipmentCategory `json:"category" required:"true"`
-	ImageUrl    *string                  `json:"imageUrl,omitempty"`
-	TemplateID  string                   `json:"templateId" required:"false"`
-	Public      bool                     `json:"public" required:"false"`
+	Name              string                   `json:"name" required:"true"`
+	DisplayName       string                   `json:"displayName" required:"true"`
+	Description       string                   `json:"description" required:"false"`
+	Category          models.EquipmentCategory `json:"category" required:"true"`
+	ImageUrl          *string                  `json:"imageUrl,omitempty"`
+	Public            bool                     `json:"public" required:"false"`
+	SourceEquipmentID *uint                    `json:"sourceEquipmentId,omitempty" doc:"Source equipment ID for imports (creates forked+equivalent relationships)"`
 }
 
 type ListEquipmentInput struct {
@@ -76,8 +76,8 @@ type ListEquipmentVersionsOutput struct {
 }
 
 type GetEquipmentVersionInput struct {
-	TemplateID string `path:"templateId"`
-	Version    int    `path:"version"`
+	ID      uint `path:"id"`
+	Version int  `path:"version"`
 }
 
 type GetEquipmentVersionOutput struct {

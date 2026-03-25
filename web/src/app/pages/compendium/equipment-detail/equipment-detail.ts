@@ -4,7 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { equipmentKeys, userEquipmentKeys } from '$core/query-keys';
+import { equipmentKeys, equipmentRelationshipKeys, userEquipmentKeys } from '$core/query-keys';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
@@ -126,9 +126,19 @@ export class EquipmentDetail {
     enabled: !!this.id(),
   }));
 
-  userEquipmentQuery = injectQuery(() => ({
-    queryKey: userEquipmentKeys.list(),
-    queryFn: () => this.userApi.fetchUserEquipment(),
+  forkedRelationshipsQuery = injectQuery(() => ({
+    queryKey: equipmentRelationshipKeys.list({
+      toEquipmentId: this.id(),
+      relationshipType: 'forked',
+      owner: 'me',
+    }),
+    queryFn: () =>
+      this.api.fetchEquipmentRelationships({
+        toEquipmentId: this.id(),
+        relationshipType: 'forked',
+        owner: 'me',
+      }),
+    enabled: !!this.id(),
   }));
 
   permissionsQuery = injectQuery(() => ({
@@ -151,10 +161,9 @@ export class EquipmentDetail {
   hasHistory = computed(() => (this.versionsQuery.data()?.length ?? 0) > 1);
 
   alreadyAdded = computed(() => {
-    const templateId = this.equipmentQuery.data()?.templateId;
-    const userEquipment = this.userEquipmentQuery.data();
-    if (!templateId || !userEquipment) return undefined;
-    return userEquipment.find((ue) => ue.templateId === templateId);
+    const rels = this.forkedRelationshipsQuery.data();
+    if (!rels || rels.length === 0) return undefined;
+    return { id: rels[0].fromEquipmentId };
   });
 
   deleteMutation = injectMutation(() => ({
@@ -174,12 +183,15 @@ export class EquipmentDetail {
         description: equipment.description,
         category: equipment.category,
         imageUrl: equipment.imageUrl,
-        templateId: equipment.templateId,
         public: false,
-      });
+        sourceEquipmentId: equipment.id,
+      } as Record<string, unknown>);
     },
     onSuccess: (created) => {
       this.queryClient.invalidateQueries({ queryKey: userEquipmentKeys.all() });
+      this.queryClient.invalidateQueries({
+        queryKey: equipmentRelationshipKeys.all(),
+      });
       this.router.navigate(['/user/equipment', created.id]);
     },
   }));

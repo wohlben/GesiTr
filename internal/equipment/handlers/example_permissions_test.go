@@ -54,8 +54,7 @@ func ExampleGetEquipmentPermissions_owner() {
 		"name": "barbell",
 		"displayName": "Barbell",
 		"description": "Standard barbell",
-		"category": "free_weights",
-		"templateId": "barbell"
+		"category": "free_weights"
 	}`)
 
 	// Query permissions as the owner.
@@ -78,7 +77,6 @@ func ExampleGetEquipmentPermissions_nonOwnerPublic() {
 		"displayName": "Dumbbell",
 		"description": "Adjustable dumbbell",
 		"category": "free_weights",
-		"templateId": "dumbbell",
 		"public": true
 	}`)
 
@@ -101,8 +99,7 @@ func ExampleGetEquipmentPermissions_nonOwnerPrivate() {
 		"name": "custom-bar",
 		"displayName": "Custom Bar",
 		"description": "Private",
-		"category": "free_weights",
-		"templateId": "custom-bar"
+		"category": "free_weights"
 	}`)
 
 	// Query permissions as a different user.

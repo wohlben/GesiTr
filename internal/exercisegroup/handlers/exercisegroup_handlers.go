@@ -9,7 +9,6 @@ import (
 	"gesitr/internal/shared"
 
 	"github.com/danielgtaylor/huma/v2"
-	"github.com/google/uuid"
 )
 
 // ListExerciseGroups returns exercise groups, optionally filtered by name search.
@@ -50,13 +49,8 @@ func ListExerciseGroups(ctx context.Context, input *ListExerciseGroupsInput) (*L
 // OpenAPI: /api/docs#/operations/create-exercise-group
 func CreateExerciseGroup(ctx context.Context, input *CreateExerciseGroupInput) (*CreateExerciseGroupOutput, error) {
 	dto := models.ExerciseGroup{
-		TemplateID:  input.Body.TemplateID,
 		Name:        input.Body.Name,
 		Description: input.Body.Description,
-	}
-
-	if dto.TemplateID == "" {
-		dto.TemplateID = uuid.New().String()
 	}
 
 	entity := models.ExerciseGroupFromDTO(dto)
@@ -111,7 +105,6 @@ func UpdateExerciseGroup(ctx context.Context, input *UpdateExerciseGroupInput) (
 	}
 
 	dto := models.ExerciseGroup{
-		TemplateID:  input.Body.TemplateID,
 		Name:        input.Body.Name,
 		Description: input.Body.Description,
 	}

@@ -19,7 +19,11 @@ func ListEquipmentRelationships(ctx context.Context, input *ListEquipmentRelatio
 	db := database.DB.Model(&models.EquipmentRelationshipEntity{})
 
 	if input.Owner != "" {
-		db = db.Where("owner = ?", input.Owner)
+		owner := input.Owner
+		if owner == "me" {
+			owner = humaconfig.GetUserID(ctx)
+		}
+		db = db.Where("owner = ?", owner)
 	}
 	if input.FromEquipmentID != "" {
 		db = db.Where("from_equipment_id = ?", input.FromEquipmentID)

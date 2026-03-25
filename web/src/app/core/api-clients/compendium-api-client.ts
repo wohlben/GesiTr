@@ -1,7 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { Exercise, Equipment, ExerciseGroup, ExerciseRelationship } from '$generated/models';
+import {
+  Exercise,
+  Equipment,
+  ExerciseGroup,
+  ExerciseRelationship,
+  EquipmentRelationship,
+} from '$generated/models';
 import { PaginatedResponse } from './paginated-response';
 import { VersionEntry } from './version-entry';
 
@@ -87,11 +93,9 @@ export class CompendiumApiClient {
     );
   }
 
-  fetchEquipmentVersion(templateId: string, version: number): Promise<VersionEntry<Equipment>> {
+  fetchEquipmentVersion(id: number, version: number): Promise<VersionEntry<Equipment>> {
     return firstValueFrom(
-      this.http.get<VersionEntry<Equipment>>(
-        `/api/equipment/templates/${templateId}/versions/${version}`,
-      ),
+      this.http.get<VersionEntry<Equipment>>(`/api/equipment/${id}/versions/${version}`),
     );
   }
 
@@ -150,6 +154,16 @@ export class CompendiumApiClient {
   ): Promise<ExerciseRelationship[]> {
     return firstValueFrom(
       this.http.get<ExerciseRelationship[]>('/api/exercise-relationships', {
+        params: buildParams(filters),
+      }),
+    );
+  }
+
+  fetchEquipmentRelationships(
+    filters: Record<string, string | number | undefined>,
+  ): Promise<EquipmentRelationship[]> {
+    return firstValueFrom(
+      this.http.get<EquipmentRelationship[]>('/api/equipment-relationships', {
         params: buildParams(filters),
       }),
     );

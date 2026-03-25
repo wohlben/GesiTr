@@ -7,11 +7,11 @@ import (
 
 	"gesitr/internal/database"
 	"gesitr/internal/equipment/models"
+	relModels "gesitr/internal/equipmentrelationship/models"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/shared"
 
 	"github.com/danielgtaylor/huma/v2"
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -22,7 +22,6 @@ func equipmentDTOFromBody(body EquipmentBody) models.Equipment {
 		Description: body.Description,
 		Category:    body.Category,
 		ImageUrl:    body.ImageUrl,
-		TemplateID:  body.TemplateID,
 		Public:      body.Public,
 	}
 }
@@ -85,25 +84,55 @@ func ListEquipment(ctx context.Context, input *ListEquipmentInput) (*ListEquipme
 func CreateEquipment(ctx context.Context, input *CreateEquipmentInput) (*CreateEquipmentOutput, error) {
 	dto := equipmentDTOFromBody(input.Body)
 
-	if dto.TemplateID == "" {
-		dto.TemplateID = uuid.New().String()
-	}
-
 	entity := models.EquipmentFromDTO(dto)
 	entity.Owner = humaconfig.GetUserID(ctx)
-	if err := database.DB.Create(&entity).Error; err != nil {
+
+	err := database.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&entity).Error; err != nil {
+			return err
+		}
+
+		resultDTO := entity.ToDTO()
+		if err := tx.Create(&models.EquipmentHistoryEntity{
+			EquipmentID: entity.ID,
+			Version:     resultDTO.Version,
+			Snapshot:    shared.SnapshotJSON(resultDTO),
+			ChangedAt:   time.Now(),
+			ChangedBy:   resultDTO.Owner,
+		}).Error; err != nil {
+			return err
+		}
+
+		if input.Body.SourceEquipmentID != nil {
+			sourceID := *input.Body.SourceEquipmentID
+			if err := tx.Create(&relModels.EquipmentRelationshipEntity{
+				RelationshipType: relModels.EquipmentRelationshipTypeForked,
+				Strength:         1.0,
+				Owner:            entity.Owner,
+				FromEquipmentID:  entity.ID,
+				ToEquipmentID:    sourceID,
+			}).Error; err != nil {
+				return err
+			}
+			if err := tx.Create(&relModels.EquipmentRelationshipEntity{
+				RelationshipType: relModels.EquipmentRelationshipTypeEquivalent,
+				Strength:         1.0,
+				Owner:            entity.Owner,
+				FromEquipmentID:  entity.ID,
+				ToEquipmentID:    sourceID,
+			}).Error; err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+
+	if err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
-	resultDTO := entity.ToDTO()
-	database.DB.Create(&models.EquipmentHistoryEntity{
-		EquipmentID: entity.ID,
-		Version:     resultDTO.Version,
-		Snapshot:    shared.SnapshotJSON(resultDTO),
-		ChangedAt:   time.Now(),
-		ChangedBy:   resultDTO.Owner,
-	})
-	return &CreateEquipmentOutput{Body: resultDTO}, nil
+	return &CreateEquipmentOutput{Body: entity.ToDTO()}, nil
 }
 
 // GetEquipmentPermissions returns the current user's permissions on equipment.
@@ -220,7 +249,7 @@ func ListEquipmentVersions(ctx context.Context, input *ListEquipmentVersionsInpu
 // OpenAPI: /api/docs#/operations/get-equipment-version
 func GetEquipmentVersion(ctx context.Context, input *GetEquipmentVersionInput) (*GetEquipmentVersionOutput, error) {
 	var history models.EquipmentHistoryEntity
-	if err := database.DB.Where("json_extract(snapshot, '$.templateId') = ? AND version = ?", input.TemplateID, input.Version).First(&history).Error; err != nil {
+	if err := database.DB.Where("equipment_id = ? AND version = ?", input.ID, input.Version).First(&history).Error; err != nil {
 		return nil, huma.Error404NotFound("Version not found")
 	}
 

@@ -7,7 +7,7 @@ import { EquipmentDetail } from './equipment-detail';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
-import { Equipment } from '$generated/models';
+import { Equipment, EquipmentRelationship } from '$generated/models';
 
 const EQUIPMENT: Equipment = {
   id: 1,
@@ -17,7 +17,6 @@ const EQUIPMENT: Equipment = {
   displayName: 'Barbell',
   description: 'A standard barbell',
   category: 'free_weights',
-  templateId: 'tmpl-barbell',
   owner: 'seed',
   public: true,
   version: 1,
@@ -31,23 +30,22 @@ const USER_EQUIPMENT: Equipment = {
   displayName: 'Barbell',
   description: 'A standard barbell',
   category: 'free_weights',
-  templateId: 'tmpl-barbell',
   owner: 'anon',
   public: false,
   version: 1,
 };
 
-function setup(userEquipment: Equipment[] = []) {
+function setup(forkedRelationships: EquipmentRelationship[] = []) {
   const compendiumApi: Partial<CompendiumApiClient> = {
     fetchEquipmentItem: vi.fn().mockResolvedValue(EQUIPMENT),
     fetchEquipmentVersions: vi.fn().mockResolvedValue([EQUIPMENT]),
     fetchEquipmentPermissions: vi
       .fn()
       .mockResolvedValue({ permissions: ['READ', 'MODIFY', 'DELETE'] }),
+    fetchEquipmentRelationships: vi.fn().mockResolvedValue(forkedRelationships),
     deleteEquipment: vi.fn(),
   };
   const userApi: Partial<UserApiClient> = {
-    fetchUserEquipment: vi.fn().mockResolvedValue(userEquipment),
     createUserEquipment: vi.fn().mockResolvedValue(USER_EQUIPMENT),
   };
 
@@ -69,15 +67,18 @@ function setup(userEquipment: Equipment[] = []) {
   };
 }
 
-function setupWithPermissions(permissions: string[], userEquipment: Equipment[] = []) {
+function setupWithPermissions(
+  permissions: string[],
+  forkedRelationships: EquipmentRelationship[] = [],
+) {
   const compendiumApi: Partial<CompendiumApiClient> = {
     fetchEquipmentItem: vi.fn().mockResolvedValue(EQUIPMENT),
     fetchEquipmentVersions: vi.fn().mockResolvedValue([EQUIPMENT]),
     fetchEquipmentPermissions: vi.fn().mockResolvedValue({ permissions }),
+    fetchEquipmentRelationships: vi.fn().mockResolvedValue(forkedRelationships),
     deleteEquipment: vi.fn(),
   };
   const userApi: Partial<UserApiClient> = {
-    fetchUserEquipment: vi.fn().mockResolvedValue(userEquipment),
     createUserEquipment: vi.fn().mockResolvedValue(USER_EQUIPMENT),
   };
 
@@ -111,7 +112,17 @@ describe('EquipmentDetail', () => {
   });
 
   it('shows "compendium.equipment.alreadyAdded" link when equipment is already imported', async () => {
-    const { providers } = setup([USER_EQUIPMENT]);
+    const forkedRel: EquipmentRelationship = {
+      id: 1,
+      createdAt: '',
+      updatedAt: '',
+      relationshipType: 'forked',
+      strength: 1,
+      owner: 'anon',
+      fromEquipmentId: 10,
+      toEquipmentId: 1,
+    };
+    const { providers } = setup([forkedRel]);
     await render(EquipmentDetail, { providers });
 
     await waitFor(() => {
@@ -121,21 +132,6 @@ describe('EquipmentDetail', () => {
 
     const link = screen.getByText('compendium.equipment.alreadyAdded');
     expect(link.getAttribute('href')).toBe('/user/equipment/10');
-  });
-
-  it('shows "compendium.equipment.addToMine" when user has other equipment but not this one', async () => {
-    const otherEquipment: Equipment = {
-      ...USER_EQUIPMENT,
-      id: 99,
-      templateId: 'tmpl-other',
-    };
-    const { providers } = setup([otherEquipment]);
-    await render(EquipmentDetail, { providers });
-
-    await waitFor(() => {
-      expect(screen.getByText('compendium.equipment.addToMine')).toBeTruthy();
-    });
-    expect(screen.queryByText('compendium.equipment.alreadyAdded')).toBeNull();
   });
 
   it('shows edit button when user has MODIFY permission', async () => {

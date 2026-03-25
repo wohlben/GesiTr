@@ -229,7 +229,7 @@ export class EquipmentEdit {
       const val = this.model();
       const data = this.equipmentQuery.data();
       const payload = {
-        ...(this.isCreateMode() ? {} : { templateId: data!.templateId, public: data!.public }),
+        ...(this.isCreateMode() ? {} : { public: data!.public }),
         name: val.name,
         displayName: val.displayName,
         description: val.description,

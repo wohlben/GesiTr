@@ -146,9 +146,7 @@ export class ExerciseGroupEdit {
   onSubmit() {
     if (this.groupForm().valid()) {
       const val = this.model();
-      const data = this.groupQuery.data();
       const payload = {
-        ...(this.isCreateMode() ? {} : { templateId: data!.templateId }),
         name: val.name,
         description: val.description || undefined,
       };

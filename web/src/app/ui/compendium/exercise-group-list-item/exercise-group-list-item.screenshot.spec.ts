@@ -10,7 +10,6 @@ const group: ExerciseGroup = {
   id: 1,
   createdAt: '2024-01-15T10:00:00Z',
   updatedAt: '2024-01-15T10:00:00Z',
-  templateId: '',
   name: 'Push Exercises',
   description: 'All pushing movements including bench press variations',
   owner: 'admin',

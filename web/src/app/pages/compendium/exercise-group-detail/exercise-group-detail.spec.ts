@@ -12,7 +12,6 @@ const GROUP: ExerciseGroup = {
   id: 1,
   createdAt: '',
   updatedAt: '',
-  templateId: 'tmpl-push',
   name: 'Push Exercises',
   description: 'All push exercises',
   owner: 'seed',

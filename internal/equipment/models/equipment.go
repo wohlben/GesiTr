@@ -9,7 +9,6 @@ type Equipment struct {
 	Description      string            `json:"description"`
 	Category         EquipmentCategory `json:"category"`
 	ImageUrl         *string           `json:"imageUrl"`
-	TemplateID       string            `json:"templateId"`
 	Owner            string            `json:"owner"`
 	Public           bool              `json:"public"`
 	Version          int               `json:"version"`

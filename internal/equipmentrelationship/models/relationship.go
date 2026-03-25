@@ -15,4 +15,5 @@ type EquipmentRelationshipType string
 
 const (
 	EquipmentRelationshipTypeEquivalent EquipmentRelationshipType = "equivalent"
+	EquipmentRelationshipTypeForked     EquipmentRelationshipType = "forked"
 )

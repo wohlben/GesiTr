@@ -116,7 +116,6 @@ export interface Equipment extends BaseModel {
   description: string;
   category: EquipmentCategory;
   imageUrl?: string;
-  templateId: string;
   owner: string;
   public: boolean;
   version: number /* int */;
@@ -133,7 +132,6 @@ export const EquipmentCategoryOther: EquipmentCategory = 'other';
 // source: exercisegroup.go
 
 export interface ExerciseGroup extends BaseModel {
-  templateId: string;
   name: string;
   description?: string;
   owner: string;
@@ -204,3 +202,4 @@ export interface EquipmentRelationship extends BaseModel {
 }
 export type EquipmentRelationshipType = string;
 export const EquipmentRelationshipTypeEquivalent: EquipmentRelationshipType = 'equivalent';
+export const EquipmentRelationshipTypeForked: EquipmentRelationshipType = 'forked';

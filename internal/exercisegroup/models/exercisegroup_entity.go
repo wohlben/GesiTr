@@ -7,7 +7,6 @@ import (
 
 type ExerciseGroupEntity struct {
 	shared.BaseModel
-	TemplateID   string `gorm:"not null;uniqueIndex"`
 	Name         string `gorm:"not null"`
 	Description  *string
 	Owner        string                           `gorm:"not null"`
@@ -19,7 +18,6 @@ func (ExerciseGroupEntity) TableName() string { return "exercise_groups" }
 func (e *ExerciseGroupEntity) ToDTO() ExerciseGroup {
 	return ExerciseGroup{
 		BaseModel:   e.BaseModel,
-		TemplateID:  e.TemplateID,
 		Name:        e.Name,
 		Description: e.Description,
 		Owner:       e.Owner,
@@ -29,7 +27,6 @@ func (e *ExerciseGroupEntity) ToDTO() ExerciseGroup {
 func ExerciseGroupFromDTO(dto ExerciseGroup) ExerciseGroupEntity {
 	return ExerciseGroupEntity{
 		BaseModel:   dto.BaseModel,
-		TemplateID:  dto.TemplateID,
 		Name:        dto.Name,
 		Description: dto.Description,
 		Owner:       dto.Owner,

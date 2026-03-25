@@ -14,7 +14,6 @@ const equipment: Equipment = {
   displayName: 'Barbell',
   description: 'Standard Olympic barbell, 20kg',
   category: 'free_weights',
-  templateId: '',
   owner: 'admin',
   public: true,
   version: 1,

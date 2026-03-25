@@ -8,10 +8,9 @@ import (
 	"gesitr/internal/shared"
 )
 
-func newGroupPayload(name, templateID string) map[string]any {
+func newGroupPayload(name string) map[string]any {
 	return map[string]any{
 		"name":        name,
-		"templateId":  templateID,
 		"description": "test group",
 	}
 }
@@ -21,7 +20,7 @@ func TestGetExerciseGroupPermissions(t *testing.T) {
 	r := newRouter()
 
 	// Create an exercise group owned by testuser
-	doJSON(r, "POST", "/api/exercise-groups", newGroupPayload("Push", "push"))
+	doJSON(r, "POST", "/api/exercise-groups", newGroupPayload("Push"))
 
 	t.Run("owner gets full permissions", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/exercise-groups/1/permissions", nil)
@@ -59,7 +58,7 @@ func TestGetExerciseGroupPermissions_VerifyValues(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/exercise-groups", newGroupPayload("Pull", "pull"))
+	doJSON(r, "POST", "/api/exercise-groups", newGroupPayload("Pull"))
 
 	w := doJSON(r, "GET", "/api/exercise-groups/1/permissions", nil)
 	if w.Code != http.StatusOK {

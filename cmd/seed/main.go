@@ -119,18 +119,19 @@ func seedEquipment() error {
 		return err
 	}
 	var entities []equipmentModels.EquipmentEntity
+	var equipTemplateIDs []string
 	for _, data := range files {
 		var j jsonEquipment
 		if err := json.Unmarshal(data, &j); err != nil {
 			return fmt.Errorf("parse equipment JSON: %w", err)
 		}
+		equipTemplateIDs = append(equipTemplateIDs, j.TemplateID)
 		entities = append(entities, equipmentModels.EquipmentEntity{
 			Name:        j.Name,
 			DisplayName: j.DisplayName,
 			Description: j.Description,
 			Category:    equipmentModels.EquipmentCategory(j.Category),
 			ImageUrl:    j.ImageUrl,
-			TemplateID:  j.TemplateID,
 			Owner:       "sinon",
 			Public:      true,
 		})
@@ -154,12 +155,12 @@ func seedEquipment() error {
 		return fmt.Errorf("insert equipment history: %w", err)
 	}
 
-	// Build equipmentIDMap for downstream seeders
-	var allEquipment []equipmentModels.EquipmentEntity
-	database.DB.Find(&allEquipment)
+	// Build equipmentIDMap for downstream seeders (templateID from seed JSON → DB ID)
 	equipmentIDMap = make(map[string]uint)
-	for _, eq := range allEquipment {
-		equipmentIDMap[eq.TemplateID] = eq.ID
+	for i, eq := range entities {
+		if equipTemplateIDs[i] != "" {
+			equipmentIDMap[equipTemplateIDs[i]] = eq.ID
+		}
 	}
 
 	log.Printf("Equipment: %d", len(entities))
@@ -382,13 +383,14 @@ func seedExerciseGroups() error {
 		return err
 	}
 	var entities []groupModels.ExerciseGroupEntity
+	var groupTemplateIDs []string
 	for _, data := range files {
 		var j jsonExerciseGroup
 		if err := json.Unmarshal(data, &j); err != nil {
 			return fmt.Errorf("parse exercise group JSON: %w", err)
 		}
+		groupTemplateIDs = append(groupTemplateIDs, j.ID)
 		e := groupModels.ExerciseGroupEntity{
-			TemplateID:  j.ID,
 			Name:        j.Name,
 			Description: j.Description,
 			Owner:       "sinon",
@@ -405,12 +407,12 @@ func seedExerciseGroups() error {
 		return fmt.Errorf("insert exercise groups: %w", err)
 	}
 
-	// Build groupIDMap for downstream seeders
-	var allGroups []groupModels.ExerciseGroupEntity
-	database.DB.Where("owner = ?", "sinon").Find(&allGroups)
+	// Build groupIDMap for downstream seeders (seed JSON ID → DB ID)
 	groupIDMap = make(map[string]uint)
-	for _, g := range allGroups {
-		groupIDMap[g.TemplateID] = g.ID
+	for i, g := range entities {
+		if groupTemplateIDs[i] != "" {
+			groupIDMap[groupTemplateIDs[i]] = g.ID
+		}
 	}
 
 	log.Printf("ExerciseGroups: %d", len(entities))
