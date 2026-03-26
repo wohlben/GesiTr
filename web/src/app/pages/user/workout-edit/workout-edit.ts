@@ -24,7 +24,11 @@ import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmInput } from '@spartan-ng/helm/input';
 import { HlmTextarea } from '@spartan-ng/helm/textarea';
-import { ExerciseGroupConfig } from '$ui/exercise-group-config/exercise-group-config';
+import {
+  ExerciseGroupConfig,
+  EMPTY_GROUP_CONFIG,
+} from '$ui/exercise-group-config/exercise-group-config';
+import type { GroupConfigValue } from '$ui/exercise-group-config/exercise-group-config';
 
 interface WorkoutItemModel {
   itemType: string;
@@ -41,9 +45,7 @@ interface WorkoutItemModel {
   distance: number | null;
   targetTime: number | null;
   // exercise_group fields (used when itemType === 'exercise_group')
-  exerciseGroupId: number | null;
-  newGroupName: string;
-  newGroupMembers: number[];
+  groupConfig: GroupConfigValue;
 }
 
 interface WorkoutSectionModel {
@@ -72,9 +74,7 @@ const EMPTY_EXERCISE_ITEM: WorkoutItemModel = {
   duration: null,
   distance: null,
   targetTime: null,
-  exerciseGroupId: null,
-  newGroupName: '',
-  newGroupMembers: [],
+  groupConfig: { ...EMPTY_GROUP_CONFIG },
 };
 
 const EMPTY_GROUP_ITEM: WorkoutItemModel = {
@@ -90,9 +90,7 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
   duration: null,
   distance: null,
   targetTime: null,
-  exerciseGroupId: null,
-  newGroupName: '',
-  newGroupMembers: [],
+  groupConfig: { ...EMPTY_GROUP_CONFIG },
 };
 
 @Component({
@@ -391,14 +389,9 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
 
                         @if (item.itemType().value() === 'exercise_group') {
                           <app-exercise-group-config
+                            [formField]="item.groupConfig"
                             [existingGroups]="exerciseGroups()"
                             [exercises]="enrichedUserExercises()"
-                            [value]="{
-                              exerciseGroupId: item.exerciseGroupId().value(),
-                              newGroupName: item.newGroupName().value(),
-                              newGroupMembers: item.newGroupMembers().value(),
-                            }"
-                            (valueChange)="onGroupConfigChange(si, ei, $event)"
                           />
                         }
                       </div>
@@ -566,9 +559,11 @@ export class WorkoutEdit {
             duration: null,
             distance: null,
             targetTime: null,
-            exerciseGroupId: item.exerciseGroupId ?? null,
-            newGroupName: '',
-            newGroupMembers: [],
+            groupConfig: {
+              exerciseGroupId: item.exerciseGroupId ?? null,
+              name: '',
+              members: [],
+            },
           })),
         })),
       });
@@ -648,8 +643,11 @@ export class WorkoutEdit {
                           ? e
                           : {
                               ...e,
-                              newGroupName: group.name ?? '',
-                              newGroupMembers: members.map((mem) => mem.exerciseId),
+                              groupConfig: {
+                                ...e.groupConfig,
+                                name: group.name ?? '',
+                                members: members.map((mem) => mem.exerciseId),
+                              },
                             },
                       ),
                     },
@@ -711,33 +709,6 @@ export class WorkoutEdit {
           : {
               ...s,
               items: s.items.filter((_, j) => j !== itemIndex),
-            },
-      ),
-    }));
-  }
-
-  onGroupConfigChange(
-    sectionIndex: number,
-    itemIndex: number,
-    value: { exerciseGroupId: number | null; newGroupName: string; newGroupMembers: number[] },
-  ) {
-    this.model.update((m) => ({
-      ...m,
-      sections: m.sections.map((s, i) =>
-        i !== sectionIndex
-          ? s
-          : {
-              ...s,
-              items: s.items.map((item, j) =>
-                j !== itemIndex
-                  ? item
-                  : {
-                      ...item,
-                      exerciseGroupId: value.exerciseGroupId,
-                      newGroupName: value.newGroupName,
-                      newGroupMembers: value.newGroupMembers,
-                    },
-              ),
             },
       ),
     }));
@@ -845,14 +816,15 @@ export class WorkoutEdit {
           });
         } else {
           // Exercise group items — create or update group
-          let groupId = item.exerciseGroupId;
+          const gc = item.groupConfig;
+          let groupId = gc.exerciseGroupId;
           if (groupId == null) {
             // Create new group
             const group = await this.compendiumApi.createExerciseGroup({
-              name: item.newGroupName || undefined,
+              name: gc.name || undefined,
             });
             groupId = group.id;
-            for (const exerciseId of item.newGroupMembers) {
+            for (const exerciseId of gc.members) {
               await this.compendiumApi.createExerciseGroupMember({
                 groupId: group.id,
                 exerciseId,
@@ -861,12 +833,12 @@ export class WorkoutEdit {
           } else {
             // Update existing group: sync name and members
             await this.compendiumApi.updateExerciseGroup(groupId, {
-              name: item.newGroupName || undefined,
+              name: gc.name || undefined,
             });
             const existingMembers = await this.compendiumApi.fetchExerciseGroupMembers({
               groupId,
             });
-            const wantedSet = new Set(item.newGroupMembers);
+            const wantedSet = new Set(gc.members);
             const existingMap = new Map(existingMembers.map((m) => [m.exerciseId, m.id]));
             // Delete removed members
             for (const m of existingMembers) {
@@ -875,7 +847,7 @@ export class WorkoutEdit {
               }
             }
             // Add new members
-            for (const exerciseId of item.newGroupMembers) {
+            for (const exerciseId of gc.members) {
               if (!existingMap.has(exerciseId)) {
                 await this.compendiumApi.createExerciseGroupMember({
                   groupId,

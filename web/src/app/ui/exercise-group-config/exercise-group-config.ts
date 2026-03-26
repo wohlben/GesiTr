@@ -1,13 +1,22 @@
-import { Component, input, output, computed } from '@angular/core';
+import { Component, model, input, computed } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { BrnSelectImports } from '@spartan-ng/brain/select';
+import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmInput } from '@spartan-ng/helm/input';
 import { ExerciseGroup } from '$generated/models';
+import type { FormValueControl } from '@angular/forms/signals';
 
-export interface ExerciseGroupConfigValue {
+export interface GroupConfigValue {
   exerciseGroupId: number | null;
-  newGroupName: string;
-  newGroupMembers: number[];
+  name: string;
+  members: number[];
 }
+
+export const EMPTY_GROUP_CONFIG: GroupConfigValue = {
+  exerciseGroupId: null,
+  name: '',
+  members: [],
+};
 
 interface ExerciseOption {
   id: number;
@@ -16,39 +25,41 @@ interface ExerciseOption {
 
 @Component({
   selector: 'app-exercise-group-config',
-  imports: [HlmInput, TranslocoDirective],
+  imports: [BrnSelectImports, HlmSelectImports, HlmInput, TranslocoDirective],
   template: `
     <ng-container *transloco="let t">
-      <!-- Group selector: existing groups or "New Group" -->
+      <!-- Group selector -->
       <div class="mb-2">
         <span class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{
           t('fields.exerciseGroup')
         }}</span>
-        <select
-          hlmInput
-          class="mt-1 w-full"
-          [value]="selectedGroupId()"
-          (change)="onGroupSelect($event)"
+        <brn-select
+          [value]="value().exerciseGroupId"
+          (valueChange)="onGroupSelect($event)"
+          class="mt-1"
+          hlm
         >
-          <option [value]="NEW_GROUP_SENTINEL">
-            {{ t('ui.exerciseGroupConfig.newGroup') }}
-          </option>
-          @for (g of existingGroups(); track g.id) {
-            <option [value]="g.id">
-              {{ g.name || t('common.unnamedGroup', { id: g.id }) }}
-            </option>
-          }
-        </select>
+          <hlm-select-trigger class="w-full">
+            <hlm-select-value />
+          </hlm-select-trigger>
+          <hlm-select-content>
+            <hlm-option [value]="null">{{ t('ui.exerciseGroupConfig.newGroup') }}</hlm-option>
+            @for (g of existingGroups(); track g.id) {
+              <hlm-option [value]="g.id">
+                {{ g.name || t('common.unnamedGroup', { id: g.id }) }}
+              </hlm-option>
+            }
+          </hlm-select-content>
+        </brn-select>
       </div>
 
-      <!-- Group editing: always shown -->
+      <!-- Group editing -->
       <div class="space-y-2">
-        <!-- Group name (optional) -->
         <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
           {{ t('fields.name') }}
           <input
             hlmInput
-            [value]="currentName()"
+            [value]="value().name"
             (input)="onNameChange($event)"
             class="mt-1"
             [placeholder]="t('ui.exerciseGroupConfig.namePlaceholder')"
@@ -94,17 +105,14 @@ interface ExerciseOption {
     </ng-container>
   `,
 })
-export class ExerciseGroupConfig {
-  readonly NEW_GROUP_SENTINEL = -1;
+export class ExerciseGroupConfig implements FormValueControl<GroupConfigValue> {
+  /** Synced with the parent form field via [formField]. */
+  readonly value = model.required<GroupConfigValue>();
 
   existingGroups = input.required<ExerciseGroup[]>();
   exercises = input.required<ExerciseOption[]>();
-  value = input.required<ExerciseGroupConfigValue>();
-  valueChange = output<ExerciseGroupConfigValue>();
 
-  selectedGroupId = computed(() => this.value().exerciseGroupId ?? this.NEW_GROUP_SENTINEL);
-  currentName = computed(() => this.value().newGroupName);
-  currentMembers = computed(() => this.value().newGroupMembers);
+  private currentMembers = computed(() => this.value().members);
 
   availableExercises = computed(() => {
     const memberSet = new Set(this.currentMembers());
@@ -118,39 +126,26 @@ export class ExerciseGroupConfig {
       .filter((ex): ex is ExerciseOption => ex != null);
   });
 
-  onGroupSelect(event: Event) {
-    const id = Number((event.target as HTMLSelectElement).value);
-    if (id === this.NEW_GROUP_SENTINEL || isNaN(id)) {
-      this.emit({ exerciseGroupId: null, newGroupName: '', newGroupMembers: [] });
-    } else {
-      this.emit({ exerciseGroupId: id, newGroupName: '', newGroupMembers: [] });
-    }
+  onGroupSelect(id: number | null | (number | null)[] | undefined) {
+    const groupId = Array.isArray(id) ? (id[0] ?? null) : (id ?? null);
+    const group = groupId != null ? this.existingGroups().find((g) => g.id === groupId) : null;
+    this.value.set({ exerciseGroupId: groupId, name: group?.name ?? '', members: [] });
   }
 
   onNameChange(event: Event) {
     const name = (event.target as HTMLInputElement).value;
-    this.emit({ ...this.value(), newGroupName: name });
+    this.value.update((v) => ({ ...v, name }));
   }
 
   onAddMember(event: Event) {
     const select = event.target as HTMLSelectElement;
     const exerciseId = Number(select.value);
     if (isNaN(exerciseId) || !exerciseId || this.currentMembers().includes(exerciseId)) return;
-    this.emit({
-      ...this.value(),
-      newGroupMembers: [...this.currentMembers(), exerciseId],
-    });
+    this.value.update((v) => ({ ...v, members: [...v.members, exerciseId] }));
     select.value = '';
   }
 
   onRemoveMember(exerciseId: number) {
-    this.emit({
-      ...this.value(),
-      newGroupMembers: this.currentMembers().filter((id) => id !== exerciseId),
-    });
-  }
-
-  private emit(val: ExerciseGroupConfigValue) {
-    this.valueChange.emit(val);
+    this.value.update((v) => ({ ...v, members: v.members.filter((id) => id !== exerciseId) }));
   }
 }

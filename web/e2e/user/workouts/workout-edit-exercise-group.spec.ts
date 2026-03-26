@@ -28,8 +28,8 @@ test.describe('workout edit - exercise group', () => {
     const nameInput = groupConfig.locator('input[placeholder="Group name (optional)"]');
     await nameInput.fill('My Push Group');
 
-    // 6. Add first exercise to the group
-    const memberSelect = groupConfig.locator('select').nth(1); // second select = member add
+    // 6. Add first exercise to the group (the only native <select> is the member add)
+    const memberSelect = groupConfig.locator('select');
     await memberSelect.selectOption({ label: 'E2E Group Bench Press' });
 
     // 7. Verify exercise appears in member list
@@ -68,12 +68,17 @@ test.describe('workout edit - exercise group', () => {
     );
     await expect(reopenedNameInput).toHaveValue('My Push Group', { timeout: 10000 });
 
+    // The group selector (brn-select) should show the existing group, NOT "New Group"
+    const groupTrigger = reopenedConfig.locator('hlm-select-value');
+    await expect(groupTrigger).not.toHaveText('New Group', { timeout: 5000 });
+    await expect(groupTrigger).toHaveText('My Push Group');
+
     // Both exercises should be visible in the member list
     await expect(reopenedConfig.getByText('E2E Group Bench Press')).toBeVisible();
     await expect(reopenedConfig.getByText('E2E Group Dumbbell Press')).toBeVisible();
 
-    // The member add select should still be present (for adding more members)
-    const reopenedMemberSelect = reopenedConfig.locator('select').nth(1);
+    // The member add select should still be present
+    const reopenedMemberSelect = reopenedConfig.locator('select');
     await expect(reopenedMemberSelect).toBeVisible();
 
     // Cleanup

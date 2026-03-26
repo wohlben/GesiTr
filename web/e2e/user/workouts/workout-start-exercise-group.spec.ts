@@ -29,7 +29,7 @@ test.describe('workout start - exercise group flow', () => {
       .fill('Push Variations');
 
     // Add both exercises as members
-    const memberSelect = groupConfig.locator('select').nth(1);
+    const memberSelect = groupConfig.locator('select');
     await memberSelect.selectOption({ label: 'E2E Start Bench Press' });
     await memberSelect.selectOption({ label: 'E2E Start Incline Press' });
 
