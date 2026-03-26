@@ -30,6 +30,8 @@ import (
 	exerciseLogModels "gesitr/internal/user/exerciselog/models"
 	workoutHandlers "gesitr/internal/user/workout/handlers"
 	workoutModels "gesitr/internal/user/workout/models"
+	workoutGroupHandlers "gesitr/internal/user/workoutgroup/handlers"
+	workoutGroupModels "gesitr/internal/user/workoutgroup/models"
 	workoutloghandlers "gesitr/internal/user/workoutlog/handlers"
 	workoutlogmodels "gesitr/internal/user/workoutlog/models"
 
@@ -122,6 +124,8 @@ func autoMigrate() {
 		&workoutlogmodels.WorkoutLogExerciseEntity{},
 		&workoutlogmodels.WorkoutLogExerciseSetEntity{},
 		&exerciseLogModels.ExerciseLogEntity{},
+		&workoutGroupModels.WorkoutGroupEntity{},
+		&workoutGroupModels.WorkoutGroupMembershipEntity{},
 	)
 }
 
@@ -142,6 +146,7 @@ func setupRoutes(r *gin.Engine) {
 	workoutHandlers.RegisterRoutes(humaAPI)
 	workoutloghandlers.RegisterRoutes(humaAPI)
 	exerciseLogHandlers.RegisterRoutes(humaAPI)
+	workoutGroupHandlers.RegisterRoutes(humaAPI)
 }
 
 func setupSPA(r *gin.Engine) {

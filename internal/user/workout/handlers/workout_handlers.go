@@ -6,6 +6,7 @@ import (
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/user/workout/models"
+	"gesitr/internal/user/workoutgroup"
 
 	"github.com/danielgtaylor/huma/v2"
 	"gorm.io/gorm"
@@ -25,7 +26,11 @@ func preloadWorkout(db *gorm.DB) *gorm.DB {
 // OpenAPI: /api/docs#/operations/ListWorkouts
 func ListWorkouts(ctx context.Context, input *ListWorkoutsInput) (*ListWorkoutsOutput, error) {
 	userID := humaconfig.GetUserID(ctx)
-	db := database.DB.Model(&models.WorkoutEntity{}).Where("owner = ?", userID)
+	db := database.DB.Model(&models.WorkoutEntity{}).Where(`owner = ? OR id IN (
+		SELECT wg.workout_id FROM workout_groups wg
+		JOIN workout_group_memberships wgm ON wgm.group_id = wg.id
+		WHERE wgm.user_id = ? AND wgm.deleted_at IS NULL AND wg.deleted_at IS NULL)`,
+		userID, userID)
 
 	var entities []models.WorkoutEntity
 	if err := preloadWorkout(db).Find(&entities).Error; err != nil {
@@ -65,7 +70,8 @@ func GetWorkout(ctx context.Context, input *GetWorkoutInput) (*GetWorkoutOutput,
 	if err := preloadWorkout(database.DB).First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout not found")
 	}
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	access := workoutgroup.CheckWorkoutAccess(humaconfig.GetUserID(ctx), entity.Owner, entity.ID)
+	if !access.CanRead() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 	return &GetWorkoutOutput{Body: entity.ToDTO()}, nil
@@ -80,7 +86,8 @@ func UpdateWorkout(ctx context.Context, input *UpdateWorkoutInput) (*UpdateWorko
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout not found")
 	}
-	if existing.Owner != humaconfig.GetUserID(ctx) {
+	access := workoutgroup.CheckWorkoutAccess(humaconfig.GetUserID(ctx), existing.Owner, existing.ID)
+	if !access.CanModify() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 
@@ -109,7 +116,8 @@ func DeleteWorkout(ctx context.Context, input *DeleteWorkoutInput) (*DeleteWorko
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout not found")
 	}
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	access := workoutgroup.CheckWorkoutAccess(humaconfig.GetUserID(ctx), entity.Owner, entity.ID)
+	if !access.CanDelete() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 	if err := database.DB.Delete(&entity).Error; err != nil {

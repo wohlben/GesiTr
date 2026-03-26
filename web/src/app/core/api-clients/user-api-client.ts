@@ -13,6 +13,11 @@ import {
   WorkoutLogExerciseSet,
   ExerciseLog,
 } from '$generated/user-models';
+import {
+  WorkoutGroup,
+  WorkoutGroupMembership,
+  WorkoutGroupRole,
+} from '$generated/user-workoutgroup';
 import { PaginatedResponse } from './paginated-response';
 
 @Injectable({ providedIn: 'root' })
@@ -265,5 +270,61 @@ export class UserApiClient {
 
   finishWorkoutLog(id: number): Promise<WorkoutLog> {
     return firstValueFrom(this.http.post<WorkoutLog>(`/api/user/workout-logs/${id}/finish`, {}));
+  }
+
+  // Workout Groups
+  fetchWorkoutGroups(): Promise<WorkoutGroup[]> {
+    return firstValueFrom(this.http.get<WorkoutGroup[]>('/api/user/workout-groups'));
+  }
+
+  fetchWorkoutGroup(id: number): Promise<WorkoutGroup> {
+    return firstValueFrom(this.http.get<WorkoutGroup>(`/api/user/workout-groups/${id}`));
+  }
+
+  createWorkoutGroup(data: { name: string; workoutId: number }): Promise<WorkoutGroup> {
+    return firstValueFrom(this.http.post<WorkoutGroup>('/api/user/workout-groups', data));
+  }
+
+  updateWorkoutGroup(id: number, data: { name: string }): Promise<WorkoutGroup> {
+    return firstValueFrom(this.http.put<WorkoutGroup>(`/api/user/workout-groups/${id}`, data));
+  }
+
+  deleteWorkoutGroup(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/user/workout-groups/${id}`));
+  }
+
+  // Workout Group Memberships
+  fetchWorkoutGroupMemberships(params?: { groupId?: number }): Promise<WorkoutGroupMembership[]> {
+    const qp = new URLSearchParams();
+    if (params?.groupId != null) qp.set('groupId', String(params.groupId));
+    const qs = qp.toString();
+    return firstValueFrom(
+      this.http.get<WorkoutGroupMembership[]>(
+        `/api/user/workout-group-memberships${qs ? '?' + qs : ''}`,
+      ),
+    );
+  }
+
+  createWorkoutGroupMembership(data: {
+    groupId: number;
+    userId: string;
+    role: WorkoutGroupRole;
+  }): Promise<WorkoutGroupMembership> {
+    return firstValueFrom(
+      this.http.post<WorkoutGroupMembership>('/api/user/workout-group-memberships', data),
+    );
+  }
+
+  updateWorkoutGroupMembership(
+    id: number,
+    data: { role: WorkoutGroupRole },
+  ): Promise<WorkoutGroupMembership> {
+    return firstValueFrom(
+      this.http.put<WorkoutGroupMembership>(`/api/user/workout-group-memberships/${id}`, data),
+    );
+  }
+
+  deleteWorkoutGroupMembership(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/user/workout-group-memberships/${id}`));
   }
 }

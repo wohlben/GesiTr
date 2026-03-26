@@ -6,18 +6,34 @@ import (
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/user/workout/models"
+	"gesitr/internal/user/workoutgroup"
 
 	"github.com/danielgtaylor/huma/v2"
 )
 
-// requireWorkoutOwner fetches the workout by ID and checks ownership.
-// Returns an error if the workout is not found or the caller is not the owner.
-func requireWorkoutOwner(ctx context.Context, workoutID uint) error {
+// requireWorkoutRead fetches the workout and checks that the caller has read access
+// (owner or group member).
+func requireWorkoutRead(ctx context.Context, workoutID uint) error {
 	var workout models.WorkoutEntity
 	if err := database.DB.First(&workout, workoutID).Error; err != nil {
 		return huma.Error404NotFound("Workout not found")
 	}
-	if workout.Owner != humaconfig.GetUserID(ctx) {
+	access := workoutgroup.CheckWorkoutAccess(humaconfig.GetUserID(ctx), workout.Owner, workoutID)
+	if !access.CanRead() {
+		return huma.Error403Forbidden("access denied")
+	}
+	return nil
+}
+
+// requireWorkoutModify fetches the workout and checks that the caller has modify access
+// (owner or group admin).
+func requireWorkoutModify(ctx context.Context, workoutID uint) error {
+	var workout models.WorkoutEntity
+	if err := database.DB.First(&workout, workoutID).Error; err != nil {
+		return huma.Error404NotFound("Workout not found")
+	}
+	access := workoutgroup.CheckWorkoutAccess(humaconfig.GetUserID(ctx), workout.Owner, workoutID)
+	if !access.CanModify() {
 		return huma.Error403Forbidden("access denied")
 	}
 	return nil
@@ -35,8 +51,11 @@ func ListWorkoutSections(ctx context.Context, input *ListWorkoutSectionsInput) (
 		db = db.Where("workout_id = ?", input.WorkoutID)
 	}
 
-	// Join through workout to enforce ownership
-	db = db.Where("workout_id IN (SELECT id FROM workouts WHERE owner = ? AND deleted_at IS NULL)", humaconfig.GetUserID(ctx))
+	// Include workouts the user owns or has group membership for
+	userID := humaconfig.GetUserID(ctx)
+	db = db.Where(`workout_id IN (SELECT id FROM workouts WHERE owner = ? AND deleted_at IS NULL)
+		OR workout_id IN (SELECT wg.workout_id FROM workout_groups wg JOIN workout_group_memberships wgm ON wgm.group_id = wg.id WHERE wgm.user_id = ? AND wgm.deleted_at IS NULL AND wg.deleted_at IS NULL)`,
+		userID, userID)
 
 	var entities []models.WorkoutSectionEntity
 	if err := db.Preload("Items").Order("position").Find(&entities).Error; err != nil {
@@ -57,7 +76,7 @@ func ListWorkoutSections(ctx context.Context, input *ListWorkoutSectionsInput) (
 //
 // OpenAPI: /api/docs#/operations/CreateWorkoutSection
 func CreateWorkoutSection(ctx context.Context, input *CreateWorkoutSectionInput) (*CreateWorkoutSectionOutput, error) {
-	if err := requireWorkoutOwner(ctx, input.Body.WorkoutID); err != nil {
+	if err := requireWorkoutModify(ctx, input.Body.WorkoutID); err != nil {
 		return nil, err
 	}
 
@@ -83,7 +102,7 @@ func GetWorkoutSection(ctx context.Context, input *GetWorkoutSectionInput) (*Get
 	if err := database.DB.Preload("Items").First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout section not found")
 	}
-	if err := requireWorkoutOwner(ctx, entity.WorkoutID); err != nil {
+	if err := requireWorkoutRead(ctx, entity.WorkoutID); err != nil {
 		return nil, err
 	}
 	return &GetWorkoutSectionOutput{Body: entity.ToDTO()}, nil
@@ -98,7 +117,7 @@ func DeleteWorkoutSection(ctx context.Context, input *DeleteWorkoutSectionInput)
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout section not found")
 	}
-	if err := requireWorkoutOwner(ctx, entity.WorkoutID); err != nil {
+	if err := requireWorkoutModify(ctx, entity.WorkoutID); err != nil {
 		return nil, err
 	}
 	if err := database.DB.Delete(&entity).Error; err != nil {

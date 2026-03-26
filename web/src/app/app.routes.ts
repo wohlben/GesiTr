@@ -46,6 +46,11 @@ export const routes: Routes = [
           import('$pages/user/workout-edit/workout-edit').then((m) => m.WorkoutEdit),
       },
       {
+        path: 'workouts/:id/group',
+        loadComponent: () =>
+          import('$pages/user/workout-group/workout-group').then((m) => m.WorkoutGroup),
+      },
+      {
         path: 'workouts/:id/start',
         loadComponent: () =>
           import('$pages/user/workout-start/workout-start').then((m) => m.WorkoutStart),

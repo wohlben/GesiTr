@@ -109,7 +109,7 @@ type CreateWorkoutOutput struct {
 ```
 
 <a name="CreateWorkout"></a>
-### func [CreateWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L47>)
+### func [CreateWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L52>)
 
 ```go
 func CreateWorkout(ctx context.Context, input *CreateWorkoutInput) (*CreateWorkoutOutput, error)
@@ -192,7 +192,7 @@ type CreateWorkoutSectionItemOutput struct {
 ```
 
 <a name="CreateWorkoutSectionItem"></a>
-### func [CreateWorkoutSectionItem](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_item_handlers.go#L59>)
+### func [CreateWorkoutSectionItem](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_item_handlers.go#L72>)
 
 ```go
 func CreateWorkoutSectionItem(ctx context.Context, input *CreateWorkoutSectionItemInput) (*CreateWorkoutSectionItemOutput, error)
@@ -304,7 +304,7 @@ type CreateWorkoutSectionOutput struct {
 ```
 
 <a name="CreateWorkoutSection"></a>
-### func [CreateWorkoutSection](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_handlers.go#L59>)
+### func [CreateWorkoutSection](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_handlers.go#L78>)
 
 ```go
 func CreateWorkoutSection(ctx context.Context, input *CreateWorkoutSectionInput) (*CreateWorkoutSectionOutput, error)
@@ -410,7 +410,7 @@ type DeleteWorkoutOutput struct{}
 ```
 
 <a name="DeleteWorkout"></a>
-### func [DeleteWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L107>)
+### func [DeleteWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L114>)
 
 ```go
 func DeleteWorkout(ctx context.Context, input *DeleteWorkoutInput) (*DeleteWorkoutOutput, error)
@@ -509,7 +509,7 @@ type DeleteWorkoutSectionItemOutput struct{}
 ```
 
 <a name="DeleteWorkoutSectionItem"></a>
-### func [DeleteWorkoutSectionItem](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_item_handlers.go#L105>)
+### func [DeleteWorkoutSectionItem](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_item_handlers.go#L118>)
 
 ```go
 func DeleteWorkoutSectionItem(ctx context.Context, input *DeleteWorkoutSectionItemInput) (*DeleteWorkoutSectionItemOutput, error)
@@ -602,7 +602,7 @@ type DeleteWorkoutSectionOutput struct{}
 ```
 
 <a name="DeleteWorkoutSection"></a>
-### func [DeleteWorkoutSection](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_handlers.go#L96>)
+### func [DeleteWorkoutSection](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_handlers.go#L115>)
 
 ```go
 func DeleteWorkoutSection(ctx context.Context, input *DeleteWorkoutSectionInput) (*DeleteWorkoutSectionOutput, error)
@@ -697,7 +697,7 @@ type GetWorkoutOutput struct {
 ```
 
 <a name="GetWorkout"></a>
-### func [GetWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L63>)
+### func [GetWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L68>)
 
 ```go
 func GetWorkout(ctx context.Context, input *GetWorkoutInput) (*GetWorkoutOutput, error)
@@ -845,7 +845,7 @@ type GetWorkoutSectionOutput struct {
 ```
 
 <a name="GetWorkoutSection"></a>
-### func [GetWorkoutSection](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_handlers.go#L81>)
+### func [GetWorkoutSection](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_handlers.go#L100>)
 
 ```go
 func GetWorkoutSection(ctx context.Context, input *GetWorkoutSectionInput) (*GetWorkoutSectionOutput, error)
@@ -941,7 +941,7 @@ type ListWorkoutSectionItemsOutput struct {
 ```
 
 <a name="ListWorkoutSectionItems"></a>
-### func [ListWorkoutSectionItems](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_item_handlers.go#L29>)
+### func [ListWorkoutSectionItems](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_item_handlers.go#L38>)
 
 ```go
 func ListWorkoutSectionItems(ctx context.Context, input *ListWorkoutSectionItemsInput) (*ListWorkoutSectionItemsOutput, error)
@@ -1055,7 +1055,7 @@ type ListWorkoutSectionsOutput struct {
 ```
 
 <a name="ListWorkoutSections"></a>
-### func [ListWorkoutSections](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_handlers.go#L31>)
+### func [ListWorkoutSections](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/section_handlers.go#L47>)
 
 ```go
 func ListWorkoutSections(ctx context.Context, input *ListWorkoutSectionsInput) (*ListWorkoutSectionsOutput, error)
@@ -1165,7 +1165,7 @@ type ListWorkoutsOutput struct {
 ```
 
 <a name="ListWorkouts"></a>
-### func [ListWorkouts](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L26>)
+### func [ListWorkouts](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L27>)
 
 ```go
 func ListWorkouts(ctx context.Context, input *ListWorkoutsInput) (*ListWorkoutsOutput, error)
@@ -1270,7 +1270,7 @@ type UpdateWorkoutOutput struct {
 ```
 
 <a name="UpdateWorkout"></a>
-### func [UpdateWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L78>)
+### func [UpdateWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L84>)
 
 ```go
 func UpdateWorkout(ctx context.Context, input *UpdateWorkoutInput) (*UpdateWorkoutOutput, error)

@@ -18,6 +18,7 @@ import (
 	"gesitr/internal/humaconfig"
 	profilemodels "gesitr/internal/profile/models"
 	"gesitr/internal/user/workout/models"
+	workoutgroupmodels "gesitr/internal/user/workoutgroup/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
@@ -55,6 +56,8 @@ func setupTestDB(t *testing.T) {
 		&models.WorkoutEntity{},
 		&models.WorkoutSectionEntity{},
 		&models.WorkoutSectionItemEntity{},
+		&workoutgroupmodels.WorkoutGroupEntity{},
+		&workoutgroupmodels.WorkoutGroupMembershipEntity{},
 	)
 	db.Create(&profilemodels.UserProfileEntity{ID: "alice", Name: "alice"})
 	db.Create(&profilemodels.UserProfileEntity{ID: "bob", Name: "bob"})

@@ -82,3 +82,13 @@ packages:
       "gorm.DeletedAt": "string | null"
     include_files:
       - "exerciselog.go"
+  - path: "gesitr/internal/user/workoutgroup/models"
+    output_path: "web/src/app/generated/user-workoutgroup.ts"
+    frontmatter: |
+      import { BaseModel } from './user-models';
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+      "shared.BaseModel": "BaseModel"
+    include_files:
+      - "workoutgroup.go"

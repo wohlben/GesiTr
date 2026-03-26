@@ -78,3 +78,10 @@ export const exerciseLogKeys = {
   list: (filters?: Filters) => [...exerciseLogKeys.all(), 'list', filters] as const,
   detail: (id: number) => [...exerciseLogKeys.all(), 'detail', id] as const,
 };
+
+export const workoutGroupKeys = {
+  all: () => ['workout-groups'] as const,
+  list: () => [...workoutGroupKeys.all(), 'list'] as const,
+  detail: (id: number) => [...workoutGroupKeys.all(), 'detail', id] as const,
+  memberships: (groupId: number) => [...workoutGroupKeys.all(), 'memberships', groupId] as const,
+};

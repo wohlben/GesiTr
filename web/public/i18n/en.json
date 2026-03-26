@@ -283,7 +283,20 @@
       "exerciseLabel": "Exercise {{n}}",
       "addExercise": "+ Add Exercise",
       "addExerciseGroup": "+ Add Exercise Group",
-      "addSection": "+ Add Section"
+      "addSection": "+ Add Section",
+      "manageGroup": "Manage group",
+      "groupTitle": "Workout Group",
+      "createGroup": "Create Group",
+      "deleteGroup": "Delete Group",
+      "deleteGroupMessage": "Are you sure you want to delete this group? All memberships will be removed.",
+      "groupName": "Group Name",
+      "groupMembers": "Members",
+      "addMember": "Add Member",
+      "userId": "User ID",
+      "role": "Role",
+      "roleMember": "Member",
+      "roleAdmin": "Admin",
+      "noMembers": "No members yet."
     },
     "workoutStart": {
       "title": "Plan Workout",

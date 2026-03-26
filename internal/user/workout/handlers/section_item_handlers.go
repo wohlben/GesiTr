@@ -12,13 +12,22 @@ import (
 	"github.com/danielgtaylor/huma/v2"
 )
 
-// requireSectionOwner fetches the section, then checks workout ownership.
-func requireSectionOwner(ctx context.Context, sectionID uint) error {
+// requireSectionRead fetches the section, then checks workout read access.
+func requireSectionRead(ctx context.Context, sectionID uint) error {
 	var section models.WorkoutSectionEntity
 	if err := database.DB.First(&section, sectionID).Error; err != nil {
 		return huma.Error404NotFound("Workout section not found")
 	}
-	return requireWorkoutOwner(ctx, section.WorkoutID)
+	return requireWorkoutRead(ctx, section.WorkoutID)
+}
+
+// requireSectionModify fetches the section, then checks workout modify access.
+func requireSectionModify(ctx context.Context, sectionID uint) error {
+	var section models.WorkoutSectionEntity
+	if err := database.DB.First(&section, sectionID).Error; err != nil {
+		return huma.Error404NotFound("Workout section not found")
+	}
+	return requireWorkoutModify(ctx, section.WorkoutID)
 }
 
 // ListWorkoutSectionItems returns section items owned by the current
@@ -33,8 +42,12 @@ func ListWorkoutSectionItems(ctx context.Context, input *ListWorkoutSectionItems
 		db = db.Where("workout_section_id = ?", input.WorkoutSectionID)
 	}
 
-	// Enforce ownership through workout section -> workout
-	db = db.Where("workout_section_id IN (SELECT id FROM workout_sections WHERE workout_id IN (SELECT id FROM workouts WHERE owner = ? AND deleted_at IS NULL))", humaconfig.GetUserID(ctx))
+	// Include items for workouts the user owns or has group membership for
+	userID := humaconfig.GetUserID(ctx)
+	db = db.Where(`workout_section_id IN (SELECT id FROM workout_sections WHERE
+		workout_id IN (SELECT id FROM workouts WHERE owner = ? AND deleted_at IS NULL)
+		OR workout_id IN (SELECT wg.workout_id FROM workout_groups wg JOIN workout_group_memberships wgm ON wgm.group_id = wg.id WHERE wgm.user_id = ? AND wgm.deleted_at IS NULL AND wg.deleted_at IS NULL))`,
+		userID, userID)
 
 	var entities []models.WorkoutSectionItemEntity
 	if err := db.Order("position").Find(&entities).Error; err != nil {
@@ -57,7 +70,7 @@ func ListWorkoutSectionItems(ctx context.Context, input *ListWorkoutSectionItems
 //
 // OpenAPI: /api/docs#/operations/CreateWorkoutSectionItem
 func CreateWorkoutSectionItem(ctx context.Context, input *CreateWorkoutSectionItemInput) (*CreateWorkoutSectionItemOutput, error) {
-	if err := requireSectionOwner(ctx, input.Body.WorkoutSectionID); err != nil {
+	if err := requireSectionModify(ctx, input.Body.WorkoutSectionID); err != nil {
 		return nil, err
 	}
 
@@ -107,7 +120,7 @@ func DeleteWorkoutSectionItem(ctx context.Context, input *DeleteWorkoutSectionIt
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout section item not found")
 	}
-	if err := requireSectionOwner(ctx, entity.WorkoutSectionID); err != nil {
+	if err := requireSectionModify(ctx, entity.WorkoutSectionID); err != nil {
 		return nil, err
 	}
 	if err := database.DB.Delete(&entity).Error; err != nil {
