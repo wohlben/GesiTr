@@ -21,6 +21,8 @@ import (
 	exerciselogmodels "gesitr/internal/user/exerciselog/models"
 	workouthandlers "gesitr/internal/user/workout/handlers"
 	workoutmodels "gesitr/internal/user/workout/models"
+	workoutgrouphandlers "gesitr/internal/user/workoutgroup/handlers"
+	workoutgroupmodels "gesitr/internal/user/workoutgroup/models"
 	workoutloghandlers "gesitr/internal/user/workoutlog/handlers"
 	"gesitr/internal/user/workoutlog/models"
 
@@ -63,6 +65,8 @@ func setupTestDB(t *testing.T) {
 		&models.WorkoutLogExerciseEntity{},
 		&models.WorkoutLogExerciseSetEntity{},
 		&exerciselogmodels.ExerciseLogEntity{},
+		&workoutgroupmodels.WorkoutGroupEntity{},
+		&workoutgroupmodels.WorkoutGroupMembershipEntity{},
 	)
 	db.Create(&profilemodels.UserProfileEntity{ID: "alice", Name: "alice"})
 	db.Create(&profilemodels.UserProfileEntity{ID: "bob", Name: "bob"})
@@ -80,6 +84,7 @@ func newRouter() *gin.Engine {
 	workouthandlers.RegisterRoutes(humaAPI)
 	workoutloghandlers.RegisterRoutes(humaAPI)
 	exerciseloghandlers.RegisterRoutes(humaAPI)
+	workoutgrouphandlers.RegisterRoutes(humaAPI)
 
 	return r
 }
@@ -96,6 +101,41 @@ func doJSON(r *gin.Engine, method, path string, body any) *httptest.ResponseReco
 	}
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
+	return w
+}
+
+func doJSONAs(r *gin.Engine, method, path string, body any, userID string) *httptest.ResponseRecorder {
+	var reader io.Reader
+	if body != nil {
+		data, _ := json.Marshal(body)
+		reader = bytes.NewReader(data)
+	}
+	req := httptest.NewRequest(method, path, reader)
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
+	}
+	req.Header.Set("X-User-Id", userID)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	return w
+}
+
+func doJSONLogAs(t *testing.T, r *gin.Engine, method, path string, body any, userID string) *httptest.ResponseRecorder {
+	t.Helper()
+	if body != nil {
+		reqJSON, _ := json.MarshalIndent(body, "  ", "  ")
+		t.Logf(">>> %s %s (as %s)\n  Request body:\n  %s", method, path, userID, reqJSON)
+	} else {
+		t.Logf(">>> %s %s (as %s, no body)", method, path, userID)
+	}
+	w := doJSONAs(r, method, path, body, userID)
+	var pretty json.RawMessage
+	if err := json.Unmarshal(w.Body.Bytes(), &pretty); err == nil {
+		respJSON, _ := json.MarshalIndent(pretty, "  ", "  ")
+		t.Logf("<<< %d\n  Response body:\n  %s", w.Code, respJSON)
+	} else {
+		t.Logf("<<< %d\n  Response body (raw): %s", w.Code, w.Body.String())
+	}
 	return w
 }
 

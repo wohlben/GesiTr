@@ -18,6 +18,7 @@ import (
 	"gesitr/internal/humaconfig"
 	profilemodels "gesitr/internal/profile/models"
 	"gesitr/internal/user/workout/models"
+	workoutgrouphandlers "gesitr/internal/user/workoutgroup/handlers"
 	workoutgroupmodels "gesitr/internal/user/workoutgroup/models"
 
 	"github.com/gin-gonic/gin"
@@ -73,6 +74,7 @@ func newRouter() *gin.Engine {
 	exercisehandlers.RegisterRoutes(humaAPI)
 	exercisegrouphandlers.RegisterRoutes(humaAPI)
 	RegisterRoutes(humaAPI)
+	workoutgrouphandlers.RegisterRoutes(humaAPI)
 
 	return r
 }

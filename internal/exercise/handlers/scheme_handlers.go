@@ -13,16 +13,17 @@ import (
 
 func exerciseSchemeDTOFromBody(b ExerciseSchemeBody) models.ExerciseScheme {
 	return models.ExerciseScheme{
-		ExerciseID:      b.ExerciseID,
-		MeasurementType: b.MeasurementType,
-		Sets:            b.Sets,
-		Reps:            b.Reps,
-		Weight:          b.Weight,
-		RestBetweenSets: b.RestBetweenSets,
-		TimePerRep:      b.TimePerRep,
-		Duration:        b.Duration,
-		Distance:        b.Distance,
-		TargetTime:      b.TargetTime,
+		ExerciseID:           b.ExerciseID,
+		MeasurementType:      b.MeasurementType,
+		Sets:                 b.Sets,
+		Reps:                 b.Reps,
+		Weight:               b.Weight,
+		RestBetweenSets:      b.RestBetweenSets,
+		TimePerRep:           b.TimePerRep,
+		Duration:             b.Duration,
+		Distance:             b.Distance,
+		TargetTime:           b.TargetTime,
+		WorkoutSectionItemID: b.WorkoutSectionItemID,
 	}
 }
 
@@ -42,6 +43,9 @@ func ListExerciseSchemes(ctx context.Context, input *ListExerciseSchemesInput) (
 	}
 	if input.MeasurementType != "" {
 		db = db.Where("measurement_type = ?", input.MeasurementType)
+	}
+	if input.WorkoutSectionItemID != "" {
+		db = db.Where("workout_section_item_id = ?", input.WorkoutSectionItemID)
 	}
 
 	var entities []models.ExerciseSchemeEntity

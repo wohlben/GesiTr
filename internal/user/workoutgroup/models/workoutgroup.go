@@ -5,8 +5,9 @@ import "gesitr/internal/shared"
 type WorkoutGroupRole string
 
 const (
-	WorkoutGroupRoleMember WorkoutGroupRole = "member"
-	WorkoutGroupRoleAdmin  WorkoutGroupRole = "admin"
+	WorkoutGroupRoleInvited WorkoutGroupRole = "invited"
+	WorkoutGroupRoleMember  WorkoutGroupRole = "member"
+	WorkoutGroupRoleAdmin   WorkoutGroupRole = "admin"
 )
 
 type WorkoutGroup struct {

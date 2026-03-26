@@ -51,6 +51,16 @@ func RegisterRoutes(api huma.API) {
 		Summary:     "Delete workout group",
 	}, DeleteWorkoutGroup)
 
+	// --- Accept invitation ---
+
+	huma.Register(api, huma.Operation{
+		OperationID: "AcceptWorkoutGroupInvitation",
+		Method:      http.MethodPost,
+		Path:        "/user/workouts/{id}/group/accept",
+		Tags:        []string{"workout-groups"},
+		Summary:     "Accept workout group invitation",
+	}, AcceptWorkoutGroupInvitation)
+
 	// --- Workout group memberships ---
 
 	huma.Register(api, huma.Operation{

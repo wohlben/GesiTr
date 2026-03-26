@@ -18,6 +18,7 @@ import {
   WorkoutSectionItemTypeExercise,
   WorkoutSectionItemTypeExerciseGroup,
 } from '$generated/user-models';
+import { ExerciseScheme } from '$generated/models';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
@@ -808,12 +809,17 @@ export class WorkoutEdit {
           }
 
           const scheme = await this.userApi.createExerciseScheme(schemeData);
-          await this.userApi.createWorkoutSectionItem({
+          const sectionItem = await this.userApi.createWorkoutSectionItem({
             workoutSectionId: section.id,
             type: 'exercise',
             exerciseSchemeId: scheme.id,
             position: ei,
           });
+          // Link scheme back to the item so user-specific schemes can be looked up
+          await this.userApi.updateExerciseScheme(scheme.id, {
+            ...schemeData,
+            workoutSectionItemId: sectionItem.id,
+          } as Partial<ExerciseScheme>);
         } else {
           // Exercise group items — create or update group
           const gc = item.groupConfig;

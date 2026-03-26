@@ -5,6 +5,7 @@ import { BaseModel } from './user-models';
 // source: workoutgroup.go
 
 export type WorkoutGroupRole = string;
+export const WorkoutGroupRoleInvited: WorkoutGroupRole = 'invited';
 export const WorkoutGroupRoleMember: WorkoutGroupRole = 'member';
 export const WorkoutGroupRoleAdmin: WorkoutGroupRole = 'admin';
 export interface WorkoutGroup extends BaseModel {

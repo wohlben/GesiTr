@@ -119,9 +119,14 @@ export class UserApiClient {
   }
 
   // Exercise Schemes
-  fetchExerciseSchemes(params?: { exerciseId?: number }): Promise<ExerciseScheme[]> {
+  fetchExerciseSchemes(params?: {
+    exerciseId?: number;
+    workoutSectionItemId?: number;
+  }): Promise<ExerciseScheme[]> {
     const qp = new URLSearchParams();
     if (params?.exerciseId != null) qp.set('exerciseId', String(params.exerciseId));
+    if (params?.workoutSectionItemId != null)
+      qp.set('workoutSectionItemId', String(params.workoutSectionItemId));
     const qs = qp.toString();
     return firstValueFrom(
       this.http.get<ExerciseScheme[]>(`/api/exercise-schemes${qs ? '?' + qs : ''}`),
@@ -291,6 +296,12 @@ export class UserApiClient {
 
   deleteWorkoutGroup(id: number): Promise<void> {
     return firstValueFrom(this.http.delete<void>(`/api/user/workout-groups/${id}`));
+  }
+
+  acceptWorkoutGroupInvitation(workoutId: number): Promise<WorkoutGroupMembership> {
+    return firstValueFrom(
+      this.http.post<WorkoutGroupMembership>(`/api/user/workouts/${workoutId}/group/accept`, {}),
+    );
   }
 
   // Workout Group Memberships

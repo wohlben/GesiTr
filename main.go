@@ -86,6 +86,14 @@ func runMigrations() {
 		database.DB.Exec("ALTER TABLE exercise_groups DROP COLUMN description")
 	}
 
+	// Backfill exercise_schemes.workout_section_item_id from workout_section_items.exercise_scheme_id.
+	// This populates the reverse FK for existing data after adding the new column.
+	database.DB.Exec(`UPDATE exercise_schemes SET workout_section_item_id = (
+		SELECT id FROM workout_section_items WHERE exercise_scheme_id = exercise_schemes.id AND deleted_at IS NULL LIMIT 1
+	) WHERE workout_section_item_id IS NULL AND id IN (
+		SELECT exercise_scheme_id FROM workout_section_items WHERE exercise_scheme_id IS NOT NULL AND deleted_at IS NULL
+	)`)
+
 	// Migrate workout_section_exercises → workout_section_items if old table still exists.
 	var oldTableCount int64
 	database.DB.Raw("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='workout_section_exercises'").Scan(&oldTableCount)

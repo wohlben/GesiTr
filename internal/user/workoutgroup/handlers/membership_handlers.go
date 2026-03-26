@@ -61,21 +61,17 @@ func CreateWorkoutGroupMembership(ctx context.Context, input *CreateWorkoutGroup
 		return nil, huma.Error422UnprocessableEntity("the workout owner does not need a membership")
 	}
 
-	// Validate role
-	if input.Body.Role != models.WorkoutGroupRoleMember && input.Body.Role != models.WorkoutGroupRoleAdmin {
-		return nil, huma.Error422UnprocessableEntity("role must be 'member' or 'admin'")
-	}
-
 	// Validate target user exists
 	var profile profilemodels.UserProfileEntity
 	if err := database.DB.First(&profile, "id = ?", input.Body.UserID).Error; err != nil {
 		return nil, huma.Error404NotFound("User not found")
 	}
 
+	// New memberships always start as "invited"
 	entity := models.WorkoutGroupMembershipEntity{
 		GroupID: input.Body.GroupID,
 		UserID:  input.Body.UserID,
-		Role:    input.Body.Role,
+		Role:    models.WorkoutGroupRoleInvited,
 	}
 	if err := database.DB.Create(&entity).Error; err != nil {
 		return nil, huma.Error422UnprocessableEntity("user is already a member of this group")
@@ -95,8 +91,8 @@ func UpdateWorkoutGroupMembership(ctx context.Context, input *UpdateWorkoutGroup
 		return nil, err
 	}
 
-	if input.Body.Role != models.WorkoutGroupRoleMember && input.Body.Role != models.WorkoutGroupRoleAdmin {
-		return nil, huma.Error422UnprocessableEntity("role must be 'member' or 'admin'")
+	if input.Body.Role != models.WorkoutGroupRoleInvited && input.Body.Role != models.WorkoutGroupRoleMember && input.Body.Role != models.WorkoutGroupRoleAdmin {
+		return nil, huma.Error422UnprocessableEntity("role must be 'invited', 'member', or 'admin'")
 	}
 
 	existing.Role = input.Body.Role

@@ -30,16 +30,17 @@ type ExerciseBody struct {
 
 // ExerciseSchemeBody contains the client-provided fields for creating or updating an exercise scheme.
 type ExerciseSchemeBody struct {
-	ExerciseID      uint     `json:"exerciseId" required:"true"`
-	MeasurementType string   `json:"measurementType" required:"true"`
-	Sets            *int     `json:"sets,omitempty"`
-	Reps            *int     `json:"reps,omitempty"`
-	Weight          *float64 `json:"weight,omitempty"`
-	RestBetweenSets *int     `json:"restBetweenSets,omitempty"`
-	TimePerRep      *int     `json:"timePerRep,omitempty"`
-	Duration        *int     `json:"duration,omitempty"`
-	Distance        *float64 `json:"distance,omitempty"`
-	TargetTime      *int     `json:"targetTime,omitempty"`
+	ExerciseID           uint     `json:"exerciseId" required:"true"`
+	MeasurementType      string   `json:"measurementType" required:"true"`
+	Sets                 *int     `json:"sets,omitempty"`
+	Reps                 *int     `json:"reps,omitempty"`
+	Weight               *float64 `json:"weight,omitempty"`
+	RestBetweenSets      *int     `json:"restBetweenSets,omitempty"`
+	TimePerRep           *int     `json:"timePerRep,omitempty"`
+	Duration             *int     `json:"duration,omitempty"`
+	Distance             *float64 `json:"distance,omitempty"`
+	TargetTime           *int     `json:"targetTime,omitempty"`
+	WorkoutSectionItemID *uint    `json:"workoutSectionItemId,omitempty"`
 }
 
 // --- Exercise handlers ---
@@ -132,8 +133,9 @@ type DeleteAllExerciseVersionsOutput struct{}
 // --- Exercise scheme handlers ---
 
 type ListExerciseSchemesInput struct {
-	ExerciseID      string `query:"exerciseId" doc:"Filter by exercise ID"`
-	MeasurementType string `query:"measurementType" doc:"Filter by measurement type"`
+	ExerciseID           string `query:"exerciseId" doc:"Filter by exercise ID"`
+	MeasurementType      string `query:"measurementType" doc:"Filter by measurement type"`
+	WorkoutSectionItemID string `query:"workoutSectionItemId" doc:"Filter by workout section item ID"`
 }
 
 type ListExerciseSchemesOutput struct {

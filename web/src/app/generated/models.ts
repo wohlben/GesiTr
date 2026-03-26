@@ -105,6 +105,7 @@ export interface ExerciseScheme extends BaseModel {
   duration?: number /* int */;
   distance?: number /* float64 */;
   targetTime?: number /* int */;
+  workoutSectionItemId?: number /* uint */;
 }
 
 //////////

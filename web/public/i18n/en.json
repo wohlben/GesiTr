@@ -296,7 +296,9 @@
       "role": "Role",
       "roleMember": "Member",
       "roleAdmin": "Admin",
-      "noMembers": "No members yet."
+      "noMembers": "No members yet.",
+      "acceptInvitation": "Accept Invitation",
+      "invited": "Invited"
     },
     "workoutStart": {
       "title": "Plan Workout",
