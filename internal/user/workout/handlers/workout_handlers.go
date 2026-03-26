@@ -37,9 +37,23 @@ func ListWorkouts(ctx context.Context, input *ListWorkoutsInput) (*ListWorkoutsO
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
+	var nonOwnedIDs []uint
+	for _, e := range entities {
+		if e.Owner != userID {
+			nonOwnedIDs = append(nonOwnedIDs, e.ID)
+		}
+	}
+	groupInfoMap := workoutgroup.GroupInfoForWorkouts(userID, nonOwnedIDs)
+
 	dtos := make([]models.Workout, len(entities))
 	for i := range entities {
 		dtos[i] = entities[i].ToDTO()
+		if info, ok := groupInfoMap[entities[i].ID]; ok {
+			dtos[i].WorkoutGroup = &models.WorkoutGroupInfo{
+				GroupName:  info.GroupName,
+				Membership: info.MembershipRole,
+			}
+		}
 	}
 	return &ListWorkoutsOutput{Body: dtos}, nil
 }
@@ -74,7 +88,14 @@ func GetWorkout(ctx context.Context, input *GetWorkoutInput) (*GetWorkoutOutput,
 	if !access.CanRead() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
-	return &GetWorkoutOutput{Body: entity.ToDTO()}, nil
+	dto := entity.ToDTO()
+	if !access.IsOwner && access.GroupName != "" {
+		dto.WorkoutGroup = &models.WorkoutGroupInfo{
+			GroupName:  access.GroupName,
+			Membership: access.MembershipRole,
+		}
+	}
+	return &GetWorkoutOutput{Body: dto}, nil
 }
 
 // UpdateWorkout updates workout metadata (name, notes). Sections and exercises

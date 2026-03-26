@@ -2,12 +2,18 @@ package models
 
 import "gesitr/internal/shared"
 
+type WorkoutGroupInfo struct {
+	GroupName  string `json:"groupName"`
+	Membership string `json:"membership"`
+}
+
 type Workout struct {
 	shared.BaseModel `tstype:",extends"`
-	Owner            string           `json:"owner"`
-	Name             string           `json:"name"`
-	Notes            *string          `json:"notes"`
-	Sections         []WorkoutSection `json:"sections" gorm:"-"`
+	Owner            string            `json:"owner"`
+	Name             string            `json:"name"`
+	Notes            *string           `json:"notes"`
+	Sections         []WorkoutSection  `json:"sections" gorm:"-"`
+	WorkoutGroup     *WorkoutGroupInfo `json:"workoutGroup,omitempty" gorm:"-"`
 }
 
 type WorkoutSectionType string

@@ -16,11 +16,16 @@ export interface ErrorResponse {
 //////////
 // source: workout.go
 
+export interface WorkoutGroupInfo {
+  groupName: string;
+  membership: string;
+}
 export interface Workout extends BaseModel {
   owner: string;
   name: string;
   notes?: string;
   sections: WorkoutSection[];
+  workoutGroup?: WorkoutGroupInfo;
 }
 export type WorkoutSectionType = string;
 export const WorkoutSectionTypeMain: WorkoutSectionType = 'main';
