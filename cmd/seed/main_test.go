@@ -11,7 +11,6 @@ import (
 	equipmentModels "gesitr/internal/equipment/models"
 	fulfillmentModels "gesitr/internal/equipmentfulfillment/models"
 	exerciseModels "gesitr/internal/exercise/models"
-	groupModels "gesitr/internal/exercisegroup/models"
 	relModels "gesitr/internal/exerciserelationship/models"
 	profileModels "gesitr/internal/profile/models"
 
@@ -38,8 +37,6 @@ func setupSeedTestDB(t *testing.T) {
 		&exerciseModels.ExerciseEquipment{},
 		&fulfillmentModels.FulfillmentEntity{},
 		&relModels.ExerciseRelationshipEntity{},
-		&groupModels.ExerciseGroupEntity{},
-		&groupModels.ExerciseGroupMemberEntity{},
 		&exerciseModels.ExerciseHistoryEntity{},
 		&equipmentModels.EquipmentHistoryEntity{},
 	)
@@ -104,27 +101,18 @@ func TestMainFunction(t *testing.T) {
 		"id": "x-y", "relationshipType": "similar", "strength": 0.5, "description": nil,
 		"createdBy": "sinon", "createdAt": ts, "fromExerciseTemplateId": "x", "toExerciseTemplateId": "x",
 	})
-	writeTempJSON(t, tmpDir, "compendium_exercise_groups", "g.json", map[string]any{
-		"id": "g1", "name": "G1", "description": nil, "createdBy": "sinon", "createdAt": ts, "updatedAt": nil,
-	})
-	writeTempJSON(t, tmpDir, "compendium_exercise_group_members", "m.json", map[string]any{
-		"groupId": "g1", "exerciseTemplateId": "x", "addedBy": "sinon", "addedAt": ts,
-	})
-
 	// main() calls database.Init() which creates gesitr.db in cwd (tmpDir)
 	main()
 
 	// Verify all entities were seeded
-	var eqCount, fCount, exCount, relCount, gCount, mCount int64
+	var eqCount, fCount, exCount, relCount int64
 	database.DB.Model(&equipmentModels.EquipmentEntity{}).Count(&eqCount)
 	database.DB.Model(&fulfillmentModels.FulfillmentEntity{}).Count(&fCount)
 	database.DB.Model(&exerciseModels.ExerciseEntity{}).Count(&exCount)
 	database.DB.Model(&relModels.ExerciseRelationshipEntity{}).Count(&relCount)
-	database.DB.Model(&groupModels.ExerciseGroupEntity{}).Count(&gCount)
-	database.DB.Model(&groupModels.ExerciseGroupMemberEntity{}).Count(&mCount)
 
-	if eqCount != 1 || fCount != 1 || exCount != 1 || relCount != 1 || gCount != 1 || mCount != 1 {
-		t.Errorf("counts: eq=%d f=%d ex=%d rel=%d g=%d m=%d", eqCount, fCount, exCount, relCount, gCount, mCount)
+	if eqCount != 1 || fCount != 1 || exCount != 1 || relCount != 1 {
+		t.Errorf("counts: eq=%d f=%d ex=%d rel=%d", eqCount, fCount, exCount, relCount)
 	}
 
 	// Verify history entries were created
@@ -551,156 +539,6 @@ func TestSeedExerciseRelationships(t *testing.T) {
 		sqlDB, _ := database.DB.DB()
 		sqlDB.Close()
 		if err := seedExerciseRelationships(); err == nil {
-			t.Error("expected error")
-		}
-	})
-}
-
-// --- seedExerciseGroups ---
-
-func TestSeedExerciseGroups(t *testing.T) {
-	t.Run("success with updatedAt", func(t *testing.T) {
-		setupSeedTestDB(t)
-		tmpDir := chdirTemp(t)
-
-		ts := int64(1700000000)
-		writeTempJSON(t, tmpDir, "compendium_exercise_groups", "push.json", map[string]any{
-			"id": "push", "name": "Push Day", "description": nil,
-			"createdBy": "sinon", "createdAt": ts, "updatedAt": ts,
-		})
-
-		if err := seedExerciseGroups(); err != nil {
-			t.Fatal(err)
-		}
-
-		var g groupModels.ExerciseGroupEntity
-		database.DB.Where("name = ?", "Push Day").First(&g)
-		if g.Name == nil || *g.Name != "Push Day" || g.Owner != "sinon" {
-			t.Errorf("field mismatch: %+v", g)
-		}
-
-		// Verify groupIDMap was populated
-		if len(groupIDMap) != 1 {
-			t.Errorf("expected groupIDMap to have 1 entry, got %d", len(groupIDMap))
-		}
-	})
-
-	t.Run("success with nil updatedAt", func(t *testing.T) {
-		setupSeedTestDB(t)
-		tmpDir := chdirTemp(t)
-
-		ts := int64(1700000000)
-		writeTempJSON(t, tmpDir, "compendium_exercise_groups", "pull.json", map[string]any{
-			"id": "pull", "name": "Pull Day", "description": nil,
-			"createdBy": "sinon", "createdAt": ts, "updatedAt": nil,
-		})
-
-		if err := seedExerciseGroups(); err != nil {
-			t.Fatal(err)
-		}
-	})
-
-	t.Run("bad json", func(t *testing.T) {
-		setupSeedTestDB(t)
-		tmpDir := chdirTemp(t)
-		dirPath := filepath.Join(tmpDir, "data", "compendium_exercise_groups")
-		os.MkdirAll(dirPath, 0755)
-		os.WriteFile(filepath.Join(dirPath, "bad.json"), []byte("{bad"), 0644)
-		if err := seedExerciseGroups(); err == nil {
-			t.Error("expected error")
-		}
-	})
-
-	t.Run("dir not found", func(t *testing.T) {
-		setupSeedTestDB(t)
-		chdirTemp(t)
-		if err := seedExerciseGroups(); err == nil {
-			t.Error("expected error")
-		}
-	})
-
-	t.Run("db error", func(t *testing.T) {
-		setupSeedTestDB(t)
-		tmpDir := chdirTemp(t)
-		writeTempJSON(t, tmpDir, "compendium_exercise_groups", "g.json", map[string]any{
-			"id": "g", "name": "G", "description": nil,
-			"createdBy": "sinon", "createdAt": 0, "updatedAt": nil,
-		})
-		sqlDB, _ := database.DB.DB()
-		sqlDB.Close()
-		if err := seedExerciseGroups(); err == nil {
-			t.Error("expected error")
-		}
-	})
-}
-
-// --- seedExerciseGroupMembers ---
-
-func TestSeedExerciseGroupMembers(t *testing.T) {
-	t.Run("success", func(t *testing.T) {
-		setupSeedTestDB(t)
-		tmpDir := chdirTemp(t)
-
-		// Initialize ID maps with test data
-		exerciseIDMap = map[string]uint{"ex1": 1, "ex2": 2}
-		groupIDMap = map[string]uint{"g1": 1}
-
-		ts := int64(1700000000)
-		writeTempJSON(t, tmpDir, "compendium_exercise_group_members", "g1-ex1.json", map[string]any{
-			"groupId": "g1", "exerciseTemplateId": "ex1", "addedBy": "sinon", "addedAt": ts,
-		})
-		writeTempJSON(t, tmpDir, "compendium_exercise_group_members", "g1-ex2.json", map[string]any{
-			"groupId": "g1", "exerciseTemplateId": "ex2", "addedBy": "sinon", "addedAt": ts,
-		})
-
-		if err := seedExerciseGroupMembers(); err != nil {
-			t.Fatal(err)
-		}
-
-		var count int64
-		database.DB.Model(&groupModels.ExerciseGroupMemberEntity{}).Count(&count)
-		if count != 2 {
-			t.Errorf("expected 2, got %d", count)
-		}
-
-		var m groupModels.ExerciseGroupMemberEntity
-		database.DB.First(&m)
-		if m.GroupID != 1 || m.Owner != "sinon" {
-			t.Errorf("field mismatch: %+v", m)
-		}
-	})
-
-	t.Run("bad json", func(t *testing.T) {
-		setupSeedTestDB(t)
-		tmpDir := chdirTemp(t)
-		dirPath := filepath.Join(tmpDir, "data", "compendium_exercise_group_members")
-		os.MkdirAll(dirPath, 0755)
-		os.WriteFile(filepath.Join(dirPath, "bad.json"), []byte("{bad"), 0644)
-		if err := seedExerciseGroupMembers(); err == nil {
-			t.Error("expected error")
-		}
-	})
-
-	t.Run("dir not found", func(t *testing.T) {
-		setupSeedTestDB(t)
-		chdirTemp(t)
-		if err := seedExerciseGroupMembers(); err == nil {
-			t.Error("expected error")
-		}
-	})
-
-	t.Run("db error", func(t *testing.T) {
-		setupSeedTestDB(t)
-		tmpDir := chdirTemp(t)
-		// Initialize ID maps
-		exerciseIDMap = map[string]uint{"e": 1}
-		groupIDMap = map[string]uint{"g": 1}
-		writeTempJSON(t, tmpDir, "compendium_exercise_group_members", "m.json", map[string]any{
-			"groupId": "g", "exerciseTemplateId": "e", "addedBy": "sinon", "addedAt": 0,
-		})
-		sqlDB, _ := database.DB.DB()
-		sqlDB.Close()
-		if err := seedExerciseGroupMembers(); err == nil {
 			t.Error("expected error")
 		}
 	})
