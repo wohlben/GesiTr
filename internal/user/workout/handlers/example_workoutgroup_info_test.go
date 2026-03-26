@@ -105,3 +105,38 @@ func ExampleGetWorkout_groupMemberSeesWorkoutGroupInfo() {
 	// Gym Buddies
 	// invited
 }
+
+// UpdateWorkout response for an admin group member includes workoutGroup info.
+func ExampleUpdateWorkout_groupAdminSeesWorkoutGroupInfo() {
+	setupExampleDB()
+	r := newRouter()
+
+	// Bob interacts with the API to establish his profile
+	doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+
+	// Alice creates a workout, group, and adds bob as admin
+	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/user/workout-groups", `{
+		"name": "Gym Buddies", "workoutId": 1
+	}`)
+	doRaw(r, "POST", "/api/user/workout-group-memberships", `{
+		"groupId": 1, "userId": "bob", "role": "member"
+	}`)
+	// Promote bob to admin so he can modify
+	doRaw(r, "PUT", "/api/user/workout-group-memberships/1", `{"role": "admin"}`)
+
+	// Bob updates the workout — response should include workoutGroup
+	w := doRawAs(r, "PUT", "/api/user/workouts/1", `{"name": "Upper Push"}`, "bob")
+
+	var workout models.Workout
+	json.Unmarshal(w.Body.Bytes(), &workout)
+	fmt.Println(w.Code)
+	fmt.Println(workout.Name)
+	fmt.Println(workout.WorkoutGroup.GroupName)
+	fmt.Println(workout.WorkoutGroup.Membership)
+	// Output:
+	// 200
+	// Upper Push
+	// Gym Buddies
+	// admin
+}

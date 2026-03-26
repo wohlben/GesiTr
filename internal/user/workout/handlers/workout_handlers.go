@@ -126,7 +126,14 @@ func UpdateWorkout(ctx context.Context, input *UpdateWorkoutInput) (*UpdateWorko
 	if err := preloadWorkout(database.DB).First(&entity, entity.ID).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	return &UpdateWorkoutOutput{Body: entity.ToDTO()}, nil
+	dto := entity.ToDTO()
+	if !access.IsOwner && access.GroupName != "" {
+		dto.WorkoutGroup = &models.WorkoutGroupInfo{
+			GroupName:  access.GroupName,
+			Membership: access.MembershipRole,
+		}
+	}
+	return &UpdateWorkoutOutput{Body: dto}, nil
 }
 
 // DeleteWorkout deletes a workout. DELETE /api/user/workouts/{id}

@@ -117,6 +117,23 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
           !isCreateMode() && workoutQuery.isError() ? workoutQuery.error().message : undefined
         "
       >
+        @if (workoutQuery.data()?.workoutGroup; as group) {
+          <div
+            class="rounded-lg border px-4 py-3 text-sm"
+            [class]="
+              group.membership === 'admin'
+                ? 'border-purple-200 bg-purple-50 text-purple-800 dark:border-purple-800 dark:bg-purple-900/20 dark:text-purple-300'
+                : group.membership === 'member'
+                  ? 'border-green-200 bg-green-50 text-green-800 dark:border-green-800 dark:bg-green-900/20 dark:text-green-300'
+                  : 'border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300'
+            "
+          >
+            <span class="font-medium">{{ group.groupName }}</span>
+            —
+            {{ t('enums.workoutGroupRole.' + group.membership) }}
+          </div>
+        }
+
         @if (isCreateMode() || workoutQuery.data()) {
           <form (submit)="onSubmit(); $event.preventDefault()" class="space-y-6">
             <!-- Basic Fields -->
