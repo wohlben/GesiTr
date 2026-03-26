@@ -1,4 +1,4 @@
-import { Component, inject, computed, signal } from '@angular/core';
+import { Component, inject, computed, signal, effect } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -218,11 +218,14 @@ export class WorkoutGroup {
   group = computed(() => {
     const groups = this.groupsQuery.data();
     if (!groups) return undefined;
-    const found = groups.find((g) => g.workoutId === this.workoutId);
-    if (found && !this.groupNameInput()) {
-      this.groupNameInput.set(found.name);
+    return groups.find((g) => g.workoutId === this.workoutId);
+  });
+
+  private _syncGroupName = effect(() => {
+    const g = this.group();
+    if (g && !this.groupNameInput()) {
+      this.groupNameInput.set(g.name);
     }
-    return found;
   });
 
   membershipsQuery = injectQuery(() => {
