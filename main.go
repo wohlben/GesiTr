@@ -192,9 +192,8 @@ func buildApp() *gin.Engine {
 			profile.ResetProfileCache()
 			c.JSON(http.StatusOK, gin.H{"status": "reset"})
 		})
-	} else {
-		setupSPA(r)
 	}
+	setupSPA(r)
 	return r
 }
 

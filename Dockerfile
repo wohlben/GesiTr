@@ -62,6 +62,7 @@ COPY --from=go-builder --chown=node:node /app/gesitr /app/gesitr
 ARG CACHEBUST
 ENV PLAYWRIGHT_TEST_BASE_URL=http://localhost:8080
 ENV AUTH_FALLBACK_USER=e2e-tester
+ENV DEV=true
 WORKDIR /app
 RUN ./gesitr & SERVER_PID=$! && \
     sleep 2 && \
