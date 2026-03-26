@@ -82,6 +82,11 @@ import { lucideListCheck, lucideUsers } from '@ng-icons/lucide';
                     >
                       {{ t('fields.exercises') }}
                     </th>
+                    <th
+                      class="px-4 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                    >
+                      {{ t('user.workouts.membership') }}
+                    </th>
                     <th class="px-4 py-3"></th>
                   </tr>
                 </thead>
@@ -99,6 +104,22 @@ import { lucideListCheck, lucideUsers } from '@ng-icons/lucide';
                       </td>
                       <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                         {{ workout.exerciseCount }}
+                      </td>
+                      <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+                        @if (workout.membership) {
+                          <span
+                            class="inline-flex rounded-full px-2 py-0.5 text-xs font-medium"
+                            [class]="
+                              workout.membership === 'admin'
+                                ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'
+                                : workout.membership === 'member'
+                                  ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
+                                  : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300'
+                            "
+                          >
+                            {{ t('enums.workoutGroupRole.' + workout.membership) }}
+                          </span>
+                        }
                       </td>
                       <td class="px-4 py-3 text-right">
                         <a
@@ -156,6 +177,7 @@ export class WorkoutList {
       name: w.name,
       sectionCount: w.sections?.length ?? 0,
       exerciseCount: w.sections?.reduce((sum, s) => sum + (s.items?.length ?? 0), 0) ?? 0,
+      membership: w.workoutGroup?.membership,
     }));
   });
 

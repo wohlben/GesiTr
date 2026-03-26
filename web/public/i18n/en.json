@@ -169,6 +169,11 @@
       "partially_finished": "Partially Finished",
       "aborted": "Aborted"
     },
+    "workoutGroupRole": {
+      "invited": "Invited",
+      "member": "Member",
+      "admin": "Admin"
+    },
     "exerciseRelationshipType": {
       "accessory": "Accessory",
       "alternative": "Alternative",
@@ -299,7 +304,8 @@
       "roleAdmin": "Admin",
       "noMembers": "No members yet.",
       "acceptInvitation": "Accept Invitation",
-      "invited": "Invited"
+      "invited": "Invited",
+      "membership": "Membership"
     },
     "workoutStart": {
       "title": "Plan Workout",
