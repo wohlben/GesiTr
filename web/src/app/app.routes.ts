@@ -4,6 +4,17 @@ import { MainLayout } from './layout/main-layout';
 export const routes: Routes = [
   { path: '', redirectTo: '/compendium/exercises', pathMatch: 'full' },
   {
+    path: 'settings',
+    component: MainLayout,
+    children: [
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('$pages/settings/profile/settings-profile').then((m) => m.SettingsProfile),
+      },
+    ],
+  },
+  {
     path: 'user',
     component: MainLayout,
     children: [

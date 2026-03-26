@@ -1,9 +1,6 @@
 {
   "/api": {
     "target": "http://localhost:9876",
-    "secure": false,
-    "headers": {
-      "X-User-Id": "devuser"
-    }
+    "secure": false
   }
 }

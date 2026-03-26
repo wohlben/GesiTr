@@ -34,7 +34,8 @@
     "calendar": "Calendar",
     "compendium": "Compendium",
     "personal": "Personal",
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "settings": "Settings"
   },
   "fields": {
     "name": "Name",
@@ -334,6 +335,14 @@
       "fri": "Fri",
       "sat": "Sat",
       "sun": "Sun"
+    }
+  },
+  "settings": {
+    "profile": {
+      "title": "Profile",
+      "userName": "User Name",
+      "devUserId": "X-User-Id Header",
+      "devUserIdHint": "Development only — sets the X-User-Id header for API requests"
     }
   }
 }

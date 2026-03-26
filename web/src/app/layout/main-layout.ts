@@ -1,10 +1,14 @@
 import { Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucideSettings } from '@ng-icons/lucide';
+import { HlmIconImports } from '@spartan-ng/helm/icon';
 
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslocoDirective],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslocoDirective, NgIcon, HlmIconImports],
+  providers: [provideIcons({ lucideSettings })],
   host: { class: 'block' },
   template: `
     <div *transloco="let t" class="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -46,30 +50,41 @@ import { TranslocoDirective } from '@jsverse/transloco';
             }
           </div>
 
-          <!-- Mobile burger button -->
-          <button
-            (click)="menuOpen.set(!menuOpen())"
-            class="rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 md:hidden"
-            [attr.aria-label]="t('nav.toggleMenu')"
-          >
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              @if (menuOpen()) {
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              } @else {
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              }
-            </svg>
-          </button>
+          <div class="flex items-center gap-1">
+            <a
+              routerLink="/settings/profile"
+              routerLinkActive="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
+              class="rounded-md p-2 text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-200"
+              [attr.aria-label]="t('nav.settings')"
+            >
+              <ng-icon hlm name="lucideSettings" size="sm" />
+            </a>
+
+            <!-- Mobile burger button -->
+            <button
+              (click)="menuOpen.set(!menuOpen())"
+              class="rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 md:hidden"
+              [attr.aria-label]="t('nav.toggleMenu')"
+            >
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                @if (menuOpen()) {
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                } @else {
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                }
+              </svg>
+            </button>
+          </div>
         </div>
 
         <!-- Mobile dropdown menu -->

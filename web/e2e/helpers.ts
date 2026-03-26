@@ -6,7 +6,7 @@ function stripServerFields(obj: Record<string, unknown>): Record<string, unknown
   return rest;
 }
 
-// The Angular proxy in e2e sets X-User-Id on all /api requests.
+// Playwright config sets X-User-Id via extraHTTPHeaders for the default user.
 // To create resources as a different user, we need a direct API context
 // that bypasses the proxy and sets its own X-User-Id header.
 // In Docker, there's no proxy — PLAYWRIGHT_TEST_BASE_URL points directly at the API.
