@@ -3,6 +3,7 @@ import { page } from 'vitest/browser';
 import { Component } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
+import { DevelopmentUserHeaderService } from '$core/dev/development-user-header.service';
 import { MainLayout } from './main-layout';
 
 @Component({
@@ -19,6 +20,7 @@ describe('MainLayout screenshots', () => {
   const providers = [
     provideTranslocoForTest(),
     provideRouter([{ path: '**', component: TestPage }]),
+    DevelopmentUserHeaderService,
   ];
 
   describe('desktop', () => {

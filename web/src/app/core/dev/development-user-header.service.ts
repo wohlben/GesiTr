@@ -5,7 +5,7 @@ const STORAGE_KEY = 'dev-x-user-id';
 
 @Injectable()
 export class DevelopmentUserHeaderService {
-  readonly userId$ = new BehaviorSubject<string>(sessionStorage.getItem(STORAGE_KEY) ?? 'devuser');
+  readonly userId$ = new BehaviorSubject<string>(resolveInitialUser());
 
   constructor() {
     if (!isDevMode()) {
@@ -13,4 +13,13 @@ export class DevelopmentUserHeaderService {
     }
     this.userId$.subscribe((id) => sessionStorage.setItem(STORAGE_KEY, id));
   }
+}
+
+function resolveInitialUser(): string {
+  const params = new URLSearchParams(window.location.search);
+  const onBehalfOf = params.get('onBehalfOf');
+  if (onBehalfOf) {
+    return onBehalfOf;
+  }
+  return sessionStorage.getItem(STORAGE_KEY) ?? 'devuser';
 }
