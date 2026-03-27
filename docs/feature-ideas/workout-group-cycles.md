@@ -4,7 +4,7 @@
 
 Workout groups operate on a rolling **cycle** system (typically weekly). Each cycle, every participant must commit to a plan — concretely, they configure their exercise schemes for the group's assigned workouts. This solves a key UX problem: when a user imports a group workout, they don't go through the normal workout creation/editing flow, so there's no natural point where they configure sets, reps, weight, etc. The cycle commitment process forces that configuration step while also producing trackable commitments.
 
-**Depends on:** [Compendium Workout Groups](./compendium-workout-groups.md), [Workout Commitments](./workout-commitments.md), [Workout Schedules](./workout-schedules.md)
+**Depends on:** [Compendium Workout Groups](./implemented/compendium-workout-groups.md), [Workout Commitments](./workout-commitments.md), [Workout Schedules](./workout-schedules.md)
 
 ## Cycle Model
 
