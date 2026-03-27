@@ -3,64 +3,21 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { form, FormField } from '@angular/forms/signals';
 import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
-import { CdkDragDrop, CdkDrag, CdkDropList, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { formatBreak } from '$core/format-utils';
 import { workoutKeys, workoutLogKeys } from '$core/query-keys';
-import {
-  Workout,
-  WorkoutSectionTypeMain,
-  WorkoutSectionTypeSupplementary,
-  WorkoutLog,
-} from '$generated/user-models';
+import { Workout, WorkoutSectionTypeMain, WorkoutLog } from '$generated/user-models';
 import { ExerciseScheme } from '$generated/models';
 import { PageLayout } from '../../../layout/page-layout';
-import { BrnSelectImports } from '@spartan-ng/brain/select';
-import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmInput } from '@spartan-ng/helm/input';
 import { HlmTextarea } from '@spartan-ng/helm/textarea';
 import { WorkoutStartStore, SetPreview } from './workout-start.store';
 import { AddExerciseDialog } from './add-exercise-dialog';
-
-interface StartSetModel {
-  id: number | null;
-  targetReps: number | null;
-  targetWeight: number | null;
-  targetDuration: number | null;
-  targetDistance: number | null;
-  targetTime: number | null;
-  restAfterSeconds: number | null;
-}
-
-interface StartExerciseModel {
-  id: number | null;
-  sourceExerciseSchemeId: number;
-  breakAfterSeconds: number | null;
-  sets: StartSetModel[];
-}
-
-interface PendingGroupModel {
-  groupId: number;
-  groupName: string;
-  members: { id: number; name: string }[];
-  position: number;
-}
-
-interface StartSectionModel {
-  id: number | null;
-  type: string;
-  label: string;
-  exercises: StartExerciseModel[];
-  pendingGroups: PendingGroupModel[];
-}
-
-interface StartModel {
-  name: string;
-  notes: string;
-  sections: StartSectionModel[];
-}
+import { WorkoutStartSection } from './workout-start-section';
+import { StartModel, StartExerciseModel, PendingGroupModel } from './workout-start.models';
 
 @Component({
   selector: 'app-workout-start',
@@ -71,12 +28,10 @@ interface StartModel {
     AddExerciseDialog,
     CdkDropList,
     CdkDrag,
-    CdkDragHandle,
-    BrnSelectImports,
-    HlmSelectImports,
     HlmInput,
     HlmTextarea,
     TranslocoDirective,
+    WorkoutStartSection,
   ],
   providers: [WorkoutStartStore],
   template: `
@@ -124,340 +79,40 @@ interface StartModel {
             <div
               cdkDropList
               [cdkDropListData]="startForm.sections"
+              [cdkDropListDisabled]="isReadonly()"
               (cdkDropListDropped)="onSectionDrop($event)"
               class="space-y-4"
             >
               @for (section of startForm.sections; track $index; let si = $index) {
-                <div cdkDrag class="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
-                  <div class="mb-3 flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                      <!-- Section drag handle -->
-                      <div
-                        cdkDragHandle
-                        class="flex cursor-grab flex-col gap-0.5 px-1 py-1 text-gray-400 active:cursor-grabbing dark:text-gray-500"
-                      >
-                        <div class="flex gap-0.5">
-                          <div class="h-1 w-1 rounded-full bg-current"></div>
-                          <div class="h-1 w-1 rounded-full bg-current"></div>
-                        </div>
-                        <div class="flex gap-0.5">
-                          <div class="h-1 w-1 rounded-full bg-current"></div>
-                          <div class="h-1 w-1 rounded-full bg-current"></div>
-                        </div>
-                        <div class="flex gap-0.5">
-                          <div class="h-1 w-1 rounded-full bg-current"></div>
-                          <div class="h-1 w-1 rounded-full bg-current"></div>
-                        </div>
-                      </div>
-                      <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                        {{ t('user.workouts.sectionLabel', { n: si + 1 }) }}
-                      </h3>
-                    </div>
-                    <button
-                      type="button"
-                      (click)="removeSection(si)"
-                      class="text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
-                    >
-                      {{ t('common.remove') }}
-                    </button>
-                  </div>
-
-                  <div class="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    <div>
-                      <span class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{
-                        t('fields.type')
-                      }}</span>
-                      <brn-select
-                        [formField]="section.type"
-                        (valueChange)="onSectionChange(si)"
-                        class="mt-1"
-                        hlm
-                      >
-                        <hlm-select-trigger class="w-full">
-                          <hlm-select-value />
-                        </hlm-select-trigger>
-                        <hlm-select-content>
-                          <hlm-option [value]="SECTION_TYPE_MAIN">{{
-                            t('enums.workoutSectionType.main')
-                          }}</hlm-option>
-                          <hlm-option [value]="SECTION_TYPE_SUPPLEMENTARY">{{
-                            t('enums.workoutSectionType.supplementary')
-                          }}</hlm-option>
-                        </hlm-select-content>
-                      </brn-select>
-                    </div>
-                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                      {{ t('fields.label') }}
-                      <input
-                        hlmInput
-                        [formField]="section.label"
-                        (change)="onSectionChange(si)"
-                        class="mt-1"
-                      />
-                    </label>
-                  </div>
-
-                  <!-- Exercise cards -->
-                  <div
-                    cdkDropList
-                    [cdkDropListData]="section.exercises"
-                    (cdkDropListDropped)="onExerciseDrop($event, si)"
-                  >
-                    @for (
-                      exercise of section.exercises;
-                      track $index;
-                      let ei = $index;
-                      let lastEx = $last
-                    ) {
-                      <div cdkDrag>
-                        @let info = store.exerciseDisplay()[exercise.id().value()!];
-                        <div class="rounded-md border border-gray-200 dark:border-gray-600">
-                          <!-- Exercise header -->
-                          <div
-                            class="flex items-center justify-between border-b border-gray-100 px-3 py-2 dark:border-gray-700"
-                          >
-                            <div
-                              class="flex items-center gap-2 text-sm text-gray-900 dark:text-gray-100"
-                            >
-                              <!-- Exercise drag handle -->
-                              <div
-                                cdkDragHandle
-                                class="flex cursor-grab flex-col gap-0.5 text-gray-400 active:cursor-grabbing dark:text-gray-500"
-                              >
-                                <div class="flex gap-0.5">
-                                  <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
-                                  <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
-                                </div>
-                                <div class="flex gap-0.5">
-                                  <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
-                                  <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
-                                </div>
-                                <div class="flex gap-0.5">
-                                  <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
-                                  <div class="h-0.5 w-0.5 rounded-full bg-current"></div>
-                                </div>
-                              </div>
-                              <div>
-                                <span class="font-semibold">{{
-                                  info?.name ?? t('common.loading')
-                                }}</span>
-                                <span class="ml-2 text-gray-500 dark:text-gray-400">{{
-                                  info?.summary
-                                }}</span>
-                              </div>
-                            </div>
-                            <button
-                              type="button"
-                              (click)="removeExercise(si, ei)"
-                              class="text-xs text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
-                            >
-                              {{ t('common.remove') }}
-                            </button>
-                          </div>
-
-                          <!-- Editable sets -->
-                          @if (exercise.sets.length) {
-                            <div class="px-3 py-2">
-                              <!-- Header -->
-                              <div
-                                class="mb-1 grid text-left text-xs text-gray-500 uppercase dark:text-gray-400"
-                                [class]="
-                                  info?.measurementType === 'REP_BASED'
-                                    ? 'grid-cols-[2rem_5rem_6rem]'
-                                    : 'grid-cols-[2rem_6rem]'
-                                "
-                              >
-                                <span>{{ t('fields.set') }}</span>
-                                @if (info?.measurementType === 'REP_BASED') {
-                                  <span>{{ t('fields.reps') }}</span>
-                                  <span>{{ t('fields.weight') }}</span>
-                                }
-                                @if (info?.measurementType === 'TIME_BASED') {
-                                  <span>{{ t('fields.duration') }}</span>
-                                }
-                                @if (info?.measurementType === 'DISTANCE_BASED') {
-                                  <span>{{ t('fields.distance') }}</span>
-                                }
-                              </div>
-
-                              @for (
-                                set of exercise.sets;
-                                track $index;
-                                let setIdx = $index;
-                                let lastSet = $last
-                              ) {
-                                <!-- Set row -->
-                                <div
-                                  class="grid items-center py-1.5"
-                                  [class]="
-                                    info?.measurementType === 'REP_BASED'
-                                      ? 'grid-cols-[2rem_5rem_6rem]'
-                                      : 'grid-cols-[2rem_6rem]'
-                                  "
-                                >
-                                  <span
-                                    class="text-sm font-medium text-gray-900 dark:text-gray-100"
-                                    >{{ setIdx + 1 }}</span
-                                  >
-                                  @if (info?.measurementType === 'REP_BASED') {
-                                    <div>
-                                      <input
-                                        hlmInput
-                                        type="number"
-                                        [formField]="set.targetReps"
-                                        data-field="targetReps"
-                                        (change)="onSetChange(si, ei, setIdx)"
-                                        class="mt-1"
-                                      />
-                                    </div>
-                                    <div>
-                                      <input
-                                        hlmInput
-                                        type="number"
-                                        [formField]="set.targetWeight"
-                                        data-field="targetWeight"
-                                        (change)="onSetChange(si, ei, setIdx)"
-                                        class="mt-1"
-                                        step="0.5"
-                                      />
-                                    </div>
-                                  }
-                                  @if (info?.measurementType === 'TIME_BASED') {
-                                    <div>
-                                      <input
-                                        hlmInput
-                                        type="number"
-                                        [formField]="set.targetDuration"
-                                        (change)="onSetChange(si, ei, setIdx)"
-                                        class="mt-1"
-                                      />
-                                    </div>
-                                  }
-                                  @if (info?.measurementType === 'DISTANCE_BASED') {
-                                    <div>
-                                      <input
-                                        hlmInput
-                                        type="number"
-                                        [formField]="set.targetDistance"
-                                        (change)="onSetChange(si, ei, setIdx)"
-                                        class="mt-1"
-                                        step="0.1"
-                                      />
-                                    </div>
-                                  }
-                                </div>
-
-                                <!-- Rest between sets: line with centered badge -->
-                                @if (!lastSet && set.restAfterSeconds().value() !== null) {
-                                  <div class="relative flex items-center justify-center py-0.5">
-                                    <div
-                                      class="absolute inset-x-0 top-1/2 border-t border-dashed border-gray-200 dark:border-gray-700"
-                                    ></div>
-                                    <div
-                                      class="relative z-10 flex items-center gap-1 rounded-full bg-gray-50 px-2 py-0.5 text-xs text-gray-400 dark:bg-gray-900 dark:text-gray-500"
-                                    >
-                                      <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                                        <path
-                                          fill-rule="evenodd"
-                                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                                          clip-rule="evenodd"
-                                        />
-                                      </svg>
-                                      <input
-                                        type="number"
-                                        [formField]="set.restAfterSeconds"
-                                        data-field="restAfterSeconds"
-                                        (change)="onSetChange(si, ei, setIdx)"
-                                        class="w-12 border-0 bg-transparent p-0 text-center text-xs text-gray-400 focus:ring-0 dark:text-gray-500"
-                                      />
-                                      <span>{{ t('common.unitSeconds') }}</span>
-                                    </div>
-                                  </div>
-                                }
-                              }
-                            </div>
-                          }
-                        </div>
-
-                        <!-- Break after exercise (editable, not shown after last) -->
-                        @if (!lastEx) {
-                          <div class="relative flex items-center justify-center py-3">
-                            <div
-                              class="absolute inset-x-0 top-1/2 border-t border-gray-200 dark:border-gray-700"
-                            ></div>
-                            <div
-                              class="relative z-10 flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs text-gray-500 shadow-sm ring-1 ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-600"
-                            >
-                              <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-                                <path
-                                  fill-rule="evenodd"
-                                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                                  clip-rule="evenodd"
-                                />
-                              </svg>
-                              <input
-                                type="number"
-                                [formField]="exercise.breakAfterSeconds"
-                                data-field="breakAfterSeconds"
-                                (change)="onExerciseChange(si, ei)"
-                                class="w-12 border-0 bg-transparent p-0 text-center text-xs text-gray-500 focus:ring-0 dark:text-gray-400"
-                              />
-                              <span>{{ t('common.unitSeconds') }}</span>
-                            </div>
-                          </div>
-                        }
-                      </div>
-                    }
-                  </div>
-
-                  <!-- Pending exercise groups -->
-                  @for (group of section.pendingGroups; track $index; let gi = $index) {
-                    <div
-                      class="mt-2 rounded-md border-2 border-dashed border-amber-300 bg-amber-50 p-3 dark:border-amber-600 dark:bg-amber-950/30"
-                      data-testid="pending-group"
-                    >
-                      <div class="mb-2 text-sm font-semibold text-amber-800 dark:text-amber-300">
-                        {{
-                          group.groupName().value() ||
-                            t('common.unnamedGroup', { id: group.groupId().value() })
-                        }}
-                      </div>
-                      <div class="mb-1 text-xs text-gray-600 dark:text-gray-400">
-                        {{ t('user.workoutStart.pickExercise') }}
-                      </div>
-                      <select
-                        hlmInput
-                        class="w-full"
-                        (change)="onGroupExercisePicked(si, gi, $event)"
-                      >
-                        <option value="">{{ t('common.select') }}</option>
-                        @for (member of group.members().value(); track member.id) {
-                          <option [value]="member.id">{{ member.name }}</option>
-                        }
-                      </select>
-                    </div>
-                  }
-
-                  <!-- Add Exercise button -->
-                  <button
-                    type="button"
-                    (click)="openAddExerciseDialog(si)"
-                    class="mt-2 text-sm text-blue-500/70 hover:text-blue-600 dark:text-blue-400/70 dark:hover:text-blue-300"
-                  >
-                    {{ t('user.workouts.addExercise') }}
-                  </button>
-                </div>
+                <app-workout-start-section
+                  cdkDrag
+                  [cdkDragDisabled]="isReadonly()"
+                  [section]="section"
+                  [sectionIndex]="si"
+                  [exerciseDisplayMap]="store.exerciseDisplay()"
+                  [readonly]="isReadonly()"
+                  (removed)="removeSection(si)"
+                  (sectionChanged)="onSectionChange(si)"
+                  (exerciseRemoved)="removeExercise(si, $event.exerciseIndex)"
+                  (exerciseChanged)="onExerciseChange(si, $event.exerciseIndex)"
+                  (setChanged)="onSetChange(si, $event.exerciseIndex, $event.setIndex)"
+                  (exerciseDropped)="onExerciseDropFromSection(si, $event)"
+                  (addExerciseRequested)="openAddExerciseDialog(si)"
+                  (groupExercisePicked)="onGroupExercisePickedFromSection(si, $event)"
+                />
               }
             </div>
 
             <!-- Add Section button -->
-            <button
-              type="button"
-              (click)="addSection()"
-              class="w-full rounded-md border border-dashed border-gray-300 px-3 py-1.5 text-xs text-gray-400 hover:border-gray-400 hover:text-gray-500 dark:border-gray-600 dark:text-gray-500 dark:hover:border-gray-500 dark:hover:text-gray-400"
-            >
-              {{ t('user.workouts.addSection') }}
-            </button>
+            @if (!isReadonly()) {
+              <button
+                type="button"
+                (click)="addSection()"
+                class="w-full rounded-md border border-dashed border-gray-300 px-3 py-1.5 text-xs text-gray-400 hover:border-gray-400 hover:text-gray-500 dark:border-gray-600 dark:text-gray-500 dark:hover:border-gray-500 dark:hover:text-gray-400"
+              >
+                {{ t('user.workouts.addSection') }}
+              </button>
+            }
 
             <!-- Actions -->
             <div class="flex gap-2">
@@ -542,8 +197,6 @@ export class WorkoutStart {
   private params = toSignal(this.route.paramMap);
 
   readonly store = inject(WorkoutStartStore);
-  readonly SECTION_TYPE_MAIN = WorkoutSectionTypeMain;
-  readonly SECTION_TYPE_SUPPLEMENTARY = WorkoutSectionTypeSupplementary;
 
   id = computed(() => Number(this.params()?.get('id')));
   private initialized = false;
@@ -551,8 +204,18 @@ export class WorkoutStart {
   private creating = signal(false);
 
   isPending = computed(
-    () => this.workoutQuery.isPending() || this.planningLogQuery.isPending() || this.creating(),
+    () =>
+      this.workoutQuery.isPending() ||
+      this.permissionsQuery.isPending() ||
+      this.planningLogQuery.isPending() ||
+      this.creating(),
   );
+
+  isReadonly = computed(() => {
+    const perms = this.permissionsQuery.data()?.permissions;
+    if (!perms) return false;
+    return !perms.includes('MODIFY');
+  });
 
   hasPendingGroups = computed(() => this.model().sections.some((s) => s.pendingGroups.length > 0));
 
@@ -570,6 +233,12 @@ export class WorkoutStart {
   workoutQuery = injectQuery(() => ({
     queryKey: workoutKeys.detail(this.id()),
     queryFn: () => this.userApi.fetchWorkout(this.id()),
+    enabled: !!this.id(),
+  }));
+
+  permissionsQuery = injectQuery(() => ({
+    queryKey: workoutKeys.permissions(this.id()),
+    queryFn: () => this.userApi.fetchWorkoutPermissions(this.id()),
     enabled: !!this.id(),
   }));
 
@@ -612,9 +281,10 @@ export class WorkoutStart {
     this.persistSectionPositions();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onExerciseDrop(event: CdkDragDrop<any>, sectionIndex: number) {
-    if (event.previousIndex === event.currentIndex) return;
+  onExerciseDropFromSection(
+    sectionIndex: number,
+    event: { previousIndex: number; currentIndex: number },
+  ) {
     this.model.update((m) => ({
       ...m,
       sections: m.sections.map((s, i) =>
@@ -700,21 +370,20 @@ export class WorkoutStart {
     }
   }
 
-  async onGroupExercisePicked(sectionIndex: number, groupIndex: number, event: Event) {
-    const exerciseId = Number((event.target as HTMLSelectElement).value);
-    if (!exerciseId || isNaN(exerciseId)) return;
-
+  onGroupExercisePickedFromSection(
+    sectionIndex: number,
+    event: { groupIndex: number; exerciseId: number },
+  ) {
     const m = this.model();
     const section = m.sections[sectionIndex];
     const sectionId = section.id;
     if (!sectionId) return;
 
-    // Open the add exercise dialog with this exercise pre-selected
     this.addDialogSectionIndex.set(sectionIndex);
     this.addDialogSectionId.set(sectionId);
     this.addDialogExerciseCount.set(section.exercises.length);
-    this.addDialogPreselectedExerciseId.set(exerciseId);
-    this.addDialogPendingGroupIndex.set(groupIndex);
+    this.addDialogPreselectedExerciseId.set(event.exerciseId);
+    this.addDialogPendingGroupIndex.set(event.groupIndex);
     this.addDialogOpen.set(true);
   }
 

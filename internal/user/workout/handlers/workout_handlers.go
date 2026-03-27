@@ -5,6 +5,7 @@ import (
 
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	"gesitr/internal/shared"
 	"gesitr/internal/user/workout/models"
 	"gesitr/internal/user/workoutgroup"
 
@@ -152,4 +153,30 @@ func DeleteWorkout(ctx context.Context, input *DeleteWorkoutInput) (*DeleteWorko
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 	return nil, nil
+}
+
+// GetWorkoutPermissions returns the permissions the current user has on a workout.
+// GET /api/user/workouts/{id}/permissions
+//
+// OpenAPI: /api/docs#/operations/GetWorkoutPermissions
+func GetWorkoutPermissions(ctx context.Context, input *GetWorkoutPermissionsInput) (*GetWorkoutPermissionsOutput, error) {
+	var entity models.WorkoutEntity
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout not found")
+	}
+	access := workoutgroup.CheckWorkoutAccess(humaconfig.GetUserID(ctx), entity.Owner, entity.ID)
+	if !access.CanRead() {
+		return nil, huma.Error404NotFound("Workout not found")
+	}
+
+	var perms []shared.Permission
+	if access.CanDelete() {
+		perms = []shared.Permission{shared.PermissionRead, shared.PermissionModify, shared.PermissionDelete}
+	} else if access.CanModify() {
+		perms = []shared.Permission{shared.PermissionRead, shared.PermissionModify}
+	} else {
+		perms = []shared.Permission{shared.PermissionRead}
+	}
+
+	return &GetWorkoutPermissionsOutput{Body: shared.PermissionsResponse{Permissions: perms}}, nil
 }

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"gesitr/internal/shared"
 	"gesitr/internal/user/workout/models"
 )
 
@@ -47,6 +48,14 @@ type DeleteWorkoutInput struct {
 }
 
 type DeleteWorkoutOutput struct{}
+
+type GetWorkoutPermissionsInput struct {
+	ID uint `path:"id"`
+}
+
+type GetWorkoutPermissionsOutput struct {
+	Body shared.PermissionsResponse
+}
 
 // --- Workout section handlers ---
 

@@ -51,6 +51,14 @@ func RegisterRoutes(api huma.API) {
 		Summary:     "Delete workout",
 	}, DeleteWorkout)
 
+	huma.Register(api, huma.Operation{
+		OperationID: "GetWorkoutPermissions",
+		Method:      http.MethodGet,
+		Path:        "/user/workouts/{id}/permissions",
+		Tags:        []string{"workouts"},
+		Summary:     "Get workout permissions",
+	}, GetWorkoutPermissions)
+
 	// --- Workout sections ---
 
 	huma.Register(api, huma.Operation{

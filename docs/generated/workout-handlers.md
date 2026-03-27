@@ -109,7 +109,7 @@ type CreateWorkoutOutput struct {
 ```
 
 <a name="CreateWorkout"></a>
-### func [CreateWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L52>)
+### func [CreateWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L66>)
 
 ```go
 func CreateWorkout(ctx context.Context, input *CreateWorkoutInput) (*CreateWorkoutOutput, error)
@@ -410,7 +410,7 @@ type DeleteWorkoutOutput struct{}
 ```
 
 <a name="DeleteWorkout"></a>
-### func [DeleteWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L114>)
+### func [DeleteWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L142>)
 
 ```go
 func DeleteWorkout(ctx context.Context, input *DeleteWorkoutInput) (*DeleteWorkoutOutput, error)
@@ -697,7 +697,7 @@ type GetWorkoutOutput struct {
 ```
 
 <a name="GetWorkout"></a>
-### func [GetWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L68>)
+### func [GetWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L82>)
 
 ```go
 func GetWorkout(ctx context.Context, input *GetWorkoutInput) (*GetWorkoutOutput, error)
@@ -757,6 +757,55 @@ Push Day
 Compound
 1 item(s)
 1
+```
+
+</p>
+</details>
+
+<details><summary>Example (Group Member Sees Workout Group Info)</summary>
+<p>
+
+GetWorkout for a group member includes workoutGroup info.
+
+```go
+setupExampleDB()
+r := newRouter()
+
+// Bob interacts with the API to establish his profile
+doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+
+// Alice creates a workout, group, and invites bob
+doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
+doRaw(r, "POST", "/api/user/workout-groups", `{
+	"name": "Gym Buddies", "workoutId": 1
+}`)
+doRaw(r, "POST", "/api/user/workout-group-memberships", `{
+	"groupId": 1, "userId": "bob", "role": "member"
+}`)
+
+// Bob fetches the workout directly
+w := doRawAs(r, "GET", "/api/user/workouts/1", "", "bob")
+
+var workout models.Workout
+json.Unmarshal(w.Body.Bytes(), &workout)
+fmt.Println(w.Code)
+fmt.Println(workout.Name)
+fmt.Println(workout.WorkoutGroup.GroupName)
+fmt.Println(workout.WorkoutGroup.Membership)
+// Output:
+// 200
+// Push Day
+// Gym Buddies
+// invited
+```
+
+#### Output
+
+```
+200
+Push Day
+Gym Buddies
+invited
 ```
 
 </p>
@@ -1175,6 +1224,60 @@ ListWorkouts returns all workouts owned by the current user, each including its 
 
 [OpenAPI docs](/api/docs#/operations/ListWorkouts)
 
+<details><summary>Example (Group Member Sees Workout Group Info)</summary>
+<p>
+
+When bob lists workouts, shared workouts include workoutGroup info with the group name and his membership role.
+
+```go
+setupExampleDB()
+r := newRouter()
+
+// Bob interacts with the API to establish his profile
+doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+
+// Alice creates a workout
+doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
+
+// Alice creates a workout group and invites bob
+doRaw(r, "POST", "/api/user/workout-groups", `{
+	"name": "Gym Buddies", "workoutId": 1
+}`)
+doRaw(r, "POST", "/api/user/workout-group-memberships", `{
+	"groupId": 1, "userId": "bob", "role": "member"
+}`)
+
+// Bob lists workouts — should see Alice's shared workout with group info
+w := doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+
+var workouts []models.Workout
+json.Unmarshal(w.Body.Bytes(), &workouts)
+fmt.Println(w.Code)
+fmt.Println(len(workouts))
+fmt.Println(workouts[0].Name)
+fmt.Println(workouts[0].WorkoutGroup.GroupName)
+fmt.Println(workouts[0].WorkoutGroup.Membership)
+// Output:
+// 200
+// 1
+// Push Day
+// Gym Buddies
+// invited
+```
+
+#### Output
+
+```
+200
+1
+Push Day
+Gym Buddies
+invited
+```
+
+</p>
+</details>
+
 <details><summary>Example (Non Owner)</summary>
 <p>
 
@@ -1246,6 +1349,49 @@ Pull Day
 </p>
 </details>
 
+<details><summary>Example (Owner Does Not See Workout Group Info)</summary>
+<p>
+
+The owner's own workouts do not include workoutGroup info, even if a group exists for that workout.
+
+```go
+setupExampleDB()
+r := newRouter()
+
+// Alice creates a workout and a group for it
+doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
+doRaw(r, "POST", "/api/user/workout-groups", `{
+	"name": "Gym Buddies", "workoutId": 1
+}`)
+
+// Alice lists her workouts — workoutGroup should be absent
+w := doJSON(r, "GET", "/api/user/workouts", nil)
+
+var workouts []models.Workout
+json.Unmarshal(w.Body.Bytes(), &workouts)
+fmt.Println(w.Code)
+fmt.Println(len(workouts))
+fmt.Println(workouts[0].Name)
+fmt.Println(workouts[0].WorkoutGroup == nil)
+// Output:
+// 200
+// 1
+// Push Day
+// true
+```
+
+#### Output
+
+```
+200
+1
+Push Day
+true
+```
+
+</p>
+</details>
+
 <a name="UpdateWorkoutInput"></a>
 ## type [UpdateWorkoutInput](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/huma_types.go#L36-L39>)
 
@@ -1270,7 +1416,7 @@ type UpdateWorkoutOutput struct {
 ```
 
 <a name="UpdateWorkout"></a>
-### func [UpdateWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L84>)
+### func [UpdateWorkout](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workout/handlers/workout_handlers.go#L105>)
 
 ```go
 func UpdateWorkout(ctx context.Context, input *UpdateWorkoutInput) (*UpdateWorkoutOutput, error)
@@ -1279,6 +1425,57 @@ func UpdateWorkout(ctx context.Context, input *UpdateWorkoutInput) (*UpdateWorko
 UpdateWorkout updates workout metadata \(name, notes\). Sections and exercises are managed via their own endpoints. PUT /api/user/workouts/\{id\}
 
 [OpenAPI docs](/api/docs#/operations/UpdateWorkout)
+
+<details><summary>Example (Group Admin Sees Workout Group Info)</summary>
+<p>
+
+UpdateWorkout response for an admin group member includes workoutGroup info.
+
+```go
+setupExampleDB()
+r := newRouter()
+
+// Bob interacts with the API to establish his profile
+doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+
+// Alice creates a workout, group, and adds bob as admin
+doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
+doRaw(r, "POST", "/api/user/workout-groups", `{
+	"name": "Gym Buddies", "workoutId": 1
+}`)
+doRaw(r, "POST", "/api/user/workout-group-memberships", `{
+	"groupId": 1, "userId": "bob", "role": "member"
+}`)
+// Promote bob to admin so he can modify
+doRaw(r, "PUT", "/api/user/workout-group-memberships/1", `{"role": "admin"}`)
+
+// Bob updates the workout — response should include workoutGroup
+w := doRawAs(r, "PUT", "/api/user/workouts/1", `{"name": "Upper Push"}`, "bob")
+
+var workout models.Workout
+json.Unmarshal(w.Body.Bytes(), &workout)
+fmt.Println(w.Code)
+fmt.Println(workout.Name)
+fmt.Println(workout.WorkoutGroup.GroupName)
+fmt.Println(workout.WorkoutGroup.Membership)
+// Output:
+// 200
+// Upper Push
+// Gym Buddies
+// admin
+```
+
+#### Output
+
+```
+200
+Upper Push
+Gym Buddies
+admin
+```
+
+</p>
+</details>
 
 <details><summary>Example (Non Owner Denied)</summary>
 <p>

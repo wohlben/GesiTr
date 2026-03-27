@@ -86,6 +86,12 @@ export class UserApiClient {
     return firstValueFrom(this.http.get<Workout>(`/api/user/workouts/${id}`));
   }
 
+  fetchWorkoutPermissions(id: number): Promise<{ permissions: string[] }> {
+    return firstValueFrom(
+      this.http.get<{ permissions: string[] }>(`/api/user/workouts/${id}/permissions`),
+    );
+  }
+
   createWorkout(data: Partial<Workout>): Promise<Workout> {
     return firstValueFrom(this.http.post<Workout>('/api/user/workouts', data));
   }
