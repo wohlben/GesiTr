@@ -1,6 +1,6 @@
-FROM node:24-slim as node
-FROM golang:1.25 as golang
-FROM debian:bookworm-slim as debian
+FROM mirror.gcr.io/library/node:24-slim as node
+FROM mirror.gcr.io/library/golang:1.25 as golang
+FROM mirror.gcr.io/library/debian:bookworm-slim as debian
 
 # Stage 1: Build + test Angular
 FROM node AS web-builder
@@ -24,24 +24,20 @@ RUN apt-get update && apt-get install -y gcc libc6-dev && rm -rf /var/lib/apt/li
 RUN useradd -m tester
 WORKDIR /app
 COPY go.mod go.sum ./
-RUN --mount=type=cache,target=/go/pkg/mod go mod download
+RUN go mod download
 COPY . .
 COPY --from=web-builder /app/web/dist ./web/dist
 ARG CACHEBUST
 RUN test -z "$(gofmt -l .)" || (echo "Go files not formatted:" && gofmt -l . && exit 1)
 RUN --mount=type=cache,target=/root/.cache/go-build \
-    --mount=type=cache,target=/go/pkg/mod \
     make docs
-RUN chown -R tester:tester /app
+RUN chown -R tester:tester /app /go/pkg/mod
 USER tester
 RUN --mount=type=cache,target=/home/tester/.cache/go-build,uid=1000 \
-    --mount=type=cache,target=/go/pkg/mod \
     go test ./...
 RUN --mount=type=cache,target=/home/tester/.cache/go-build,uid=1000 \
-    --mount=type=cache,target=/go/pkg/mod \
     CGO_ENABLED=1 go build -o gesitr .
 RUN --mount=type=cache,target=/home/tester/.cache/go-build,uid=1000 \
-    --mount=type=cache,target=/go/pkg/mod \
     CGO_ENABLED=1 go build -o seed ./cmd/seed
 
 # Stage 3: E2E tests — Playwright against the production binary
