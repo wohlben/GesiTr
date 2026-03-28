@@ -47,12 +47,22 @@ test.describe('/user/calendar', () => {
       type: 'fixed_date',
     });
 
-    // Planned period: starts after the active one
-    await createSchedulePeriod(request, {
+    // Planned period: starts after the active one, with commitments (hollow dots)
+    const plannedPeriod = await createSchedulePeriod(request, {
       scheduleId: schedule.id,
       periodStart: daysFromNow(4),
       periodEnd: daysFromNow(11),
       type: 'fixed_date',
+    });
+
+    // Add commitments on specific days within the planned period
+    await createScheduleCommitment(request, {
+      periodId: plannedPeriod.id,
+      date: daysFromNow(5),
+    });
+    await createScheduleCommitment(request, {
+      periodId: plannedPeriod.id,
+      date: daysFromNow(8),
     });
 
     for (const viewport of viewports) {

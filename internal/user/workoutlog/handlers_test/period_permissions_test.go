@@ -367,3 +367,86 @@ func TestPeriodList_AllPeriods_OnlyReturnsOwnPeriods(t *testing.T) {
 		t.Errorf("bob's period should belong to schedule 2, got %d", bobPeriods[0].ScheduleID)
 	}
 }
+
+// TestCommitmentList_AllCommitments_OnlyReturnsOwnCommitments verifies that
+// listing all commitments (no periodId) only returns the requesting user's commitments.
+func TestCommitmentList_AllCommitments_OnlyReturnsOwnCommitments(t *testing.T) {
+	setupTestDB(t)
+	defer closeDB(t)
+	r := newRouter()
+
+	// Alice creates workout → schedule → period → commitment
+	doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Alice Workout"})
+	startDate := time.Now().AddDate(0, 0, -3)
+	doJSONLog(t, r, "POST", "/api/user/workout-schedules", map[string]any{
+		"workoutId": 1, "startDate": startDate.Format(time.RFC3339),
+	})
+
+	futureStart := time.Now().AddDate(0, 0, 7).Truncate(24 * time.Hour)
+	futureEnd := time.Now().AddDate(0, 0, 14).Truncate(24 * time.Hour)
+	w := doJSONLog(t, r, "POST", "/api/user/schedule-periods", map[string]any{
+		"scheduleId": 1, "periodStart": futureStart.Format(time.RFC3339),
+		"periodEnd": futureEnd.Format(time.RFC3339), "type": "fixed_date",
+	})
+	if w.Code != http.StatusCreated {
+		t.Fatalf("create period: %d", w.Code)
+	}
+	var alicePeriod schedulemodels.SchedulePeriod
+	json.Unmarshal(w.Body.Bytes(), &alicePeriod)
+
+	commitDate := time.Now().AddDate(0, 0, 8).Truncate(24 * time.Hour)
+	doJSONLog(t, r, "POST", "/api/user/schedule-commitments", map[string]any{
+		"periodId": alicePeriod.ID, "date": commitDate.Format(time.RFC3339),
+	})
+
+	// Bob creates workout → schedule → period → commitment
+	doJSONLogAs(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Bob Workout"}, "bob")
+	doJSONLogAs(t, r, "POST", "/api/user/workout-schedules", map[string]any{
+		"workoutId": 2, "startDate": startDate.Format(time.RFC3339),
+	}, "bob")
+
+	bobStart := time.Now().AddDate(0, 0, 3).Truncate(24 * time.Hour)
+	bobEnd := time.Now().AddDate(0, 0, 10).Truncate(24 * time.Hour)
+	w = doJSONLogAs(t, r, "POST", "/api/user/schedule-periods", map[string]any{
+		"scheduleId": 2, "periodStart": bobStart.Format(time.RFC3339),
+		"periodEnd": bobEnd.Format(time.RFC3339), "type": "fixed_date",
+	}, "bob")
+	if w.Code != http.StatusCreated {
+		t.Fatalf("bob create period: %d", w.Code)
+	}
+	var bobPeriod schedulemodels.SchedulePeriod
+	json.Unmarshal(w.Body.Bytes(), &bobPeriod)
+
+	bobDate := time.Now().AddDate(0, 0, 5).Truncate(24 * time.Hour)
+	doJSONLogAs(t, r, "POST", "/api/user/schedule-commitments", map[string]any{
+		"periodId": bobPeriod.ID, "date": bobDate.Format(time.RFC3339),
+	}, "bob")
+
+	// Alice lists all commitments → only sees hers
+	w = doJSONLog(t, r, "GET", "/api/user/schedule-commitments", nil)
+	if w.Code != http.StatusOK {
+		t.Fatalf("alice list all commitments: %d", w.Code)
+	}
+	var aliceCommitments []schedulemodels.ScheduleCommitment
+	json.Unmarshal(w.Body.Bytes(), &aliceCommitments)
+	if len(aliceCommitments) != 1 {
+		t.Fatalf("alice should see 1 commitment, got %d", len(aliceCommitments))
+	}
+	if aliceCommitments[0].PeriodID != alicePeriod.ID {
+		t.Errorf("alice's commitment should belong to her period %d, got %d", alicePeriod.ID, aliceCommitments[0].PeriodID)
+	}
+
+	// Bob lists all commitments → only sees his
+	w = doJSONLogAs(t, r, "GET", "/api/user/schedule-commitments", nil, "bob")
+	if w.Code != http.StatusOK {
+		t.Fatalf("bob list all commitments: %d", w.Code)
+	}
+	var bobCommitments []schedulemodels.ScheduleCommitment
+	json.Unmarshal(w.Body.Bytes(), &bobCommitments)
+	if len(bobCommitments) != 1 {
+		t.Fatalf("bob should see 1 commitment, got %d", len(bobCommitments))
+	}
+	if bobCommitments[0].PeriodID != bobPeriod.ID {
+		t.Errorf("bob's commitment should belong to his period %d, got %d", bobPeriod.ID, bobCommitments[0].PeriodID)
+	}
+}

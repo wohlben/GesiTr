@@ -403,11 +403,12 @@ export class UserApiClient {
     );
   }
 
-  fetchScheduleCommitments(params: { periodId: number }): Promise<ScheduleCommitment[]> {
+  fetchScheduleCommitments(params?: { periodId?: number }): Promise<ScheduleCommitment[]> {
+    const qp = new URLSearchParams();
+    if (params?.periodId != null) qp.set('periodId', String(params.periodId));
+    const qs = qp.toString();
     return firstValueFrom(
-      this.http.get<ScheduleCommitment[]>(
-        `/api/user/schedule-commitments?periodId=${params.periodId}`,
-      ),
+      this.http.get<ScheduleCommitment[]>(`/api/user/schedule-commitments${qs ? '?' + qs : ''}`),
     );
   }
 

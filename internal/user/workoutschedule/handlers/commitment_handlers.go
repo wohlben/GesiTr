@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"gesitr/internal/database"
+	"gesitr/internal/humaconfig"
 	"gesitr/internal/user/workoutschedule/models"
 
 	"github.com/danielgtaylor/huma/v2"
@@ -25,18 +26,37 @@ func requirePeriodOwner(ctx context.Context, periodID uint) (models.SchedulePeri
 	return period, nil
 }
 
-// ListScheduleCommitments returns commitments for a given period.
+// ListScheduleCommitments returns commitments for a given period, or all
+// commitments for the user when periodId is omitted.
 // GET /api/user/schedule-commitments
 func ListScheduleCommitments(ctx context.Context, input *ListScheduleCommitmentsInput) (*ListScheduleCommitmentsOutput, error) {
-	periodID := input.PeriodID
-	if _, err := requirePeriodOwner(ctx, parseUint(periodID)); err != nil {
-		return nil, err
-	}
+	userID := humaconfig.GetUserID(ctx)
 
 	var entities []models.ScheduleCommitmentEntity
-	if err := database.DB.Where("period_id = ?", periodID).
-		Order("date").Find(&entities).Error; err != nil {
-		return nil, huma.Error500InternalServerError(err.Error())
+	if input.PeriodID != "" {
+		// Filter by specific period
+		if _, err := requirePeriodOwner(ctx, parseUint(input.PeriodID)); err != nil {
+			return nil, err
+		}
+		if err := database.DB.Where("period_id = ?", input.PeriodID).
+			Order("date").Find(&entities).Error; err != nil {
+			return nil, huma.Error500InternalServerError(err.Error())
+		}
+	} else {
+		// Return all commitments for the user's schedules → periods
+		var periodIDs []uint
+		if err := database.DB.Model(&models.SchedulePeriodEntity{}).
+			Joins("JOIN workout_schedules ON workout_schedules.id = schedule_periods.schedule_id").
+			Where("workout_schedules.owner = ?", userID).
+			Pluck("schedule_periods.id", &periodIDs).Error; err != nil {
+			return nil, huma.Error500InternalServerError(err.Error())
+		}
+		if len(periodIDs) > 0 {
+			if err := database.DB.Where("period_id IN ?", periodIDs).
+				Order("date").Find(&entities).Error; err != nil {
+				return nil, huma.Error500InternalServerError(err.Error())
+			}
+		}
 	}
 
 	dtos := make([]models.ScheduleCommitment, len(entities))

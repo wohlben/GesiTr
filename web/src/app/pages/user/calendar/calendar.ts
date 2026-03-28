@@ -7,6 +7,7 @@ import {
   workoutKeys,
   workoutScheduleKeys,
   schedulePeriodKeys,
+  scheduleCommitmentKeys,
 } from '$core/query-keys';
 import {
   WorkoutLog,
@@ -40,6 +41,7 @@ interface CalendarCell {
   logs: WorkoutLog[];
   isToday: boolean;
   bars: PeriodBar[];
+  commitmentCount: number; // unactivated commitments (no workout log yet)
 }
 
 @Component({
@@ -132,7 +134,7 @@ interface CalendarCell {
                 }
 
                 <span>{{ cell.day }}</span>
-                @if (cell.logs.length) {
+                @if (cell.logs.length || cell.commitmentCount) {
                   <div class="mt-0.5 flex gap-0.5">
                     @for (log of cell.logs; track log.id) {
                       <span
@@ -154,6 +156,11 @@ interface CalendarCell {
                                         ? 'bg-gray-400'
                                         : 'bg-red-500'
                         "
+                      ></span>
+                    }
+                    @for (_ of commitmentSlots(cell.commitmentCount); track $index) {
+                      <span
+                        class="h-1.5 w-1.5 rounded-full border border-indigo-400 dark:border-indigo-500"
                       ></span>
                     }
                   </div>
@@ -204,6 +211,26 @@ export class Calendar {
     queryKey: workoutKeys.list(),
     queryFn: () => this.userApi.fetchWorkouts(),
   }));
+
+  commitmentsQuery = injectQuery(() => ({
+    queryKey: scheduleCommitmentKeys.list(),
+    queryFn: () => this.userApi.fetchScheduleCommitments(),
+  }));
+
+  /** Unactivated commitments (no workout log yet) grouped by date */
+  private commitmentsByDate = computed(() => {
+    const commitments = this.commitmentsQuery.data();
+    if (!commitments) return new Map<string, number>();
+
+    const map = new Map<string, number>();
+    for (const c of commitments) {
+      if (c.workoutLogId != null) continue; // already activated — shows as a workout log dot
+      if (!c.date) continue; // frequency-type commitments have no date
+      const key = c.date.substring(0, 10);
+      map.set(key, (map.get(key) ?? 0) + 1);
+    }
+    return map;
+  });
 
   private logsByDate = computed(() => {
     const logs = this.logsQuery.data();
@@ -302,6 +329,7 @@ export class Calendar {
       today.getFullYear() === year && today.getMonth() === month ? today.getDate() : -1;
 
     const logsByDate = this.logsByDate();
+    const commitmentsByDate = this.commitmentsByDate();
     const nameMap = this.workoutNameByScheduleId();
     const { lanes } = this.periodLanes();
 
@@ -339,6 +367,7 @@ export class Calendar {
         logs: logsByDate.get(key) ?? [],
         isToday: day === todayKey,
         bars,
+        commitmentCount: commitmentsByDate.get(key) ?? 0,
       });
     }
 
@@ -383,6 +412,10 @@ export class Calendar {
       default:
         return `${rounded} bg-gray-200 text-gray-600 dark:bg-gray-700/60 dark:text-gray-400`;
     }
+  }
+
+  commitmentSlots(count: number): number[] {
+    return Array.from({ length: count }, (_, i) => i);
   }
 
   private nextDay(dateKey: string): string {

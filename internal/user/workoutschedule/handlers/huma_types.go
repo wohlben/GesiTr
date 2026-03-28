@@ -96,7 +96,7 @@ type GetSchedulePeriodPermissionsOutput struct {
 // --- Commitment handlers ---
 
 type ListScheduleCommitmentsInput struct {
-	PeriodID string `query:"periodId" doc:"Filter by period ID" required:"true"`
+	PeriodID string `query:"periodId" doc:"Filter by period ID (omit to list all commitments for the user)"`
 }
 
 type ListScheduleCommitmentsOutput struct {
