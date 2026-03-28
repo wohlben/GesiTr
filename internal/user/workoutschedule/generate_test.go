@@ -172,7 +172,8 @@ func TestClone_ClonesLastPeriod(t *testing.T) {
 	db := setupTestDB(t)
 	workout := createWorkout(t, db)
 
-	// Create a period that ended yesterday
+	// Create a period that ended yesterday — chain-cloning will produce
+	// an active clone (starts today) and then a planned clone (future).
 	lastWeek := startOfDay(time.Now().AddDate(0, 0, -8))
 	yesterday := startOfDay(time.Now().AddDate(0, 0, -1))
 	day1 := lastWeek
@@ -181,32 +182,34 @@ func TestClone_ClonesLastPeriod(t *testing.T) {
 	schedule, _ := createScheduleWithPeriodAndCommitments(t, db, workout,
 		lastWeek, yesterday, []*time.Time{&day1, &day4})
 
-	// Run generation — should clone the period forward
+	// Run generation — should clone the period forward (possibly multiple times)
 	if err := GenerateForUser(db, "alice", time.Now()); err != nil {
 		t.Fatal(err)
 	}
 
-	// Should now have 2 periods
+	// Should have at least 2 periods; may have 3 if the first clone also started
 	var periods []models.SchedulePeriodEntity
 	db.Where("schedule_id = ?", schedule.ID).Order("period_start").Find(&periods)
-	if len(periods) != 2 {
-		t.Fatalf("expected 2 periods (original + clone), got %d", len(periods))
+	if len(periods) < 2 {
+		t.Fatalf("expected at least 2 periods, got %d", len(periods))
 	}
 
-	// New period should have same duration
-	origDuration := yesterday.Sub(lastWeek)
-	newDuration := periods[1].PeriodEnd.Sub(periods[1].PeriodStart)
-	if origDuration != newDuration {
-		t.Errorf("cloned period duration mismatch: %v vs %v", origDuration, newDuration)
-	}
-
-	// New period should start the day after the old one ended
+	// First clone should start the day after the original ended
 	expectedStart := startOfDay(yesterday.AddDate(0, 0, 1))
 	if !periods[1].PeriodStart.Equal(expectedStart) {
-		t.Errorf("expected clone to start at %v, got %v", expectedStart, periods[1].PeriodStart)
+		t.Errorf("expected first clone to start at %v, got %v", expectedStart, periods[1].PeriodStart)
 	}
 
-	// New period should have 2 commitments (same as template)
+	// All cloned periods should have same duration
+	origDuration := yesterday.Sub(lastWeek)
+	for i := 1; i < len(periods); i++ {
+		dur := periods[i].PeriodEnd.Sub(periods[i].PeriodStart)
+		if dur != origDuration {
+			t.Errorf("period %d duration mismatch: %v vs %v", i, dur, origDuration)
+		}
+	}
+
+	// First clone should have 2 commitments (same as template)
 	var newCommitments []models.ScheduleCommitmentEntity
 	db.Where("period_id = ?", periods[1].ID).Find(&newCommitments)
 	if len(newCommitments) != 2 {
@@ -219,12 +222,20 @@ func TestClone_ClonesLastPeriod(t *testing.T) {
 			t.Errorf("commitment %d should have a date (fixed_date clone)", i)
 		}
 	}
+
+	// The last period should be planned (starts in the future)
+	lastClone := periods[len(periods)-1]
+	if !time.Now().Before(lastClone.PeriodStart) {
+		t.Error("last period should be planned (in the future)")
+	}
 }
 
 func TestClone_Idempotent(t *testing.T) {
 	db := setupTestDB(t)
 	workout := createWorkout(t, db)
 
+	// Period ended yesterday — clone starts today (active), so a second clone
+	// is needed to produce a planned period. Running twice should not create more.
 	lastWeek := startOfDay(time.Now().AddDate(0, 0, -8))
 	yesterday := startOfDay(time.Now().AddDate(0, 0, -1))
 
@@ -237,8 +248,9 @@ func TestClone_Idempotent(t *testing.T) {
 
 	var periodCount int64
 	db.Model(&models.SchedulePeriodEntity{}).Count(&periodCount)
-	if periodCount != 2 {
-		t.Errorf("expected exactly 2 periods (original + 1 clone), got %d", periodCount)
+	// 3 periods: original (archived) + clone (active, starts today) + clone (planned, future)
+	if periodCount != 3 {
+		t.Errorf("expected exactly 3 periods (archived + active + planned), got %d", periodCount)
 	}
 }
 
@@ -377,6 +389,63 @@ func TestFrequency_CommitmentsWithoutDates(t *testing.T) {
 		if log.DueStart == nil || log.DueEnd == nil {
 			t.Error("due window should be set")
 		}
+	}
+}
+
+func TestClone_TriggeredWhenPeriodBecomesActive(t *testing.T) {
+	db := setupTestDB(t)
+	workout := createWorkout(t, db)
+
+	// Create a period that started yesterday but ends next week (currently active)
+	yesterday := startOfDay(time.Now().AddDate(0, 0, -1))
+	nextWeek := startOfDay(time.Now().AddDate(0, 0, 6))
+	day1 := yesterday
+
+	schedule, _ := createScheduleWithPeriodAndCommitments(t, db, workout,
+		yesterday, nextWeek, []*time.Time{&day1})
+
+	// Run generation — should clone forward because the period is now active
+	if err := GenerateForUser(db, "alice", time.Now()); err != nil {
+		t.Fatal(err)
+	}
+
+	// Should now have 2 periods (active + planned clone)
+	var periods []models.SchedulePeriodEntity
+	db.Where("schedule_id = ?", schedule.ID).Order("period_start").Find(&periods)
+	if len(periods) != 2 {
+		t.Fatalf("expected 2 periods (active + planned clone), got %d", len(periods))
+	}
+
+	// The cloned period should start after the current one ends
+	expectedStart := startOfDay(nextWeek.AddDate(0, 0, 1))
+	if !periods[1].PeriodStart.Equal(expectedStart) {
+		t.Errorf("expected clone start %v, got %v", expectedStart, periods[1].PeriodStart)
+	}
+
+	// The cloned period should be in the future (planned)
+	if !time.Now().Before(periods[1].PeriodStart) {
+		t.Error("cloned period should be in the future (planned)")
+	}
+}
+
+func TestClone_NoCloneWhenPeriodStillPlanned(t *testing.T) {
+	db := setupTestDB(t)
+	workout := createWorkout(t, db)
+
+	// Period starts tomorrow (still planned)
+	tomorrow := startOfDay(time.Now().AddDate(0, 0, 1))
+	nextWeek := startOfDay(time.Now().AddDate(0, 0, 8))
+
+	schedule, _ := createScheduleWithPeriodAndCommitments(t, db, workout,
+		tomorrow, nextWeek, []*time.Time{&tomorrow})
+
+	GenerateForUser(db, "alice", time.Now())
+
+	var periodCount int64
+	db.Model(&models.SchedulePeriodEntity{}).
+		Where("schedule_id = ?", schedule.ID).Count(&periodCount)
+	if periodCount != 1 {
+		t.Errorf("expected 1 period (no clone for planned), got %d", periodCount)
 	}
 }
 

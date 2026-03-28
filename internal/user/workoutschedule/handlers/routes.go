@@ -70,6 +70,14 @@ func RegisterRoutes(api huma.API) {
 		DefaultStatus: 201,
 	}, CreateSchedulePeriod)
 
+	huma.Register(api, huma.Operation{
+		OperationID: "GetSchedulePeriodPermissions",
+		Method:      http.MethodGet,
+		Path:        "/user/schedule-periods/{id}/permissions",
+		Tags:        []string{"workout-schedules"},
+		Summary:     "Get schedule period permissions",
+	}, GetSchedulePeriodPermissions)
+
 	// --- Commitments ---
 
 	huma.Register(api, huma.Operation{

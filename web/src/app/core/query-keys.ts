@@ -95,5 +95,5 @@ export const workoutScheduleKeys = {
 
 export const schedulePeriodKeys = {
   all: () => ['schedule-periods'] as const,
-  list: (scheduleId: number) => [...schedulePeriodKeys.all(), 'list', scheduleId] as const,
+  list: (scheduleId?: number) => [...schedulePeriodKeys.all(), 'list', scheduleId] as const,
 };

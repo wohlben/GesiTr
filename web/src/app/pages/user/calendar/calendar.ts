@@ -2,7 +2,12 @@ import { Component, inject, computed, signal } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { workoutLogKeys } from '$core/query-keys';
+import {
+  workoutLogKeys,
+  workoutKeys,
+  workoutScheduleKeys,
+  schedulePeriodKeys,
+} from '$core/query-keys';
 import {
   WorkoutLog,
   WorkoutLogStatusPlanning,
@@ -11,8 +16,31 @@ import {
   WorkoutLogStatusSkipped,
   WorkoutLogStatusBroken,
 } from '$generated/user-models';
+import {
+  SchedulePeriod,
+  PeriodStatusActive,
+  PeriodStatusPlanned,
+  PeriodStatusArchived,
+} from '$generated/user-workoutschedule';
 import { PageLayout } from '../../../layout/page-layout';
 import { DayDialog } from './day-dialog';
+
+interface PeriodBar {
+  periodId: number;
+  scheduleId: number;
+  label: string;
+  status: string;
+  lane: number;
+  isStart: boolean;
+  isEnd: boolean;
+}
+
+interface CalendarCell {
+  day: number;
+  logs: WorkoutLog[];
+  isToday: boolean;
+  bars: PeriodBar[];
+}
 
 @Component({
   selector: 'app-calendar',
@@ -87,6 +115,22 @@ import { DayDialog } from './day-dialog';
                       : 'text-gray-400 dark:text-gray-600'
                 "
               >
+                <!-- Period bars -->
+                @if (cell.bars.length) {
+                  <div class="mb-0.5 flex w-full flex-col gap-px px-0.5">
+                    @for (bar of cell.bars; track bar.periodId) {
+                      <div
+                        class="flex h-3.5 items-center overflow-hidden text-[9px] leading-none font-medium"
+                        [class]="barClasses(bar)"
+                      >
+                        @if (bar.isStart) {
+                          <span class="truncate px-1">{{ bar.label }}</span>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+
                 <span>{{ cell.day }}</span>
                 @if (cell.logs.length) {
                   <div class="mt-0.5 flex gap-0.5">
@@ -146,6 +190,21 @@ export class Calendar {
     queryFn: () => this.userApi.fetchWorkoutLogs(),
   }));
 
+  schedulesQuery = injectQuery(() => ({
+    queryKey: workoutScheduleKeys.list(),
+    queryFn: () => this.userApi.fetchWorkoutSchedules(),
+  }));
+
+  periodsQuery = injectQuery(() => ({
+    queryKey: schedulePeriodKeys.list(),
+    queryFn: () => this.userApi.fetchSchedulePeriods(),
+  }));
+
+  workoutsQuery = injectQuery(() => ({
+    queryKey: workoutKeys.list(),
+    queryFn: () => this.userApi.fetchWorkouts(),
+  }));
+
   private logsByDate = computed(() => {
     const logs = this.logsQuery.data();
     if (!logs) return new Map<string, WorkoutLog[]>();
@@ -174,6 +233,53 @@ export class Calendar {
     return map;
   });
 
+  /** Build a lookup: scheduleId → workout name */
+  private workoutNameByScheduleId = computed(() => {
+    const schedules = this.schedulesQuery.data();
+    const workouts = this.workoutsQuery.data();
+    if (!schedules || !workouts) return new Map<number, string>();
+
+    const workoutMap = new Map(workouts.map((w) => [w.id, w.name]));
+    const result = new Map<number, string>();
+    for (const s of schedules) {
+      result.set(s.id, workoutMap.get(s.workoutId) ?? 'Schedule');
+    }
+    return result;
+  });
+
+  /**
+   * Compute period bars for the current month. Each period gets a lane
+   * (vertical slot) so overlapping periods from different schedules stack.
+   */
+  private periodLanes = computed(() => {
+    const periods = this.periodsQuery.data();
+    if (!periods?.length)
+      return { lanes: [] as { period: SchedulePeriod; lane: number }[], maxLane: 0 };
+
+    // Sort by start date, then longer periods first (for stable lane assignment)
+    const sorted = [...periods].sort((a, b) => {
+      const startCmp = a.periodStart.localeCompare(b.periodStart);
+      if (startCmp !== 0) return startCmp;
+      return b.periodEnd.localeCompare(a.periodEnd);
+    });
+
+    const lanes: { period: SchedulePeriod; lane: number }[] = [];
+    // Track end date per lane (ISO string) for overlap detection
+    const laneEnds: string[] = [];
+
+    for (const period of sorted) {
+      let lane = 0;
+      while (lane < laneEnds.length && laneEnds[lane] > period.periodStart.substring(0, 10)) {
+        lane++;
+      }
+      if (lane === laneEnds.length) laneEnds.push('');
+      laneEnds[lane] = period.periodEnd.substring(0, 10);
+      lanes.push({ period, lane });
+    }
+
+    return { lanes, maxLane: laneEnds.length };
+  });
+
   monthLabel = computed(() => {
     const d = this.currentMonth();
     return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
@@ -196,7 +302,10 @@ export class Calendar {
       today.getFullYear() === year && today.getMonth() === month ? today.getDate() : -1;
 
     const logsByDate = this.logsByDate();
-    const cells: (null | { day: number; logs: WorkoutLog[]; isToday: boolean })[] = [];
+    const nameMap = this.workoutNameByScheduleId();
+    const { lanes } = this.periodLanes();
+
+    const cells: (null | CalendarCell)[] = [];
 
     for (let i = 0; i < startOffset; i++) {
       cells.push(null);
@@ -204,10 +313,32 @@ export class Calendar {
 
     for (let day = 1; day <= daysInMonth; day++) {
       const key = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+      // Build bars for this day
+      const bars: PeriodBar[] = [];
+      for (const { period, lane } of lanes) {
+        const pStart = period.periodStart.substring(0, 10);
+        const pEnd = period.periodEnd.substring(0, 10);
+        if (key >= pStart && key < pEnd) {
+          bars.push({
+            periodId: period.id,
+            scheduleId: period.scheduleId,
+            label: nameMap.get(period.scheduleId) ?? 'Schedule',
+            status: period.status,
+            lane,
+            isStart: key === pStart,
+            isEnd: this.nextDay(key) >= pEnd,
+          });
+        }
+      }
+      // Sort by lane so they render consistently
+      bars.sort((a, b) => a.lane - b.lane);
+
       cells.push({
         day,
         logs: logsByDate.get(key) ?? [],
         isToday: day === todayKey,
+        bars,
       });
     }
 
@@ -224,11 +355,39 @@ export class Calendar {
     this.currentMonth.set(new Date(d.getFullYear(), d.getMonth() + 1, 1));
   }
 
-  openDay(cell: { day: number; logs: WorkoutLog[] }) {
+  openDay(cell: CalendarCell) {
     if (!cell.logs.length) return;
     const d = this.currentMonth();
     this.selectedDate.set(new Date(d.getFullYear(), d.getMonth(), cell.day));
     this.selectedLogs.set(cell.logs);
     this.dialogOpen.set(true);
+  }
+
+  barClasses(bar: PeriodBar): string {
+    const rounded =
+      bar.isStart && bar.isEnd
+        ? 'rounded'
+        : bar.isStart
+          ? 'rounded-l'
+          : bar.isEnd
+            ? 'rounded-r'
+            : '';
+
+    switch (bar.status) {
+      case PeriodStatusActive:
+        return `${rounded} bg-purple-200 text-purple-900 dark:bg-purple-800/60 dark:text-purple-200`;
+      case PeriodStatusPlanned:
+        return `${rounded} bg-indigo-200 text-indigo-900 dark:bg-indigo-800/60 dark:text-indigo-200`;
+      case PeriodStatusArchived:
+        return `${rounded} bg-gray-200 text-gray-600 dark:bg-gray-700/60 dark:text-gray-400`;
+      default:
+        return `${rounded} bg-gray-200 text-gray-600 dark:bg-gray-700/60 dark:text-gray-400`;
+    }
+  }
+
+  private nextDay(dateKey: string): string {
+    const d = new Date(dateKey + 'T00:00:00');
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().substring(0, 10);
   }
 }

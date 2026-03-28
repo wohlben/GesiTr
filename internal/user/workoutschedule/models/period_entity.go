@@ -38,7 +38,16 @@ type SchedulePeriodEntity struct {
 
 func (SchedulePeriodEntity) TableName() string { return "schedule_periods" }
 
-func (e *SchedulePeriodEntity) ToDTO() SchedulePeriod {
+func (e *SchedulePeriodEntity) ToDTO(now time.Time) SchedulePeriod {
+	var status PeriodStatus
+	switch {
+	case now.Before(e.PeriodStart):
+		status = PeriodStatusPlanned
+	case now.Before(e.PeriodEnd):
+		status = PeriodStatusActive
+	default:
+		status = PeriodStatusArchived
+	}
 	return SchedulePeriod{
 		BaseModel:   e.BaseModel,
 		ScheduleID:  e.ScheduleID,
@@ -46,5 +55,6 @@ func (e *SchedulePeriodEntity) ToDTO() SchedulePeriod {
 		PeriodEnd:   e.PeriodEnd,
 		Type:        e.Type,
 		Mode:        e.Mode,
+		Status:      status,
 	}
 }

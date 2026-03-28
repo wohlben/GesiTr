@@ -415,9 +415,12 @@ export class UserApiClient {
     return firstValueFrom(this.http.delete<void>(`/api/user/schedule-commitments/${id}`));
   }
 
-  fetchSchedulePeriods(params: { scheduleId: number }): Promise<SchedulePeriod[]> {
+  fetchSchedulePeriods(params?: { scheduleId?: number }): Promise<SchedulePeriod[]> {
+    const qp = new URLSearchParams();
+    if (params?.scheduleId != null) qp.set('scheduleId', String(params.scheduleId));
+    const qs = qp.toString();
     return firstValueFrom(
-      this.http.get<SchedulePeriod[]>(`/api/user/schedule-periods?scheduleId=${params.scheduleId}`),
+      this.http.get<SchedulePeriod[]>(`/api/user/schedule-periods${qs ? '?' + qs : ''}`),
     );
   }
 }

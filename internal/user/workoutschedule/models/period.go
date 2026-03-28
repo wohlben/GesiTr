@@ -19,6 +19,20 @@ const (
 	ScheduleTypeFrequency ScheduleType = "frequency"
 )
 
+// PeriodStatus is the computed lifecycle state of a period, derived from dates.
+type PeriodStatus string
+
+const (
+	// PeriodStatusPlanned means the period hasn't started yet (now < periodStart).
+	PeriodStatusPlanned PeriodStatus = "planned"
+
+	// PeriodStatusActive means the period is currently in progress (periodStart ≤ now < periodEnd).
+	PeriodStatusActive PeriodStatus = "active"
+
+	// PeriodStatusArchived means the period has ended (now ≥ periodEnd).
+	PeriodStatusArchived PeriodStatus = "archived"
+)
+
 // PeriodMode determines how the period duration is computed when cloning.
 type PeriodMode string
 
@@ -40,4 +54,5 @@ type SchedulePeriod struct {
 	PeriodEnd        time.Time    `json:"periodEnd"`
 	Type             ScheduleType `json:"type"`
 	Mode             PeriodMode   `json:"mode"`
+	Status           PeriodStatus `json:"status"` // derived, not stored
 }

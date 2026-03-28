@@ -300,3 +300,46 @@ export async function finishWorkoutLog(request: APIRequestContext, id: number) {
 export async function deleteWorkoutLog(request: APIRequestContext, id: number) {
   await request.delete(`/api/user/workout-logs/${id}`);
 }
+
+export async function createWorkoutSchedule(
+  request: APIRequestContext,
+  overrides: Record<string, unknown> = {},
+) {
+  const data = {
+    ...overrides,
+  };
+  const res = await request.post('/api/user/workout-schedules', { data });
+  expect(
+    res.ok(),
+    `Failed to create workout schedule: ${await res.text()}`,
+  ).toBeTruthy();
+  return res.json();
+}
+
+export async function createSchedulePeriod(
+  request: APIRequestContext,
+  overrides: Record<string, unknown> = {},
+) {
+  const data = {
+    type: 'fixed_date',
+    ...overrides,
+  };
+  const res = await request.post('/api/user/schedule-periods', { data });
+  expect(
+    res.ok(),
+    `Failed to create schedule period: ${await res.text()}`,
+  ).toBeTruthy();
+  return res.json();
+}
+
+export async function createScheduleCommitment(
+  request: APIRequestContext,
+  overrides: Record<string, unknown> = {},
+) {
+  const res = await request.post('/api/user/schedule-commitments', { data: overrides });
+  expect(
+    res.ok(),
+    `Failed to create schedule commitment: ${await res.text()}`,
+  ).toBeTruthy();
+  return res.json();
+}

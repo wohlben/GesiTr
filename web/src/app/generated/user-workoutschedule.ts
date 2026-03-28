@@ -33,6 +33,22 @@ export const ScheduleTypeFixedDate: ScheduleType = 'fixed_date';
  */
 export const ScheduleTypeFrequency: ScheduleType = 'frequency';
 /**
+ * PeriodStatus is the computed lifecycle state of a period, derived from dates.
+ */
+export type PeriodStatus = string;
+/**
+ * PeriodStatusPlanned means the period hasn't started yet (now < periodStart).
+ */
+export const PeriodStatusPlanned: PeriodStatus = 'planned';
+/**
+ * PeriodStatusActive means the period is currently in progress (periodStart ≤ now < periodEnd).
+ */
+export const PeriodStatusActive: PeriodStatus = 'active';
+/**
+ * PeriodStatusArchived means the period has ended (now ≥ periodEnd).
+ */
+export const PeriodStatusArchived: PeriodStatus = 'archived';
+/**
  * PeriodMode determines how the period duration is computed when cloning.
  */
 export type PeriodMode = string;
@@ -55,6 +71,7 @@ export interface SchedulePeriod extends BaseModel {
   periodEnd: string;
   type: ScheduleType;
   mode: PeriodMode;
+  status: PeriodStatus; // derived, not stored
 }
 
 //////////

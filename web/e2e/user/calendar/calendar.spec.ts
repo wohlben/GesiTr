@@ -1,5 +1,13 @@
 import { expect, test } from '../../base-test';
-import { createWorkoutLog, startWorkoutLog, abandonWorkoutLog } from '../../helpers';
+import {
+  createWorkout,
+  createWorkoutLog,
+  createWorkoutSchedule,
+  createSchedulePeriod,
+  createScheduleCommitment,
+  startWorkoutLog,
+  abandonWorkoutLog,
+} from '../../helpers';
 
 const viewports = [
   { name: 'desktop', width: 1280, height: 720 },
@@ -8,14 +16,44 @@ const viewports = [
 
 const themes = ['light', 'dark'] as const;
 
+function daysFromNow(days: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  d.setHours(0, 0, 0, 0);
+  return d.toISOString();
+}
+
 test.describe('/user/calendar', () => {
   test('screenshots', async ({ request, page }) => {
-    // Create two logs: one in_progress, one aborted
+    // Create workout logs (dots on the calendar)
     const logA = await createWorkoutLog(request, { name: 'Morning Push' });
     await startWorkoutLog(request, logA.id);
     const logB = await createWorkoutLog(request, { name: 'Evening Recovery' });
     const startedB = await startWorkoutLog(request, logB.id);
     await abandonWorkoutLog(request, startedB.id);
+
+    // Create a schedule with an active period and a planned period (bars on the calendar)
+    const workout = await createWorkout(request, { name: 'Back Day' });
+    const schedule = await createWorkoutSchedule(request, {
+      workoutId: workout.id,
+      startDate: daysFromNow(-14),
+    });
+
+    // Active period: started a few days ago, ends in a few days
+    await createSchedulePeriod(request, {
+      scheduleId: schedule.id,
+      periodStart: daysFromNow(-5),
+      periodEnd: daysFromNow(3),
+      type: 'fixed_date',
+    });
+
+    // Planned period: starts after the active one
+    await createSchedulePeriod(request, {
+      scheduleId: schedule.id,
+      periodStart: daysFromNow(4),
+      periodEnd: daysFromNow(11),
+      type: 'fixed_date',
+    });
 
     for (const viewport of viewports) {
       for (const theme of themes) {

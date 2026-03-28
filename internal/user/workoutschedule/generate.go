@@ -37,9 +37,17 @@ func GenerateForUser(db *gorm.DB, userID string, now time.Time) error {
 }
 
 func generateForSchedule(db *gorm.DB, schedule *models.WorkoutScheduleEntity, now time.Time) error {
-	// Phase 1: Clone — if the last period has ended, clone it forward
-	if err := cloneIfNeeded(db, schedule, now); err != nil {
-		return err
+	// Phase 1: Clone — ensure there is always a planned period ahead.
+	// Loop because if the app was offline, multiple periods may need to be
+	// cloned forward before one lands in the future.
+	for {
+		cloned, err := cloneIfNeeded(db, schedule, now)
+		if err != nil {
+			return err
+		}
+		if !cloned {
+			break
+		}
 	}
 
 	// Phase 2: Activate — create WorkoutLogs for unlinked commitments in active periods
@@ -50,30 +58,27 @@ func generateForSchedule(db *gorm.DB, schedule *models.WorkoutScheduleEntity, no
 	return nil
 }
 
-func cloneIfNeeded(db *gorm.DB, schedule *models.WorkoutScheduleEntity, now time.Time) error {
-	// Find the last period for this schedule
+// cloneIfNeeded clones the last period forward if no planned period exists.
+// Returns true if a period was cloned (caller should loop until false).
+func cloneIfNeeded(db *gorm.DB, schedule *models.WorkoutScheduleEntity, now time.Time) (bool, error) {
+	// If there's already a planned period (starts in the future), nothing to do
+	var plannedCount int64
+	db.Model(&models.SchedulePeriodEntity{}).
+		Where("schedule_id = ? AND period_start > ?", schedule.ID, now).
+		Count(&plannedCount)
+	if plannedCount > 0 {
+		return false, nil
+	}
+
+	// Find the last period for this schedule (template for cloning)
 	var lastPeriod models.SchedulePeriodEntity
 	err := db.Where("schedule_id = ?", schedule.ID).
 		Order("period_end DESC").First(&lastPeriod).Error
 	if err == gorm.ErrRecordNotFound {
-		return nil // no periods yet — user hasn't configured the first one
+		return false, nil // no periods yet — user hasn't configured the first one
 	}
 	if err != nil {
-		return fmt.Errorf("find last period: %w", err)
-	}
-
-	// If the last period hasn't ended yet, no need to clone
-	if now.Before(lastPeriod.PeriodEnd) {
-		return nil
-	}
-
-	// Check if a next period already exists (idempotency)
-	var nextCount int64
-	db.Model(&models.SchedulePeriodEntity{}).
-		Where("schedule_id = ? AND period_start > ?", schedule.ID, lastPeriod.PeriodStart).
-		Count(&nextCount)
-	if nextCount > 0 {
-		return nil // already cloned
+		return false, fmt.Errorf("find last period: %w", err)
 	}
 
 	// Compute next period
@@ -90,10 +95,10 @@ func cloneIfNeeded(db *gorm.DB, schedule *models.WorkoutScheduleEntity, now time
 
 	// Check schedule end date
 	if schedule.EndDate != nil && nextStart.After(*schedule.EndDate) {
-		return nil
+		return false, nil
 	}
 
-	return db.Transaction(func(tx *gorm.DB) error {
+	return true, db.Transaction(func(tx *gorm.DB) error {
 		newPeriod := models.SchedulePeriodEntity{
 			ScheduleID:  schedule.ID,
 			PeriodStart: nextStart,

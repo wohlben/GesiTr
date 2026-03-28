@@ -3,6 +3,7 @@ package handlers
 import (
 	"time"
 
+	"gesitr/internal/shared"
 	"gesitr/internal/user/workoutschedule/models"
 )
 
@@ -61,7 +62,7 @@ type DeleteWorkoutScheduleOutput struct{}
 // --- Period handlers ---
 
 type ListSchedulePeriodsInput struct {
-	ScheduleID string `query:"scheduleId" doc:"Filter by schedule ID" required:"true"`
+	ScheduleID string `query:"scheduleId" doc:"Filter by schedule ID (omit to list all periods for the user)"`
 }
 
 type ListSchedulePeriodsOutput struct {
@@ -82,6 +83,14 @@ type CreateSchedulePeriodInput struct {
 
 type CreateSchedulePeriodOutput struct {
 	Body models.SchedulePeriod
+}
+
+type GetSchedulePeriodPermissionsInput struct {
+	ID uint `path:"id"`
+}
+
+type GetSchedulePeriodPermissionsOutput struct {
+	Body shared.PermissionsResponse
 }
 
 // --- Commitment handlers ---

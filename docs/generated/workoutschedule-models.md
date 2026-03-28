@@ -44,6 +44,7 @@ A schedule has no stored "active" flag. It is derived: active = StartDate ≤ no
 ## Index
 
 - [type PeriodMode](<#PeriodMode>)
+- [type PeriodStatus](<#PeriodStatus>)
 - [type ScheduleCommitment](<#ScheduleCommitment>)
 - [type ScheduleCommitmentEntity](<#ScheduleCommitmentEntity>)
   - [func \(ScheduleCommitmentEntity\) TableName\(\) string](<#ScheduleCommitmentEntity.TableName>)
@@ -51,7 +52,7 @@ A schedule has no stored "active" flag. It is derived: active = StartDate ≤ no
 - [type SchedulePeriod](<#SchedulePeriod>)
 - [type SchedulePeriodEntity](<#SchedulePeriodEntity>)
   - [func \(SchedulePeriodEntity\) TableName\(\) string](<#SchedulePeriodEntity.TableName>)
-  - [func \(e \*SchedulePeriodEntity\) ToDTO\(\) SchedulePeriod](<#SchedulePeriodEntity.ToDTO>)
+  - [func \(e \*SchedulePeriodEntity\) ToDTO\(now time.Time\) SchedulePeriod](<#SchedulePeriodEntity.ToDTO>)
 - [type ScheduleType](<#ScheduleType>)
 - [type WorkoutSchedule](<#WorkoutSchedule>)
 - [type WorkoutScheduleEntity](<#WorkoutScheduleEntity>)
@@ -61,7 +62,7 @@ A schedule has no stored "active" flag. It is derived: active = StartDate ≤ no
 
 
 <a name="PeriodMode"></a>
-## type [PeriodMode](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutschedule/models/period.go#L23>)
+## type [PeriodMode](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutschedule/models/period.go#L37>)
 
 PeriodMode determines how the period duration is computed when cloning.
 
@@ -80,6 +81,30 @@ const (
     // PeriodModeMonthly clones the period by advancing one calendar month.
     // The day-of-month offset is preserved (e.g. 4th Jan → 4th Feb).
     PeriodModeMonthly PeriodMode = "monthly"
+)
+```
+
+<a name="PeriodStatus"></a>
+## type [PeriodStatus](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutschedule/models/period.go#L23>)
+
+PeriodStatus is the computed lifecycle state of a period, derived from dates.
+
+```go
+type PeriodStatus string
+```
+
+<a name="PeriodStatusPlanned"></a>
+
+```go
+const (
+    // PeriodStatusPlanned means the period hasn't started yet (now < periodStart).
+    PeriodStatusPlanned PeriodStatus = "planned"
+
+    // PeriodStatusActive means the period is currently in progress (periodStart ≤ now < periodEnd).
+    PeriodStatusActive PeriodStatus = "active"
+
+    // PeriodStatusArchived means the period has ended (now ≥ periodEnd).
+    PeriodStatusArchived PeriodStatus = "archived"
 )
 ```
 
@@ -142,7 +167,7 @@ func (e *ScheduleCommitmentEntity) ToDTO() ScheduleCommitment
 
 
 <a name="SchedulePeriod"></a>
-## type [SchedulePeriod](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutschedule/models/period.go#L36-L43>)
+## type [SchedulePeriod](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutschedule/models/period.go#L50-L58>)
 
 SchedulePeriod is the API\-facing DTO for a schedule period.
 
@@ -154,6 +179,7 @@ type SchedulePeriod struct {
     PeriodEnd        time.Time    `json:"periodEnd"`
     Type             ScheduleType `json:"type"`
     Mode             PeriodMode   `json:"mode"`
+    Status           PeriodStatus `json:"status"` // derived, not stored
 }
 ```
 
@@ -205,7 +231,7 @@ func (SchedulePeriodEntity) TableName() string
 ### func \(\*SchedulePeriodEntity\) [ToDTO](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutschedule/models/period_entity.go#L41>)
 
 ```go
-func (e *SchedulePeriodEntity) ToDTO() SchedulePeriod
+func (e *SchedulePeriodEntity) ToDTO(now time.Time) SchedulePeriod
 ```
 
 
