@@ -4,7 +4,7 @@
 
 Workout groups operate on a rolling **cycle** system (typically weekly). Each cycle, every participant must commit to a plan — concretely, they configure their exercise schemes for the group's assigned workouts. This solves a key UX problem: when a user imports a group workout, they don't go through the normal workout creation/editing flow, so there's no natural point where they configure sets, reps, weight, etc. The cycle commitment process forces that configuration step while also producing trackable commitments.
 
-**Depends on:** [Compendium Workout Groups](./implemented/compendium-workout-groups.md), [Workout Commitments](./workout-commitments.md), [Workout Schedules](./workout-schedules.md)
+**Depends on:** [Compendium Workout Groups](./implemented/compendium-workout-groups.md), [Workout Commitments](./workout-commitments.md)
 
 ## Cycle Model
 
@@ -35,12 +35,12 @@ A cycle progresses through states:
 
 Transition from `PLANNING` → `ACTIVE` happens when **all members have committed** for that cycle. This is a group-level gate — the cycle doesn't activate until everyone has planned.
 
-## Relationship to Workout Schedules
+## Relationship to Workout Commitments
 
-The output of a cycle commitment is conceptually a workout schedule, but scoped to a single cycle and driven by group context rather than individual configuration. Rather than creating a persistent workout schedule entity, the cycle commitment produces:
+The output of a cycle commitment is committed workout logs (see [Workout Commitments](./workout-commitments.md)), scoped to a single cycle and driven by group context. Each planned session becomes a workout log in `committed` status with `due_start`/`due_end` matching the cycle's date range. The cycle commitment also produces:
 
 - Exercise scheme configurations on the user's imported workout (the concrete sets/reps/weight).
-- Workout commitments for each planned session (date + workout).
+- Committed workout logs for each planned session (with date + window).
 
 If a user also has a personal workout schedule, the group cycle commitments coexist alongside it — they're additive.
 
