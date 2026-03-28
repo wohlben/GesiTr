@@ -238,12 +238,34 @@ export class Calendar {
     const nameMap = this.workoutNameByScheduleId();
     if (!commitments) return new Map<string, PlannedCommitment[]>();
 
+    const todayKey = new Date().toISOString().substring(0, 10);
     const map = new Map<string, PlannedCommitment[]>();
+    // Track periods that already have a frequency representative on today
+    const frequencyPeriodsShown = new Set<number>();
+
     for (const c of commitments) {
-      if (c.workoutLogId != null) continue; // already activated — shows as a workout log dot
-      if (!c.date) continue; // frequency-type commitments have no date
-      const key = c.date.substring(0, 10);
+      if (c.workoutLogId != null) continue; // already activated
       const period = periodMap.get(c.periodId);
+
+      if (!c.date) {
+        // Frequency-type: show one per period on today if period is active
+        if (!period || period.status !== 'active') continue;
+        if (frequencyPeriodsShown.has(c.periodId)) continue;
+        frequencyPeriodsShown.add(c.periodId);
+        const entry: PlannedCommitment = {
+          workoutName: nameMap.get(period.scheduleId) ?? 'Schedule',
+          periodStatus: period.status,
+        };
+        const existing = map.get(todayKey);
+        if (existing) {
+          existing.push(entry);
+        } else {
+          map.set(todayKey, [entry]);
+        }
+        continue;
+      }
+
+      const key = c.date.substring(0, 10);
       const entry: PlannedCommitment = {
         workoutName: period ? (nameMap.get(period.scheduleId) ?? 'Schedule') : 'Schedule',
         periodStatus: period?.status ?? 'planned',
@@ -262,16 +284,40 @@ export class Calendar {
     const logs = this.logsQuery.data();
     if (!logs) return new Map<string, WorkoutLog[]>();
 
+    const todayKey = new Date().toISOString().substring(0, 10);
+
     const map = new Map<string, WorkoutLog[]>();
+    // Track which periods already have a frequency representative on today
+    const frequencyPeriodsShown = new Set<number>();
+
     for (const log of logs) {
       if (log.status === WorkoutLogStatusPlanning) continue;
 
-      // Committed/proposed logs use dueStart as the calendar date; others use date
       const isCommitment =
         log.status === WorkoutLogStatusProposed ||
         log.status === WorkoutLogStatusCommitted ||
         log.status === WorkoutLogStatusSkipped ||
         log.status === WorkoutLogStatusBroken;
+
+      if (isCommitment && !log.date) {
+        // Frequency-type: no specific date. Show one per period on today
+        // if the period is still active. Skip terminal states.
+        if (log.status === WorkoutLogStatusSkipped || log.status === WorkoutLogStatusBroken)
+          continue;
+        const dueEnd = log.dueEnd?.substring(0, 10);
+        if (!dueEnd || todayKey >= dueEnd) continue; // period ended
+        const periodKey = log.periodId ?? 0;
+        if (frequencyPeriodsShown.has(periodKey)) continue; // already showing one
+        frequencyPeriodsShown.add(periodKey);
+        const existing = map.get(todayKey);
+        if (existing) {
+          existing.push(log);
+        } else {
+          map.set(todayKey, [log]);
+        }
+        continue;
+      }
+
       const dateStr = isCommitment ? (log.date ?? log.dueStart) : log.date;
       if (!dateStr) continue;
 
