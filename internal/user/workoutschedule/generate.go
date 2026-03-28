@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	exercisemodels "gesitr/internal/exercise/models"
 	workoutmodels "gesitr/internal/user/workout/models"
 	workoutlogmodels "gesitr/internal/user/workoutlog/models"
 	"gesitr/internal/user/workoutschedule/models"
@@ -143,9 +144,13 @@ func activateCommitments(db *gorm.DB, schedule *models.WorkoutScheduleEntity, no
 		return fmt.Errorf("find active periods: %w", err)
 	}
 
-	// Fetch the workout name
+	// Fetch the workout with full structure (sections → items)
 	var workout workoutmodels.WorkoutEntity
-	if err := db.First(&workout, schedule.WorkoutID).Error; err != nil {
+	if err := db.Preload("Sections", func(db *gorm.DB) *gorm.DB {
+		return db.Order("position")
+	}).Preload("Sections.Items", func(db *gorm.DB) *gorm.DB {
+		return db.Order("position")
+	}).First(&workout, schedule.WorkoutID).Error; err != nil {
 		return fmt.Errorf("workout %d not found: %w", schedule.WorkoutID, err)
 	}
 
@@ -176,6 +181,11 @@ func activateCommitments(db *gorm.DB, schedule *models.WorkoutScheduleEntity, no
 					return fmt.Errorf("create log: %w", err)
 				}
 
+				// Snapshot workout structure into the log
+				if err := snapshotWorkoutIntoLog(tx, &workout, &log, schedule.Owner); err != nil {
+					return fmt.Errorf("snapshot workout: %w", err)
+				}
+
 				// Link the commitment to the newly created log
 				if err := tx.Model(&commitment).Update("workout_log_id", log.ID).Error; err != nil {
 					return fmt.Errorf("link commitment: %w", err)
@@ -184,6 +194,90 @@ func activateCommitments(db *gorm.DB, schedule *models.WorkoutScheduleEntity, no
 				return nil
 			}); err != nil {
 				return err
+			}
+		}
+	}
+	return nil
+}
+
+// snapshotWorkoutIntoLog copies the workout's sections, exercises, and sets
+// into a workout log. For each exercise-type section item, the user's scheme
+// (matched by WorkoutSectionItemID) is preferred; otherwise the item's
+// default scheme is used. Exercise group items are skipped.
+func snapshotWorkoutIntoLog(tx *gorm.DB, workout *workoutmodels.WorkoutEntity, log *workoutlogmodels.WorkoutLogEntity, owner string) error {
+	for si, section := range workout.Sections {
+		logSection := workoutlogmodels.WorkoutLogSectionEntity{
+			WorkoutLogID:         log.ID,
+			Type:                 section.Type,
+			Label:                section.Label,
+			Position:             si,
+			RestBetweenExercises: section.RestBetweenExercises,
+			Status:               workoutlogmodels.WorkoutLogItemStatusPlanning,
+		}
+		if err := tx.Create(&logSection).Error; err != nil {
+			return fmt.Errorf("create section: %w", err)
+		}
+
+		for ei, item := range section.Items {
+			if item.Type != workoutmodels.WorkoutSectionItemTypeExercise {
+				continue // exercise_group items require interactive resolution
+			}
+			if item.ExerciseSchemeID == nil {
+				continue
+			}
+
+			// Prefer user-specific scheme for this item, fall back to item's default
+			schemeID := *item.ExerciseSchemeID
+			var userScheme exercisemodels.ExerciseSchemeEntity
+			err := tx.Where("owner = ? AND workout_section_item_id = ?", owner, item.ID).
+				First(&userScheme).Error
+			if err == nil {
+				schemeID = userScheme.ID
+			}
+
+			var scheme exercisemodels.ExerciseSchemeEntity
+			if err := tx.First(&scheme, schemeID).Error; err != nil {
+				return fmt.Errorf("scheme %d not found: %w", schemeID, err)
+			}
+
+			breakAfter := section.RestBetweenExercises
+
+			exercise := workoutlogmodels.WorkoutLogExerciseEntity{
+				WorkoutLogSectionID:    logSection.ID,
+				WorkoutLogID:           log.ID,
+				SourceExerciseSchemeID: schemeID,
+				Position:               ei,
+				Status:                 workoutlogmodels.WorkoutLogItemStatusPlanning,
+				BreakAfterSeconds:      breakAfter,
+				TargetMeasurementType:  scheme.MeasurementType,
+				TargetTimePerRep:       scheme.TimePerRep,
+			}
+			if err := tx.Create(&exercise).Error; err != nil {
+				return fmt.Errorf("create exercise: %w", err)
+			}
+
+			numSets := 0
+			if scheme.Sets != nil {
+				numSets = *scheme.Sets
+			}
+			for i := 1; i <= numSets; i++ {
+				set := workoutlogmodels.WorkoutLogExerciseSetEntity{
+					WorkoutLogExerciseID: exercise.ID,
+					WorkoutLogID:         log.ID,
+					SetNumber:            i,
+					Status:               workoutlogmodels.WorkoutLogItemStatusPlanning,
+					TargetReps:           scheme.Reps,
+					TargetWeight:         scheme.Weight,
+					TargetDuration:       scheme.Duration,
+					TargetDistance:       scheme.Distance,
+					TargetTime:           scheme.TargetTime,
+				}
+				if i < numSets {
+					set.BreakAfterSeconds = scheme.RestBetweenSets
+				}
+				if err := tx.Create(&set).Error; err != nil {
+					return fmt.Errorf("create set: %w", err)
+				}
 			}
 		}
 	}

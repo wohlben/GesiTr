@@ -272,7 +272,7 @@ export class Calendar {
         log.status === WorkoutLogStatusCommitted ||
         log.status === WorkoutLogStatusSkipped ||
         log.status === WorkoutLogStatusBroken;
-      const dateStr = isCommitment ? (log.dueStart ?? log.date) : log.date;
+      const dateStr = isCommitment ? (log.date ?? log.dueStart) : log.date;
       if (!dateStr) continue;
 
       const key = dateStr.substring(0, 10);

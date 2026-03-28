@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	exercisemodels "gesitr/internal/exercise/models"
 	profilemodels "gesitr/internal/profile/models"
 	workoutmodels "gesitr/internal/user/workout/models"
 	workoutlogmodels "gesitr/internal/user/workoutlog/models"
@@ -22,6 +23,8 @@ func setupTestDB(t *testing.T) *gorm.DB {
 	}
 	db.AutoMigrate(
 		&profilemodels.UserProfileEntity{},
+		&exercisemodels.ExerciseEntity{},
+		&exercisemodels.ExerciseSchemeEntity{},
 		&workoutmodels.WorkoutEntity{},
 		&workoutmodels.WorkoutSectionEntity{},
 		&workoutmodels.WorkoutSectionItemEntity{},
@@ -449,4 +452,164 @@ func TestClone_NoCloneWhenPeriodStillPlanned(t *testing.T) {
 	}
 }
 
-func ptr(t time.Time) *time.Time { return &t }
+func TestActivation_SnapshotsWorkoutStructure(t *testing.T) {
+	db := setupTestDB(t)
+
+	// Create exercise + scheme with 3 sets of 10 reps at 60kg
+	exercise := exercisemodels.ExerciseEntity{Owner: "alice", Name: "Bench Press"}
+	db.Create(&exercise)
+
+	sets := intPtr(3)
+	reps := intPtr(10)
+	weight := float64Ptr(60.0)
+	rest := intPtr(90)
+	scheme := exercisemodels.ExerciseSchemeEntity{
+		Owner:           "alice",
+		ExerciseID:      exercise.ID,
+		MeasurementType: "REP_BASED",
+		Sets:            sets,
+		Reps:            reps,
+		Weight:          weight,
+		RestBetweenSets: rest,
+	}
+	db.Create(&scheme)
+
+	// Create workout with one section and one exercise item
+	workout := workoutmodels.WorkoutEntity{Owner: "alice", Name: "Push Day"}
+	db.Create(&workout)
+
+	section := workoutmodels.WorkoutSectionEntity{
+		WorkoutID: workout.ID,
+		Type:      "main",
+		Position:  0,
+	}
+	db.Create(&section)
+
+	item := workoutmodels.WorkoutSectionItemEntity{
+		WorkoutSectionID: section.ID,
+		Type:             workoutmodels.WorkoutSectionItemTypeExercise,
+		ExerciseSchemeID: &scheme.ID,
+		Position:         0,
+	}
+	db.Create(&item)
+
+	// Create schedule + active period + commitment
+	yesterday := startOfDay(time.Now().AddDate(0, 0, -1))
+	nextWeek := startOfDay(time.Now().AddDate(0, 0, 6))
+	commitDate := startOfDay(time.Now().AddDate(0, 0, 2))
+
+	schedule := models.WorkoutScheduleEntity{
+		Owner:         "alice",
+		WorkoutID:     workout.ID,
+		StartDate:     yesterday,
+		InitialStatus: "proposed",
+	}
+	db.Create(&schedule)
+
+	period := models.SchedulePeriodEntity{
+		ScheduleID:  schedule.ID,
+		PeriodStart: yesterday,
+		PeriodEnd:   nextWeek,
+		Type:        models.ScheduleTypeFixedDate,
+	}
+	db.Create(&period)
+	db.Create(&models.ScheduleCommitmentEntity{PeriodID: period.ID, Date: &commitDate})
+
+	// Run generation
+	if err := GenerateForUser(db, "alice", time.Now()); err != nil {
+		t.Fatal(err)
+	}
+
+	// Verify the log was created with structure
+	var log workoutlogmodels.WorkoutLogEntity
+	db.Where("schedule_id = ?", schedule.ID).First(&log)
+
+	if log.Status != workoutlogmodels.WorkoutLogStatusProposed {
+		t.Errorf("expected proposed, got %s", log.Status)
+	}
+
+	// Verify log sections
+	var logSections []workoutlogmodels.WorkoutLogSectionEntity
+	db.Where("workout_log_id = ?", log.ID).Find(&logSections)
+	if len(logSections) != 1 {
+		t.Fatalf("expected 1 log section, got %d", len(logSections))
+	}
+	if logSections[0].Type != "main" {
+		t.Errorf("expected section type main, got %s", logSections[0].Type)
+	}
+
+	// Verify log exercises
+	var logExercises []workoutlogmodels.WorkoutLogExerciseEntity
+	db.Where("workout_log_id = ?", log.ID).Find(&logExercises)
+	if len(logExercises) != 1 {
+		t.Fatalf("expected 1 log exercise, got %d", len(logExercises))
+	}
+	if logExercises[0].SourceExerciseSchemeID != scheme.ID {
+		t.Errorf("expected scheme ID %d, got %d", scheme.ID, logExercises[0].SourceExerciseSchemeID)
+	}
+	if logExercises[0].TargetMeasurementType != "REP_BASED" {
+		t.Errorf("expected REP_BASED, got %s", logExercises[0].TargetMeasurementType)
+	}
+
+	// Verify log sets (3 sets with snapshotted targets)
+	var logSets []workoutlogmodels.WorkoutLogExerciseSetEntity
+	db.Where("workout_log_id = ?", log.ID).Order("set_number").Find(&logSets)
+	if len(logSets) != 3 {
+		t.Fatalf("expected 3 log sets, got %d", len(logSets))
+	}
+	for i, s := range logSets {
+		if s.SetNumber != i+1 {
+			t.Errorf("set %d: expected set_number %d, got %d", i, i+1, s.SetNumber)
+		}
+		if s.TargetReps == nil || *s.TargetReps != 10 {
+			t.Errorf("set %d: expected target_reps 10", i)
+		}
+		if s.TargetWeight == nil || *s.TargetWeight != 60.0 {
+			t.Errorf("set %d: expected target_weight 60", i)
+		}
+	}
+	// First two sets should have rest, last should not
+	if logSets[0].BreakAfterSeconds == nil || *logSets[0].BreakAfterSeconds != 90 {
+		t.Error("set 0 should have 90s break")
+	}
+	if logSets[2].BreakAfterSeconds != nil {
+		t.Error("last set should have no break")
+	}
+}
+
+func TestActivation_LogDateMatchesCommitmentDate(t *testing.T) {
+	db := setupTestDB(t)
+	workout := createWorkout(t, db)
+
+	yesterday := startOfDay(time.Now().AddDate(0, 0, -1))
+	nextWeek := startOfDay(time.Now().AddDate(0, 0, 6))
+	// Commitment on day +3 (not the period start)
+	commitDate := startOfDay(time.Now().AddDate(0, 0, 3))
+
+	schedule, period := createScheduleWithPeriodAndCommitments(t, db, workout,
+		yesterday, nextWeek, []*time.Time{&commitDate})
+
+	if err := GenerateForUser(db, "alice", time.Now()); err != nil {
+		t.Fatal(err)
+	}
+
+	var log workoutlogmodels.WorkoutLogEntity
+	db.Where("schedule_id = ?", schedule.ID).First(&log)
+
+	// Date should be the commitment date, not the period start
+	if log.Date == nil {
+		t.Fatal("log date should not be nil")
+	}
+	if !startOfDay(*log.Date).Equal(commitDate) {
+		t.Errorf("log date should be commitment date %v, got %v", commitDate, *log.Date)
+	}
+
+	// DueStart should be the period start
+	if log.DueStart == nil || !startOfDay(*log.DueStart).Equal(period.PeriodStart) {
+		t.Errorf("due_start should be period start %v", period.PeriodStart)
+	}
+}
+
+func intPtr(v int) *int             { return &v }
+func float64Ptr(v float64) *float64 { return &v }
+func ptr(t time.Time) *time.Time    { return &t }
