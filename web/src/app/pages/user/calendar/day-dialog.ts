@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { WorkoutLog } from '$generated/user-models';
 import { HlmDialogImports } from '@spartan-ng/helm/dialog';
+import { PlannedCommitment } from './calendar';
 
 @Component({
   selector: 'app-day-dialog',
@@ -35,6 +36,20 @@ import { HlmDialogImports } from '@spartan-ng/helm/dialog';
                   </span>
                 </a>
               }
+              @for (c of commitments(); track $index) {
+                <div
+                  class="flex items-center justify-between rounded-md border border-dashed border-indigo-300 px-3 py-2 dark:border-indigo-600"
+                >
+                  <span class="text-sm font-medium text-gray-900 dark:text-gray-100">{{
+                    c.workoutName
+                  }}</span>
+                  <span
+                    class="rounded-full px-2 py-0.5 text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300"
+                  >
+                    {{ t('enums.periodStatus.' + c.periodStatus) }}
+                  </span>
+                </div>
+              }
             </div>
           </hlm-dialog-content>
         </ng-template>
@@ -46,6 +61,7 @@ export class DayDialog {
   open = input(false);
   date = input<Date>();
   logs = input<WorkoutLog[]>([]);
+  commitments = input<PlannedCommitment[]>([]);
 
   closed = output();
 

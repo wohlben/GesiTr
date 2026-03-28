@@ -183,6 +183,11 @@
       "member": "Member",
       "admin": "Admin"
     },
+    "periodStatus": {
+      "planned": "Planned",
+      "active": "Active",
+      "archived": "Archived"
+    },
     "scheduleType": {
       "fixed_date": "Fixed Date",
       "frequency": "Frequency"

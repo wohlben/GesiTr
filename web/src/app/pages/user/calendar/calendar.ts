@@ -36,12 +36,17 @@ interface PeriodBar {
   isEnd: boolean;
 }
 
+export interface PlannedCommitment {
+  workoutName: string;
+  periodStatus: string;
+}
+
 interface CalendarCell {
   day: number;
   logs: WorkoutLog[];
   isToday: boolean;
   bars: PeriodBar[];
-  commitmentCount: number; // unactivated commitments (no workout log yet)
+  commitments: PlannedCommitment[]; // unactivated commitments (no workout log yet)
 }
 
 @Component({
@@ -104,15 +109,15 @@ interface CalendarCell {
             @if (cell) {
               <button
                 type="button"
-                [disabled]="!cell.logs.length"
+                [disabled]="!cell.logs.length && !cell.commitments.length"
                 (click)="openDay(cell)"
                 class="flex min-h-12 flex-col items-center rounded-md py-1.5 text-sm transition-colors"
                 [class]="
                   cell.isToday
-                    ? cell.logs.length
+                    ? cell.logs.length || cell.commitments.length
                       ? 'cursor-pointer bg-blue-50 font-semibold text-blue-700 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-300 dark:hover:bg-blue-900/40'
                       : 'bg-blue-50 font-semibold text-blue-700 dark:bg-blue-900/20 dark:text-blue-300'
-                    : cell.logs.length
+                    : cell.logs.length || cell.commitments.length
                       ? 'cursor-pointer text-gray-900 hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-800'
                       : 'text-gray-400 dark:text-gray-600'
                 "
@@ -134,7 +139,7 @@ interface CalendarCell {
                 }
 
                 <span>{{ cell.day }}</span>
-                @if (cell.logs.length || cell.commitmentCount) {
+                @if (cell.logs.length || cell.commitments.length) {
                   <div class="mt-0.5 flex gap-0.5">
                     @for (log of cell.logs; track log.id) {
                       <span
@@ -158,7 +163,7 @@ interface CalendarCell {
                         "
                       ></span>
                     }
-                    @for (_ of commitmentSlots(cell.commitmentCount); track $index) {
+                    @for (_ of cell.commitments; track $index) {
                       <span
                         class="h-1.5 w-1.5 rounded-full border border-indigo-400 dark:border-indigo-500"
                       ></span>
@@ -177,6 +182,7 @@ interface CalendarCell {
         [open]="dialogOpen()"
         [date]="selectedDate()"
         [logs]="selectedLogs()"
+        [commitments]="selectedCommitments()"
         (closed)="dialogOpen.set(false)"
       />
     </ng-container>
@@ -189,6 +195,7 @@ export class Calendar {
   dialogOpen = signal(false);
   selectedDate = signal<Date | undefined>(undefined);
   selectedLogs = signal<WorkoutLog[]>([]);
+  selectedCommitments = signal<PlannedCommitment[]>([]);
 
   weekDayKeys = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
@@ -217,17 +224,36 @@ export class Calendar {
     queryFn: () => this.userApi.fetchScheduleCommitments(),
   }));
 
+  /** Build a lookup: periodId → { scheduleId, status } */
+  private periodLookup = computed(() => {
+    const periods = this.periodsQuery.data();
+    if (!periods) return new Map<number, { scheduleId: number; status: string }>();
+    return new Map(periods.map((p) => [p.id, { scheduleId: p.scheduleId, status: p.status }]));
+  });
+
   /** Unactivated commitments (no workout log yet) grouped by date */
   private commitmentsByDate = computed(() => {
     const commitments = this.commitmentsQuery.data();
-    if (!commitments) return new Map<string, number>();
+    const periodMap = this.periodLookup();
+    const nameMap = this.workoutNameByScheduleId();
+    if (!commitments) return new Map<string, PlannedCommitment[]>();
 
-    const map = new Map<string, number>();
+    const map = new Map<string, PlannedCommitment[]>();
     for (const c of commitments) {
       if (c.workoutLogId != null) continue; // already activated — shows as a workout log dot
       if (!c.date) continue; // frequency-type commitments have no date
       const key = c.date.substring(0, 10);
-      map.set(key, (map.get(key) ?? 0) + 1);
+      const period = periodMap.get(c.periodId);
+      const entry: PlannedCommitment = {
+        workoutName: period ? (nameMap.get(period.scheduleId) ?? 'Schedule') : 'Schedule',
+        periodStatus: period?.status ?? 'planned',
+      };
+      const existing = map.get(key);
+      if (existing) {
+        existing.push(entry);
+      } else {
+        map.set(key, [entry]);
+      }
     }
     return map;
   });
@@ -367,7 +393,7 @@ export class Calendar {
         logs: logsByDate.get(key) ?? [],
         isToday: day === todayKey,
         bars,
-        commitmentCount: commitmentsByDate.get(key) ?? 0,
+        commitments: commitmentsByDate.get(key) ?? [],
       });
     }
 
@@ -385,10 +411,11 @@ export class Calendar {
   }
 
   openDay(cell: CalendarCell) {
-    if (!cell.logs.length) return;
+    if (!cell.logs.length && !cell.commitments.length) return;
     const d = this.currentMonth();
     this.selectedDate.set(new Date(d.getFullYear(), d.getMonth(), cell.day));
     this.selectedLogs.set(cell.logs);
+    this.selectedCommitments.set(cell.commitments);
     this.dialogOpen.set(true);
   }
 
@@ -412,10 +439,6 @@ export class Calendar {
       default:
         return `${rounded} bg-gray-200 text-gray-600 dark:bg-gray-700/60 dark:text-gray-400`;
     }
-  }
-
-  commitmentSlots(count: number): number[] {
-    return Array.from({ length: count }, (_, i) => i);
   }
 
   private nextDay(dateKey: string): string {
