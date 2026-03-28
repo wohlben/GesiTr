@@ -32,7 +32,14 @@
       "@spartan-ng/helm/spinner": ["./src/app/ui/spartan/spinner/src/index.ts"],
       "@spartan-ng/helm/alert": ["./src/app/ui/spartan/alert/src/index.ts"],
       "@spartan-ng/helm/separator": ["./src/app/ui/spartan/separator/src/index.ts"],
-      "@spartan-ng/helm/popover": ["./src/app/ui/spartan/popover/src/index.ts"]
+      "@spartan-ng/helm/popover": ["./src/app/ui/spartan/popover/src/index.ts"],
+      "@spartan-ng/helm/radio-group": ["./src/app/ui/spartan/radio-group/src/index.ts"],
+      "@spartan-ng/helm/calendar": ["./src/app/ui/spartan/calendar/src/index.ts"],
+      "@spartan-ng/helm/toggle": ["./src/app/ui/spartan/toggle/src/index.ts"],
+      "@spartan-ng/helm/toggle-group": ["./src/app/ui/spartan/toggle-group/src/index.ts"],
+      "@spartan-ng/helm/date-picker": ["./src/app/ui/spartan/date-picker/src/index.ts"],
+      "@spartan-ng/helm/tooltip": ["./src/app/ui/spartan/tooltip/src/index.ts"],
+      "@spartan-ng/helm/slider": ["./src/app/ui/spartan/slider/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

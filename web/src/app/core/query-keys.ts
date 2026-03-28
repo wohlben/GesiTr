@@ -86,3 +86,14 @@ export const workoutGroupKeys = {
   detail: (id: number) => [...workoutGroupKeys.all(), 'detail', id] as const,
   memberships: (groupId: number) => [...workoutGroupKeys.all(), 'memberships', groupId] as const,
 };
+
+export const workoutScheduleKeys = {
+  all: () => ['workout-schedules'] as const,
+  list: (workoutId?: number) => [...workoutScheduleKeys.all(), 'list', workoutId] as const,
+  detail: (id: number) => [...workoutScheduleKeys.all(), 'detail', id] as const,
+};
+
+export const schedulePeriodKeys = {
+  all: () => ['schedule-periods'] as const,
+  list: (scheduleId: number) => [...schedulePeriodKeys.all(), 'list', scheduleId] as const,
+};

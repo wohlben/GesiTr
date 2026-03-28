@@ -36,6 +36,8 @@ import (
 	workoutlog "gesitr/internal/user/workoutlog"
 	workoutloghandlers "gesitr/internal/user/workoutlog/handlers"
 	workoutlogmodels "gesitr/internal/user/workoutlog/models"
+	workoutScheduleHandlers "gesitr/internal/user/workoutschedule/handlers"
+	workoutScheduleModels "gesitr/internal/user/workoutschedule/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -96,6 +98,21 @@ func runMigrations() {
 		SELECT exercise_scheme_id FROM workout_section_items WHERE exercise_scheme_id IS NOT NULL AND deleted_at IS NULL
 	)`)
 
+	// Drop old schedule config columns (replaced by period+commitment model).
+	for _, col := range []string{"active", "days_of_week", "interval_weeks", "count", "period_days", "interval_days", "required_count", "type"} {
+		var colCount int64
+		database.DB.Raw("SELECT COUNT(*) FROM pragma_table_info('workout_schedules') WHERE name = ?", col).Scan(&colCount)
+		if colCount > 0 {
+			database.DB.Exec("ALTER TABLE workout_schedules DROP COLUMN " + col)
+		}
+	}
+	// Drop required_count from schedule_periods if it exists.
+	var reqCountCol int64
+	database.DB.Raw("SELECT COUNT(*) FROM pragma_table_info('schedule_periods') WHERE name = 'required_count'").Scan(&reqCountCol)
+	if reqCountCol > 0 {
+		database.DB.Exec("ALTER TABLE schedule_periods DROP COLUMN required_count")
+	}
+
 	// Migrate workout_section_exercises → workout_section_items if old table still exists.
 	var oldTableCount int64
 	database.DB.Raw("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='workout_section_exercises'").Scan(&oldTableCount)
@@ -136,6 +153,9 @@ func autoMigrate() {
 		&exerciseLogModels.ExerciseLogEntity{},
 		&workoutGroupModels.WorkoutGroupEntity{},
 		&workoutGroupModels.WorkoutGroupMembershipEntity{},
+		&workoutScheduleModels.WorkoutScheduleEntity{},
+		&workoutScheduleModels.SchedulePeriodEntity{},
+		&workoutScheduleModels.ScheduleCommitmentEntity{},
 	)
 }
 
@@ -157,6 +177,7 @@ func setupRoutes(r *gin.Engine) {
 	workoutloghandlers.RegisterRoutes(humaAPI)
 	exerciseLogHandlers.RegisterRoutes(humaAPI)
 	workoutGroupHandlers.RegisterRoutes(humaAPI)
+	workoutScheduleHandlers.RegisterRoutes(humaAPI)
 }
 
 func setupSPA(r *gin.Engine) {

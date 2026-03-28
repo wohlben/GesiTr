@@ -6,12 +6,12 @@ import { UserApiClient } from '$core/api-clients/user-api-client';
 import { workoutKeys, workoutLogKeys } from '$core/query-keys';
 import { PageLayout } from '../../../layout/page-layout';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideListCheck, lucideUsers } from '@ng-icons/lucide';
+import { lucideCalendarClock, lucideListCheck, lucideUsers } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-workout-list',
   imports: [PageLayout, RouterLink, NgIcon, TranslocoDirective],
-  providers: [provideIcons({ lucideListCheck, lucideUsers })],
+  providers: [provideIcons({ lucideCalendarClock, lucideListCheck, lucideUsers })],
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
@@ -122,6 +122,14 @@ import { lucideListCheck, lucideUsers } from '@ng-icons/lucide';
                         }
                       </td>
                       <td class="px-4 py-3 text-right">
+                        <a
+                          [routerLink]="['./', workout.id, 'schedules']"
+                          (click)="$event.stopPropagation()"
+                          class="inline-flex items-center rounded-md p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+                          [title]="t('user.workouts.manageSchedules')"
+                        >
+                          <ng-icon name="lucideCalendarClock" class="text-lg" />
+                        </a>
                         <a
                           [routerLink]="['./', workout.id, 'group']"
                           (click)="$event.stopPropagation()"

@@ -28,6 +28,20 @@ func StartCommitmentTicker(db *gorm.DB, interval time.Duration) {
 			if result.RowsAffected > 0 {
 				log.Printf("commitment ticker: marked %d logs as broken", result.RowsAffected)
 			}
+
+			// Transition proposed logs to skipped when due_end has elapsed
+			result2 := db.Model(&models.WorkoutLogEntity{}).
+				Where("status = ? AND due_end < ?", models.WorkoutLogStatusProposed, now).
+				Updates(map[string]any{
+					"status":            models.WorkoutLogStatusSkipped,
+					"status_changed_at": now,
+				})
+			if result2.Error != nil {
+				log.Printf("commitment ticker error (proposed→skipped): %v", result2.Error)
+			}
+			if result2.RowsAffected > 0 {
+				log.Printf("commitment ticker: marked %d proposed logs as skipped", result2.RowsAffected)
+			}
 		}
 	}()
 }

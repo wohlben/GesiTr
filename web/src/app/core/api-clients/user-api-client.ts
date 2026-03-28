@@ -18,6 +18,11 @@ import {
   WorkoutGroupMembership,
   WorkoutGroupRole,
 } from '$generated/user-workoutgroup';
+import {
+  WorkoutSchedule,
+  SchedulePeriod,
+  ScheduleCommitment,
+} from '$generated/user-workoutschedule';
 import { PaginatedResponse } from './paginated-response';
 
 @Injectable({ providedIn: 'root' })
@@ -156,10 +161,15 @@ export class UserApiClient {
   }
 
   // Workout Logs
-  fetchWorkoutLogs(params?: { workoutId?: number; status?: string }): Promise<WorkoutLog[]> {
+  fetchWorkoutLogs(params?: {
+    workoutId?: number;
+    status?: string;
+    periodId?: number;
+  }): Promise<WorkoutLog[]> {
     const qp = new URLSearchParams();
     if (params?.workoutId != null) qp.set('workoutId', String(params.workoutId));
     if (params?.status) qp.set('status', params.status);
+    if (params?.periodId != null) qp.set('periodId', String(params.periodId));
     const qs = qp.toString();
     return firstValueFrom(
       this.http.get<WorkoutLog[]>(`/api/user/workout-logs${qs ? '?' + qs : ''}`),
@@ -351,5 +361,63 @@ export class UserApiClient {
 
   deleteWorkoutGroupMembership(id: number): Promise<void> {
     return firstValueFrom(this.http.delete<void>(`/api/user/workout-group-memberships/${id}`));
+  }
+
+  // Workout Schedules
+  fetchWorkoutSchedules(params?: { workoutId?: number }): Promise<WorkoutSchedule[]> {
+    const qp = new URLSearchParams();
+    if (params?.workoutId != null) qp.set('workoutId', String(params.workoutId));
+    const qs = qp.toString();
+    return firstValueFrom(
+      this.http.get<WorkoutSchedule[]>(`/api/user/workout-schedules${qs ? '?' + qs : ''}`),
+    );
+  }
+
+  fetchWorkoutSchedule(id: number): Promise<WorkoutSchedule> {
+    return firstValueFrom(this.http.get<WorkoutSchedule>(`/api/user/workout-schedules/${id}`));
+  }
+
+  createWorkoutSchedule(data: Partial<WorkoutSchedule>): Promise<WorkoutSchedule> {
+    return firstValueFrom(this.http.post<WorkoutSchedule>('/api/user/workout-schedules', data));
+  }
+
+  updateWorkoutSchedule(id: number, data: Partial<WorkoutSchedule>): Promise<WorkoutSchedule> {
+    return firstValueFrom(
+      this.http.patch<WorkoutSchedule>(`/api/user/workout-schedules/${id}`, data),
+    );
+  }
+
+  deleteWorkoutSchedule(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/user/workout-schedules/${id}`));
+  }
+
+  // Schedule Periods
+  createSchedulePeriod(data: Partial<SchedulePeriod>): Promise<SchedulePeriod> {
+    return firstValueFrom(this.http.post<SchedulePeriod>('/api/user/schedule-periods', data));
+  }
+
+  // Schedule Commitments
+  createScheduleCommitment(data: Partial<ScheduleCommitment>): Promise<ScheduleCommitment> {
+    return firstValueFrom(
+      this.http.post<ScheduleCommitment>('/api/user/schedule-commitments', data),
+    );
+  }
+
+  fetchScheduleCommitments(params: { periodId: number }): Promise<ScheduleCommitment[]> {
+    return firstValueFrom(
+      this.http.get<ScheduleCommitment[]>(
+        `/api/user/schedule-commitments?periodId=${params.periodId}`,
+      ),
+    );
+  }
+
+  deleteScheduleCommitment(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/user/schedule-commitments/${id}`));
+  }
+
+  fetchSchedulePeriods(params: { scheduleId: number }): Promise<SchedulePeriod[]> {
+    return firstValueFrom(
+      this.http.get<SchedulePeriod[]>(`/api/user/schedule-periods?scheduleId=${params.scheduleId}`),
+    );
   }
 }

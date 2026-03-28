@@ -92,3 +92,15 @@ packages:
       "shared.BaseModel": "BaseModel"
     include_files:
       - "workoutgroup.go"
+  - path: "gesitr/internal/user/workoutschedule/models"
+    output_path: "web/src/app/generated/user-workoutschedule.ts"
+    frontmatter: |
+      import { BaseModel } from './user-models';
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+      "shared.BaseModel": "BaseModel"
+    include_files:
+      - "schedule.go"
+      - "period.go"
+      - "commitment.go"

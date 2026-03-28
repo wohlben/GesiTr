@@ -57,6 +57,38 @@ export const routes: Routes = [
           import('$pages/user/workout-edit/workout-edit').then((m) => m.WorkoutEdit),
       },
       {
+        path: 'workouts/:id/schedules/new',
+        loadComponent: () =>
+          import('$pages/user/workout-schedule-edit/workout-schedule-edit').then(
+            (m) => m.WorkoutScheduleEdit,
+          ),
+      },
+      {
+        path: 'workouts/:id/schedules/:scheduleId/periods/:periodId',
+        loadComponent: () =>
+          import('$pages/user/workout-schedule-period/workout-schedule-period').then(
+            (m) => m.WorkoutSchedulePeriod,
+          ),
+      },
+      {
+        path: 'workouts/:id/schedules/:scheduleId/edit',
+        loadComponent: () =>
+          import('$pages/user/workout-schedule-edit/workout-schedule-edit').then(
+            (m) => m.WorkoutScheduleEdit,
+          ),
+      },
+      {
+        path: 'workouts/:id/schedules/:scheduleId',
+        redirectTo: 'workouts/:id/schedules/:scheduleId/edit',
+      },
+      {
+        path: 'workouts/:id/schedules',
+        loadComponent: () =>
+          import('$pages/user/workout-schedule-list/workout-schedule-list').then(
+            (m) => m.WorkoutScheduleList,
+          ),
+      },
+      {
         path: 'workouts/:id/group',
         loadComponent: () =>
           import('$pages/user/workout-group/workout-group').then((m) => m.WorkoutGroup),

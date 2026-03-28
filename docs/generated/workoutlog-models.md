@@ -63,7 +63,7 @@ See the individual status constants for permission models and editability rules 
 
 
 <a name="WorkoutLog"></a>
-## type [WorkoutLog](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log.go#L9-L22>)
+## type [WorkoutLog](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log.go#L9-L23>)
 
 
 
@@ -78,6 +78,7 @@ type WorkoutLog struct {
     Status           WorkoutLogStatus    `json:"status"`
     StatusChangedAt  *time.Time          `json:"statusChangedAt"`
     ScheduleID       *uint               `json:"scheduleId"`
+    PeriodID         *uint               `json:"periodId"`
     DueStart         *time.Time          `json:"dueStart"`
     DueEnd           *time.Time          `json:"dueEnd"`
     Sections         []WorkoutLogSection `json:"sections" gorm:"-"`
@@ -85,7 +86,7 @@ type WorkoutLog struct {
 ```
 
 <a name="WorkoutLogEntity"></a>
-## type [WorkoutLogEntity](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L10-L24>)
+## type [WorkoutLogEntity](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L10-L25>)
 
 
 
@@ -101,6 +102,7 @@ type WorkoutLogEntity struct {
     Status          WorkoutLogStatus `gorm:"not null;default:'planning'"`
     StatusChangedAt *time.Time
     ScheduleID      *uint `gorm:"index"`
+    PeriodID        *uint `gorm:"index"`
     DueStart        *time.Time
     DueEnd          *time.Time
     Sections        []WorkoutLogSectionEntity `gorm:"foreignKey:WorkoutLogID"`
@@ -108,7 +110,7 @@ type WorkoutLogEntity struct {
 ```
 
 <a name="WorkoutLogFromDTO"></a>
-### func [WorkoutLogFromDTO](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L48>)
+### func [WorkoutLogFromDTO](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L50>)
 
 ```go
 func WorkoutLogFromDTO(dto WorkoutLog) WorkoutLogEntity
@@ -117,7 +119,7 @@ func WorkoutLogFromDTO(dto WorkoutLog) WorkoutLogEntity
 
 
 <a name="WorkoutLogEntity.TableName"></a>
-### func \(WorkoutLogEntity\) [TableName](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L26>)
+### func \(WorkoutLogEntity\) [TableName](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L27>)
 
 ```go
 func (WorkoutLogEntity) TableName() string
@@ -126,7 +128,7 @@ func (WorkoutLogEntity) TableName() string
 
 
 <a name="WorkoutLogEntity.ToDTO"></a>
-### func \(\*WorkoutLogEntity\) [ToDTO](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L28>)
+### func \(\*WorkoutLogEntity\) [ToDTO](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L29>)
 
 ```go
 func (e *WorkoutLogEntity) ToDTO() WorkoutLog

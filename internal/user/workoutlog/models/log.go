@@ -16,6 +16,7 @@ type WorkoutLog struct {
 	Status           WorkoutLogStatus    `json:"status"`
 	StatusChangedAt  *time.Time          `json:"statusChangedAt"`
 	ScheduleID       *uint               `json:"scheduleId"`
+	PeriodID         *uint               `json:"periodId"`
 	DueStart         *time.Time          `json:"dueStart"`
 	DueEnd           *time.Time          `json:"dueEnd"`
 	Sections         []WorkoutLogSection `json:"sections" gorm:"-"`

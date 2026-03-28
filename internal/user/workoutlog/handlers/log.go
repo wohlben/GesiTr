@@ -9,6 +9,7 @@ import (
 	"gesitr/internal/humaconfig"
 	workoutmodels "gesitr/internal/user/workout/models"
 	"gesitr/internal/user/workoutlog/models"
+	workoutschedule "gesitr/internal/user/workoutschedule"
 
 	"github.com/danielgtaylor/huma/v2"
 	"gorm.io/gorm"
@@ -29,14 +30,22 @@ func preloadWorkoutLog(db *gorm.DB) *gorm.DB {
 //
 // OpenAPI: /api/docs#/operations/ListWorkoutLogs
 func ListWorkoutLogs(ctx context.Context, input *ListWorkoutLogsInput) (*ListWorkoutLogsOutput, error) {
+	userID := humaconfig.GetUserID(ctx)
+
+	// Lazy generation: ensure schedule-derived logs exist for current/next window
+	_ = workoutschedule.GenerateForUser(database.DB, userID, time.Now())
+
 	db := database.DB.Model(&models.WorkoutLogEntity{}).
-		Where("owner = ?", humaconfig.GetUserID(ctx))
+		Where("owner = ?", userID)
 
 	if input.WorkoutID != "" {
 		db = db.Where("workout_id = ?", input.WorkoutID)
 	}
 	if input.Status != "" {
 		db = db.Where("status = ?", input.Status)
+	}
+	if input.PeriodID != "" {
+		db = db.Where("period_id = ?", input.PeriodID)
 	}
 
 	var entities []models.WorkoutLogEntity

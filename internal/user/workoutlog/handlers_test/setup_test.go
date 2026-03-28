@@ -25,6 +25,8 @@ import (
 	workoutgroupmodels "gesitr/internal/user/workoutgroup/models"
 	workoutloghandlers "gesitr/internal/user/workoutlog/handlers"
 	"gesitr/internal/user/workoutlog/models"
+	workoutschedulehandlers "gesitr/internal/user/workoutschedule/handlers"
+	workoutschedulemodels "gesitr/internal/user/workoutschedule/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
@@ -67,6 +69,9 @@ func setupTestDB(t *testing.T) {
 		&exerciselogmodels.ExerciseLogEntity{},
 		&workoutgroupmodels.WorkoutGroupEntity{},
 		&workoutgroupmodels.WorkoutGroupMembershipEntity{},
+		&workoutschedulemodels.WorkoutScheduleEntity{},
+		&workoutschedulemodels.SchedulePeriodEntity{},
+		&workoutschedulemodels.ScheduleCommitmentEntity{},
 	)
 	db.Create(&profilemodels.UserProfileEntity{ID: "alice", Name: "alice"})
 	db.Create(&profilemodels.UserProfileEntity{ID: "bob", Name: "bob"})
@@ -85,6 +90,7 @@ func newRouter() *gin.Engine {
 	workoutloghandlers.RegisterRoutes(humaAPI)
 	exerciseloghandlers.RegisterRoutes(humaAPI)
 	workoutgrouphandlers.RegisterRoutes(humaAPI)
+	workoutschedulehandlers.RegisterRoutes(humaAPI)
 
 	return r
 }

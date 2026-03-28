@@ -12,6 +12,7 @@ import (
 type ListWorkoutLogsInput struct {
 	WorkoutID string `query:"workoutId" doc:"Filter by workout ID"`
 	Status    string `query:"status" doc:"Filter by status"`
+	PeriodID  string `query:"periodId" doc:"Filter by schedule period ID"`
 }
 
 type ListWorkoutLogsOutput struct {

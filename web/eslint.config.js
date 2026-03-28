@@ -44,7 +44,16 @@ module.exports = defineConfig([
   {
     files: ['**/*.html'],
     extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
-    rules: {},
+    rules: {
+      // spartan-ng radio/checkbox labels use directives (hlmRadio) that
+      // render the control internally — eslint can't see the association.
+      '@angular-eslint/template/label-has-associated-control': [
+        'error',
+        {
+          controlComponents: ['hlm-radio-indicator'],
+        },
+      ],
+    },
   },
   {
     files: ['src/app/ui/spartan/**/*.html'],
