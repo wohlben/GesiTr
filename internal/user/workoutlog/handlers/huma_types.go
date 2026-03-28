@@ -23,6 +23,9 @@ type WorkoutLogBody struct {
 	Name      string     `json:"name" required:"true"`
 	Notes     *string    `json:"notes,omitempty"`
 	Date      *time.Time `json:"date,omitempty"`
+	Status    *string    `json:"status,omitempty" doc:"Initial status: 'proposed' or 'committed'. Defaults to 'planning'."`
+	DueStart  *time.Time `json:"dueStart,omitempty" doc:"Start of the commitment window. Required when status is proposed or committed."`
+	DueEnd    *time.Time `json:"dueEnd,omitempty" doc:"End of the commitment window. Required when status is proposed or committed."`
 }
 
 type CreateWorkoutLogInput struct {
@@ -88,6 +91,22 @@ type AbandonWorkoutLogInput struct {
 }
 
 type AbandonWorkoutLogOutput struct {
+	Body models.WorkoutLog
+}
+
+type SkipWorkoutLogInput struct {
+	ID uint `path:"id"`
+}
+
+type SkipWorkoutLogOutput struct {
+	Body models.WorkoutLog
+}
+
+type CommitWorkoutLogInput struct {
+	ID uint `path:"id"`
+}
+
+type CommitWorkoutLogOutput struct {
 	Body models.WorkoutLog
 }
 

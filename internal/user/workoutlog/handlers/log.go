@@ -56,19 +56,42 @@ func ListWorkoutLogs(ctx context.Context, input *ListWorkoutLogsInput) (*ListWor
 //
 // OpenAPI: /api/docs#/operations/CreateWorkoutLog
 func CreateWorkoutLog(ctx context.Context, input *CreateWorkoutLogInput) (*CreateWorkoutLogOutput, error) {
+	status := models.WorkoutLogStatusPlanning
+	if input.Body.Status != nil {
+		s := models.WorkoutLogStatus(*input.Body.Status)
+		switch s {
+		case models.WorkoutLogStatusProposed, models.WorkoutLogStatusCommitted:
+			status = s
+		default:
+			return nil, huma.Error400BadRequest("status must be 'proposed' or 'committed' (or omitted for 'planning')")
+		}
+	}
+
+	isCommitment := status == models.WorkoutLogStatusProposed || status == models.WorkoutLogStatusCommitted
+	if isCommitment {
+		if input.Body.DueStart == nil || input.Body.DueEnd == nil {
+			return nil, huma.Error400BadRequest("dueStart and dueEnd are required for proposed/committed logs")
+		}
+		if !input.Body.DueEnd.After(*input.Body.DueStart) {
+			return nil, huma.Error400BadRequest("dueEnd must be after dueStart")
+		}
+	}
+
 	if input.Body.WorkoutID != nil {
 		var w workoutmodels.WorkoutEntity
 		if err := database.DB.First(&w, *input.Body.WorkoutID).Error; err != nil {
 			return nil, huma.Error404NotFound("Workout not found")
 		}
 
-		// Uniqueness: only one planning log per workout
-		var count int64
-		database.DB.Model(&models.WorkoutLogEntity{}).
-			Where("workout_id = ? AND status = ?", *input.Body.WorkoutID, models.WorkoutLogStatusPlanning).
-			Count(&count)
-		if count > 0 {
-			return nil, huma.Error409Conflict("A planning log already exists for this workout")
+		// Uniqueness: only one planning log per workout (commitments are exempt)
+		if status == models.WorkoutLogStatusPlanning {
+			var count int64
+			database.DB.Model(&models.WorkoutLogEntity{}).
+				Where("workout_id = ? AND status = ?", *input.Body.WorkoutID, models.WorkoutLogStatusPlanning).
+				Count(&count)
+			if count > 0 {
+				return nil, huma.Error409Conflict("A planning log already exists for this workout")
+			}
 		}
 	}
 
@@ -77,9 +100,11 @@ func CreateWorkoutLog(ctx context.Context, input *CreateWorkoutLogInput) (*Creat
 		Name:      input.Body.Name,
 		Notes:     input.Body.Notes,
 		Date:      input.Body.Date,
+		DueStart:  input.Body.DueStart,
+		DueEnd:    input.Body.DueEnd,
 	}
 	entity.Owner = humaconfig.GetUserID(ctx)
-	entity.Status = models.WorkoutLogStatusPlanning
+	entity.Status = status
 	if err := database.DB.Create(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
@@ -149,8 +174,8 @@ func DeleteWorkoutLog(ctx context.Context, input *DeleteWorkoutLogInput) (*Delet
 	if err := requireOwner(ctx, existing.Owner); err != nil {
 		return nil, err
 	}
-	if existing.Status != models.WorkoutLogStatusPlanning {
-		return nil, huma.Error409Conflict("can only delete logs in planning status")
+	if existing.Status != models.WorkoutLogStatusPlanning && existing.Status != models.WorkoutLogStatusProposed && existing.Status != models.WorkoutLogStatusCommitted {
+		return nil, huma.Error409Conflict("can only delete logs in planning, proposed, or committed status")
 	}
 	if err := database.DB.Delete(&existing).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
@@ -534,4 +559,66 @@ func AbandonWorkoutLog(ctx context.Context, input *AbandonWorkoutLogInput) (*Aba
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 	return &AbandonWorkoutLogOutput{Body: entity.ToDTO()}, nil
+}
+
+// SkipWorkoutLog transitions a proposed workout log to skipped.
+// POST /api/user/workout-logs/{id}/skip
+//
+// OpenAPI: /api/docs#/operations/SkipWorkoutLog
+func SkipWorkoutLog(ctx context.Context, input *SkipWorkoutLogInput) (*SkipWorkoutLogOutput, error) {
+	var entity models.WorkoutLogEntity
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout log not found")
+	}
+	if err := requireOwner(ctx, entity.Owner); err != nil {
+		return nil, err
+	}
+
+	if err := entity.Status.TransitionTo(models.WorkoutLogStatusSkipped); err != nil {
+		return nil, huma.Error409Conflict(err.Error())
+	}
+
+	now := time.Now()
+	if err := database.DB.Model(&entity).Updates(map[string]any{
+		"status":            models.WorkoutLogStatusSkipped,
+		"status_changed_at": now,
+	}).Error; err != nil {
+		return nil, huma.Error500InternalServerError(err.Error())
+	}
+
+	if err := preloadWorkoutLog(database.DB).First(&entity, entity.ID).Error; err != nil {
+		return nil, huma.Error500InternalServerError(err.Error())
+	}
+	return &SkipWorkoutLogOutput{Body: entity.ToDTO()}, nil
+}
+
+// CommitWorkoutLog transitions a proposed workout log to committed.
+// POST /api/user/workout-logs/{id}/commit
+//
+// OpenAPI: /api/docs#/operations/CommitWorkoutLog
+func CommitWorkoutLog(ctx context.Context, input *CommitWorkoutLogInput) (*CommitWorkoutLogOutput, error) {
+	var entity models.WorkoutLogEntity
+	if err := database.DB.First(&entity, input.ID).Error; err != nil {
+		return nil, huma.Error404NotFound("Workout log not found")
+	}
+	if err := requireOwner(ctx, entity.Owner); err != nil {
+		return nil, err
+	}
+
+	if err := entity.Status.TransitionTo(models.WorkoutLogStatusCommitted); err != nil {
+		return nil, huma.Error409Conflict(err.Error())
+	}
+
+	now := time.Now()
+	if err := database.DB.Model(&entity).Updates(map[string]any{
+		"status":            models.WorkoutLogStatusCommitted,
+		"status_changed_at": now,
+	}).Error; err != nil {
+		return nil, huma.Error500InternalServerError(err.Error())
+	}
+
+	if err := preloadWorkoutLog(database.DB).First(&entity, entity.ID).Error; err != nil {
+		return nil, huma.Error500InternalServerError(err.Error())
+	}
+	return &CommitWorkoutLogOutput{Body: entity.ToDTO()}, nil
 }

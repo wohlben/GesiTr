@@ -59,7 +59,7 @@ func CreateWorkoutLogExercise(ctx context.Context, input *CreateWorkoutLogExerci
 	}
 
 	// Guard: parent log must be in planning or adhoc status
-	log, err := requireLogStatus(ctx, section.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc)
+	log, err := requireLogStatus(ctx, section.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc, models.WorkoutLogStatusProposed)
 	if err != nil {
 		return nil, err
 	}
@@ -181,7 +181,7 @@ func DeleteWorkoutLogExercise(ctx context.Context, input *DeleteWorkoutLogExerci
 	}
 
 	// Guard: parent log must be in planning or adhoc status
-	if _, err := requireLogStatus(ctx, existing.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc); err != nil {
+	if _, err := requireLogStatus(ctx, existing.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc, models.WorkoutLogStatusProposed); err != nil {
 		return nil, err
 	}
 

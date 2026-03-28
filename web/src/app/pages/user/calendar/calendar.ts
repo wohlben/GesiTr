@@ -3,7 +3,14 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { workoutLogKeys } from '$core/query-keys';
-import { WorkoutLog, WorkoutLogStatusPlanning } from '$generated/user-models';
+import {
+  WorkoutLog,
+  WorkoutLogStatusPlanning,
+  WorkoutLogStatusProposed,
+  WorkoutLogStatusCommitted,
+  WorkoutLogStatusSkipped,
+  WorkoutLogStatusBroken,
+} from '$generated/user-models';
 import { PageLayout } from '../../../layout/page-layout';
 import { DayDialog } from './day-dialog';
 
@@ -93,7 +100,15 @@ import { DayDialog } from './day-dialog';
                               ? 'bg-yellow-500'
                               : log.status === 'in_progress'
                                 ? 'bg-blue-500'
-                                : 'bg-red-500'
+                                : log.status === 'proposed'
+                                  ? 'bg-purple-300 dark:bg-purple-400'
+                                  : log.status === 'committed'
+                                    ? 'bg-purple-500'
+                                    : log.status === 'broken'
+                                      ? 'bg-orange-500'
+                                      : log.status === 'skipped'
+                                        ? 'bg-gray-400'
+                                        : 'bg-red-500'
                         "
                       ></span>
                     }
@@ -137,8 +152,18 @@ export class Calendar {
 
     const map = new Map<string, WorkoutLog[]>();
     for (const log of logs) {
-      if (log.status === WorkoutLogStatusPlanning || !log.date) continue;
-      const key = log.date.substring(0, 10);
+      if (log.status === WorkoutLogStatusPlanning) continue;
+
+      // Committed/proposed logs use dueStart as the calendar date; others use date
+      const isCommitment =
+        log.status === WorkoutLogStatusProposed ||
+        log.status === WorkoutLogStatusCommitted ||
+        log.status === WorkoutLogStatusSkipped ||
+        log.status === WorkoutLogStatusBroken;
+      const dateStr = isCommitment ? (log.dueStart ?? log.date) : log.date;
+      if (!dateStr) continue;
+
+      const key = dateStr.substring(0, 10);
       const existing = map.get(key);
       if (existing) {
         existing.push(log);

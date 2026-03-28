@@ -84,6 +84,22 @@ func RegisterRoutes(api huma.API) {
 		Summary:     "Abandon workout log",
 	}, AbandonWorkoutLog)
 
+	huma.Register(api, huma.Operation{
+		OperationID: "SkipWorkoutLog",
+		Method:      http.MethodPost,
+		Path:        "/user/workout-logs/{id}/skip",
+		Tags:        []string{"workout-logs"},
+		Summary:     "Skip a proposed workout log",
+	}, SkipWorkoutLog)
+
+	huma.Register(api, huma.Operation{
+		OperationID: "CommitWorkoutLog",
+		Method:      http.MethodPost,
+		Path:        "/user/workout-logs/{id}/commit",
+		Tags:        []string{"workout-logs"},
+		Summary:     "Commit a proposed workout log",
+	}, CommitWorkoutLog)
+
 	// --- Workout log sections ---
 
 	huma.Register(api, huma.Operation{

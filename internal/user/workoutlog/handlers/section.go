@@ -50,7 +50,7 @@ func ListWorkoutLogSections(ctx context.Context, input *ListWorkoutLogSectionsIn
 //
 // OpenAPI: /api/docs#/operations/CreateWorkoutLogSection
 func CreateWorkoutLogSection(ctx context.Context, input *CreateWorkoutLogSectionInput) (*CreateWorkoutLogSectionOutput, error) {
-	log, err := requireLogStatus(ctx, input.Body.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc)
+	log, err := requireLogStatus(ctx, input.Body.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc, models.WorkoutLogStatusProposed)
 	if err != nil {
 		return nil, err
 	}
@@ -148,7 +148,7 @@ func DeleteWorkoutLogSection(ctx context.Context, input *DeleteWorkoutLogSection
 		return nil, huma.Error404NotFound("Workout log section not found")
 	}
 
-	if _, err := requireLogStatus(ctx, existing.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc); err != nil {
+	if _, err := requireLogStatus(ctx, existing.WorkoutLogID, models.WorkoutLogStatusPlanning, models.WorkoutLogStatusAdhoc, models.WorkoutLogStatusProposed); err != nil {
 		return nil, err
 	}
 

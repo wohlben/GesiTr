@@ -17,6 +17,9 @@ type WorkoutLogEntity struct {
 	Date            *time.Time       `gorm:"index"`
 	Status          WorkoutLogStatus `gorm:"not null;default:'planning'"`
 	StatusChangedAt *time.Time
+	ScheduleID      *uint `gorm:"index"`
+	DueStart        *time.Time
+	DueEnd          *time.Time
 	Sections        []WorkoutLogSectionEntity `gorm:"foreignKey:WorkoutLogID"`
 }
 
@@ -32,6 +35,9 @@ func (e *WorkoutLogEntity) ToDTO() WorkoutLog {
 		Date:            e.Date,
 		Status:          e.Status,
 		StatusChangedAt: e.StatusChangedAt,
+		ScheduleID:      e.ScheduleID,
+		DueStart:        e.DueStart,
+		DueEnd:          e.DueEnd,
 	}
 	for _, s := range e.Sections {
 		dto.Sections = append(dto.Sections, s.ToDTO())
@@ -49,5 +55,8 @@ func WorkoutLogFromDTO(dto WorkoutLog) WorkoutLogEntity {
 		Date:            dto.Date,
 		Status:          dto.Status,
 		StatusChangedAt: dto.StatusChangedAt,
+		ScheduleID:      dto.ScheduleID,
+		DueStart:        dto.DueStart,
+		DueEnd:          dto.DueEnd,
 	}
 }

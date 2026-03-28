@@ -10,6 +10,10 @@ func TestCanTransitionTo(t *testing.T) {
 		{WorkoutLogStatusInProgress, WorkoutLogStatusFinished},
 		{WorkoutLogStatusInProgress, WorkoutLogStatusPartiallyFinished},
 		{WorkoutLogStatusInProgress, WorkoutLogStatusAborted},
+		{WorkoutLogStatusProposed, WorkoutLogStatusCommitted},
+		{WorkoutLogStatusProposed, WorkoutLogStatusSkipped},
+		{WorkoutLogStatusCommitted, WorkoutLogStatusInProgress},
+		{WorkoutLogStatusCommitted, WorkoutLogStatusBroken},
 	}
 	for _, tt := range allowed {
 		if !tt.from.CanTransitionTo(tt.to) {
@@ -33,6 +37,15 @@ func TestCanTransitionTo(t *testing.T) {
 		{WorkoutLogStatusAborted, WorkoutLogStatusPlanning},
 		{WorkoutLogStatusAborted, WorkoutLogStatusInProgress},
 		{WorkoutLogStatusAborted, WorkoutLogStatusFinished},
+		// Commitment-specific forbidden transitions
+		{WorkoutLogStatusProposed, WorkoutLogStatusInProgress},
+		{WorkoutLogStatusProposed, WorkoutLogStatusPlanning},
+		{WorkoutLogStatusCommitted, WorkoutLogStatusSkipped},
+		{WorkoutLogStatusCommitted, WorkoutLogStatusPlanning},
+		{WorkoutLogStatusSkipped, WorkoutLogStatusCommitted},
+		{WorkoutLogStatusSkipped, WorkoutLogStatusInProgress},
+		{WorkoutLogStatusBroken, WorkoutLogStatusInProgress},
+		{WorkoutLogStatusBroken, WorkoutLogStatusCommitted},
 	}
 	for _, tt := range forbidden {
 		if tt.from.CanTransitionTo(tt.to) {

@@ -283,6 +283,14 @@ export class UserApiClient {
     return firstValueFrom(this.http.post<WorkoutLog>(`/api/user/workout-logs/${id}/finish`, {}));
   }
 
+  skipWorkoutLog(id: number): Promise<WorkoutLog> {
+    return firstValueFrom(this.http.post<WorkoutLog>(`/api/user/workout-logs/${id}/skip`, {}));
+  }
+
+  commitWorkoutLog(id: number): Promise<WorkoutLog> {
+    return firstValueFrom(this.http.post<WorkoutLog>(`/api/user/workout-logs/${id}/commit`, {}));
+  }
+
   // Workout Groups
   fetchWorkoutGroups(): Promise<WorkoutGroup[]> {
     return firstValueFrom(this.http.get<WorkoutGroup[]>('/api/user/workout-groups'));

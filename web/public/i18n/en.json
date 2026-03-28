@@ -167,7 +167,11 @@
       "adhoc": "Ad-hoc",
       "finished": "Finished",
       "partially_finished": "Partially Finished",
-      "aborted": "Aborted"
+      "aborted": "Aborted",
+      "proposed": "Proposed",
+      "committed": "Committed",
+      "skipped": "Skipped",
+      "broken": "Broken"
     },
     "workoutGroupRole": {
       "invited": "Invited",

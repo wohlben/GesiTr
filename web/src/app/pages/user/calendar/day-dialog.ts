@@ -57,6 +57,14 @@ export class DayDialog {
         return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300';
       case 'aborted':
         return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
+      case 'proposed':
+        return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300';
+      case 'committed':
+        return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300';
+      case 'broken':
+        return 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300';
+      case 'skipped':
+        return 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400';
       default:
         return 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400';
     }

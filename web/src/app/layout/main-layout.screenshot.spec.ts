@@ -2,6 +2,7 @@ import { render } from '@testing-library/angular';
 import { page } from 'vitest/browser';
 import { Component } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { DevelopmentUserHeaderService } from '$core/dev/development-user-header.service';
 import { MainLayout } from './main-layout';
@@ -20,6 +21,7 @@ describe('MainLayout screenshots', () => {
   const providers = [
     provideTranslocoForTest(),
     provideRouter([{ path: '**', component: TestPage }]),
+    provideTanStackQuery(new QueryClient({ defaultOptions: { queries: { retry: false } } })),
     DevelopmentUserHeaderService,
   ];
 

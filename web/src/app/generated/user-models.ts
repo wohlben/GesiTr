@@ -111,6 +111,9 @@ export interface WorkoutLog extends BaseModel {
   date?: string;
   status: WorkoutLogStatus;
   statusChangedAt?: string;
+  scheduleId?: number /* uint */;
+  dueStart?: string;
+  dueEnd?: string;
   sections: WorkoutLogSection[];
 }
 
@@ -156,3 +159,7 @@ export const WorkoutLogStatusAdhoc: WorkoutLogStatus = 'adhoc';
 export const WorkoutLogStatusFinished: WorkoutLogStatus = 'finished';
 export const WorkoutLogStatusPartiallyFinished: WorkoutLogStatus = 'partially_finished';
 export const WorkoutLogStatusAborted: WorkoutLogStatus = 'aborted';
+export const WorkoutLogStatusProposed: WorkoutLogStatus = 'proposed';
+export const WorkoutLogStatusCommitted: WorkoutLogStatus = 'committed';
+export const WorkoutLogStatusSkipped: WorkoutLogStatus = 'skipped';
+export const WorkoutLogStatusBroken: WorkoutLogStatus = 'broken';

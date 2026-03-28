@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
@@ -32,6 +33,7 @@ import (
 	workoutModels "gesitr/internal/user/workout/models"
 	workoutGroupHandlers "gesitr/internal/user/workoutgroup/handlers"
 	workoutGroupModels "gesitr/internal/user/workoutgroup/models"
+	workoutlog "gesitr/internal/user/workoutlog"
 	workoutloghandlers "gesitr/internal/user/workoutlog/handlers"
 	workoutlogmodels "gesitr/internal/user/workoutlog/models"
 
@@ -181,6 +183,7 @@ func buildApp() *gin.Engine {
 	database.Init()
 	autoMigrate()
 	runMigrations()
+	workoutlog.StartCommitmentTicker(database.DB, 15*time.Minute)
 
 	r := gin.Default()
 	setupRoutes(r)
