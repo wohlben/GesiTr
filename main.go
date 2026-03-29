@@ -241,7 +241,13 @@ func buildApp() *gin.Engine {
 	runMigrations()
 	workoutlog.StartCommitmentTicker(database.DB, 15*time.Minute)
 
-	r := gin.Default()
+	var r *gin.Engine
+	if level := auth.RequestLogLevel(); level == "info" || level == "trace" {
+		r = gin.New()
+		r.Use(auth.APIOnlyLogger(), gin.Recovery())
+	} else {
+		r = gin.Default()
+	}
 	setupRoutes(r)
 	docsFS, _ := fs.Sub(docsFiles, "docs/generated")
 	docs.SetupRoutes(r, docsFS)
