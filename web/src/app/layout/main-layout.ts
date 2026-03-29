@@ -1,12 +1,13 @@
-import { Component, inject, isDevMode, signal } from '@angular/core';
+import { Component, computed, inject, isDevMode, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { injectQueryClient } from '@tanstack/angular-query-experimental';
+import { injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideSettings, lucideUser } from '@ng-icons/lucide';
 import { HlmIconImports } from '@spartan-ng/helm/icon';
 import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 import { DevelopmentUserHeaderService } from '$core/dev/development-user-header.service';
+import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 
 interface NavLink {
   path: string;
@@ -34,6 +35,14 @@ interface NavLink {
       >
         <div class="flex items-center justify-between px-6 py-3">
           <div class="flex items-center gap-4">
+            @if (deployStatus(); as ds) {
+              <span
+                class="inline-block size-2.5 rounded-full"
+                [class]="deployDotClass()"
+                [class.animate-pulse]="ds.status === 'running'"
+                [title]="ds.title ? ds.title + ' (' + ds.createdAt + ')' : ds.status"
+              ></span>
+            }
             <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">GesiTr</span>
             <a
               routerLink="/user/workouts"
@@ -200,6 +209,25 @@ export class MainLayout {
   devUserService = isDevMode() ? inject(DevelopmentUserHeaderService) : null!;
   private router = inject(Router);
   private queryClient = injectQueryClient();
+  private compendiumApi = inject(CompendiumApiClient);
+
+  private deployQuery = injectQuery(() => ({
+    queryKey: ['deploy-status'] as const,
+    queryFn: () => this.compendiumApi.fetchDeployStatus(),
+    staleTime: 60_000,
+    refetchInterval: 60_000,
+    retry: false,
+  }));
+
+  deployStatus = computed(() => (this.deployQuery.isSuccess() ? this.deployQuery.data() : null));
+
+  deployDotClass = computed(() => {
+    const s = this.deployStatus()?.status;
+    if (s === 'done') return 'bg-green-500';
+    if (s === 'running') return 'bg-yellow-400';
+    if (s === 'error') return 'bg-red-500';
+    return 'bg-gray-400';
+  });
 
   devUsers = ['devuser', 'anon', 'sinon', 'alice', 'bob'];
 

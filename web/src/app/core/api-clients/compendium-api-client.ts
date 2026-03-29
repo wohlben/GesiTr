@@ -190,4 +190,10 @@ export class CompendiumApiClient {
       }),
     );
   }
+
+  fetchDeployStatus(): Promise<{ status: string; title?: string; createdAt?: string }> {
+    return firstValueFrom(
+      this.http.get<{ status: string; title?: string; createdAt?: string }>('/api/deploy-status'),
+    );
+  }
 }
