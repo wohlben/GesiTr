@@ -108,14 +108,15 @@ describe('Calendar', () => {
 
   describe('logsByDate - fixed_date commitments', () => {
     it('places proposed logs at their date, not dueStart', async () => {
+      // Use fixed dates mid-month to avoid month-boundary flakiness.
       const c = setup({
         fetchWorkoutLogs: vi.fn().mockResolvedValue([
           makeLog({
             id: 1,
             status: 'proposed',
-            date: daysFromNowStr(3),
-            dueStart: daysFromNowStr(-2),
-            dueEnd: daysFromNowStr(7),
+            date: '2025-06-15T00:00:00Z',
+            dueStart: '2025-06-10T00:00:00Z',
+            dueEnd: '2025-06-20T00:00:00Z',
             periodId: 1,
           }),
         ]),
@@ -123,15 +124,11 @@ describe('Calendar', () => {
       // Wait for query to resolve
       await vi.waitFor(() => expect(c.logsQuery.data()).toBeTruthy());
 
-      const today = new Date();
-      c.currentMonth.set(new Date(today.getFullYear(), today.getMonth(), 1));
+      c.currentMonth.set(new Date(2025, 5, 1)); // June 2025
       const cells = c.calendarCells();
       const cellsWithLogs = cells.filter((cell) => cell !== null && cell.logs.length > 0);
       expect(cellsWithLogs.length).toBe(1);
-
-      const expectedDay = new Date();
-      expectedDay.setDate(expectedDay.getDate() + 3);
-      expect(cellsWithLogs[0]!.day).toBe(expectedDay.getDate());
+      expect(cellsWithLogs[0]!.day).toBe(15);
     });
   });
 

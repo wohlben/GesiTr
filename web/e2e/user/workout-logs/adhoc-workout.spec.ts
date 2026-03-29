@@ -71,12 +71,9 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
     // ============================================================
     // Step 4: Select exercise — Phase 2 (runner) appears
     // ============================================================
-    const exerciseSelectTrigger = page
-      .locator('app-exercise-config brn-select')
-      .first()
-      .locator('hlm-select-trigger');
-    await exerciseSelectTrigger.click();
-    await page.locator('hlm-option').filter({ hasText: 'AH Bench Press' }).click();
+    const comboboxInput = page.locator('app-exercise-config hlm-combobox-input input').first();
+    await comboboxInput.fill('AH Bench');
+    await page.locator('hlm-combobox-item').filter({ hasText: 'AH Bench Press' }).click();
 
     // Runner should appear with exercise name
     const runner = page.locator('app-exercise-runner');
@@ -217,12 +214,9 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
     await expect(dialogTitle).toBeVisible({ timeout: 5000 });
 
     // Select second exercise
-    const exerciseSelectTrigger2 = page
-      .locator('app-exercise-config brn-select')
-      .first()
-      .locator('hlm-select-trigger');
-    await exerciseSelectTrigger2.click();
-    await page.locator('hlm-option').filter({ hasText: 'AH Bicep Curl' }).click();
+    const comboboxInput2 = page.locator('app-exercise-config hlm-combobox-input input').first();
+    await comboboxInput2.fill('AH Bicep');
+    await page.locator('hlm-combobox-item').filter({ hasText: 'AH Bicep Curl' }).click();
 
     // Keep defaults (3 sets, 10 reps) — just add
     const addBtn2 = page.getByRole('button', { name: 'Add', exact: true });

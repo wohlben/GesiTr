@@ -6,6 +6,7 @@ import (
 	"gesitr/internal/database"
 	"gesitr/internal/exerciserelationship/models"
 	"gesitr/internal/humaconfig"
+	masteryHandlers "gesitr/internal/user/mastery/handlers"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -65,6 +66,7 @@ func CreateExerciseRelationship(ctx context.Context, input *CreateExerciseRelati
 	if err := database.DB.Create(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
+	_ = masteryHandlers.RecalculateContributions(database.DB, entity.Owner, entity.FromExerciseID, entity.ToExerciseID)
 	return &CreateExerciseRelationshipOutput{Body: entity.ToDTO()}, nil
 }
 
@@ -85,5 +87,6 @@ func DeleteExerciseRelationship(ctx context.Context, input *DeleteExerciseRelati
 	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
+	_ = masteryHandlers.RecalculateContributions(database.DB, entity.Owner, entity.FromExerciseID, entity.ToExerciseID)
 	return nil, nil
 }

@@ -9,9 +9,9 @@ import (
 
 type ExerciseLogEntity struct {
 	shared.BaseModel
-	Owner                   string                           `gorm:"not null;index"`
+	Owner                   string                           `gorm:"not null;index;index:idx_owner_exercise_performed,priority:1"`
 	OwnerProfile            *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
-	ExerciseID              uint                             `gorm:"not null;index"`
+	ExerciseID              uint                             `gorm:"not null;index;index:idx_owner_exercise_performed,priority:2"`
 	MeasurementType         string                           `gorm:"not null"`
 	Reps                    *int
 	Weight                  *float64
@@ -20,7 +20,7 @@ type ExerciseLogEntity struct {
 	Time                    *int
 	RecordValue             float64   `gorm:"not null"`
 	IsRecord                bool      `gorm:"not null;default:false;index"`
-	PerformedAt             time.Time `gorm:"not null;index"`
+	PerformedAt             time.Time `gorm:"not null;index;index:idx_owner_exercise_performed,priority:3"`
 	WorkoutLogExerciseSetID *uint     `gorm:"index"`
 	SourceExerciseSchemeID  *uint
 }

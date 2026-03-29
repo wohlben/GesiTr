@@ -8,6 +8,12 @@ import { HlmIconImports } from '@spartan-ng/helm/icon';
 import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 import { DevelopmentUserHeaderService } from '$core/dev/development-user-header.service';
 
+interface NavLink {
+  path: string;
+  labelKey: string;
+  queryParams?: Record<string, string>;
+}
+
 @Component({
   selector: 'app-main-layout',
   imports: [
@@ -43,17 +49,21 @@ import { DevelopmentUserHeaderService } from '$core/dev/development-user-header.
             @for (link of compendiumLinks; track link.path) {
               <a
                 [routerLink]="link.path"
+                [queryParams]="link.queryParams ?? {}"
                 routerLinkActive="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
+                [routerLinkActiveOptions]="link.queryParams ? { queryParams: 'exact' } : {}"
                 class="rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-200"
               >
                 {{ t(link.labelKey) }}
               </a>
             }
             <div class="mx-2 h-5 w-px bg-gray-200 dark:bg-gray-700"></div>
-            @for (link of userLinks; track link.path) {
+            @for (link of userLinks; track link.labelKey) {
               <a
                 [routerLink]="link.path"
+                [queryParams]="link.queryParams ?? {}"
                 routerLinkActive="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
+                [routerLinkActiveOptions]="link.queryParams ? { queryParams: 'exact' } : {}"
                 class="rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-200"
               >
                 {{ t(link.labelKey) }}
@@ -143,8 +153,10 @@ import { DevelopmentUserHeaderService } from '$core/dev/development-user-header.
                 @for (link of compendiumLinks; track link.path) {
                   <a
                     [routerLink]="link.path"
+                    [queryParams]="link.queryParams ?? {}"
                     (click)="menuOpen.set(false)"
                     routerLinkActive="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
+                    [routerLinkActiveOptions]="link.queryParams ? { queryParams: 'exact' } : {}"
                     class="rounded-md px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-200"
                   >
                     {{ t(link.labelKey) }}
@@ -158,11 +170,13 @@ import { DevelopmentUserHeaderService } from '$core/dev/development-user-header.
                 >{{ t('nav.personal') }}</span
               >
               <div class="mt-1 flex flex-col gap-0.5">
-                @for (link of userLinks; track link.path) {
+                @for (link of userLinks; track link.labelKey) {
                   <a
                     [routerLink]="link.path"
+                    [queryParams]="link.queryParams ?? {}"
                     (click)="menuOpen.set(false)"
                     routerLinkActive="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
+                    [routerLinkActiveOptions]="link.queryParams ? { queryParams: 'exact' } : {}"
                     class="rounded-md px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-200"
                   >
                     {{ t(link.labelKey) }}
@@ -189,13 +203,12 @@ export class MainLayout {
 
   devUsers = ['devuser', 'anon', 'sinon', 'alice', 'bob'];
 
-  compendiumLinks = [
+  compendiumLinks: NavLink[] = [
     { path: '/compendium/exercises', labelKey: 'nav.exercises' },
     { path: '/compendium/equipment', labelKey: 'nav.equipment' },
   ];
 
-  userLinks = [
-    { path: '/user/exercises', labelKey: 'nav.myExercises' },
+  userLinks: NavLink[] = [
     { path: '/user/equipment', labelKey: 'nav.myEquipment' },
     { path: '/user/workouts', labelKey: 'nav.myWorkouts' },
     { path: '/user/calendar', labelKey: 'nav.calendar' },

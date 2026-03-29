@@ -10,6 +10,7 @@ import (
 	"gesitr/internal/humaconfig"
 	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciselogmodels "gesitr/internal/user/exerciselog/models"
+	masteryHandlers "gesitr/internal/user/mastery/handlers"
 	"gesitr/internal/user/workoutlog/models"
 
 	"github.com/danielgtaylor/huma/v2"
@@ -210,6 +211,7 @@ func createOrUpdateExerciseLog(db *gorm.DB, set *models.WorkoutLogExerciseSetEnt
 		if err := db.Create(&exerciseLog).Error; err != nil {
 			return err
 		}
+		_ = masteryHandlers.UpsertExperience(db, log.Owner, scheme.ExerciseID, reps)
 		return exerciseloghandlers.RecomputeRecord(db, scheme.ExerciseID, logExercise.TargetMeasurementType)
 	} else if err != nil {
 		return err

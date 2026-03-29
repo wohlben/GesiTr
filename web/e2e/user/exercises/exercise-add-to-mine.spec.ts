@@ -27,7 +27,7 @@ test.describe('add compendium exercise to my exercises', () => {
     await expect(page.locator('h1')).toHaveText('Add To Mine Test Exercise');
 
     // The "Add to Mine" button should be visible (not "Already Added")
-    await expect(page.getByText('Add to My Exercises')).toBeVisible();
+    await expect(page.getByText('Fork Exercise')).toBeVisible();
 
     // Click "Add to Mine" and wait for the POST and navigation
     await Promise.all([
@@ -37,7 +37,7 @@ test.describe('add compendium exercise to my exercises', () => {
           r.request().method() === 'POST' &&
           r.status() === 201,
       ),
-      page.getByText('Add to My Exercises').click(),
+      page.getByText('Fork Exercise').click(),
     ]);
 
     // Should navigate to the user exercise detail page

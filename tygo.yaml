@@ -82,6 +82,13 @@ packages:
       "gorm.DeletedAt": "string | null"
     include_files:
       - "exerciselog.go"
+  - path: "gesitr/internal/user/mastery/models"
+    output_path: "web/src/app/generated/user-mastery.ts"
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+    include_files:
+      - "mastery.go"
   - path: "gesitr/internal/user/workoutgroup/models"
     output_path: "web/src/app/generated/user-workoutgroup.ts"
     frontmatter: |

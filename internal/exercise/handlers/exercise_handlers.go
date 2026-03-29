@@ -58,7 +58,9 @@ func ListExercises(ctx context.Context, input *ListExercisesInput) (*ListExercis
 	db := database.DB.Model(&models.ExerciseEntity{})
 
 	userID := humaconfig.GetUserID(ctx)
-	if input.Owner != "" {
+	if input.Mastery == "me" {
+		db = db.Where("owner = ? OR exercises.id IN (SELECT exercise_id FROM mastery_experience WHERE owner = ?)", userID, userID)
+	} else if input.Owner != "" {
 		if input.Owner == "me" || input.Owner == userID {
 			db = db.Where("owner = ?", userID)
 		} else {

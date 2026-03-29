@@ -2,12 +2,15 @@ import { Component, inject, computed, signal, input, effect } from '@angular/cor
 import { form, FormField, disabled } from '@angular/forms/signals';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { userExerciseKeys, exerciseSchemeKeys } from '$core/query-keys';
+import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
+import { exerciseKeys, exerciseSchemeKeys, masteryKeys } from '$core/query-keys';
 import { ExerciseScheme } from '$generated/models';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
+import { HlmComboboxImports } from '@spartan-ng/helm/combobox';
 import { HlmInput } from '@spartan-ng/helm/input';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { Exercise } from '$generated/models';
 
 export interface ExerciseConfigResult {
   exerciseId: number;
@@ -17,7 +20,14 @@ export interface ExerciseConfigResult {
 
 @Component({
   selector: 'app-exercise-config',
-  imports: [FormField, BrnSelectImports, HlmSelectImports, HlmInput, TranslocoDirective],
+  imports: [
+    FormField,
+    BrnSelectImports,
+    HlmSelectImports,
+    HlmComboboxImports,
+    HlmInput,
+    TranslocoDirective,
+  ],
   template: `
     <div
       *transloco="let t"
@@ -28,21 +38,29 @@ export interface ExerciseConfigResult {
           <span class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{
             t('ui.exerciseConfig.exerciseLabel')
           }}</span>
-          <brn-select
-            [formField]="configForm.exerciseId"
-            class="mt-1"
-            hlm
-            [placeholder]="t('common.select')"
+          <hlm-combobox
+            class="mt-1 block"
+            [value]="selectedExercise()"
+            (valueChange)="onExerciseSelected($event)"
+            [filter]="exerciseFilter"
+            [itemToString]="exerciseToString"
           >
-            <hlm-select-trigger class="w-full">
-              <hlm-select-value />
-            </hlm-select-trigger>
-            <hlm-select-content>
-              @for (ue of userExercises(); track ue.id) {
-                <hlm-option [value]="ue.id">{{ ue.name }}</hlm-option>
-              }
-            </hlm-select-content>
-          </brn-select>
+            <hlm-combobox-input
+              [placeholder]="t('common.search')"
+              [showClear]="!!model().exerciseId"
+            />
+            <ng-template hlmComboboxPortal>
+              <hlm-combobox-content>
+                <hlm-combobox-input [placeholder]="t('common.search')" [showClear]="false" />
+                <div hlmComboboxList>
+                  @for (ex of sortedExercises(); track ex.id) {
+                    <hlm-combobox-item [value]="ex">{{ ex.name }}</hlm-combobox-item>
+                  }
+                  <hlm-combobox-empty>{{ t('common.noResults') }}</hlm-combobox-empty>
+                </div>
+              </hlm-combobox-content>
+            </ng-template>
+          </hlm-combobox>
         </div>
         <div>
           <span class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{
@@ -119,6 +137,7 @@ export interface ExerciseConfigResult {
 })
 export class ExerciseConfig {
   private userApi = inject(UserApiClient);
+  private compendiumApi = inject(CompendiumApiClient);
   private queryClient = inject(QueryClient);
 
   /** When set, the exercise dropdown is locked to this user exercise. */
@@ -150,19 +169,45 @@ export class ExerciseConfig {
     });
   }
 
-  // User exercises query — exercises are now full entities, no second fetch needed
-  private userExercisesQuery = injectQuery(() => ({
-    queryKey: userExerciseKeys.list(),
-    queryFn: () => this.userApi.fetchUserExercises(),
+  // All exercises
+  private allExercisesQuery = injectQuery(() => ({
+    queryKey: exerciseKeys.list({ limit: 200 }),
+    queryFn: () => this.compendiumApi.fetchExercises({ limit: 200 }),
   }));
 
-  userExercises = computed(() => this.userExercisesQuery.data() ?? []);
+  // Mastery list (used for sorting mastered exercises first)
+  private masteryQuery = injectQuery(() => ({
+    queryKey: masteryKeys.list(),
+    queryFn: () => this.userApi.fetchMasteryList(),
+  }));
 
-  selectedExerciseName = computed(() => {
-    const id = this.model().exerciseId;
-    if (!id) return '';
-    return this.userExercises().find((ue) => ue.id === id)?.name ?? '';
+  sortedExercises = computed(() => {
+    const all = this.allExercisesQuery.data()?.items ?? [];
+    const masteryIds = new Set((this.masteryQuery.data() ?? []).map((m) => m.exerciseId));
+    return [...all].sort((a, b) => {
+      const aHas = masteryIds.has(a.id) ? 0 : 1;
+      const bHas = masteryIds.has(b.id) ? 0 : 1;
+      if (aHas !== bHas) return aHas - bHas;
+      return a.name.localeCompare(b.name);
+    });
   });
+
+  selectedExercise = computed(() => {
+    const id = this.model().exerciseId;
+    if (!id) return null;
+    return this.sortedExercises().find((e) => e.id === id) ?? null;
+  });
+
+  selectedExerciseName = computed(() => this.selectedExercise()?.name ?? '');
+
+  exerciseFilter = (exercise: Exercise, search: string) =>
+    exercise.name.toLowerCase().includes(search.toLowerCase());
+
+  exerciseToString = (exercise: Exercise) => exercise.name;
+
+  onExerciseSelected(exercise: Exercise | null) {
+    this.model.update((m) => ({ ...m, exerciseId: exercise?.id ?? null }));
+  }
 
   canConfirm = computed(() => this.model().exerciseId != null);
 

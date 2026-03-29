@@ -2,7 +2,8 @@ import { render } from '@testing-library/angular';
 import { page } from 'vitest/browser';
 import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { userExerciseKeys } from '$core/query-keys';
+import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
+import { exerciseKeys, masteryKeys } from '$core/query-keys';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { AdhocAddExerciseDialog } from './adhoc-add-exercise-dialog';
 import { Exercise } from '$generated/models';
@@ -62,7 +63,11 @@ describe('AdhocAddExerciseDialog screenshots', () => {
       defaultOptions: { queries: { retry: false } },
     });
 
-    queryClient.setQueryData(userExerciseKeys.list(), mockUserExercises);
+    queryClient.setQueryData(exerciseKeys.list({ limit: 200 }), {
+      items: mockUserExercises,
+      total: mockUserExercises.length,
+    });
+    queryClient.setQueryData(masteryKeys.list(), []);
 
     const result = await render(AdhocAddExerciseDialog, {
       inputs: {
@@ -77,9 +82,17 @@ describe('AdhocAddExerciseDialog screenshots', () => {
         {
           provide: UserApiClient,
           useValue: {
-            fetchUserExercises: vi.fn().mockResolvedValue(mockUserExercises),
+            fetchMasteryList: vi.fn().mockResolvedValue([]),
             createExerciseScheme: vi.fn(),
             createWorkoutLogExercise: vi.fn(),
+          },
+        },
+        {
+          provide: CompendiumApiClient,
+          useValue: {
+            fetchExercises: vi
+              .fn()
+              .mockResolvedValue({ items: mockUserExercises, total: mockUserExercises.length }),
           },
         },
       ],

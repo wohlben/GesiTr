@@ -54,7 +54,7 @@ make docker
 - **`internal/equipmentrelationship/`** — equipment relationship models and handlers
 - **`internal/user/`** — user-scoped entities: workouts, workout logs, exercise logs
 - **`internal/profile/`** — user profile models and handlers
-- **`internal/auth/`** — middleware extracting UserID (falls back to `AUTH_FALLBACK_USER` env var in dev)
+- **`internal/auth/`** — middleware extracting UserID from header (`AUTH_HEADER` env var, default `X-User-Id`; falls back to `AUTH_FALLBACK_USER` in dev)
 - **`internal/database/`** — SQLite init via GORM
 - **`internal/shared/`** — shared types and utilities
 - **`cmd/seed/`** — database seeder loading CSV/JSON from `data/`

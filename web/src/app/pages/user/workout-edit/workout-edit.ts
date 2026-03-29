@@ -7,10 +7,11 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import {
-  userExerciseKeys,
   workoutKeys,
+  exerciseKeys,
   exerciseSchemeKeys,
   exerciseGroupKeys,
+  masteryKeys,
 } from '$core/query-keys';
 import {
   WorkoutSectionTypeMain,
@@ -23,7 +24,9 @@ import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
+import { HlmComboboxImports } from '@spartan-ng/helm/combobox';
 import { HlmInput } from '@spartan-ng/helm/input';
+import { Exercise } from '$generated/models';
 import { HlmTextarea } from '@spartan-ng/helm/textarea';
 import {
   ExerciseGroupConfig,
@@ -103,6 +106,7 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
     ConfirmDialog,
     BrnSelectImports,
     HlmSelectImports,
+    HlmComboboxImports,
     HlmInput,
     HlmTextarea,
     TranslocoDirective,
@@ -258,21 +262,36 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
                                 class="block text-xs font-medium text-gray-700 dark:text-gray-300"
                                 >{{ t('ui.exerciseConfig.exerciseLabel') }}</span
                               >
-                              <brn-select
-                                [formField]="item.exerciseId"
-                                class="mt-1"
-                                hlm
-                                [placeholder]="t('common.select')"
+                              <hlm-combobox
+                                class="mt-1 block"
+                                [value]="findExerciseById(item.exerciseId().value())"
+                                (valueChange)="onItemExerciseSelected(si, ei, $event)"
+                                [filter]="exerciseFilter"
+                                [itemToString]="exerciseToString"
                               >
-                                <hlm-select-trigger class="w-full">
-                                  <hlm-select-value />
-                                </hlm-select-trigger>
-                                <hlm-select-content>
-                                  @for (ue of enrichedUserExercises(); track ue.id) {
-                                    <hlm-option [value]="ue.id">{{ ue.name }}</hlm-option>
-                                  }
-                                </hlm-select-content>
-                              </brn-select>
+                                <hlm-combobox-input
+                                  [placeholder]="t('common.search')"
+                                  [showClear]="!!item.exerciseId().value()"
+                                />
+                                <ng-template hlmComboboxPortal>
+                                  <hlm-combobox-content>
+                                    <hlm-combobox-input
+                                      [placeholder]="t('common.search')"
+                                      [showClear]="false"
+                                    />
+                                    <div hlmComboboxList>
+                                      @for (ue of enrichedUserExercises(); track ue.id) {
+                                        <hlm-combobox-item [value]="ue">{{
+                                          ue.name
+                                        }}</hlm-combobox-item>
+                                      }
+                                      <hlm-combobox-empty>{{
+                                        t('common.noResults')
+                                      }}</hlm-combobox-empty>
+                                    </div>
+                                  </hlm-combobox-content>
+                                </ng-template>
+                              </hlm-combobox>
                             </div>
                             <div>
                               <span
@@ -514,13 +533,47 @@ export class WorkoutEdit {
     enabled: !!this.id() && !this.isCreateMode(),
   }));
 
-  // User exercises for the picker dropdown
-  private userExercisesQuery = injectQuery(() => ({
-    queryKey: userExerciseKeys.list(),
-    queryFn: () => this.userApi.fetchUserExercises(),
+  // All exercises for the picker dropdown, sorted with mastery exercises first
+  private allExercisesQuery = injectQuery(() => ({
+    queryKey: exerciseKeys.list({ limit: 200 }),
+    queryFn: () => this.compendiumApi.fetchExercises({ limit: 200 }),
   }));
 
-  enrichedUserExercises = computed(() => this.userExercisesQuery.data() ?? []);
+  private masteryQuery = injectQuery(() => ({
+    queryKey: masteryKeys.list(),
+    queryFn: () => this.userApi.fetchMasteryList(),
+  }));
+
+  enrichedUserExercises = computed(() => {
+    const all = this.allExercisesQuery.data()?.items ?? [];
+    const masteryIds = new Set((this.masteryQuery.data() ?? []).map((m) => m.exerciseId));
+    return [...all].sort((a, b) => {
+      const aHas = masteryIds.has(a.id) ? 0 : 1;
+      const bHas = masteryIds.has(b.id) ? 0 : 1;
+      if (aHas !== bHas) return aHas - bHas;
+      return a.name.localeCompare(b.name);
+    });
+  });
+
+  exerciseFilter = (exercise: Exercise, search: string) =>
+    exercise.name.toLowerCase().includes(search.toLowerCase());
+
+  exerciseToString = (exercise: Exercise) => exercise.name;
+
+  findExerciseById(id: number | null): Exercise | null {
+    if (!id) return null;
+    return this.enrichedUserExercises().find((e) => e.id === id) ?? null;
+  }
+
+  onItemExerciseSelected(si: number, ei: number, exercise: Exercise | null) {
+    this.model.update((m) => {
+      const sections = [...m.sections];
+      const items = [...sections[si].items];
+      items[ei] = { ...items[ei], exerciseId: exercise?.id ?? null };
+      sections[si] = { ...sections[si], items };
+      return { ...m, sections };
+    });
+  }
 
   // Exercise groups for the group picker
   private exerciseGroupsQuery = injectQuery(() => ({
