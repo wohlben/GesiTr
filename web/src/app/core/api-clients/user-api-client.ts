@@ -45,7 +45,7 @@ export class UserApiClient {
   fetchUserExercises(): Promise<Exercise[]> {
     return firstValueFrom(
       this.http
-        .get<PaginatedResponse<Exercise>>('/api/exercises?owner=me')
+        .get<PaginatedResponse<Exercise>>('/api/exercises?mastery=me')
         .pipe(map((res) => res.items)),
     );
   }

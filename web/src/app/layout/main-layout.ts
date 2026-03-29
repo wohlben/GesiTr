@@ -195,7 +195,6 @@ export class MainLayout {
   ];
 
   userLinks = [
-    { path: '/user/exercises', labelKey: 'nav.myExercises' },
     { path: '/user/equipment', labelKey: 'nav.myEquipment' },
     { path: '/user/workouts', labelKey: 'nav.myWorkouts' },
     { path: '/user/calendar', labelKey: 'nav.calendar' },

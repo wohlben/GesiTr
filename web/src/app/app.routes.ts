@@ -32,10 +32,7 @@ export const routes: Routes = [
       },
       {
         path: 'exercises',
-        loadComponent: () =>
-          import('$pages/user/user-exercise-list/user-exercise-list').then(
-            (m) => m.UserExerciseList,
-          ),
+        redirectTo: '/compendium/exercises',
       },
       {
         path: 'equipment/:id',

@@ -29,6 +29,8 @@ import (
 	profileModels "gesitr/internal/profile/models"
 	exerciseLogHandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciseLogModels "gesitr/internal/user/exerciselog/models"
+	masteryHandlers "gesitr/internal/user/mastery/handlers"
+	masteryModels "gesitr/internal/user/mastery/models"
 	workoutHandlers "gesitr/internal/user/workout/handlers"
 	workoutModels "gesitr/internal/user/workout/models"
 	workoutGroupHandlers "gesitr/internal/user/workoutgroup/handlers"
@@ -121,6 +123,31 @@ func runMigrations() {
 			SELECT id, created_at, updated_at, deleted_at, workout_section_id, 'exercise', exercise_scheme_id, position FROM workout_section_exercises`)
 		database.DB.Exec("DROP TABLE workout_section_exercises")
 	}
+
+	// Backfill mastery_contributions from existing exercise_relationships.
+	var contribCount int64
+	database.DB.Raw("SELECT COUNT(*) FROM mastery_contributions").Scan(&contribCount)
+	if contribCount == 0 {
+		var relCount int64
+		database.DB.Raw("SELECT COUNT(*) FROM exercise_relationships WHERE deleted_at IS NULL").Scan(&relCount)
+		if relCount > 0 {
+			masteryHandlers.BackfillContributions(database.DB)
+		}
+	}
+
+	// Backfill mastery_experience from existing exercise_logs.
+	var expCount int64
+	database.DB.Raw("SELECT COUNT(*) FROM mastery_experience").Scan(&expCount)
+	if expCount == 0 {
+		var logCount int64
+		database.DB.Raw("SELECT COUNT(*) FROM exercise_logs WHERE deleted_at IS NULL").Scan(&logCount)
+		if logCount > 0 {
+			database.DB.Exec(`INSERT INTO mastery_experience (owner, exercise_id, total_reps)
+				SELECT owner, exercise_id, SUM(COALESCE(reps, 1))
+				FROM exercise_logs WHERE deleted_at IS NULL
+				GROUP BY owner, exercise_id`)
+		}
+	}
 }
 
 func autoMigrate() {
@@ -156,6 +183,8 @@ func autoMigrate() {
 		&workoutScheduleModels.WorkoutScheduleEntity{},
 		&workoutScheduleModels.SchedulePeriodEntity{},
 		&workoutScheduleModels.ScheduleCommitmentEntity{},
+		&masteryModels.MasteryContributionEntity{},
+		&masteryModels.MasteryExperienceEntity{},
 	)
 }
 
@@ -178,6 +207,7 @@ func setupRoutes(r *gin.Engine) {
 	exerciseLogHandlers.RegisterRoutes(humaAPI)
 	workoutGroupHandlers.RegisterRoutes(humaAPI)
 	workoutScheduleHandlers.RegisterRoutes(humaAPI)
+	masteryHandlers.RegisterRoutes(humaAPI)
 }
 
 func setupSPA(r *gin.Engine) {

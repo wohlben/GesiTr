@@ -79,7 +79,7 @@ test.describe('/user/exercises/:id', () => {
       page.locator('[role="dialog"] button:has-text("Delete")').click(),
     ]);
 
-    await page.waitForURL(/\/user\/exercises$/);
-    await expect(page.locator('h1')).toHaveText('My Exercises');
+    await page.waitForURL(/\/compendium\/exercises/);
+    await expect(page.locator('h1')).toHaveText('Exercises');
   });
 });

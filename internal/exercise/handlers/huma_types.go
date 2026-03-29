@@ -49,6 +49,7 @@ type ListExercisesInput struct {
 	humaconfig.PaginationInput
 	Owner         string `query:"owner" doc:"Filter by owner ('me' for current user)"`
 	Public        string `query:"public" doc:"'true' to show only public exercises"`
+	Mastery       string `query:"mastery" doc:"'me' to show exercises you own or have mastery in"`
 	Q             string `query:"q" doc:"Search by name or alternative name"`
 	Type          string `query:"type" doc:"Filter by exercise type"`
 	Difficulty    string `query:"difficulty" doc:"Filter by technical difficulty"`

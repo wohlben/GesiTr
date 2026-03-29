@@ -86,7 +86,7 @@ func RegisterRoutes(api huma.API)
 RegisterRoutes registers all exercise and exercise\-scheme endpoints on the huma API.
 
 <a name="CreateExerciseInput"></a>
-## type [CreateExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L64-L66>)
+## type [CreateExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L65-L67>)
 
 
 
@@ -97,7 +97,7 @@ type CreateExerciseInput struct {
 ```
 
 <a name="CreateExerciseOutput"></a>
-## type [CreateExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L68-L70>)
+## type [CreateExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L69-L71>)
 
 
 
@@ -108,7 +108,7 @@ type CreateExerciseOutput struct {
 ```
 
 <a name="CreateExercise"></a>
-### func [CreateExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L124>)
+### func [CreateExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L126>)
 
 ```go
 func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExerciseOutput, error)
@@ -211,7 +211,7 @@ Bench Press
 </details>
 
 <a name="CreateExerciseSchemeInput"></a>
-## type [CreateExerciseSchemeInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L145-L147>)
+## type [CreateExerciseSchemeInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L146-L148>)
 
 
 
@@ -222,7 +222,7 @@ type CreateExerciseSchemeInput struct {
 ```
 
 <a name="CreateExerciseSchemeOutput"></a>
-## type [CreateExerciseSchemeOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L149-L151>)
+## type [CreateExerciseSchemeOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L150-L152>)
 
 
 
@@ -344,7 +344,7 @@ true - no sets for cardio
 </details>
 
 <a name="DeleteAllExerciseVersionsInput"></a>
-## type [DeleteAllExerciseVersionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L127-L129>)
+## type [DeleteAllExerciseVersionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L128-L130>)
 
 
 
@@ -355,7 +355,7 @@ type DeleteAllExerciseVersionsInput struct {
 ```
 
 <a name="DeleteAllExerciseVersionsOutput"></a>
-## type [DeleteAllExerciseVersionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L131>)
+## type [DeleteAllExerciseVersionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L132>)
 
 
 
@@ -364,7 +364,7 @@ type DeleteAllExerciseVersionsOutput struct{}
 ```
 
 <a name="DeleteAllExerciseVersions"></a>
-### func [DeleteAllExerciseVersions](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L454>)
+### func [DeleteAllExerciseVersions](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L456>)
 
 ```go
 func DeleteAllExerciseVersions(ctx context.Context, input *DeleteAllExerciseVersionsInput) (*DeleteAllExerciseVersionsOutput, error)
@@ -375,7 +375,7 @@ DeleteAllExerciseVersions deletes all version history for an exercise. Owner onl
 [OpenAPI docs](/api/docs#/operations/DeleteAllExerciseVersions)
 
 <a name="DeleteExerciseInput"></a>
-## type [DeleteExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L89-L91>)
+## type [DeleteExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L90-L92>)
 
 
 
@@ -386,7 +386,7 @@ type DeleteExerciseInput struct {
 ```
 
 <a name="DeleteExerciseOutput"></a>
-## type [DeleteExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L93>)
+## type [DeleteExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L94>)
 
 
 
@@ -395,7 +395,7 @@ type DeleteExerciseOutput struct{}
 ```
 
 <a name="DeleteExercise"></a>
-### func [DeleteExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L414>)
+### func [DeleteExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L416>)
 
 ```go
 func DeleteExercise(ctx context.Context, input *DeleteExerciseInput) (*DeleteExerciseOutput, error)
@@ -406,7 +406,7 @@ DeleteExercise deletes an exercise. Owner only. DELETE /api/exercises/:id
 [OpenAPI docs](/api/docs#/operations/DeleteExercise)
 
 <a name="DeleteExerciseSchemeInput"></a>
-## type [DeleteExerciseSchemeInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L170-L172>)
+## type [DeleteExerciseSchemeInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L171-L173>)
 
 
 
@@ -417,7 +417,7 @@ type DeleteExerciseSchemeInput struct {
 ```
 
 <a name="DeleteExerciseSchemeOutput"></a>
-## type [DeleteExerciseSchemeOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L174>)
+## type [DeleteExerciseSchemeOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L175>)
 
 
 
@@ -437,7 +437,7 @@ DeleteExerciseScheme deletes an exercise scheme. Owner only. DELETE /api/exercis
 [OpenAPI docs](/api/docs#/operations/DeleteExerciseScheme)
 
 <a name="DeleteExerciseVersionInput"></a>
-## type [DeleteExerciseVersionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L120-L123>)
+## type [DeleteExerciseVersionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L121-L124>)
 
 
 
@@ -449,7 +449,7 @@ type DeleteExerciseVersionInput struct {
 ```
 
 <a name="DeleteExerciseVersionOutput"></a>
-## type [DeleteExerciseVersionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L125>)
+## type [DeleteExerciseVersionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L126>)
 
 
 
@@ -458,7 +458,7 @@ type DeleteExerciseVersionOutput struct{}
 ```
 
 <a name="DeleteExerciseVersion"></a>
-### func [DeleteExerciseVersion](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L432>)
+### func [DeleteExerciseVersion](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L434>)
 
 ```go
 func DeleteExerciseVersion(ctx context.Context, input *DeleteExerciseVersionInput) (*DeleteExerciseVersionOutput, error)
@@ -518,7 +518,7 @@ type ExerciseSchemeBody struct {
 ```
 
 <a name="GetExerciseInput"></a>
-## type [GetExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L72-L74>)
+## type [GetExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L73-L75>)
 
 
 
@@ -529,7 +529,7 @@ type GetExerciseInput struct {
 ```
 
 <a name="GetExerciseOutput"></a>
-## type [GetExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L76-L78>)
+## type [GetExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L77-L79>)
 
 
 
@@ -540,7 +540,7 @@ type GetExerciseOutput struct {
 ```
 
 <a name="GetExercise"></a>
-### func [GetExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L208>)
+### func [GetExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L210>)
 
 ```go
 func GetExercise(ctx context.Context, input *GetExerciseInput) (*GetExerciseOutput, error)
@@ -662,7 +662,7 @@ testuser
 </details>
 
 <a name="GetExercisePermissionsInput"></a>
-## type [GetExercisePermissionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L95-L97>)
+## type [GetExercisePermissionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L96-L98>)
 
 
 
@@ -673,7 +673,7 @@ type GetExercisePermissionsInput struct {
 ```
 
 <a name="GetExercisePermissionsOutput"></a>
-## type [GetExercisePermissionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L99-L101>)
+## type [GetExercisePermissionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L100-L102>)
 
 
 
@@ -684,7 +684,7 @@ type GetExercisePermissionsOutput struct {
 ```
 
 <a name="GetExercisePermissions"></a>
-### func [GetExercisePermissions](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L190>)
+### func [GetExercisePermissions](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L192>)
 
 ```go
 func GetExercisePermissions(ctx context.Context, input *GetExercisePermissionsInput) (*GetExercisePermissionsOutput, error)
@@ -804,7 +804,7 @@ fmt.Println(resp.Permissions)
 </details>
 
 <a name="GetExerciseSchemeInput"></a>
-## type [GetExerciseSchemeInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L153-L155>)
+## type [GetExerciseSchemeInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L154-L156>)
 
 
 
@@ -815,7 +815,7 @@ type GetExerciseSchemeInput struct {
 ```
 
 <a name="GetExerciseSchemeOutput"></a>
-## type [GetExerciseSchemeOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L157-L159>)
+## type [GetExerciseSchemeOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L158-L160>)
 
 
 
@@ -970,7 +970,7 @@ REP_BASED
 </details>
 
 <a name="GetExerciseVersionInput"></a>
-## type [GetExerciseVersionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L111-L114>)
+## type [GetExerciseVersionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L112-L115>)
 
 
 
@@ -982,7 +982,7 @@ type GetExerciseVersionInput struct {
 ```
 
 <a name="GetExerciseVersionOutput"></a>
-## type [GetExerciseVersionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L116-L118>)
+## type [GetExerciseVersionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L117-L119>)
 
 
 
@@ -993,7 +993,7 @@ type GetExerciseVersionOutput struct {
 ```
 
 <a name="GetExerciseVersion"></a>
-### func [GetExerciseVersion](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L393>)
+### func [GetExerciseVersion](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L395>)
 
 ```go
 func GetExerciseVersion(ctx context.Context, input *GetExerciseVersionInput) (*GetExerciseVersionOutput, error)
@@ -1229,7 +1229,7 @@ v1 name: Back Squat
 </details>
 
 <a name="ListExerciseSchemesInput"></a>
-## type [ListExerciseSchemesInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L135-L139>)
+## type [ListExerciseSchemesInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L136-L140>)
 
 
 
@@ -1242,7 +1242,7 @@ type ListExerciseSchemesInput struct {
 ```
 
 <a name="ListExerciseSchemesOutput"></a>
-## type [ListExerciseSchemesOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L141-L143>)
+## type [ListExerciseSchemesOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L142-L144>)
 
 
 
@@ -1405,7 +1405,7 @@ REP_BASED
 </details>
 
 <a name="ListExerciseVersionsInput"></a>
-## type [ListExerciseVersionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L103-L105>)
+## type [ListExerciseVersionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L104-L106>)
 
 
 
@@ -1416,7 +1416,7 @@ type ListExerciseVersionsInput struct {
 ```
 
 <a name="ListExerciseVersionsOutput"></a>
-## type [ListExerciseVersionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L107-L109>)
+## type [ListExerciseVersionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L108-L110>)
 
 
 
@@ -1427,7 +1427,7 @@ type ListExerciseVersionsOutput struct {
 ```
 
 <a name="ListExerciseVersions"></a>
-### func [ListExerciseVersions](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L370>)
+### func [ListExerciseVersions](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L372>)
 
 ```go
 func ListExerciseVersions(ctx context.Context, input *ListExerciseVersionsInput) (*ListExerciseVersionsOutput, error)
@@ -1438,7 +1438,7 @@ ListExerciseVersions returns the version history for an exercise. Each update vi
 [OpenAPI docs](/api/docs#/operations/ListExerciseVersions)
 
 <a name="ListExercisesInput"></a>
-## type [ListExercisesInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L48-L58>)
+## type [ListExercisesInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L48-L59>)
 
 
 
@@ -1447,6 +1447,7 @@ type ListExercisesInput struct {
     humaconfig.PaginationInput
     Owner         string `query:"owner" doc:"Filter by owner ('me' for current user)"`
     Public        string `query:"public" doc:"'true' to show only public exercises"`
+    Mastery       string `query:"mastery" doc:"'me' to show exercises you own or have mastery in"`
     Q             string `query:"q" doc:"Search by name or alternative name"`
     Type          string `query:"type" doc:"Filter by exercise type"`
     Difficulty    string `query:"difficulty" doc:"Filter by technical difficulty"`
@@ -1457,7 +1458,7 @@ type ListExercisesInput struct {
 ```
 
 <a name="ListExercisesOutput"></a>
-## type [ListExercisesOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L60-L62>)
+## type [ListExercisesOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L61-L63>)
 
 
 
@@ -1614,7 +1615,7 @@ fmt.Println(page.Total)
 </details>
 
 <a name="UpdateExerciseInput"></a>
-## type [UpdateExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L80-L83>)
+## type [UpdateExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L81-L84>)
 
 
 
@@ -1626,7 +1627,7 @@ type UpdateExerciseInput struct {
 ```
 
 <a name="UpdateExerciseOutput"></a>
-## type [UpdateExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L85-L87>)
+## type [UpdateExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L86-L88>)
 
 
 
@@ -1637,7 +1638,7 @@ type UpdateExerciseOutput struct {
 ```
 
 <a name="UpdateExercise"></a>
-### func [UpdateExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L225>)
+### func [UpdateExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/exercise_handlers.go#L227>)
 
 ```go
 func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExerciseOutput, error)
@@ -1838,7 +1839,7 @@ v1 name: Back Squat
 </details>
 
 <a name="UpdateExerciseSchemeInput"></a>
-## type [UpdateExerciseSchemeInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L161-L164>)
+## type [UpdateExerciseSchemeInput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L162-L165>)
 
 
 
@@ -1850,7 +1851,7 @@ type UpdateExerciseSchemeInput struct {
 ```
 
 <a name="UpdateExerciseSchemeOutput"></a>
-## type [UpdateExerciseSchemeOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L166-L168>)
+## type [UpdateExerciseSchemeOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/exercise/handlers/huma_types.go#L167-L169>)
 
 
 
