@@ -190,6 +190,7 @@ func autoMigrate() {
 
 func setupRoutes(r *gin.Engine) {
 	api := r.Group("/api")
+	api.Use(auth.RequestTrace())
 	api.Use(auth.UserID())
 	api.Use(profile.EnsureProfile())
 
