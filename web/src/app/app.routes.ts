@@ -31,10 +31,6 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'exercises',
-        redirectTo: '/compendium/exercises',
-      },
-      {
         path: 'equipment/:id',
         loadComponent: () =>
           import('$pages/user/user-equipment-detail/user-equipment-detail').then(

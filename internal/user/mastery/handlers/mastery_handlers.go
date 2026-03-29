@@ -16,9 +16,9 @@ type xpRow struct {
 	TotalXP    float64
 }
 
-type daysRow struct {
-	ExerciseID   uint
-	DistinctDays int
+type dateRow struct {
+	ExerciseID uint
+	LogDate    string
 }
 
 // ListExerciseMastery returns mastery for all exercises the user has logged.
@@ -43,17 +43,17 @@ func ListExerciseMastery(ctx context.Context, input *ListMasteryInput) (*ListMas
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
-	// 3. Distinct days per exercise in recency window.
-	var daysRows []daysRow
+	// 3. Distinct (exercise_id, date) pairs in recency window for union computation.
+	var dateRows []dateRow
 	if err := database.DB.Table("exercise_logs").
-		Select("exercise_id, COUNT(DISTINCT DATE(performed_at)) as distinct_days").
+		Select("exercise_id, DATE(performed_at) as log_date").
 		Where("owner = ? AND performed_at >= ? AND deleted_at IS NULL", userID, recencyStart).
-		Group("exercise_id").
-		Scan(&daysRows).Error; err != nil {
+		Group("exercise_id, DATE(performed_at)").
+		Scan(&dateRows).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
-	return &ListMasteryOutput{Body: computeMasteryList(xpRows, daysRows, contributions)}, nil
+	return &ListMasteryOutput{Body: computeMasteryList(xpRows, dateRows, contributions)}, nil
 }
 
 // GetExerciseMastery returns mastery for a specific exercise.
@@ -86,30 +86,33 @@ func GetExerciseMastery(ctx context.Context, input *GetMasteryInput) (*GetMaster
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
-	// 3. Distinct days in recency window (across all relevant exercises).
-	var daysRows []daysRow
+	// 3. Distinct days across all relevant exercises (union, not per-exercise sum).
+	var unionDays int64
 	if err := database.DB.Table("exercise_logs").
-		Select("exercise_id, COUNT(DISTINCT DATE(performed_at)) as distinct_days").
+		Select("COUNT(DISTINCT DATE(performed_at))").
 		Where("owner = ? AND exercise_id IN ? AND performed_at >= ? AND deleted_at IS NULL", userID, queryIDs, recencyStart).
-		Group("exercise_id").
-		Scan(&daysRows).Error; err != nil {
+		Scan(&unionDays).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
-	mastery := computeSingleMastery(exerciseID, xpRows, daysRows, contributions)
+	mastery := computeSingleMastery(exerciseID, xpRows, int(unionDays), contributions)
 	return &GetMasteryOutput{Body: mastery}, nil
 }
 
 // computeMasteryList computes mastery for all exercises that have any logs.
-func computeMasteryList(xpRows []xpRow, daysRows []daysRow, contributions []models.MasteryContributionEntity) []models.ExerciseMastery {
+func computeMasteryList(xpRows []xpRow, dateRows []dateRow, contributions []models.MasteryContributionEntity) []models.ExerciseMastery {
 	xpMap := make(map[uint]float64)
 	for _, r := range xpRows {
 		xpMap[r.ExerciseID] = r.TotalXP
 	}
 
-	daysMap := make(map[uint]int)
-	for _, r := range daysRows {
-		daysMap[r.ExerciseID] = r.DistinctDays
+	// Build per-exercise date sets for computing union days.
+	dateSets := make(map[uint]map[string]bool)
+	for _, r := range dateRows {
+		if dateSets[r.ExerciseID] == nil {
+			dateSets[r.ExerciseID] = make(map[string]bool)
+		}
+		dateSets[r.ExerciseID][r.LogDate] = true
 	}
 
 	// Build contribution index: exerciseID → []contributions
@@ -132,7 +135,19 @@ func computeMasteryList(xpRows []xpRow, daysRows []daysRow, contributions []mode
 	result := make([]models.ExerciseMastery, 0, len(exerciseIDs))
 	for exerciseID := range exerciseIDs {
 		contribs := contribMap[exerciseID]
-		mastery := computeSingleMastery(exerciseID, xpRows, daysRows, contribs)
+
+		// Compute union of distinct days across self + contributors.
+		unionDates := make(map[string]bool)
+		for d := range dateSets[exerciseID] {
+			unionDates[d] = true
+		}
+		for _, c := range contribs {
+			for d := range dateSets[c.ContributesFromID] {
+				unionDates[d] = true
+			}
+		}
+
+		mastery := computeSingleMastery(exerciseID, xpRows, len(unionDates), contribs)
 		if mastery.TotalXP > 0 {
 			result = append(result, mastery)
 		}
@@ -141,15 +156,10 @@ func computeMasteryList(xpRows []xpRow, daysRows []daysRow, contributions []mode
 }
 
 // computeSingleMastery computes mastery for one exercise given pre-fetched data.
-func computeSingleMastery(exerciseID uint, xpRows []xpRow, daysRows []daysRow, contributions []models.MasteryContributionEntity) models.ExerciseMastery {
+func computeSingleMastery(exerciseID uint, xpRows []xpRow, unionDays int, contributions []models.MasteryContributionEntity) models.ExerciseMastery {
 	xpMap := make(map[uint]float64)
 	for _, r := range xpRows {
 		xpMap[r.ExerciseID] = r.TotalXP
-	}
-
-	daysMap := make(map[uint]int)
-	for _, r := range daysRows {
-		daysMap[r.ExerciseID] = r.DistinctDays
 	}
 
 	// Own XP at 1.0 multiplier.
@@ -160,14 +170,8 @@ func computeSingleMastery(exerciseID uint, xpRows []xpRow, daysRows []daysRow, c
 		totalXP += xpMap[c.ContributesFromID] * c.Multiplier
 	}
 
-	// Distinct days across self + contributors.
-	totalDays := daysMap[exerciseID]
-	for _, c := range contributions {
-		totalDays += daysMap[c.ContributesFromID]
-	}
-
 	baseLevel := models.ComputeLevel(totalXP)
-	multiplier := models.ComputeRecencyMultiplier(totalDays, baseLevel)
+	multiplier := models.ComputeRecencyMultiplier(unionDays, baseLevel)
 	effectiveXP := totalXP * multiplier
 	level := models.ComputeLevel(effectiveXP)
 	tier := models.ComputeTier(level)
@@ -180,7 +184,7 @@ func computeSingleMastery(exerciseID uint, xpRows []xpRow, daysRows []daysRow, c
 		Level:        level,
 		Tier:         string(tier),
 		Progress:     progress,
-		DistinctDays: totalDays,
+		DistinctDays: unionDays,
 		Multiplier:   multiplier,
 	}
 }

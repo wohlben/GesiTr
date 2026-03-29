@@ -2,7 +2,8 @@ import { Component, inject, computed, signal, input, effect } from '@angular/cor
 import { form, FormField, disabled } from '@angular/forms/signals';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { userExerciseKeys, exerciseSchemeKeys } from '$core/query-keys';
+import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
+import { userExerciseKeys, exerciseKeys, exerciseSchemeKeys } from '$core/query-keys';
 import { ExerciseScheme } from '$generated/models';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
@@ -38,8 +39,18 @@ export interface ExerciseConfigResult {
               <hlm-select-value />
             </hlm-select-trigger>
             <hlm-select-content>
-              @for (ue of userExercises(); track ue.id) {
+              @for (ue of myExercises(); track ue.id) {
                 <hlm-option [value]="ue.id">{{ ue.name }}</hlm-option>
+              }
+              @if (otherExercises().length) {
+                <hlm-option [disabled]="true"
+                  ><span class="text-xs text-gray-400">{{
+                    t('ui.exerciseConfig.allExercises')
+                  }}</span></hlm-option
+                >
+                @for (ex of otherExercises(); track ex.id) {
+                  <hlm-option [value]="ex.id">{{ ex.name }}</hlm-option>
+                }
               }
             </hlm-select-content>
           </brn-select>
@@ -119,6 +130,7 @@ export interface ExerciseConfigResult {
 })
 export class ExerciseConfig {
   private userApi = inject(UserApiClient);
+  private compendiumApi = inject(CompendiumApiClient);
   private queryClient = inject(QueryClient);
 
   /** When set, the exercise dropdown is locked to this user exercise. */
@@ -150,18 +162,35 @@ export class ExerciseConfig {
     });
   }
 
-  // User exercises query — exercises are now full entities, no second fetch needed
-  private userExercisesQuery = injectQuery(() => ({
+  // Mastered/owned exercises (primary selection)
+  private myExercisesQuery = injectQuery(() => ({
     queryKey: userExerciseKeys.list(),
     queryFn: () => this.userApi.fetchUserExercises(),
   }));
 
-  userExercises = computed(() => this.userExercisesQuery.data() ?? []);
+  // All exercises (for the "browse all" section)
+  private allExercisesQuery = injectQuery(() => ({
+    queryKey: exerciseKeys.list({ limit: 500 }),
+    queryFn: () => this.compendiumApi.fetchExercises({ limit: 500 }),
+  }));
+
+  myExercises = computed(() => this.myExercisesQuery.data() ?? []);
+
+  otherExercises = computed(() => {
+    const all = this.allExercisesQuery.data()?.items ?? [];
+    const myIds = new Set(this.myExercises().map((e) => e.id));
+    return all.filter((e) => !myIds.has(e.id));
+  });
+
+  // Keep this alias for external consumers (e.g., exercise-track)
+  userExercises = this.myExercises;
 
   selectedExerciseName = computed(() => {
     const id = this.model().exerciseId;
     if (!id) return '';
-    return this.userExercises().find((ue) => ue.id === id)?.name ?? '';
+    const myEx = this.myExercises().find((e) => e.id === id);
+    if (myEx) return myEx.name;
+    return this.otherExercises().find((e) => e.id === id)?.name ?? '';
   });
 
   canConfirm = computed(() => this.model().exerciseId != null);

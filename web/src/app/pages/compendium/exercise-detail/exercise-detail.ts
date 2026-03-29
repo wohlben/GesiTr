@@ -4,14 +4,20 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { exerciseKeys, exerciseRelationshipKeys, userExerciseKeys } from '$core/query-keys';
+import {
+  exerciseKeys,
+  exerciseRelationshipKeys,
+  userExerciseKeys,
+  masteryKeys,
+} from '$core/query-keys';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-exercise-detail',
-  imports: [PageLayout, RouterLink, ConfirmDialog, TranslocoDirective],
+  imports: [PageLayout, RouterLink, ConfirmDialog, TranslocoDirective, DecimalPipe],
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
@@ -74,6 +80,42 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
           (cancelled)="showDeleteDialog.set(false)"
         />
         @if (exerciseQuery.data(); as exercise) {
+          @if (masteryQuery.data(); as mastery) {
+            @if (mastery.totalXp > 0) {
+              <div
+                class="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20"
+              >
+                <h3 class="text-sm font-medium text-amber-900 dark:text-amber-200">Your Mastery</h3>
+                <div class="mt-2 grid grid-cols-3 gap-4 text-sm">
+                  <div>
+                    <span class="text-amber-600 dark:text-amber-400">Level</span>
+                    <span class="block font-semibold text-amber-900 dark:text-amber-100">{{
+                      mastery.level
+                    }}</span>
+                  </div>
+                  <div>
+                    <span class="text-amber-600 dark:text-amber-400">Tier</span>
+                    <span
+                      class="block font-semibold capitalize text-amber-900 dark:text-amber-100"
+                      >{{ mastery.tier }}</span
+                    >
+                  </div>
+                  <div>
+                    <span class="text-amber-600 dark:text-amber-400">XP</span>
+                    <span class="block font-semibold text-amber-900 dark:text-amber-100">{{
+                      mastery.effectiveXp | number: '1.0-0'
+                    }}</span>
+                  </div>
+                </div>
+                <div class="mt-3 h-2 w-full rounded-full bg-amber-200 dark:bg-amber-800">
+                  <div
+                    class="h-2 rounded-full bg-amber-500"
+                    [style.width.%]="mastery.progress * 100"
+                  ></div>
+                </div>
+              </div>
+            }
+          }
           <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -160,6 +202,12 @@ export class ExerciseDetail {
   permissionsQuery = injectQuery(() => ({
     queryKey: exerciseKeys.permissions(this.id()),
     queryFn: () => this.api.fetchExercisePermissions(this.id()),
+    enabled: !!this.id(),
+  }));
+
+  masteryQuery = injectQuery(() => ({
+    queryKey: masteryKeys.detail(this.id()),
+    queryFn: () => this.userApi.fetchMastery(this.id()),
     enabled: !!this.id(),
   }));
 

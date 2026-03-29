@@ -23,11 +23,21 @@ import {
   SchedulePeriod,
   ScheduleCommitment,
 } from '$generated/user-workoutschedule';
+import { ExerciseMastery } from '$generated/user-mastery';
 import { PaginatedResponse } from './paginated-response';
 
 @Injectable({ providedIn: 'root' })
 export class UserApiClient {
   private http = inject(HttpClient);
+
+  // Mastery
+  fetchMasteryList(): Promise<ExerciseMastery[]> {
+    return firstValueFrom(this.http.get<ExerciseMastery[]>('/api/user/mastery'));
+  }
+
+  fetchMastery(exerciseId: number): Promise<ExerciseMastery> {
+    return firstValueFrom(this.http.get<ExerciseMastery>(`/api/user/mastery/${exerciseId}`));
+  }
 
   // Profile
   fetchProfile(): Promise<UserProfile> {

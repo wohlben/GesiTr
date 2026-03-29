@@ -132,7 +132,7 @@ export class UserExerciseDetail {
     mutationFn: () => this.userApi.deleteUserExercise(this.id()),
     onSuccess: () => {
       this.queryClient.invalidateQueries({ queryKey: userExerciseKeys.all() });
-      this.router.navigate(['/user/exercises']);
+      this.router.navigate(['/compendium/exercises'], { queryParams: { mastery: 'me' } });
     },
   }));
 }

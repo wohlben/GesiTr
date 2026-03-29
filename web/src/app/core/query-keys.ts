@@ -43,6 +43,12 @@ export const equipmentRelationshipKeys = {
   list: (filters?: Filters) => [...equipmentRelationshipKeys.all(), 'list', filters] as const,
 };
 
+export const masteryKeys = {
+  all: () => ['mastery'] as const,
+  list: () => [...masteryKeys.all(), 'list'] as const,
+  detail: (exerciseId: number) => [...masteryKeys.all(), 'detail', exerciseId] as const,
+};
+
 export const userExerciseKeys = {
   all: () => ['user-exercises'] as const,
   list: () => [...userExerciseKeys.all(), 'list'] as const,

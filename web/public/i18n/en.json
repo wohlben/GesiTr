@@ -32,7 +32,7 @@
     "exercises": "Exercises",
     "equipment": "Equipment",
     "exerciseGroups": "Exercise Groups",
-    "myExercises": "Exercises",
+    "myExercises": "My Exercises",
     "myEquipment": "My Equipment",
     "myWorkouts": "My Workouts",
     "workouts": "Workouts",
@@ -239,7 +239,8 @@
     },
     "exerciseConfig": {
       "exerciseLabel": "Exercise *",
-      "measurementType": "Measurement Type"
+      "measurementType": "Measurement Type",
+      "allExercises": "All Exercises"
     },
     "exerciseGroupConfig": {
       "newGroup": "New Group",
