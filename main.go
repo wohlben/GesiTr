@@ -314,20 +314,43 @@ func setupDeployStatus(r *gin.Engine) {
 			return
 		}
 
-		var deployments []struct {
-			Status    string `json:"status"`
-			Title     string `json:"title"`
-			CreatedAt string `json:"createdAt"`
+		// Dokploy may return a raw array or a wrapped object — try both.
+		var records []json.RawMessage
+		if err := json.Unmarshal(raw, &records); err != nil {
+			// Try wrapped: { "data": [...] } or similar
+			var wrapped map[string]json.RawMessage
+			if err2 := json.Unmarshal(raw, &wrapped); err2 != nil {
+				c.JSON(http.StatusBadGateway, gin.H{"error": "bad response from dokploy", "raw": string(raw[:min(len(raw), 500)])})
+				return
+			}
+			// Try common wrapper keys
+			for _, key := range []string{"data", "deployments", "items"} {
+				if v, ok := wrapped[key]; ok {
+					if json.Unmarshal(v, &records) == nil {
+						break
+					}
+				}
+			}
 		}
-		if err := json.Unmarshal(raw, &deployments); err != nil {
-			c.JSON(http.StatusBadGateway, gin.H{"error": "bad response from dokploy"})
-			return
+
+		type deployment struct {
+			Status      string `json:"status"`
+			Title       string `json:"title"`
+			Description string `json:"description"`
+			CreatedAt   string `json:"createdAt"`
 		}
 
 		result := gin.H{"status": "idle"}
-		if len(deployments) > 0 {
-			d := deployments[0]
-			result = gin.H{"status": d.Status, "title": d.Title, "createdAt": d.CreatedAt}
+		for _, rec := range records {
+			var d deployment
+			if json.Unmarshal(rec, &d) == nil && d.Status != "" {
+				title := d.Title
+				if title == "" {
+					title = d.Description
+				}
+				result = gin.H{"status": d.Status, "title": title, "createdAt": d.CreatedAt}
+				break // First (most recent) deployment with a status
+			}
 		}
 
 		body, _ := json.Marshal(result)
