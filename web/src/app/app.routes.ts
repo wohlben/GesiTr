@@ -140,7 +140,24 @@ export const routes: Routes = [
           import('$pages/compendium/exercise-edit/exercise-edit').then((m) => m.ExerciseEdit),
       },
       {
+        path: 'exercises/:id/history',
+        loadComponent: () =>
+          import('$pages/compendium/exercise-history/exercise-history').then(
+            (m) => m.ExerciseHistory,
+          ),
+      },
+      {
+        path: 'exercises/:id/edit',
+        loadComponent: () =>
+          import('$pages/compendium/exercise-edit/exercise-edit').then((m) => m.ExerciseEdit),
+      },
+      {
         path: 'exercises/:id/:slug',
+        loadComponent: () =>
+          import('$pages/compendium/exercise-detail/exercise-detail').then((m) => m.ExerciseDetail),
+      },
+      {
+        path: 'exercises/:id',
         loadComponent: () =>
           import('$pages/compendium/exercise-detail/exercise-detail').then((m) => m.ExerciseDetail),
       },
@@ -174,6 +191,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'equipment/:id',
+        loadComponent: () =>
+          import('$pages/compendium/equipment-detail/equipment-detail').then(
+            (m) => m.EquipmentDetail,
+          ),
+      },
+      {
         path: 'equipment',
         loadComponent: () =>
           import('$pages/compendium/equipment-list/equipment-list').then((m) => m.EquipmentList),
@@ -194,6 +218,13 @@ export const routes: Routes = [
       },
       {
         path: 'exercise-groups/:id/:slug',
+        loadComponent: () =>
+          import('$pages/compendium/exercise-group-detail/exercise-group-detail').then(
+            (m) => m.ExerciseGroupDetail,
+          ),
+      },
+      {
+        path: 'exercise-groups/:id',
         loadComponent: () =>
           import('$pages/compendium/exercise-group-detail/exercise-group-detail').then(
             (m) => m.ExerciseGroupDetail,

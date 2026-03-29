@@ -1,4 +1,4 @@
-import { Component, inject, computed, signal } from '@angular/core';
+import { Component, inject, computed, signal, effect } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
@@ -259,7 +259,11 @@ import { DecimalPipe } from '@angular/common';
                       {{ t('enums.exerciseRelationshipType.' + rel.relationshipType) }}
                     </span>
                     <a
-                      [routerLink]="['/compendium/exercises', rel.linkedId, rel.linkedSlug]"
+                      [routerLink]="
+                        rel.linkedSlug
+                          ? ['/compendium/exercises', rel.linkedId, rel.linkedSlug]
+                          : ['/compendium/exercises', rel.linkedId]
+                      "
                       class="text-blue-600 hover:underline dark:text-blue-400"
                     >
                       {{ rel.linkedName }}
@@ -362,26 +366,9 @@ export class ExerciseDetail {
     return items.filter((e) => ids.has(e.id)).map((e) => e.displayName ?? e.name);
   });
 
-  allRelationships = computed(() => {
-    const id = this.id();
-    const from = (this.fromRelationshipsQuery.data() ?? []).map((r) => ({
-      ...r,
-      linkedId: r.toExerciseId,
-      linkedName: this.exerciseNameMap().get(r.toExerciseId) ?? `Exercise #${r.toExerciseId}`,
-      linkedSlug: this.exerciseSlugMap().get(r.toExerciseId) ?? '',
-    }));
-    const to = (this.toRelationshipsQuery.data() ?? [])
-      .filter((r) => r.fromExerciseId !== id)
-      .map((r) => ({
-        ...r,
-        linkedId: r.fromExerciseId,
-        linkedName: this.exerciseNameMap().get(r.fromExerciseId) ?? `Exercise #${r.fromExerciseId}`,
-        linkedSlug: this.exerciseSlugMap().get(r.fromExerciseId) ?? '',
-      }));
-    return [...from, ...to];
-  });
+  // Resolve related exercise names by fetching each individually
+  private exerciseNameMap = signal(new Map<number, string>());
 
-  // Exercise names for relationship links — fetch all exercises involved
   private relatedExerciseIds = computed(() => {
     const ids = new Set<number>();
     for (const r of this.fromRelationshipsQuery.data() ?? []) ids.add(r.toExerciseId);
@@ -390,32 +377,47 @@ export class ExerciseDetail {
     return ids;
   });
 
-  private relatedExercisesQuery = injectQuery(() => ({
-    queryKey: exerciseKeys.list({ limit: 200, relatedTo: this.id() }),
-    queryFn: () => this.api.fetchExercises({ limit: 200 }),
-    enabled: this.relatedExerciseIds().size > 0,
-  }));
-
-  private exerciseNameMap = computed(() => {
-    const map = new Map<number, string>();
-    for (const e of this.relatedExercisesQuery.data()?.items ?? []) {
-      map.set(e.id, e.name);
-    }
-    return map;
+  private resolveRelatedNames = effect(() => {
+    const ids = this.relatedExerciseIds();
+    const current = this.exerciseNameMap();
+    const missing = [...ids].filter((id) => !current.has(id));
+    if (!missing.length) return;
+    Promise.all(missing.map((id) => this.api.fetchExercise(id).catch(() => null))).then(
+      (exercises) => {
+        const updated = new Map(this.exerciseNameMap());
+        for (const ex of exercises) {
+          if (ex) updated.set(ex.id, ex.name);
+        }
+        this.exerciseNameMap.set(updated);
+      },
+    );
   });
 
-  private exerciseSlugMap = computed(() => {
-    const map = new Map<number, string>();
-    for (const e of this.relatedExercisesQuery.data()?.items ?? []) {
-      map.set(
-        e.id,
-        e.name
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/^-|-$/g, ''),
-      );
-    }
-    return map;
+  private slugify(name: string): string {
+    return name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+  }
+
+  allRelationships = computed(() => {
+    const id = this.id();
+    const names = this.exerciseNameMap();
+    const from = (this.fromRelationshipsQuery.data() ?? []).map((r) => ({
+      ...r,
+      linkedId: r.toExerciseId,
+      linkedName: names.get(r.toExerciseId) ?? `Exercise #${r.toExerciseId}`,
+      linkedSlug: this.slugify(names.get(r.toExerciseId) ?? ''),
+    }));
+    const to = (this.toRelationshipsQuery.data() ?? [])
+      .filter((r) => r.fromExerciseId !== id)
+      .map((r) => ({
+        ...r,
+        linkedId: r.fromExerciseId,
+        linkedName: names.get(r.fromExerciseId) ?? `Exercise #${r.fromExerciseId}`,
+        linkedSlug: this.slugify(names.get(r.fromExerciseId) ?? ''),
+      }));
+    return [...from, ...to];
   });
 
   hasHistory = computed(() => (this.versionsQuery.data()?.length ?? 0) > 1);
