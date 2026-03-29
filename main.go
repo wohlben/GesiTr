@@ -2,10 +2,14 @@ package main
 
 import (
 	"embed"
+	"encoding/json"
+	"fmt"
+	"io"
 	"io/fs"
 	"log"
 	"net/http"
 	"os"
+	"sync"
 	"time"
 
 	"gesitr/internal/auth"
@@ -256,8 +260,83 @@ func buildApp() *gin.Engine {
 			c.JSON(http.StatusOK, gin.H{"status": "reset"})
 		})
 	}
+	setupDeployStatus(r)
 	setupSPA(r)
 	return r
+}
+
+func setupDeployStatus(r *gin.Engine) {
+	dokployURL := os.Getenv("DOKPLOY_URL")
+	dokployKey := os.Getenv("DOKPLOY_API_KEY")
+	dokployAppID := os.Getenv("DOKPLOY_APP_ID")
+	if dokployURL == "" || dokployKey == "" || dokployAppID == "" {
+		return
+	}
+
+	type cachedStatus struct {
+		body      []byte
+		fetchedAt time.Time
+	}
+	var (
+		mu    sync.Mutex
+		cache *cachedStatus
+	)
+	client := &http.Client{Timeout: 10 * time.Second}
+
+	r.GET("/api/deploy-status", func(c *gin.Context) {
+		mu.Lock()
+		if cache != nil && time.Since(cache.fetchedAt) < 30*time.Second {
+			body := cache.body
+			mu.Unlock()
+			c.Data(http.StatusOK, "application/json", body)
+			return
+		}
+		mu.Unlock()
+
+		url := fmt.Sprintf("%s/api/deployment.all?applicationId=%s", dokployURL, dokployAppID)
+		req, err := http.NewRequestWithContext(c.Request.Context(), http.MethodGet, url, nil)
+		if err != nil {
+			c.JSON(http.StatusBadGateway, gin.H{"error": "failed to build request"})
+			return
+		}
+		req.Header.Set("x-api-key", dokployKey)
+
+		resp, err := client.Do(req)
+		if err != nil {
+			c.JSON(http.StatusBadGateway, gin.H{"error": "dokploy unreachable"})
+			return
+		}
+		defer resp.Body.Close()
+
+		raw, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+		if err != nil || resp.StatusCode != http.StatusOK {
+			c.JSON(http.StatusBadGateway, gin.H{"error": "dokploy error", "upstream": resp.StatusCode})
+			return
+		}
+
+		var deployments []struct {
+			Status    string `json:"status"`
+			Title     string `json:"title"`
+			CreatedAt string `json:"createdAt"`
+		}
+		if err := json.Unmarshal(raw, &deployments); err != nil {
+			c.JSON(http.StatusBadGateway, gin.H{"error": "bad response from dokploy"})
+			return
+		}
+
+		result := gin.H{"status": "idle"}
+		if len(deployments) > 0 {
+			d := deployments[0]
+			result = gin.H{"status": d.Status, "title": d.Title, "createdAt": d.CreatedAt}
+		}
+
+		body, _ := json.Marshal(result)
+		mu.Lock()
+		cache = &cachedStatus{body: body, fetchedAt: time.Now()}
+		mu.Unlock()
+
+		c.Data(http.StatusOK, "application/json", body)
+	})
 }
 
 func main() {
