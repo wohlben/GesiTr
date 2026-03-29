@@ -3,7 +3,7 @@ import { form, FormField, disabled } from '@angular/forms/signals';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
-import { userExerciseKeys, exerciseKeys, exerciseSchemeKeys } from '$core/query-keys';
+import { exerciseKeys, exerciseSchemeKeys, masteryKeys } from '$core/query-keys';
 import { ExerciseScheme } from '$generated/models';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
@@ -39,18 +39,8 @@ export interface ExerciseConfigResult {
               <hlm-select-value />
             </hlm-select-trigger>
             <hlm-select-content>
-              @for (ue of myExercises(); track ue.id) {
-                <hlm-option [value]="ue.id">{{ ue.name }}</hlm-option>
-              }
-              @if (otherExercises().length) {
-                <hlm-option [disabled]="true"
-                  ><span class="text-xs text-gray-400">{{
-                    t('ui.exerciseConfig.allExercises')
-                  }}</span></hlm-option
-                >
-                @for (ex of otherExercises(); track ex.id) {
-                  <hlm-option [value]="ex.id">{{ ex.name }}</hlm-option>
-                }
+              @for (ex of sortedExercises(); track ex.id) {
+                <hlm-option [value]="ex.id">{{ ex.name }}</hlm-option>
               }
             </hlm-select-content>
           </brn-select>
@@ -162,35 +152,33 @@ export class ExerciseConfig {
     });
   }
 
-  // Mastered/owned exercises (primary selection)
-  private myExercisesQuery = injectQuery(() => ({
-    queryKey: userExerciseKeys.list(),
-    queryFn: () => this.userApi.fetchUserExercises(),
-  }));
-
-  // All exercises (for the "browse all" section)
+  // All exercises
   private allExercisesQuery = injectQuery(() => ({
     queryKey: exerciseKeys.list({ limit: 500 }),
     queryFn: () => this.compendiumApi.fetchExercises({ limit: 500 }),
   }));
 
-  myExercises = computed(() => this.myExercisesQuery.data() ?? []);
+  // Mastery list (used for sorting mastered exercises first)
+  private masteryQuery = injectQuery(() => ({
+    queryKey: masteryKeys.list(),
+    queryFn: () => this.userApi.fetchMasteryList(),
+  }));
 
-  otherExercises = computed(() => {
+  sortedExercises = computed(() => {
     const all = this.allExercisesQuery.data()?.items ?? [];
-    const myIds = new Set(this.myExercises().map((e) => e.id));
-    return all.filter((e) => !myIds.has(e.id));
+    const masteryIds = new Set((this.masteryQuery.data() ?? []).map((m) => m.exerciseId));
+    return [...all].sort((a, b) => {
+      const aHas = masteryIds.has(a.id) ? 0 : 1;
+      const bHas = masteryIds.has(b.id) ? 0 : 1;
+      if (aHas !== bHas) return aHas - bHas;
+      return a.name.localeCompare(b.name);
+    });
   });
-
-  // Keep this alias for external consumers (e.g., exercise-track)
-  userExercises = this.myExercises;
 
   selectedExerciseName = computed(() => {
     const id = this.model().exerciseId;
     if (!id) return '';
-    const myEx = this.myExercises().find((e) => e.id === id);
-    if (myEx) return myEx.name;
-    return this.otherExercises().find((e) => e.id === id)?.name ?? '';
+    return this.sortedExercises().find((e) => e.id === id)?.name ?? '';
   });
 
   canConfirm = computed(() => this.model().exerciseId != null);

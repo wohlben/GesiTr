@@ -238,8 +238,7 @@
     },
     "exerciseConfig": {
       "exerciseLabel": "Exercise *",
-      "measurementType": "Measurement Type",
-      "allExercises": "All Exercises"
+      "measurementType": "Measurement Type"
     },
     "exerciseGroupConfig": {
       "newGroup": "New Group",
