@@ -10,6 +10,8 @@
     "confirm": "Confirm",
     "areYouSure": "Are you sure?",
     "select": "-- Select --",
+    "search": "Search...",
+    "noResults": "No results found",
     "add": "Add",
     "adding": "Adding...",
     "starting": "Starting...",

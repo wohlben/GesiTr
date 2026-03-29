@@ -7,8 +7,10 @@ import { exerciseKeys, exerciseSchemeKeys, masteryKeys } from '$core/query-keys'
 import { ExerciseScheme } from '$generated/models';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
+import { HlmComboboxImports } from '@spartan-ng/helm/combobox';
 import { HlmInput } from '@spartan-ng/helm/input';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { Exercise } from '$generated/models';
 
 export interface ExerciseConfigResult {
   exerciseId: number;
@@ -18,7 +20,14 @@ export interface ExerciseConfigResult {
 
 @Component({
   selector: 'app-exercise-config',
-  imports: [FormField, BrnSelectImports, HlmSelectImports, HlmInput, TranslocoDirective],
+  imports: [
+    FormField,
+    BrnSelectImports,
+    HlmSelectImports,
+    HlmComboboxImports,
+    HlmInput,
+    TranslocoDirective,
+  ],
   template: `
     <div
       *transloco="let t"
@@ -29,21 +38,29 @@ export interface ExerciseConfigResult {
           <span class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{
             t('ui.exerciseConfig.exerciseLabel')
           }}</span>
-          <brn-select
-            [formField]="configForm.exerciseId"
-            class="mt-1"
-            hlm
-            [placeholder]="t('common.select')"
+          <hlm-combobox
+            class="mt-1 block"
+            [value]="selectedExercise()"
+            (valueChange)="onExerciseSelected($event)"
+            [filter]="exerciseFilter"
+            [itemToString]="exerciseToString"
           >
-            <hlm-select-trigger class="w-full">
-              <hlm-select-value />
-            </hlm-select-trigger>
-            <hlm-select-content>
-              @for (ex of sortedExercises(); track ex.id) {
-                <hlm-option [value]="ex.id">{{ ex.name }}</hlm-option>
-              }
-            </hlm-select-content>
-          </brn-select>
+            <hlm-combobox-input
+              [placeholder]="t('common.search')"
+              [showClear]="!!model().exerciseId"
+            />
+            <ng-template hlmComboboxPortal>
+              <hlm-combobox-content>
+                <hlm-combobox-input [placeholder]="t('common.search')" [showClear]="false" />
+                <div hlmComboboxList>
+                  @for (ex of sortedExercises(); track ex.id) {
+                    <hlm-combobox-item [value]="ex">{{ ex.name }}</hlm-combobox-item>
+                  }
+                  <hlm-combobox-empty>{{ t('common.noResults') }}</hlm-combobox-empty>
+                </div>
+              </hlm-combobox-content>
+            </ng-template>
+          </hlm-combobox>
         </div>
         <div>
           <span class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{
@@ -175,11 +192,22 @@ export class ExerciseConfig {
     });
   });
 
-  selectedExerciseName = computed(() => {
+  selectedExercise = computed(() => {
     const id = this.model().exerciseId;
-    if (!id) return '';
-    return this.sortedExercises().find((e) => e.id === id)?.name ?? '';
+    if (!id) return null;
+    return this.sortedExercises().find((e) => e.id === id) ?? null;
   });
+
+  selectedExerciseName = computed(() => this.selectedExercise()?.name ?? '');
+
+  exerciseFilter = (exercise: Exercise, search: string) =>
+    exercise.name.toLowerCase().includes(search.toLowerCase());
+
+  exerciseToString = (exercise: Exercise) => exercise.name;
+
+  onExerciseSelected(exercise: Exercise | null) {
+    this.model.update((m) => ({ ...m, exerciseId: exercise?.id ?? null }));
+  }
 
   canConfirm = computed(() => this.model().exerciseId != null);
 

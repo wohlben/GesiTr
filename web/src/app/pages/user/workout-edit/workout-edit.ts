@@ -24,7 +24,9 @@ import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
+import { HlmComboboxImports } from '@spartan-ng/helm/combobox';
 import { HlmInput } from '@spartan-ng/helm/input';
+import { Exercise } from '$generated/models';
 import { HlmTextarea } from '@spartan-ng/helm/textarea';
 import {
   ExerciseGroupConfig,
@@ -104,6 +106,7 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
     ConfirmDialog,
     BrnSelectImports,
     HlmSelectImports,
+    HlmComboboxImports,
     HlmInput,
     HlmTextarea,
     TranslocoDirective,
@@ -259,21 +262,36 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
                                 class="block text-xs font-medium text-gray-700 dark:text-gray-300"
                                 >{{ t('ui.exerciseConfig.exerciseLabel') }}</span
                               >
-                              <brn-select
-                                [formField]="item.exerciseId"
-                                class="mt-1"
-                                hlm
-                                [placeholder]="t('common.select')"
+                              <hlm-combobox
+                                class="mt-1 block"
+                                [value]="findExerciseById(item.exerciseId().value())"
+                                (valueChange)="onItemExerciseSelected(si, ei, $event)"
+                                [filter]="exerciseFilter"
+                                [itemToString]="exerciseToString"
                               >
-                                <hlm-select-trigger class="w-full">
-                                  <hlm-select-value />
-                                </hlm-select-trigger>
-                                <hlm-select-content>
-                                  @for (ue of enrichedUserExercises(); track ue.id) {
-                                    <hlm-option [value]="ue.id">{{ ue.name }}</hlm-option>
-                                  }
-                                </hlm-select-content>
-                              </brn-select>
+                                <hlm-combobox-input
+                                  [placeholder]="t('common.search')"
+                                  [showClear]="!!item.exerciseId().value()"
+                                />
+                                <ng-template hlmComboboxPortal>
+                                  <hlm-combobox-content>
+                                    <hlm-combobox-input
+                                      [placeholder]="t('common.search')"
+                                      [showClear]="false"
+                                    />
+                                    <div hlmComboboxList>
+                                      @for (ue of enrichedUserExercises(); track ue.id) {
+                                        <hlm-combobox-item [value]="ue">{{
+                                          ue.name
+                                        }}</hlm-combobox-item>
+                                      }
+                                      <hlm-combobox-empty>{{
+                                        t('common.noResults')
+                                      }}</hlm-combobox-empty>
+                                    </div>
+                                  </hlm-combobox-content>
+                                </ng-template>
+                              </hlm-combobox>
                             </div>
                             <div>
                               <span
@@ -536,6 +554,26 @@ export class WorkoutEdit {
       return a.name.localeCompare(b.name);
     });
   });
+
+  exerciseFilter = (exercise: Exercise, search: string) =>
+    exercise.name.toLowerCase().includes(search.toLowerCase());
+
+  exerciseToString = (exercise: Exercise) => exercise.name;
+
+  findExerciseById(id: number | null): Exercise | null {
+    if (!id) return null;
+    return this.enrichedUserExercises().find((e) => e.id === id) ?? null;
+  }
+
+  onItemExerciseSelected(si: number, ei: number, exercise: Exercise | null) {
+    this.model.update((m) => {
+      const sections = [...m.sections];
+      const items = [...sections[si].items];
+      items[ei] = { ...items[ei], exerciseId: exercise?.id ?? null };
+      sections[si] = { ...sections[si], items };
+      return { ...m, sections };
+    });
+  }
 
   // Exercise groups for the group picker
   private exerciseGroupsQuery = injectQuery(() => ({

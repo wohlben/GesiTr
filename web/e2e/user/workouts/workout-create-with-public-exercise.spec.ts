@@ -27,20 +27,20 @@ test.describe('Create workout with public exercises from another user', () => {
       // Add an exercise item to the section
       await page.getByRole('button', { name: '+ Add Exercise', exact: true }).click();
 
-      // Open the exercise picker dropdown (the one with placeholder "-- Select --")
-      const exerciseTrigger = page.getByRole('combobox', { name: '-- Select --' });
-      await exerciseTrigger.click();
+      // Type in the exercise combobox to search
+      const comboboxInput = page.locator('hlm-combobox-input input').first();
+      await comboboxInput.fill('Alice');
 
-      // Verify alice's public exercises appear in the dropdown
-      const options = page.locator('hlm-option');
-      await expect(options.filter({ hasText: 'Alice Bench Press' })).toBeVisible({ timeout: 5000 });
-      await expect(options.filter({ hasText: 'Alice Deadlift' })).toBeVisible();
+      // Verify alice's public exercises appear in the filtered results
+      const items = page.locator('hlm-combobox-item');
+      await expect(items.filter({ hasText: 'Alice Bench Press' })).toBeVisible({ timeout: 5000 });
+      await expect(items.filter({ hasText: 'Alice Deadlift' })).toBeVisible();
 
       // Select one of alice's exercises
-      await options.filter({ hasText: 'Alice Bench Press' }).click();
+      await items.filter({ hasText: 'Alice Bench Press' }).click();
 
-      // Verify the exercise was selected (trigger should show the name)
-      await expect(exerciseTrigger).toContainText('Alice Bench Press');
+      // Verify the exercise was selected (input should show the name)
+      await expect(comboboxInput).toHaveValue('Alice Bench Press');
     } finally {
       await deleteExerciseAs(exerciseA.id, 'alice');
       await deleteExerciseAs(exerciseB.id, 'alice');
