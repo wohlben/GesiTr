@@ -209,7 +209,6 @@ export class MainLayout {
   ];
 
   userLinks: NavLink[] = [
-    { path: '/compendium/exercises', labelKey: 'nav.myExercises', queryParams: { mastery: 'me' } },
     { path: '/user/equipment', labelKey: 'nav.myEquipment' },
     { path: '/user/workouts', labelKey: 'nav.myWorkouts' },
     { path: '/user/calendar', labelKey: 'nav.calendar' },
