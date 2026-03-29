@@ -91,10 +91,11 @@ function setup(permissions: string[]) {
       weight: 60,
     }),
     fetchUserExercise: vi.fn().mockResolvedValue({ id: 5, name: 'Bench Press', version: 1 }),
-    fetchUserExercises: vi.fn().mockResolvedValue([]),
   };
 
-  const compendiumApi: Partial<CompendiumApiClient> = {};
+  const compendiumApi: Partial<CompendiumApiClient> = {
+    fetchExercises: vi.fn().mockResolvedValue({ items: [], total: 0 }),
+  };
 
   return {
     userApi,

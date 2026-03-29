@@ -7,10 +7,11 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import {
-  userExerciseKeys,
   workoutKeys,
+  exerciseKeys,
   exerciseSchemeKeys,
   exerciseGroupKeys,
+  masteryKeys,
 } from '$core/query-keys';
 import {
   WorkoutSectionTypeMain,
@@ -514,13 +515,27 @@ export class WorkoutEdit {
     enabled: !!this.id() && !this.isCreateMode(),
   }));
 
-  // User exercises for the picker dropdown
-  private userExercisesQuery = injectQuery(() => ({
-    queryKey: userExerciseKeys.list(),
-    queryFn: () => this.userApi.fetchUserExercises(),
+  // All exercises for the picker dropdown, sorted with mastery exercises first
+  private allExercisesQuery = injectQuery(() => ({
+    queryKey: exerciseKeys.list({ limit: 200 }),
+    queryFn: () => this.compendiumApi.fetchExercises({ limit: 200 }),
   }));
 
-  enrichedUserExercises = computed(() => this.userExercisesQuery.data() ?? []);
+  private masteryQuery = injectQuery(() => ({
+    queryKey: masteryKeys.list(),
+    queryFn: () => this.userApi.fetchMasteryList(),
+  }));
+
+  enrichedUserExercises = computed(() => {
+    const all = this.allExercisesQuery.data()?.items ?? [];
+    const masteryIds = new Set((this.masteryQuery.data() ?? []).map((m) => m.exerciseId));
+    return [...all].sort((a, b) => {
+      const aHas = masteryIds.has(a.id) ? 0 : 1;
+      const bHas = masteryIds.has(b.id) ? 0 : 1;
+      if (aHas !== bHas) return aHas - bHas;
+      return a.name.localeCompare(b.name);
+    });
+  });
 
   // Exercise groups for the group picker
   private exerciseGroupsQuery = injectQuery(() => ({

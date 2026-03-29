@@ -25,9 +25,10 @@ function makeWorkout(overrides: Partial<Workout> = {}): Workout {
 function setup(workout: Workout) {
   const userApi: Partial<UserApiClient> = {
     fetchWorkout: vi.fn().mockResolvedValue(workout),
-    fetchUserExercises: vi.fn().mockResolvedValue([]),
+    fetchMasteryList: vi.fn().mockResolvedValue([]),
   };
   const compendiumApi: Partial<CompendiumApiClient> = {
+    fetchExercises: vi.fn().mockResolvedValue({ items: [], total: 0 }),
     fetchExerciseGroups: vi.fn().mockResolvedValue({ items: [], total: 0 }),
   };
 

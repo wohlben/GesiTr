@@ -661,8 +661,8 @@ export class WorkoutStart {
 
     // Collect pending exercise groups and resolve their members
     const pendingGroupsBySection = new Map<number, PendingGroupModel[]>();
-    const userExercises = await this.userApi.fetchUserExercises();
-    const exerciseNameMap = new Map(userExercises.map((e) => [e.id, e.name]));
+    const allExercises = await this.compendiumApi.fetchExercises({ limit: 200 });
+    const exerciseNameMap = new Map(allExercises.items.map((e) => [e.id, e.name]));
 
     for (let si = 0; si < (workout.sections ?? []).length; si++) {
       const templateSection = workout.sections[si];
