@@ -14,12 +14,12 @@ func NewAPI(r *gin.Engine, group *gin.RouterGroup) huma.API {
 	config := huma.DefaultConfig("GesiTr API", "1.0.0")
 	config.Servers = []*huma.Server{{URL: "/api"}}
 
-	// Expose x-user-id as a header field in the OpenAPI docs UI.
+	// Expose the auth header as a field in the OpenAPI docs UI.
 	config.Components.SecuritySchemes = map[string]*huma.SecurityScheme{
 		"UserID": {
 			Type: "apiKey",
 			In:   "header",
-			Name: "x-user-id",
+			Name: AuthHeader,
 		},
 	}
 	config.Security = []map[string][]string{{"UserID": {}}}

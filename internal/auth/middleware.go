@@ -12,20 +12,22 @@ import (
 
 const userIDKey = "userID"
 
-// UserID returns a Gin middleware that reads the X-User-Id header
-// and stores it in the context. If the header is missing, it falls
-// back to AUTH_FALLBACK_USER. If that env var is also unset, the
-// request is rejected with 401.
+// UserID returns a Gin middleware that reads the auth header (configurable
+// via AUTH_HEADER env var, default "X-User-Id") and stores it in the context.
+// If the header is missing, it falls back to AUTH_FALLBACK_USER. If that env
+// var is also unset, the request is rejected with 401.
 func UserID() gin.HandlerFunc {
 	fallback := os.Getenv("AUTH_FALLBACK_USER")
 
+	header := humaconfig.AuthHeader
+
 	return func(c *gin.Context) {
-		id := c.GetHeader("X-User-Id")
+		id := c.GetHeader(header)
 		if id == "" {
 			id = fallback
 		}
 		if id == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "missing X-User-Id header"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "missing " + header + " header"})
 			return
 		}
 		c.Set(userIDKey, id)
