@@ -7,6 +7,7 @@ import { UserApiClient } from '$core/api-clients/user-api-client';
 import {
   exerciseKeys,
   exerciseRelationshipKeys,
+  equipmentKeys,
   userExerciseKeys,
   masteryKeys,
 } from '$core/query-keys';
@@ -133,12 +134,26 @@ import { DecimalPipe } from '@angular/common';
                 {{ t('enums.difficulty.' + exercise.technicalDifficulty) }}
               </dd>
             </div>
+            @if (exercise.force?.length) {
+              <div>
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {{ t('fields.force') }}
+                </dt>
+                <dd class="text-sm text-gray-900 dark:text-gray-100">
+                  @for (f of exercise.force; track f; let last = $last) {
+                    {{ t('enums.force.' + f) }}{{ last ? '' : ', ' }}
+                  }
+                </dd>
+              </div>
+            }
             <div>
               <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
                 {{ t('fields.primaryMuscles') }}
               </dt>
               <dd class="text-sm text-gray-900 dark:text-gray-100">
-                {{ exercise.primaryMuscles?.join(', ') }}
+                @for (m of exercise.primaryMuscles; track m; let last = $last) {
+                  {{ t('enums.muscle.' + m) }}{{ last ? '' : ', ' }}
+                }
               </dd>
             </div>
             <div>
@@ -146,16 +161,114 @@ import { DecimalPipe } from '@angular/common';
                 {{ t('fields.secondaryMuscles') }}
               </dt>
               <dd class="text-sm text-gray-900 dark:text-gray-100">
-                {{ exercise.secondaryMuscles?.join(', ') }}
+                @for (m of exercise.secondaryMuscles; track m; let last = $last) {
+                  {{ t('enums.muscle.' + m) }}{{ last ? '' : ', ' }}
+                }
               </dd>
             </div>
-            <div class="sm:col-span-2">
-              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                {{ t('fields.description') }}
-              </dt>
-              <dd class="text-sm text-gray-900 dark:text-gray-100">{{ exercise.description }}</dd>
-            </div>
+            @if (exercise.suggestedMeasurementParadigms?.length) {
+              <div>
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {{ t('fields.suggestedMeasurementParadigms') }}
+                </dt>
+                <dd class="text-sm text-gray-900 dark:text-gray-100">
+                  @for (p of exercise.suggestedMeasurementParadigms; track p; let last = $last) {
+                    {{ t('enums.measurementType.' + p) }}{{ last ? '' : ', ' }}
+                  }
+                </dd>
+              </div>
+            }
+            @if (equipmentNames().length) {
+              <div>
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {{ t('fields.equipmentIds') }}
+                </dt>
+                <dd class="text-sm text-gray-900 dark:text-gray-100">
+                  {{ equipmentNames().join(', ') }}
+                </dd>
+              </div>
+            }
+            @if (exercise.alternativeNames?.length) {
+              <div>
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {{ t('fields.alternativeNames') }}
+                </dt>
+                <dd class="text-sm text-gray-900 dark:text-gray-100">
+                  {{ exercise.alternativeNames.join(', ') }}
+                </dd>
+              </div>
+            }
+            @if (exercise.authorName) {
+              <div>
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {{ t('fields.authorName') }}
+                </dt>
+                <dd class="text-sm text-gray-900 dark:text-gray-100">
+                  @if (exercise.authorUrl) {
+                    <a
+                      [href]="exercise.authorUrl"
+                      target="_blank"
+                      rel="noopener"
+                      class="text-blue-600 hover:underline dark:text-blue-400"
+                      >{{ exercise.authorName }}</a
+                    >
+                  } @else {
+                    {{ exercise.authorName }}
+                  }
+                </dd>
+              </div>
+            }
+            @if (exercise.description) {
+              <div class="sm:col-span-2">
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {{ t('fields.description') }}
+                </dt>
+                <dd class="whitespace-pre-line text-sm text-gray-900 dark:text-gray-100">
+                  {{ exercise.description }}
+                </dd>
+              </div>
+            }
           </dl>
+
+          @if (exercise.instructions?.length) {
+            <div class="mt-6">
+              <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('fields.instructions') }}
+              </h3>
+              <ol
+                class="mt-2 list-inside list-decimal space-y-1 text-sm text-gray-900 dark:text-gray-100"
+              >
+                @for (step of exercise.instructions; track $index) {
+                  <li>{{ step }}</li>
+                }
+              </ol>
+            </div>
+          }
+
+          @if (allRelationships().length) {
+            <div class="mt-6">
+              <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('compendium.exercises.relationships') }}
+              </h3>
+              <ul class="mt-2 space-y-1 text-sm">
+                @for (rel of allRelationships(); track rel.id) {
+                  <li class="flex items-center gap-2">
+                    <span
+                      class="rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                    >
+                      {{ t('enums.exerciseRelationshipType.' + rel.relationshipType) }}
+                    </span>
+                    <a
+                      [routerLink]="['/compendium/exercises', rel.linkedId, rel.linkedSlug]"
+                      class="text-blue-600 hover:underline dark:text-blue-400"
+                    >
+                      {{ rel.linkedName }}
+                    </a>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
         }
       </app-page-layout>
     </ng-container>
@@ -221,6 +334,89 @@ export class ExerciseDetail {
       this.permissionsQuery.isSuccess() &&
       (this.permissionsQuery.data()?.permissions?.includes('DELETE') ?? false),
   );
+
+  // All relationships (both directions) for this exercise
+  private fromRelationshipsQuery = injectQuery(() => ({
+    queryKey: exerciseRelationshipKeys.list({ fromExerciseId: this.id() }),
+    queryFn: () => this.api.fetchExerciseRelationships({ fromExerciseId: this.id() }),
+    enabled: !!this.id(),
+  }));
+
+  private toRelationshipsQuery = injectQuery(() => ({
+    queryKey: exerciseRelationshipKeys.list({ toExerciseId: this.id() }),
+    queryFn: () => this.api.fetchExerciseRelationships({ toExerciseId: this.id() }),
+    enabled: !!this.id(),
+  }));
+
+  // Equipment list (to resolve names from IDs)
+  private equipmentQuery = injectQuery(() => ({
+    queryKey: equipmentKeys.list({ limit: 200 }),
+    queryFn: () => this.api.fetchEquipment({ limit: 200 }),
+    enabled: !!this.exerciseQuery.data()?.equipmentIds?.length,
+  }));
+
+  equipmentNames = computed(() => {
+    const ids = new Set(this.exerciseQuery.data()?.equipmentIds ?? []);
+    if (!ids.size) return [];
+    const items = this.equipmentQuery.data()?.items ?? [];
+    return items.filter((e) => ids.has(e.id)).map((e) => e.displayName ?? e.name);
+  });
+
+  allRelationships = computed(() => {
+    const id = this.id();
+    const from = (this.fromRelationshipsQuery.data() ?? []).map((r) => ({
+      ...r,
+      linkedId: r.toExerciseId,
+      linkedName: this.exerciseNameMap().get(r.toExerciseId) ?? `Exercise #${r.toExerciseId}`,
+      linkedSlug: this.exerciseSlugMap().get(r.toExerciseId) ?? '',
+    }));
+    const to = (this.toRelationshipsQuery.data() ?? [])
+      .filter((r) => r.fromExerciseId !== id)
+      .map((r) => ({
+        ...r,
+        linkedId: r.fromExerciseId,
+        linkedName: this.exerciseNameMap().get(r.fromExerciseId) ?? `Exercise #${r.fromExerciseId}`,
+        linkedSlug: this.exerciseSlugMap().get(r.fromExerciseId) ?? '',
+      }));
+    return [...from, ...to];
+  });
+
+  // Exercise names for relationship links — fetch all exercises involved
+  private relatedExerciseIds = computed(() => {
+    const ids = new Set<number>();
+    for (const r of this.fromRelationshipsQuery.data() ?? []) ids.add(r.toExerciseId);
+    for (const r of this.toRelationshipsQuery.data() ?? []) ids.add(r.fromExerciseId);
+    ids.delete(this.id());
+    return ids;
+  });
+
+  private relatedExercisesQuery = injectQuery(() => ({
+    queryKey: exerciseKeys.list({ limit: 200, relatedTo: this.id() }),
+    queryFn: () => this.api.fetchExercises({ limit: 200 }),
+    enabled: this.relatedExerciseIds().size > 0,
+  }));
+
+  private exerciseNameMap = computed(() => {
+    const map = new Map<number, string>();
+    for (const e of this.relatedExercisesQuery.data()?.items ?? []) {
+      map.set(e.id, e.name);
+    }
+    return map;
+  });
+
+  private exerciseSlugMap = computed(() => {
+    const map = new Map<number, string>();
+    for (const e of this.relatedExercisesQuery.data()?.items ?? []) {
+      map.set(
+        e.id,
+        e.name
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-|-$/g, ''),
+      );
+    }
+    return map;
+  });
 
   hasHistory = computed(() => (this.versionsQuery.data()?.length ?? 0) > 1);
 

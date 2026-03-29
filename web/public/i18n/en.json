@@ -257,6 +257,7 @@
       "deleteMessage": "Are you sure you want to delete '{{name}}'?",
       "alreadyAdded": "Already Forked",
       "addToMine": "Fork Exercise",
+      "relationships": "Related Exercises",
       "newTitle": "New Exercise",
       "editTitle": "Edit Exercise",
       "historyTitle": "History",
