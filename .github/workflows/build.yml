@@ -1,9 +1,7 @@
 name: Build and push Docker image
-
 on:
   push:
     branches: [main]
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,16 +10,13 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
-
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       - id: lower
         run: echo "image=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
-
       - uses: docker/build-push-action@v6
         with:
           context: .
@@ -29,3 +24,27 @@ jobs:
           tags: ${{ steps.lower.outputs.image }}:latest
           build-args: |
             CACHEBUST=${{ github.sha }}
+
+  sync-devel:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Merge main into devel
+        id: merge
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout devel
+          git merge origin/main --ff --no-edit
+          git push origin devel
+      - name: Create PR on conflict
+        if: steps.merge.outcome == 'failure'
+        run: gh pr create --base devel --head main --title "Sync main → devel" --body "Auto-merge failed due to conflicts."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
