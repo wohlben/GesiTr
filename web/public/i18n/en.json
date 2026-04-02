@@ -383,6 +383,7 @@
     "workoutLog": {
       "fallbackHeader": "Workout Log",
       "finishWorkout": "Finish Workout",
+      "startWorkout": "Start Workout",
       "abandon": "Abandon",
       "addExercise": "+ Add Exercise",
       "addExerciseTitle": "Add Exercise",

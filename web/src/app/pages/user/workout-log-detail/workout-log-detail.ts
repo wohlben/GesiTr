@@ -62,6 +62,21 @@ import { HlmButton } from '@spartan-ng/helm/button';
               }
             </div>
             <div class="flex items-center gap-2">
+              @if (log.status === 'committed') {
+                <button
+                  hlmBtn
+                  variant="default"
+                  (click)="startWorkout()"
+                  [disabled]="startMutation.isPending()"
+                  class="bg-green-600 text-white hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700"
+                >
+                  @if (startMutation.isPending()) {
+                    {{ t('common.starting') }}
+                  } @else {
+                    {{ t('user.workoutLog.startWorkout') }}
+                  }
+                </button>
+              }
               @if (log.status === 'adhoc') {
                 <button
                   hlmBtn
@@ -241,6 +256,13 @@ export class WorkoutLogDetail {
     },
   }));
 
+  startMutation = injectMutation(() => ({
+    mutationFn: () => this.userApi.startWorkoutLog(this.id()),
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: workoutLogKeys.detail(this.id()) });
+    },
+  }));
+
   constructor() {
     // Load exercise names whenever log data changes
     effect(() => {
@@ -264,6 +286,10 @@ export class WorkoutLogDetail {
 
   finishWorkout() {
     this.finishMutation.mutate();
+  }
+
+  startWorkout() {
+    this.startMutation.mutate();
   }
 
   onAddExerciseDialogClosed() {
