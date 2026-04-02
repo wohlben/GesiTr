@@ -1,4 +1,4 @@
-package handlers_test
+package handlers
 
 import (
 	"bytes"
@@ -20,8 +20,7 @@ import (
 	exerciselogmodels "gesitr/internal/user/exerciselog/models"
 	workouthandlers "gesitr/internal/workout/handlers"
 	workoutmodels "gesitr/internal/workout/models"
-	workoutloghandlers "gesitr/internal/workoutlog/handlers"
-	workoutlogmodels "gesitr/internal/workoutlog/models"
+	"gesitr/internal/workoutlog/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
@@ -58,10 +57,10 @@ func setupTestDB(t *testing.T) {
 		&workoutmodels.WorkoutHistoryEntity{},
 		&workoutmodels.WorkoutSectionEntity{},
 		&workoutmodels.WorkoutSectionItemEntity{},
-		&workoutlogmodels.WorkoutLogEntity{},
-		&workoutlogmodels.WorkoutLogSectionEntity{},
-		&workoutlogmodels.WorkoutLogExerciseEntity{},
-		&workoutlogmodels.WorkoutLogExerciseSetEntity{},
+		&models.WorkoutLogEntity{},
+		&models.WorkoutLogSectionEntity{},
+		&models.WorkoutLogExerciseEntity{},
+		&models.WorkoutLogExerciseSetEntity{},
 		&exerciselogmodels.ExerciseLogEntity{},
 	)
 	db.Create(&profilemodels.UserProfileEntity{ID: "alice", Name: "alice"})
@@ -78,7 +77,7 @@ func newRouter() *gin.Engine {
 	exercisehandlers.RegisterRoutes(humaAPI)
 	equipmenthandlers.RegisterRoutes(humaAPI)
 	workouthandlers.RegisterRoutes(humaAPI)
-	workoutloghandlers.RegisterRoutes(humaAPI)
+	RegisterRoutes(humaAPI)
 	exerciseloghandlers.RegisterRoutes(humaAPI)
 
 	return r
@@ -94,6 +93,14 @@ func doJSON(r *gin.Engine, method, path string, body any) *httptest.ResponseReco
 	if body != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	return w
+}
+
+func doRaw(r *gin.Engine, method, path, body string) *httptest.ResponseRecorder {
+	req := httptest.NewRequest(method, path, bytes.NewReader([]byte(body)))
+	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	return w

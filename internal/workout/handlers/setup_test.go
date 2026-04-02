@@ -1,4 +1,4 @@
-package handlers_test
+package handlers
 
 import (
 	"bytes"
@@ -10,18 +10,16 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/database"
-	equipmenthandlers "gesitr/internal/equipment/handlers"
 	equipmentmodels "gesitr/internal/equipment/models"
 	exercisehandlers "gesitr/internal/exercise/handlers"
 	exercisemodels "gesitr/internal/exercise/models"
+	exercisegrouphandlers "gesitr/internal/exercisegroup/handlers"
+	exercisegroupmodels "gesitr/internal/exercisegroup/models"
 	"gesitr/internal/humaconfig"
 	profilemodels "gesitr/internal/profile/models"
-	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
-	exerciselogmodels "gesitr/internal/user/exerciselog/models"
-	workouthandlers "gesitr/internal/workout/handlers"
-	workoutmodels "gesitr/internal/workout/models"
-	workoutloghandlers "gesitr/internal/workoutlog/handlers"
-	workoutlogmodels "gesitr/internal/workoutlog/models"
+	"gesitr/internal/workout/models"
+	workoutgrouphandlers "gesitr/internal/workoutgroup/handlers"
+	workoutgroupmodels "gesitr/internal/workoutgroup/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
@@ -54,15 +52,14 @@ func setupTestDB(t *testing.T) {
 		&exercisemodels.ExerciseHistoryEntity{},
 		&exercisemodels.ExerciseSchemeEntity{},
 		&equipmentmodels.EquipmentEntity{},
-		&workoutmodels.WorkoutEntity{},
-		&workoutmodels.WorkoutHistoryEntity{},
-		&workoutmodels.WorkoutSectionEntity{},
-		&workoutmodels.WorkoutSectionItemEntity{},
-		&workoutlogmodels.WorkoutLogEntity{},
-		&workoutlogmodels.WorkoutLogSectionEntity{},
-		&workoutlogmodels.WorkoutLogExerciseEntity{},
-		&workoutlogmodels.WorkoutLogExerciseSetEntity{},
-		&exerciselogmodels.ExerciseLogEntity{},
+		&exercisegroupmodels.ExerciseGroupEntity{},
+		&exercisegroupmodels.ExerciseGroupMemberEntity{},
+		&models.WorkoutEntity{},
+		&models.WorkoutHistoryEntity{},
+		&models.WorkoutSectionEntity{},
+		&models.WorkoutSectionItemEntity{},
+		&workoutgroupmodels.WorkoutGroupEntity{},
+		&workoutgroupmodels.WorkoutGroupMembershipEntity{},
 	)
 	db.Create(&profilemodels.UserProfileEntity{ID: "alice", Name: "alice"})
 	db.Create(&profilemodels.UserProfileEntity{ID: "bob", Name: "bob"})
@@ -76,10 +73,9 @@ func newRouter() *gin.Engine {
 
 	humaAPI := humaconfig.NewAPI(r, api)
 	exercisehandlers.RegisterRoutes(humaAPI)
-	equipmenthandlers.RegisterRoutes(humaAPI)
-	workouthandlers.RegisterRoutes(humaAPI)
-	workoutloghandlers.RegisterRoutes(humaAPI)
-	exerciseloghandlers.RegisterRoutes(humaAPI)
+	exercisegrouphandlers.RegisterRoutes(humaAPI)
+	RegisterRoutes(humaAPI)
+	workoutgrouphandlers.RegisterRoutes(humaAPI)
 
 	return r
 }
@@ -94,6 +90,14 @@ func doJSON(r *gin.Engine, method, path string, body any) *httptest.ResponseReco
 	if body != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	return w
+}
+
+func doRaw(r *gin.Engine, method, path, body string) *httptest.ResponseRecorder {
+	req := httptest.NewRequest(method, path, bytes.NewReader([]byte(body)))
+	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	return w

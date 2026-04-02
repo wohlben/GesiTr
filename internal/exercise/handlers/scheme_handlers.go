@@ -64,7 +64,7 @@ func ListExerciseSchemes(ctx context.Context, input *ListExerciseSchemesInput) (
 // configuration of an exercise (sets, reps, measurement type). Requires
 // an exerciseId referencing an existing exercise (see [CreateExercise]).
 // Schemes are referenced when adding exercises to workouts via
-// [gesitr/internal/user/workout/handlers.CreateWorkoutSectionItem].
+// [gesitr/internal/workout/handlers.CreateWorkoutSectionItem].
 // POST /api/exercise-schemes
 //
 // OpenAPI: /api/docs#/operations/CreateExerciseScheme
