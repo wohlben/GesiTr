@@ -8,7 +8,7 @@ test.describe('workout edit - exercise group', () => {
     const ex2 = await createExercise(request, { name: 'E2E Group Dumbbell Press' });
 
     // 1. Navigate to create workout page
-    await page.goto('/user/workouts/new', { waitUntil: 'networkidle' });
+    await page.goto('/compendium/workouts/new', { waitUntil: 'networkidle' });
     await expect(page.locator('h1')).toHaveText('New Workout');
 
     // 2. Fill in workout name
@@ -45,17 +45,17 @@ test.describe('workout edit - exercise group', () => {
     // 10. Save the workout
     const [saveResponse] = await Promise.all([
       page.waitForResponse(
-        (r) => r.url().includes('/api/user/workouts') && r.request().method() === 'POST',
+        (r) => r.url().includes('/api/workouts') && r.request().method() === 'POST',
       ),
       page.locator('button[type="submit"]').click(),
     ]);
     const workout = await saveResponse.json();
 
     // Should navigate to workout list
-    await page.waitForURL(/\/user\/workouts$/);
+    await page.waitForURL(/\/compendium\/workouts$/);
 
     // 11. Reopen the workout in edit mode
-    await page.goto(`/user/workouts/${workout.id}/edit`, { waitUntil: 'networkidle' });
+    await page.goto(`/compendium/workouts/${workout.id}/edit`, { waitUntil: 'networkidle' });
     await expect(page.locator('h1')).toHaveText('Edit Workout');
     await expect(page.locator('input#name')).toHaveValue('E2E Group Test Workout');
 

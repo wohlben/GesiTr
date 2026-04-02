@@ -19,7 +19,7 @@ func TestPeriodStatus(t *testing.T) {
 	r := newRouter()
 
 	// Create workout + schedule
-	doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Status Test"})
+	doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Status Test"})
 	startDate := time.Now().AddDate(0, 0, -10)
 	w := doJSONLog(t, r, "POST", "/api/user/workout-schedules", map[string]any{
 		"workoutId": 1, "startDate": startDate.Format(time.RFC3339),
@@ -99,7 +99,7 @@ func TestPeriodPermissions_PlannedIsEditable(t *testing.T) {
 	defer closeDB(t)
 	r := newRouter()
 
-	doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Perms Test"})
+	doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Perms Test"})
 	doJSONLog(t, r, "POST", "/api/user/workout-schedules", map[string]any{"workoutId": 1})
 
 	// Create a planned period (starts next week)
@@ -154,7 +154,7 @@ func TestPeriodPermissions_ActiveIsReadOnly(t *testing.T) {
 	defer closeDB(t)
 	r := newRouter()
 
-	doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Active Perms"})
+	doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Active Perms"})
 	startDate := time.Now().AddDate(0, 0, -3)
 	doJSONLog(t, r, "POST", "/api/user/workout-schedules", map[string]any{
 		"workoutId": 1, "startDate": startDate.Format(time.RFC3339),
@@ -197,7 +197,7 @@ func TestPeriodPermissions_ArchivedIsReadOnly(t *testing.T) {
 	defer closeDB(t)
 	r := newRouter()
 
-	doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Archived Perms"})
+	doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Archived Perms"})
 	startDate := time.Now().AddDate(0, 0, -10)
 	doJSONLog(t, r, "POST", "/api/user/workout-schedules", map[string]any{
 		"workoutId": 1, "startDate": startDate.Format(time.RFC3339),
@@ -240,7 +240,7 @@ func TestPeriodPermissions_NonOwnerForbidden(t *testing.T) {
 	defer closeDB(t)
 	r := newRouter()
 
-	doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Forbidden Test"})
+	doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Forbidden Test"})
 	doJSONLog(t, r, "POST", "/api/user/workout-schedules", map[string]any{"workoutId": 1})
 
 	futureStart := time.Now().AddDate(0, 0, 7).Truncate(24 * time.Hour)
@@ -272,7 +272,7 @@ func TestPeriodList_BySchedule_OnlyOwnerPeriods(t *testing.T) {
 	r := newRouter()
 
 	// Alice creates a workout + schedule + period
-	doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Alice Workout"})
+	doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Alice Workout"})
 	startDate := time.Now().AddDate(0, 0, -3)
 	w := doJSONLog(t, r, "POST", "/api/user/workout-schedules", map[string]any{
 		"workoutId": 1, "startDate": startDate.Format(time.RFC3339),
@@ -307,7 +307,7 @@ func TestPeriodList_AllPeriods_OnlyReturnsOwnPeriods(t *testing.T) {
 	r := newRouter()
 
 	// Alice creates a workout + schedule + period
-	doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Alice Workout"})
+	doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Alice Workout"})
 	startDate := time.Now().AddDate(0, 0, -3)
 	doJSONLog(t, r, "POST", "/api/user/workout-schedules", map[string]any{
 		"workoutId": 1, "startDate": startDate.Format(time.RFC3339),
@@ -323,7 +323,7 @@ func TestPeriodList_AllPeriods_OnlyReturnsOwnPeriods(t *testing.T) {
 	})
 
 	// Bob creates his own workout + schedule + period
-	doJSONLogAs(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Bob Workout"}, "bob")
+	doJSONLogAs(t, r, "POST", "/api/workouts", map[string]any{"name": "Bob Workout"}, "bob")
 	doJSONLogAs(t, r, "POST", "/api/user/workout-schedules", map[string]any{
 		"workoutId": 2, "startDate": startDate.Format(time.RFC3339),
 	}, "bob")
@@ -376,7 +376,7 @@ func TestCommitmentList_AllCommitments_OnlyReturnsOwnCommitments(t *testing.T) {
 	r := newRouter()
 
 	// Alice creates workout → schedule → period → commitment
-	doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Alice Workout"})
+	doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Alice Workout"})
 	startDate := time.Now().AddDate(0, 0, -3)
 	doJSONLog(t, r, "POST", "/api/user/workout-schedules", map[string]any{
 		"workoutId": 1, "startDate": startDate.Format(time.RFC3339),
@@ -400,7 +400,7 @@ func TestCommitmentList_AllCommitments_OnlyReturnsOwnCommitments(t *testing.T) {
 	})
 
 	// Bob creates workout → schedule → period → commitment
-	doJSONLogAs(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Bob Workout"}, "bob")
+	doJSONLogAs(t, r, "POST", "/api/workouts", map[string]any{"name": "Bob Workout"}, "bob")
 	doJSONLogAs(t, r, "POST", "/api/user/workout-schedules", map[string]any{
 		"workoutId": 2, "startDate": startDate.Format(time.RFC3339),
 	}, "bob")

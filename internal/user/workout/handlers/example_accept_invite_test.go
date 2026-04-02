@@ -12,7 +12,7 @@ func ExampleAcceptWorkoutGroupInvitation_denied() {
 	r := newRouter()
 
 	// Bob interacts with the API to establish his profile (middleware creates it on first request)
-	doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+	doRawAs(r, "GET", "/api/workouts", "", "bob")
 
 	// Alice creates an exercise and scheme
 	doRaw(r, "POST", "/api/exercises", `{
@@ -26,11 +26,11 @@ func ExampleAcceptWorkoutGroupInvitation_denied() {
 	}`)
 
 	// Alice creates a workout with one section and one exercise item
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
-	doRaw(r, "POST", "/api/user/workout-sections", `{
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workout-sections", `{
 		"workoutId": 1, "type": "main", "position": 0
 	}`)
-	doRaw(r, "POST", "/api/user/workout-section-items", `{
+	doRaw(r, "POST", "/api/workout-section-items", `{
 		"workoutSectionId": 1, "type": "exercise",
 		"exerciseSchemeId": 1, "position": 0
 	}`)
@@ -44,7 +44,7 @@ func ExampleAcceptWorkoutGroupInvitation_denied() {
 	}`)
 
 	// Bob tries to accept without having created his exercise schemes
-	w := doRawAs(r, "POST", "/api/user/workouts/1/group/accept", "", "bob")
+	w := doRawAs(r, "POST", "/api/workouts/1/group/accept", "", "bob")
 	fmt.Println(w.Code)
 	// Output: 400
 }
@@ -57,7 +57,7 @@ func ExampleAcceptWorkoutGroupInvitation_success() {
 	r := newRouter()
 
 	// Bob interacts with the API to establish his profile
-	doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+	doRawAs(r, "GET", "/api/workouts", "", "bob")
 
 	// Alice creates an exercise and scheme
 	doRaw(r, "POST", "/api/exercises", `{
@@ -71,11 +71,11 @@ func ExampleAcceptWorkoutGroupInvitation_success() {
 	}`)
 
 	// Alice creates a workout with one section and one exercise item
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
-	doRaw(r, "POST", "/api/user/workout-sections", `{
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workout-sections", `{
 		"workoutId": 1, "type": "main", "position": 0
 	}`)
-	doRaw(r, "POST", "/api/user/workout-section-items", `{
+	doRaw(r, "POST", "/api/workout-section-items", `{
 		"workoutSectionId": 1, "type": "exercise",
 		"exerciseSchemeId": 1, "position": 0
 	}`)
@@ -96,7 +96,7 @@ func ExampleAcceptWorkoutGroupInvitation_success() {
 	}`, "bob")
 
 	// Bob accepts the invitation — should succeed now
-	w := doRawAs(r, "POST", "/api/user/workouts/1/group/accept", "", "bob")
+	w := doRawAs(r, "POST", "/api/workouts/1/group/accept", "", "bob")
 	fmt.Println(w.Code)
 	// Output: 200
 }

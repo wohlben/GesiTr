@@ -41,6 +41,7 @@ func setupExampleDB() {
 		&exercisegroupmodels.ExerciseGroupEntity{},
 		&exercisegroupmodels.ExerciseGroupMemberEntity{},
 		&models.WorkoutEntity{},
+		&models.WorkoutHistoryEntity{},
 		&models.WorkoutSectionEntity{},
 		&models.WorkoutSectionItemEntity{},
 		&workoutgroupmodels.WorkoutGroupEntity{},

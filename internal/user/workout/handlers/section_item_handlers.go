@@ -32,7 +32,7 @@ func requireSectionModify(ctx context.Context, sectionID uint) error {
 
 // ListWorkoutSectionItems returns section items owned by the current
 // user. Filter by workoutSectionId query param.
-// GET /api/user/workout-section-items
+// GET /api/workout-section-items
 //
 // OpenAPI: /api/docs#/operations/ListWorkoutSectionItems
 func ListWorkoutSectionItems(ctx context.Context, input *ListWorkoutSectionItemsInput) (*ListWorkoutSectionItemsOutput, error) {
@@ -42,12 +42,12 @@ func ListWorkoutSectionItems(ctx context.Context, input *ListWorkoutSectionItems
 		db = db.Where("workout_section_id = ?", input.WorkoutSectionID)
 	}
 
-	// Include items for workouts the user owns or has group membership for
+	// Include items for workouts the user owns, public workouts, or group membership workouts
 	userID := humaconfig.GetUserID(ctx)
 	db = db.Where(`workout_section_id IN (SELECT id FROM workout_sections WHERE
-		workout_id IN (SELECT id FROM workouts WHERE owner = ? AND deleted_at IS NULL)
+		workout_id IN (SELECT id FROM workouts WHERE (owner = ? OR public = ?) AND deleted_at IS NULL)
 		OR workout_id IN (SELECT wg.workout_id FROM workout_groups wg JOIN workout_group_memberships wgm ON wgm.group_id = wg.id WHERE wgm.user_id = ? AND wgm.deleted_at IS NULL AND wg.deleted_at IS NULL))`,
-		userID, userID)
+		userID, true, userID)
 
 	var entities []models.WorkoutSectionItemEntity
 	if err := db.Order("position").Find(&entities).Error; err != nil {
@@ -66,7 +66,7 @@ func ListWorkoutSectionItems(ctx context.Context, input *ListWorkoutSectionItems
 //   - "exercise": exerciseSchemeId is required
 //   - "exercise_group": exerciseGroupId is required
 //
-// POST /api/user/workout-section-items
+// POST /api/workout-section-items
 //
 // OpenAPI: /api/docs#/operations/CreateWorkoutSectionItem
 func CreateWorkoutSectionItem(ctx context.Context, input *CreateWorkoutSectionItemInput) (*CreateWorkoutSectionItemOutput, error) {
@@ -112,7 +112,7 @@ func CreateWorkoutSectionItem(ctx context.Context, input *CreateWorkoutSectionIt
 }
 
 // DeleteWorkoutSectionItem removes an item from a section.
-// DELETE /api/user/workout-section-items/{id}
+// DELETE /api/workout-section-items/{id}
 //
 // OpenAPI: /api/docs#/operations/DeleteWorkoutSectionItem
 func DeleteWorkoutSectionItem(ctx context.Context, input *DeleteWorkoutSectionItemInput) (*DeleteWorkoutSectionItemOutput, error) {

@@ -39,13 +39,13 @@ func ExampleCreateWorkoutSectionItem() {
 	createExerciseSchemeForExample(r)
 
 	// Create a workout and section.
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
-	doRaw(r, "POST", "/api/user/workout-sections", `{
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workout-sections", `{
 		"workoutId": 1, "type": "main", "position": 0
 	}`)
 
 	// Add the exercise scheme to the section.
-	w := doRaw(r, "POST", "/api/user/workout-section-items", `{
+	w := doRaw(r, "POST", "/api/workout-section-items", `{
 		"workoutSectionId": 1,
 		"type": "exercise",
 		"exerciseSchemeId": 1,
@@ -71,12 +71,12 @@ func ExampleCreateWorkoutSectionItem_nonOwnerDenied() {
 	r := newRouter()
 
 	createExerciseSchemeForExample(r)
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
-	doRaw(r, "POST", "/api/user/workout-sections", `{
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workout-sections", `{
 		"workoutId": 1, "type": "main", "position": 0
 	}`)
 
-	w := doRawAs(r, "POST", "/api/user/workout-section-items", `{
+	w := doRawAs(r, "POST", "/api/workout-section-items", `{
 		"workoutSectionId": 1,
 		"type": "exercise",
 		"exerciseSchemeId": 1,
@@ -93,15 +93,15 @@ func ExampleListWorkoutSectionItems_owner() {
 	r := newRouter()
 
 	createExerciseSchemeForExample(r)
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
-	doRaw(r, "POST", "/api/user/workout-sections", `{
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workout-sections", `{
 		"workoutId": 1, "type": "main", "position": 0
 	}`)
-	doRaw(r, "POST", "/api/user/workout-section-items", `{
+	doRaw(r, "POST", "/api/workout-section-items", `{
 		"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
 	}`)
 
-	w := doRaw(r, "GET", "/api/user/workout-section-items?workoutSectionId=1", "")
+	w := doRaw(r, "GET", "/api/workout-section-items?workoutSectionId=1", "")
 
 	var items []models.WorkoutSectionItem
 	json.Unmarshal(w.Body.Bytes(), &items)
@@ -120,15 +120,15 @@ func ExampleListWorkoutSectionItems_nonOwner() {
 	r := newRouter()
 
 	createExerciseSchemeForExample(r)
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
-	doRaw(r, "POST", "/api/user/workout-sections", `{
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workout-sections", `{
 		"workoutId": 1, "type": "main", "position": 0
 	}`)
-	doRaw(r, "POST", "/api/user/workout-section-items", `{
+	doRaw(r, "POST", "/api/workout-section-items", `{
 		"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
 	}`)
 
-	w := doRawAs(r, "GET", "/api/user/workout-section-items?workoutSectionId=1", "", "bob")
+	w := doRawAs(r, "GET", "/api/workout-section-items?workoutSectionId=1", "", "bob")
 
 	var items []models.WorkoutSectionItem
 	json.Unmarshal(w.Body.Bytes(), &items)
@@ -145,19 +145,19 @@ func ExampleDeleteWorkoutSectionItem_owner() {
 	r := newRouter()
 
 	createExerciseSchemeForExample(r)
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
-	doRaw(r, "POST", "/api/user/workout-sections", `{
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workout-sections", `{
 		"workoutId": 1, "type": "main", "position": 0
 	}`)
-	doRaw(r, "POST", "/api/user/workout-section-items", `{
+	doRaw(r, "POST", "/api/workout-section-items", `{
 		"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
 	}`)
 
-	w := doJSON(r, "DELETE", "/api/user/workout-section-items/1", nil)
+	w := doJSON(r, "DELETE", "/api/workout-section-items/1", nil)
 	fmt.Println(w.Code)
 
 	// Section item is gone.
-	wl := doRaw(r, "GET", "/api/user/workout-section-items?workoutSectionId=1", "")
+	wl := doRaw(r, "GET", "/api/workout-section-items?workoutSectionId=1", "")
 	var items []models.WorkoutSectionItem
 	json.Unmarshal(wl.Body.Bytes(), &items)
 	fmt.Println(len(items))
@@ -172,15 +172,15 @@ func ExampleDeleteWorkoutSectionItem_nonOwnerDenied() {
 	r := newRouter()
 
 	createExerciseSchemeForExample(r)
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
-	doRaw(r, "POST", "/api/user/workout-sections", `{
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workout-sections", `{
 		"workoutId": 1, "type": "main", "position": 0
 	}`)
-	doRaw(r, "POST", "/api/user/workout-section-items", `{
+	doRaw(r, "POST", "/api/workout-section-items", `{
 		"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
 	}`)
 
-	w := doRawAs(r, "DELETE", "/api/user/workout-section-items/1", "", "bob")
+	w := doRawAs(r, "DELETE", "/api/workout-section-items/1", "", "bob")
 	fmt.Println(w.Code)
 	// Output: 403
 }
@@ -195,16 +195,16 @@ func ExampleGetWorkout_fullHierarchy() {
 	createExerciseSchemeForExample(r)
 
 	// Build the workout hierarchy.
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
-	doRaw(r, "POST", "/api/user/workout-sections", `{
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workout-sections", `{
 		"workoutId": 1, "type": "main", "label": "Compound", "position": 0
 	}`)
-	doRaw(r, "POST", "/api/user/workout-section-items", `{
+	doRaw(r, "POST", "/api/workout-section-items", `{
 		"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
 	}`)
 
 	// GetWorkout returns the full tree.
-	w := doJSON(r, "GET", "/api/user/workouts/1", nil)
+	w := doJSON(r, "GET", "/api/workouts/1", nil)
 
 	var workout models.Workout
 	json.Unmarshal(w.Body.Bytes(), &workout)

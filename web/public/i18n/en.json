@@ -306,7 +306,7 @@
       "deleteMessage": "Are you sure you want to remove '{{name}}' from your equipment?"
     },
     "workouts": {
-      "title": "My Workouts",
+      "title": "Workouts",
       "newWorkout": "New Workout",
       "adhocWorkout": "Ad-hoc Workout",
       "adhocDescription": "Start an open-ended workout and add exercises as you go",

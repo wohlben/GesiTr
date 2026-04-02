@@ -8,7 +8,7 @@ import {
   createApiContextAs,
 } from '../../helpers';
 
-test.describe('/user/workouts — group member full flow', () => {
+test.describe('/compendium/workouts — group member full flow', () => {
   test('member sees readonly workout-start, starts workout, tracks sets, finishes', async ({
     browser,
     request,
@@ -41,7 +41,7 @@ test.describe('/user/workouts — group member full flow', () => {
 
     // Bob needs to "exist" (profile created on first API hit) before being invited
     const bobApi = await createApiContextAs('bob');
-    await bobApi.get('/api/user/workouts');
+    await bobApi.get('/api/workouts');
 
     // Create workout group and invite bob
     const groupRes = await request.post('/api/user/workout-groups', {
@@ -77,7 +77,7 @@ test.describe('/user/workouts — group member full flow', () => {
     ).toBeTruthy();
 
     // Bob accepts the invite
-    const acceptRes = await bobApi.post(`/api/user/workouts/${workout.id}/group/accept`);
+    const acceptRes = await bobApi.post(`/api/workouts/${workout.id}/group/accept`);
     expect(acceptRes.ok(), `Failed to accept invite: ${await acceptRes.text()}`).toBeTruthy();
     await bobApi.dispose();
 
@@ -92,7 +92,7 @@ test.describe('/user/workouts — group member full flow', () => {
     });
     const bobPage = await bobContext.newPage();
 
-    await bobPage.goto('/user/workouts', { waitUntil: 'networkidle' });
+    await bobPage.goto('/compendium/workouts', { waitUntil: 'networkidle' });
     await expect(bobPage.getByText('E2E Group Push Day')).toBeVisible({ timeout: 10000 });
 
     // Verify membership badge is visible
@@ -105,7 +105,7 @@ test.describe('/user/workouts — group member full flow', () => {
     await expect(startLink).toBeVisible();
     await startLink.click();
 
-    await bobPage.waitForURL(/\/user\/workouts\/\d+\/start/, { timeout: 10000 });
+    await bobPage.waitForURL(/\/compendium\/workouts\/\d+\/start/, { timeout: 10000 });
 
     // Wait for the exercise to load in the planning log
     await expect(bobPage.getByText('E2E Group Bench Press')).toBeVisible({ timeout: 15000 });

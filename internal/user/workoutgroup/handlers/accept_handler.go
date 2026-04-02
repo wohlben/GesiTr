@@ -24,7 +24,7 @@ type AcceptWorkoutGroupInvitationOutput struct {
 // AcceptWorkoutGroupInvitation promotes an "invited" membership to "member"
 // after validating that the caller has created exercise schemes for all
 // exercise-type items in the workout.
-// POST /api/user/workouts/{id}/group/accept
+// POST /api/workouts/{id}/group/accept
 func AcceptWorkoutGroupInvitation(ctx context.Context, input *AcceptWorkoutGroupInvitationInput) (*AcceptWorkoutGroupInvitationOutput, error) {
 	userID := humaconfig.GetUserID(ctx)
 

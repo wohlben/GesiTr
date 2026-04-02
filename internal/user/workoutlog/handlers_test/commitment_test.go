@@ -248,7 +248,7 @@ func TestMultipleCommitmentsPerWorkout(t *testing.T) {
 	r := newRouter()
 
 	// Create a workout
-	doJSON(r, "POST", "/api/user/workouts", map[string]any{"name": "My Workout"})
+	doJSON(r, "POST", "/api/workouts", map[string]any{"name": "My Workout"})
 
 	dueStart1 := time.Now().Add(24 * time.Hour)
 	dueEnd1 := time.Now().Add(48 * time.Hour)

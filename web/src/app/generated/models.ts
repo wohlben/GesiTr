@@ -203,3 +203,17 @@ export interface EquipmentRelationship extends BaseModel {
 export type EquipmentRelationshipType = string;
 export const EquipmentRelationshipTypeEquivalent: EquipmentRelationshipType = 'equivalent';
 export const EquipmentRelationshipTypeForked: EquipmentRelationshipType = 'forked';
+
+//////////
+// source: relationship.go
+
+export interface WorkoutRelationship extends BaseModel {
+  relationshipType: WorkoutRelationshipType;
+  strength: number /* float64 */;
+  owner: string;
+  fromWorkoutId: number /* uint */;
+  toWorkoutId: number /* uint */;
+}
+export type WorkoutRelationshipType = string;
+export const WorkoutRelationshipTypeEquivalent: WorkoutRelationshipType = 'equivalent';
+export const WorkoutRelationshipTypeForked: WorkoutRelationshipType = 'forked';

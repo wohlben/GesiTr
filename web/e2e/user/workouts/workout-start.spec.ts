@@ -116,7 +116,7 @@ async function cleanupPlanningLogs(
   }
 }
 
-test.describe('/user/workouts/[id]/start', () => {
+test.describe('/compendium/workouts/[id]/start', () => {
   for (const viewport of viewports) {
     test.describe(viewport.name, () => {
       test.use({ viewport: { width: viewport.width, height: viewport.height } });
@@ -125,7 +125,7 @@ test.describe('/user/workouts/[id]/start', () => {
         const v = variantData[`${viewport.name}-light`];
         const { workout, cleanup } = await createFixtures(request, v);
 
-        await page.goto(`/user/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
+        await page.goto(`/compendium/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toHaveText('Plan Workout');
         await expect(page.locator('input#name')).toHaveValue(v.workoutName);
         await expect(page.getByText('Section 1')).toBeVisible();
@@ -133,7 +133,7 @@ test.describe('/user/workouts/[id]/start', () => {
           await expect(page.getByText(ex.name)).toBeVisible({ timeout: 10000 });
         }
         await expect(page).toHaveScreenshot(
-          [viewport.name, 'light', 'user', 'workouts', '[id]', 'start.png'],
+          [viewport.name, 'light', 'compendium', 'workouts', '[id]', 'start.png'],
           { fullPage: true },
         );
 
@@ -150,7 +150,7 @@ test.describe('/user/workouts/[id]/start', () => {
         });
 
         await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto(`/user/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
+        await page.goto(`/compendium/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toHaveText('Plan Workout');
         await expect(page.locator('input#name')).toHaveValue(v.workoutName);
         await expect(page.getByText('Section 1')).toBeVisible();
@@ -158,7 +158,7 @@ test.describe('/user/workouts/[id]/start', () => {
           await expect(page.getByText(ex.name)).toBeVisible({ timeout: 10000 });
         }
         await expect(page).toHaveScreenshot(
-          [viewport.name, 'dark', 'user', 'workouts', '[id]', 'start.png'],
+          [viewport.name, 'dark', 'compendium', 'workouts', '[id]', 'start.png'],
           { fullPage: true },
         );
 

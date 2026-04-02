@@ -18,7 +18,7 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
     // ============================================================
     // Step 1: Start adhoc workout from workout list
     // ============================================================
-    await page.goto('/user/workouts', { waitUntil: 'networkidle' });
+    await page.goto('/compendium/workouts', { waitUntil: 'networkidle' });
 
     const adhocButton = page.getByRole('button', { name: 'Ad-hoc Workout' });
     await expect(adhocButton).toBeVisible();

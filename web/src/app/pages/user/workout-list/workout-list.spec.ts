@@ -14,6 +14,8 @@ function makeWorkout(overrides: Partial<Workout> = {}): Workout {
     updatedAt: '',
     owner: 'alice',
     name: 'Push Day',
+    public: false,
+    version: 0,
     sections: [],
     ...overrides,
   };

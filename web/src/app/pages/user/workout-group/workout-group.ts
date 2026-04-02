@@ -20,7 +20,7 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
       >
         <a
           actions
-          routerLink="/user/workouts"
+          routerLink="/compendium/workouts"
           class="text-sm text-blue-600 hover:underline dark:text-blue-400"
         >
           &larr; {{ t('common.back') }}

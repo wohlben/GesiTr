@@ -1,6 +1,6 @@
-FROM mirror.gcr.io/library/node:24-slim as node
-FROM mirror.gcr.io/library/golang:1.25 as golang
-FROM mirror.gcr.io/library/debian:bookworm-slim as debian
+FROM mirror.gcr.io/library/node:24-slim AS node
+FROM mirror.gcr.io/library/golang:1.25 AS golang
+FROM mirror.gcr.io/library/debian:bookworm-slim AS debian
 
 # Stage 1: Build + test Angular
 FROM node AS web-builder

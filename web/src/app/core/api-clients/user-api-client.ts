@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
+import { PaginatedResponse } from './paginated-response';
 import { UserProfile, UpdateProfileRequest } from '$generated/profile';
 import { Exercise, Equipment, ExerciseScheme } from '$generated/models';
 import {
@@ -75,50 +76,59 @@ export class UserApiClient {
   }
 
   // Workouts
-  fetchWorkouts(): Promise<Workout[]> {
-    return firstValueFrom(this.http.get<Workout[]>('/api/user/workouts'));
+  fetchWorkouts(filters?: Record<string, string | number | undefined>): Promise<Workout[]> {
+    const qp = new URLSearchParams();
+    if (filters) {
+      for (const [k, v] of Object.entries(filters)) {
+        if (v != null) qp.set(k, String(v));
+      }
+    }
+    const qs = qp.toString();
+    return firstValueFrom(
+      this.http
+        .get<PaginatedResponse<Workout>>(`/api/workouts${qs ? '?' + qs : ''}`)
+        .pipe(map((res) => res.items)),
+    );
   }
 
   fetchWorkout(id: number): Promise<Workout> {
-    return firstValueFrom(this.http.get<Workout>(`/api/user/workouts/${id}`));
+    return firstValueFrom(this.http.get<Workout>(`/api/workouts/${id}`));
   }
 
   fetchWorkoutPermissions(id: number): Promise<{ permissions: string[] }> {
     return firstValueFrom(
-      this.http.get<{ permissions: string[] }>(`/api/user/workouts/${id}/permissions`),
+      this.http.get<{ permissions: string[] }>(`/api/workouts/${id}/permissions`),
     );
   }
 
   createWorkout(data: Partial<Workout>): Promise<Workout> {
-    return firstValueFrom(this.http.post<Workout>('/api/user/workouts', data));
+    return firstValueFrom(this.http.post<Workout>('/api/workouts', data));
   }
 
   updateWorkout(id: number, data: Partial<Workout>): Promise<Workout> {
-    return firstValueFrom(this.http.put<Workout>(`/api/user/workouts/${id}`, data));
+    return firstValueFrom(this.http.put<Workout>(`/api/workouts/${id}`, data));
   }
 
   deleteWorkout(id: number): Promise<void> {
-    return firstValueFrom(this.http.delete<void>(`/api/user/workouts/${id}`));
+    return firstValueFrom(this.http.delete<void>(`/api/workouts/${id}`));
   }
 
   // Workout Sections
   createWorkoutSection(data: Partial<WorkoutSection>): Promise<WorkoutSection> {
-    return firstValueFrom(this.http.post<WorkoutSection>('/api/user/workout-sections', data));
+    return firstValueFrom(this.http.post<WorkoutSection>('/api/workout-sections', data));
   }
 
   deleteWorkoutSection(id: number): Promise<void> {
-    return firstValueFrom(this.http.delete<void>(`/api/user/workout-sections/${id}`));
+    return firstValueFrom(this.http.delete<void>(`/api/workout-sections/${id}`));
   }
 
   // Workout Section Items
   createWorkoutSectionItem(data: Partial<WorkoutSectionItem>): Promise<WorkoutSectionItem> {
-    return firstValueFrom(
-      this.http.post<WorkoutSectionItem>('/api/user/workout-section-items', data),
-    );
+    return firstValueFrom(this.http.post<WorkoutSectionItem>('/api/workout-section-items', data));
   }
 
   deleteWorkoutSectionItem(id: number): Promise<void> {
-    return firstValueFrom(this.http.delete<void>(`/api/user/workout-section-items/${id}`));
+    return firstValueFrom(this.http.delete<void>(`/api/workout-section-items/${id}`));
   }
 
   // Exercise Schemes
@@ -316,7 +326,7 @@ export class UserApiClient {
 
   acceptWorkoutGroupInvitation(workoutId: number): Promise<WorkoutGroupMembership> {
     return firstValueFrom(
-      this.http.post<WorkoutGroupMembership>(`/api/user/workouts/${workoutId}/group/accept`, {}),
+      this.http.post<WorkoutGroupMembership>(`/api/workouts/${workoutId}/group/accept`, {}),
     );
   }
 

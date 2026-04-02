@@ -28,6 +28,8 @@ const WORKOUT: Workout = {
   updatedAt: '',
   owner: 'alice',
   name: 'Push Day',
+  public: false,
+  version: 0,
   sections: [],
 };
 

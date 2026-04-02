@@ -175,13 +175,13 @@ export async function createWorkout(
     notes: '',
     ...overrides,
   };
-  const res = await request.post('/api/user/workouts', { data });
+  const res = await request.post('/api/workouts', { data });
   expect(res.ok(), `Failed to create workout: ${await res.text()}`).toBeTruthy();
   return res.json();
 }
 
 export async function deleteWorkout(request: APIRequestContext, id: number) {
-  await request.delete(`/api/user/workouts/${id}`);
+  await request.delete(`/api/workouts/${id}`);
 }
 
 export async function createExerciseScheme(
@@ -214,13 +214,13 @@ export async function createWorkoutSection(
     position: 0,
     ...overrides,
   };
-  const res = await request.post('/api/user/workout-sections', { data });
+  const res = await request.post('/api/workout-sections', { data });
   expect(res.ok(), `Failed to create workout section: ${await res.text()}`).toBeTruthy();
   return res.json();
 }
 
 export async function deleteWorkoutSection(request: APIRequestContext, id: number) {
-  await request.delete(`/api/user/workout-sections/${id}`);
+  await request.delete(`/api/workout-sections/${id}`);
 }
 
 export async function createWorkoutSectionItem(
@@ -232,7 +232,7 @@ export async function createWorkoutSectionItem(
     position: 0,
     ...overrides,
   };
-  const res = await request.post('/api/user/workout-section-items', { data });
+  const res = await request.post('/api/workout-section-items', { data });
   expect(
     res.ok(),
     `Failed to create workout section item: ${await res.text()}`,
@@ -244,7 +244,7 @@ export async function deleteWorkoutSectionItem(
   request: APIRequestContext,
   id: number,
 ) {
-  await request.delete(`/api/user/workout-section-items/${id}`);
+  await request.delete(`/api/workout-section-items/${id}`);
 }
 
 export async function fetchWorkoutLogs(

@@ -50,7 +50,7 @@ func TestListWorkoutLogs(t *testing.T) {
 
 	t.Run("filter by workoutId", func(t *testing.T) {
 		// Create a workout and a log referencing it
-		doJSON(r, "POST", "/api/user/workouts", map[string]any{
+		doJSON(r, "POST", "/api/workouts", map[string]any{
 			"name": "Template",
 		})
 		doJSON(r, "POST", "/api/user/workout-logs", map[string]any{
@@ -92,7 +92,7 @@ func TestCreateWorkoutLog(t *testing.T) {
 	})
 
 	t.Run("with workoutId", func(t *testing.T) {
-		doJSON(r, "POST", "/api/user/workouts", map[string]any{
+		doJSON(r, "POST", "/api/workouts", map[string]any{
 			"name": "Template",
 		})
 		w := doJSON(r, "POST", "/api/user/workout-logs", map[string]any{

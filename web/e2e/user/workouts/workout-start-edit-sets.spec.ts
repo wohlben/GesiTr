@@ -14,7 +14,7 @@ import {
   deleteWorkoutLog,
 } from '../../helpers';
 
-test.describe('/user/workouts/[id]/start — set editing', () => {
+test.describe('/compendium/workouts/[id]/start — set editing', () => {
   test('editing target reps and weight on a set persists after page reload', async ({
     request,
     page,
@@ -41,7 +41,7 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
     });
 
     // Navigate to workout start page, wait for exercise to load
-    await page.goto(`/user/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
+    await page.goto(`/compendium/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
     await expect(page.getByText('Set Edit Test Ex')).toBeVisible({ timeout: 10000 });
 
     // Verify default values
@@ -119,7 +119,7 @@ test.describe('/user/workouts/[id]/start — set editing', () => {
     });
 
     // Navigate to workout start page, wait for exercise to load
-    await page.goto(`/user/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
+    await page.goto(`/compendium/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
     await expect(page.getByText('Rest Edit Test Ex')).toBeVisible({ timeout: 10000 });
 
     // Verify default rest between sets is 90

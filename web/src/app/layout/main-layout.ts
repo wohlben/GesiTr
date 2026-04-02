@@ -45,7 +45,7 @@ interface NavLink {
             }
             <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">GesiTr</span>
             <a
-              routerLink="/user/workouts"
+              routerLink="/compendium/workouts"
               routerLinkActive="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
               class="rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-200 md:hidden"
             >
@@ -234,12 +234,10 @@ export class MainLayout {
   compendiumLinks: NavLink[] = [
     { path: '/compendium/exercises', labelKey: 'nav.exercises' },
     { path: '/compendium/equipment', labelKey: 'nav.equipment' },
+    { path: '/compendium/workouts', labelKey: 'nav.workouts' },
   ];
 
-  userLinks: NavLink[] = [
-    { path: '/user/workouts', labelKey: 'nav.myWorkouts' },
-    { path: '/user/calendar', labelKey: 'nav.calendar' },
-  ];
+  userLinks: NavLink[] = [{ path: '/user/calendar', labelKey: 'nav.calendar' }];
 
   switchUser(userId: string) {
     this.devUserService.userId$.next(userId);

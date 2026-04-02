@@ -11,6 +11,8 @@ type WorkoutEntity struct {
 	OwnerProfile *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
 	Name         string                           `gorm:"not null"`
 	Notes        *string
+	Public       bool                   `gorm:"not null;default:false;index"`
+	Version      int                    `gorm:"not null;default:0"`
 	Sections     []WorkoutSectionEntity `gorm:"foreignKey:WorkoutID"`
 }
 
@@ -22,6 +24,8 @@ func (e *WorkoutEntity) ToDTO() Workout {
 		Owner:     e.Owner,
 		Name:      e.Name,
 		Notes:     e.Notes,
+		Public:    e.Public,
+		Version:   e.Version,
 	}
 	for _, s := range e.Sections {
 		dto.Sections = append(dto.Sections, s.ToDTO())
@@ -35,6 +39,8 @@ func WorkoutFromDTO(dto Workout) WorkoutEntity {
 		Owner:     dto.Owner,
 		Name:      dto.Name,
 		Notes:     dto.Notes,
+		Public:    dto.Public,
+		Version:   dto.Version,
 	}
 }
 

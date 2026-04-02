@@ -48,13 +48,10 @@ func ListWorkoutSchedules(ctx context.Context, input *ListWorkoutSchedulesInput)
 func CreateWorkoutSchedule(ctx context.Context, input *CreateWorkoutScheduleInput) (*CreateWorkoutScheduleOutput, error) {
 	userID := humaconfig.GetUserID(ctx)
 
-	// Verify workout exists and is owned by user
+	// Verify workout exists and is visible to user
 	var workout workoutmodels.WorkoutEntity
 	if err := database.DB.First(&workout, input.Body.WorkoutID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout not found")
-	}
-	if workout.Owner != userID {
-		return nil, huma.Error403Forbidden("not the owner of this workout")
 	}
 
 	initialStatus := "committed"

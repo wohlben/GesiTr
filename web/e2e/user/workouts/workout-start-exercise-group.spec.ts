@@ -12,7 +12,7 @@ test.describe('workout start - exercise group flow', () => {
 
     // === Phase 1: Create workout with exercise group via UI ===
 
-    await page.goto('/user/workouts/new', { waitUntil: 'networkidle' });
+    await page.goto('/compendium/workouts/new', { waitUntil: 'networkidle' });
     await page.locator('input#name').fill('E2E Start Group Workout');
 
     // Add section
@@ -36,11 +36,11 @@ test.describe('workout start - exercise group flow', () => {
     // Save the workout
     await Promise.all([
       page.waitForResponse(
-        (r) => r.url().includes('/api/user/workouts') && r.request().method() === 'POST',
+        (r) => r.url().includes('/api/workouts') && r.request().method() === 'POST',
       ),
       page.locator('button[type="submit"]').click(),
     ]);
-    await page.waitForURL(/\/user\/workouts$/);
+    await page.waitForURL(/\/compendium\/workouts$/);
 
     // Find the workout we just created
     const workoutLink = page.getByText('E2E Start Group Workout');

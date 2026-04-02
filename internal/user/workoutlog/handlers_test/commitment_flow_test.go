@@ -40,14 +40,14 @@ func TestCommitmentHappyPath(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &scheme)
 
 	// 2. Create a workout template
-	w = doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Pull Day"})
+	w = doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Pull Day"})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create workout: %d", w.Code)
 	}
 	var workout workoutmodels.Workout
 	json.Unmarshal(w.Body.Bytes(), &workout)
 
-	w = doJSONLog(t, r, "POST", "/api/user/workout-sections", map[string]any{
+	w = doJSONLog(t, r, "POST", "/api/workout-sections", map[string]any{
 		"workoutId": workout.ID, "type": "main", "position": 0,
 	})
 	if w.Code != http.StatusCreated {
@@ -56,7 +56,7 @@ func TestCommitmentHappyPath(t *testing.T) {
 	var section workoutmodels.WorkoutSection
 	json.Unmarshal(w.Body.Bytes(), &section)
 
-	w = doJSONLog(t, r, "POST", "/api/user/workout-section-items", map[string]any{
+	w = doJSONLog(t, r, "POST", "/api/workout-section-items", map[string]any{
 		"workoutSectionId": section.ID, "type": "exercise", "exerciseSchemeId": scheme.ID, "position": 0,
 	})
 	if w.Code != http.StatusCreated {
@@ -273,7 +273,7 @@ func TestMultipleCommitmentsCoexist(t *testing.T) {
 	r := newRouter()
 
 	// Create a workout
-	w := doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Leg Day"})
+	w := doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Leg Day"})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create workout: %d", w.Code)
 	}

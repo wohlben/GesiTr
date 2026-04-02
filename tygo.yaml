@@ -56,6 +56,13 @@ packages:
       "gorm.DeletedAt": "string | null"
     include_files:
       - "relationship.go"
+  - path: "gesitr/internal/workoutrelationship/models"
+    output_path: "web/src/app/generated/workout-relationship.ts"
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+    include_files:
+      - "relationship.go"
   - path: "gesitr/internal/user/workout/models"
     output_path: "web/src/app/generated/user-workout.ts"
     type_mappings:

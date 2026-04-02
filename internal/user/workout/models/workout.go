@@ -12,6 +12,8 @@ type Workout struct {
 	Owner            string            `json:"owner"`
 	Name             string            `json:"name"`
 	Notes            *string           `json:"notes"`
+	Public           bool              `json:"public"`
+	Version          int               `json:"version"`
 	Sections         []WorkoutSection  `json:"sections" gorm:"-"`
 	WorkoutGroup     *WorkoutGroupInfo `json:"workoutGroup,omitempty" gorm:"-"`
 }

@@ -15,7 +15,7 @@ test.describe('Create workout with public exercises from another user', () => {
 
     try {
       // Default user (devuser) navigates to create a new workout
-      await page.goto('/user/workouts/new', { waitUntil: 'networkidle' });
+      await page.goto('/compendium/workouts/new', { waitUntil: 'networkidle' });
       await expect(page.locator('h1')).toHaveText('New Workout');
 
       // Fill in the workout name

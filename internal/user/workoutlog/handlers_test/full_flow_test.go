@@ -63,7 +63,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &scheme2)
 
 	// 4. Create a workout template
-	w = doJSON(r, "POST", "/api/user/workouts", map[string]any{
+	w = doJSON(r, "POST", "/api/workouts", map[string]any{
 		"name": "Strength Day",
 	})
 	if w.Code != http.StatusCreated {
@@ -73,14 +73,14 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &wkt)
 
 	// 5. Add sections to the workout template (with restBetweenExercises)
-	w = doJSON(r, "POST", "/api/user/workout-sections", map[string]any{
+	w = doJSON(r, "POST", "/api/workout-sections", map[string]any{
 		"workoutId": wkt.ID, "type": "supplementary", "label": "Warmup", "position": 0,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create warmup section: status = %d", w.Code)
 	}
 
-	w = doJSON(r, "POST", "/api/user/workout-sections", map[string]any{
+	w = doJSON(r, "POST", "/api/workout-sections", map[string]any{
 		"workoutId": wkt.ID, "type": "main", "position": 1, "restBetweenExercises": 120,
 	})
 	if w.Code != http.StatusCreated {
@@ -90,14 +90,14 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &mainSection)
 
 	// 6. Add exercises to the workout template sections
-	w = doJSON(r, "POST", "/api/user/workout-section-items", map[string]any{
+	w = doJSON(r, "POST", "/api/workout-section-items", map[string]any{
 		"workoutSectionId": mainSection.ID, "type": "exercise", "exerciseSchemeId": scheme.ID, "position": 0,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section exercise 1: status = %d", w.Code)
 	}
 
-	w = doJSON(r, "POST", "/api/user/workout-section-items", map[string]any{
+	w = doJSON(r, "POST", "/api/workout-section-items", map[string]any{
 		"workoutSectionId": mainSection.ID, "type": "exercise", "exerciseSchemeId": scheme2.ID, "position": 1,
 	})
 	if w.Code != http.StatusCreated {
@@ -105,7 +105,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	}
 
 	// 7. Verify the workout template is fully loaded
-	w = doJSON(r, "GET", "/api/user/workouts/"+itoa(wkt.ID), nil)
+	w = doJSON(r, "GET", "/api/workouts/"+itoa(wkt.ID), nil)
 	if w.Code != http.StatusOK {
 		t.Fatalf("get workout: status = %d", w.Code)
 	}

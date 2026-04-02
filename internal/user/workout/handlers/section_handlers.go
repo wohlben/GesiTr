@@ -18,8 +18,7 @@ func requireWorkoutRead(ctx context.Context, workoutID uint) error {
 	if err := database.DB.First(&workout, workoutID).Error; err != nil {
 		return huma.Error404NotFound("Workout not found")
 	}
-	access := workoutgroup.CheckWorkoutAccess(humaconfig.GetUserID(ctx), workout.Owner, workoutID)
-	if !access.CanRead() {
+	if !canReadWorkout(humaconfig.GetUserID(ctx), &workout) {
 		return huma.Error403Forbidden("access denied")
 	}
 	return nil
@@ -41,7 +40,7 @@ func requireWorkoutModify(ctx context.Context, workoutID uint) error {
 
 // ListWorkoutSections returns sections owned by the current user. Filter by
 // workoutId query param to get sections for a specific workout.
-// GET /api/user/workout-sections
+// GET /api/workout-sections
 //
 // OpenAPI: /api/docs#/operations/ListWorkoutSections
 func ListWorkoutSections(ctx context.Context, input *ListWorkoutSectionsInput) (*ListWorkoutSectionsOutput, error) {
@@ -51,11 +50,11 @@ func ListWorkoutSections(ctx context.Context, input *ListWorkoutSectionsInput) (
 		db = db.Where("workout_id = ?", input.WorkoutID)
 	}
 
-	// Include workouts the user owns or has group membership for
+	// Include workouts the user owns, public workouts, or group membership workouts
 	userID := humaconfig.GetUserID(ctx)
-	db = db.Where(`workout_id IN (SELECT id FROM workouts WHERE owner = ? AND deleted_at IS NULL)
+	db = db.Where(`workout_id IN (SELECT id FROM workouts WHERE (owner = ? OR public = ?) AND deleted_at IS NULL)
 		OR workout_id IN (SELECT wg.workout_id FROM workout_groups wg JOIN workout_group_memberships wgm ON wgm.group_id = wg.id WHERE wgm.user_id = ? AND wgm.deleted_at IS NULL AND wg.deleted_at IS NULL)`,
-		userID, userID)
+		userID, true, userID)
 
 	var entities []models.WorkoutSectionEntity
 	if err := db.Preload("Items").Order("position").Find(&entities).Error; err != nil {
@@ -72,7 +71,7 @@ func ListWorkoutSections(ctx context.Context, input *ListWorkoutSectionsInput) (
 // CreateWorkoutSection adds a section to a workout. Requires a workoutId
 // referencing a workout owned by the current user. A workout must exist
 // before sections can be added — see [CreateWorkout].
-// POST /api/user/workout-sections
+// POST /api/workout-sections
 //
 // OpenAPI: /api/docs#/operations/CreateWorkoutSection
 func CreateWorkoutSection(ctx context.Context, input *CreateWorkoutSectionInput) (*CreateWorkoutSectionOutput, error) {
@@ -94,7 +93,7 @@ func CreateWorkoutSection(ctx context.Context, input *CreateWorkoutSectionInput)
 }
 
 // GetWorkoutSection returns a single section with its exercises.
-// GET /api/user/workout-sections/{id}
+// GET /api/workout-sections/{id}
 //
 // OpenAPI: /api/docs#/operations/GetWorkoutSection
 func GetWorkoutSection(ctx context.Context, input *GetWorkoutSectionInput) (*GetWorkoutSectionOutput, error) {
@@ -109,7 +108,7 @@ func GetWorkoutSection(ctx context.Context, input *GetWorkoutSectionInput) (*Get
 }
 
 // DeleteWorkoutSection removes a section from its workout.
-// DELETE /api/user/workout-sections/{id}
+// DELETE /api/workout-sections/{id}
 //
 // OpenAPI: /api/docs#/operations/DeleteWorkoutSection
 func DeleteWorkoutSection(ctx context.Context, input *DeleteWorkoutSectionInput) (*DeleteWorkoutSectionOutput, error) {

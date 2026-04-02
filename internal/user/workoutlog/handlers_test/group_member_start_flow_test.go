@@ -43,14 +43,14 @@ func TestGroupMemberStartFlow(t *testing.T) {
 
 	// -- Setup: alice creates workout with 1 exercise item --
 
-	w = doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Squat Day"})
+	w = doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Squat Day"})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create workout: status = %d", w.Code)
 	}
 	var wkt workoutmodels.Workout
 	json.Unmarshal(w.Body.Bytes(), &wkt)
 
-	w = doJSONLog(t, r, "POST", "/api/user/workout-sections", map[string]any{
+	w = doJSONLog(t, r, "POST", "/api/workout-sections", map[string]any{
 		"workoutId": wkt.ID, "type": "main", "position": 0, "restBetweenExercises": 90,
 	})
 	if w.Code != http.StatusCreated {
@@ -59,7 +59,7 @@ func TestGroupMemberStartFlow(t *testing.T) {
 	var section workoutmodels.WorkoutSection
 	json.Unmarshal(w.Body.Bytes(), &section)
 
-	w = doJSONLog(t, r, "POST", "/api/user/workout-section-items", map[string]any{
+	w = doJSONLog(t, r, "POST", "/api/workout-section-items", map[string]any{
 		"workoutSectionId": section.ID, "type": "exercise",
 		"exerciseSchemeId": aliceScheme.ID, "position": 0,
 	})
@@ -107,7 +107,7 @@ func TestGroupMemberStartFlow(t *testing.T) {
 	// -- Bob accepts the invitation --
 
 	t.Log("=== Bob accepts workout group invitation ===")
-	w = doJSONLogAs(t, r, "POST", "/api/user/workouts/"+itoa(wkt.ID)+"/group/accept", nil, "bob")
+	w = doJSONLogAs(t, r, "POST", "/api/workouts/"+itoa(wkt.ID)+"/group/accept", nil, "bob")
 	if w.Code != http.StatusOK {
 		t.Fatalf("accept invitation: status = %d, body = %s", w.Code, w.Body.String())
 	}

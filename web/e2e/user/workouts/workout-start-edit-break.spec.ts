@@ -14,7 +14,7 @@ import {
   deleteWorkoutLog,
 } from '../../helpers';
 
-test.describe('/user/workouts/[id]/start — break time editing', () => {
+test.describe('/compendium/workouts/[id]/start — break time editing', () => {
   test('editing break between exercises persists after page reload', async ({
     request,
     page,
@@ -54,7 +54,7 @@ test.describe('/user/workouts/[id]/start — break time editing', () => {
     });
 
     // Navigate to workout start page, wait for exercises to load
-    await page.goto(`/user/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
+    await page.goto(`/compendium/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
     await expect(page.getByText('Break Test Ex A')).toBeVisible({ timeout: 10000 });
     await expect(page.getByText('Break Test Ex B')).toBeVisible({ timeout: 10000 });
 

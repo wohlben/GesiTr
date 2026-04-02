@@ -42,7 +42,7 @@ func TestScheduleFixedDateFullFlow(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &scheme)
 
 	// 2. Create a workout template
-	w = doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Back Day"})
+	w = doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Back Day"})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create workout: %d", w.Code)
 	}
@@ -177,7 +177,7 @@ func TestScheduleDeleteOrphansLogs(t *testing.T) {
 	defer closeDB(t)
 	r := newRouter()
 
-	doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Orphan Test"})
+	doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Orphan Test"})
 
 	// Create schedule + period + commitment
 	startDate := time.Now().AddDate(0, 0, -3)
@@ -237,7 +237,7 @@ func TestScheduleCRUD(t *testing.T) {
 	defer closeDB(t)
 	r := newRouter()
 
-	doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "CRUD Test"})
+	doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "CRUD Test"})
 
 	// Create
 	w := doJSONLog(t, r, "POST", "/api/user/workout-schedules", map[string]any{
@@ -279,7 +279,7 @@ func TestScheduleValidation(t *testing.T) {
 	defer closeDB(t)
 	r := newRouter()
 
-	doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Validation"})
+	doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Validation"})
 
 	// Invalid initialStatus
 	w := doJSONLog(t, r, "POST", "/api/user/workout-schedules", map[string]any{
@@ -297,7 +297,7 @@ func TestScheduleIdempotentGeneration(t *testing.T) {
 	defer closeDB(t)
 	r := newRouter()
 
-	doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{"name": "Idempotent"})
+	doJSONLog(t, r, "POST", "/api/workouts", map[string]any{"name": "Idempotent"})
 
 	startDate := time.Now().AddDate(0, 0, -3)
 	doJSONLog(t, r, "POST", "/api/user/workout-schedules", map[string]any{

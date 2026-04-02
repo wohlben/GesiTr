@@ -24,6 +24,8 @@ export interface Workout extends BaseModel {
   owner: string;
   name: string;
   notes?: string;
+  public: boolean;
+  version: number /* int */;
   sections: WorkoutSection[];
   workoutGroup?: WorkoutGroupInfo;
 }

@@ -36,7 +36,7 @@ const variantWorkouts: Record<string, { workoutName: string; exerciseName: strin
   ],
 };
 
-test.describe('/user/workouts', () => {
+test.describe('/compendium/workouts', () => {
   for (const viewport of viewports) {
     test.describe(viewport.name, () => {
       test.use({ viewport: { width: viewport.width, height: viewport.height } });
@@ -69,11 +69,11 @@ test.describe('/user/workouts', () => {
           items.push({ exercise, scheme, workout, section, sectionExercise });
         }
 
-        await page.goto('/user/workouts', { waitUntil: 'networkidle' });
-        await expect(page.locator('h1')).toHaveText('My Workouts');
+        await page.goto('/compendium/workouts', { waitUntil: 'networkidle' });
+        await expect(page.locator('h1')).toHaveText('Workouts');
         await expect(page.locator('table tbody tr')).toHaveCount(variant.length);
         await expect(page.locator('table')).toContainText(variant[0].workoutName);
-        await expect(page).toHaveScreenshot([viewport.name, 'light', 'user', 'workouts.png'], { fullPage: true });
+        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'workouts.png'], { fullPage: true });
 
         for (const item of items) {
           await deleteWorkoutSectionItem(request, item.sectionExercise.id);
@@ -113,11 +113,11 @@ test.describe('/user/workouts', () => {
         }
 
         await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto('/user/workouts', { waitUntil: 'networkidle' });
-        await expect(page.locator('h1')).toHaveText('My Workouts');
+        await page.goto('/compendium/workouts', { waitUntil: 'networkidle' });
+        await expect(page.locator('h1')).toHaveText('Workouts');
         await expect(page.locator('table tbody tr')).toHaveCount(variant.length);
         await expect(page.locator('table')).toContainText(variant[0].workoutName);
-        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'user', 'workouts.png'], { fullPage: true });
+        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'workouts.png'], { fullPage: true });
 
         for (const item of items) {
           await deleteWorkoutSectionItem(request, item.sectionExercise.id);

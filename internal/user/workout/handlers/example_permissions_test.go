@@ -12,9 +12,9 @@ func ExampleGetWorkoutPermissions_owner() {
 	setupExampleDB()
 	r := newRouter()
 
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 
-	w := doRaw(r, "GET", "/api/user/workouts/1/permissions", "")
+	w := doRaw(r, "GET", "/api/workouts/1/permissions", "")
 
 	var resp shared.PermissionsResponse
 	json.Unmarshal(w.Body.Bytes(), &resp)
@@ -30,9 +30,9 @@ func ExampleGetWorkoutPermissions_groupMember() {
 	setupExampleDB()
 	r := newRouter()
 
-	doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+	doRawAs(r, "GET", "/api/workouts", "", "bob")
 
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 	doRaw(r, "POST", "/api/user/workout-groups", `{
 		"name": "Gym Buddies", "workoutId": 1
 	}`)
@@ -40,7 +40,7 @@ func ExampleGetWorkoutPermissions_groupMember() {
 		"groupId": 1, "userId": "bob", "role": "member"
 	}`)
 
-	w := doRawAs(r, "GET", "/api/user/workouts/1/permissions", "", "bob")
+	w := doRawAs(r, "GET", "/api/workouts/1/permissions", "", "bob")
 
 	var resp shared.PermissionsResponse
 	json.Unmarshal(w.Body.Bytes(), &resp)
@@ -56,9 +56,9 @@ func ExampleGetWorkoutPermissions_groupAdmin() {
 	setupExampleDB()
 	r := newRouter()
 
-	doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+	doRawAs(r, "GET", "/api/workouts", "", "bob")
 
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 	doRaw(r, "POST", "/api/user/workout-groups", `{
 		"name": "Gym Buddies", "workoutId": 1
 	}`)
@@ -68,7 +68,7 @@ func ExampleGetWorkoutPermissions_groupAdmin() {
 	// Promote bob to admin
 	doRaw(r, "PUT", "/api/user/workout-group-memberships/1", `{"role": "admin"}`)
 
-	w := doRawAs(r, "GET", "/api/user/workouts/1/permissions", "", "bob")
+	w := doRawAs(r, "GET", "/api/workouts/1/permissions", "", "bob")
 
 	var resp shared.PermissionsResponse
 	json.Unmarshal(w.Body.Bytes(), &resp)
@@ -84,11 +84,11 @@ func ExampleGetWorkoutPermissions_noAccess() {
 	setupExampleDB()
 	r := newRouter()
 
-	doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+	doRawAs(r, "GET", "/api/workouts", "", "bob")
 
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 
-	w := doRawAs(r, "GET", "/api/user/workouts/1/permissions", "", "bob")
+	w := doRawAs(r, "GET", "/api/workouts/1/permissions", "", "bob")
 
 	fmt.Println(w.Code)
 	// Output:
@@ -100,9 +100,9 @@ func ExampleGetWorkoutPermissions_invitedMember() {
 	setupExampleDB()
 	r := newRouter()
 
-	doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+	doRawAs(r, "GET", "/api/workouts", "", "bob")
 
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 	doRaw(r, "POST", "/api/user/workout-groups", `{
 		"name": "Gym Buddies", "workoutId": 1
 	}`)
@@ -110,7 +110,7 @@ func ExampleGetWorkoutPermissions_invitedMember() {
 		"groupId": 1, "userId": "bob", "role": "invited"
 	}`)
 
-	w := doRawAs(r, "GET", "/api/user/workouts/1/permissions", "", "bob")
+	w := doRawAs(r, "GET", "/api/workouts/1/permissions", "", "bob")
 
 	var resp shared.PermissionsResponse
 	json.Unmarshal(w.Body.Bytes(), &resp)

@@ -97,7 +97,7 @@ async function createFixturesAndStartLog(
   }
 
   // Navigate to start page, wait for planning log creation, click Start
-  await page.goto(`/user/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
+  await page.goto(`/compendium/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
   await expect(page.locator('h1')).toHaveText('Plan Workout');
   for (const ex of v.exercises) {
     await expect(page.getByText(ex.name)).toBeVisible({ timeout: 10000 });

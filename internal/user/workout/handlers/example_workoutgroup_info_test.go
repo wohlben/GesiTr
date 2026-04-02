@@ -14,10 +14,10 @@ func ExampleListWorkouts_groupMemberSeesWorkoutGroupInfo() {
 	r := newRouter()
 
 	// Bob interacts with the API to establish his profile
-	doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+	doRawAs(r, "GET", "/api/workouts", "", "bob")
 
 	// Alice creates a workout
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 
 	// Alice creates a workout group and invites bob
 	doRaw(r, "POST", "/api/user/workout-groups", `{
@@ -28,15 +28,17 @@ func ExampleListWorkouts_groupMemberSeesWorkoutGroupInfo() {
 	}`)
 
 	// Bob lists workouts — should see Alice's shared workout with group info
-	w := doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+	w := doRawAs(r, "GET", "/api/workouts", "", "bob")
 
-	var workouts []models.Workout
-	json.Unmarshal(w.Body.Bytes(), &workouts)
+	var page struct {
+		Items []models.Workout `json:"items"`
+	}
+	json.Unmarshal(w.Body.Bytes(), &page)
 	fmt.Println(w.Code)
-	fmt.Println(len(workouts))
-	fmt.Println(workouts[0].Name)
-	fmt.Println(workouts[0].WorkoutGroup.GroupName)
-	fmt.Println(workouts[0].WorkoutGroup.Membership)
+	fmt.Println(len(page.Items))
+	fmt.Println(page.Items[0].Name)
+	fmt.Println(page.Items[0].WorkoutGroup.GroupName)
+	fmt.Println(page.Items[0].WorkoutGroup.Membership)
 	// Output:
 	// 200
 	// 1
@@ -52,20 +54,22 @@ func ExampleListWorkouts_ownerDoesNotSeeWorkoutGroupInfo() {
 	r := newRouter()
 
 	// Alice creates a workout and a group for it
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 	doRaw(r, "POST", "/api/user/workout-groups", `{
 		"name": "Gym Buddies", "workoutId": 1
 	}`)
 
 	// Alice lists her workouts — workoutGroup should be absent
-	w := doJSON(r, "GET", "/api/user/workouts", nil)
+	w := doJSON(r, "GET", "/api/workouts", nil)
 
-	var workouts []models.Workout
-	json.Unmarshal(w.Body.Bytes(), &workouts)
+	var page struct {
+		Items []models.Workout `json:"items"`
+	}
+	json.Unmarshal(w.Body.Bytes(), &page)
 	fmt.Println(w.Code)
-	fmt.Println(len(workouts))
-	fmt.Println(workouts[0].Name)
-	fmt.Println(workouts[0].WorkoutGroup == nil)
+	fmt.Println(len(page.Items))
+	fmt.Println(page.Items[0].Name)
+	fmt.Println(page.Items[0].WorkoutGroup == nil)
 	// Output:
 	// 200
 	// 1
@@ -79,10 +83,10 @@ func ExampleGetWorkout_groupMemberSeesWorkoutGroupInfo() {
 	r := newRouter()
 
 	// Bob interacts with the API to establish his profile
-	doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+	doRawAs(r, "GET", "/api/workouts", "", "bob")
 
 	// Alice creates a workout, group, and invites bob
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 	doRaw(r, "POST", "/api/user/workout-groups", `{
 		"name": "Gym Buddies", "workoutId": 1
 	}`)
@@ -91,7 +95,7 @@ func ExampleGetWorkout_groupMemberSeesWorkoutGroupInfo() {
 	}`)
 
 	// Bob fetches the workout directly
-	w := doRawAs(r, "GET", "/api/user/workouts/1", "", "bob")
+	w := doRawAs(r, "GET", "/api/workouts/1", "", "bob")
 
 	var workout models.Workout
 	json.Unmarshal(w.Body.Bytes(), &workout)
@@ -112,10 +116,10 @@ func ExampleUpdateWorkout_groupAdminSeesWorkoutGroupInfo() {
 	r := newRouter()
 
 	// Bob interacts with the API to establish his profile
-	doRawAs(r, "GET", "/api/user/workouts", "", "bob")
+	doRawAs(r, "GET", "/api/workouts", "", "bob")
 
 	// Alice creates a workout, group, and adds bob as admin
-	doRaw(r, "POST", "/api/user/workouts", `{"name": "Push Day"}`)
+	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 	doRaw(r, "POST", "/api/user/workout-groups", `{
 		"name": "Gym Buddies", "workoutId": 1
 	}`)
@@ -126,7 +130,7 @@ func ExampleUpdateWorkout_groupAdminSeesWorkoutGroupInfo() {
 	doRaw(r, "PUT", "/api/user/workout-group-memberships/1", `{"role": "admin"}`)
 
 	// Bob updates the workout — response should include workoutGroup
-	w := doRawAs(r, "PUT", "/api/user/workouts/1", `{"name": "Upper Push"}`, "bob")
+	w := doRawAs(r, "PUT", "/api/workouts/1", `{"name": "Upper Push"}`, "bob")
 
 	var workout models.Workout
 	json.Unmarshal(w.Body.Bytes(), &workout)

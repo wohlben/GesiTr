@@ -64,7 +64,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 
 	// -- Setup: create workout template with sections and exercises --
 
-	w = doJSONLog(t, r, "POST", "/api/user/workouts", map[string]any{
+	w = doJSONLog(t, r, "POST", "/api/workouts", map[string]any{
 		"name": "Strength Day",
 	})
 	if w.Code != http.StatusCreated {
@@ -73,7 +73,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	var wkt workoutmodels.Workout
 	json.Unmarshal(w.Body.Bytes(), &wkt)
 
-	w = doJSONLog(t, r, "POST", "/api/user/workout-sections", map[string]any{
+	w = doJSONLog(t, r, "POST", "/api/workout-sections", map[string]any{
 		"workoutId": wkt.ID, "type": "main", "position": 0, "restBetweenExercises": 90,
 	})
 	if w.Code != http.StatusCreated {
@@ -82,14 +82,14 @@ func TestWorkoutStartFlow(t *testing.T) {
 	var section workoutmodels.WorkoutSection
 	json.Unmarshal(w.Body.Bytes(), &section)
 
-	w = doJSONLog(t, r, "POST", "/api/user/workout-section-items", map[string]any{
+	w = doJSONLog(t, r, "POST", "/api/workout-section-items", map[string]any{
 		"workoutSectionId": section.ID, "type": "exercise", "exerciseSchemeId": scheme1.ID, "position": 0,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section exercise 1: status = %d", w.Code)
 	}
 
-	w = doJSONLog(t, r, "POST", "/api/user/workout-section-items", map[string]any{
+	w = doJSONLog(t, r, "POST", "/api/workout-section-items", map[string]any{
 		"workoutSectionId": section.ID, "type": "exercise", "exerciseSchemeId": scheme2.ID, "position": 1,
 	})
 	if w.Code != http.StatusCreated {
@@ -97,7 +97,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	}
 
 	// Fetch the full workout template to see what the frontend has to work with
-	w = doJSONLog(t, r, "GET", "/api/user/workouts/"+itoa(wkt.ID), nil)
+	w = doJSONLog(t, r, "GET", "/api/workouts/"+itoa(wkt.ID), nil)
 	if w.Code != http.StatusOK {
 		t.Fatalf("get workout template: status = %d", w.Code)
 	}

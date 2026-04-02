@@ -24,7 +24,7 @@ const variantData: Record<string, { workoutName: string; exerciseName: string }>
   'mobile-dark': { workoutName: 'Edit Full Body', exerciseName: 'WE MD Deadlift' },
 };
 
-test.describe('/user/workouts/[id]/edit', () => {
+test.describe('/compendium/workouts/[id]/edit', () => {
   for (const viewport of viewports) {
     test.describe(viewport.name, () => {
       test.use({ viewport: { width: viewport.width, height: viewport.height } });
@@ -47,7 +47,7 @@ test.describe('/user/workouts/[id]/edit', () => {
           exerciseSchemeId: scheme.id,
         });
 
-        await page.goto(`/user/workouts/${workout.id}/edit`, { waitUntil: 'networkidle' });
+        await page.goto(`/compendium/workouts/${workout.id}/edit`, { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toHaveText('Edit Workout');
         await expect(page.locator('input#name')).toHaveValue(v.workoutName);
         await expect(page).toHaveScreenshot([
@@ -86,7 +86,7 @@ test.describe('/user/workouts/[id]/edit', () => {
         });
 
         await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto(`/user/workouts/${workout.id}/edit`, { waitUntil: 'networkidle' });
+        await page.goto(`/compendium/workouts/${workout.id}/edit`, { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toHaveText('Edit Workout');
         await expect(page.locator('input#name')).toHaveValue(v.workoutName);
         await expect(page).toHaveScreenshot([

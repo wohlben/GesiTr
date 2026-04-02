@@ -189,7 +189,7 @@ func TestUniquePlanningLog(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	doJSON(r, "POST", "/api/user/workouts", map[string]any{
+	doJSON(r, "POST", "/api/workouts", map[string]any{
 		"name": "Template",
 	})
 

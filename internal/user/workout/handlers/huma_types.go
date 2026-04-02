@@ -1,21 +1,30 @@
 package handlers
 
 import (
+	"gesitr/internal/humaconfig"
 	"gesitr/internal/shared"
 	"gesitr/internal/user/workout/models"
 )
 
 // --- Workout handlers ---
 
-type ListWorkoutsInput struct{}
+type ListWorkoutsInput struct {
+	humaconfig.PaginationInput
+	Owner  string `query:"owner" doc:"Filter by owner ('me' for current user)"`
+	Public string `query:"public" doc:"'true' to show only public workouts"`
+	Logged string `query:"logged" doc:"'me' to show workouts you own or have logged"`
+	Q      string `query:"q" doc:"Search by name"`
+}
 
 type ListWorkoutsOutput struct {
-	Body []models.Workout
+	Body humaconfig.PaginatedBody[models.Workout]
 }
 
 type WorkoutBody struct {
-	Name  string  `json:"name" required:"true"`
-	Notes *string `json:"notes,omitempty"`
+	Name            string  `json:"name" required:"true"`
+	Notes           *string `json:"notes,omitempty"`
+	Public          bool    `json:"public" required:"false"`
+	SourceWorkoutID *uint   `json:"sourceWorkoutId,omitempty" doc:"Source workout ID for forks (creates forked+equivalent relationships)"`
 }
 
 type CreateWorkoutInput struct {
@@ -55,6 +64,23 @@ type GetWorkoutPermissionsInput struct {
 
 type GetWorkoutPermissionsOutput struct {
 	Body shared.PermissionsResponse
+}
+
+type ListWorkoutVersionsInput struct {
+	ID uint `path:"id"`
+}
+
+type ListWorkoutVersionsOutput struct {
+	Body []shared.VersionEntry
+}
+
+type GetWorkoutVersionInput struct {
+	ID      uint `path:"id"`
+	Version int  `path:"version"`
+}
+
+type GetWorkoutVersionOutput struct {
+	Body shared.VersionEntry
 }
 
 // --- Workout section handlers ---

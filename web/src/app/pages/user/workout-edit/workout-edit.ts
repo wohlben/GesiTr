@@ -473,7 +473,7 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
                 {{ t('common.save') }}
               </button>
               <a
-                routerLink="/user/workouts"
+                routerLink="/compendium/workouts"
                 class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 {{ t('common.cancel') }}
@@ -591,7 +591,7 @@ export class WorkoutEdit {
     onSuccess: () => {
       this.queryClient.invalidateQueries({ queryKey: workoutKeys.all() });
       this.queryClient.invalidateQueries({ queryKey: exerciseSchemeKeys.all() });
-      this.router.navigate(['/user/workouts']);
+      this.router.navigate(['/compendium/workouts']);
     },
   }));
 
@@ -600,7 +600,7 @@ export class WorkoutEdit {
     onSuccess: () => {
       this.queryClient.invalidateQueries({ queryKey: workoutKeys.all() });
       this.queryClient.invalidateQueries({ queryKey: exerciseSchemeKeys.all() });
-      this.router.navigate(['/user/workouts']);
+      this.router.navigate(['/compendium/workouts']);
     },
   }));
 

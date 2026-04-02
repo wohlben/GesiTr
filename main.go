@@ -44,6 +44,8 @@ import (
 	workoutlogmodels "gesitr/internal/user/workoutlog/models"
 	workoutScheduleHandlers "gesitr/internal/user/workoutschedule/handlers"
 	workoutScheduleModels "gesitr/internal/user/workoutschedule/models"
+	workoutRelHandlers "gesitr/internal/workoutrelationship/handlers"
+	workoutRelModels "gesitr/internal/workoutrelationship/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -181,6 +183,10 @@ func runMigrations() {
 				GROUP BY el.owner, ee.equipment_id`)
 		}
 	}
+
+	// Drop unique index on workout_groups.workout_id to allow multiple groups per workout.
+	database.DB.Exec("DROP INDEX IF EXISTS idx_workout_groups_workout_id")
+	database.DB.Exec("DROP INDEX IF EXISTS uni_workout_groups_workout_id")
 }
 
 func autoMigrate() {
@@ -220,6 +226,8 @@ func autoMigrate() {
 		&masteryModels.MasteryExperienceEntity{},
 		&masteryModels.EquipmentMasteryContributionEntity{},
 		&masteryModels.EquipmentMasteryExperienceEntity{},
+		&workoutModels.WorkoutHistoryEntity{},
+		&workoutRelModels.WorkoutRelationshipEntity{},
 	)
 }
 
@@ -244,6 +252,7 @@ func setupRoutes(r *gin.Engine) {
 	workoutGroupHandlers.RegisterRoutes(humaAPI)
 	workoutScheduleHandlers.RegisterRoutes(humaAPI)
 	masteryHandlers.RegisterRoutes(humaAPI)
+	workoutRelHandlers.RegisterRoutes(humaAPI)
 }
 
 func setupSPA(r *gin.Engine) {

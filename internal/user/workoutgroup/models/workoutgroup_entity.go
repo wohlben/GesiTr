@@ -9,7 +9,7 @@ import (
 type WorkoutGroupEntity struct {
 	shared.BaseModel
 	Name         string                           `gorm:"not null"`
-	WorkoutID    uint                             `gorm:"not null;uniqueIndex"`
+	WorkoutID    uint                             `gorm:"not null;index"`
 	Workout      *workoutmodels.WorkoutEntity     `gorm:"foreignKey:WorkoutID;constraint:OnDelete:CASCADE" json:"-"`
 	Owner        string                           `gorm:"not null;index"`
 	OwnerProfile *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
