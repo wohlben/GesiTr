@@ -23,7 +23,8 @@
   ],
   "remoteUser": "vscode",
   "containerEnv": {
-    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
+    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
+    "TZ": "${localEnv:TZ:Europe/Berlin}"
   },
   "postCreateCommand": "cd web && npm ci",
   "customizations": {
