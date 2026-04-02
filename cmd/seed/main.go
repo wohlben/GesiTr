@@ -8,9 +8,9 @@ import (
 	"path/filepath"
 	"time"
 
+	equipmentModels "gesitr/internal/compendium/equipment/models"
+	exerciseModels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
-	equipmentModels "gesitr/internal/equipment/models"
-	exerciseModels "gesitr/internal/exercise/models"
 	profileModels "gesitr/internal/profile/models"
 	"gesitr/internal/shared"
 )

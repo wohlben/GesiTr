@@ -3,8 +3,8 @@ package models
 import (
 	"math"
 
-	equipmentmodels "gesitr/internal/equipment/models"
-	exercisemodels "gesitr/internal/exercise/models"
+	equipmentmodels "gesitr/internal/compendium/equipment/models"
+	exercisemodels "gesitr/internal/compendium/exercise/models"
 )
 
 const (

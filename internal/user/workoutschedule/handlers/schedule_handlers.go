@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
+	workoutmodels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 	workoutlogmodels "gesitr/internal/user/workoutlog/models"
 	"gesitr/internal/user/workoutschedule/models"
-	workoutmodels "gesitr/internal/workout/models"
 
 	"github.com/danielgtaylor/huma/v2"
 )

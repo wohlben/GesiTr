@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	exercisemodels "gesitr/internal/exercise/models"
+	exercisemodels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/user/mastery/models"
 
 	"gorm.io/gorm"

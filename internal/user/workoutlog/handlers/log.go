@@ -5,11 +5,11 @@ import (
 	"reflect"
 	"time"
 
+	workoutmodels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/user/workoutlog/models"
 	workoutschedule "gesitr/internal/user/workoutschedule"
-	workoutmodels "gesitr/internal/workout/models"
 
 	"github.com/danielgtaylor/huma/v2"
 	"gorm.io/gorm"

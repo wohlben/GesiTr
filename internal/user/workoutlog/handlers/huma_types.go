@@ -3,8 +3,8 @@ package handlers
 import (
 	"time"
 
+	workoutmodels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/user/workoutlog/models"
-	workoutmodels "gesitr/internal/workout/models"
 )
 
 // --- Workout log handlers ---

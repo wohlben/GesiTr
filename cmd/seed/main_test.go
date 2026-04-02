@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
+	equipmentModels "gesitr/internal/compendium/equipment/models"
+	exerciseModels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
-	equipmentModels "gesitr/internal/equipment/models"
-	exerciseModels "gesitr/internal/exercise/models"
 	profileModels "gesitr/internal/profile/models"
 
 	"gorm.io/driver/sqlite"

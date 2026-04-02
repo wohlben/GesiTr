@@ -4,8 +4,8 @@ import (
 	"context"
 	"reflect"
 
+	exercisemodels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
-	exercisemodels "gesitr/internal/exercise/models"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/user/workoutlog/models"
 

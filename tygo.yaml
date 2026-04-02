@@ -13,7 +13,7 @@ packages:
       "gorm.DeletedAt": "string | null"
     include_files:
       - "base.go"
-  - path: "gesitr/internal/exercise/models"
+  - path: "gesitr/internal/compendium/exercise/models"
     output_path: "web/src/app/generated/exercise.ts"
     type_mappings:
       "time.Time": "string"
@@ -22,7 +22,7 @@ packages:
       - "exercise.go"
       - "scheme.go"
       - "relationship.go"
-  - path: "gesitr/internal/equipment/models"
+  - path: "gesitr/internal/compendium/equipment/models"
     output_path: "web/src/app/generated/equipment.ts"
     type_mappings:
       "time.Time": "string"
@@ -31,7 +31,7 @@ packages:
       - "equipment.go"
       - "fulfillment.go"
       - "relationship.go"
-  - path: "gesitr/internal/workout/models"
+  - path: "gesitr/internal/compendium/workout/models"
     output_path: "web/src/app/generated/user-workout.ts"
     type_mappings:
       "time.Time": "string"
@@ -66,7 +66,7 @@ packages:
       "gorm.DeletedAt": "string | null"
     include_files:
       - "mastery.go"
-  - path: "gesitr/internal/workoutgroup/models"
+  - path: "gesitr/internal/compendium/workoutgroup/models"
     output_path: "web/src/app/generated/user-workoutgroup.ts"
     frontmatter: |
       import { BaseModel } from './user-models';

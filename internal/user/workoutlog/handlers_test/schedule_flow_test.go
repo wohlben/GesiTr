@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	exercisemodels "gesitr/internal/exercise/models"
+	exercisemodels "gesitr/internal/compendium/exercise/models"
+	workoutmodels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/user/workoutlog/models"
 	schedulemodels "gesitr/internal/user/workoutschedule/models"
-	workoutmodels "gesitr/internal/workout/models"
 )
 
 // TestScheduleFixedDateFullFlow exercises the complete lifecycle:

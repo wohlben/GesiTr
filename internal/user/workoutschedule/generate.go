@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"time"
 
-	exercisemodels "gesitr/internal/exercise/models"
+	exercisemodels "gesitr/internal/compendium/exercise/models"
+	workoutmodels "gesitr/internal/compendium/workout/models"
 	workoutlogmodels "gesitr/internal/user/workoutlog/models"
 	"gesitr/internal/user/workoutschedule/models"
-	workoutmodels "gesitr/internal/workout/models"
 
 	"gorm.io/gorm"
 )

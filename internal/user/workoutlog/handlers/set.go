@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"time"
 
+	exercisemodels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
-	exercisemodels "gesitr/internal/exercise/models"
 	"gesitr/internal/humaconfig"
 	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciselogmodels "gesitr/internal/user/exerciselog/models"

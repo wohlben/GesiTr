@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"testing"
 
-	exercisemodels "gesitr/internal/exercise/models"
+	exercisemodels "gesitr/internal/compendium/exercise/models"
+	workoutmodels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/user/workoutlog/models"
-	workoutmodels "gesitr/internal/workout/models"
 )
 
 func TestWorkoutStartFlow(t *testing.T) {

@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
+	exercisemodels "gesitr/internal/compendium/exercise/models"
+	workoutmodels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
-	exercisemodels "gesitr/internal/exercise/models"
 	"gesitr/internal/user/workoutlog/models"
-	workoutmodels "gesitr/internal/workout/models"
 )
 
 // TestCommitmentHappyPath exercises the full proposed → committed → in_progress → finished flow

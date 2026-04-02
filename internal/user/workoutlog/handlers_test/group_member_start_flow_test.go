@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"testing"
 
-	exercisemodels "gesitr/internal/exercise/models"
+	exercisemodels "gesitr/internal/compendium/exercise/models"
+	workoutmodels "gesitr/internal/compendium/workout/models"
+	workoutgroupmodels "gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/user/workoutlog/models"
-	workoutmodels "gesitr/internal/workout/models"
-	workoutgroupmodels "gesitr/internal/workoutgroup/models"
 )
 
 // TestGroupMemberStartFlow verifies that an invited group member can accept

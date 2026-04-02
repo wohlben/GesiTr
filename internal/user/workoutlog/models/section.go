@@ -3,8 +3,8 @@ package models
 import (
 	"time"
 
+	workoutmodels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/shared"
-	workoutmodels "gesitr/internal/workout/models"
 )
 
 type WorkoutLogSection struct {

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	equipmentmodels "gesitr/internal/equipment/models"
+	equipmentmodels "gesitr/internal/compendium/equipment/models"
 	"gesitr/internal/user/mastery/models"
 
 	"gorm.io/gorm"

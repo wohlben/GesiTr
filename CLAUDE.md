@@ -46,10 +46,12 @@ make docker
 ### Backend (Go)
 
 - **Entry point**: `main.go` — sets up Gin routes, GORM auto-migration, embeds SPA via `//go:embed`
-- **`internal/exercise/`** — exercise models and handlers (`/api/exercises`)
-- **`internal/equipment/`** — equipment, fulfillment, and relationship models and handlers (`/api/equipment`, `/api/fulfillments`, `/api/equipment-relationships`)
-- **`internal/exerciserelationship/`** — exercise relationship models and handlers
-- **`internal/user/`** — user-scoped entities: workouts, workout logs, exercise logs
+- **`internal/compendium/`** — public/shared entities (the compendium):
+  - **`exercise/`** — exercises, exercise relationships, exercise schemes
+  - **`equipment/`** — equipment, fulfillments, equipment relationships
+  - **`workout/`** — workouts, workout sections, exercise groups, workout relationships
+  - **`workoutgroup/`** — workout group sharing and memberships
+- **`internal/user/`** — user-scoped entities: workout logs, workout schedules, exercise logs, mastery
 - **`internal/profile/`** — user profile models and handlers
 - **`internal/auth/`** — middleware extracting UserID from header (`AUTH_HEADER` env var, default `X-User-Id`; falls back to `AUTH_FALLBACK_USER` in dev)
 - **`internal/database/`** — SQLite init via GORM
@@ -114,5 +116,5 @@ Output files:
 ## Conventions
 
 - **Commits**: conventional commits (`feat:`, `fix:`, `chore:`, `refactor:`, `docs:`)
-- **Enum values**: Go backend uses lowercase for some enums (e.g., `'free_weights'`, `'beginner'`) and uppercase for others (e.g., `'STRENGTH'`, `'CHEST'`). Check `internal/exercise/models/exercise.go` and `internal/equipment/models/equipment.go` for canonical values.
+- **Enum values**: Go backend uses lowercase for some enums (e.g., `'free_weights'`, `'beginner'`) and uppercase for others (e.g., `'STRENGTH'`, `'CHEST'`). Check `internal/compendium/exercise/models/exercise.go` and `internal/compendium/equipment/models/equipment.go` for canonical values.
 - **Issue tracking**: uses `bd` (beads) — see `AGENTS.md` for workflow
