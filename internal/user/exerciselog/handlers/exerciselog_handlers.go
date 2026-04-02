@@ -84,6 +84,7 @@ func CreateExerciseLog(ctx context.Context, input *CreateExerciseLogInput) (*Cre
 			return err
 		}
 		_ = masteryHandlers.UpsertExperience(tx, entity.Owner, entity.ExerciseID, entity.Reps)
+		_ = masteryHandlers.UpsertEquipmentExperience(tx, entity.Owner, entity.ExerciseID, entity.Reps)
 		return RecomputeRecord(tx, entity.ExerciseID, entity.MeasurementType)
 	})
 	if err != nil {

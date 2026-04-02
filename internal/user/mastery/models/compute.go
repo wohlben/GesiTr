@@ -3,6 +3,7 @@ package models
 import (
 	"math"
 
+	equipmentrelmodels "gesitr/internal/equipmentrelationship/models"
 	exerciserelmodels "gesitr/internal/exerciserelationship/models"
 )
 
@@ -86,4 +87,29 @@ func ComputeContributionMultiplier(strength float64, relType string) (float64, b
 		return 0, false
 	}
 	return (strength * 0.5) + typeBonus, true
+}
+
+// EquipmentRelationshipTypeBonus returns the type bonus for an equipment relationship type.
+func EquipmentRelationshipTypeBonus(relType string) (float64, bool) {
+	switch equipmentrelmodels.EquipmentRelationshipType(relType) {
+	case equipmentrelmodels.EquipmentRelationshipTypeEquivalent:
+		return 0.5, true
+	default:
+		return 0, false
+	}
+}
+
+// ComputeEquipmentContributionMultiplier calculates the combined multiplier for equipment relationships.
+func ComputeEquipmentContributionMultiplier(strength float64, relType string) (float64, bool) {
+	typeBonus, contributes := EquipmentRelationshipTypeBonus(relType)
+	if !contributes {
+		return 0, false
+	}
+	return (strength * 0.5) + typeBonus, true
+}
+
+// FulfillmentContributionMultiplier returns the fixed multiplier for equipment fulfillments.
+// Fulfillments represent substitutability — experience with a substitute partially transfers.
+func FulfillmentContributionMultiplier() float64 {
+	return 0.75 // (1.0 * 0.5) + 0.25
 }

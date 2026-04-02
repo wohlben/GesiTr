@@ -135,3 +135,50 @@ func TestComputeContributionMultiplier(t *testing.T) {
 		}
 	}
 }
+
+func TestEquipmentRelationshipTypeBonus(t *testing.T) {
+	// equivalent contributes
+	bonus, ok := EquipmentRelationshipTypeBonus("equivalent")
+	if !ok || bonus != 0.5 {
+		t.Errorf("equivalent: got (%v, %v), want (0.5, true)", bonus, ok)
+	}
+
+	// forked does not contribute
+	_, ok = EquipmentRelationshipTypeBonus("forked")
+	if ok {
+		t.Error("forked should not contribute")
+	}
+
+	// unknown type does not contribute
+	_, ok = EquipmentRelationshipTypeBonus("unknown")
+	if ok {
+		t.Error("unknown should not contribute")
+	}
+}
+
+func TestComputeEquipmentContributionMultiplier(t *testing.T) {
+	tests := []struct {
+		strength float64
+		relType  string
+		want     float64
+		wantOK   bool
+	}{
+		{1.0, "equivalent", 1.0, true},  // 0.5 + 0.5
+		{0.8, "equivalent", 0.9, true},  // 0.4 + 0.5
+		{0.5, "equivalent", 0.75, true}, // 0.25 + 0.5
+		{1.0, "forked", 0, false},       // no transfer
+	}
+	for _, tt := range tests {
+		got, ok := ComputeEquipmentContributionMultiplier(tt.strength, tt.relType)
+		if ok != tt.wantOK || got != tt.want {
+			t.Errorf("ComputeEquipmentContributionMultiplier(%v, %q) = (%v, %v), want (%v, %v)", tt.strength, tt.relType, got, ok, tt.want, tt.wantOK)
+		}
+	}
+}
+
+func TestFulfillmentContributionMultiplier(t *testing.T) {
+	got := FulfillmentContributionMultiplier()
+	if got != 0.75 {
+		t.Errorf("FulfillmentContributionMultiplier() = %v, want 0.75", got)
+	}
+}

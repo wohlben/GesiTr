@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { firstValueFrom, map } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { UserProfile, UpdateProfileRequest } from '$generated/profile';
 import { Exercise, Equipment, ExerciseScheme } from '$generated/models';
 import {
@@ -23,8 +23,7 @@ import {
   SchedulePeriod,
   ScheduleCommitment,
 } from '$generated/user-workoutschedule';
-import { ExerciseMastery } from '$generated/user-mastery';
-import { PaginatedResponse } from './paginated-response';
+import { ExerciseMastery, EquipmentMastery } from '$generated/user-mastery';
 
 @Injectable({ providedIn: 'root' })
 export class UserApiClient {
@@ -37,6 +36,17 @@ export class UserApiClient {
 
   fetchMastery(exerciseId: number): Promise<ExerciseMastery> {
     return firstValueFrom(this.http.get<ExerciseMastery>(`/api/user/mastery/${exerciseId}`));
+  }
+
+  // Equipment Mastery
+  fetchEquipmentMasteryList(): Promise<EquipmentMastery[]> {
+    return firstValueFrom(this.http.get<EquipmentMastery[]>('/api/user/equipment-mastery'));
+  }
+
+  fetchEquipmentMastery(equipmentId: number): Promise<EquipmentMastery> {
+    return firstValueFrom(
+      this.http.get<EquipmentMastery>(`/api/user/equipment-mastery/${equipmentId}`),
+    );
   }
 
   // Profile
@@ -52,14 +62,6 @@ export class UserApiClient {
     return firstValueFrom(this.http.get<UserProfile>(`/api/profiles/${id}`));
   }
 
-  fetchUserExercises(): Promise<Exercise[]> {
-    return firstValueFrom(
-      this.http
-        .get<PaginatedResponse<Exercise>>('/api/exercises?mastery=me')
-        .pipe(map((res) => res.items)),
-    );
-  }
-
   fetchUserExercise(id: number): Promise<Exercise> {
     return firstValueFrom(this.http.get<Exercise>(`/api/exercises/${id}`));
   }
@@ -68,28 +70,8 @@ export class UserApiClient {
     return firstValueFrom(this.http.post<Exercise>('/api/exercises', data));
   }
 
-  deleteUserExercise(id: number): Promise<void> {
-    return firstValueFrom(this.http.delete<void>(`/api/exercises/${id}`));
-  }
-
-  fetchUserEquipment(): Promise<Equipment[]> {
-    return firstValueFrom(
-      this.http
-        .get<PaginatedResponse<Equipment>>('/api/equipment?owner=me')
-        .pipe(map((res) => res.items)),
-    );
-  }
-
-  fetchUserEquipmentItem(id: number): Promise<Equipment> {
-    return firstValueFrom(this.http.get<Equipment>(`/api/equipment/${id}`));
-  }
-
   createUserEquipment(data: Partial<Equipment>): Promise<Equipment> {
     return firstValueFrom(this.http.post<Equipment>('/api/equipment', data));
-  }
-
-  deleteUserEquipment(id: number): Promise<void> {
-    return firstValueFrom(this.http.delete<void>(`/api/equipment/${id}`));
   }
 
   // Workouts

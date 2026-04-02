@@ -49,16 +49,10 @@ export const masteryKeys = {
   detail: (exerciseId: number) => [...masteryKeys.all(), 'detail', exerciseId] as const,
 };
 
-export const userExerciseKeys = {
-  all: () => ['user-exercises'] as const,
-  list: () => [...userExerciseKeys.all(), 'list'] as const,
-  detail: (id: number) => [...userExerciseKeys.all(), 'detail', id] as const,
-};
-
-export const userEquipmentKeys = {
-  all: () => ['user-equipment'] as const,
-  list: () => [...userEquipmentKeys.all(), 'list'] as const,
-  detail: (id: number) => [...userEquipmentKeys.all(), 'detail', id] as const,
+export const equipmentMasteryKeys = {
+  all: () => ['equipment-mastery'] as const,
+  list: () => [...equipmentMasteryKeys.all(), 'list'] as const,
+  detail: (equipmentId: number) => [...equipmentMasteryKeys.all(), 'detail', equipmentId] as const,
 };
 
 export const workoutKeys = {

@@ -3,7 +3,9 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
-import { exerciseKeys } from '$core/query-keys';
+import { UserApiClient } from '$core/api-clients/user-api-client';
+import { exerciseKeys, masteryKeys } from '$core/query-keys';
+import { ExerciseMastery } from '$generated/user-mastery';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ExerciseListItem } from '$ui/compendium/exercise-list-item/exercise-list-item';
 import { DataTable, DataTableColumn } from '$ui/data-table/data-table';
@@ -69,7 +71,7 @@ import {
             (hiddenColumnsChange)="onHiddenColumnsChange($event)"
           >
             @for (ex of page.items; track ex.id) {
-              <tr app-exercise-list-item [exercise]="ex"></tr>
+              <tr app-exercise-list-item [exercise]="ex" [mastery]="masteryMap().get(ex.id)"></tr>
             }
           </app-data-table>
           <app-pagination [page]="page" [emptyLabel]="t('compendium.exercises.noResults')" />
@@ -80,6 +82,7 @@ import {
 })
 export class ExerciseList {
   private api = inject(CompendiumApiClient);
+  private userApi = inject(UserApiClient);
   private queryParams = toSignal(inject(ActivatedRoute).queryParamMap);
 
   filters = computed(() => {
@@ -100,6 +103,19 @@ export class ExerciseList {
     placeholderData: keepPreviousData,
   }));
 
+  masteryQuery = injectQuery(() => ({
+    queryKey: masteryKeys.list(),
+    queryFn: () => this.userApi.fetchMasteryList(),
+  }));
+
+  masteryMap = computed(() => {
+    const map = new Map<number, ExerciseMastery>();
+    for (const m of this.masteryQuery.data() ?? []) {
+      map.set(m.exerciseId, m);
+    }
+    return map;
+  });
+
   private static readonly STORAGE_KEY = 'dt-columns-exercises';
 
   savedHiddenColumns = ExerciseList.loadHiddenColumns();
@@ -119,6 +135,7 @@ export class ExerciseList {
 
   exerciseColumns: DataTableColumn[] = [
     { label: 'Name', labelKey: 'fields.name', searchParam: 'q' },
+    { label: 'Mastery', labelKey: 'fields.mastery' },
     {
       label: 'Type',
       labelKey: 'fields.type',

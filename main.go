@@ -152,6 +152,35 @@ func runMigrations() {
 				GROUP BY owner, exercise_id`)
 		}
 	}
+
+	// Backfill equipment_mastery_contributions from existing equipment relationships + fulfillments.
+	var eqContribCount int64
+	database.DB.Raw("SELECT COUNT(*) FROM equipment_mastery_contributions").Scan(&eqContribCount)
+	if eqContribCount == 0 {
+		var eqRelCount int64
+		database.DB.Raw("SELECT COUNT(*) FROM equipment_relationships WHERE deleted_at IS NULL").Scan(&eqRelCount)
+		var fulCount int64
+		database.DB.Raw("SELECT COUNT(*) FROM fulfillments").Scan(&fulCount)
+		if eqRelCount > 0 || fulCount > 0 {
+			masteryHandlers.BackfillEquipmentContributions(database.DB)
+		}
+	}
+
+	// Backfill equipment_mastery_experience from existing exercise_logs + exercise_equipments.
+	var eqExpCount int64
+	database.DB.Raw("SELECT COUNT(*) FROM equipment_mastery_experience").Scan(&eqExpCount)
+	if eqExpCount == 0 {
+		var logCount int64
+		database.DB.Raw("SELECT COUNT(*) FROM exercise_logs WHERE deleted_at IS NULL").Scan(&logCount)
+		if logCount > 0 {
+			database.DB.Exec(`INSERT INTO equipment_mastery_experience (owner, equipment_id, total_reps)
+				SELECT el.owner, ee.equipment_id, SUM(COALESCE(el.reps, 1))
+				FROM exercise_logs el
+				JOIN exercise_equipments ee ON ee.exercise_id = el.exercise_id
+				WHERE el.deleted_at IS NULL
+				GROUP BY el.owner, ee.equipment_id`)
+		}
+	}
 }
 
 func autoMigrate() {
@@ -189,6 +218,8 @@ func autoMigrate() {
 		&workoutScheduleModels.ScheduleCommitmentEntity{},
 		&masteryModels.MasteryContributionEntity{},
 		&masteryModels.MasteryExperienceEntity{},
+		&masteryModels.EquipmentMasteryContributionEntity{},
+		&masteryModels.EquipmentMasteryExperienceEntity{},
 	)
 }
 

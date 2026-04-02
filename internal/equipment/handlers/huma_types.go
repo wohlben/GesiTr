@@ -22,6 +22,7 @@ type ListEquipmentInput struct {
 	Public   string `query:"public" doc:"'true' to show only public equipment"`
 	Q        string `query:"q" doc:"Search by name or display name"`
 	Category string `query:"category" doc:"Filter by equipment category"`
+	Mastery  string `query:"mastery" doc:"'me' to show equipment you own or have mastery in"`
 }
 
 type ListEquipmentOutput struct {

@@ -8,6 +8,7 @@ import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { Equipment, EquipmentRelationship } from '$generated/models';
+import { EquipmentMastery } from '$generated/user-mastery';
 
 const EQUIPMENT: Equipment = {
   id: 1,
@@ -35,7 +36,7 @@ const USER_EQUIPMENT: Equipment = {
   version: 1,
 };
 
-function setup(forkedRelationships: EquipmentRelationship[] = []) {
+function setup(forkedRelationships: EquipmentRelationship[] = [], mastery?: EquipmentMastery) {
   const compendiumApi: Partial<CompendiumApiClient> = {
     fetchEquipmentItem: vi.fn().mockResolvedValue(EQUIPMENT),
     fetchEquipmentVersions: vi.fn().mockResolvedValue([EQUIPMENT]),
@@ -47,6 +48,9 @@ function setup(forkedRelationships: EquipmentRelationship[] = []) {
   };
   const userApi: Partial<UserApiClient> = {
     createUserEquipment: vi.fn().mockResolvedValue(USER_EQUIPMENT),
+    fetchEquipmentMastery: mastery
+      ? vi.fn().mockResolvedValue(mastery)
+      : vi.fn().mockRejectedValue(new Error('no mastery')),
   };
 
   return {
@@ -80,6 +84,7 @@ function setupWithPermissions(
   };
   const userApi: Partial<UserApiClient> = {
     createUserEquipment: vi.fn().mockResolvedValue(USER_EQUIPMENT),
+    fetchEquipmentMastery: vi.fn().mockRejectedValue(new Error('no mastery')),
   };
 
   return {
@@ -101,7 +106,7 @@ function setupWithPermissions(
 }
 
 describe('EquipmentDetail', () => {
-  it('shows "compendium.equipment.addToMine" when equipment is not yet added', async () => {
+  it('shows fork button when equipment is not yet forked', async () => {
     const { providers } = setup([]);
     await render(EquipmentDetail, { providers });
 
@@ -111,7 +116,7 @@ describe('EquipmentDetail', () => {
     expect(screen.queryByText('compendium.equipment.alreadyAdded')).toBeNull();
   });
 
-  it('shows "compendium.equipment.alreadyAdded" link when equipment is already imported', async () => {
+  it('shows "already forked" link when equipment is forked', async () => {
     const forkedRel: EquipmentRelationship = {
       id: 1,
       createdAt: '',
@@ -131,7 +136,7 @@ describe('EquipmentDetail', () => {
     expect(screen.queryByText('compendium.equipment.addToMine')).toBeNull();
 
     const link = screen.getByText('compendium.equipment.alreadyAdded');
-    expect(link.getAttribute('href')).toBe('/user/equipment/10');
+    expect(link.getAttribute('href')).toBe('/compendium/equipment/10');
   });
 
   it('shows edit button when user has MODIFY permission', async () => {
@@ -170,5 +175,36 @@ describe('EquipmentDetail', () => {
       expect(screen.getByText('Barbell')).toBeTruthy();
     });
     expect(screen.queryByText('common.delete')).toBeNull();
+  });
+
+  it('shows mastery card when user has mastery data', async () => {
+    const mastery: EquipmentMastery = {
+      equipmentId: 1,
+      totalXp: 500,
+      effectiveXp: 750,
+      level: 7,
+      tier: 'novice',
+      progress: 0.5,
+      distinctDays: 10,
+      multiplier: 1.5,
+    };
+    const { providers } = setup([], mastery);
+    await render(EquipmentDetail, { providers });
+
+    await waitFor(() => {
+      expect(screen.getByText('Your Mastery')).toBeTruthy();
+    });
+    expect(screen.getByText('7')).toBeTruthy();
+    expect(screen.getByText('novice')).toBeTruthy();
+  });
+
+  it('hides mastery card when user has no mastery data', async () => {
+    const { providers } = setup([]);
+    await render(EquipmentDetail, { providers });
+
+    await waitFor(() => {
+      expect(screen.getByText('Barbell')).toBeTruthy();
+    });
+    expect(screen.queryByText('Your Mastery')).toBeNull();
   });
 });

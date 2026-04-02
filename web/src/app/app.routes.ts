@@ -19,32 +19,6 @@ export const routes: Routes = [
     component: MainLayout,
     children: [
       {
-        path: 'exercises/:id/track',
-        loadComponent: () =>
-          import('$pages/user/exercise-track/exercise-track').then((m) => m.ExerciseTrack),
-      },
-      {
-        path: 'exercises/:id',
-        loadComponent: () =>
-          import('$pages/user/user-exercise-detail/user-exercise-detail').then(
-            (m) => m.UserExerciseDetail,
-          ),
-      },
-      {
-        path: 'equipment/:id',
-        loadComponent: () =>
-          import('$pages/user/user-equipment-detail/user-equipment-detail').then(
-            (m) => m.UserEquipmentDetail,
-          ),
-      },
-      {
-        path: 'equipment',
-        loadComponent: () =>
-          import('$pages/user/user-equipment-list/user-equipment-list').then(
-            (m) => m.UserEquipmentList,
-          ),
-      },
-      {
         path: 'workouts/new',
         loadComponent: () =>
           import('$pages/user/workout-edit/workout-edit').then((m) => m.WorkoutEdit),
@@ -126,6 +100,16 @@ export const routes: Routes = [
         path: 'exercises/new',
         loadComponent: () =>
           import('$pages/compendium/exercise-edit/exercise-edit').then((m) => m.ExerciseEdit),
+      },
+      {
+        path: 'exercises/:id/:slug/track',
+        loadComponent: () =>
+          import('$pages/user/exercise-track/exercise-track').then((m) => m.ExerciseTrack),
+      },
+      {
+        path: 'exercises/:id/track',
+        loadComponent: () =>
+          import('$pages/user/exercise-track/exercise-track').then((m) => m.ExerciseTrack),
       },
       {
         path: 'exercises/:id/:slug/history',

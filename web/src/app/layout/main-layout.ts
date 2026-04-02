@@ -237,7 +237,6 @@ export class MainLayout {
   ];
 
   userLinks: NavLink[] = [
-    { path: '/user/equipment', labelKey: 'nav.myEquipment' },
     { path: '/user/workouts', labelKey: 'nav.myWorkouts' },
     { path: '/user/calendar', labelKey: 'nav.calendar' },
   ];

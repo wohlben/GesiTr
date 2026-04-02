@@ -6,6 +6,7 @@ import (
 	"gesitr/internal/database"
 	"gesitr/internal/equipmentrelationship/models"
 	"gesitr/internal/humaconfig"
+	masteryHandlers "gesitr/internal/user/mastery/handlers"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -64,6 +65,7 @@ func CreateEquipmentRelationship(ctx context.Context, input *CreateEquipmentRela
 	if err := database.DB.Create(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
+	_ = masteryHandlers.RecalculateEquipmentContributions(database.DB, entity.Owner, entity.FromEquipmentID, entity.ToEquipmentID)
 	return &CreateEquipmentRelationshipOutput{Body: entity.ToDTO()}, nil
 }
 
@@ -84,5 +86,6 @@ func DeleteEquipmentRelationship(ctx context.Context, input *DeleteEquipmentRela
 	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
+	_ = masteryHandlers.RecalculateEquipmentContributions(database.DB, entity.Owner, entity.FromEquipmentID, entity.ToEquipmentID)
 	return nil, nil
 }

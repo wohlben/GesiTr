@@ -212,6 +212,7 @@ func createOrUpdateExerciseLog(db *gorm.DB, set *models.WorkoutLogExerciseSetEnt
 			return err
 		}
 		_ = masteryHandlers.UpsertExperience(db, log.Owner, scheme.ExerciseID, reps)
+		_ = masteryHandlers.UpsertEquipmentExperience(db, log.Owner, scheme.ExerciseID, reps)
 		return exerciseloghandlers.RecomputeRecord(db, scheme.ExerciseID, logExercise.TargetMeasurementType)
 	} else if err != nil {
 		return err

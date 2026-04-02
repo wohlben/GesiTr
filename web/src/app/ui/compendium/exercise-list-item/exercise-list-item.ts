@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideExternalLink } from '@ng-icons/lucide';
 import { Exercise } from '$generated/models';
+import { ExerciseMastery } from '$generated/user-mastery';
 import { HlmIcon } from '$ui/spartan/icon/src/lib/hlm-icon';
 import { SlugifyPipe } from '$ui/pipes/slugify';
 
@@ -21,6 +22,16 @@ import { SlugifyPipe } from '$ui/pipes/slugify';
           <ng-icon hlm name="lucideExternalLink" size="sm" />
         </a>
       </span>
+    </td>
+    <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
+      @if (mastery(); as m) {
+        <span
+          class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
+          [class]="tierBadgeClass(m.tier)"
+        >
+          Lv.{{ m.level }}
+        </span>
+      }
     </td>
     <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
       {{ exercise().type }}
@@ -68,4 +79,20 @@ import { SlugifyPipe } from '$ui/pipes/slugify';
 })
 export class ExerciseListItem {
   exercise = input.required<Exercise>();
+  mastery = input<ExerciseMastery | undefined>(undefined);
+
+  tierBadgeClass(tier: string): string {
+    switch (tier) {
+      case 'mastered':
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300';
+      case 'master':
+        return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300';
+      case 'adept':
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300';
+      case 'journeyman':
+        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
+      default:
+        return 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400';
+    }
+  }
 }

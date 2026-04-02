@@ -106,27 +106,29 @@ function setupWithPermissions(permissions: string[]) {
 }
 
 describe('ExerciseDetail', () => {
-  it('shows "compendium.exercises.addToMine" when exercise is not yet added', async () => {
+  it('shows track button and fork button when exercise is not yet forked', async () => {
     const { providers } = setup([]);
     await render(ExerciseDetail, { providers });
 
     await waitFor(() => {
+      expect(screen.getByText('compendium.exercises.track')).toBeTruthy();
       expect(screen.getByText('compendium.exercises.addToMine')).toBeTruthy();
     });
     expect(screen.queryByText('compendium.exercises.alreadyAdded')).toBeNull();
   });
 
-  it('shows "compendium.exercises.alreadyAdded" link when exercise is already forked', async () => {
+  it('shows track button and "already forked" link when exercise is forked', async () => {
     const { providers } = setup([FORKED_RELATIONSHIP]);
     await render(ExerciseDetail, { providers });
 
     await waitFor(() => {
+      expect(screen.getByText('compendium.exercises.track')).toBeTruthy();
       expect(screen.getByText('compendium.exercises.alreadyAdded')).toBeTruthy();
     });
     expect(screen.queryByText('compendium.exercises.addToMine')).toBeNull();
 
     const link = screen.getByText('compendium.exercises.alreadyAdded');
-    expect(link.getAttribute('href')).toBe('/user/exercises/10');
+    expect(link.getAttribute('href')).toBe('/compendium/exercises/10');
   });
 
   it('shows edit button when user has MODIFY permission', async () => {

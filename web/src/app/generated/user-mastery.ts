@@ -13,6 +13,16 @@ export interface ExerciseMastery {
   distinctDays: number /* int */;
   multiplier: number /* float64 */;
 }
+export interface EquipmentMastery {
+  equipmentId: number /* uint */;
+  totalXp: number /* float64 */;
+  effectiveXp: number /* float64 */;
+  level: number /* int */;
+  tier: string;
+  progress: number /* float64 */;
+  distinctDays: number /* int */;
+  multiplier: number /* float64 */;
+}
 export type MasteryTier = string;
 export const TierNovice: MasteryTier = 'novice';
 export const TierJourneyman: MasteryTier = 'journeyman';

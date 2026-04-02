@@ -4,14 +4,15 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { equipmentKeys, equipmentRelationshipKeys, userEquipmentKeys } from '$core/query-keys';
+import { equipmentKeys, equipmentRelationshipKeys, equipmentMasteryKeys } from '$core/query-keys';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-equipment-detail',
-  imports: [PageLayout, RouterLink, ConfirmDialog, TranslocoDirective],
+  imports: [PageLayout, RouterLink, ConfirmDialog, TranslocoDirective, DecimalPipe],
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
@@ -22,8 +23,8 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
         <div actions class="flex gap-2">
           @if (alreadyAdded(); as existing) {
             <a
-              [routerLink]="['/user/equipment', existing.id]"
-              class="rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+              [routerLink]="['/compendium/equipment', existing.id]"
+              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               {{ t('compendium.equipment.alreadyAdded') }}
             </a>
@@ -32,7 +33,7 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
               type="button"
               (click)="addMutation.mutate()"
               [disabled]="addMutation.isPending()"
-              class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               {{
                 addMutation.isPending() ? t('common.adding') : t('compendium.equipment.addToMine')
@@ -76,6 +77,42 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
           (cancelled)="showDeleteDialog.set(false)"
         />
         @if (equipmentQuery.data(); as equipment) {
+          @if (equipmentMasteryQuery.data(); as mastery) {
+            @if (mastery.totalXp > 0) {
+              <div
+                class="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20"
+              >
+                <h3 class="text-sm font-medium text-amber-900 dark:text-amber-200">Your Mastery</h3>
+                <div class="mt-2 grid grid-cols-3 gap-4 text-sm">
+                  <div>
+                    <span class="text-amber-600 dark:text-amber-400">Level</span>
+                    <span class="block font-semibold text-amber-900 dark:text-amber-100">{{
+                      mastery.level
+                    }}</span>
+                  </div>
+                  <div>
+                    <span class="text-amber-600 dark:text-amber-400">Tier</span>
+                    <span
+                      class="block font-semibold capitalize text-amber-900 dark:text-amber-100"
+                      >{{ mastery.tier }}</span
+                    >
+                  </div>
+                  <div>
+                    <span class="text-amber-600 dark:text-amber-400">XP</span>
+                    <span class="block font-semibold text-amber-900 dark:text-amber-100">{{
+                      mastery.effectiveXp | number: '1.0-0'
+                    }}</span>
+                  </div>
+                </div>
+                <div class="mt-3 h-2 w-full rounded-full bg-amber-200 dark:bg-amber-800">
+                  <div
+                    class="h-2 rounded-full bg-amber-500"
+                    [style.width.%]="mastery.progress * 100"
+                  ></div>
+                </div>
+              </div>
+            }
+          }
           <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -147,6 +184,12 @@ export class EquipmentDetail {
     enabled: !!this.id(),
   }));
 
+  equipmentMasteryQuery = injectQuery(() => ({
+    queryKey: equipmentMasteryKeys.detail(this.id()),
+    queryFn: () => this.userApi.fetchEquipmentMastery(this.id()),
+    enabled: !!this.id(),
+  }));
+
   canModify = computed(
     () =>
       this.permissionsQuery.isSuccess() &&
@@ -188,11 +231,11 @@ export class EquipmentDetail {
       } as Record<string, unknown>);
     },
     onSuccess: (created) => {
-      this.queryClient.invalidateQueries({ queryKey: userEquipmentKeys.all() });
+      this.queryClient.invalidateQueries({ queryKey: equipmentKeys.all() });
       this.queryClient.invalidateQueries({
         queryKey: equipmentRelationshipKeys.all(),
       });
-      this.router.navigate(['/user/equipment', created.id]);
+      this.router.navigate(['/compendium/equipment', created.id]);
     },
   }));
 }

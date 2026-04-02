@@ -6,6 +6,7 @@ import (
 	"gesitr/internal/database"
 	"gesitr/internal/equipmentfulfillment/models"
 	"gesitr/internal/humaconfig"
+	masteryHandlers "gesitr/internal/user/mastery/handlers"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -52,6 +53,7 @@ func CreateFulfillment(ctx context.Context, input *CreateFulfillmentInput) (*Cre
 	if err := database.DB.Create(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
+	_ = masteryHandlers.RecalculateEquipmentContributions(database.DB, entity.Owner, entity.EquipmentID, entity.FulfillsEquipmentID)
 	return &CreateFulfillmentOutput{Body: entity.ToDTO()}, nil
 }
 
@@ -72,5 +74,6 @@ func DeleteFulfillment(ctx context.Context, input *DeleteFulfillmentInput) (*Del
 	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
+	_ = masteryHandlers.RecalculateEquipmentContributions(database.DB, entity.Owner, entity.EquipmentID, entity.FulfillsEquipmentID)
 	return nil, nil
 }

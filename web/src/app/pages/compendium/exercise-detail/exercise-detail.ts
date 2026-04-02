@@ -8,7 +8,6 @@ import {
   exerciseKeys,
   exerciseRelationshipKeys,
   equipmentKeys,
-  userExerciseKeys,
   masteryKeys,
 } from '$core/query-keys';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -27,10 +26,16 @@ import { DecimalPipe } from '@angular/common';
         [errorMessage]="exerciseQuery.isError() ? exerciseQuery.error().message : undefined"
       >
         <div actions class="flex gap-2">
+          <a
+            routerLink="./track"
+            class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+          >
+            {{ t('compendium.exercises.track') }}
+          </a>
           @if (alreadyAdded(); as existing) {
             <a
-              [routerLink]="['/user/exercises', existing.id]"
-              class="rounded-md bg-gray-500 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+              [routerLink]="['/compendium/exercises', existing.id]"
+              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               {{ t('compendium.exercises.alreadyAdded') }}
             </a>
@@ -39,7 +44,7 @@ import { DecimalPipe } from '@angular/common';
               type="button"
               (click)="addMutation.mutate()"
               [disabled]="addMutation.isPending()"
-              class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               {{
                 addMutation.isPending() ? t('common.adding') : t('compendium.exercises.addToMine')
@@ -461,11 +466,11 @@ export class ExerciseDetail {
       } as Record<string, unknown>);
     },
     onSuccess: (created) => {
-      this.queryClient.invalidateQueries({ queryKey: userExerciseKeys.all() });
+      this.queryClient.invalidateQueries({ queryKey: exerciseKeys.all() });
       this.queryClient.invalidateQueries({
         queryKey: exerciseRelationshipKeys.all(),
       });
-      this.router.navigate(['/user/exercises', created.id]);
+      this.router.navigate(['/compendium/exercises', created.id]);
     },
   }));
 }

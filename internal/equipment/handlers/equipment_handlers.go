@@ -35,7 +35,9 @@ func ListEquipment(ctx context.Context, input *ListEquipmentInput) (*ListEquipme
 	db := database.DB.Model(&models.EquipmentEntity{})
 
 	userID := humaconfig.GetUserID(ctx)
-	if input.Owner != "" {
+	if input.Mastery == "me" {
+		db = db.Where("owner = ? OR equipment.id IN (SELECT equipment_id FROM equipment_mastery_experience WHERE owner = ?)", userID, userID)
+	} else if input.Owner != "" {
 		if input.Owner == "me" || input.Owner == userID {
 			db = db.Where("owner = ?", userID)
 		} else {

@@ -30,6 +30,7 @@ const exercise: Exercise = {
 
 const columns: DataTableColumn[] = [
   { label: 'Name' },
+  { label: 'Mastery' },
   { label: 'Type' },
   { label: 'Difficulty' },
   { label: 'Force' },

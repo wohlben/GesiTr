@@ -3,7 +3,9 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
-import { equipmentKeys } from '$core/query-keys';
+import { UserApiClient } from '$core/api-clients/user-api-client';
+import { equipmentKeys, equipmentMasteryKeys } from '$core/query-keys';
+import { EquipmentMastery } from '$generated/user-mastery';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { EquipmentListItem } from '$ui/compendium/equipment-list-item/equipment-list-item';
 import { DataTable, DataTableColumn } from '$ui/data-table/data-table';
@@ -42,7 +44,11 @@ import {
             (hiddenColumnsChange)="onHiddenColumnsChange($event)"
           >
             @for (item of page.items; track item.id) {
-              <tr app-equipment-list-item [equipment]="item"></tr>
+              <tr
+                app-equipment-list-item
+                [equipment]="item"
+                [mastery]="masteryMap().get(item.id)"
+              ></tr>
             }
           </app-data-table>
           <app-pagination [page]="page" [emptyLabel]="t('compendium.equipment.noResults')" />
@@ -53,6 +59,7 @@ import {
 })
 export class EquipmentList {
   private api = inject(CompendiumApiClient);
+  private userApi = inject(UserApiClient);
   private queryParams = toSignal(inject(ActivatedRoute).queryParamMap);
 
   filters = computed(() => {
@@ -73,6 +80,19 @@ export class EquipmentList {
     placeholderData: keepPreviousData,
   }));
 
+  masteryQuery = injectQuery(() => ({
+    queryKey: equipmentMasteryKeys.list(),
+    queryFn: () => this.userApi.fetchEquipmentMasteryList(),
+  }));
+
+  masteryMap = computed(() => {
+    const map = new Map<number, EquipmentMastery>();
+    for (const m of this.masteryQuery.data() ?? []) {
+      map.set(m.equipmentId, m);
+    }
+    return map;
+  });
+
   private static readonly STORAGE_KEY = 'dt-columns-equipment';
 
   savedHiddenColumns = EquipmentList.loadHiddenColumns();
@@ -92,6 +112,7 @@ export class EquipmentList {
 
   equipmentColumns: DataTableColumn[] = [
     { label: 'Name', labelKey: 'fields.name', searchParam: 'q' },
+    { label: 'Mastery', labelKey: 'fields.mastery' },
     {
       label: 'Category',
       labelKey: 'fields.category',

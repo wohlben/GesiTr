@@ -21,6 +21,7 @@ const equipment: Equipment = {
 
 const columns: DataTableColumn[] = [
   { label: 'Name' },
+  { label: 'Mastery' },
   { label: 'Category' },
   { label: 'Description' },
   { label: 'Internal name', defaultHidden: true },
