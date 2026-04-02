@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { ExerciseGroupDetail } from './exercise-group-detail';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
-import { ExerciseGroup } from '$generated/models';
+import { ExerciseGroup } from '$generated/user-models';
 
 const GROUP: ExerciseGroup = {
   id: 1,

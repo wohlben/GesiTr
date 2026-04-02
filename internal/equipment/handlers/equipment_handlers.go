@@ -7,7 +7,6 @@ import (
 
 	"gesitr/internal/database"
 	"gesitr/internal/equipment/models"
-	relModels "gesitr/internal/equipmentrelationship/models"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/shared"
 
@@ -107,8 +106,8 @@ func CreateEquipment(ctx context.Context, input *CreateEquipmentInput) (*CreateE
 
 		if input.Body.SourceEquipmentID != nil {
 			sourceID := *input.Body.SourceEquipmentID
-			if err := tx.Create(&relModels.EquipmentRelationshipEntity{
-				RelationshipType: relModels.EquipmentRelationshipTypeForked,
+			if err := tx.Create(&models.EquipmentRelationshipEntity{
+				RelationshipType: models.EquipmentRelationshipTypeForked,
 				Strength:         1.0,
 				Owner:            entity.Owner,
 				FromEquipmentID:  entity.ID,
@@ -116,8 +115,8 @@ func CreateEquipment(ctx context.Context, input *CreateEquipmentInput) (*CreateE
 			}).Error; err != nil {
 				return err
 			}
-			if err := tx.Create(&relModels.EquipmentRelationshipEntity{
-				RelationshipType: relModels.EquipmentRelationshipTypeEquivalent,
+			if err := tx.Create(&models.EquipmentRelationshipEntity{
+				RelationshipType: models.EquipmentRelationshipTypeEquivalent,
 				Strength:         1.0,
 				Owner:            entity.Owner,
 				FromEquipmentID:  entity.ID,

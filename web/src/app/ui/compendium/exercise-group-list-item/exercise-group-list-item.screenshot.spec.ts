@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { ExerciseGroupListItem } from './exercise-group-list-item';
 import { DataTable, DataTableColumn } from '$ui/data-table/data-table';
-import { ExerciseGroup } from '$generated/models';
+import { ExerciseGroup } from '$generated/user-models';
 
 const group: ExerciseGroup = {
   id: 1,

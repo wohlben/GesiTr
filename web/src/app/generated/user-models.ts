@@ -14,6 +14,33 @@ export interface ErrorResponse {
 }
 
 //////////
+// source: exercisegroup.go
+
+export interface ExerciseGroup extends BaseModel {
+  name?: string;
+  owner: string;
+}
+export interface ExerciseGroupMember extends BaseModel {
+  groupId: number /* uint */;
+  exerciseId: number /* uint */;
+  owner: string;
+}
+
+//////////
+// source: relationship.go
+
+export interface WorkoutRelationship extends BaseModel {
+  relationshipType: WorkoutRelationshipType;
+  strength: number /* float64 */;
+  owner: string;
+  fromWorkoutId: number /* uint */;
+  toWorkoutId: number /* uint */;
+}
+export type WorkoutRelationshipType = string;
+export const WorkoutRelationshipTypeEquivalent: WorkoutRelationshipType = 'equivalent';
+export const WorkoutRelationshipTypeForked: WorkoutRelationshipType = 'forked';
+
+//////////
 // source: workout.go
 
 export interface WorkoutGroupInfo {

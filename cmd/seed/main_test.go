@@ -9,9 +9,7 @@ import (
 
 	"gesitr/internal/database"
 	equipmentModels "gesitr/internal/equipment/models"
-	fulfillmentModels "gesitr/internal/equipmentfulfillment/models"
 	exerciseModels "gesitr/internal/exercise/models"
-	relModels "gesitr/internal/exerciserelationship/models"
 	profileModels "gesitr/internal/profile/models"
 
 	"gorm.io/driver/sqlite"
@@ -35,8 +33,8 @@ func setupSeedTestDB(t *testing.T) {
 		&exerciseModels.ExerciseAlternativeName{},
 		&equipmentModels.EquipmentEntity{},
 		&exerciseModels.ExerciseEquipment{},
-		&fulfillmentModels.FulfillmentEntity{},
-		&relModels.ExerciseRelationshipEntity{},
+		&equipmentModels.FulfillmentEntity{},
+		&exerciseModels.ExerciseRelationshipEntity{},
 		&exerciseModels.ExerciseHistoryEntity{},
 		&equipmentModels.EquipmentHistoryEntity{},
 	)
@@ -107,9 +105,9 @@ func TestMainFunction(t *testing.T) {
 	// Verify all entities were seeded
 	var eqCount, fCount, exCount, relCount int64
 	database.DB.Model(&equipmentModels.EquipmentEntity{}).Count(&eqCount)
-	database.DB.Model(&fulfillmentModels.FulfillmentEntity{}).Count(&fCount)
+	database.DB.Model(&equipmentModels.FulfillmentEntity{}).Count(&fCount)
 	database.DB.Model(&exerciseModels.ExerciseEntity{}).Count(&exCount)
-	database.DB.Model(&relModels.ExerciseRelationshipEntity{}).Count(&relCount)
+	database.DB.Model(&exerciseModels.ExerciseRelationshipEntity{}).Count(&relCount)
 
 	if eqCount != 1 || fCount != 1 || exCount != 1 || relCount != 1 {
 		t.Errorf("counts: eq=%d f=%d ex=%d rel=%d", eqCount, fCount, exCount, relCount)
@@ -301,7 +299,7 @@ func TestSeedFulfillments(t *testing.T) {
 		}
 
 		var count int64
-		database.DB.Model(&fulfillmentModels.FulfillmentEntity{}).Count(&count)
+		database.DB.Model(&equipmentModels.FulfillmentEntity{}).Count(&count)
 		if count != 1 {
 			t.Errorf("expected 1, got %d", count)
 		}
@@ -501,7 +499,7 @@ func TestSeedExerciseRelationships(t *testing.T) {
 		}
 
 		var count int64
-		database.DB.Model(&relModels.ExerciseRelationshipEntity{}).Count(&count)
+		database.DB.Model(&exerciseModels.ExerciseRelationshipEntity{}).Count(&count)
 		if count != 1 {
 			t.Errorf("expected 1, got %d", count)
 		}

@@ -9,7 +9,6 @@ import (
 	"gesitr/internal/shared"
 	"gesitr/internal/workout/models"
 	"gesitr/internal/workoutgroup"
-	relModels "gesitr/internal/workoutrelationship/models"
 
 	"github.com/danielgtaylor/huma/v2"
 	"gorm.io/gorm"
@@ -132,8 +131,8 @@ func CreateWorkout(ctx context.Context, input *CreateWorkoutInput) (*CreateWorko
 
 		if input.Body.SourceWorkoutID != nil {
 			sourceID := *input.Body.SourceWorkoutID
-			forked := relModels.WorkoutRelationshipEntity{
-				RelationshipType: relModels.WorkoutRelationshipTypeForked,
+			forked := models.WorkoutRelationshipEntity{
+				RelationshipType: models.WorkoutRelationshipTypeForked,
 				Strength:         1.0,
 				Owner:            entity.Owner,
 				FromWorkoutID:    entity.ID,
@@ -142,8 +141,8 @@ func CreateWorkout(ctx context.Context, input *CreateWorkoutInput) (*CreateWorko
 			if err := tx.Create(&forked).Error; err != nil {
 				return err
 			}
-			equivalent := relModels.WorkoutRelationshipEntity{
-				RelationshipType: relModels.WorkoutRelationshipTypeEquivalent,
+			equivalent := models.WorkoutRelationshipEntity{
+				RelationshipType: models.WorkoutRelationshipTypeEquivalent,
 				Strength:         1.0,
 				Owner:            entity.Owner,
 				FromWorkoutID:    entity.ID,

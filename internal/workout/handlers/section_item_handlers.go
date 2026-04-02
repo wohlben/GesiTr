@@ -5,7 +5,6 @@ import (
 
 	"gesitr/internal/database"
 	exercisemodels "gesitr/internal/exercise/models"
-	exercisegroupmodels "gesitr/internal/exercisegroup/models"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/workout/models"
 
@@ -88,7 +87,7 @@ func CreateWorkoutSectionItem(ctx context.Context, input *CreateWorkoutSectionIt
 		if input.Body.ExerciseGroupID == nil {
 			return nil, huma.Error422UnprocessableEntity("exerciseGroupId is required for exercise_group type")
 		}
-		var group exercisegroupmodels.ExerciseGroupEntity
+		var group models.ExerciseGroupEntity
 		if err := database.DB.First(&group, *input.Body.ExerciseGroupID).Error; err != nil {
 			return nil, huma.Error404NotFound("Exercise group not found")
 		}

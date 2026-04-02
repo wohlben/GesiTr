@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideExternalLink } from '@ng-icons/lucide';
-import { ExerciseGroup } from '$generated/models';
+import { ExerciseGroup } from '$generated/user-models';
 import { HlmIcon } from '$ui/spartan/icon/src/lib/hlm-icon';
 import { SlugifyPipe } from '$ui/pipes/slugify';
 

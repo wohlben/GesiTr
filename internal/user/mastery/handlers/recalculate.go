@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	exerciserelmodels "gesitr/internal/exerciserelationship/models"
+	exercisemodels "gesitr/internal/exercise/models"
 	"gesitr/internal/user/mastery/models"
 
 	"gorm.io/gorm"
@@ -12,7 +12,7 @@ import (
 // and affected exercise IDs. Called after relationship create/delete.
 func RecalculateContributions(db *gorm.DB, owner string, exerciseIDs ...uint) error {
 	// Fetch all relationships for this owner that involve any of the affected exercises.
-	var relationships []exerciserelmodels.ExerciseRelationshipEntity
+	var relationships []exercisemodels.ExerciseRelationshipEntity
 	err := db.Where("owner = ? AND (from_exercise_id IN ? OR to_exercise_id IN ?)", owner, exerciseIDs, exerciseIDs).
 		Find(&relationships).Error
 	if err != nil {
@@ -76,7 +76,7 @@ func RecalculateContributions(db *gorm.DB, owner string, exerciseIDs ...uint) er
 func BackfillContributions(db *gorm.DB) error {
 	// Find all distinct owners with relationships.
 	var owners []string
-	if err := db.Model(&exerciserelmodels.ExerciseRelationshipEntity{}).
+	if err := db.Model(&exercisemodels.ExerciseRelationshipEntity{}).
 		Distinct("owner").Pluck("owner", &owners).Error; err != nil {
 		return err
 	}
@@ -85,9 +85,9 @@ func BackfillContributions(db *gorm.DB) error {
 		// Get all exercise IDs involved in relationships for this owner.
 		var exerciseIDs []uint
 		var fromIDs, toIDs []uint
-		db.Model(&exerciserelmodels.ExerciseRelationshipEntity{}).
+		db.Model(&exercisemodels.ExerciseRelationshipEntity{}).
 			Where("owner = ?", owner).Pluck("from_exercise_id", &fromIDs)
-		db.Model(&exerciserelmodels.ExerciseRelationshipEntity{}).
+		db.Model(&exercisemodels.ExerciseRelationshipEntity{}).
 			Where("owner = ?", owner).Pluck("to_exercise_id", &toIDs)
 		seen := make(map[uint]bool)
 		for _, id := range append(fromIDs, toIDs...) {

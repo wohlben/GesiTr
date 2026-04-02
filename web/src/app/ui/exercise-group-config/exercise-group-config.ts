@@ -3,7 +3,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmInput } from '@spartan-ng/helm/input';
-import { ExerciseGroup } from '$generated/models';
+import { ExerciseGroup } from '$generated/user-models';
 import type { FormValueControl } from '@angular/forms/signals';
 
 export interface GroupConfigValue {

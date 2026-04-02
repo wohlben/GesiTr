@@ -3,8 +3,8 @@ package models
 import (
 	"math"
 
-	equipmentrelmodels "gesitr/internal/equipmentrelationship/models"
-	exerciserelmodels "gesitr/internal/exerciserelationship/models"
+	equipmentmodels "gesitr/internal/equipment/models"
+	exercisemodels "gesitr/internal/exercise/models"
 )
 
 const (
@@ -58,21 +58,21 @@ func ComputeProgress(effectiveXP float64, level int) float64 {
 
 // RelationshipTypeBonus returns the type bonus for a relationship type and whether it contributes to mastery at all.
 func RelationshipTypeBonus(relType string) (float64, bool) {
-	switch exerciserelmodels.ExerciseRelationshipType(relType) {
-	case exerciserelmodels.ExerciseRelationshipTypeEquivalent:
+	switch exercisemodels.ExerciseRelationshipType(relType) {
+	case exercisemodels.ExerciseRelationshipTypeEquivalent:
 		return 0.5, true
 
-	case exerciserelmodels.ExerciseRelationshipTypeAlternative,
-		exerciserelmodels.ExerciseRelationshipTypeEasierAlternative,
-		exerciserelmodels.ExerciseRelationshipTypeHarderAlternative,
-		exerciserelmodels.ExerciseRelationshipTypeEquipmentVariation,
-		exerciserelmodels.ExerciseRelationshipTypeVariant,
-		exerciserelmodels.ExerciseRelationshipTypeVariation,
-		exerciserelmodels.ExerciseRelationshipTypeBilateralUnilateral,
-		exerciserelmodels.ExerciseRelationshipTypeProgression,
-		exerciserelmodels.ExerciseRelationshipTypeProgressesTo,
-		exerciserelmodels.ExerciseRelationshipTypeRegression,
-		exerciserelmodels.ExerciseRelationshipTypeRegressesTo:
+	case exercisemodels.ExerciseRelationshipTypeAlternative,
+		exercisemodels.ExerciseRelationshipTypeEasierAlternative,
+		exercisemodels.ExerciseRelationshipTypeHarderAlternative,
+		exercisemodels.ExerciseRelationshipTypeEquipmentVariation,
+		exercisemodels.ExerciseRelationshipTypeVariant,
+		exercisemodels.ExerciseRelationshipTypeVariation,
+		exercisemodels.ExerciseRelationshipTypeBilateralUnilateral,
+		exercisemodels.ExerciseRelationshipTypeProgression,
+		exercisemodels.ExerciseRelationshipTypeProgressesTo,
+		exercisemodels.ExerciseRelationshipTypeRegression,
+		exercisemodels.ExerciseRelationshipTypeRegressesTo:
 		return 0.25, true
 
 	default:
@@ -91,8 +91,8 @@ func ComputeContributionMultiplier(strength float64, relType string) (float64, b
 
 // EquipmentRelationshipTypeBonus returns the type bonus for an equipment relationship type.
 func EquipmentRelationshipTypeBonus(relType string) (float64, bool) {
-	switch equipmentrelmodels.EquipmentRelationshipType(relType) {
-	case equipmentrelmodels.EquipmentRelationshipTypeEquivalent:
+	switch equipmentmodels.EquipmentRelationshipType(relType) {
+	case equipmentmodels.EquipmentRelationshipTypeEquivalent:
 		return 0.5, true
 	default:
 		return 0, false

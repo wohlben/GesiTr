@@ -10,9 +10,7 @@ import (
 
 	"gesitr/internal/database"
 	equipmentModels "gesitr/internal/equipment/models"
-	fulfillmentModels "gesitr/internal/equipmentfulfillment/models"
 	exerciseModels "gesitr/internal/exercise/models"
-	relModels "gesitr/internal/exerciserelationship/models"
 	profileModels "gesitr/internal/profile/models"
 	"gesitr/internal/shared"
 )
@@ -33,8 +31,8 @@ func main() {
 		&exerciseModels.ExerciseAlternativeName{},
 		&equipmentModels.EquipmentEntity{},
 		&exerciseModels.ExerciseEquipment{},
-		&fulfillmentModels.FulfillmentEntity{},
-		&relModels.ExerciseRelationshipEntity{},
+		&equipmentModels.FulfillmentEntity{},
+		&exerciseModels.ExerciseRelationshipEntity{},
 		&exerciseModels.ExerciseHistoryEntity{},
 		&equipmentModels.EquipmentHistoryEntity{},
 	)
@@ -298,13 +296,13 @@ func seedFulfillments() error {
 	if err != nil {
 		return err
 	}
-	var entities []fulfillmentModels.FulfillmentEntity
+	var entities []equipmentModels.FulfillmentEntity
 	for _, data := range files {
 		var j jsonFulfillment
 		if err := json.Unmarshal(data, &j); err != nil {
 			return fmt.Errorf("parse fulfillment JSON: %w", err)
 		}
-		e := fulfillmentModels.FulfillmentEntity{
+		e := equipmentModels.FulfillmentEntity{
 			EquipmentID:         equipmentIDMap[j.EquipmentTemplateID],
 			FulfillsEquipmentID: equipmentIDMap[j.FulfillsEquipmentTemplateID],
 			Owner:               "sinon",
@@ -336,14 +334,14 @@ func seedExerciseRelationships() error {
 	if err != nil {
 		return err
 	}
-	var entities []relModels.ExerciseRelationshipEntity
+	var entities []exerciseModels.ExerciseRelationshipEntity
 	for _, data := range files {
 		var j jsonExerciseRelationship
 		if err := json.Unmarshal(data, &j); err != nil {
 			return fmt.Errorf("parse relationship JSON: %w", err)
 		}
-		e := relModels.ExerciseRelationshipEntity{
-			RelationshipType: relModels.ExerciseRelationshipType(j.RelationshipType),
+		e := exerciseModels.ExerciseRelationshipEntity{
+			RelationshipType: exerciseModels.ExerciseRelationshipType(j.RelationshipType),
 			Strength:         j.Strength,
 			Description:      j.Description,
 			Owner:            "sinon",

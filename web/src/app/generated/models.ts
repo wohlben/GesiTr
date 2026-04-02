@@ -88,6 +88,45 @@ export const MeasurementTime: MeasurementParadigm = 'TIME';
 export const MeasurementDistance: MeasurementParadigm = 'DISTANCE';
 
 //////////
+// source: relationship.go
+
+export interface ExerciseRelationship extends BaseModel {
+  relationshipType: ExerciseRelationshipType;
+  strength: number /* float64 */;
+  description?: string;
+  owner: string;
+  fromExerciseId: number /* uint */;
+  toExerciseId: number /* uint */;
+}
+export type ExerciseRelationshipType = string;
+export const ExerciseRelationshipTypeAccessory: ExerciseRelationshipType = 'accessory';
+export const ExerciseRelationshipTypeAlternative: ExerciseRelationshipType = 'alternative';
+export const ExerciseRelationshipTypeAntagonist: ExerciseRelationshipType = 'antagonist';
+export const ExerciseRelationshipTypeBilateralUnilateral: ExerciseRelationshipType =
+  'bilateral_unilateral';
+export const ExerciseRelationshipTypeComplementary: ExerciseRelationshipType = 'complementary';
+export const ExerciseRelationshipTypeEasierAlternative: ExerciseRelationshipType =
+  'easier_alternative';
+export const ExerciseRelationshipTypeEquipmentVariation: ExerciseRelationshipType =
+  'equipment_variation';
+export const ExerciseRelationshipTypeEquivalent: ExerciseRelationshipType = 'equivalent';
+export const ExerciseRelationshipTypeForked: ExerciseRelationshipType = 'forked';
+export const ExerciseRelationshipTypeHarderAlternative: ExerciseRelationshipType =
+  'harder_alternative';
+export const ExerciseRelationshipTypePreparation: ExerciseRelationshipType = 'preparation';
+export const ExerciseRelationshipTypePrerequisite: ExerciseRelationshipType = 'prerequisite';
+export const ExerciseRelationshipTypeProgressesTo: ExerciseRelationshipType = 'progresses_to';
+export const ExerciseRelationshipTypeProgression: ExerciseRelationshipType = 'progression';
+export const ExerciseRelationshipTypeRegressesTo: ExerciseRelationshipType = 'regresses_to';
+export const ExerciseRelationshipTypeRegression: ExerciseRelationshipType = 'regression';
+export const ExerciseRelationshipTypeRelated: ExerciseRelationshipType = 'related';
+export const ExerciseRelationshipTypeSimilar: ExerciseRelationshipType = 'similar';
+export const ExerciseRelationshipTypeSupersetWith: ExerciseRelationshipType = 'superset_with';
+export const ExerciseRelationshipTypeSupports: ExerciseRelationshipType = 'supports';
+export const ExerciseRelationshipTypeVariant: ExerciseRelationshipType = 'variant';
+export const ExerciseRelationshipTypeVariation: ExerciseRelationshipType = 'variation';
+
+//////////
 // source: scheme.go
 
 /**
@@ -130,58 +169,6 @@ export const EquipmentCategoryFunctional: EquipmentCategory = 'functional';
 export const EquipmentCategoryOther: EquipmentCategory = 'other';
 
 //////////
-// source: exercisegroup.go
-
-export interface ExerciseGroup extends BaseModel {
-  name?: string;
-  owner: string;
-}
-export interface ExerciseGroupMember extends BaseModel {
-  groupId: number /* uint */;
-  exerciseId: number /* uint */;
-  owner: string;
-}
-
-//////////
-// source: relationship.go
-
-export interface ExerciseRelationship extends BaseModel {
-  relationshipType: ExerciseRelationshipType;
-  strength: number /* float64 */;
-  description?: string;
-  owner: string;
-  fromExerciseId: number /* uint */;
-  toExerciseId: number /* uint */;
-}
-export type ExerciseRelationshipType = string;
-export const ExerciseRelationshipTypeAccessory: ExerciseRelationshipType = 'accessory';
-export const ExerciseRelationshipTypeAlternative: ExerciseRelationshipType = 'alternative';
-export const ExerciseRelationshipTypeAntagonist: ExerciseRelationshipType = 'antagonist';
-export const ExerciseRelationshipTypeBilateralUnilateral: ExerciseRelationshipType =
-  'bilateral_unilateral';
-export const ExerciseRelationshipTypeComplementary: ExerciseRelationshipType = 'complementary';
-export const ExerciseRelationshipTypeEasierAlternative: ExerciseRelationshipType =
-  'easier_alternative';
-export const ExerciseRelationshipTypeEquipmentVariation: ExerciseRelationshipType =
-  'equipment_variation';
-export const ExerciseRelationshipTypeEquivalent: ExerciseRelationshipType = 'equivalent';
-export const ExerciseRelationshipTypeForked: ExerciseRelationshipType = 'forked';
-export const ExerciseRelationshipTypeHarderAlternative: ExerciseRelationshipType =
-  'harder_alternative';
-export const ExerciseRelationshipTypePreparation: ExerciseRelationshipType = 'preparation';
-export const ExerciseRelationshipTypePrerequisite: ExerciseRelationshipType = 'prerequisite';
-export const ExerciseRelationshipTypeProgressesTo: ExerciseRelationshipType = 'progresses_to';
-export const ExerciseRelationshipTypeProgression: ExerciseRelationshipType = 'progression';
-export const ExerciseRelationshipTypeRegressesTo: ExerciseRelationshipType = 'regresses_to';
-export const ExerciseRelationshipTypeRegression: ExerciseRelationshipType = 'regression';
-export const ExerciseRelationshipTypeRelated: ExerciseRelationshipType = 'related';
-export const ExerciseRelationshipTypeSimilar: ExerciseRelationshipType = 'similar';
-export const ExerciseRelationshipTypeSupersetWith: ExerciseRelationshipType = 'superset_with';
-export const ExerciseRelationshipTypeSupports: ExerciseRelationshipType = 'supports';
-export const ExerciseRelationshipTypeVariant: ExerciseRelationshipType = 'variant';
-export const ExerciseRelationshipTypeVariation: ExerciseRelationshipType = 'variation';
-
-//////////
 // source: fulfillment.go
 
 export interface Fulfillment extends BaseModel {
@@ -203,17 +190,3 @@ export interface EquipmentRelationship extends BaseModel {
 export type EquipmentRelationshipType = string;
 export const EquipmentRelationshipTypeEquivalent: EquipmentRelationshipType = 'equivalent';
 export const EquipmentRelationshipTypeForked: EquipmentRelationshipType = 'forked';
-
-//////////
-// source: relationship.go
-
-export interface WorkoutRelationship extends BaseModel {
-  relationshipType: WorkoutRelationshipType;
-  strength: number /* float64 */;
-  owner: string;
-  fromWorkoutId: number /* uint */;
-  toWorkoutId: number /* uint */;
-}
-export type WorkoutRelationshipType = string;
-export const WorkoutRelationshipTypeEquivalent: WorkoutRelationshipType = 'equivalent';
-export const WorkoutRelationshipTypeForked: WorkoutRelationshipType = 'forked';

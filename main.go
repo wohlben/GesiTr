@@ -17,16 +17,8 @@ import (
 	"gesitr/internal/docs"
 	equipmentHandlers "gesitr/internal/equipment/handlers"
 	equipmentModels "gesitr/internal/equipment/models"
-	fulfillmentHandlers "gesitr/internal/equipmentfulfillment/handlers"
-	fulfillmentModels "gesitr/internal/equipmentfulfillment/models"
-	equipmentRelHandlers "gesitr/internal/equipmentrelationship/handlers"
-	equipmentRelModels "gesitr/internal/equipmentrelationship/models"
 	exerciseHandlers "gesitr/internal/exercise/handlers"
 	exerciseModels "gesitr/internal/exercise/models"
-	exerciseGroupHandlers "gesitr/internal/exercisegroup/handlers"
-	exerciseGroupModels "gesitr/internal/exercisegroup/models"
-	exerciseRelHandlers "gesitr/internal/exerciserelationship/handlers"
-	exerciseRelModels "gesitr/internal/exerciserelationship/models"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/profile"
 	profileHandlers "gesitr/internal/profile/handlers"
@@ -35,17 +27,15 @@ import (
 	exerciseLogModels "gesitr/internal/user/exerciselog/models"
 	masteryHandlers "gesitr/internal/user/mastery/handlers"
 	masteryModels "gesitr/internal/user/mastery/models"
+	workoutlog "gesitr/internal/user/workoutlog"
+	workoutloghandlers "gesitr/internal/user/workoutlog/handlers"
+	workoutlogmodels "gesitr/internal/user/workoutlog/models"
+	workoutScheduleHandlers "gesitr/internal/user/workoutschedule/handlers"
+	workoutScheduleModels "gesitr/internal/user/workoutschedule/models"
 	workoutHandlers "gesitr/internal/workout/handlers"
 	workoutModels "gesitr/internal/workout/models"
 	workoutGroupHandlers "gesitr/internal/workoutgroup/handlers"
 	workoutGroupModels "gesitr/internal/workoutgroup/models"
-	workoutlog "gesitr/internal/workoutlog"
-	workoutloghandlers "gesitr/internal/workoutlog/handlers"
-	workoutlogmodels "gesitr/internal/workoutlog/models"
-	workoutRelHandlers "gesitr/internal/workoutrelationship/handlers"
-	workoutRelModels "gesitr/internal/workoutrelationship/models"
-	workoutScheduleHandlers "gesitr/internal/workoutschedule/handlers"
-	workoutScheduleModels "gesitr/internal/workoutschedule/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -201,14 +191,14 @@ func autoMigrate() {
 		&exerciseModels.ExerciseAlternativeName{},
 		&equipmentModels.EquipmentEntity{},
 		&exerciseModels.ExerciseEquipment{},
-		&fulfillmentModels.FulfillmentEntity{},
-		&exerciseRelModels.ExerciseRelationshipEntity{},
-		&exerciseGroupModels.ExerciseGroupEntity{},
-		&exerciseGroupModels.ExerciseGroupMemberEntity{},
+		&equipmentModels.FulfillmentEntity{},
+		&exerciseModels.ExerciseRelationshipEntity{},
+		&workoutModels.ExerciseGroupEntity{},
+		&workoutModels.ExerciseGroupMemberEntity{},
 		&exerciseModels.ExerciseHistoryEntity{},
 		&equipmentModels.EquipmentHistoryEntity{},
 		&exerciseModels.ExerciseSchemeEntity{},
-		&equipmentRelModels.EquipmentRelationshipEntity{},
+		&equipmentModels.EquipmentRelationshipEntity{},
 		&workoutModels.WorkoutEntity{},
 		&workoutModels.WorkoutSectionEntity{},
 		&workoutModels.WorkoutSectionItemEntity{},
@@ -227,7 +217,7 @@ func autoMigrate() {
 		&masteryModels.EquipmentMasteryContributionEntity{},
 		&masteryModels.EquipmentMasteryExperienceEntity{},
 		&workoutModels.WorkoutHistoryEntity{},
-		&workoutRelModels.WorkoutRelationshipEntity{},
+		&workoutModels.WorkoutRelationshipEntity{},
 	)
 }
 
@@ -241,10 +231,6 @@ func setupRoutes(r *gin.Engine) {
 	humaAPI := humaconfig.NewAPI(r, api)
 	exerciseHandlers.RegisterRoutes(humaAPI)
 	equipmentHandlers.RegisterRoutes(humaAPI)
-	fulfillmentHandlers.RegisterRoutes(humaAPI)
-	exerciseRelHandlers.RegisterRoutes(humaAPI)
-	equipmentRelHandlers.RegisterRoutes(humaAPI)
-	exerciseGroupHandlers.RegisterRoutes(humaAPI)
 	profileHandlers.RegisterRoutes(humaAPI)
 	workoutHandlers.RegisterRoutes(humaAPI)
 	workoutloghandlers.RegisterRoutes(humaAPI)
@@ -252,7 +238,6 @@ func setupRoutes(r *gin.Engine) {
 	workoutGroupHandlers.RegisterRoutes(humaAPI)
 	workoutScheduleHandlers.RegisterRoutes(humaAPI)
 	masteryHandlers.RegisterRoutes(humaAPI)
-	workoutRelHandlers.RegisterRoutes(humaAPI)
 }
 
 func setupSPA(r *gin.Engine) {

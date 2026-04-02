@@ -133,4 +133,31 @@ func RegisterRoutes(api huma.API) {
 		Tags:        []string{"exercise-schemes"},
 		Summary:     "Delete exercise scheme",
 	}, DeleteExerciseScheme)
+
+	// --- Exercise relationships ---
+
+	huma.Register(api, huma.Operation{
+		OperationID: "ListExerciseRelationships",
+		Method:      http.MethodGet,
+		Path:        "/exercise-relationships",
+		Tags:        []string{"exercise-relationships"},
+		Summary:     "List exercise relationships",
+	}, ListExerciseRelationships)
+
+	huma.Register(api, huma.Operation{
+		OperationID:   "CreateExerciseRelationship",
+		Method:        http.MethodPost,
+		Path:          "/exercise-relationships",
+		Tags:          []string{"exercise-relationships"},
+		Summary:       "Create exercise relationship",
+		DefaultStatus: 201,
+	}, CreateExerciseRelationship)
+
+	huma.Register(api, huma.Operation{
+		OperationID: "DeleteExerciseRelationship",
+		Method:      http.MethodDelete,
+		Path:        "/exercise-relationships/{id}",
+		Tags:        []string{"exercise-relationships"},
+		Summary:     "Delete exercise relationship",
+	}, DeleteExerciseRelationship)
 }

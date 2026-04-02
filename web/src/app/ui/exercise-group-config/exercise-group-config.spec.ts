@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ExerciseGroupConfig, GroupConfigValue } from './exercise-group-config';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
-import { ExerciseGroup } from '$generated/models';
+import { ExerciseGroup } from '$generated/user-models';
 
 // brn-select uses ResizeObserver which isn't available in the unit test environment
 beforeAll(() => {

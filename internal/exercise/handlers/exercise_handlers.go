@@ -7,7 +7,6 @@ import (
 
 	"gesitr/internal/database"
 	"gesitr/internal/exercise/models"
-	relModels "gesitr/internal/exerciserelationship/models"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/shared"
 
@@ -152,8 +151,8 @@ func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExe
 
 		if input.Body.SourceExerciseID != nil {
 			sourceID := *input.Body.SourceExerciseID
-			forked := relModels.ExerciseRelationshipEntity{
-				RelationshipType: relModels.ExerciseRelationshipTypeForked,
+			forked := models.ExerciseRelationshipEntity{
+				RelationshipType: models.ExerciseRelationshipTypeForked,
 				Strength:         1.0,
 				Owner:            entity.Owner,
 				FromExerciseID:   entity.ID,
@@ -162,8 +161,8 @@ func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExe
 			if err := tx.Create(&forked).Error; err != nil {
 				return err
 			}
-			equivalent := relModels.ExerciseRelationshipEntity{
-				RelationshipType: relModels.ExerciseRelationshipTypeEquivalent,
+			equivalent := models.ExerciseRelationshipEntity{
+				RelationshipType: models.ExerciseRelationshipTypeEquivalent,
 				Strength:         1.0,
 				Owner:            entity.Owner,
 				FromExerciseID:   entity.ID,

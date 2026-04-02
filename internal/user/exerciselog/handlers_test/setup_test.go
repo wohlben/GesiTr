@@ -18,10 +18,10 @@ import (
 	profilemodels "gesitr/internal/profile/models"
 	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciselogmodels "gesitr/internal/user/exerciselog/models"
+	workoutloghandlers "gesitr/internal/user/workoutlog/handlers"
+	workoutlogmodels "gesitr/internal/user/workoutlog/models"
 	workouthandlers "gesitr/internal/workout/handlers"
 	workoutmodels "gesitr/internal/workout/models"
-	workoutloghandlers "gesitr/internal/workoutlog/handlers"
-	workoutlogmodels "gesitr/internal/workoutlog/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"

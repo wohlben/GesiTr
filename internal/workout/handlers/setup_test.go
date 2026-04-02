@@ -13,8 +13,6 @@ import (
 	equipmentmodels "gesitr/internal/equipment/models"
 	exercisehandlers "gesitr/internal/exercise/handlers"
 	exercisemodels "gesitr/internal/exercise/models"
-	exercisegrouphandlers "gesitr/internal/exercisegroup/handlers"
-	exercisegroupmodels "gesitr/internal/exercisegroup/models"
 	"gesitr/internal/humaconfig"
 	profilemodels "gesitr/internal/profile/models"
 	"gesitr/internal/workout/models"
@@ -52,8 +50,8 @@ func setupTestDB(t *testing.T) {
 		&exercisemodels.ExerciseHistoryEntity{},
 		&exercisemodels.ExerciseSchemeEntity{},
 		&equipmentmodels.EquipmentEntity{},
-		&exercisegroupmodels.ExerciseGroupEntity{},
-		&exercisegroupmodels.ExerciseGroupMemberEntity{},
+		&models.ExerciseGroupEntity{},
+		&models.ExerciseGroupMemberEntity{},
 		&models.WorkoutEntity{},
 		&models.WorkoutHistoryEntity{},
 		&models.WorkoutSectionEntity{},
@@ -73,7 +71,6 @@ func newRouter() *gin.Engine {
 
 	humaAPI := humaconfig.NewAPI(r, api)
 	exercisehandlers.RegisterRoutes(humaAPI)
-	exercisegrouphandlers.RegisterRoutes(humaAPI)
 	RegisterRoutes(humaAPI)
 	workoutgrouphandlers.RegisterRoutes(humaAPI)
 
@@ -90,6 +87,22 @@ func doJSON(r *gin.Engine, method, path string, body any) *httptest.ResponseReco
 	if body != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	return w
+}
+
+func doJSONAs(r *gin.Engine, method, path string, body any, userID string) *httptest.ResponseRecorder {
+	var reader io.Reader
+	if body != nil {
+		data, _ := json.Marshal(body)
+		reader = bytes.NewReader(data)
+	}
+	req := httptest.NewRequest(method, path, reader)
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
+	}
+	req.Header.Set("X-User-Id", userID)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	return w

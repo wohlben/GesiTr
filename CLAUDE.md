@@ -47,11 +47,8 @@ make docker
 
 - **Entry point**: `main.go` — sets up Gin routes, GORM auto-migration, embeds SPA via `//go:embed`
 - **`internal/exercise/`** — exercise models and handlers (`/api/exercises`)
-- **`internal/equipment/`** — equipment models and handlers (`/api/equipment`)
-- **`internal/exercisegroup/`** — exercise group models and handlers
+- **`internal/equipment/`** — equipment, fulfillment, and relationship models and handlers (`/api/equipment`, `/api/fulfillments`, `/api/equipment-relationships`)
 - **`internal/exerciserelationship/`** — exercise relationship models and handlers
-- **`internal/equipmentfulfillment/`** — equipment fulfillment models and handlers
-- **`internal/equipmentrelationship/`** — equipment relationship models and handlers
 - **`internal/user/`** — user-scoped entities: workouts, workout logs, exercise logs
 - **`internal/profile/`** — user profile models and handlers
 - **`internal/auth/`** — middleware extracting UserID from header (`AUTH_HEADER` env var, default `X-User-Id`; falls back to `AUTH_FALLBACK_USER` in dev)

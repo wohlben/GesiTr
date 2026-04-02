@@ -21,6 +21,7 @@ packages:
     include_files:
       - "exercise.go"
       - "scheme.go"
+      - "relationship.go"
   - path: "gesitr/internal/equipment/models"
     output_path: "web/src/app/generated/equipment.ts"
     type_mappings:
@@ -28,40 +29,7 @@ packages:
       "gorm.DeletedAt": "string | null"
     include_files:
       - "equipment.go"
-  - path: "gesitr/internal/exercisegroup/models"
-    output_path: "web/src/app/generated/exercise-group.ts"
-    type_mappings:
-      "time.Time": "string"
-      "gorm.DeletedAt": "string | null"
-    include_files:
-      - "exercisegroup.go"
-  - path: "gesitr/internal/exerciserelationship/models"
-    output_path: "web/src/app/generated/exercise-relationship.ts"
-    type_mappings:
-      "time.Time": "string"
-      "gorm.DeletedAt": "string | null"
-    include_files:
-      - "relationship.go"
-  - path: "gesitr/internal/equipmentfulfillment/models"
-    output_path: "web/src/app/generated/equipment-fulfillment.ts"
-    type_mappings:
-      "time.Time": "string"
-      "gorm.DeletedAt": "string | null"
-    include_files:
       - "fulfillment.go"
-  - path: "gesitr/internal/equipmentrelationship/models"
-    output_path: "web/src/app/generated/equipment-relationship.ts"
-    type_mappings:
-      "time.Time": "string"
-      "gorm.DeletedAt": "string | null"
-    include_files:
-      - "relationship.go"
-  - path: "gesitr/internal/workoutrelationship/models"
-    output_path: "web/src/app/generated/workout-relationship.ts"
-    type_mappings:
-      "time.Time": "string"
-      "gorm.DeletedAt": "string | null"
-    include_files:
       - "relationship.go"
   - path: "gesitr/internal/workout/models"
     output_path: "web/src/app/generated/user-workout.ts"
@@ -70,7 +38,9 @@ packages:
       "gorm.DeletedAt": "string | null"
     include_files:
       - "workout.go"
-  - path: "gesitr/internal/workoutlog/models"
+      - "relationship.go"
+      - "exercisegroup.go"
+  - path: "gesitr/internal/user/workoutlog/models"
     output_path: "web/src/app/generated/user-workoutlog.ts"
     type_mappings:
       "time.Time": "string"
@@ -106,7 +76,7 @@ packages:
       "shared.BaseModel": "BaseModel"
     include_files:
       - "workoutgroup.go"
-  - path: "gesitr/internal/workoutschedule/models"
+  - path: "gesitr/internal/user/workoutschedule/models"
     output_path: "web/src/app/generated/user-workoutschedule.ts"
     frontmatter: |
       import { BaseModel } from './user-models';

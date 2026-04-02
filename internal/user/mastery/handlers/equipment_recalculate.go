@@ -1,8 +1,7 @@
 package handlers
 
 import (
-	fulfillmentmodels "gesitr/internal/equipmentfulfillment/models"
-	equipmentrelmodels "gesitr/internal/equipmentrelationship/models"
+	equipmentmodels "gesitr/internal/equipment/models"
 	"gesitr/internal/user/mastery/models"
 
 	"gorm.io/gorm"
@@ -14,14 +13,14 @@ import (
 // Called after equipment relationship or fulfillment create/delete.
 func RecalculateEquipmentContributions(db *gorm.DB, owner string, equipmentIDs ...uint) error {
 	// 1. Fetch equipment relationships for this owner involving affected IDs.
-	var relationships []equipmentrelmodels.EquipmentRelationshipEntity
+	var relationships []equipmentmodels.EquipmentRelationshipEntity
 	if err := db.Where("owner = ? AND (from_equipment_id IN ? OR to_equipment_id IN ?)", owner, equipmentIDs, equipmentIDs).
 		Find(&relationships).Error; err != nil {
 		return err
 	}
 
 	// 2. Fetch fulfillments for this owner involving affected IDs.
-	var fulfillments []fulfillmentmodels.FulfillmentEntity
+	var fulfillments []equipmentmodels.FulfillmentEntity
 	if err := db.Where("owner = ? AND (equipment_id IN ? OR fulfills_equipment_id IN ?)", owner, equipmentIDs, equipmentIDs).
 		Find(&fulfillments).Error; err != nil {
 		return err
@@ -105,14 +104,14 @@ func BackfillEquipmentContributions(db *gorm.DB) error {
 	ownerSet := make(map[string]bool)
 
 	var relOwners []string
-	db.Model(&equipmentrelmodels.EquipmentRelationshipEntity{}).
+	db.Model(&equipmentmodels.EquipmentRelationshipEntity{}).
 		Distinct("owner").Pluck("owner", &relOwners)
 	for _, o := range relOwners {
 		ownerSet[o] = true
 	}
 
 	var fulOwners []string
-	db.Model(&fulfillmentmodels.FulfillmentEntity{}).
+	db.Model(&equipmentmodels.FulfillmentEntity{}).
 		Distinct("owner").Pluck("owner", &fulOwners)
 	for _, o := range fulOwners {
 		ownerSet[o] = true
@@ -124,15 +123,15 @@ func BackfillEquipmentContributions(db *gorm.DB) error {
 		seen := make(map[uint]bool)
 
 		var fromIDs, toIDs []uint
-		db.Model(&equipmentrelmodels.EquipmentRelationshipEntity{}).
+		db.Model(&equipmentmodels.EquipmentRelationshipEntity{}).
 			Where("owner = ?", owner).Pluck("from_equipment_id", &fromIDs)
-		db.Model(&equipmentrelmodels.EquipmentRelationshipEntity{}).
+		db.Model(&equipmentmodels.EquipmentRelationshipEntity{}).
 			Where("owner = ?", owner).Pluck("to_equipment_id", &toIDs)
 
 		var fulEqIDs, fulFulIDs []uint
-		db.Model(&fulfillmentmodels.FulfillmentEntity{}).
+		db.Model(&equipmentmodels.FulfillmentEntity{}).
 			Where("owner = ?", owner).Pluck("equipment_id", &fulEqIDs)
-		db.Model(&fulfillmentmodels.FulfillmentEntity{}).
+		db.Model(&equipmentmodels.FulfillmentEntity{}).
 			Where("owner = ?", owner).Pluck("fulfills_equipment_id", &fulFulIDs)
 
 		for _, id := range append(append(append(fromIDs, toIDs...), fulEqIDs...), fulFulIDs...) {
