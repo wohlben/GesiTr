@@ -199,7 +199,7 @@ export class LocalityDetail {
   }));
 
   availabilityQuery = injectQuery(() => ({
-    queryKey: localityAvailabilityKeys.list(this.id()),
+    queryKey: localityAvailabilityKeys.list({ localityId: this.id() }),
     queryFn: () => this.api.fetchLocalityAvailabilities({ localityId: this.id() }),
     enabled: !!this.id(),
   }));
@@ -274,7 +274,7 @@ export class LocalityDetail {
       this.api.createLocalityAvailability({ localityId: this.id(), equipmentId }),
     onSuccess: () => {
       this.queryClient.invalidateQueries({
-        queryKey: localityAvailabilityKeys.list(this.id()),
+        queryKey: localityAvailabilityKeys.list({ localityId: this.id() }),
       });
     },
   }));
@@ -284,7 +284,7 @@ export class LocalityDetail {
       this.api.updateLocalityAvailability(vars.id, { available: vars.available }),
     onSuccess: () => {
       this.queryClient.invalidateQueries({
-        queryKey: localityAvailabilityKeys.list(this.id()),
+        queryKey: localityAvailabilityKeys.list({ localityId: this.id() }),
       });
     },
   }));
@@ -293,7 +293,7 @@ export class LocalityDetail {
     mutationFn: (availabilityId: number) => this.api.deleteLocalityAvailability(availabilityId),
     onSuccess: () => {
       this.queryClient.invalidateQueries({
-        queryKey: localityAvailabilityKeys.list(this.id()),
+        queryKey: localityAvailabilityKeys.list({ localityId: this.id() }),
       });
     },
   }));

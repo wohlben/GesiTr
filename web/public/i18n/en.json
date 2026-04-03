@@ -280,8 +280,7 @@
       "newTitle": "New Equipment",
       "editTitle": "Edit Equipment",
       "historyTitle": "History",
-      "addTo": "Add to...",
-      "added": "Added!"
+      "addTo": "Add to..."
     },
     "exerciseGroups": {
       "title": "Exercise Groups",

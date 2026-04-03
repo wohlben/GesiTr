@@ -4,9 +4,11 @@ import { provideRouter } from '@angular/router';
 import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
-import { localityKeys } from '$core/query-keys';
-import { Locality } from '$generated/models';
+import { localityKeys, localityAvailabilityKeys } from '$core/query-keys';
+import { Locality, LocalityAvailability } from '$generated/models';
 import { EquipmentAddToLocalityMenu } from './equipment-add-to-locality-menu';
+
+const EQUIPMENT_ID = 42;
 
 const mockLocalities: Locality[] = [
   {
@@ -27,23 +29,41 @@ const mockLocalities: Locality[] = [
   },
 ];
 
+// Equipment is already added to "Home Gym"
+const mockAvailabilities: LocalityAvailability[] = [
+  {
+    id: 10,
+    localityId: 1,
+    equipmentId: EQUIPMENT_ID,
+    available: true,
+    owner: 'user',
+    createdAt: '2024-01-15T00:00:00Z',
+    updatedAt: '2024-01-15T00:00:00Z',
+  },
+];
+
 describe('EquipmentAddToLocalityMenu screenshots', () => {
   afterEach(() => {
     document.documentElement.classList.remove('dark');
   });
 
-  async function renderMenu(localities: Locality[]) {
+  async function renderMenu() {
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     });
 
     queryClient.setQueryData(localityKeys.list({ owner: 'me', limit: 100 }), {
-      items: localities,
-      total: localities.length,
+      items: mockLocalities,
+      total: mockLocalities.length,
     });
 
+    queryClient.setQueryData(
+      localityAvailabilityKeys.list({ equipmentId: EQUIPMENT_ID }),
+      mockAvailabilities,
+    );
+
     const result = await render(EquipmentAddToLocalityMenu, {
-      inputs: { equipmentId: 42 },
+      inputs: { equipmentId: EQUIPMENT_ID },
       providers: [
         provideTranslocoForTest(),
         provideRouter([]),
@@ -53,8 +73,10 @@ describe('EquipmentAddToLocalityMenu screenshots', () => {
           useValue: {
             fetchLocalities: vi
               .fn()
-              .mockResolvedValue({ items: localities, total: localities.length }),
+              .mockResolvedValue({ items: mockLocalities, total: mockLocalities.length }),
+            fetchLocalityAvailabilities: vi.fn().mockResolvedValue(mockAvailabilities),
             createLocalityAvailability: vi.fn(),
+            deleteLocalityAvailability: vi.fn(),
           },
         },
       ],
@@ -71,14 +93,14 @@ describe('EquipmentAddToLocalityMenu screenshots', () => {
   }
 
   it('light', async () => {
-    await renderMenu(mockLocalities);
+    await renderMenu();
     const locator = page.elementLocator(document.body);
     await expect(locator).toMatchScreenshot('light');
   });
 
   it('dark', async () => {
     document.documentElement.classList.add('dark');
-    await renderMenu(mockLocalities);
+    await renderMenu();
     const locator = page.elementLocator(document.body);
     await expect(locator).toMatchScreenshot('dark');
   });

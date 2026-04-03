@@ -20,6 +20,9 @@ func ListLocalityAvailabilities(ctx context.Context, input *ListLocalityAvailabi
 	if input.LocalityID != "" {
 		db = db.Where("locality_id = ?", input.LocalityID)
 	}
+	if input.EquipmentID != "" {
+		db = db.Where("equipment_id = ?", input.EquipmentID)
+	}
 	if input.Available == "true" {
 		db = db.Where("available = ?", true)
 	} else if input.Available == "false" {

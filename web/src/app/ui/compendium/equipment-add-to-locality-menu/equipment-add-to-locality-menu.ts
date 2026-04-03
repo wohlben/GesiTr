@@ -1,35 +1,31 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, input, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { injectQuery, injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { localityKeys, localityAvailabilityKeys } from '$core/query-keys';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideMapPin, lucideHome } from '@ng-icons/lucide';
+import { lucideMapPin, lucideHome, lucideX } from '@ng-icons/lucide';
 import { HlmIconImports } from '@spartan-ng/helm/icon';
 import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 
 @Component({
   selector: 'app-equipment-add-to-locality-menu',
   imports: [TranslocoDirective, NgIcon, HlmIconImports, HlmPopoverImports],
-  providers: [provideIcons({ lucideMapPin, lucideHome })],
+  providers: [provideIcons({ lucideMapPin, lucideHome, lucideX })],
   template: `
     <ng-container *transloco="let t">
       <div hlmPopover [state]="open() ? 'open' : 'closed'" (closed)="open.set(false)" align="end">
         <button
           hlmPopoverTrigger
           (click)="open.set(!open())"
-          [disabled]="addMutation.isPending()"
+          [disabled]="addMutation.isPending() || removeMutation.isPending()"
           class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
         >
-          @if (justAdded()) {
-            {{ t('compendium.equipment.added') }}
-          } @else {
-            <span class="flex items-center gap-1.5">
-              <ng-icon hlm name="lucideMapPin" size="sm" />
-              {{ t('compendium.equipment.addTo') }}
-            </span>
-          }
+          <span class="flex items-center gap-1.5">
+            <ng-icon hlm name="lucideMapPin" size="sm" />
+            {{ t('compendium.equipment.addTo') }}
+          </span>
         </button>
         <ng-template hlmPopoverPortal>
           <div hlmPopoverContent class="w-56 p-2">
@@ -53,13 +49,28 @@ import { HlmPopoverImports } from '@spartan-ng/helm/popover';
                 </button>
               } @else {
                 @for (locality of page.items; track locality.id) {
-                  <button
-                    (click)="addToLocality(locality.id)"
-                    [disabled]="addMutation.isPending()"
-                    class="w-full rounded-md px-3 py-1.5 text-left text-sm transition-colors hover:bg-gray-100 disabled:opacity-50 dark:hover:bg-gray-800"
-                  >
-                    {{ locality.name }}
-                  </button>
+                  @if (availabilityMap().get(locality.id); as avail) {
+                    <div
+                      class="flex w-full items-center justify-between rounded-md px-3 py-1.5 text-sm"
+                    >
+                      <span class="text-gray-900 dark:text-gray-100">{{ locality.name }}</span>
+                      <button
+                        (click)="removeFromLocality(avail.id)"
+                        [disabled]="removeMutation.isPending()"
+                        class="rounded p-0.5 text-red-500 transition-colors hover:bg-red-100 disabled:opacity-50 dark:text-red-400 dark:hover:bg-red-900/30"
+                      >
+                        <ng-icon hlm name="lucideX" size="sm" />
+                      </button>
+                    </div>
+                  } @else {
+                    <button
+                      (click)="addToLocality(locality.id)"
+                      [disabled]="addMutation.isPending()"
+                      class="w-full rounded-md px-3 py-1.5 text-left text-sm transition-colors hover:bg-gray-100 disabled:opacity-50 dark:hover:bg-gray-800"
+                    >
+                      {{ locality.name }}
+                    </button>
+                  }
                 }
               }
             }
@@ -77,12 +88,25 @@ export class EquipmentAddToLocalityMenu {
   private queryClient = inject(QueryClient);
 
   open = signal(false);
-  justAdded = signal(false);
 
   localitiesQuery = injectQuery(() => ({
     queryKey: localityKeys.list({ owner: 'me', limit: 100 }),
     queryFn: () => this.api.fetchLocalities({ owner: 'me', limit: 100 }),
   }));
+
+  availabilitiesQuery = injectQuery(() => ({
+    queryKey: localityAvailabilityKeys.list({ equipmentId: this.equipmentId() }),
+    queryFn: () => this.api.fetchLocalityAvailabilities({ equipmentId: this.equipmentId() }),
+    enabled: !!this.equipmentId(),
+  }));
+
+  availabilityMap = computed(() => {
+    const map = new Map<number, { id: number; localityId: number }>();
+    for (const a of this.availabilitiesQuery.data() ?? []) {
+      map.set(a.localityId, { id: a.id, localityId: a.localityId });
+    }
+    return map;
+  });
 
   addMutation = injectMutation(() => ({
     mutationFn: (localityId: number) =>
@@ -92,14 +116,22 @@ export class EquipmentAddToLocalityMenu {
       }),
     onSuccess: () => {
       this.queryClient.invalidateQueries({ queryKey: localityAvailabilityKeys.all() });
-      this.open.set(false);
-      this.justAdded.set(true);
-      setTimeout(() => this.justAdded.set(false), 2000);
+    },
+  }));
+
+  removeMutation = injectMutation(() => ({
+    mutationFn: (availabilityId: number) => this.api.deleteLocalityAvailability(availabilityId),
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: localityAvailabilityKeys.all() });
     },
   }));
 
   addToLocality(localityId: number) {
     this.addMutation.mutate(localityId);
+  }
+
+  removeFromLocality(availabilityId: number) {
+    this.removeMutation.mutate(availabilityId);
   }
 
   goToLocalities() {

@@ -5,8 +5,9 @@ import (
 )
 
 type ListLocalityAvailabilitiesInput struct {
-	LocalityID string `query:"localityId" required:"true" doc:"Filter by locality ID"`
-	Available  string `query:"available" doc:"Filter by availability ('true' or 'false')"`
+	LocalityID  string `query:"localityId" doc:"Filter by locality ID"`
+	EquipmentID string `query:"equipmentId" doc:"Filter by equipment ID"`
+	Available   string `query:"available" doc:"Filter by availability ('true' or 'false')"`
 }
 
 type ListLocalityAvailabilitiesOutput struct {
