@@ -4,15 +4,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import {
-  equipmentKeys,
-  equipmentMasteryKeys,
-  localityKeys,
-  localityAvailabilityKeys,
-} from '$core/query-keys';
+import { equipmentKeys, equipmentMasteryKeys, localityAvailabilityKeys } from '$core/query-keys';
 import { EquipmentMastery } from '$generated/user-mastery';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { EquipmentListItem } from '$ui/compendium/equipment-list-item/equipment-list-item';
+import { LocalityToggleGroup } from '$ui/compendium/locality-toggle-group/locality-toggle-group';
 import { DataTable, DataTableColumn } from '$ui/data-table/data-table';
 import { Pagination } from '$ui/pagination/pagination';
 import { PageLayout } from '../../../layout/page-layout';
@@ -27,7 +23,15 @@ import {
 
 @Component({
   selector: 'app-equipment-list',
-  imports: [EquipmentListItem, DataTable, Pagination, PageLayout, RouterLink, TranslocoDirective],
+  imports: [
+    EquipmentListItem,
+    LocalityToggleGroup,
+    DataTable,
+    Pagination,
+    PageLayout,
+    RouterLink,
+    TranslocoDirective,
+  ],
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
@@ -36,38 +40,7 @@ import {
         [errorMessage]="equipmentQuery.isError() ? equipmentQuery.error().message : undefined"
       >
         <div actions class="flex items-center gap-2">
-          @if (localitiesQuery.data(); as localityPage) {
-            <div
-              class="flex overflow-hidden rounded-md border border-gray-300 dark:border-gray-600"
-            >
-              <button
-                type="button"
-                (click)="selectedLocalityId.set(null)"
-                class="px-3 py-2 text-sm font-medium transition-colors"
-                [class]="
-                  selectedLocalityId() === null
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
-                "
-              >
-                {{ t('common.all') }}
-              </button>
-              @for (locality of localityPage.items; track locality.id) {
-                <button
-                  type="button"
-                  (click)="selectedLocalityId.set(locality.id)"
-                  class="border-l border-gray-300 px-3 py-2 text-sm font-medium transition-colors dark:border-gray-600"
-                  [class]="
-                    selectedLocalityId() === locality.id
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
-                  "
-                >
-                  {{ locality.name }}
-                </button>
-              }
-            </div>
-          }
+          <app-locality-toggle-group (selectedChange)="selectedLocalityId.set($event)" />
           <div class="flex-grow"></div>
           <a
             routerLink="./new"
@@ -124,11 +97,6 @@ export class EquipmentList {
   masteryQuery = injectQuery(() => ({
     queryKey: equipmentMasteryKeys.list(),
     queryFn: () => this.userApi.fetchEquipmentMasteryList(),
-  }));
-
-  localitiesQuery = injectQuery(() => ({
-    queryKey: localityKeys.list({ owner: 'me', limit: 100 }),
-    queryFn: () => this.api.fetchLocalities({ owner: 'me', limit: 100 }),
   }));
 
   availabilitiesQuery = injectQuery(() => ({
