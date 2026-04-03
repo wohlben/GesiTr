@@ -86,15 +86,14 @@ type WorkoutLog struct {
 ```
 
 <a name="WorkoutLogEntity"></a>
-## type [WorkoutLogEntity](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L10-L25>)
+## type [WorkoutLogEntity](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L9-L23>)
 
 
 
 ```go
 type WorkoutLogEntity struct {
     shared.BaseModel
-    Owner           string                           `gorm:"not null;index"`
-    OwnerProfile    *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
+    Owner           string `gorm:"not null;index"`
     WorkoutID       *uint
     Name            string `gorm:"not null"`
     Notes           *string
@@ -110,7 +109,7 @@ type WorkoutLogEntity struct {
 ```
 
 <a name="WorkoutLogFromDTO"></a>
-### func [WorkoutLogFromDTO](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L50>)
+### func [WorkoutLogFromDTO](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L48>)
 
 ```go
 func WorkoutLogFromDTO(dto WorkoutLog) WorkoutLogEntity
@@ -119,7 +118,7 @@ func WorkoutLogFromDTO(dto WorkoutLog) WorkoutLogEntity
 
 
 <a name="WorkoutLogEntity.TableName"></a>
-### func \(WorkoutLogEntity\) [TableName](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L27>)
+### func \(WorkoutLogEntity\) [TableName](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L25>)
 
 ```go
 func (WorkoutLogEntity) TableName() string
@@ -128,7 +127,7 @@ func (WorkoutLogEntity) TableName() string
 
 
 <a name="WorkoutLogEntity.ToDTO"></a>
-### func \(\*WorkoutLogEntity\) [ToDTO](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L29>)
+### func \(\*WorkoutLogEntity\) [ToDTO](<https://github.com/wohlben/GesiTr/blob/main/internal/user/workoutlog/models/log_entity.go#L27>)
 
 ```go
 func (e *WorkoutLogEntity) ToDTO() WorkoutLog
