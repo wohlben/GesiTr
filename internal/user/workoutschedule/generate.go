@@ -222,22 +222,20 @@ func snapshotWorkoutIntoLog(tx *gorm.DB, workout *workoutmodels.WorkoutEntity, l
 			if item.Type != workoutmodels.WorkoutSectionItemTypeExercise {
 				continue // exercise_group items require interactive resolution
 			}
-			if item.ExerciseSchemeID == nil {
+			if item.ExerciseID == nil {
 				continue
 			}
 
-			// Prefer user-specific scheme for this item, fall back to item's default
-			schemeID := *item.ExerciseSchemeID
-			var userScheme exerciseschememodels.ExerciseSchemeEntity
-			err := tx.Where("owner = ? AND workout_section_item_id = ?", owner, item.ID).
-				First(&userScheme).Error
-			if err == nil {
-				schemeID = userScheme.ID
+			// Look up user's scheme assignment for this item via the join table
+			var assignment exerciseschememodels.ExerciseSchemeSectionItemEntity
+			if err := tx.Where("workout_section_item_id = ? AND owner = ?", item.ID, owner).
+				First(&assignment).Error; err != nil {
+				continue // no scheme assigned for this item, skip
 			}
 
 			var scheme exerciseschememodels.ExerciseSchemeEntity
-			if err := tx.First(&scheme, schemeID).Error; err != nil {
-				return fmt.Errorf("scheme %d not found: %w", schemeID, err)
+			if err := tx.First(&scheme, assignment.ExerciseSchemeID).Error; err != nil {
+				return fmt.Errorf("scheme %d not found: %w", assignment.ExerciseSchemeID, err)
 			}
 
 			breakAfter := section.RestBetweenExercises
@@ -245,7 +243,7 @@ func snapshotWorkoutIntoLog(tx *gorm.DB, workout *workoutmodels.WorkoutEntity, l
 			exercise := workoutlogmodels.WorkoutLogExerciseEntity{
 				WorkoutLogSectionID:    logSection.ID,
 				WorkoutLogID:           log.ID,
-				SourceExerciseSchemeID: schemeID,
+				SourceExerciseSchemeID: assignment.ExerciseSchemeID,
 				Position:               ei,
 				Status:                 workoutlogmodels.WorkoutLogItemStatusPlanning,
 				BreakAfterSeconds:      breakAfter,

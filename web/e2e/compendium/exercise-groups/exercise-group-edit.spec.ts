@@ -4,10 +4,9 @@ import { createExerciseGroup, deleteExerciseGroup, toSlug } from '../../helpers'
 test.describe('/compendium/exercise-groups/:id/:slug/edit', () => {
   test('renders edit form with exercise group data', async ({ request, page }) => {
     const group = await createExerciseGroup(request, { name: 'Plyometrics' });
-    await page.goto(
-      `/compendium/exercise-groups/${group.id}/${toSlug(group.name)}/edit`,
-      { waitUntil: 'networkidle' },
-    );
+    await page.goto(`/compendium/exercise-groups/${group.id}/${toSlug(group.name)}/edit`, {
+      waitUntil: 'networkidle',
+    });
     await expect(page.locator('h1')).toHaveText('Edit Exercise Group');
     await expect(page.locator('form')).toBeVisible();
     await expect(page.locator('button[type="submit"]')).toBeVisible();

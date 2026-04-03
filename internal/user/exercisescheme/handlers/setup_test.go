@@ -45,6 +45,7 @@ func setupTestDB(t *testing.T) {
 		&exerciseModels.ExerciseEquipment{},
 		&exerciseModels.ExerciseHistoryEntity{},
 		&models.ExerciseSchemeEntity{},
+		&models.ExerciseSchemeSectionItemEntity{},
 		&namePreferenceModels.ExerciseNamePreference{},
 	)
 	database.DB = db

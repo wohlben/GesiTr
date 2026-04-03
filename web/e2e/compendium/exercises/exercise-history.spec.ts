@@ -5,10 +5,9 @@ test.describe('/compendium/exercises/:id/:slug/history', () => {
   test('renders history page with version entries', async ({ request, page }) => {
     const exercise = await createExercise(request, { names: ['Lat Pulldown'] });
     await updateExercise(request, exercise.id, { names: ['Lat Pulldown (v1)'] });
-    await page.goto(
-      `/compendium/exercises/${exercise.id}/${toSlug('Lat Pulldown')}/history`,
-      { waitUntil: 'networkidle' },
-    );
+    await page.goto(`/compendium/exercises/${exercise.id}/${toSlug('Lat Pulldown')}/history`, {
+      waitUntil: 'networkidle',
+    });
     await expect(page.locator('h1')).toContainText('History');
     const versionLabels = page.locator('text=/Version \\d+/');
     expect(await versionLabels.count()).toBeGreaterThanOrEqual(2);

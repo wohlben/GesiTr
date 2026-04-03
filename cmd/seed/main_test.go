@@ -41,6 +41,7 @@ func setupSeedTestDB(t *testing.T) {
 		&workoutModels.WorkoutSectionEntity{},
 		&workoutModels.WorkoutSectionItemEntity{},
 		&exerciseSchemeModels.ExerciseSchemeEntity{},
+		&exerciseSchemeModels.ExerciseSchemeSectionItemEntity{},
 		&workoutModels.WorkoutHistoryEntity{},
 	)
 	database.DB = db
@@ -636,12 +637,18 @@ func TestSeedWorkouts(t *testing.T) {
 			if item.Position != i {
 				t.Errorf("item %d: position=%d", i, item.Position)
 			}
-			if item.ExerciseSchemeID == nil {
-				t.Fatalf("item %d: nil ExerciseSchemeID", i)
+			if item.ExerciseID == nil {
+				t.Fatalf("item %d: nil ExerciseID", i)
+			}
+
+			// Look up the scheme via the join table
+			var link exerciseSchemeModels.ExerciseSchemeSectionItemEntity
+			if err := database.DB.Where("workout_section_item_id = ?", item.ID).First(&link).Error; err != nil {
+				t.Fatalf("item %d: scheme link not found: %v", i, err)
 			}
 
 			var scheme exerciseSchemeModels.ExerciseSchemeEntity
-			if err := database.DB.First(&scheme, *item.ExerciseSchemeID).Error; err != nil {
+			if err := database.DB.First(&scheme, link.ExerciseSchemeID).Error; err != nil {
 				t.Fatalf("item %d: scheme not found: %v", i, err)
 			}
 			if scheme.MeasurementType != "REP_BASED" {
@@ -654,15 +661,15 @@ func TestSeedWorkouts(t *testing.T) {
 				t.Errorf("item %d: restBetweenSets=%v", i, scheme.RestBetweenSets)
 			}
 
-			// Verify scheme points to correct exercise via exerciseIDMap
+			// Verify item points to correct exercise via exerciseIDMap
 			expectedID := exerciseIDMap[expectedExercises[i]]
-			if scheme.ExerciseID != expectedID {
-				t.Errorf("item %d: exerciseID=%d, expected=%d", i, scheme.ExerciseID, expectedID)
+			if *item.ExerciseID != expectedID {
+				t.Errorf("item %d: exerciseID=%d, expected=%d", i, *item.ExerciseID, expectedID)
 			}
 
-			// Verify back-link
-			if scheme.WorkoutSectionItemID == nil || *scheme.WorkoutSectionItemID != item.ID {
-				t.Errorf("item %d: scheme back-link=%v, expected=%d", i, scheme.WorkoutSectionItemID, item.ID)
+			// Verify scheme also references the correct exercise
+			if scheme.ExerciseID != expectedID {
+				t.Errorf("item %d: scheme exerciseID=%d, expected=%d", i, scheme.ExerciseID, expectedID)
 			}
 		}
 

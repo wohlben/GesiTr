@@ -73,7 +73,7 @@ export const WorkoutSectionItemTypeExerciseGroup: WorkoutSectionItemType = 'exer
 export interface WorkoutSectionItem extends BaseModel {
   workoutSectionId: number /* uint */;
   type: WorkoutSectionItemType;
-  exerciseSchemeId?: number /* uint */;
+  exerciseId?: number /* uint */;
   exerciseGroupId?: number /* uint */;
   data?: string;
   position: number /* int */;

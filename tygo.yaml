@@ -86,6 +86,7 @@ packages:
       "shared.BaseModel": "BaseModel"
     include_files:
       - "scheme.go"
+      - "scheme_section_item.go"
   - path: "gesitr/internal/user/workoutschedule/models"
     output_path: "web/src/app/generated/user-workoutschedule.ts"
     frontmatter: |

@@ -92,18 +92,30 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 
 	// 6. Add exercises to the workout template sections
 	w = doJSON(r, "POST", "/api/workout-section-items", map[string]any{
-		"workoutSectionId": mainSection.ID, "type": "exercise", "exerciseSchemeId": scheme.ID, "position": 0,
+		"workoutSectionId": mainSection.ID, "type": "exercise", "exerciseId": userExercise.ID, "position": 0,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section exercise 1: status = %d", w.Code)
 	}
+	var sItem1 workoutmodels.WorkoutSectionItem
+	json.Unmarshal(w.Body.Bytes(), &sItem1)
 
 	w = doJSON(r, "POST", "/api/workout-section-items", map[string]any{
-		"workoutSectionId": mainSection.ID, "type": "exercise", "exerciseSchemeId": scheme2.ID, "position": 1,
+		"workoutSectionId": mainSection.ID, "type": "exercise", "exerciseId": userExercise2.ID, "position": 1,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section exercise 2: status = %d", w.Code)
 	}
+	var sItem2 workoutmodels.WorkoutSectionItem
+	json.Unmarshal(w.Body.Bytes(), &sItem2)
+
+	// Link schemes to section items
+	doJSON(r, "PUT", "/api/user/exercise-scheme-section-items", map[string]any{
+		"exerciseSchemeId": scheme.ID, "workoutSectionItemId": sItem1.ID,
+	})
+	doJSON(r, "PUT", "/api/user/exercise-scheme-section-items", map[string]any{
+		"exerciseSchemeId": scheme2.ID, "workoutSectionItemId": sItem2.ID,
+	})
 
 	// 7. Verify the workout template is fully loaded
 	w = doJSON(r, "GET", "/api/workouts/"+itoa(wkt.ID), nil)

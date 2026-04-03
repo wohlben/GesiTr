@@ -607,21 +607,14 @@ export class WorkoutStart {
   private async createPlanningLog(workout: Workout) {
     this.creating.set(true);
 
-    // Pre-fetch user-specific schemes for all exercise items
+    // Pre-fetch user-specific scheme assignments for all exercise items
     const exerciseItems = (workout.sections ?? []).flatMap((s) =>
       (s.items ?? []).filter((i) => i.type === 'exercise'),
     );
-    const schemeResults = await Promise.all(
-      exerciseItems.map((item) =>
-        this.userApi.fetchExerciseSchemes({ workoutSectionItemId: item.id }),
-      ),
-    );
-    const userSchemeByItemId = new Map(
-      schemeResults
-        .flat()
-        .filter((s) => s.workoutSectionItemId != null)
-        .map((s) => [s.workoutSectionItemId!, s]),
-    );
+    const itemIds = exerciseItems.map((i) => i.id);
+    const assignments =
+      itemIds.length > 0 ? await this.userApi.fetchSchemeSectionItems(itemIds) : [];
+    const assignmentByItemId = new Map(assignments.map((a) => [a.workoutSectionItemId, a]));
 
     const log = await this.userApi.createWorkoutLog({
       name: workout.name,
@@ -645,13 +638,12 @@ export class WorkoutStart {
         // Only create log exercises for exercise-type items;
         // exercise_group items are resolved on the start page
         if (templateItem.type === 'exercise') {
-          // Use user-specific scheme (looked up by item ID), falling back to item's embedded scheme
-          const myScheme = userSchemeByItemId.get(templateItem.id);
-          const schemeId = myScheme?.id ?? templateItem.exerciseSchemeId;
-          if (schemeId) {
+          // Use user-specific scheme assignment from the join table
+          const assignment = assignmentByItemId.get(templateItem.id);
+          if (assignment) {
             await this.userApi.createWorkoutLogExercise({
               workoutLogSectionId: section.id,
-              sourceExerciseSchemeId: schemeId,
+              sourceExerciseSchemeId: assignment.exerciseSchemeId,
               position: ei,
             });
           }

@@ -10,6 +10,7 @@ import {
   deleteWorkoutSection,
   createWorkoutSectionItem,
   deleteWorkoutSectionItem,
+  upsertSchemeSectionItem,
   fetchWorkoutLogs,
   deleteWorkoutLog,
 } from '../../helpers';
@@ -54,8 +55,12 @@ async function createFixtures(
     cleanup.push(() => deleteExerciseScheme(request, scheme.id));
     const sectionExercise = await createWorkoutSectionItem(request, {
       workoutSectionId: section.id,
-      exerciseSchemeId: scheme.id,
+      exerciseId: exercise.id,
       position: i,
+    });
+    await upsertSchemeSectionItem(request, {
+      exerciseSchemeId: scheme.id,
+      workoutSectionItemId: sectionExercise.id,
     });
     cleanup.push(() => deleteWorkoutSectionItem(request, sectionExercise.id));
   }

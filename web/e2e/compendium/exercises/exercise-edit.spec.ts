@@ -4,10 +4,9 @@ import { createExercise, deleteExercise, toSlug } from '../../helpers';
 test.describe('/compendium/exercises/:id/:slug/edit', () => {
   test('renders edit form with exercise data', async ({ request, page }) => {
     const exercise = await createExercise(request, { names: ['Tricep Extension'] });
-    await page.goto(
-      `/compendium/exercises/${exercise.id}/${toSlug(exercise.names[0].name)}/edit`,
-      { waitUntil: 'networkidle' },
-    );
+    await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.names[0].name)}/edit`, {
+      waitUntil: 'networkidle',
+    });
     await expect(page.locator('h1')).toHaveText('Edit Exercise');
     await expect(page.locator('form')).toBeVisible();
     await expect(page.locator('button[type="submit"]')).toBeVisible();

@@ -24,9 +24,7 @@ test.describe('workout start - exercise group flow', () => {
 
     // Configure the group
     const groupConfig = page.locator('app-exercise-group-config');
-    await groupConfig
-      .locator('input[placeholder="Group name (optional)"]')
-      .fill('Push Variations');
+    await groupConfig.locator('input[placeholder="Group name (optional)"]').fill('Push Variations');
 
     // Add both exercises as members
     const memberSelect = groupConfig.locator('select');
@@ -103,9 +101,7 @@ test.describe('workout start - exercise group flow', () => {
     // === Phase 5: Start the workout ===
 
     await Promise.all([
-      page.waitForResponse(
-        (r) => r.url().includes('/start') && r.request().method() === 'POST',
-      ),
+      page.waitForResponse((r) => r.url().includes('/start') && r.request().method() === 'POST'),
       page.locator('button[type="submit"]').click(),
     ]);
 

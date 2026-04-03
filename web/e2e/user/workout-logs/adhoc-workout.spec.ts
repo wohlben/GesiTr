@@ -25,8 +25,7 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
 
     const adhocResponse = page.waitForResponse(
       (resp) =>
-        resp.url().includes('/api/user/workout-logs/adhoc') &&
-        resp.request().method() === 'POST',
+        resp.url().includes('/api/user/workout-logs/adhoc') && resp.request().method() === 'POST',
     );
     await adhocButton.click();
     const response = await adhocResponse;
@@ -141,8 +140,7 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
     // ============================================================
     const schemeResponse = page.waitForResponse(
       (resp) =>
-        resp.url().includes('/api/user/exercise-schemes') &&
-        resp.request().method() === 'POST',
+        resp.url().includes('/api/user/exercise-schemes') && resp.request().method() === 'POST',
     );
     const exerciseResponse = page.waitForResponse(
       (resp) =>
@@ -222,8 +220,7 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
     const addBtn2 = page.getByRole('button', { name: 'Add', exact: true });
     const schemeResponse2 = page.waitForResponse(
       (resp) =>
-        resp.url().includes('/api/user/exercise-schemes') &&
-        resp.request().method() === 'POST',
+        resp.url().includes('/api/user/exercise-schemes') && resp.request().method() === 'POST',
     );
     const exerciseResponse2 = page.waitForResponse(
       (resp) =>
@@ -253,8 +250,7 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
     // Step 13: Finish workout
     // ============================================================
     const finishResponse = page.waitForResponse(
-      (resp) =>
-        resp.url().includes('/finish') && resp.request().method() === 'POST',
+      (resp) => resp.url().includes('/finish') && resp.request().method() === 'POST',
     );
     await finishBtn.click();
     await finishResponse;

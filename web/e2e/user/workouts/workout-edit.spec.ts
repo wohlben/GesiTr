@@ -10,6 +10,7 @@ import {
   deleteWorkoutSection,
   createWorkoutSectionItem,
   deleteWorkoutSectionItem,
+  upsertSchemeSectionItem,
 } from '../../helpers';
 
 test.describe('/compendium/workouts/[id]/edit', () => {
@@ -27,7 +28,11 @@ test.describe('/compendium/workouts/[id]/edit', () => {
     });
     const sectionExercise = await createWorkoutSectionItem(request, {
       workoutSectionId: section.id,
+      exerciseId: exercise.id,
+    });
+    await upsertSchemeSectionItem(request, {
       exerciseSchemeId: scheme.id,
+      workoutSectionItemId: sectionExercise.id,
     });
 
     await page.goto(`/compendium/workouts/${workout.id}/edit`, { waitUntil: 'networkidle' });

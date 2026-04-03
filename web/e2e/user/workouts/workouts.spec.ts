@@ -10,6 +10,7 @@ import {
   deleteWorkoutSection,
   createWorkoutSectionItem,
   deleteWorkoutSectionItem,
+  upsertSchemeSectionItem,
 } from '../../helpers';
 
 test.describe('/compendium/workouts', () => {
@@ -39,7 +40,11 @@ test.describe('/compendium/workouts', () => {
       });
       const sectionExercise = await createWorkoutSectionItem(request, {
         workoutSectionId: section.id,
+        exerciseId: exercise.id,
+      });
+      await upsertSchemeSectionItem(request, {
         exerciseSchemeId: scheme.id,
+        workoutSectionItemId: sectionExercise.id,
       });
       items.push({ exercise, scheme, workout, section, sectionExercise });
     }

@@ -19,7 +19,6 @@ import {
   WorkoutSectionItemTypeExercise,
   WorkoutSectionItemTypeExerciseGroup,
 } from '$generated/user-models';
-import { ExerciseScheme } from '$generated/user-exercisescheme';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
@@ -639,13 +638,6 @@ export class WorkoutEdit {
         })),
       });
 
-      const schemeIds: number[] = [];
-      for (const section of data.sections ?? []) {
-        for (const item of section.items ?? []) {
-          if (item.exerciseSchemeId) schemeIds.push(item.exerciseSchemeId);
-        }
-      }
-      this.originalSchemeIds.set(schemeIds);
       this.loadItemDetails(data.sections ?? []);
     });
   }
@@ -653,45 +645,62 @@ export class WorkoutEdit {
   private async loadItemDetails(
     sections: NonNullable<ReturnType<typeof this.workoutQuery.data>>['sections'],
   ) {
+    // Batch-fetch scheme assignments via the join table
+    const exerciseItemIds = sections
+      .flatMap((s) => s.items ?? [])
+      .filter((i) => i.type === 'exercise' && i.exerciseId != null)
+      .map((i) => i.id);
+
+    const schemeAssignments =
+      exerciseItemIds.length > 0 ? await this.userApi.fetchSchemeSectionItems(exerciseItemIds) : [];
+    const assignmentByItemId = new Map(schemeAssignments.map((a) => [a.workoutSectionItemId, a]));
+
+    // Track original scheme IDs for orphan cleanup on edit
+    const schemeIds = schemeAssignments.map((a) => a.exerciseSchemeId);
+    this.originalSchemeIds.set(schemeIds);
+
     for (let si = 0; si < sections.length; si++) {
       const section = sections[si];
       for (let ei = 0; ei < (section.items?.length ?? 0); ei++) {
         const item = section.items[ei];
 
-        if (item.exerciseSchemeId) {
-          // Load scheme details for exercise items
-          try {
-            const scheme = await this.userApi.fetchExerciseScheme(item.exerciseSchemeId);
-            this.model.update((m) => ({
-              ...m,
-              sections: m.sections.map((s, sIdx) =>
-                sIdx !== si
-                  ? s
-                  : {
-                      ...s,
-                      items: s.items.map((e, eIdx) =>
-                        eIdx !== ei
-                          ? e
-                          : {
-                              ...e,
-                              existingSchemeId: scheme.id,
-                              exerciseId: scheme.exerciseId,
-                              measurementType: scheme.measurementType || 'REP_BASED',
-                              sets: scheme.sets ?? null,
-                              reps: scheme.reps ?? null,
-                              weight: scheme.weight ?? null,
-                              restBetweenSets: scheme.restBetweenSets ?? null,
-                              timePerRep: scheme.timePerRep ?? null,
-                              duration: scheme.duration ?? null,
-                              distance: scheme.distance ?? null,
-                              targetTime: scheme.targetTime ?? null,
-                            },
-                      ),
-                    },
-              ),
-            }));
-          } catch {
-            // scheme may have been deleted
+        if (item.exerciseId != null) {
+          // Load scheme details from join-table assignment
+          const assignment = assignmentByItemId.get(item.id);
+          if (assignment) {
+            try {
+              const scheme = await this.userApi.fetchExerciseScheme(assignment.exerciseSchemeId);
+              this.model.update((m) => ({
+                ...m,
+                sections: m.sections.map((s, sIdx) =>
+                  sIdx !== si
+                    ? s
+                    : {
+                        ...s,
+                        items: s.items.map((e, eIdx) =>
+                          eIdx !== ei
+                            ? e
+                            : {
+                                ...e,
+                                existingSchemeId: scheme.id,
+                                exerciseId: scheme.exerciseId,
+                                measurementType: scheme.measurementType || 'REP_BASED',
+                                sets: scheme.sets ?? null,
+                                reps: scheme.reps ?? null,
+                                weight: scheme.weight ?? null,
+                                restBetweenSets: scheme.restBetweenSets ?? null,
+                                timePerRep: scheme.timePerRep ?? null,
+                                duration: scheme.duration ?? null,
+                                distance: scheme.distance ?? null,
+                                targetTime: scheme.targetTime ?? null,
+                              },
+                        ),
+                      },
+                ),
+              }));
+            } catch {
+              // scheme may have been deleted
+            }
           }
         }
 
@@ -878,18 +887,18 @@ export class WorkoutEdit {
             if (item.targetTime != null) schemeData['targetTime'] = item.targetTime;
           }
 
-          const scheme = await this.userApi.createExerciseScheme(schemeData);
           const sectionItem = await this.userApi.createWorkoutSectionItem({
             workoutSectionId: section.id,
             type: 'exercise',
-            exerciseSchemeId: scheme.id,
+            exerciseId: item.exerciseId ?? undefined,
             position: ei,
           });
-          // Link scheme back to the item so user-specific schemes can be looked up
-          await this.userApi.updateExerciseScheme(scheme.id, {
-            ...schemeData,
+          const scheme = await this.userApi.createExerciseScheme(schemeData);
+          // Link scheme to the section item via join table
+          await this.userApi.upsertSchemeSectionItem({
+            exerciseSchemeId: scheme.id,
             workoutSectionItemId: sectionItem.id,
-          } as Partial<ExerciseScheme>);
+          });
         } else {
           // Exercise group items — create or update group
           const gc = item.groupConfig;

@@ -36,6 +36,7 @@ func setupExampleDB() {
 		&exercisemodels.ExerciseEquipment{},
 		&exercisemodels.ExerciseHistoryEntity{},
 		&exerciseschememodels.ExerciseSchemeEntity{},
+		&exerciseschememodels.ExerciseSchemeSectionItemEntity{},
 		&namePreferenceModels.ExerciseNamePreference{},
 		&equipmentmodels.EquipmentEntity{},
 		&models.ExerciseGroupEntity{},

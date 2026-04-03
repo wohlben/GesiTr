@@ -51,10 +51,7 @@ export async function createExercise(
   return res.json();
 }
 
-export async function createExerciseAs(
-  userId: string,
-  overrides: Record<string, unknown> = {},
-) {
+export async function createExerciseAs(userId: string, overrides: Record<string, unknown> = {}) {
   const ctx = await createApiContextAs(userId);
   const data = {
     names: ['Test Exercise'],
@@ -231,18 +228,21 @@ export async function createWorkoutSectionItem(
     ...overrides,
   };
   const res = await request.post('/api/workout-section-items', { data });
-  expect(
-    res.ok(),
-    `Failed to create workout section item: ${await res.text()}`,
-  ).toBeTruthy();
+  expect(res.ok(), `Failed to create workout section item: ${await res.text()}`).toBeTruthy();
   return res.json();
 }
 
-export async function deleteWorkoutSectionItem(
-  request: APIRequestContext,
-  id: number,
-) {
+export async function deleteWorkoutSectionItem(request: APIRequestContext, id: number) {
   await request.delete(`/api/workout-section-items/${id}`);
+}
+
+export async function upsertSchemeSectionItem(
+  request: APIRequestContext,
+  data: { exerciseSchemeId: number; workoutSectionItemId: number },
+) {
+  const res = await request.put('/api/user/exercise-scheme-section-items', { data });
+  expect(res.ok(), `Failed to upsert scheme section item: ${await res.text()}`).toBeTruthy();
+  return res.json();
 }
 
 export async function fetchWorkoutLogs(
@@ -307,10 +307,7 @@ export async function createWorkoutSchedule(
     ...overrides,
   };
   const res = await request.post('/api/user/workout-schedules', { data });
-  expect(
-    res.ok(),
-    `Failed to create workout schedule: ${await res.text()}`,
-  ).toBeTruthy();
+  expect(res.ok(), `Failed to create workout schedule: ${await res.text()}`).toBeTruthy();
   return res.json();
 }
 
@@ -323,10 +320,7 @@ export async function createSchedulePeriod(
     ...overrides,
   };
   const res = await request.post('/api/user/schedule-periods', { data });
-  expect(
-    res.ok(),
-    `Failed to create schedule period: ${await res.text()}`,
-  ).toBeTruthy();
+  expect(res.ok(), `Failed to create schedule period: ${await res.text()}`).toBeTruthy();
   return res.json();
 }
 
@@ -335,9 +329,6 @@ export async function createScheduleCommitment(
   overrides: Record<string, unknown> = {},
 ) {
   const res = await request.post('/api/user/schedule-commitments', { data: overrides });
-  expect(
-    res.ok(),
-    `Failed to create schedule commitment: ${await res.text()}`,
-  ).toBeTruthy();
+  expect(res.ok(), `Failed to create schedule commitment: ${await res.text()}`).toBeTruthy();
   return res.json();
 }

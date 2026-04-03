@@ -39,6 +39,7 @@ func main() {
 		&workoutModels.WorkoutSectionEntity{},
 		&workoutModels.WorkoutSectionItemEntity{},
 		&exerciseSchemeModels.ExerciseSchemeEntity{},
+		&exerciseSchemeModels.ExerciseSchemeSectionItemEntity{},
 		&workoutModels.WorkoutHistoryEntity{},
 	)
 
@@ -434,6 +435,16 @@ func seedWorkouts() error {
 					return fmt.Errorf("unknown exercise template ID %q in workout %q", ji.ExerciseTemplateID, j.Name)
 				}
 
+				item := workoutModels.WorkoutSectionItemEntity{
+					WorkoutSectionID: section.ID,
+					Type:             workoutModels.WorkoutSectionItemType(ji.Type),
+					ExerciseID:       &exerciseID,
+					Position:         ji.Position,
+				}
+				if err := database.DB.Create(&item).Error; err != nil {
+					return fmt.Errorf("insert section item for exercise %q: %w", ji.ExerciseTemplateID, err)
+				}
+
 				scheme := exerciseSchemeModels.ExerciseSchemeEntity{
 					Owner:           "sinon",
 					ExerciseID:      exerciseID,
@@ -446,19 +457,14 @@ func seedWorkouts() error {
 					return fmt.Errorf("insert scheme for exercise %q: %w", ji.ExerciseTemplateID, err)
 				}
 
-				item := workoutModels.WorkoutSectionItemEntity{
-					WorkoutSectionID: section.ID,
-					Type:             workoutModels.WorkoutSectionItemType(ji.Type),
-					ExerciseSchemeID: &scheme.ID,
-					Position:         ji.Position,
+				// Link the scheme to the section item via join table
+				link := exerciseSchemeModels.ExerciseSchemeSectionItemEntity{
+					ExerciseSchemeID:     scheme.ID,
+					WorkoutSectionItemID: item.ID,
+					Owner:                "sinon",
 				}
-				if err := database.DB.Create(&item).Error; err != nil {
-					return fmt.Errorf("insert section item for exercise %q: %w", ji.ExerciseTemplateID, err)
-				}
-
-				// Back-link the scheme to its section item.
-				if err := database.DB.Model(&scheme).Update("workout_section_item_id", item.ID).Error; err != nil {
-					return fmt.Errorf("update scheme back-link for exercise %q: %w", ji.ExerciseTemplateID, err)
+				if err := database.DB.Create(&link).Error; err != nil {
+					return fmt.Errorf("insert scheme-section-item link for exercise %q: %w", ji.ExerciseTemplateID, err)
 				}
 			}
 		}

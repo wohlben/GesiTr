@@ -43,8 +43,7 @@ test.describe('/compendium/exercise-groups/:id', () => {
     await Promise.all([
       page.waitForResponse(
         (r) =>
-          r.url().includes(`/api/exercise-groups/${group.id}`) &&
-          r.request().method() === 'DELETE',
+          r.url().includes(`/api/exercise-groups/${group.id}`) && r.request().method() === 'DELETE',
       ),
       page.locator('[role="dialog"] button:has-text("Delete")').click(),
     ]);

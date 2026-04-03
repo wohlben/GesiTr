@@ -19,5 +19,16 @@ export interface ExerciseScheme extends BaseModel {
   duration?: number /* int */;
   distance?: number /* float64 */;
   targetTime?: number /* int */;
-  workoutSectionItemId?: number /* uint */;
+}
+
+//////////
+// source: scheme_section_item.go
+
+/**
+ * ExerciseSchemeSectionItem is the API DTO for the join between exercise schemes and workout section items.
+ */
+export interface ExerciseSchemeSectionItem extends BaseModel {
+  exerciseSchemeId: number /* uint */;
+  workoutSectionItemId: number /* uint */;
+  owner: string;
 }

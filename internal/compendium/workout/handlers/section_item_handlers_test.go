@@ -12,15 +12,12 @@ func TestListWorkoutSectionItems(t *testing.T) {
 	setupTestDB(t)
 	r := newRouter()
 
-	// Setup: exercise -> scheme -> workout -> section
+	// Setup: exercises -> workout -> section
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Bench Press"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
-	})
-	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
-		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 5, "reps": 5,
+	doJSON(r, "POST", "/api/exercises", map[string]any{
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/workouts", map[string]any{
 		"name": "Push Day",
@@ -42,10 +39,10 @@ func TestListWorkoutSectionItems(t *testing.T) {
 	})
 
 	doJSON(r, "POST", "/api/workout-section-items", map[string]any{
-		"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0,
+		"workoutSectionId": 1, "type": "exercise", "exerciseId": 1, "position": 0,
 	})
 	doJSON(r, "POST", "/api/workout-section-items", map[string]any{
-		"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 2, "position": 1,
+		"workoutSectionId": 1, "type": "exercise", "exerciseId": 2, "position": 1,
 	})
 
 	t.Run("list all", func(t *testing.T) {
@@ -108,14 +105,14 @@ func TestCreateWorkoutSectionItem(t *testing.T) {
 
 	t.Run("success exercise type", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/workout-section-items", map[string]any{
-			"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0,
+			"workoutSectionId": 1, "type": "exercise", "exerciseId": 1, "position": 0,
 		})
 		if w.Code != http.StatusCreated {
 			t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
 		}
 		var result models.WorkoutSectionItem
 		json.Unmarshal(w.Body.Bytes(), &result)
-		if result.ID == 0 || result.WorkoutSectionID != 1 || *result.ExerciseSchemeID != 1 {
+		if result.ID == 0 || result.WorkoutSectionID != 1 || *result.ExerciseID != 1 {
 			t.Error("create response mismatch")
 		}
 		if result.Type != models.WorkoutSectionItemTypeExercise {
@@ -144,7 +141,7 @@ func TestCreateWorkoutSectionItem(t *testing.T) {
 		}
 	})
 
-	t.Run("exercise type missing schemeId", func(t *testing.T) {
+	t.Run("exercise type missing exerciseId", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/workout-section-items", map[string]any{
 			"workoutSectionId": 1, "type": "exercise", "position": 0,
 		})
@@ -164,16 +161,16 @@ func TestCreateWorkoutSectionItem(t *testing.T) {
 
 	t.Run("section not found", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/workout-section-items", map[string]any{
-			"workoutSectionId": 999, "type": "exercise", "exerciseSchemeId": 1, "position": 0,
+			"workoutSectionId": 999, "type": "exercise", "exerciseId": 1, "position": 0,
 		})
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
 		}
 	})
 
-	t.Run("scheme not found", func(t *testing.T) {
+	t.Run("exercise not found", func(t *testing.T) {
 		w := doJSON(r, "POST", "/api/workout-section-items", map[string]any{
-			"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 999, "position": 0,
+			"workoutSectionId": 1, "type": "exercise", "exerciseId": 999, "position": 0,
 		})
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
@@ -206,7 +203,7 @@ func TestDeleteWorkoutSectionItem(t *testing.T) {
 		"workoutId": 1, "type": "main", "position": 0,
 	})
 	doJSON(r, "POST", "/api/workout-section-items", map[string]any{
-		"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0,
+		"workoutSectionId": 1, "type": "exercise", "exerciseId": 1, "position": 0,
 	})
 
 	t.Run("success", func(t *testing.T) {

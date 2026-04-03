@@ -3,10 +3,10 @@ package handlers
 import (
 	"context"
 
+	exercisemodels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -75,12 +75,12 @@ func CreateWorkoutSectionItem(ctx context.Context, input *CreateWorkoutSectionIt
 
 	switch input.Body.Type {
 	case models.WorkoutSectionItemTypeExercise:
-		if input.Body.ExerciseSchemeID == nil {
-			return nil, huma.Error422UnprocessableEntity("exerciseSchemeId is required for exercise type")
+		if input.Body.ExerciseID == nil {
+			return nil, huma.Error422UnprocessableEntity("exerciseId is required for exercise type")
 		}
-		var scheme exerciseschememodels.ExerciseSchemeEntity
-		if err := database.DB.First(&scheme, *input.Body.ExerciseSchemeID).Error; err != nil {
-			return nil, huma.Error404NotFound("Exercise scheme not found")
+		var exercise exercisemodels.ExerciseEntity
+		if err := database.DB.First(&exercise, *input.Body.ExerciseID).Error; err != nil {
+			return nil, huma.Error404NotFound("Exercise not found")
 		}
 
 	case models.WorkoutSectionItemTypeExerciseGroup:
@@ -99,7 +99,7 @@ func CreateWorkoutSectionItem(ctx context.Context, input *CreateWorkoutSectionIt
 	entity := models.WorkoutSectionItemEntity{
 		WorkoutSectionID: input.Body.WorkoutSectionID,
 		Type:             input.Body.Type,
-		ExerciseSchemeID: input.Body.ExerciseSchemeID,
+		ExerciseID:       input.Body.ExerciseID,
 		ExerciseGroupID:  input.Body.ExerciseGroupID,
 		Data:             input.Body.Data,
 		Position:         input.Body.Position,

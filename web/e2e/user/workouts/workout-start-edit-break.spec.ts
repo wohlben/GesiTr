@@ -10,15 +10,13 @@ import {
   deleteWorkoutSection,
   createWorkoutSectionItem,
   deleteWorkoutSectionItem,
+  upsertSchemeSectionItem,
   fetchWorkoutLogs,
   deleteWorkoutLog,
 } from '../../helpers';
 
 test.describe('/compendium/workouts/[id]/start — break time editing', () => {
-  test('editing break between exercises persists after page reload', async ({
-    request,
-    page,
-  }) => {
+  test('editing break between exercises persists after page reload', async ({ request, page }) => {
     // Create fixtures: workout with 2 exercises in one section, default rest = 90s
     const exercise1 = await createExercise(request, { names: ['Break Test Ex A'] });
     const scheme1 = await createExerciseScheme(request, {
@@ -44,13 +42,21 @@ test.describe('/compendium/workouts/[id]/start — break time editing', () => {
     });
     const sectionEx1 = await createWorkoutSectionItem(request, {
       workoutSectionId: section.id,
-      exerciseSchemeId: scheme1.id,
+      exerciseId: exercise1.id,
       position: 0,
+    });
+    await upsertSchemeSectionItem(request, {
+      exerciseSchemeId: scheme1.id,
+      workoutSectionItemId: sectionEx1.id,
     });
     const sectionEx2 = await createWorkoutSectionItem(request, {
       workoutSectionId: section.id,
-      exerciseSchemeId: scheme2.id,
+      exerciseId: exercise2.id,
       position: 1,
+    });
+    await upsertSchemeSectionItem(request, {
+      exerciseSchemeId: scheme2.id,
+      workoutSectionItemId: sectionEx2.id,
     });
 
     // Navigate to workout start page, wait for exercises to load

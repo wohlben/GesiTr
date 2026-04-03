@@ -24,6 +24,7 @@ func setupTestDB(t *testing.T) *gorm.DB {
 	db.AutoMigrate(
 		&exercisemodels.ExerciseEntity{},
 		&exerciseschememodels.ExerciseSchemeEntity{},
+		&exerciseschememodels.ExerciseSchemeSectionItemEntity{},
 		&workoutmodels.WorkoutEntity{},
 		&workoutmodels.WorkoutSectionEntity{},
 		&workoutmodels.WorkoutSectionItemEntity{},
@@ -486,10 +487,18 @@ func TestActivation_SnapshotsWorkoutStructure(t *testing.T) {
 	item := workoutmodels.WorkoutSectionItemEntity{
 		WorkoutSectionID: section.ID,
 		Type:             workoutmodels.WorkoutSectionItemTypeExercise,
-		ExerciseSchemeID: &scheme.ID,
+		ExerciseID:       &exercise.ID,
 		Position:         0,
 	}
 	db.Create(&item)
+
+	// Link scheme to section item via join table
+	link := exerciseschememodels.ExerciseSchemeSectionItemEntity{
+		ExerciseSchemeID:     scheme.ID,
+		WorkoutSectionItemID: item.ID,
+		Owner:                "alice",
+	}
+	db.Create(&link)
 
 	// Create schedule + active period + commitment
 	yesterday := startOfDay(time.Now().AddDate(0, 0, -1))

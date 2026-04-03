@@ -63,9 +63,7 @@ test.describe('workout edit - exercise group', () => {
     const reopenedConfig = page.locator('app-exercise-group-config');
 
     // Group name should be populated
-    const reopenedNameInput = reopenedConfig.locator(
-      'input[placeholder="Group name (optional)"]',
-    );
+    const reopenedNameInput = reopenedConfig.locator('input[placeholder="Group name (optional)"]');
     await expect(reopenedNameInput).toHaveValue('My Push Group', { timeout: 10000 });
 
     // The group selector (brn-select) should show the existing group, NOT "New Group"

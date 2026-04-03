@@ -53,11 +53,11 @@ func AcceptWorkoutGroupInvitation(ctx context.Context, input *AcceptWorkoutGroup
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
-	// For each item, check that the user has a scheme
+	// For each item, check that the user has a scheme via the join table
 	var missingItemIDs []uint
 	for _, item := range items {
 		var count int64
-		database.DB.Model(&exerciseschememodels.ExerciseSchemeEntity{}).
+		database.DB.Model(&exerciseschememodels.ExerciseSchemeSectionItemEntity{}).
 			Where("workout_section_item_id = ? AND owner = ?", item.ID, userID).
 			Count(&count)
 		if count == 0 {

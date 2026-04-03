@@ -70,30 +70,35 @@ export const WorkoutStartStore = signalStore(
 
         const display: Record<number, ExerciseDisplayInfo> = {};
 
-        // 1. Fetch all schemes in parallel
+        // 1. Collect exercise items and fetch scheme assignments via join table
+        const exerciseItems = sections.flatMap((s) =>
+          (s.items ?? []).filter((item) => item.type === 'exercise' && item.exerciseId != null),
+        );
+        const itemIds = exerciseItems.map((i) => i.id);
+        const assignments =
+          itemIds.length > 0 ? await userApi.fetchSchemeSectionItems(itemIds) : [];
+        const assignmentByItemId = new Map(assignments.map((a) => [a.workoutSectionItemId, a]));
+
+        // 2. Fetch schemes for assigned items
         const schemeResults = await Promise.all(
-          sections.flatMap((s) =>
-            (s.items ?? [])
-              .filter((item) => item.type === 'exercise' && item.exerciseSchemeId != null)
-              .map((item) =>
-                userApi
-                  .fetchExerciseScheme(item.exerciseSchemeId!)
-                  .then((scheme) => ({ schemeId: item.exerciseSchemeId!, scheme }))
-                  .catch(() => null),
-              ),
+          assignments.map((a) =>
+            userApi
+              .fetchExerciseScheme(a.exerciseSchemeId)
+              .then((scheme) => ({ itemId: a.workoutSectionItemId, scheme }))
+              .catch(() => null),
           ),
         );
-        const schemes = schemeResults.filter(
-          (r): r is { schemeId: number; scheme: ExerciseScheme } => r !== null,
+        const schemeByItemId = new Map(
+          schemeResults
+            .filter((r): r is { itemId: number; scheme: ExerciseScheme } => r !== null)
+            .map((r) => [r.itemId, r.scheme]),
         );
 
-        // 2. Fetch unique exercises to get names directly
-        const uniqueExerciseIds = [...new Set(schemes.map((s) => s.scheme.exerciseId))];
+        // 3. Fetch unique exercises to get names
+        const uniqueExerciseIds = [...new Set(exerciseItems.map((i) => i.exerciseId!))];
         const exerciseResults = await Promise.all(
           uniqueExerciseIds.map((id) => userApi.fetchUserExercise(id).catch(() => null)),
         );
-
-        // 3. Build exercise name map
         const exerciseNames: Record<number, string> = {};
         for (const exercise of exerciseResults) {
           if (exercise) {
@@ -101,25 +106,29 @@ export const WorkoutStartStore = signalStore(
           }
         }
 
-        // 4. Build display map with set previews
-        for (const item of schemes) {
-          const numSets = item.scheme.sets ?? 0;
+        // 4. Build display map — keyed by scheme ID (for log exercise references)
+        for (const item of exerciseItems) {
+          const assignment = assignmentByItemId.get(item.id);
+          const scheme = schemeByItemId.get(item.id);
+          if (!assignment || !scheme) continue;
+
+          const numSets = scheme.sets ?? 0;
           const sets: SetPreview[] = [];
           for (let i = 1; i <= numSets; i++) {
             sets.push({
               setNumber: i,
-              targetReps: item.scheme.reps,
-              targetWeight: item.scheme.weight,
-              targetDuration: item.scheme.duration,
-              targetDistance: item.scheme.distance,
-              targetTime: item.scheme.targetTime,
-              restAfterSeconds: i < numSets ? (item.scheme.restBetweenSets ?? null) : null,
+              targetReps: scheme.reps,
+              targetWeight: scheme.weight,
+              targetDuration: scheme.duration,
+              targetDistance: scheme.distance,
+              targetTime: scheme.targetTime,
+              restAfterSeconds: i < numSets ? (scheme.restBetweenSets ?? null) : null,
             });
           }
-          display[item.schemeId] = {
-            name: exerciseNames[item.scheme.exerciseId] ?? `Exercise #${item.scheme.exerciseId}`,
-            summary: formatSchemeSummary(item.scheme),
-            measurementType: item.scheme.measurementType,
+          display[assignment.exerciseSchemeId] = {
+            name: exerciseNames[item.exerciseId!] ?? `Exercise #${item.exerciseId}`,
+            summary: formatSchemeSummary(scheme),
+            measurementType: scheme.measurementType,
             sets,
           };
         }

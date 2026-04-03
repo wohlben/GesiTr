@@ -48,4 +48,29 @@ func RegisterRoutes(api huma.API) {
 		Tags:        []string{"exercise-schemes"},
 		Summary:     "Delete exercise scheme",
 	}, DeleteExerciseScheme)
+
+	// Exercise Scheme Section Item (join table) routes
+	huma.Register(api, huma.Operation{
+		OperationID: "ListExerciseSchemeSectionItems",
+		Method:      http.MethodGet,
+		Path:        "/user/exercise-scheme-section-items",
+		Tags:        []string{"exercise-scheme-section-items"},
+		Summary:     "List exercise scheme section items",
+	}, ListExerciseSchemeSectionItems)
+
+	huma.Register(api, huma.Operation{
+		OperationID: "UpsertExerciseSchemeSectionItem",
+		Method:      http.MethodPut,
+		Path:        "/user/exercise-scheme-section-items",
+		Tags:        []string{"exercise-scheme-section-items"},
+		Summary:     "Create or replace exercise scheme section item",
+	}, UpsertExerciseSchemeSectionItem)
+
+	huma.Register(api, huma.Operation{
+		OperationID: "DeleteExerciseSchemeSectionItem",
+		Method:      http.MethodDelete,
+		Path:        "/user/exercise-scheme-section-items/{id}",
+		Tags:        []string{"exercise-scheme-section-items"},
+		Summary:     "Delete exercise scheme section item",
+	}, DeleteExerciseSchemeSectionItem)
 }

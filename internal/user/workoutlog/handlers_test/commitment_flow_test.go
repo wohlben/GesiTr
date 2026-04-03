@@ -58,11 +58,18 @@ func TestCommitmentHappyPath(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &section)
 
 	w = doJSONLog(t, r, "POST", "/api/workout-section-items", map[string]any{
-		"workoutSectionId": section.ID, "type": "exercise", "exerciseSchemeId": scheme.ID, "position": 0,
+		"workoutSectionId": section.ID, "type": "exercise", "exerciseId": exercise.ID, "position": 0,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section item: %d", w.Code)
 	}
+	var sItem workoutmodels.WorkoutSectionItem
+	json.Unmarshal(w.Body.Bytes(), &sItem)
+
+	// Link scheme to section item
+	doJSONLog(t, r, "PUT", "/api/user/exercise-scheme-section-items", map[string]any{
+		"exerciseSchemeId": scheme.ID, "workoutSectionItemId": sItem.ID,
+	})
 
 	// 3. Create a proposed commitment for next week
 	dueStart := time.Now().Add(7 * 24 * time.Hour).Truncate(time.Second)

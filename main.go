@@ -292,6 +292,7 @@ func autoMigrate() {
 		&exerciseModels.ExerciseHistoryEntity{},
 		&equipmentModels.EquipmentHistoryEntity{},
 		&exerciseSchemeModels.ExerciseSchemeEntity{},
+		&exerciseSchemeModels.ExerciseSchemeSectionItemEntity{},
 		&equipmentModels.EquipmentRelationshipEntity{},
 		&workoutModels.WorkoutEntity{},
 		&workoutModels.WorkoutSectionEntity{},

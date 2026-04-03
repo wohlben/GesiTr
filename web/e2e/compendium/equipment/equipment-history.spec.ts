@@ -8,10 +8,9 @@ test.describe('/compendium/equipment/:id/:slug/history', () => {
       displayName: 'Foam Roller',
     });
     await updateEquipment(request, equipment.id, { displayName: 'Foam Roller (v1)' });
-    await page.goto(
-      `/compendium/equipment/${equipment.id}/${equipment.name}/history`,
-      { waitUntil: 'networkidle' },
-    );
+    await page.goto(`/compendium/equipment/${equipment.id}/${equipment.name}/history`, {
+      waitUntil: 'networkidle',
+    });
     await expect(page.locator('h1')).toContainText('History');
     const versionLabels = page.locator('text=/Version \\d+/');
     expect(await versionLabels.count()).toBeGreaterThanOrEqual(2);

@@ -84,7 +84,7 @@ type WorkoutSectionItemEntity struct {
 	shared.BaseModel
 	WorkoutSectionID uint                   `gorm:"not null;index"`
 	Type             WorkoutSectionItemType `gorm:"not null;default:'exercise'"`
-	ExerciseSchemeID *uint
+	ExerciseID       *uint
 	ExerciseGroupID  *uint
 	Data             *string
 	Position         int `gorm:"not null"`
@@ -97,7 +97,7 @@ func (e *WorkoutSectionItemEntity) ToDTO() WorkoutSectionItem {
 		BaseModel:        e.BaseModel,
 		WorkoutSectionID: e.WorkoutSectionID,
 		Type:             e.Type,
-		ExerciseSchemeID: e.ExerciseSchemeID,
+		ExerciseID:       e.ExerciseID,
 		ExerciseGroupID:  e.ExerciseGroupID,
 		Data:             e.Data,
 		Position:         e.Position,
@@ -109,7 +109,7 @@ func WorkoutSectionItemFromDTO(dto WorkoutSectionItem) WorkoutSectionItemEntity 
 		BaseModel:        dto.BaseModel,
 		WorkoutSectionID: dto.WorkoutSectionID,
 		Type:             dto.Type,
-		ExerciseSchemeID: dto.ExerciseSchemeID,
+		ExerciseID:       dto.ExerciseID,
 		ExerciseGroupID:  dto.ExerciseGroupID,
 		Data:             dto.Data,
 		Position:         dto.Position,

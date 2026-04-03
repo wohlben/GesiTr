@@ -161,7 +161,7 @@ func TestGetWorkoutWithSectionsAndExercises(t *testing.T) {
 		"workoutId": 1, "type": "main", "position": 1,
 	})
 	doJSON(r, "POST", "/api/workout-section-items", map[string]any{
-		"workoutSectionId": 2, "type": "exercise", "exerciseSchemeId": 1, "position": 0,
+		"workoutSectionId": 2, "type": "exercise", "exerciseId": 1, "position": 0,
 	})
 
 	w := doJSON(r, "GET", "/api/workouts/1", nil)
@@ -185,8 +185,8 @@ func TestGetWorkoutWithSectionsAndExercises(t *testing.T) {
 	if len(result.Sections[1].Items) != 1 {
 		t.Fatalf("expected 1 item in main section, got %d", len(result.Sections[1].Items))
 	}
-	if *result.Sections[1].Items[0].ExerciseSchemeID != 1 {
-		t.Error("exercise scheme ID mismatch")
+	if *result.Sections[1].Items[0].ExerciseID != 1 {
+		t.Error("exercise ID mismatch")
 	}
 }
 

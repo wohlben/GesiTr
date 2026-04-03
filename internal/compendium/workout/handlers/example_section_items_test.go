@@ -9,9 +9,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// createExerciseSchemeForExample creates an exercise and a scheme, returning
-// the full router. Used as setup for section item examples.
-func createExerciseSchemeForExample(r *gin.Engine) {
+// createExerciseForExample creates an exercise, returning the full router.
+// Used as setup for section item examples.
+func createExerciseForExample(r *gin.Engine) {
 	doRaw(r, "POST", "/api/exercises", `{
 		"names": ["Bench Press"],
 		"type": "STRENGTH",
@@ -19,24 +19,16 @@ func createExerciseSchemeForExample(r *gin.Engine) {
 		"bodyWeightScaling": 0.5,
 		"description": "Barbell bench press"
 	}`)
-	doRaw(r, "POST", "/api/user/exercise-schemes", `{
-		"exerciseId": 1,
-		"measurementType": "REP_BASED",
-		"sets": 3,
-		"reps": 10,
-		"weight": 60.0,
-		"restBetweenSets": 90
-	}`)
 }
 
-// Creating a section item requires a workout, a section, and an exercise
-// scheme. The full hierarchy: Workout → Section → SectionItem → ExerciseScheme.
+// Creating a section item requires a workout, a section, and an exercise.
+// The full hierarchy: Workout → Section → SectionItem → Exercise.
 func ExampleCreateWorkoutSectionItem() {
 	setupExampleDB()
 	r := newRouter()
 
-	// Create the exercise and scheme first.
-	createExerciseSchemeForExample(r)
+	// Create the exercise first.
+	createExerciseForExample(r)
 
 	// Create a workout and section.
 	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
@@ -44,11 +36,11 @@ func ExampleCreateWorkoutSectionItem() {
 		"workoutId": 1, "type": "main", "position": 0
 	}`)
 
-	// Add the exercise scheme to the section.
+	// Add the exercise to the section.
 	w := doRaw(r, "POST", "/api/workout-section-items", `{
 		"workoutSectionId": 1,
 		"type": "exercise",
-		"exerciseSchemeId": 1,
+		"exerciseId": 1,
 		"position": 0
 	}`)
 
@@ -57,7 +49,7 @@ func ExampleCreateWorkoutSectionItem() {
 	fmt.Println(w.Code)
 	fmt.Println(item.WorkoutSectionID)
 	fmt.Println(item.Type)
-	fmt.Println(*item.ExerciseSchemeID)
+	fmt.Println(*item.ExerciseID)
 	// Output:
 	// 201
 	// 1
@@ -70,7 +62,7 @@ func ExampleCreateWorkoutSectionItem_nonOwnerDenied() {
 	setupExampleDB()
 	r := newRouter()
 
-	createExerciseSchemeForExample(r)
+	createExerciseForExample(r)
 	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 	doRaw(r, "POST", "/api/workout-sections", `{
 		"workoutId": 1, "type": "main", "position": 0
@@ -79,7 +71,7 @@ func ExampleCreateWorkoutSectionItem_nonOwnerDenied() {
 	w := doRawAs(r, "POST", "/api/workout-section-items", `{
 		"workoutSectionId": 1,
 		"type": "exercise",
-		"exerciseSchemeId": 1,
+		"exerciseId": 1,
 		"position": 0
 	}`, "bob")
 	fmt.Println(w.Code)
@@ -92,13 +84,13 @@ func ExampleListWorkoutSectionItems_owner() {
 	setupExampleDB()
 	r := newRouter()
 
-	createExerciseSchemeForExample(r)
+	createExerciseForExample(r)
 	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 	doRaw(r, "POST", "/api/workout-sections", `{
 		"workoutId": 1, "type": "main", "position": 0
 	}`)
 	doRaw(r, "POST", "/api/workout-section-items", `{
-		"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
+		"workoutSectionId": 1, "type": "exercise", "exerciseId": 1, "position": 0
 	}`)
 
 	w := doRaw(r, "GET", "/api/workout-section-items?workoutSectionId=1", "")
@@ -107,7 +99,7 @@ func ExampleListWorkoutSectionItems_owner() {
 	json.Unmarshal(w.Body.Bytes(), &items)
 	fmt.Println(w.Code)
 	fmt.Println(len(items))
-	fmt.Println(*items[0].ExerciseSchemeID)
+	fmt.Println(*items[0].ExerciseID)
 	// Output:
 	// 200
 	// 1
@@ -119,13 +111,13 @@ func ExampleListWorkoutSectionItems_nonOwner() {
 	setupExampleDB()
 	r := newRouter()
 
-	createExerciseSchemeForExample(r)
+	createExerciseForExample(r)
 	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 	doRaw(r, "POST", "/api/workout-sections", `{
 		"workoutId": 1, "type": "main", "position": 0
 	}`)
 	doRaw(r, "POST", "/api/workout-section-items", `{
-		"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
+		"workoutSectionId": 1, "type": "exercise", "exerciseId": 1, "position": 0
 	}`)
 
 	w := doRawAs(r, "GET", "/api/workout-section-items?workoutSectionId=1", "", "bob")
@@ -144,13 +136,13 @@ func ExampleDeleteWorkoutSectionItem_owner() {
 	setupExampleDB()
 	r := newRouter()
 
-	createExerciseSchemeForExample(r)
+	createExerciseForExample(r)
 	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 	doRaw(r, "POST", "/api/workout-sections", `{
 		"workoutId": 1, "type": "main", "position": 0
 	}`)
 	doRaw(r, "POST", "/api/workout-section-items", `{
-		"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
+		"workoutSectionId": 1, "type": "exercise", "exerciseId": 1, "position": 0
 	}`)
 
 	w := doJSON(r, "DELETE", "/api/workout-section-items/1", nil)
@@ -171,13 +163,13 @@ func ExampleDeleteWorkoutSectionItem_nonOwnerDenied() {
 	setupExampleDB()
 	r := newRouter()
 
-	createExerciseSchemeForExample(r)
+	createExerciseForExample(r)
 	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 	doRaw(r, "POST", "/api/workout-sections", `{
 		"workoutId": 1, "type": "main", "position": 0
 	}`)
 	doRaw(r, "POST", "/api/workout-section-items", `{
-		"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
+		"workoutSectionId": 1, "type": "exercise", "exerciseId": 1, "position": 0
 	}`)
 
 	w := doRawAs(r, "DELETE", "/api/workout-section-items/1", "", "bob")
@@ -191,8 +183,8 @@ func ExampleGetWorkout_fullHierarchy() {
 	setupExampleDB()
 	r := newRouter()
 
-	// Create exercise and scheme.
-	createExerciseSchemeForExample(r)
+	// Create exercise.
+	createExerciseForExample(r)
 
 	// Build the workout hierarchy.
 	doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
@@ -200,7 +192,7 @@ func ExampleGetWorkout_fullHierarchy() {
 		"workoutId": 1, "type": "main", "label": "Compound", "position": 0
 	}`)
 	doRaw(r, "POST", "/api/workout-section-items", `{
-		"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
+		"workoutSectionId": 1, "type": "exercise", "exerciseId": 1, "position": 0
 	}`)
 
 	// GetWorkout returns the full tree.
@@ -213,7 +205,7 @@ func ExampleGetWorkout_fullHierarchy() {
 	fmt.Println(len(workout.Sections), "section(s)")
 	fmt.Println(*workout.Sections[0].Label)
 	fmt.Println(len(workout.Sections[0].Items), "item(s)")
-	fmt.Println(*workout.Sections[0].Items[0].ExerciseSchemeID)
+	fmt.Println(*workout.Sections[0].Items[0].ExerciseID)
 	// Output:
 	// 200
 	// Push Day

@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { firstValueFrom, map } from 'rxjs';
 import { PaginatedResponse } from './paginated-response';
 import { Exercise, Equipment } from '$generated/models';
-import { ExerciseScheme } from '$generated/user-exercisescheme';
+import { ExerciseScheme, ExerciseSchemeSectionItem } from '$generated/user-exercisescheme';
 import {
   Workout,
   WorkoutSection,
@@ -119,18 +119,36 @@ export class UserApiClient {
   }
 
   // Exercise Schemes
-  fetchExerciseSchemes(params?: {
-    exerciseId?: number;
-    workoutSectionItemId?: number;
-  }): Promise<ExerciseScheme[]> {
+  fetchExerciseSchemes(params?: { exerciseId?: number }): Promise<ExerciseScheme[]> {
     const qp = new URLSearchParams();
     if (params?.exerciseId != null) qp.set('exerciseId', String(params.exerciseId));
-    if (params?.workoutSectionItemId != null)
-      qp.set('workoutSectionItemId', String(params.workoutSectionItemId));
     const qs = qp.toString();
     return firstValueFrom(
       this.http.get<ExerciseScheme[]>(`/api/user/exercise-schemes${qs ? '?' + qs : ''}`),
     );
+  }
+
+  // Exercise Scheme Section Items (join table)
+  fetchSchemeSectionItems(workoutSectionItemIds: number[]): Promise<ExerciseSchemeSectionItem[]> {
+    const ids = workoutSectionItemIds.join(',');
+    return firstValueFrom(
+      this.http.get<ExerciseSchemeSectionItem[]>(
+        `/api/user/exercise-scheme-section-items?workoutSectionItemIds=${ids}`,
+      ),
+    );
+  }
+
+  upsertSchemeSectionItem(data: {
+    exerciseSchemeId: number;
+    workoutSectionItemId: number;
+  }): Promise<ExerciseSchemeSectionItem> {
+    return firstValueFrom(
+      this.http.put<ExerciseSchemeSectionItem>('/api/user/exercise-scheme-section-items', data),
+    );
+  }
+
+  deleteSchemeSectionItem(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/user/exercise-scheme-section-items/${id}`));
   }
 
   fetchExerciseScheme(id: number): Promise<ExerciseScheme> {

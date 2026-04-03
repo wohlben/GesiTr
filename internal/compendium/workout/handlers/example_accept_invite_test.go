@@ -32,7 +32,12 @@ func ExampleAcceptWorkoutGroupInvitation_denied() {
 	}`)
 	doRaw(r, "POST", "/api/workout-section-items", `{
 		"workoutSectionId": 1, "type": "exercise",
-		"exerciseSchemeId": 1, "position": 0
+		"exerciseId": 1, "position": 0
+	}`)
+
+	// Alice links her scheme to the section item
+	doRaw(r, "PUT", "/api/user/exercise-scheme-section-items", `{
+		"exerciseSchemeId": 1, "workoutSectionItemId": 1
 	}`)
 
 	// Alice creates a workout group and invites bob
@@ -77,7 +82,12 @@ func ExampleAcceptWorkoutGroupInvitation_success() {
 	}`)
 	doRaw(r, "POST", "/api/workout-section-items", `{
 		"workoutSectionId": 1, "type": "exercise",
-		"exerciseSchemeId": 1, "position": 0
+		"exerciseId": 1, "position": 0
+	}`)
+
+	// Alice links her scheme to the section item
+	doRaw(r, "PUT", "/api/user/exercise-scheme-section-items", `{
+		"exerciseSchemeId": 1, "workoutSectionItemId": 1
 	}`)
 
 	// Alice creates a workout group and invites bob
@@ -88,11 +98,13 @@ func ExampleAcceptWorkoutGroupInvitation_success() {
 		"groupId": 1, "userId": "bob", "role": "member"
 	}`)
 
-	// Bob creates his own exercise scheme linked to the workout section item (id=1)
+	// Bob creates his own exercise scheme and links it to the workout section item
 	doRawAs(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1, "measurementType": "REP_BASED",
-		"sets": 5, "reps": 5, "weight": 80.0,
-		"workoutSectionItemId": 1
+		"sets": 5, "reps": 5, "weight": 80.0
+	}`, "bob")
+	doRawAs(r, "PUT", "/api/user/exercise-scheme-section-items", `{
+		"exerciseSchemeId": 2, "workoutSectionItemId": 1
 	}`, "bob")
 
 	// Bob accepts the invitation — should succeed now
