@@ -17,6 +17,7 @@ import (
 	workoutgroupmodels "gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	namePreferenceModels "gesitr/internal/user/namepreference/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
@@ -47,6 +48,7 @@ func setupTestDB(t *testing.T) {
 		&exercisemodels.ExerciseEquipment{},
 		&exercisemodels.ExerciseHistoryEntity{},
 		&exercisemodels.ExerciseSchemeEntity{},
+		&namePreferenceModels.ExerciseNamePreference{},
 		&equipmentmodels.EquipmentEntity{},
 		&models.ExerciseGroupEntity{},
 		&models.ExerciseGroupMemberEntity{},

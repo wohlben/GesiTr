@@ -41,13 +41,17 @@ func exerciseDTOFromBody(b ExerciseBody) models.Exercise {
 }
 
 var exercisePreloads = []string{
-	"Forces", "Muscles", "Paradigms", "Instructions", "Images", "Names", "Equipment",
+	"Forces", "Muscles", "Paradigms", "Instructions", "Images", "Equipment",
 }
 
 func preloadExercise(db *gorm.DB) *gorm.DB {
 	for _, p := range exercisePreloads {
 		db = db.Preload(p)
 	}
+	// Sort names by popularity (most users' preferred name first), then position as tiebreaker.
+	db = db.Preload("Names", func(tx *gorm.DB) *gorm.DB {
+		return tx.Order("(SELECT COUNT(*) FROM exercise_name_preferences WHERE exercise_name_id = exercise_names.id) DESC, exercise_names.position ASC")
+	})
 	return db
 }
 

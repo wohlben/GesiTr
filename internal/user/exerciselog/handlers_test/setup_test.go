@@ -19,6 +19,7 @@ import (
 	"gesitr/internal/humaconfig"
 	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciselogmodels "gesitr/internal/user/exerciselog/models"
+	namePreferenceModels "gesitr/internal/user/namepreference/models"
 	workoutloghandlers "gesitr/internal/user/workoutlog/handlers"
 	workoutlogmodels "gesitr/internal/user/workoutlog/models"
 
@@ -51,6 +52,7 @@ func setupTestDB(t *testing.T) {
 		&exercisemodels.ExerciseEquipment{},
 		&exercisemodels.ExerciseHistoryEntity{},
 		&exercisemodels.ExerciseSchemeEntity{},
+		&namePreferenceModels.ExerciseNamePreference{},
 		&equipmentmodels.EquipmentEntity{},
 		&workoutmodels.WorkoutEntity{},
 		&workoutmodels.WorkoutHistoryEntity{},

@@ -19,6 +19,7 @@ import (
 	"gesitr/internal/humaconfig"
 	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciselogmodels "gesitr/internal/user/exerciselog/models"
+	namePreferenceModels "gesitr/internal/user/namepreference/models"
 	"gesitr/internal/user/workoutlog/models"
 
 	"github.com/gin-gonic/gin"
@@ -50,6 +51,7 @@ func setupTestDB(t *testing.T) {
 		&exercisemodels.ExerciseEquipment{},
 		&exercisemodels.ExerciseHistoryEntity{},
 		&exercisemodels.ExerciseSchemeEntity{},
+		&namePreferenceModels.ExerciseNamePreference{},
 		&equipmentmodels.EquipmentEntity{},
 		&workoutmodels.WorkoutEntity{},
 		&workoutmodels.WorkoutHistoryEntity{},

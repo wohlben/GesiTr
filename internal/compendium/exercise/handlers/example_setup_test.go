@@ -11,6 +11,7 @@ import (
 	"gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	namePreferenceModels "gesitr/internal/user/namepreference/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
@@ -35,6 +36,7 @@ func setupExampleDB() {
 		&models.ExerciseEquipment{},
 		&models.ExerciseHistoryEntity{},
 		&models.ExerciseSchemeEntity{},
+		&namePreferenceModels.ExerciseNamePreference{},
 		&equipmentmodels.EquipmentEntity{},
 		&equipmentmodels.EquipmentHistoryEntity{},
 	)
