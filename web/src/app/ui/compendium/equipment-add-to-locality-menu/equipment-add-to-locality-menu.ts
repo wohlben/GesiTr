@@ -66,15 +66,15 @@ import { HlmPopoverImports } from '@spartan-ng/helm/popover';
                     <button
                       (click)="addToLocality(locality.id)"
                       [disabled]="addMutation.isPending()"
-                      class="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-left text-sm transition-colors hover:bg-gray-100 disabled:opacity-50 dark:hover:bg-gray-800"
+                      class="flex w-full items-center justify-between rounded-md px-3 py-1.5 text-left text-sm transition-colors hover:bg-gray-100 disabled:opacity-50 dark:hover:bg-gray-800"
                     >
+                      {{ locality.name }}
                       <ng-icon
                         hlm
                         name="lucideLocationEdit"
                         size="sm"
                         class="text-gray-400 dark:text-gray-500"
                       />
-                      {{ locality.name }}
                     </button>
                   }
                 }
