@@ -279,7 +279,9 @@
       "addToMine": "Fork Equipment",
       "newTitle": "New Equipment",
       "editTitle": "Edit Equipment",
-      "historyTitle": "History"
+      "historyTitle": "History",
+      "addTo": "Add to...",
+      "added": "Added!"
     },
     "exerciseGroups": {
       "title": "Exercise Groups",
