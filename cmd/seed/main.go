@@ -10,6 +10,7 @@ import (
 
 	equipmentModels "gesitr/internal/compendium/equipment/models"
 	exerciseModels "gesitr/internal/compendium/exercise/models"
+	workoutModels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
 	"gesitr/internal/shared"
 )
@@ -33,6 +34,11 @@ func main() {
 		&exerciseModels.ExerciseRelationshipEntity{},
 		&exerciseModels.ExerciseHistoryEntity{},
 		&equipmentModels.EquipmentHistoryEntity{},
+		&workoutModels.WorkoutEntity{},
+		&workoutModels.WorkoutSectionEntity{},
+		&workoutModels.WorkoutSectionItemEntity{},
+		&exerciseModels.ExerciseSchemeEntity{},
+		&workoutModels.WorkoutHistoryEntity{},
 	)
 
 	steps := []struct {
@@ -43,6 +49,7 @@ func main() {
 		{"Exercises", seedExercises},
 		{"Fulfillments", seedFulfillments},
 		{"ExerciseRelationships", seedExerciseRelationships},
+		{"Workouts", seedWorkouts},
 	}
 	for _, s := range steps {
 		if err := s.fn(); err != nil {
@@ -348,5 +355,131 @@ func seedExerciseRelationships() error {
 		return fmt.Errorf("insert exercise relationships: %w", err)
 	}
 	log.Printf("ExerciseRelationships: %d", len(entities))
+	return nil
+}
+
+// --- Workouts ---
+
+type jsonWorkoutScheme struct {
+	MeasurementType string `json:"measurementType"`
+	Sets            *int   `json:"sets"`
+	Reps            *int   `json:"reps"`
+	RestBetweenSets *int   `json:"restBetweenSets"`
+}
+
+type jsonWorkoutItem struct {
+	Type               string            `json:"type"`
+	Position           int               `json:"position"`
+	ExerciseTemplateID string            `json:"exerciseTemplateId"`
+	Scheme             jsonWorkoutScheme `json:"scheme"`
+}
+
+type jsonWorkoutSection struct {
+	Type                 string            `json:"type"`
+	Label                *string           `json:"label"`
+	Position             int               `json:"position"`
+	RestBetweenExercises *int              `json:"restBetweenExercises"`
+	Items                []jsonWorkoutItem `json:"items"`
+}
+
+type jsonWorkout struct {
+	Name      string               `json:"name"`
+	Notes     *string              `json:"notes"`
+	CreatedBy string               `json:"createdBy"`
+	CreatedAt *int64               `json:"createdAt"`
+	Version   int                  `json:"version"`
+	Sections  []jsonWorkoutSection `json:"sections"`
+}
+
+func seedWorkouts() error {
+	files, err := readDir("data/compendium_workouts")
+	if err != nil {
+		return err
+	}
+	count := 0
+	for _, data := range files {
+		var j jsonWorkout
+		if err := json.Unmarshal(data, &j); err != nil {
+			return fmt.Errorf("parse workout JSON: %w", err)
+		}
+
+		workout := workoutModels.WorkoutEntity{
+			Owner:   "sinon",
+			Name:    j.Name,
+			Notes:   j.Notes,
+			Public:  true,
+			Version: j.Version,
+		}
+		workout.CreatedAt = unixToTime(j.CreatedAt)
+		if err := database.DB.Create(&workout).Error; err != nil {
+			return fmt.Errorf("insert workout %q: %w", j.Name, err)
+		}
+
+		for _, js := range j.Sections {
+			section := workoutModels.WorkoutSectionEntity{
+				WorkoutID:            workout.ID,
+				Type:                 workoutModels.WorkoutSectionType(js.Type),
+				Label:                js.Label,
+				Position:             js.Position,
+				RestBetweenExercises: js.RestBetweenExercises,
+			}
+			if err := database.DB.Create(&section).Error; err != nil {
+				return fmt.Errorf("insert section for workout %q: %w", j.Name, err)
+			}
+
+			for _, ji := range js.Items {
+				exerciseID, ok := exerciseIDMap[ji.ExerciseTemplateID]
+				if !ok {
+					return fmt.Errorf("unknown exercise template ID %q in workout %q", ji.ExerciseTemplateID, j.Name)
+				}
+
+				scheme := exerciseModels.ExerciseSchemeEntity{
+					Owner:           "sinon",
+					ExerciseID:      exerciseID,
+					MeasurementType: ji.Scheme.MeasurementType,
+					Sets:            ji.Scheme.Sets,
+					Reps:            ji.Scheme.Reps,
+					RestBetweenSets: ji.Scheme.RestBetweenSets,
+				}
+				if err := database.DB.Create(&scheme).Error; err != nil {
+					return fmt.Errorf("insert scheme for exercise %q: %w", ji.ExerciseTemplateID, err)
+				}
+
+				item := workoutModels.WorkoutSectionItemEntity{
+					WorkoutSectionID: section.ID,
+					Type:             workoutModels.WorkoutSectionItemType(ji.Type),
+					ExerciseSchemeID: &scheme.ID,
+					Position:         ji.Position,
+				}
+				if err := database.DB.Create(&item).Error; err != nil {
+					return fmt.Errorf("insert section item for exercise %q: %w", ji.ExerciseTemplateID, err)
+				}
+
+				// Back-link the scheme to its section item.
+				if err := database.DB.Model(&scheme).Update("workout_section_item_id", item.ID).Error; err != nil {
+					return fmt.Errorf("update scheme back-link for exercise %q: %w", ji.ExerciseTemplateID, err)
+				}
+			}
+		}
+
+		// Create version 0 history snapshot.
+		if err := database.DB.Preload("Sections.Items").First(&workout, workout.ID).Error; err != nil {
+			return fmt.Errorf("reload workout %q: %w", j.Name, err)
+		}
+		dto := workout.ToDTO()
+		history := workoutModels.WorkoutHistoryEntity{
+			WorkoutID: workout.ID,
+			Version:   0,
+			Snapshot:  shared.SnapshotJSON(dto),
+			ChangedAt: workout.CreatedAt,
+			ChangedBy: workout.Owner,
+		}
+		if err := database.DB.Create(&history).Error; err != nil {
+			return fmt.Errorf("insert workout history for %q: %w", j.Name, err)
+		}
+
+		count++
+	}
+	log.Printf("Workouts: %d", count)
 	return nil
 }
