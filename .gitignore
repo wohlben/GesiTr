@@ -11,7 +11,9 @@ gesitr
 
 # Angular build output (embedded at compile time)
 web/dist/*
-!web/dist/.gitkeep
+!web/dist/browser/
+web/dist/browser/*
+!web/dist/browser/.gitkeep
 
 # IDE
 .idea/

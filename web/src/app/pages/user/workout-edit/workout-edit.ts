@@ -628,7 +628,7 @@ export class WorkoutEdit {
           items: (section.items ?? []).map((item) => ({
             itemType: item.type ?? 'exercise',
             existingSchemeId: null,
-            exerciseId: null,
+            exerciseId: item.exerciseId ?? null,
             measurementType: 'REP_BASED',
             sets: null,
             reps: null,
