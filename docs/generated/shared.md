@@ -52,7 +52,7 @@ Handler packages call ResolvePermissions to populate [PermissionsResponse](<#Per
 ```go
 const (
     DefaultLimit = 50
-    MaxLimit     = 200
+    MaxLimit     = 1000
 )
 ```
 

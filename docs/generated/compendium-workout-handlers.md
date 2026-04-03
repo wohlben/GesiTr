@@ -353,14 +353,14 @@ POST /api/workout\-section\-items
 <details><summary>Example</summary>
 <p>
 
-Creating a section item requires a workout, a section, and an exercise scheme. The full hierarchy: Workout → Section → SectionItem → ExerciseScheme.
+Creating a section item requires a workout, a section, and an exercise. The full hierarchy: Workout → Section → SectionItem → Exercise.
 
 ```go
 setupExampleDB()
 r := newRouter()
 
-// Create the exercise and scheme first.
-createExerciseSchemeForExample(r)
+// Create the exercise first.
+createExerciseForExample(r)
 
 // Create a workout and section.
 doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
@@ -368,11 +368,11 @@ doRaw(r, "POST", "/api/workout-sections", `{
 	"workoutId": 1, "type": "main", "position": 0
 }`)
 
-// Add the exercise scheme to the section.
+// Add the exercise to the section.
 w := doRaw(r, "POST", "/api/workout-section-items", `{
 	"workoutSectionId": 1,
 	"type": "exercise",
-	"exerciseSchemeId": 1,
+	"exerciseId": 1,
 	"position": 0
 }`)
 
@@ -381,7 +381,7 @@ json.Unmarshal(w.Body.Bytes(), &item)
 fmt.Println(w.Code)
 fmt.Println(item.WorkoutSectionID)
 fmt.Println(item.Type)
-fmt.Println(*item.ExerciseSchemeID)
+fmt.Println(*item.ExerciseID)
 // Output:
 // 201
 // 1
@@ -410,7 +410,7 @@ Non\-owner cannot add items to another user's section.
 setupExampleDB()
 r := newRouter()
 
-createExerciseSchemeForExample(r)
+createExerciseForExample(r)
 doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 doRaw(r, "POST", "/api/workout-sections", `{
 	"workoutId": 1, "type": "main", "position": 0
@@ -419,7 +419,7 @@ doRaw(r, "POST", "/api/workout-sections", `{
 w := doRawAs(r, "POST", "/api/workout-section-items", `{
 	"workoutSectionId": 1,
 	"type": "exercise",
-	"exerciseSchemeId": 1,
+	"exerciseId": 1,
 	"position": 0
 }`, "bob")
 fmt.Println(w.Code)
@@ -760,13 +760,13 @@ Non\-owner cannot delete items from another user's section.
 setupExampleDB()
 r := newRouter()
 
-createExerciseSchemeForExample(r)
+createExerciseForExample(r)
 doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 doRaw(r, "POST", "/api/workout-sections", `{
 	"workoutId": 1, "type": "main", "position": 0
 }`)
 doRaw(r, "POST", "/api/workout-section-items", `{
-	"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
+	"workoutSectionId": 1, "type": "exercise", "exerciseId": 1, "position": 0
 }`)
 
 w := doRawAs(r, "DELETE", "/api/workout-section-items/1", "", "bob")
@@ -792,13 +792,13 @@ Owner can delete an item from their section.
 setupExampleDB()
 r := newRouter()
 
-createExerciseSchemeForExample(r)
+createExerciseForExample(r)
 doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 doRaw(r, "POST", "/api/workout-sections", `{
 	"workoutId": 1, "type": "main", "position": 0
 }`)
 doRaw(r, "POST", "/api/workout-section-items", `{
-	"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
+	"workoutSectionId": 1, "type": "exercise", "exerciseId": 1, "position": 0
 }`)
 
 w := doJSON(r, "DELETE", "/api/workout-section-items/1", nil)
@@ -1035,8 +1035,8 @@ Full hierarchy: create a workout with sections and items, then retrieve the comp
 setupExampleDB()
 r := newRouter()
 
-// Create exercise and scheme.
-createExerciseSchemeForExample(r)
+// Create exercise.
+createExerciseForExample(r)
 
 // Build the workout hierarchy.
 doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
@@ -1044,7 +1044,7 @@ doRaw(r, "POST", "/api/workout-sections", `{
 	"workoutId": 1, "type": "main", "label": "Compound", "position": 0
 }`)
 doRaw(r, "POST", "/api/workout-section-items", `{
-	"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
+	"workoutSectionId": 1, "type": "exercise", "exerciseId": 1, "position": 0
 }`)
 
 // GetWorkout returns the full tree.
@@ -1057,7 +1057,7 @@ fmt.Println(workout.Name)
 fmt.Println(len(workout.Sections), "section(s)")
 fmt.Println(*workout.Sections[0].Label)
 fmt.Println(len(workout.Sections[0].Items), "item(s)")
-fmt.Println(*workout.Sections[0].Items[0].ExerciseSchemeID)
+fmt.Println(*workout.Sections[0].Items[0].ExerciseID)
 // Output:
 // 200
 // Push Day
@@ -1676,13 +1676,13 @@ Non\-owner sees an empty list for another user's section items.
 setupExampleDB()
 r := newRouter()
 
-createExerciseSchemeForExample(r)
+createExerciseForExample(r)
 doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 doRaw(r, "POST", "/api/workout-sections", `{
 	"workoutId": 1, "type": "main", "position": 0
 }`)
 doRaw(r, "POST", "/api/workout-section-items", `{
-	"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
+	"workoutSectionId": 1, "type": "exercise", "exerciseId": 1, "position": 0
 }`)
 
 w := doRawAs(r, "GET", "/api/workout-section-items?workoutSectionId=1", "", "bob")
@@ -1715,13 +1715,13 @@ ListWorkoutSectionItems returns items in sections owned by the current user. Fil
 setupExampleDB()
 r := newRouter()
 
-createExerciseSchemeForExample(r)
+createExerciseForExample(r)
 doRaw(r, "POST", "/api/workouts", `{"name": "Push Day"}`)
 doRaw(r, "POST", "/api/workout-sections", `{
 	"workoutId": 1, "type": "main", "position": 0
 }`)
 doRaw(r, "POST", "/api/workout-section-items", `{
-	"workoutSectionId": 1, "type": "exercise", "exerciseSchemeId": 1, "position": 0
+	"workoutSectionId": 1, "type": "exercise", "exerciseId": 1, "position": 0
 }`)
 
 w := doRaw(r, "GET", "/api/workout-section-items?workoutSectionId=1", "")
@@ -1730,7 +1730,7 @@ var items []models.WorkoutSectionItem
 json.Unmarshal(w.Body.Bytes(), &items)
 fmt.Println(w.Code)
 fmt.Println(len(items))
-fmt.Println(*items[0].ExerciseSchemeID)
+fmt.Println(*items[0].ExerciseID)
 // Output:
 // 200
 // 1
@@ -2331,7 +2331,7 @@ type WorkoutSectionBody struct {
 type WorkoutSectionItemBody struct {
     WorkoutSectionID uint                          `json:"workoutSectionId" required:"true"`
     Type             models.WorkoutSectionItemType `json:"type" required:"true"`
-    ExerciseSchemeID *uint                         `json:"exerciseSchemeId,omitempty"`
+    ExerciseID       *uint                         `json:"exerciseId,omitempty"`
     ExerciseGroupID  *uint                         `json:"exerciseGroupId,omitempty"`
     Data             *string                       `json:"data,omitempty"`
     Position         int                           `json:"position"`

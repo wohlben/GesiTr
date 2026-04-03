@@ -6,15 +6,13 @@
 import "gesitr/internal/compendium/exercise/handlers"
 ```
 
-Package handlers implements the HTTP handlers for exercises and exercise schemes.
+Package handlers implements the HTTP handlers for exercises.
 
 ### Overview
 
 Exercises are the core building blocks of workouts. They can be public \(visible to all users as part of the compendium\) or private \(visible only to their owner\). Exercises can reference equipment via equipmentIds — see [gesitr/internal/compendium/equipment/handlers](<https://pkg.go.dev/gesitr/internal/compendium/equipment/handlers/>).
 
-### Exercise Schemes
-
-An exercise scheme is a user\-specific configuration of an exercise that defines how it should be performed \(measurement type, sets, reps, rest\). Schemes bridge exercises and workouts: to add an exercise to a workout section, first create a scheme via [CreateExerciseScheme](<#CreateExerciseScheme>), then reference it via [gesitr/internal/compendium/workout/handlers.CreateWorkoutSectionItem](<https://pkg.go.dev/gesitr/internal/compendium/workout/handlers/#CreateWorkoutSectionItem>).
+Exercise schemes \(user\-specific configurations of exercises\) are in [gesitr/internal/user/exercisescheme/handlers](<https://pkg.go.dev/gesitr/internal/user/exercisescheme/handlers/>).
 
 ### Version History
 
@@ -33,9 +31,6 @@ Exercises maintain version history — each [UpdateExercise](<#UpdateExercise>) 
 - [type CreateExerciseRelationshipInput](<#CreateExerciseRelationshipInput>)
 - [type CreateExerciseRelationshipOutput](<#CreateExerciseRelationshipOutput>)
   - [func CreateExerciseRelationship\(ctx context.Context, input \*CreateExerciseRelationshipInput\) \(\*CreateExerciseRelationshipOutput, error\)](<#CreateExerciseRelationship>)
-- [type CreateExerciseSchemeInput](<#CreateExerciseSchemeInput>)
-- [type CreateExerciseSchemeOutput](<#CreateExerciseSchemeOutput>)
-  - [func CreateExerciseScheme\(ctx context.Context, input \*CreateExerciseSchemeInput\) \(\*CreateExerciseSchemeOutput, error\)](<#CreateExerciseScheme>)
 - [type DeleteAllExerciseVersionsInput](<#DeleteAllExerciseVersionsInput>)
 - [type DeleteAllExerciseVersionsOutput](<#DeleteAllExerciseVersionsOutput>)
   - [func DeleteAllExerciseVersions\(ctx context.Context, input \*DeleteAllExerciseVersionsInput\) \(\*DeleteAllExerciseVersionsOutput, error\)](<#DeleteAllExerciseVersions>)
@@ -45,33 +40,23 @@ Exercises maintain version history — each [UpdateExercise](<#UpdateExercise>) 
 - [type DeleteExerciseRelationshipInput](<#DeleteExerciseRelationshipInput>)
 - [type DeleteExerciseRelationshipOutput](<#DeleteExerciseRelationshipOutput>)
   - [func DeleteExerciseRelationship\(ctx context.Context, input \*DeleteExerciseRelationshipInput\) \(\*DeleteExerciseRelationshipOutput, error\)](<#DeleteExerciseRelationship>)
-- [type DeleteExerciseSchemeInput](<#DeleteExerciseSchemeInput>)
-- [type DeleteExerciseSchemeOutput](<#DeleteExerciseSchemeOutput>)
-  - [func DeleteExerciseScheme\(ctx context.Context, input \*DeleteExerciseSchemeInput\) \(\*DeleteExerciseSchemeOutput, error\)](<#DeleteExerciseScheme>)
 - [type DeleteExerciseVersionInput](<#DeleteExerciseVersionInput>)
 - [type DeleteExerciseVersionOutput](<#DeleteExerciseVersionOutput>)
   - [func DeleteExerciseVersion\(ctx context.Context, input \*DeleteExerciseVersionInput\) \(\*DeleteExerciseVersionOutput, error\)](<#DeleteExerciseVersion>)
 - [type ExerciseBody](<#ExerciseBody>)
 - [type ExerciseRelationshipBody](<#ExerciseRelationshipBody>)
-- [type ExerciseSchemeBody](<#ExerciseSchemeBody>)
 - [type GetExerciseInput](<#GetExerciseInput>)
 - [type GetExerciseOutput](<#GetExerciseOutput>)
   - [func GetExercise\(ctx context.Context, input \*GetExerciseInput\) \(\*GetExerciseOutput, error\)](<#GetExercise>)
 - [type GetExercisePermissionsInput](<#GetExercisePermissionsInput>)
 - [type GetExercisePermissionsOutput](<#GetExercisePermissionsOutput>)
   - [func GetExercisePermissions\(ctx context.Context, input \*GetExercisePermissionsInput\) \(\*GetExercisePermissionsOutput, error\)](<#GetExercisePermissions>)
-- [type GetExerciseSchemeInput](<#GetExerciseSchemeInput>)
-- [type GetExerciseSchemeOutput](<#GetExerciseSchemeOutput>)
-  - [func GetExerciseScheme\(ctx context.Context, input \*GetExerciseSchemeInput\) \(\*GetExerciseSchemeOutput, error\)](<#GetExerciseScheme>)
 - [type GetExerciseVersionInput](<#GetExerciseVersionInput>)
 - [type GetExerciseVersionOutput](<#GetExerciseVersionOutput>)
   - [func GetExerciseVersion\(ctx context.Context, input \*GetExerciseVersionInput\) \(\*GetExerciseVersionOutput, error\)](<#GetExerciseVersion>)
 - [type ListExerciseRelationshipsInput](<#ListExerciseRelationshipsInput>)
 - [type ListExerciseRelationshipsOutput](<#ListExerciseRelationshipsOutput>)
   - [func ListExerciseRelationships\(ctx context.Context, input \*ListExerciseRelationshipsInput\) \(\*ListExerciseRelationshipsOutput, error\)](<#ListExerciseRelationships>)
-- [type ListExerciseSchemesInput](<#ListExerciseSchemesInput>)
-- [type ListExerciseSchemesOutput](<#ListExerciseSchemesOutput>)
-  - [func ListExerciseSchemes\(ctx context.Context, input \*ListExerciseSchemesInput\) \(\*ListExerciseSchemesOutput, error\)](<#ListExerciseSchemes>)
 - [type ListExerciseVersionsInput](<#ListExerciseVersionsInput>)
 - [type ListExerciseVersionsOutput](<#ListExerciseVersionsOutput>)
   - [func ListExerciseVersions\(ctx context.Context, input \*ListExerciseVersionsInput\) \(\*ListExerciseVersionsOutput, error\)](<#ListExerciseVersions>)
@@ -81,9 +66,6 @@ Exercises maintain version history — each [UpdateExercise](<#UpdateExercise>) 
 - [type UpdateExerciseInput](<#UpdateExerciseInput>)
 - [type UpdateExerciseOutput](<#UpdateExerciseOutput>)
   - [func UpdateExercise\(ctx context.Context, input \*UpdateExerciseInput\) \(\*UpdateExerciseOutput, error\)](<#UpdateExercise>)
-- [type UpdateExerciseSchemeInput](<#UpdateExerciseSchemeInput>)
-- [type UpdateExerciseSchemeOutput](<#UpdateExerciseSchemeOutput>)
-  - [func UpdateExerciseScheme\(ctx context.Context, input \*UpdateExerciseSchemeInput\) \(\*UpdateExerciseSchemeOutput, error\)](<#UpdateExerciseScheme>)
 
 
 <a name="RegisterRoutes"></a>
@@ -96,7 +78,7 @@ func RegisterRoutes(api huma.API)
 RegisterRoutes registers all exercise and exercise\-scheme endpoints on the huma API.
 
 <a name="CreateExerciseInput"></a>
-## type [CreateExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L65-L67>)
+## type [CreateExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L50-L52>)
 
 
 
@@ -107,7 +89,7 @@ type CreateExerciseInput struct {
 ```
 
 <a name="CreateExerciseOutput"></a>
-## type [CreateExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L69-L71>)
+## type [CreateExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L54-L56>)
 
 
 
@@ -124,7 +106,7 @@ type CreateExerciseOutput struct {
 func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExerciseOutput, error)
 ```
 
-CreateExercise creates an exercise owned by the current user. The exercise can reference equipment via equipmentIds — equipment must already exist \(see [gesitr/internal/compendium/equipment/handlers.CreateEquipment](<https://pkg.go.dev/gesitr/internal/compendium/equipment/handlers/#CreateEquipment>)\). To use this exercise in a workout, create an exercise scheme via [CreateExerciseScheme](<#CreateExerciseScheme>). POST /api/exercises
+CreateExercise creates an exercise owned by the current user. The exercise can reference equipment via equipmentIds — equipment must already exist \(see [gesitr/internal/compendium/equipment/handlers.CreateEquipment](<https://pkg.go.dev/gesitr/internal/compendium/equipment/handlers/#CreateEquipment>)\). To use this exercise in a workout, create an exercise scheme via \[CreateExerciseScheme\]. POST /api/exercises
 
 [OpenAPI docs](/api/docs#/operations/CreateExercise)
 
@@ -253,141 +235,8 @@ CreateExerciseRelationship creates an exercise relationship owned by the current
 
 [OpenAPI docs](/api/docs#/operations/CreateExerciseRelationship)
 
-<a name="CreateExerciseSchemeInput"></a>
-## type [CreateExerciseSchemeInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L146-L148>)
-
-
-
-```go
-type CreateExerciseSchemeInput struct {
-    Body ExerciseSchemeBody
-}
-```
-
-<a name="CreateExerciseSchemeOutput"></a>
-## type [CreateExerciseSchemeOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L150-L152>)
-
-
-
-```go
-type CreateExerciseSchemeOutput struct {
-    Body models.ExerciseScheme
-}
-```
-
-<a name="CreateExerciseScheme"></a>
-### func [CreateExerciseScheme](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/scheme_handlers.go#L71>)
-
-```go
-func CreateExerciseScheme(ctx context.Context, input *CreateExerciseSchemeInput) (*CreateExerciseSchemeOutput, error)
-```
-
-CreateExerciseScheme creates an exercise scheme — a user\-specific configuration of an exercise \(sets, reps, measurement type\). Requires an exerciseId referencing an existing exercise \(see [CreateExercise](<#CreateExercise>)\). Schemes are referenced when adding exercises to workouts via [gesitr/internal/compendium/workout/handlers.CreateWorkoutSectionItem](<https://pkg.go.dev/gesitr/internal/compendium/workout/handlers/#CreateWorkoutSectionItem>). POST /api/exercise\-schemes
-
-[OpenAPI docs](/api/docs#/operations/CreateExerciseScheme)
-
-<details><summary>Example (Rep Based)</summary>
-<p>
-
-Creating a rep\-based exercise scheme for bicep curls. The exercise must exist first \(see [CreateExercise](<#CreateExercise>)\). The scheme defines how to perform the exercise: 3 sets of 12 reps at 15kg with 90s rest.
-
-```go
-setupExampleDB()
-r := newRouter()
-
-// Create the exercise first.
-doRaw(r, "POST", "/api/exercises", `{
-	"names": ["Bicep Curl"],
-	"type": "STRENGTH",
-	"technicalDifficulty": "beginner",
-	"bodyWeightScaling": 0,
-	"description": "Dumbbell bicep curl"
-}`)
-
-// Create a rep-based scheme for this exercise.
-w := doRaw(r, "POST", "/api/exercise-schemes", `{
-	"exerciseId": 1,
-	"measurementType": "REP_BASED",
-	"sets": 3,
-	"reps": 12,
-	"weight": 15.0,
-	"restBetweenSets": 90
-}`)
-
-var scheme models.ExerciseScheme
-json.Unmarshal(w.Body.Bytes(), &scheme)
-fmt.Println(w.Code)
-fmt.Println(scheme.MeasurementType)
-fmt.Println(*scheme.Sets, "sets,", *scheme.Reps, "reps,", *scheme.Weight, "kg")
-// Output:
-// 201
-// REP_BASED
-// 3 sets, 12 reps, 15 kg
-```
-
-#### Output
-
-```
-201
-REP_BASED
-3 sets, 12 reps, 15 kg
-```
-
-</p>
-</details>
-
-<details><summary>Example (Time Based)</summary>
-<p>
-
-Creating a time\-based exercise scheme for an ergometer session. The scheme defines a 30\-minute cardio session with no sets or reps.
-
-```go
-setupExampleDB()
-r := newRouter()
-
-// Create the exercise first.
-doRaw(r, "POST", "/api/exercises", `{
-	"names": ["Ergometer"],
-	"type": "CARDIO",
-	"technicalDifficulty": "beginner",
-	"bodyWeightScaling": 0,
-	"description": "Rowing ergometer"
-}`)
-
-// Create a time-based scheme for this exercise.
-w := doRaw(r, "POST", "/api/exercise-schemes", `{
-	"exerciseId": 1,
-	"measurementType": "TIME_BASED",
-	"duration": 1800
-}`)
-
-var scheme models.ExerciseScheme
-json.Unmarshal(w.Body.Bytes(), &scheme)
-fmt.Println(w.Code)
-fmt.Println(scheme.MeasurementType)
-fmt.Println(*scheme.Duration, "seconds")
-fmt.Println(scheme.Sets == nil, "- no sets for cardio")
-// Output:
-// 201
-// TIME_BASED
-// 1800 seconds
-// true - no sets for cardio
-```
-
-#### Output
-
-```
-201
-TIME_BASED
-1800 seconds
-true - no sets for cardio
-```
-
-</p>
-</details>
-
 <a name="DeleteAllExerciseVersionsInput"></a>
-## type [DeleteAllExerciseVersionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L128-L130>)
+## type [DeleteAllExerciseVersionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L113-L115>)
 
 
 
@@ -398,7 +247,7 @@ type DeleteAllExerciseVersionsInput struct {
 ```
 
 <a name="DeleteAllExerciseVersionsOutput"></a>
-## type [DeleteAllExerciseVersionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L132>)
+## type [DeleteAllExerciseVersionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L117>)
 
 
 
@@ -418,7 +267,7 @@ DeleteAllExerciseVersions deletes all version history for an exercise. Owner onl
 [OpenAPI docs](/api/docs#/operations/DeleteAllExerciseVersions)
 
 <a name="DeleteExerciseInput"></a>
-## type [DeleteExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L90-L92>)
+## type [DeleteExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L75-L77>)
 
 
 
@@ -429,7 +278,7 @@ type DeleteExerciseInput struct {
 ```
 
 <a name="DeleteExerciseOutput"></a>
-## type [DeleteExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L94>)
+## type [DeleteExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L79>)
 
 
 
@@ -479,39 +328,8 @@ DeleteExerciseRelationship deletes an exercise relationship. Owner only. DELETE 
 
 [OpenAPI docs](/api/docs#/operations/DeleteExerciseRelationship)
 
-<a name="DeleteExerciseSchemeInput"></a>
-## type [DeleteExerciseSchemeInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L171-L173>)
-
-
-
-```go
-type DeleteExerciseSchemeInput struct {
-    ID uint `path:"id"`
-}
-```
-
-<a name="DeleteExerciseSchemeOutput"></a>
-## type [DeleteExerciseSchemeOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L175>)
-
-
-
-```go
-type DeleteExerciseSchemeOutput struct{}
-```
-
-<a name="DeleteExerciseScheme"></a>
-### func [DeleteExerciseScheme](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/scheme_handlers.go#L138>)
-
-```go
-func DeleteExerciseScheme(ctx context.Context, input *DeleteExerciseSchemeInput) (*DeleteExerciseSchemeOutput, error)
-```
-
-DeleteExerciseScheme deletes an exercise scheme. Owner only. DELETE /api/exercise\-schemes/:id
-
-[OpenAPI docs](/api/docs#/operations/DeleteExerciseScheme)
-
 <a name="DeleteExerciseVersionInput"></a>
-## type [DeleteExerciseVersionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L121-L124>)
+## type [DeleteExerciseVersionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L106-L109>)
 
 
 
@@ -523,7 +341,7 @@ type DeleteExerciseVersionInput struct {
 ```
 
 <a name="DeleteExerciseVersionOutput"></a>
-## type [DeleteExerciseVersionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L126>)
+## type [DeleteExerciseVersionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L111>)
 
 
 
@@ -584,29 +402,8 @@ type ExerciseRelationshipBody struct {
 }
 ```
 
-<a name="ExerciseSchemeBody"></a>
-## type [ExerciseSchemeBody](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L31-L43>)
-
-ExerciseSchemeBody contains the client\-provided fields for creating or updating an exercise scheme.
-
-```go
-type ExerciseSchemeBody struct {
-    ExerciseID           uint     `json:"exerciseId" required:"true"`
-    MeasurementType      string   `json:"measurementType" required:"true"`
-    Sets                 *int     `json:"sets,omitempty"`
-    Reps                 *int     `json:"reps,omitempty"`
-    Weight               *float64 `json:"weight,omitempty"`
-    RestBetweenSets      *int     `json:"restBetweenSets,omitempty"`
-    TimePerRep           *int     `json:"timePerRep,omitempty"`
-    Duration             *int     `json:"duration,omitempty"`
-    Distance             *float64 `json:"distance,omitempty"`
-    TargetTime           *int     `json:"targetTime,omitempty"`
-    WorkoutSectionItemID *uint    `json:"workoutSectionItemId,omitempty"`
-}
-```
-
 <a name="GetExerciseInput"></a>
-## type [GetExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L73-L75>)
+## type [GetExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L58-L60>)
 
 
 
@@ -617,7 +414,7 @@ type GetExerciseInput struct {
 ```
 
 <a name="GetExerciseOutput"></a>
-## type [GetExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L77-L79>)
+## type [GetExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L62-L64>)
 
 
 
@@ -750,7 +547,7 @@ testuser
 </details>
 
 <a name="GetExercisePermissionsInput"></a>
-## type [GetExercisePermissionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L96-L98>)
+## type [GetExercisePermissionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L81-L83>)
 
 
 
@@ -761,7 +558,7 @@ type GetExercisePermissionsInput struct {
 ```
 
 <a name="GetExercisePermissionsOutput"></a>
-## type [GetExercisePermissionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L100-L102>)
+## type [GetExercisePermissionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L85-L87>)
 
 
 
@@ -891,174 +688,8 @@ fmt.Println(resp.Permissions)
 </p>
 </details>
 
-<a name="GetExerciseSchemeInput"></a>
-## type [GetExerciseSchemeInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L154-L156>)
-
-
-
-```go
-type GetExerciseSchemeInput struct {
-    ID uint `path:"id"`
-}
-```
-
-<a name="GetExerciseSchemeOutput"></a>
-## type [GetExerciseSchemeOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L158-L160>)
-
-
-
-```go
-type GetExerciseSchemeOutput struct {
-    Body models.ExerciseScheme
-}
-```
-
-<a name="GetExerciseScheme"></a>
-### func [GetExerciseScheme](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/scheme_handlers.go#L92>)
-
-```go
-func GetExerciseScheme(ctx context.Context, input *GetExerciseSchemeInput) (*GetExerciseSchemeOutput, error)
-```
-
-GetExerciseScheme returns a single exercise scheme. Access is determined by the linked exercise's visibility — if the user can see the exercise, they can see its schemes. GET /api/exercise\-schemes/:id
-
-[OpenAPI docs](/api/docs#/operations/GetExerciseScheme)
-
-<details><summary>Example (Non Owner Private Exercise)</summary>
-<p>
-
-Non\-owner cannot read a scheme if the linked exercise is private.
-
-```go
-setupExampleDB()
-r := newRouter()
-
-// Create a private exercise and a scheme for it.
-doRaw(r, "POST", "/api/exercises", `{
-	"names": ["Secret Move"],
-	"type": "STRENGTH",
-	"technicalDifficulty": "advanced",
-	"bodyWeightScaling": 0,
-	"description": "A private exercise"
-}`)
-doRaw(r, "POST", "/api/exercise-schemes", `{
-	"exerciseId": 1,
-	"measurementType": "REP_BASED",
-	"sets": 3,
-	"reps": 8
-}`)
-
-// Another user is denied because the exercise is private.
-w := doRawAs(r, "GET", "/api/exercise-schemes/1", "", "other")
-fmt.Println(w.Code)
-// Output: 403
-```
-
-#### Output
-
-```
-403
-```
-
-</p>
-</details>
-
-<details><summary>Example (Non Owner Public Exercise)</summary>
-<p>
-
-Non\-owner can read a scheme if the linked exercise is public.
-
-```go
-setupExampleDB()
-r := newRouter()
-
-// Create a public exercise and a scheme for it.
-doRaw(r, "POST", "/api/exercises", `{
-	"names": ["Push-up"],
-	"type": "STRENGTH",
-	"technicalDifficulty": "beginner",
-	"bodyWeightScaling": 1.0,
-	"description": "Bodyweight push-up",
-	"public": true
-}`)
-doRaw(r, "POST", "/api/exercise-schemes", `{
-	"exerciseId": 1,
-	"measurementType": "REP_BASED",
-	"sets": 3,
-	"reps": 20
-}`)
-
-// Another user can read the scheme because the exercise is public.
-w := doRawAs(r, "GET", "/api/exercise-schemes/1", "", "other")
-
-var scheme models.ExerciseScheme
-json.Unmarshal(w.Body.Bytes(), &scheme)
-fmt.Println(w.Code)
-fmt.Println(scheme.MeasurementType)
-// Output:
-// 200
-// REP_BASED
-```
-
-#### Output
-
-```
-200
-REP_BASED
-```
-
-</p>
-</details>
-
-<details><summary>Example (Owner)</summary>
-<p>
-
-Owner can retrieve their own exercise scheme.
-
-```go
-setupExampleDB()
-r := newRouter()
-
-// Create the exercise and a scheme.
-doRaw(r, "POST", "/api/exercises", `{
-	"names": ["Squat"],
-	"type": "STRENGTH",
-	"technicalDifficulty": "beginner",
-	"bodyWeightScaling": 0.5,
-	"description": "Barbell squat"
-}`)
-doRaw(r, "POST", "/api/exercise-schemes", `{
-	"exerciseId": 1,
-	"measurementType": "REP_BASED",
-	"sets": 5,
-	"reps": 5,
-	"weight": 100.0,
-	"restBetweenSets": 180
-}`)
-
-w := doJSON(r, "GET", "/api/exercise-schemes/1", nil)
-
-var scheme models.ExerciseScheme
-json.Unmarshal(w.Body.Bytes(), &scheme)
-fmt.Println(w.Code)
-fmt.Println(scheme.MeasurementType)
-// Output:
-// 200
-// REP_BASED
-```
-
-#### Output
-
-```
-200
-REP_BASED
-```
-
-</p>
-</details>
-
 <a name="GetExerciseVersionInput"></a>
-## type [GetExerciseVersionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L112-L115>)
+## type [GetExerciseVersionInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L97-L100>)
 
 
 
@@ -1070,7 +701,7 @@ type GetExerciseVersionInput struct {
 ```
 
 <a name="GetExerciseVersionOutput"></a>
-## type [GetExerciseVersionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L117-L119>)
+## type [GetExerciseVersionOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L102-L104>)
 
 
 
@@ -1352,184 +983,8 @@ ListExerciseRelationships returns exercise relationships, optionally filtered by
 
 [OpenAPI docs](/api/docs#/operations/ListExerciseRelationships)
 
-<a name="ListExerciseSchemesInput"></a>
-## type [ListExerciseSchemesInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L136-L140>)
-
-
-
-```go
-type ListExerciseSchemesInput struct {
-    ExerciseID           string `query:"exerciseId" doc:"Filter by exercise ID"`
-    MeasurementType      string `query:"measurementType" doc:"Filter by measurement type"`
-    WorkoutSectionItemID string `query:"workoutSectionItemId" doc:"Filter by workout section item ID"`
-}
-```
-
-<a name="ListExerciseSchemesOutput"></a>
-## type [ListExerciseSchemesOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L142-L144>)
-
-
-
-```go
-type ListExerciseSchemesOutput struct {
-    Body []models.ExerciseScheme
-}
-```
-
-<a name="ListExerciseSchemes"></a>
-### func [ListExerciseSchemes](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/scheme_handlers.go#L35>)
-
-```go
-func ListExerciseSchemes(ctx context.Context, input *ListExerciseSchemesInput) (*ListExerciseSchemesOutput, error)
-```
-
-ListExerciseSchemes returns schemes the current user has access to: their own schemes plus schemes linked to public exercises. Filter by exerciseId or measurementType query params. GET /api/exercise\-schemes
-
-[OpenAPI docs](/api/docs#/operations/ListExerciseSchemes)
-
-<details><summary>Example (Non Owner Private Exercise)</summary>
-<p>
-
-Non\-owner does not see schemes for private exercises.
-
-```go
-setupExampleDB()
-r := newRouter()
-
-// Create a private exercise and a scheme.
-doRaw(r, "POST", "/api/exercises", `{
-	"names": ["Secret Move"],
-	"type": "STRENGTH",
-	"technicalDifficulty": "advanced",
-	"bodyWeightScaling": 0,
-	"description": "A private exercise"
-}`)
-doRaw(r, "POST", "/api/exercise-schemes", `{
-	"exerciseId": 1,
-	"measurementType": "REP_BASED",
-	"sets": 3,
-	"reps": 8
-}`)
-
-// Another user sees an empty list.
-w := doRawAs(r, "GET", "/api/exercise-schemes", "", "other")
-
-var schemes []models.ExerciseScheme
-json.Unmarshal(w.Body.Bytes(), &schemes)
-fmt.Println(w.Code)
-fmt.Println(len(schemes))
-// Output:
-// 200
-// 0
-```
-
-#### Output
-
-```
-200
-0
-```
-
-</p>
-</details>
-
-<details><summary>Example (Non Owner Public Exercise)</summary>
-<p>
-
-Non\-owner sees schemes for public exercises in the list.
-
-```go
-setupExampleDB()
-r := newRouter()
-
-// Create a public exercise and a scheme.
-doRaw(r, "POST", "/api/exercises", `{
-	"names": ["Push-up"],
-	"type": "STRENGTH",
-	"technicalDifficulty": "beginner",
-	"bodyWeightScaling": 1.0,
-	"description": "Bodyweight push-up",
-	"public": true
-}`)
-doRaw(r, "POST", "/api/exercise-schemes", `{
-	"exerciseId": 1,
-	"measurementType": "REP_BASED",
-	"sets": 3,
-	"reps": 20
-}`)
-
-// Another user sees schemes for public exercises.
-w := doRawAs(r, "GET", "/api/exercise-schemes", "", "other")
-
-var schemes []models.ExerciseScheme
-json.Unmarshal(w.Body.Bytes(), &schemes)
-fmt.Println(w.Code)
-fmt.Println(len(schemes))
-// Output:
-// 200
-// 1
-```
-
-#### Output
-
-```
-200
-1
-```
-
-</p>
-</details>
-
-<details><summary>Example (Owner)</summary>
-<p>
-
-Owner sees their own schemes in the list.
-
-```go
-setupExampleDB()
-r := newRouter()
-
-// Create a private exercise and a scheme.
-doRaw(r, "POST", "/api/exercises", `{
-	"names": ["Squat"],
-	"type": "STRENGTH",
-	"technicalDifficulty": "beginner",
-	"bodyWeightScaling": 0.5,
-	"description": "Barbell squat"
-}`)
-doRaw(r, "POST", "/api/exercise-schemes", `{
-	"exerciseId": 1,
-	"measurementType": "REP_BASED",
-	"sets": 5,
-	"reps": 5
-}`)
-
-w := doJSON(r, "GET", "/api/exercise-schemes", nil)
-
-var schemes []models.ExerciseScheme
-json.Unmarshal(w.Body.Bytes(), &schemes)
-fmt.Println(w.Code)
-fmt.Println(len(schemes))
-fmt.Println(schemes[0].MeasurementType)
-// Output:
-// 200
-// 1
-// REP_BASED
-```
-
-#### Output
-
-```
-200
-1
-REP_BASED
-```
-
-</p>
-</details>
-
 <a name="ListExerciseVersionsInput"></a>
-## type [ListExerciseVersionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L104-L106>)
+## type [ListExerciseVersionsInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L89-L91>)
 
 
 
@@ -1540,7 +995,7 @@ type ListExerciseVersionsInput struct {
 ```
 
 <a name="ListExerciseVersionsOutput"></a>
-## type [ListExerciseVersionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L108-L110>)
+## type [ListExerciseVersionsOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L93-L95>)
 
 
 
@@ -1562,7 +1017,7 @@ ListExerciseVersions returns the version history for an exercise. Each update vi
 [OpenAPI docs](/api/docs#/operations/ListExerciseVersions)
 
 <a name="ListExercisesInput"></a>
-## type [ListExercisesInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L47-L59>)
+## type [ListExercisesInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L32-L44>)
 
 
 
@@ -1583,7 +1038,7 @@ type ListExercisesInput struct {
 ```
 
 <a name="ListExercisesOutput"></a>
-## type [ListExercisesOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L61-L63>)
+## type [ListExercisesOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L46-L48>)
 
 
 
@@ -1740,7 +1195,7 @@ fmt.Println(page.Total)
 </details>
 
 <a name="UpdateExerciseInput"></a>
-## type [UpdateExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L81-L84>)
+## type [UpdateExerciseInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L66-L69>)
 
 
 
@@ -1752,7 +1207,7 @@ type UpdateExerciseInput struct {
 ```
 
 <a name="UpdateExerciseOutput"></a>
-## type [UpdateExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L86-L88>)
+## type [UpdateExerciseOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L71-L73>)
 
 
 
@@ -1958,179 +1413,6 @@ fmt.Println("v1 name:", snap1.Names[0].Name)
 current version: 1
 v0 name: Squat
 v1 name: Back Squat
-```
-
-</p>
-</details>
-
-<a name="UpdateExerciseSchemeInput"></a>
-## type [UpdateExerciseSchemeInput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L162-L165>)
-
-
-
-```go
-type UpdateExerciseSchemeInput struct {
-    ID   uint `path:"id"`
-    Body ExerciseSchemeBody
-}
-```
-
-<a name="UpdateExerciseSchemeOutput"></a>
-## type [UpdateExerciseSchemeOutput](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/huma_types.go#L167-L169>)
-
-
-
-```go
-type UpdateExerciseSchemeOutput struct {
-    Body models.ExerciseScheme
-}
-```
-
-<a name="UpdateExerciseScheme"></a>
-### func [UpdateExerciseScheme](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/scheme_handlers.go#L113>)
-
-```go
-func UpdateExerciseScheme(ctx context.Context, input *UpdateExerciseSchemeInput) (*UpdateExerciseSchemeOutput, error)
-```
-
-UpdateExerciseScheme updates a scheme's configuration. The exerciseId cannot be changed. PUT /api/exercise\-schemes/:id
-
-[OpenAPI docs](/api/docs#/operations/UpdateExerciseScheme)
-
-<details><summary>Example (Non Owner Private Exercise)</summary>
-<p>
-
-Non\-owner cannot update a scheme for a private exercise.
-
-```go
-setupExampleDB()
-r := newRouter()
-
-doRaw(r, "POST", "/api/exercises", `{
-	"names": ["Secret Move"],
-	"type": "STRENGTH",
-	"technicalDifficulty": "advanced",
-	"bodyWeightScaling": 0,
-	"description": "A private exercise"
-}`)
-doRaw(r, "POST", "/api/exercise-schemes", `{
-	"exerciseId": 1,
-	"measurementType": "REP_BASED",
-	"sets": 3,
-	"reps": 8
-}`)
-
-w := doRawAs(r, "PUT", "/api/exercise-schemes/1", `{
-	"exerciseId": 1,
-	"measurementType": "REP_BASED",
-	"sets": 5,
-	"reps": 50
-}`, "other")
-fmt.Println(w.Code)
-// Output: 403
-```
-
-#### Output
-
-```
-403
-```
-
-</p>
-</details>
-
-<details><summary>Example (Non Owner Public Exercise)</summary>
-<p>
-
-Non\-owner cannot update a scheme even if the linked exercise is public.
-
-```go
-setupExampleDB()
-r := newRouter()
-
-doRaw(r, "POST", "/api/exercises", `{
-	"names": ["Push-up"],
-	"type": "STRENGTH",
-	"technicalDifficulty": "beginner",
-	"bodyWeightScaling": 1.0,
-	"description": "Bodyweight push-up",
-	"public": true
-}`)
-doRaw(r, "POST", "/api/exercise-schemes", `{
-	"exerciseId": 1,
-	"measurementType": "REP_BASED",
-	"sets": 3,
-	"reps": 20
-}`)
-
-w := doRawAs(r, "PUT", "/api/exercise-schemes/1", `{
-	"exerciseId": 1,
-	"measurementType": "REP_BASED",
-	"sets": 5,
-	"reps": 50
-}`, "other")
-fmt.Println(w.Code)
-// Output: 403
-```
-
-#### Output
-
-```
-403
-```
-
-</p>
-</details>
-
-<details><summary>Example (Owner)</summary>
-<p>
-
-Owner can update their exercise scheme.
-
-```go
-setupExampleDB()
-r := newRouter()
-
-doRaw(r, "POST", "/api/exercises", `{
-	"names": ["Bicep Curl"],
-	"type": "STRENGTH",
-	"technicalDifficulty": "beginner",
-	"bodyWeightScaling": 0,
-	"description": "Dumbbell bicep curl"
-}`)
-doRaw(r, "POST", "/api/exercise-schemes", `{
-	"exerciseId": 1,
-	"measurementType": "REP_BASED",
-	"sets": 3,
-	"reps": 10,
-	"weight": 12.0,
-	"restBetweenSets": 60
-}`)
-
-// Update the scheme — increase weight and reduce reps.
-w := doRaw(r, "PUT", "/api/exercise-schemes/1", `{
-	"exerciseId": 1,
-	"measurementType": "REP_BASED",
-	"sets": 3,
-	"reps": 8,
-	"weight": 15.0,
-	"restBetweenSets": 90
-}`)
-
-var scheme models.ExerciseScheme
-json.Unmarshal(w.Body.Bytes(), &scheme)
-fmt.Println(w.Code)
-fmt.Println(*scheme.Reps, "reps,", *scheme.Weight, "kg")
-// Output:
-// 200
-// 8 reps, 15 kg
-```
-
-#### Output
-
-```
-200
-8 reps, 15 kg
 ```
 
 </p>
