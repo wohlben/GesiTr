@@ -5,14 +5,14 @@ import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { localityKeys, localityAvailabilityKeys } from '$core/query-keys';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideMapPin, lucideHome, lucideX } from '@ng-icons/lucide';
+import { lucideMapPin, lucideHome, lucideX, lucideLocationEdit } from '@ng-icons/lucide';
 import { HlmIconImports } from '@spartan-ng/helm/icon';
 import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 
 @Component({
   selector: 'app-equipment-add-to-locality-menu',
   imports: [TranslocoDirective, NgIcon, HlmIconImports, HlmPopoverImports],
-  providers: [provideIcons({ lucideMapPin, lucideHome, lucideX })],
+  providers: [provideIcons({ lucideMapPin, lucideHome, lucideX, lucideLocationEdit })],
   template: `
     <ng-container *transloco="let t">
       <div hlmPopover [state]="open() ? 'open' : 'closed'" (closed)="open.set(false)" align="end">
@@ -57,7 +57,7 @@ import { HlmPopoverImports } from '@spartan-ng/helm/popover';
                       <button
                         (click)="removeFromLocality(avail.id)"
                         [disabled]="removeMutation.isPending()"
-                        class="rounded p-0.5 text-red-500 transition-colors hover:bg-red-100 disabled:opacity-50 dark:text-red-400 dark:hover:bg-red-900/30"
+                        class="flex items-center justify-center rounded p-0.5 text-red-500 transition-colors hover:bg-red-100 disabled:opacity-50 dark:text-red-400 dark:hover:bg-red-900/30"
                       >
                         <ng-icon hlm name="lucideX" size="sm" />
                       </button>
@@ -66,8 +66,14 @@ import { HlmPopoverImports } from '@spartan-ng/helm/popover';
                     <button
                       (click)="addToLocality(locality.id)"
                       [disabled]="addMutation.isPending()"
-                      class="w-full rounded-md px-3 py-1.5 text-left text-sm transition-colors hover:bg-gray-100 disabled:opacity-50 dark:hover:bg-gray-800"
+                      class="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-left text-sm transition-colors hover:bg-gray-100 disabled:opacity-50 dark:hover:bg-gray-800"
                     >
+                      <ng-icon
+                        hlm
+                        name="lucideLocationEdit"
+                        size="sm"
+                        class="text-gray-400 dark:text-gray-500"
+                      />
                       {{ locality.name }}
                     </button>
                   }
