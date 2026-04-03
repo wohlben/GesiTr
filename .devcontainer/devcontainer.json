@@ -2,11 +2,6 @@
   "name": "GesiTr",
   "image": "mcr.microsoft.com/devcontainers/base:bookworm",
   "features": {
-    "ghcr.io/devcontainers/features/common-utils:2": {
-      "uid": "502",
-      "gid": "502",
-      "username": "vscode"
-    },
     "ghcr.io/devcontainers/features/go:1": {
       "version": "1.25"
     },
