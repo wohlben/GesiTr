@@ -1,10 +1,15 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { equipmentKeys, equipmentMasteryKeys } from '$core/query-keys';
+import {
+  equipmentKeys,
+  equipmentMasteryKeys,
+  localityKeys,
+  localityAvailabilityKeys,
+} from '$core/query-keys';
 import { EquipmentMastery } from '$generated/user-mastery';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { EquipmentListItem } from '$ui/compendium/equipment-list-item/equipment-list-item';
@@ -30,19 +35,47 @@ import {
         [isPending]="equipmentQuery.isPending()"
         [errorMessage]="equipmentQuery.isError() ? equipmentQuery.error().message : undefined"
       >
-        <div actions class="flex gap-2">
-          <a
-            routerLink="/compendium/localities"
-            class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
-            >{{ t('nav.localities') }}</a
-          >
+        <div actions class="flex items-center gap-2">
+          @if (localitiesQuery.data(); as localityPage) {
+            <div
+              class="flex overflow-hidden rounded-md border border-gray-300 dark:border-gray-600"
+            >
+              <button
+                type="button"
+                (click)="selectedLocalityId.set(null)"
+                class="px-3 py-2 text-sm font-medium transition-colors"
+                [class]="
+                  selectedLocalityId() === null
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
+                "
+              >
+                {{ t('common.all') }}
+              </button>
+              @for (locality of localityPage.items; track locality.id) {
+                <button
+                  type="button"
+                  (click)="selectedLocalityId.set(locality.id)"
+                  class="border-l border-gray-300 px-3 py-2 text-sm font-medium transition-colors dark:border-gray-600"
+                  [class]="
+                    selectedLocalityId() === locality.id
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
+                  "
+                >
+                  {{ locality.name }}
+                </button>
+              }
+            </div>
+          }
+          <div class="flex-grow"></div>
           <a
             routerLink="./new"
             class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
             >{{ t('common.new') }}</a
           >
         </div>
-        @if (equipmentQuery.data(); as page) {
+        @if (filteredPage(); as page) {
           <app-data-table
             [columns]="equipmentColumns"
             [stale]="equipmentQuery.isPlaceholderData()"
@@ -68,6 +101,8 @@ export class EquipmentList {
   private userApi = inject(UserApiClient);
   private queryParams = toSignal(inject(ActivatedRoute).queryParamMap);
 
+  selectedLocalityId = signal<number | null>(null);
+
   filters = computed(() => {
     const params: Record<string, string> = {};
     const qp = this.queryParams();
@@ -90,6 +125,34 @@ export class EquipmentList {
     queryKey: equipmentMasteryKeys.list(),
     queryFn: () => this.userApi.fetchEquipmentMasteryList(),
   }));
+
+  localitiesQuery = injectQuery(() => ({
+    queryKey: localityKeys.list({ owner: 'me', limit: 100 }),
+    queryFn: () => this.api.fetchLocalities({ owner: 'me', limit: 100 }),
+  }));
+
+  availabilitiesQuery = injectQuery(() => ({
+    queryKey: localityAvailabilityKeys.list({ localityId: this.selectedLocalityId()! }),
+    queryFn: () => this.api.fetchLocalityAvailabilities({ localityId: this.selectedLocalityId()! }),
+    enabled: this.selectedLocalityId() !== null,
+  }));
+
+  private availableEquipmentIds = computed(() => {
+    const ids = new Set<number>();
+    for (const a of this.availabilitiesQuery.data() ?? []) {
+      ids.add(a.equipmentId);
+    }
+    return ids;
+  });
+
+  filteredPage = computed(() => {
+    const page = this.equipmentQuery.data();
+    if (!page) return undefined;
+    if (this.selectedLocalityId() === null) return page;
+    const ids = this.availableEquipmentIds();
+    const items = page.items.filter((e) => ids.has(e.id));
+    return { ...page, items, total: items.length };
+  });
 
   masteryMap = computed(() => {
     const map = new Map<number, EquipmentMastery>();
