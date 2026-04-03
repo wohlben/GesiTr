@@ -81,7 +81,7 @@ describe('WorkoutStartStore', () => {
     });
     userApiMock.fetchUserExercise.mockResolvedValue({
       id: 5,
-      name: 'Bench Press',
+      names: [{ id: 1, name: 'Bench Press' }],
       version: 1,
     });
 
@@ -156,13 +156,13 @@ describe('WorkoutStartStore', () => {
       if (id === 5) {
         return Promise.resolve({
           id: 5,
-          name: 'Squat',
+          names: [{ id: 2, name: 'Squat' }],
           version: 1,
         });
       }
       return Promise.resolve({
         id: 6,
-        name: 'Plank',
+        names: [{ id: 14, name: 'Plank' }],
         version: 2,
       });
     });
@@ -290,7 +290,7 @@ describe('WorkoutStartStore', () => {
     );
     userApiMock.fetchUserExercise.mockResolvedValue({
       id: 5,
-      name: 'Curl',
+      names: [{ id: 3, name: 'Curl' }],
       version: 1,
     });
 

@@ -21,7 +21,7 @@ import { DecimalPipe } from '@angular/common';
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
-        [header]="exerciseQuery.data()?.name ?? 'Exercise'"
+        [header]="exerciseQuery.data()?.names?.[0]?.name ?? 'Exercise'"
         [isPending]="exerciseQuery.isPending()"
         [errorMessage]="exerciseQuery.isError() ? exerciseQuery.error().message : undefined"
       >
@@ -79,7 +79,9 @@ import { DecimalPipe } from '@angular/common';
           [open]="showDeleteDialog()"
           [title]="t('compendium.exercises.deleteTitle')"
           [message]="
-            t('compendium.exercises.deleteMessage', { name: exerciseQuery.data()?.name ?? '' })
+            t('compendium.exercises.deleteMessage', {
+              name: exerciseQuery.data()?.names?.[0]?.name ?? '',
+            })
           "
           [isPending]="deleteMutation.isPending()"
           (confirmed)="deleteMutation.mutate()"
@@ -193,13 +195,13 @@ import { DecimalPipe } from '@angular/common';
                 </dd>
               </div>
             }
-            @if (exercise.alternativeNames?.length) {
+            @if (exercise.names?.length) {
               <div>
                 <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                  {{ t('fields.alternativeNames') }}
+                  {{ t('fields.names') }}
                 </dt>
                 <dd class="text-sm text-gray-900 dark:text-gray-100">
-                  {{ exercise.alternativeNames.join(', ') }}
+                  {{ exercise.names.map(n => n.name).join(', ') }}
                 </dd>
               </div>
             }
@@ -391,7 +393,7 @@ export class ExerciseDetail {
       (exercises) => {
         const updated = new Map(this.exerciseNameMap());
         for (const ex of exercises) {
-          if (ex) updated.set(ex.id, ex.name);
+          if (ex) updated.set(ex.id, ex.names?.[0]?.name ?? '');
         }
         this.exerciseNameMap.set(updated);
       },
@@ -445,7 +447,7 @@ export class ExerciseDetail {
     mutationFn: () => {
       const exercise = this.exerciseQuery.data()!;
       return this.userApi.createUserExercise({
-        name: exercise.name,
+        names: exercise.names.map((n) => n.name),
         type: exercise.type,
         force: exercise.force,
         primaryMuscles: exercise.primaryMuscles,
@@ -456,7 +458,6 @@ export class ExerciseDetail {
         description: exercise.description,
         instructions: exercise.instructions,
         images: exercise.images,
-        alternativeNames: exercise.alternativeNames,
         authorName: exercise.authorName,
         authorUrl: exercise.authorUrl,
         parentExerciseId: exercise.parentExerciseId,

@@ -453,7 +453,7 @@ func TestActivation_SnapshotsWorkoutStructure(t *testing.T) {
 	db := setupTestDB(t)
 
 	// Create exercise + scheme with 3 sets of 10 reps at 60kg
-	exercise := exercisemodels.ExerciseEntity{Owner: "alice", Name: "Bench Press"}
+	exercise := exercisemodels.ExerciseEntity{Owner: "alice", Names: []exercisemodels.ExerciseName{{Position: 0, Name: "Bench Press"}}}
 	db.Create(&exercise)
 
 	sets := intPtr(3)

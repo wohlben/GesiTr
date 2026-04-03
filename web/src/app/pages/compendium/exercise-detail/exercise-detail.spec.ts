@@ -14,7 +14,7 @@ const EXERCISE: Exercise = {
   id: 1,
   createdAt: '',
   updatedAt: '',
-  name: 'Bench Press',
+  names: [{ id: 1, name: 'Bench Press' }],
   type: 'STRENGTH',
   force: [],
   primaryMuscles: ['CHEST'],
@@ -25,7 +25,6 @@ const EXERCISE: Exercise = {
   description: 'A compound exercise',
   instructions: [],
   images: [],
-  alternativeNames: [],
   owner: 'seed',
   public: true,
   version: 1,
@@ -145,7 +144,7 @@ describe('ExerciseDetail', () => {
     await render(ExerciseDetail, { providers });
 
     await waitFor(() => {
-      expect(screen.getByText('Bench Press')).toBeTruthy();
+      expect(screen.getByRole('heading', { name: 'Bench Press' })).toBeTruthy();
     });
     expect(screen.queryByText('common.edit')).toBeNull();
   });
@@ -164,7 +163,7 @@ describe('ExerciseDetail', () => {
     await render(ExerciseDetail, { providers });
 
     await waitFor(() => {
-      expect(screen.getByText('Bench Press')).toBeTruthy();
+      expect(screen.getByRole('heading', { name: 'Bench Press' })).toBeTruthy();
     });
     expect(screen.queryByText('common.delete')).toBeNull();
   });

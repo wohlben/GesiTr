@@ -54,7 +54,7 @@ export interface ExerciseConfigResult {
                 <hlm-combobox-input [placeholder]="t('common.search')" [showClear]="false" />
                 <div hlmComboboxList>
                   @for (ex of sortedExercises(); track ex.id) {
-                    <hlm-combobox-item [value]="ex">{{ ex.name }}</hlm-combobox-item>
+                    <hlm-combobox-item [value]="ex">{{ ex.names?.[0]?.name }}</hlm-combobox-item>
                   }
                   <hlm-combobox-empty>{{ t('common.noResults') }}</hlm-combobox-empty>
                 </div>
@@ -188,7 +188,7 @@ export class ExerciseConfig {
       const aHas = masteryIds.has(a.id) ? 0 : 1;
       const bHas = masteryIds.has(b.id) ? 0 : 1;
       if (aHas !== bHas) return aHas - bHas;
-      return a.name.localeCompare(b.name);
+      return (a.names?.[0]?.name ?? '').localeCompare(b.names?.[0]?.name ?? '');
     });
   });
 
@@ -198,12 +198,12 @@ export class ExerciseConfig {
     return this.sortedExercises().find((e) => e.id === id) ?? null;
   });
 
-  selectedExerciseName = computed(() => this.selectedExercise()?.name ?? '');
+  selectedExerciseName = computed(() => this.selectedExercise()?.names?.[0]?.name ?? '');
 
   exerciseFilter = (exercise: Exercise, search: string) =>
-    exercise.name.toLowerCase().includes(search.toLowerCase());
+    exercise.names?.some((n) => n.name.toLowerCase().includes(search.toLowerCase())) ?? false;
 
-  exerciseToString = (exercise: Exercise) => exercise.name;
+  exerciseToString = (exercise: Exercise) => exercise.names?.[0]?.name ?? '';
 
   onExerciseSelected(exercise: Exercise | null) {
     this.model.update((m) => ({ ...m, exerciseId: exercise?.id ?? null }));

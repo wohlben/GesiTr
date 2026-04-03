@@ -18,7 +18,7 @@ test.describe('/compendium/workouts — group member full flow', () => {
     // API Setup: devuser creates workout with exercise + group
     // ============================================================
     const exercise = await createExercise(request, {
-      name: 'E2E Group Bench Press',
+      names: ['E2E Group Bench Press'],
       public: true,
     });
     const scheme = await createExerciseScheme(request, {

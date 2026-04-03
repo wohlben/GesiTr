@@ -30,7 +30,7 @@ test.describe('/compendium/exercises/new', () => {
     await expect(page.locator('h1')).toHaveText('New Exercise');
 
     const testName = `E2E Test Exercise ${Date.now()}`;
-    await page.locator('#name').fill(testName);
+    await page.locator('fieldset').first().locator('input').first().fill(testName);
     await page.locator('#description').fill('Created by e2e test');
 
     // Submit and wait for POST response

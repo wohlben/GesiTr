@@ -5,11 +5,11 @@ test.describe('Create workout with public exercises from another user', () => {
   test('exercise dropdown shows public exercises created by another user', async ({ page }) => {
     // User "alice" creates two public exercises via the API
     const exerciseA = await createExerciseAs('alice', {
-      name: 'Alice Bench Press',
+      names: ['Alice Bench Press'],
       public: true,
     });
     const exerciseB = await createExerciseAs('alice', {
-      name: 'Alice Deadlift',
+      names: ['Alice Deadlift'],
       public: true,
     });
 

@@ -1,10 +1,16 @@
 import { Component, inject, computed } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
+import {
+  injectQuery,
+  injectMutation,
+  keepPreviousData,
+  QueryClient,
+} from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { exerciseKeys, masteryKeys } from '$core/query-keys';
+import { exerciseKeys, masteryKeys, namePreferenceKeys } from '$core/query-keys';
+import { Exercise } from '$generated/models';
 import { ExerciseMastery } from '$generated/user-mastery';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ExerciseListItem } from '$ui/compendium/exercise-list-item/exercise-list-item';
@@ -71,7 +77,14 @@ import {
             (hiddenColumnsChange)="onHiddenColumnsChange($event)"
           >
             @for (ex of page.items; track ex.id) {
-              <tr app-exercise-list-item [exercise]="ex" [mastery]="masteryMap().get(ex.id)"></tr>
+              <tr
+                app-exercise-list-item
+                [exercise]="ex"
+                [displayName]="getDisplayName(ex)"
+                [matchingNames]="getMatchingNames(ex)"
+                [mastery]="masteryMap().get(ex.id)"
+                (nameClicked)="onNameClicked(ex.id, $event)"
+              ></tr>
             }
           </app-data-table>
           <app-pagination [page]="page" [emptyLabel]="t('compendium.exercises.noResults')" />
@@ -83,6 +96,7 @@ import {
 export class ExerciseList {
   private api = inject(CompendiumApiClient);
   private userApi = inject(UserApiClient);
+  private queryClient = inject(QueryClient);
   private queryParams = toSignal(inject(ActivatedRoute).queryParamMap);
 
   filters = computed(() => {
@@ -130,6 +144,62 @@ export class ExerciseList {
       return stored ? JSON.parse(stored) : undefined;
     } catch {
       return undefined;
+    }
+  }
+
+  namePreferenceQuery = injectQuery(() => ({
+    queryKey: namePreferenceKeys.list(),
+    queryFn: () => this.userApi.fetchExerciseNamePreferences(),
+  }));
+
+  // Maps exerciseId → preferred exercise_name.id
+  preferenceMap = computed(() => {
+    const map = new Map<number, number>();
+    for (const p of this.namePreferenceQuery.data() ?? []) {
+      map.set(p.exerciseId, p.exerciseNameId);
+    }
+    return map;
+  });
+
+  searchQuery = computed(() => this.filters()['q'] ?? '');
+
+  savePreferenceMutation = injectMutation(() => ({
+    mutationFn: (vars: { exerciseId: number; exerciseNameId: number }) =>
+      this.userApi.setExerciseNamePreference(vars.exerciseId, vars.exerciseNameId),
+    onSuccess: () => this.queryClient.invalidateQueries({ queryKey: namePreferenceKeys.all() }),
+  }));
+
+  getDisplayName(ex: Exercise): string {
+    const q = this.searchQuery().toLowerCase();
+    if (q) {
+      const names = ex.names ?? [];
+      const startsWithMatch = names.find((n) => n.name.toLowerCase().startsWith(q));
+      if (startsWithMatch) return startsWithMatch.name;
+      const containsMatch = names.find((n) => n.name.toLowerCase().includes(q));
+      if (containsMatch) return containsMatch.name;
+    }
+    const prefId = this.preferenceMap().get(ex.id);
+    if (prefId) {
+      const preferred = ex.names?.find((n) => n.id === prefId);
+      if (preferred) return preferred.name;
+    }
+    return ex.names?.[0]?.name ?? '';
+  }
+
+  getMatchingNames(ex: Exercise): string[] {
+    const q = this.searchQuery().toLowerCase();
+    if (!q) return [];
+    const primary = this.getDisplayName(ex);
+    return (ex.names ?? [])
+      .filter((n) => n.name !== primary && n.name.toLowerCase().includes(q))
+      .map((n) => n.name);
+  }
+
+  onNameClicked(exerciseId: number, name: string) {
+    const ex = this.exercisesQuery.data()?.items.find((e) => e.id === exerciseId);
+    const nameEntry = ex?.names?.find((n) => n.name === name);
+    if (nameEntry) {
+      this.savePreferenceMutation.mutate({ exerciseId, exerciseNameId: nameEntry.id });
     }
   }
 
@@ -198,7 +268,7 @@ export class ExerciseList {
       defaultHidden: true,
     },
     { label: 'Description', labelKey: 'fields.description', defaultHidden: true },
-    { label: 'Alternative names', labelKey: 'fields.alternativeNames', defaultHidden: true },
+    { label: 'Names', labelKey: 'fields.names', defaultHidden: true },
     { label: 'Author', labelKey: 'fields.author', defaultHidden: true },
     { label: 'Version', labelKey: 'fields.version', defaultHidden: true },
     { label: 'Owner', labelKey: 'fields.owner', defaultHidden: true },

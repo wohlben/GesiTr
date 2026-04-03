@@ -14,7 +14,7 @@ func TestRecordCreatedOnSetCompletion(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -68,7 +68,7 @@ func TestRecordUpdatedOnBetterPerformance(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -120,7 +120,7 @@ func TestRecordNotUpdatedOnWorsePerformance(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -166,7 +166,7 @@ func TestDifferentMeasurementTypes(t *testing.T) {
 
 	// TIME_BASED exercise
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Plank", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Plank"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "TIME_BASED",
@@ -206,7 +206,7 @@ func TestDistanceBasedMeasurement(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Run", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Run"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "DISTANCE_BASED",
@@ -246,7 +246,7 @@ func TestUpdateExerciseLogShiftsRecord(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -317,7 +317,7 @@ func TestDeleteExerciseLogShiftsRecord(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -375,7 +375,7 @@ func TestDeleteLastExerciseLogClearsRecord(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 
 	// Create a single ad-hoc log
@@ -403,7 +403,7 @@ func TestNoRecordWhenNotFinished(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -438,7 +438,7 @@ func TestPerExerciseNotPerScheme(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	// Two schemes for the same exercise
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{

@@ -97,7 +97,7 @@ export const WorkoutStartStore = signalStore(
         const exerciseNames: Record<number, string> = {};
         for (const exercise of exerciseResults) {
           if (exercise) {
-            exerciseNames[exercise.id] = exercise.name;
+            exerciseNames[exercise.id] = exercise.names?.[0]?.name ?? `Exercise #${exercise.id}`;
           }
         }
 
@@ -162,7 +162,7 @@ export const WorkoutStartStore = signalStore(
         const exerciseNames: Record<number, string> = {};
         for (const exercise of exerciseResults) {
           if (exercise) {
-            exerciseNames[exercise.id] = exercise.name;
+            exerciseNames[exercise.id] = exercise.names?.[0]?.name ?? `Exercise #${exercise.id}`;
           }
         }
 

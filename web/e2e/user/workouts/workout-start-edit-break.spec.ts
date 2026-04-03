@@ -20,7 +20,7 @@ test.describe('/compendium/workouts/[id]/start — break time editing', () => {
     page,
   }) => {
     // Create fixtures: workout with 2 exercises in one section, default rest = 90s
-    const exercise1 = await createExercise(request, { name: 'Break Test Ex A' });
+    const exercise1 = await createExercise(request, { names: ['Break Test Ex A'] });
     const scheme1 = await createExerciseScheme(request, {
       exerciseId: exercise1.id,
       sets: 1,
@@ -28,7 +28,7 @@ test.describe('/compendium/workouts/[id]/start — break time editing', () => {
       weight: 100,
     });
 
-    const exercise2 = await createExercise(request, { name: 'Break Test Ex B' });
+    const exercise2 = await createExercise(request, { names: ['Break Test Ex B'] });
     const scheme2 = await createExerciseScheme(request, {
       exerciseId: exercise2.id,
       sets: 1,

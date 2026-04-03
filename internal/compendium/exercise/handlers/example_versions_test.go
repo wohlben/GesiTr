@@ -17,7 +17,7 @@ func ExampleGetExerciseVersion_owner() {
 
 	// Create an exercise (version 0).
 	doRaw(r, "POST", "/api/exercises", `{
-		"name": "Squat",
+		"names": ["Squat"],
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,
@@ -33,11 +33,11 @@ func ExampleGetExerciseVersion_owner() {
 	// Parse the snapshot to check the exercise name at version 0.
 	var snap0 models.Exercise
 	json.Unmarshal(v0.Snapshot, &snap0)
-	fmt.Println("v0 name:", snap0.Name)
+	fmt.Println("v0 name:", snap0.Names[0].Name)
 
 	// Update the exercise (creates version 1).
 	doRaw(r, "PUT", "/api/exercises/1", `{
-		"name": "Back Squat",
+		"names": ["Back Squat"],
 		"type": "STRENGTH",
 		"technicalDifficulty": "intermediate",
 		"bodyWeightScaling": 0.5,
@@ -54,7 +54,7 @@ func ExampleGetExerciseVersion_owner() {
 
 	var snap1 models.Exercise
 	json.Unmarshal(v1.Snapshot, &snap1)
-	fmt.Println("v1 name:", snap1.Name)
+	fmt.Println("v1 name:", snap1.Names[0].Name)
 
 	// Output:
 	// v0: 200 version 0
@@ -70,7 +70,7 @@ func ExampleGetExerciseVersion_nonOwnerPublic() {
 
 	// Create a public exercise (version 0).
 	doRaw(r, "POST", "/api/exercises", `{
-		"name": "Push-up",
+		"names": ["Push-up"],
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 1.0,
@@ -80,7 +80,7 @@ func ExampleGetExerciseVersion_nonOwnerPublic() {
 
 	// Update it (version 1).
 	doRaw(r, "PUT", "/api/exercises/1", `{
-		"name": "Push-up",
+		"names": ["Push-up"],
 		"type": "STRENGTH",
 		"technicalDifficulty": "intermediate",
 		"bodyWeightScaling": 1.0,
@@ -118,7 +118,7 @@ func ExampleGetExerciseVersion_nonOwnerPrivate() {
 
 	// Create a private exercise.
 	doRaw(r, "POST", "/api/exercises", `{
-		"name": "Secret Move",
+		"names": ["Secret Move"],
 		"type": "STRENGTH",
 		"technicalDifficulty": "advanced",
 		"bodyWeightScaling": 0,
@@ -138,7 +138,7 @@ func ExampleGetExerciseVersion_afterDelete() {
 
 	// Create an exercise (version 0).
 	doRaw(r, "POST", "/api/exercises", `{
-		"name": "Overhead Press",
+		"names": ["Overhead Press"],
 		"type": "STRENGTH",
 		"technicalDifficulty": "intermediate",
 		"bodyWeightScaling": 0,
@@ -165,7 +165,7 @@ func ExampleGetExerciseVersion_afterDelete() {
 
 	var snap models.Exercise
 	json.Unmarshal(v0.Snapshot, &snap)
-	fmt.Println("snapshot name:", snap.Name)
+	fmt.Println("snapshot name:", snap.Names[0].Name)
 
 	// Output:
 	// before delete: 200

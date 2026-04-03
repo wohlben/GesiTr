@@ -21,7 +21,7 @@ func TestCommitmentHappyPath(t *testing.T) {
 
 	// 1. Create exercise + scheme
 	w := doJSONLog(t, r, "POST", "/api/exercises", map[string]any{
-		"name": "Deadlift", "type": "STRENGTH", "technicalDifficulty": "intermediate",
+		"names": []string{"Deadlift"}, "type": "STRENGTH", "technicalDifficulty": "intermediate",
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create exercise: %d", w.Code)

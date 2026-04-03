@@ -42,9 +42,8 @@ func normalizeExerciseJSON(dto Exercise) string {
 	slices.Sort(dto.PrimaryMuscles)
 	slices.Sort(dto.SecondaryMuscles)
 	slices.Sort(dto.SuggestedMeasurementParadigms)
-	slices.Sort(dto.AlternativeNames)
 	slices.Sort(dto.EquipmentIDs)
-	// Instructions and Images are position-ordered — don't sort
+	// Instructions, Images, and Names are position-ordered — don't sort
 
 	// Normalize nil vs empty slices
 	if dto.Force == nil {
@@ -65,8 +64,12 @@ func normalizeExerciseJSON(dto Exercise) string {
 	if dto.Images == nil {
 		dto.Images = []string{}
 	}
-	if dto.AlternativeNames == nil {
-		dto.AlternativeNames = []string{}
+	if dto.Names == nil {
+		dto.Names = []ExerciseNameDTO{}
+	}
+	// Strip IDs from names for comparison (IDs are server-assigned and change across creates)
+	for i := range dto.Names {
+		dto.Names[i].ID = 0
 	}
 	if dto.EquipmentIDs == nil {
 		dto.EquipmentIDs = []uint{}

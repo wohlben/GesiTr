@@ -5,7 +5,7 @@ import "gesitr/internal/shared"
 // Exercise is the API DTO (tygo generates TypeScript from this)
 type Exercise struct {
 	shared.BaseModel              `tstype:",extends"`
-	Name                          string                `json:"name"`
+	Names                         []ExerciseNameDTO     `json:"names" gorm:"-"`
 	Type                          ExerciseType          `json:"type"`
 	Force                         []Force               `json:"force" gorm:"-"`
 	PrimaryMuscles                []Muscle              `json:"primaryMuscles" gorm:"-"`
@@ -16,7 +16,6 @@ type Exercise struct {
 	Description                   string                `json:"description"`
 	Instructions                  []string              `json:"instructions" gorm:"-"`
 	Images                        []string              `json:"images" gorm:"-"`
-	AlternativeNames              []string              `json:"alternativeNames" gorm:"-"`
 	AuthorName                    *string               `json:"authorName"`
 	AuthorUrl                     *string               `json:"authorUrl"`
 	Owner                         string                `json:"owner"`
@@ -24,6 +23,11 @@ type Exercise struct {
 	Version                       int                   `json:"version"`
 	ParentExerciseID              *uint                 `json:"parentExerciseId"`
 	EquipmentIDs                  []uint                `json:"equipmentIds" gorm:"-"`
+}
+
+type ExerciseNameDTO struct {
+	ID   uint   `json:"id"`
+	Name string `json:"name"`
 }
 
 type ExerciseType string

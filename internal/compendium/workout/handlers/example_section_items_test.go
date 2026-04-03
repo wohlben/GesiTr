@@ -13,7 +13,7 @@ import (
 // the full router. Used as setup for section item examples.
 func createExerciseSchemeForExample(r *gin.Engine) {
 	doRaw(r, "POST", "/api/exercises", `{
-		"name": "Bench Press",
+		"names": ["Bench Press"],
 		"type": "STRENGTH",
 		"technicalDifficulty": "beginner",
 		"bodyWeightScaling": 0.5,

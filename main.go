@@ -29,6 +29,8 @@ import (
 	exerciseLogModels "gesitr/internal/user/exerciselog/models"
 	masteryHandlers "gesitr/internal/user/mastery/handlers"
 	masteryModels "gesitr/internal/user/mastery/models"
+	namePreferenceHandlers "gesitr/internal/user/namepreference/handlers"
+	namePreferenceModels "gesitr/internal/user/namepreference/models"
 	workoutlog "gesitr/internal/user/workoutlog"
 	workoutloghandlers "gesitr/internal/user/workoutlog/handlers"
 	workoutlogmodels "gesitr/internal/user/workoutlog/models"
@@ -176,6 +178,43 @@ func runMigrations() {
 	database.DB.Exec("DROP INDEX IF EXISTS idx_workout_groups_workout_id")
 	database.DB.Exec("DROP INDEX IF EXISTS uni_workout_groups_workout_id")
 
+	// Migrate exercise names: move exercises.name + exercise_alternative_names → exercise_names table.
+	var nameColExists int64
+	database.DB.Raw("SELECT COUNT(*) FROM pragma_table_info('exercises') WHERE name = 'name'").Scan(&nameColExists)
+	var altTableExists int64
+	database.DB.Raw("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='exercise_alternative_names'").Scan(&altTableExists)
+	if nameColExists > 0 {
+		// Insert the primary name at position 0.
+		database.DB.Exec(`INSERT INTO exercise_names (exercise_id, position, name)
+			SELECT id, 0, name FROM exercises WHERE name IS NOT NULL AND name != ''`)
+		if altTableExists > 0 {
+			// Insert alternative names at incrementing positions, skipping duplicates of the primary name.
+			database.DB.Exec(`INSERT INTO exercise_names (exercise_id, position, name)
+				SELECT ean.exercise_id,
+					(SELECT COALESCE(MAX(position), -1) + 1 FROM exercise_names en WHERE en.exercise_id = ean.exercise_id),
+					ean.name
+				FROM exercise_alternative_names ean
+				WHERE NOT EXISTS (
+					SELECT 1 FROM exercise_names en
+					WHERE en.exercise_id = ean.exercise_id AND en.name = ean.name
+				)`)
+			database.DB.Exec("DROP TABLE exercise_alternative_names")
+		}
+		database.DB.Exec("ALTER TABLE exercises DROP COLUMN name")
+	} else if altTableExists > 0 {
+		// Column already dropped but old table lingers — just migrate remaining data.
+		database.DB.Exec(`INSERT INTO exercise_names (exercise_id, position, name)
+			SELECT ean.exercise_id,
+				(SELECT COALESCE(MAX(position), -1) + 1 FROM exercise_names en WHERE en.exercise_id = ean.exercise_id),
+				ean.name
+			FROM exercise_alternative_names ean
+			WHERE NOT EXISTS (
+				SELECT 1 FROM exercise_names en
+				WHERE en.exercise_id = ean.exercise_id AND en.name = ean.name
+			)`)
+		database.DB.Exec("DROP TABLE exercise_alternative_names")
+	}
+
 	// Remove user_profiles table and FK constraints referencing it.
 	removeProfileForeignKeys()
 }
@@ -239,7 +278,7 @@ func autoMigrate() {
 		&exerciseModels.ExerciseMeasurementParadigm{},
 		&exerciseModels.ExerciseInstruction{},
 		&exerciseModels.ExerciseImage{},
-		&exerciseModels.ExerciseAlternativeName{},
+		&exerciseModels.ExerciseName{},
 		&equipmentModels.EquipmentEntity{},
 		&exerciseModels.ExerciseEquipment{},
 		&equipmentModels.FulfillmentEntity{},
@@ -269,6 +308,7 @@ func autoMigrate() {
 		&masteryModels.EquipmentMasteryExperienceEntity{},
 		&workoutModels.WorkoutHistoryEntity{},
 		&workoutModels.WorkoutRelationshipEntity{},
+		&namePreferenceModels.ExerciseNamePreference{},
 	)
 }
 
@@ -287,6 +327,7 @@ func setupRoutes(r *gin.Engine) {
 	workoutGroupHandlers.RegisterRoutes(humaAPI)
 	workoutScheduleHandlers.RegisterRoutes(humaAPI)
 	masteryHandlers.RegisterRoutes(humaAPI)
+	namePreferenceHandlers.RegisterRoutes(humaAPI)
 }
 
 func setupSPA(r *gin.Engine) {

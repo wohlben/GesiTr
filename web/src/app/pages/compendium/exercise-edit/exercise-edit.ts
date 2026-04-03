@@ -142,12 +142,35 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
       >
         @if (isCreateMode() || exerciseQuery.data()) {
           <form (submit)="onSubmit(); $event.preventDefault()" class="space-y-4">
-            <div>
-              <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >{{ t('fields.name') }} *</label
-              >
-              <input hlmInput id="name" [formField]="exerciseForm.name" class="mt-1" />
-            </div>
+            <!-- Names -->
+            <fieldset>
+              <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {{ t('fields.names') }} *
+              </legend>
+              <div class="mt-1 space-y-2">
+                @for (item of exerciseForm.names; track $index; let i = $index) {
+                  <div class="flex gap-2">
+                    <input hlmInput [formField]="item" />
+                    @if (exerciseForm.names.length > 1) {
+                      <button
+                        type="button"
+                        (click)="removeName(i)"
+                        class="rounded-md border border-red-300 px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
+                      >
+                        {{ t('common.remove') }}
+                      </button>
+                    }
+                  </div>
+                }
+                <button
+                  type="button"
+                  (click)="addName()"
+                  class="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  {{ t('compendium.exercises.addName') }}
+                </button>
+              </div>
+            </fieldset>
 
             <div>
               <label
@@ -375,34 +398,6 @@ const MEASUREMENT_PARADIGMS: MeasurementParadigm[] = [
               </div>
             </fieldset>
 
-            <!-- Alternative Names -->
-            <fieldset>
-              <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {{ t('fields.alternativeNames') }}
-              </legend>
-              <div class="mt-1 space-y-2">
-                @for (item of exerciseForm.alternativeNames; track $index; let i = $index) {
-                  <div class="flex gap-2">
-                    <input hlmInput [formField]="item" />
-                    <button
-                      type="button"
-                      (click)="removeAlternativeName(i)"
-                      class="rounded-md border border-red-300 px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
-                    >
-                      {{ t('common.remove') }}
-                    </button>
-                  </div>
-                }
-                <button
-                  type="button"
-                  (click)="addAlternativeName()"
-                  class="text-sm text-blue-600 hover:underline dark:text-blue-400"
-                >
-                  {{ t('compendium.exercises.addAlternativeName') }}
-                </button>
-              </div>
-            </fieldset>
-
             <!-- Equipment IDs -->
             <fieldset>
               <legend class="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -477,7 +472,7 @@ export class ExerciseEdit {
   selectedParadigms = new Set<string>();
 
   model = signal({
-    name: '',
+    names: [''] as string[],
     description: '',
     type: ExerciseTypeStrength as string,
     technicalDifficulty: DifficultyBeginner as string,
@@ -486,12 +481,10 @@ export class ExerciseEdit {
     authorUrl: '',
     instructions: [] as string[],
     images: [] as string[],
-    alternativeNames: [] as string[],
     equipmentIds: [] as number[],
   });
 
   exerciseForm = form(this.model, (f) => {
-    required(f.name);
     required(f.type);
     required(f.technicalDifficulty);
   });
@@ -525,7 +518,7 @@ export class ExerciseEdit {
       this.router.navigate([
         '/compendium/exercises',
         result.id,
-        this.slugify.transform(result.name),
+        this.slugify.transform(result.names?.[0]?.name ?? ''),
       ]);
     },
   }));
@@ -542,7 +535,7 @@ export class ExerciseEdit {
       const data = this.exerciseQuery.data();
       if (data) {
         this.model.set({
-          name: data.name,
+          names: data.names?.length ? data.names.map((n) => n.name) : [''],
           description: data.description,
           type: data.type,
           technicalDifficulty: data.technicalDifficulty,
@@ -551,7 +544,6 @@ export class ExerciseEdit {
           authorUrl: data.authorUrl ?? '',
           instructions: data.instructions ?? [],
           images: data.images ?? [],
-          alternativeNames: data.alternativeNames ?? [],
           equipmentIds: data.equipmentIds ?? [],
         });
 
@@ -601,13 +593,13 @@ export class ExerciseEdit {
     this.model.update((m) => ({ ...m, images: m.images.filter((_, idx) => idx !== i) }));
   }
 
-  addAlternativeName() {
-    this.model.update((m) => ({ ...m, alternativeNames: [...m.alternativeNames, ''] }));
+  addName() {
+    this.model.update((m) => ({ ...m, names: [...m.names, ''] }));
   }
-  removeAlternativeName(i: number) {
+  removeName(i: number) {
     this.model.update((m) => ({
       ...m,
-      alternativeNames: m.alternativeNames.filter((_, idx) => idx !== i),
+      names: m.names.filter((_, idx) => idx !== i),
     }));
   }
 
@@ -622,7 +614,7 @@ export class ExerciseEdit {
   }
 
   onSubmit() {
-    if (this.exerciseForm().valid()) {
+    if (this.exerciseForm().valid() && this.model().names.some((n) => n.trim())) {
       const val = this.model();
       const data = this.exerciseQuery.data();
       const payload = {
@@ -632,7 +624,7 @@ export class ExerciseEdit {
               public: data!.public,
               parentExerciseId: data!.parentExerciseId,
             }),
-        name: val.name,
+        names: val.names.filter((n) => n.trim()),
         description: val.description,
         type: val.type,
         technicalDifficulty: val.technicalDifficulty,
@@ -645,13 +637,14 @@ export class ExerciseEdit {
         suggestedMeasurementParadigms: [...this.selectedParadigms],
         instructions: val.instructions,
         images: val.images,
-        alternativeNames: val.alternativeNames,
         equipmentIds: val.equipmentIds,
       };
+      // The API accepts names as string[] in request bodies, but the Exercise
+      // response type uses ExerciseNameDTO[]. Cast to Record to bridge the mismatch.
       if (this.isCreateMode()) {
-        this.createMutation.mutate(payload);
+        this.createMutation.mutate(payload as unknown as Record<string, unknown>);
       } else {
-        this.mutation.mutate(payload);
+        this.mutation.mutate(payload as unknown as Record<string, unknown>);
       }
     }
   }

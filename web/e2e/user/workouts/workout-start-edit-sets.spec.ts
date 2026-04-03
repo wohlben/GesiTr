@@ -20,7 +20,7 @@ test.describe('/compendium/workouts/[id]/start — set editing', () => {
     page,
   }) => {
     // Create fixtures: 1 exercise with 2 sets
-    const exercise = await createExercise(request, { name: 'Set Edit Test Ex' });
+    const exercise = await createExercise(request, { names: ['Set Edit Test Ex'] });
     const scheme = await createExerciseScheme(request, {
       exerciseId: exercise.id,
       sets: 2,
@@ -98,7 +98,7 @@ test.describe('/compendium/workouts/[id]/start — set editing', () => {
 
   test('editing rest between sets persists after page reload', async ({ request, page }) => {
     // Create fixtures: 1 exercise with 2 sets (so there's 1 rest timer between them)
-    const exercise = await createExercise(request, { name: 'Rest Edit Test Ex' });
+    const exercise = await createExercise(request, { names: ['Rest Edit Test Ex'] });
     const scheme = await createExerciseScheme(request, {
       exerciseId: exercise.id,
       sets: 2,

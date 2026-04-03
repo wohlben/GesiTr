@@ -4,8 +4,8 @@ import { createExercise, deleteExercise } from '../../helpers';
 test.describe('workout edit - exercise group', () => {
   test('create workout with exercise group, reopen and verify', async ({ request, page }) => {
     // Setup: create two exercises via API
-    const ex1 = await createExercise(request, { name: 'E2E Group Bench Press' });
-    const ex2 = await createExercise(request, { name: 'E2E Group Dumbbell Press' });
+    const ex1 = await createExercise(request, { names: ['E2E Group Bench Press'] });
+    const ex2 = await createExercise(request, { names: ['E2E Group Dumbbell Press'] });
 
     // 1. Navigate to create workout page
     await page.goto('/compendium/workouts/new', { waitUntil: 'networkidle' });

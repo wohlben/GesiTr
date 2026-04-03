@@ -14,7 +14,7 @@ func TestStartCascade(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -69,7 +69,7 @@ func TestStartWhenNotPlanning(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -100,7 +100,7 @@ func TestAbandonCascade(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -155,7 +155,7 @@ func TestAbandonWhenTerminal(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -211,7 +211,7 @@ func TestUniquePlanningLog(t *testing.T) {
 
 	// Start the first log — it should no longer block new planning logs
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -239,7 +239,7 @@ func TestGuardCreateSectionWhenInProgress(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -271,7 +271,7 @@ func TestGuardDeleteExerciseWhenInProgress(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -301,7 +301,7 @@ func TestPropagationAllFinished(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -347,7 +347,7 @@ func TestPropagationAnyAborted(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -394,7 +394,7 @@ func TestDeleteInProgressLog(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -424,7 +424,7 @@ func TestMultiSectionPropagation(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -490,7 +490,7 @@ func TestUpdateLogPreservesStatus(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -538,7 +538,7 @@ func TestListWorkoutLogsStatusFilter(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -651,7 +651,7 @@ func TestDeleteExercisePropagatesStatus(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -698,7 +698,7 @@ func TestProgressiveCompletion(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",

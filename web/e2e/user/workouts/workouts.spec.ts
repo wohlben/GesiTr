@@ -52,7 +52,7 @@ test.describe('/compendium/workouts', () => {
         }[] = [];
 
         for (const v of variant) {
-          const exercise = await createExercise(request, { name: v.exerciseName });
+          const exercise = await createExercise(request, { names: [v.exerciseName] });
           const scheme = await createExerciseScheme(request, {
             exerciseId: exercise.id,
           });
@@ -95,7 +95,7 @@ test.describe('/compendium/workouts', () => {
         }[] = [];
 
         for (const v of variant) {
-          const exercise = await createExercise(request, { name: v.exerciseName });
+          const exercise = await createExercise(request, { names: [v.exerciseName] });
           const scheme = await createExerciseScheme(request, {
             exerciseId: exercise.id,
           });

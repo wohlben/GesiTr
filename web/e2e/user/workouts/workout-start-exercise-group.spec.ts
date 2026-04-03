@@ -7,8 +7,8 @@ test.describe('workout start - exercise group flow', () => {
     page,
   }) => {
     // Setup: create two exercises via API
-    const ex1 = await createExercise(request, { name: 'E2E Start Bench Press' });
-    const ex2 = await createExercise(request, { name: 'E2E Start Incline Press' });
+    const ex1 = await createExercise(request, { names: ['E2E Start Bench Press'] });
+    const ex2 = await createExercise(request, { names: ['E2E Start Incline Press'] });
 
     // === Phase 1: Create workout with exercise group via UI ===
 

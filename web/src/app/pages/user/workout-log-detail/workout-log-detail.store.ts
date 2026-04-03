@@ -52,7 +52,7 @@ export const WorkoutLogDetailStore = signalStore(
         const exerciseNameMap: Record<number, string> = {};
         for (const exercise of exerciseResults) {
           if (exercise) {
-            exerciseNameMap[exercise.id] = exercise.name;
+            exerciseNameMap[exercise.id] = exercise.names?.[0]?.name ?? `Exercise #${exercise.id}`;
           }
         }
 

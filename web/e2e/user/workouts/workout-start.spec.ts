@@ -88,7 +88,7 @@ async function createFixtures(
 
   for (let i = 0; i < v.exercises.length; i++) {
     const ex = v.exercises[i];
-    const exercise = await createExercise(request, { name: ex.name });
+    const exercise = await createExercise(request, { names: [ex.name] });
     cleanup.push(() => deleteExercise(request, exercise.id));
     const scheme = await createExerciseScheme(request, {
       exerciseId: exercise.id,

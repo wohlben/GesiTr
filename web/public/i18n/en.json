@@ -56,7 +56,7 @@
     "slug": "Slug",
     "bodyWeightScaling": "Body Weight Scaling",
     "measurementParadigms": "Measurement Paradigms",
-    "alternativeNames": "Alternative Names",
+    "names": "Names",
     "author": "Author",
     "authorName": "Author Name",
     "authorUrl": "Author URL",
@@ -266,7 +266,7 @@
       "byLabel": " by {{changedBy}}",
       "addInstruction": "+ Add instruction",
       "addImage": "+ Add image",
-      "addAlternativeName": "+ Add alternative name",
+      "addName": "+ Add name",
       "addEquipmentId": "+ Add equipment ID"
     },
     "equipment": {

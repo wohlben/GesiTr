@@ -31,7 +31,7 @@ test.describe('/compendium/workouts/[id]/edit', () => {
 
       test('light', async ({ request, page }) => {
         const v = variantData[`${viewport.name}-light`];
-        const exercise = await createExercise(request, { name: v.exerciseName });
+        const exercise = await createExercise(request, { names: [v.exerciseName] });
         const scheme = await createExerciseScheme(request, {
           exerciseId: exercise.id,
         });
@@ -68,7 +68,7 @@ test.describe('/compendium/workouts/[id]/edit', () => {
 
       test('dark', async ({ request, page }) => {
         const v = variantData[`${viewport.name}-dark`];
-        const exercise = await createExercise(request, { name: v.exerciseName });
+        const exercise = await createExercise(request, { names: [v.exerciseName] });
         const scheme = await createExerciseScheme(request, {
           exerciseId: exercise.id,
         });

@@ -28,7 +28,7 @@ func setupSeedTestDB(t *testing.T) {
 		&exerciseModels.ExerciseMeasurementParadigm{},
 		&exerciseModels.ExerciseInstruction{},
 		&exerciseModels.ExerciseImage{},
-		&exerciseModels.ExerciseAlternativeName{},
+		&exerciseModels.ExerciseName{},
 		&equipmentModels.EquipmentEntity{},
 		&exerciseModels.ExerciseEquipment{},
 		&equipmentModels.FulfillmentEntity{},
@@ -378,18 +378,19 @@ func TestSeedExercises(t *testing.T) {
 
 		// Verify child records
 		var ex exerciseModels.ExerciseEntity
-		database.DB.Where("name = ?", "Squat").First(&ex)
-		var fc, mc, pc, ic, imgc, alc, eqc int64
+		database.DB.First(&ex) // only one exercise seeded
+		var fc, mc, pc, ic, imgc, nc, eqc int64
 		database.DB.Model(&exerciseModels.ExerciseForce{}).Where("exercise_id = ?", ex.ID).Count(&fc)
 		database.DB.Model(&exerciseModels.ExerciseMuscle{}).Where("exercise_id = ?", ex.ID).Count(&mc)
 		database.DB.Model(&exerciseModels.ExerciseMeasurementParadigm{}).Where("exercise_id = ?", ex.ID).Count(&pc)
 		database.DB.Model(&exerciseModels.ExerciseInstruction{}).Where("exercise_id = ?", ex.ID).Count(&ic)
 		database.DB.Model(&exerciseModels.ExerciseImage{}).Where("exercise_id = ?", ex.ID).Count(&imgc)
-		database.DB.Model(&exerciseModels.ExerciseAlternativeName{}).Where("exercise_id = ?", ex.ID).Count(&alc)
+		database.DB.Model(&exerciseModels.ExerciseName{}).Where("exercise_id = ?", ex.ID).Count(&nc)
 		database.DB.Model(&exerciseModels.ExerciseEquipment{}).Where("exercise_id = ?", ex.ID).Count(&eqc)
-		if fc != 1 || mc != 2 || pc != 1 || ic != 2 || imgc != 1 || alc != 1 || eqc != 1 {
-			t.Errorf("child counts: forces=%d muscles=%d paradigms=%d instr=%d img=%d alt=%d eq=%d",
-				fc, mc, pc, ic, imgc, alc, eqc)
+		// 2 names: "Squat" (from name) + "Back Squat" (from alternativeNames, deduplicated)
+		if fc != 1 || mc != 2 || pc != 1 || ic != 2 || imgc != 1 || nc != 2 || eqc != 1 {
+			t.Errorf("child counts: forces=%d muscles=%d paradigms=%d instr=%d img=%d names=%d eq=%d",
+				fc, mc, pc, ic, imgc, nc, eqc)
 		}
 
 		var histCount int64

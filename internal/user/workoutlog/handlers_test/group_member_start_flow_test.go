@@ -21,7 +21,7 @@ func TestGroupMemberStartFlow(t *testing.T) {
 	// -- Setup: alice creates a public exercise --
 
 	w := doJSONLog(t, r, "POST", "/api/exercises", map[string]any{
-		"name": "Barbell Squat", "type": "STRENGTH",
+		"names": []string{"Barbell Squat"}, "type": "STRENGTH",
 		"technicalDifficulty": "intermediate", "public": true,
 	})
 	if w.Code != http.StatusCreated {

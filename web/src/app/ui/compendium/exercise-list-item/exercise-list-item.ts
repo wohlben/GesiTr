@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideExternalLink } from '@ng-icons/lucide';
@@ -14,14 +14,25 @@ import { SlugifyPipe } from '$ui/pipes/slugify';
   template: `
     <td class="whitespace-nowrap px-4 py-2 text-sm font-medium text-gray-900 dark:text-gray-100">
       <span class="inline-flex items-center gap-1">
-        {{ exercise().name }}
+        {{ displayName() }}
         <a
-          [routerLink]="['/compendium/exercises', exercise().id, exercise().name | slugify]"
+          [routerLink]="['/compendium/exercises', exercise().id, displayName() | slugify]"
           class="inline-flex items-center justify-center rounded-full p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+          (click)="nameClicked.emit(displayName())"
         >
           <ng-icon hlm name="lucideExternalLink" size="sm" />
         </a>
       </span>
+      @for (name of matchingNames(); track name) {
+        <div class="text-xs text-gray-400 dark:text-gray-500 pl-1">
+          <a
+            [routerLink]="['/compendium/exercises', exercise().id, name | slugify]"
+            class="hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer"
+            (click)="nameClicked.emit(name)"
+            >{{ name }}</a
+          >
+        </div>
+      }
     </td>
     <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
       @if (mastery(); as m) {
@@ -58,7 +69,7 @@ import { SlugifyPipe } from '$ui/pipes/slugify';
       {{ exercise().description }}
     </td>
     <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
-      {{ exercise().alternativeNames?.join(', ') }}
+      {{ exercise().names?.map(n => n.name)?.join(', ') }}
     </td>
     <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
       {{ exercise().authorName }}
@@ -79,7 +90,10 @@ import { SlugifyPipe } from '$ui/pipes/slugify';
 })
 export class ExerciseListItem {
   exercise = input.required<Exercise>();
+  displayName = input.required<string>();
+  matchingNames = input<string[]>([]);
   mastery = input<ExerciseMastery | undefined>(undefined);
+  nameClicked = output<string>();
 
   tierBadgeClass(tier: string): string {
     switch (tier) {

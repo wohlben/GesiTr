@@ -33,8 +33,8 @@ test.describe('/compendium/exercises/:id/:slug/history', () => {
 
       test('light', async ({ request, page }) => {
         const name = variantNames[`${viewport.name}-light`];
-        const exercise = await createExercise(request, { name });
-        await updateExercise(request, exercise.id, { name: `${name} (v1)` });
+        const exercise = await createExercise(request, { names: [name] });
+        await updateExercise(request, exercise.id, { names: [`${name} (v1)`] });
         await page.goto(
           `/compendium/exercises/${exercise.id}/${toSlug(name)}/history`,
           { waitUntil: 'networkidle' },
@@ -47,8 +47,8 @@ test.describe('/compendium/exercises/:id/:slug/history', () => {
 
       test('dark', async ({ request, page }) => {
         const name = variantNames[`${viewport.name}-dark`];
-        const exercise = await createExercise(request, { name });
-        await updateExercise(request, exercise.id, { name: `${name} (v1)` });
+        const exercise = await createExercise(request, { names: [name] });
+        await updateExercise(request, exercise.id, { names: [`${name} (v1)`] });
         await page.emulateMedia({ colorScheme: 'dark' });
         await page.goto(
           `/compendium/exercises/${exercise.id}/${toSlug(name)}/history`,
@@ -66,11 +66,11 @@ test.describe('/compendium/exercises/:id/:slug/history', () => {
     request,
     page,
   }) => {
-    const exercise = await createExercise(request, { name: 'History Navigation Test' });
-    await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.name)}/edit`, {
+    const exercise = await createExercise(request, { names: ['History Navigation Test'] });
+    await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.names[0].name)}/edit`, {
       waitUntil: 'networkidle',
     });
-    const nameInput = page.locator('#name');
+    const nameInput = page.locator('fieldset').first().locator('input').first();
     await nameInput.clear();
     await nameInput.fill('History Navigation Test (edited)');
     await Promise.all([

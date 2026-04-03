@@ -16,7 +16,7 @@ func ExampleAcceptWorkoutGroupInvitation_denied() {
 
 	// Alice creates an exercise and scheme
 	doRaw(r, "POST", "/api/exercises", `{
-		"name": "Bench Press", "type": "STRENGTH",
+		"names": ["Bench Press"], "type": "STRENGTH",
 		"technicalDifficulty": "beginner", "bodyWeightScaling": 0.5,
 		"description": "Barbell bench press", "public": true
 	}`)
@@ -61,7 +61,7 @@ func ExampleAcceptWorkoutGroupInvitation_success() {
 
 	// Alice creates an exercise and scheme
 	doRaw(r, "POST", "/api/exercises", `{
-		"name": "Bench Press", "type": "STRENGTH",
+		"names": ["Bench Press"], "type": "STRENGTH",
 		"technicalDifficulty": "beginner", "bodyWeightScaling": 0.5,
 		"description": "Barbell bench press", "public": true
 	}`)

@@ -15,7 +15,7 @@ import (
 
 func newExercisePayload(name string) map[string]any {
 	return map[string]any{
-		"name": name, "type": "STRENGTH",
+		"names": []string{name, "Alt Name"}, "type": "STRENGTH",
 		"technicalDifficulty": "beginner", "bodyWeightScaling": 0.5,
 		"description": "test",
 		"force":       []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
@@ -23,7 +23,6 @@ func newExercisePayload(name string) map[string]any {
 		"suggestedMeasurementParadigms": []string{"REP_BASED"},
 		"instructions":                  []string{"Step 1", "Step 2"},
 		"images":                        []string{"/img/a.jpg"},
-		"alternativeNames":              []string{"Alt Name"},
 		"equipmentIds":                  []uint{1},
 	}
 }
@@ -53,7 +52,7 @@ func TestListExercises(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", newExercisePayload("Bench Press"))
 
 	cardio := map[string]any{
-		"name": "Running", "type": "CARDIO",
+		"names": []string{"Running"}, "type": "CARDIO",
 		"technicalDifficulty": "intermediate", "bodyWeightScaling": 1.0,
 		"description": "run",
 		"force":       []string{"DYNAMIC"}, "primaryMuscles": []string{"QUADS"},
@@ -104,7 +103,7 @@ func TestListExercises(t *testing.T) {
 		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Exercise
 		json.Unmarshal(page.Items, &result)
-		if len(result) != 1 || result[0].Name != "Running" {
+		if len(result) != 1 || result[0].Names[0].Name != "Running" {
 			t.Errorf("type filter: got %d results", len(result))
 		}
 	})
@@ -115,7 +114,7 @@ func TestListExercises(t *testing.T) {
 		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Exercise
 		json.Unmarshal(page.Items, &result)
-		if len(result) != 1 || result[0].Name != "Bench Press" {
+		if len(result) != 1 || result[0].Names[0].Name != "Bench Press" {
 			t.Errorf("difficulty filter: got %d results", len(result))
 		}
 	})
@@ -126,7 +125,7 @@ func TestListExercises(t *testing.T) {
 		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Exercise
 		json.Unmarshal(page.Items, &result)
-		if len(result) != 1 || result[0].Name != "Bench Press" {
+		if len(result) != 1 || result[0].Names[0].Name != "Bench Press" {
 			t.Errorf("force filter: got %d results", len(result))
 		}
 	})
@@ -137,7 +136,7 @@ func TestListExercises(t *testing.T) {
 		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Exercise
 		json.Unmarshal(page.Items, &result)
-		if len(result) != 1 || result[0].Name != "Running" {
+		if len(result) != 1 || result[0].Names[0].Name != "Running" {
 			t.Errorf("muscle filter: got %d results", len(result))
 		}
 	})
@@ -148,7 +147,7 @@ func TestListExercises(t *testing.T) {
 		json.Unmarshal(w.Body.Bytes(), &page)
 		var result []models.Exercise
 		json.Unmarshal(page.Items, &result)
-		if len(result) != 1 || result[0].Name != "Bench Press" {
+		if len(result) != 1 || result[0].Names[0].Name != "Bench Press" {
 			t.Errorf("primaryMuscle filter: got %d results", len(result))
 		}
 	})
@@ -216,8 +215,8 @@ func TestListExercises(t *testing.T) {
 		if len(result) != 1 {
 			t.Errorf("expected 1 public exercise visible to bob, got %d", len(result))
 		}
-		if len(result) > 0 && result[0].Name != "Public Exercise" {
-			t.Errorf("expected 'Public Exercise', got %q", result[0].Name)
+		if len(result) > 0 && result[0].Names[0].Name != "Public Exercise" {
+			t.Errorf("expected 'Public Exercise', got %q", result[0].Names[0].Name)
 		}
 	})
 
@@ -233,7 +232,7 @@ func TestListExercises(t *testing.T) {
 		json.Unmarshal(page.Items, &result)
 		for _, ex := range result {
 			if !ex.Public {
-				t.Errorf("bob should not see private exercise %q from testuser", ex.Name)
+				t.Errorf("bob should not see private exercise %q from testuser", ex.Names[0].Name)
 			}
 		}
 	})
@@ -249,7 +248,7 @@ func TestListExercises(t *testing.T) {
 		json.Unmarshal(page.Items, &result)
 		for _, ex := range result {
 			if !ex.Public {
-				t.Errorf("expected only public exercises, got private %q", ex.Name)
+				t.Errorf("expected only public exercises, got private %q", ex.Names[0].Name)
 			}
 		}
 	})
@@ -274,7 +273,7 @@ func TestCreateExercise(t *testing.T) {
 		}
 		var result models.Exercise
 		json.Unmarshal(w.Body.Bytes(), &result)
-		if result.ID == 0 || result.Name != "Squat" {
+		if result.ID == 0 || result.Names[0].Name != "Squat" {
 			t.Error("create response mismatch")
 		}
 		if result.Owner != "testuser" {
@@ -295,8 +294,8 @@ func TestCreateExercise(t *testing.T) {
 		if len(result.Images) != 1 {
 			t.Errorf("Images len = %d", len(result.Images))
 		}
-		if len(result.AlternativeNames) != 1 {
-			t.Errorf("AlternativeNames len = %d", len(result.AlternativeNames))
+		if len(result.Names) != 2 {
+			t.Errorf("Names len = %d, want 2", len(result.Names))
 		}
 		if len(result.EquipmentIDs) != 1 {
 			t.Errorf("EquipmentIDs len = %d", len(result.EquipmentIDs))
@@ -360,7 +359,7 @@ func TestGetExercise(t *testing.T) {
 		}
 		var result models.Exercise
 		json.Unmarshal(w.Body.Bytes(), &result)
-		if result.Name != "Deadlift" {
+		if result.Names[0].Name != "Deadlift" {
 			t.Error("get response mismatch")
 		}
 		// Verify preloads work
@@ -385,7 +384,7 @@ func TestUpdateExercise(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		updated := map[string]any{
-			"name": "Overhead Press", "type": "STRENGTH",
+			"names": []string{"Overhead Press", "Press", "Military Press"}, "type": "STRENGTH",
 			"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
 			"description": "updated",
 			"force":       []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
@@ -393,7 +392,6 @@ func TestUpdateExercise(t *testing.T) {
 			"suggestedMeasurementParadigms": []string{"REP_BASED", "AMRAP"},
 			"instructions":                  []string{"New step 1"},
 			"images":                        []string{"/img/new.jpg"},
-			"alternativeNames":              []string{"Press", "Military Press"},
 			"equipmentIds":                  []uint{1},
 		}
 		w := doJSON(r, "PUT", "/api/exercises/1", updated)
@@ -402,8 +400,8 @@ func TestUpdateExercise(t *testing.T) {
 		}
 		var result models.Exercise
 		json.Unmarshal(w.Body.Bytes(), &result)
-		if result.Name != "Overhead Press" {
-			t.Errorf("Name = %q", result.Name)
+		if len(result.Names) != 3 || result.Names[0].Name != "Overhead Press" {
+			t.Errorf("Names = %v", result.Names)
 		}
 		if result.Version != 1 {
 			t.Errorf("Version = %d, want 1", result.Version)
@@ -417,9 +415,6 @@ func TestUpdateExercise(t *testing.T) {
 		if len(result.Instructions) != 1 {
 			t.Errorf("Instructions len = %d", len(result.Instructions))
 		}
-		if len(result.AlternativeNames) != 2 {
-			t.Errorf("AlternativeNames len = %d", len(result.AlternativeNames))
-		}
 	})
 
 	t.Run("forbidden for non-owner", func(t *testing.T) {
@@ -432,7 +427,7 @@ func TestUpdateExercise(t *testing.T) {
 	t.Run("no version bump when unchanged", func(t *testing.T) {
 		// Re-PUT the same data that's currently in the DB (from the "success" test above)
 		same := map[string]any{
-			"name": "Overhead Press", "type": "STRENGTH",
+			"names": []string{"Overhead Press", "Press", "Military Press"}, "type": "STRENGTH",
 			"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
 			"description": "updated",
 			"force":       []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
@@ -440,7 +435,6 @@ func TestUpdateExercise(t *testing.T) {
 			"suggestedMeasurementParadigms": []string{"REP_BASED", "AMRAP"},
 			"instructions":                  []string{"New step 1"},
 			"images":                        []string{"/img/new.jpg"},
-			"alternativeNames":              []string{"Press", "Military Press"},
 			"equipmentIds":                  []uint{1},
 		}
 		w := doJSON(r, "PUT", "/api/exercises/1", same)
@@ -466,7 +460,7 @@ func TestUpdateExercise(t *testing.T) {
 	t.Run("successive updates accumulate history", func(t *testing.T) {
 		// Second real update -> version 2
 		w := doJSON(r, "PUT", "/api/exercises/1", map[string]any{
-			"name": "OHP v2", "type": "STRENGTH",
+			"names": []string{"OHP v2"}, "type": "STRENGTH",
 			"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
 			"description": "v2",
 			"force":       []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
@@ -495,7 +489,7 @@ func TestUpdateExercise(t *testing.T) {
 			}
 		})
 		w := doJSON(r, "PUT", "/api/exercises/1", map[string]any{
-			"name": "OHP v3 fail", "type": "STRENGTH",
+			"names": []string{"OHP v3 fail"}, "type": "STRENGTH",
 			"technicalDifficulty": "advanced", "bodyWeightScaling": 0.0,
 			"description": "v3 fail",
 			"force":       []string{"PUSH"}, "primaryMuscles": []string{"SHOULDERS"},
@@ -536,7 +530,7 @@ func TestUpdateExercise(t *testing.T) {
 		{"exercise_measurement_paradigms", "paradigms"},
 		{"exercise_instructions", "instructions"},
 		{"exercise_images", "images"},
-		{"exercise_alternative_names", "alt_names"},
+		{"exercise_names", "names"},
 		{"exercise_equipments", "equipment"},
 	}
 	for _, target := range deleteTargets {
@@ -566,7 +560,7 @@ func TestUpdateExercise(t *testing.T) {
 		{"exercise_measurement_paradigms", "paradigms"},
 		{"exercise_instructions", "instructions"},
 		{"exercise_images", "images"},
-		{"exercise_alternative_names", "alt_names"},
+		{"exercise_names", "names"},
 		{"exercise_equipments", "equipment"},
 	}
 	for _, target := range insertTargets {
@@ -621,13 +615,13 @@ func TestListExerciseVersions(t *testing.T) {
 	// Create exercise (v0) and update it twice (v1, v2)
 	doJSON(r, "POST", "/api/exercises", newExercisePayload("Press"))
 	doJSON(r, "PUT", "/api/exercises/1", map[string]any{
-		"name": "Press v1", "type": "STRENGTH",
+		"names": []string{"Press v1"}, "type": "STRENGTH",
 		"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
 		"description": "v1",
 		"force":       []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
 	})
 	doJSON(r, "PUT", "/api/exercises/1", map[string]any{
-		"name": "Press v2", "type": "STRENGTH",
+		"names": []string{"Press v2"}, "type": "STRENGTH",
 		"technicalDifficulty": "advanced", "bodyWeightScaling": 0.0,
 		"description": "v2",
 		"force":       []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
@@ -664,15 +658,15 @@ func TestListExerciseVersions(t *testing.T) {
 		// Check v0 snapshot
 		var v0 models.Exercise
 		json.Unmarshal(entries[0].Snapshot, &v0)
-		if v0.Name != "Press" {
-			t.Errorf("v0 name = %q, want Press", v0.Name)
+		if len(v0.Names) == 0 || v0.Names[0].Name != "Press" {
+			t.Errorf("v0 names = %v, want [Press ...]", v0.Names)
 		}
 
 		// Check v2 snapshot
 		var v2 models.Exercise
 		json.Unmarshal(entries[2].Snapshot, &v2)
-		if v2.Name != "Press v2" {
-			t.Errorf("v2 name = %q, want Press v2", v2.Name)
+		if len(v2.Names) == 0 || v2.Names[0].Name != "Press v2" {
+			t.Errorf("v2 names = %v, want [Press v2]", v2.Names)
 		}
 		if v2.TechnicalDifficulty != "advanced" {
 			t.Errorf("v2 difficulty = %q, want advanced", v2.TechnicalDifficulty)
@@ -702,7 +696,7 @@ func TestGetExerciseVersion(t *testing.T) {
 	// Create exercise (v0) and update it (v1)
 	doJSON(r, "POST", "/api/exercises", newExercisePayload("Press"))
 	doJSON(r, "PUT", "/api/exercises/1", map[string]any{
-		"name": "Press v1", "type": "STRENGTH",
+		"names": []string{"Press v1"}, "type": "STRENGTH",
 		"technicalDifficulty": "intermediate", "bodyWeightScaling": 0.0,
 		"description": "v1",
 		"force":       []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
@@ -720,8 +714,8 @@ func TestGetExerciseVersion(t *testing.T) {
 		}
 		var snapshot models.Exercise
 		json.Unmarshal(entry.Snapshot, &snapshot)
-		if snapshot.Name != "Press" {
-			t.Errorf("snapshot name = %q, want Press", snapshot.Name)
+		if snapshot.Names[0].Name != "Press" {
+			t.Errorf("snapshot name = %q, want Press", snapshot.Names[0].Name)
 		}
 	})
 
@@ -737,8 +731,8 @@ func TestGetExerciseVersion(t *testing.T) {
 		}
 		var snapshot models.Exercise
 		json.Unmarshal(entry.Snapshot, &snapshot)
-		if snapshot.Name != "Press v1" {
-			t.Errorf("snapshot name = %q, want Press v1", snapshot.Name)
+		if snapshot.Names[0].Name != "Press v1" {
+			t.Errorf("snapshot name = %q, want Press v1", snapshot.Names[0].Name)
 		}
 	})
 

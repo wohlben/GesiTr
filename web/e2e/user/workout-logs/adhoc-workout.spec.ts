@@ -9,10 +9,10 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
     const cleanup: (() => Promise<void>)[] = [];
 
     // --- Fixtures: create exercises via API ---
-    const exerciseA = await createExercise(request, { name: 'AH Bench Press' });
+    const exerciseA = await createExercise(request, { names: ['AH Bench Press'] });
     cleanup.push(() => deleteExercise(request, exerciseA.id));
 
-    const exerciseB = await createExercise(request, { name: 'AH Bicep Curl' });
+    const exerciseB = await createExercise(request, { names: ['AH Bicep Curl'] });
     cleanup.push(() => deleteExercise(request, exerciseB.id));
 
     // ============================================================

@@ -20,7 +20,7 @@ export const EMPTY_GROUP_CONFIG: GroupConfigValue = {
 
 interface ExerciseOption {
   id: number;
-  name: string;
+  names?: { name: string }[];
 }
 
 @Component({
@@ -74,7 +74,7 @@ interface ExerciseOption {
           <select hlmInput class="mt-1 w-full" (change)="onAddMember($event)">
             <option value="">{{ t('common.select') }}</option>
             @for (ex of availableExercises(); track ex.id) {
-              <option [value]="ex.id">{{ ex.name }}</option>
+              <option [value]="ex.id">{{ ex.names?.[0]?.name }}</option>
             }
           </select>
         </div>
@@ -89,7 +89,7 @@ interface ExerciseOption {
               <div
                 class="flex items-center justify-between rounded-md border border-gray-200 px-3 py-1.5 text-sm dark:border-gray-600"
               >
-                <span class="text-gray-900 dark:text-gray-100">{{ member.name }}</span>
+                <span class="text-gray-900 dark:text-gray-100">{{ member.names?.[0]?.name }}</span>
                 <button
                   type="button"
                   (click)="onRemoveMember(member.id)"

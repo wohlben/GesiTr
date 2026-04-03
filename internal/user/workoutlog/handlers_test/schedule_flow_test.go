@@ -23,7 +23,7 @@ func TestScheduleFixedDateFullFlow(t *testing.T) {
 
 	// 1. Create exercise + scheme
 	w := doJSONLog(t, r, "POST", "/api/exercises", map[string]any{
-		"name": "Barbell Row", "type": "STRENGTH", "technicalDifficulty": "intermediate",
+		"names": []string{"Barbell Row"}, "type": "STRENGTH", "technicalDifficulty": "intermediate",
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create exercise: %d", w.Code)

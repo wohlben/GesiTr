@@ -26,7 +26,7 @@ func main() {
 		&exerciseModels.ExerciseMeasurementParadigm{},
 		&exerciseModels.ExerciseInstruction{},
 		&exerciseModels.ExerciseImage{},
-		&exerciseModels.ExerciseAlternativeName{},
+		&exerciseModels.ExerciseName{},
 		&equipmentModels.EquipmentEntity{},
 		&exerciseModels.ExerciseEquipment{},
 		&equipmentModels.FulfillmentEntity{},
@@ -186,7 +186,6 @@ func seedExercises() error {
 		}
 		templateIDs = append(templateIDs, templateID)
 		e := exerciseModels.ExerciseEntity{
-			Name:                j.Name,
 			Type:                exerciseModels.ExerciseType(j.Type),
 			TechnicalDifficulty: exerciseModels.TechnicalDifficulty(j.TechnicalDifficulty),
 			BodyWeightScaling:   j.BodyWeightScaling,
@@ -223,8 +222,19 @@ func seedExercises() error {
 		for i, path := range j.Images {
 			e.Images = append(e.Images, exerciseModels.ExerciseImage{Position: i, Path: path})
 		}
-		for _, name := range j.AlternativeNames {
-			e.AlternativeNames = append(e.AlternativeNames, exerciseModels.ExerciseAlternativeName{Name: name})
+		// Merge name + alternativeNames into a single deduplicated names list.
+		seen := map[string]bool{}
+		pos := 0
+		addName := func(n string) {
+			if n != "" && !seen[n] {
+				seen[n] = true
+				e.Names = append(e.Names, exerciseModels.ExerciseName{Position: pos, Name: n})
+				pos++
+			}
+		}
+		addName(j.Name)
+		for _, n := range j.AlternativeNames {
+			addName(n)
 		}
 		for _, tid := range j.EquipmentIDs {
 			if id, ok := equipmentIDMap[tid]; ok {

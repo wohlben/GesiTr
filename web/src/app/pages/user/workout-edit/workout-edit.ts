@@ -282,7 +282,7 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
                                     <div hlmComboboxList>
                                       @for (ue of enrichedUserExercises(); track ue.id) {
                                         <hlm-combobox-item [value]="ue">{{
-                                          ue.name
+                                          ue.names?.[0]?.name
                                         }}</hlm-combobox-item>
                                       }
                                       <hlm-combobox-empty>{{
@@ -551,14 +551,14 @@ export class WorkoutEdit {
       const aHas = masteryIds.has(a.id) ? 0 : 1;
       const bHas = masteryIds.has(b.id) ? 0 : 1;
       if (aHas !== bHas) return aHas - bHas;
-      return a.name.localeCompare(b.name);
+      return (a.names?.[0]?.name ?? '').localeCompare(b.names?.[0]?.name ?? '');
     });
   });
 
   exerciseFilter = (exercise: Exercise, search: string) =>
-    exercise.name.toLowerCase().includes(search.toLowerCase());
+    exercise.names?.some((n) => n.name.toLowerCase().includes(search.toLowerCase())) ?? false;
 
-  exerciseToString = (exercise: Exercise) => exercise.name;
+  exerciseToString = (exercise: Exercise) => exercise.names?.[0]?.name ?? '';
 
   findExerciseById(id: number | null): Exercise | null {
     if (!id) return null;

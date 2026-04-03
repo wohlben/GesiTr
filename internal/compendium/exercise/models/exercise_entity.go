@@ -7,7 +7,6 @@ import (
 // ExerciseEntity is the GORM entity for the exercises table
 type ExerciseEntity struct {
 	shared.BaseModel
-	Name                string              `gorm:"not null"`
 	Type                ExerciseType        `gorm:"not null"`
 	TechnicalDifficulty TechnicalDifficulty `gorm:"not null"`
 	BodyWeightScaling   float64
@@ -19,13 +18,13 @@ type ExerciseEntity struct {
 	Version             int    `gorm:"not null;default:0"`
 	ParentExerciseID    *uint
 
-	Forces           []ExerciseForce               `gorm:"foreignKey:ExerciseID"`
-	Muscles          []ExerciseMuscle              `gorm:"foreignKey:ExerciseID"`
-	Paradigms        []ExerciseMeasurementParadigm `gorm:"foreignKey:ExerciseID"`
-	Instructions     []ExerciseInstruction         `gorm:"foreignKey:ExerciseID"`
-	Images           []ExerciseImage               `gorm:"foreignKey:ExerciseID"`
-	AlternativeNames []ExerciseAlternativeName     `gorm:"foreignKey:ExerciseID"`
-	Equipment        []ExerciseEquipment           `gorm:"foreignKey:ExerciseID"`
+	Forces       []ExerciseForce               `gorm:"foreignKey:ExerciseID"`
+	Muscles      []ExerciseMuscle              `gorm:"foreignKey:ExerciseID"`
+	Paradigms    []ExerciseMeasurementParadigm `gorm:"foreignKey:ExerciseID"`
+	Instructions []ExerciseInstruction         `gorm:"foreignKey:ExerciseID"`
+	Images       []ExerciseImage               `gorm:"foreignKey:ExerciseID"`
+	Names        []ExerciseName                `gorm:"foreignKey:ExerciseID"`
+	Equipment    []ExerciseEquipment           `gorm:"foreignKey:ExerciseID"`
 }
 
 func (ExerciseEntity) TableName() string { return "exercises" }
@@ -60,9 +59,11 @@ type ExerciseImage struct {
 	Path       string `gorm:"not null"`
 }
 
-type ExerciseAlternativeName struct {
-	ExerciseID uint   `gorm:"primaryKey"`
-	Name       string `gorm:"primaryKey"`
+type ExerciseName struct {
+	ID         uint   `gorm:"primaryKey;autoIncrement"`
+	ExerciseID uint   `gorm:"not null;index"`
+	Position   int    `gorm:"not null"`
+	Name       string `gorm:"not null"`
 }
 
 type ExerciseEquipment struct {
@@ -75,7 +76,6 @@ type ExerciseEquipment struct {
 func (e *ExerciseEntity) ToDTO() Exercise {
 	dto := Exercise{
 		BaseModel:           e.BaseModel,
-		Name:                e.Name,
 		Type:                e.Type,
 		TechnicalDifficulty: e.TechnicalDifficulty,
 		BodyWeightScaling:   e.BodyWeightScaling,
@@ -107,8 +107,8 @@ func (e *ExerciseEntity) ToDTO() Exercise {
 	for _, img := range e.Images {
 		dto.Images = append(dto.Images, img.Path)
 	}
-	for _, an := range e.AlternativeNames {
-		dto.AlternativeNames = append(dto.AlternativeNames, an.Name)
+	for _, n := range e.Names {
+		dto.Names = append(dto.Names, ExerciseNameDTO{ID: n.ID, Name: n.Name})
 	}
 	for _, eq := range e.Equipment {
 		dto.EquipmentIDs = append(dto.EquipmentIDs, eq.EquipmentID)
@@ -120,7 +120,6 @@ func (e *ExerciseEntity) ToDTO() Exercise {
 func ExerciseFromDTO(dto Exercise) ExerciseEntity {
 	entity := ExerciseEntity{
 		BaseModel:           dto.BaseModel,
-		Name:                dto.Name,
 		Type:                dto.Type,
 		TechnicalDifficulty: dto.TechnicalDifficulty,
 		BodyWeightScaling:   dto.BodyWeightScaling,
@@ -151,8 +150,8 @@ func ExerciseFromDTO(dto Exercise) ExerciseEntity {
 	for i, path := range dto.Images {
 		entity.Images = append(entity.Images, ExerciseImage{Position: i, Path: path})
 	}
-	for _, name := range dto.AlternativeNames {
-		entity.AlternativeNames = append(entity.AlternativeNames, ExerciseAlternativeName{Name: name})
+	for i, n := range dto.Names {
+		entity.Names = append(entity.Names, ExerciseName{Position: i, Name: n.Name})
 	}
 	for _, eid := range dto.EquipmentIDs {
 		entity.Equipment = append(entity.Equipment, ExerciseEquipment{EquipmentID: eid})

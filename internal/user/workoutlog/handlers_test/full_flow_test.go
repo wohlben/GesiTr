@@ -16,7 +16,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 
 	// 1. Create an exercise
 	w := doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Barbell Squat", "type": "STRENGTH", "technicalDifficulty": "intermediate",
+		"names": []string{"Barbell Squat"}, "type": "STRENGTH", "technicalDifficulty": "intermediate",
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create user exercise: status = %d, body = %s", w.Code, w.Body.String())
@@ -41,7 +41,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 
 	// 3. Create a second exercise + scheme for variety
 	w = doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Bench Press", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Bench Press"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create second user exercise: status = %d", w.Code)
@@ -346,7 +346,7 @@ func TestGetWorkoutLogWithSectionsAndExercises(t *testing.T) {
 
 	// Setup: exercise -> scheme -> workout log -> section -> exercise
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Bench Press", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Bench Press"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,

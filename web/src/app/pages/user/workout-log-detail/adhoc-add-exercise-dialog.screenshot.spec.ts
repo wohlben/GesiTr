@@ -17,7 +17,7 @@ describe('AdhocAddExerciseDialog screenshots', () => {
     {
       id: 1,
       owner: 'user',
-      name: 'Bench Press',
+      names: [{ id: 1, name: 'Bench Press' }],
       type: 'STRENGTH',
       force: [],
       primaryMuscles: [],
@@ -28,7 +28,6 @@ describe('AdhocAddExerciseDialog screenshots', () => {
       description: '',
       instructions: [],
       images: [],
-      alternativeNames: [],
       public: false,
       version: 1,
       equipmentIds: [],
@@ -38,7 +37,7 @@ describe('AdhocAddExerciseDialog screenshots', () => {
     {
       id: 2,
       owner: 'user',
-      name: 'Bicep Curl',
+      names: [{ id: 2, name: 'Bicep Curl' }],
       type: 'STRENGTH',
       force: [],
       primaryMuscles: [],
@@ -49,7 +48,6 @@ describe('AdhocAddExerciseDialog screenshots', () => {
       description: '',
       instructions: [],
       images: [],
-      alternativeNames: [],
       public: false,
       version: 1,
       equipmentIds: [],

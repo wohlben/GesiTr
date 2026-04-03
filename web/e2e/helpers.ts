@@ -32,7 +32,7 @@ export async function createExercise(
   overrides: Record<string, unknown> = {},
 ) {
   const data = {
-    name: 'Test Exercise',
+    names: ['Test Exercise'],
     type: 'STRENGTH',
     technicalDifficulty: 'beginner',
     bodyWeightScaling: 0,
@@ -43,7 +43,6 @@ export async function createExercise(
     description: '',
     instructions: [],
     images: [],
-    alternativeNames: [],
     equipmentIds: [],
     ...overrides,
   };
@@ -58,7 +57,7 @@ export async function createExerciseAs(
 ) {
   const ctx = await createApiContextAs(userId);
   const data = {
-    name: 'Test Exercise',
+    names: ['Test Exercise'],
     type: 'STRENGTH',
     technicalDifficulty: 'beginner',
     bodyWeightScaling: 0,
@@ -69,7 +68,6 @@ export async function createExerciseAs(
     description: '',
     instructions: [],
     images: [],
-    alternativeNames: [],
     equipmentIds: [],
     ...overrides,
   };

@@ -146,7 +146,7 @@ func TestGetWorkoutWithSectionsAndExercises(t *testing.T) {
 
 	// Create prerequisite chain: exercise -> scheme -> workout -> section -> section exercise
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Bench Press", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Bench Press"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,

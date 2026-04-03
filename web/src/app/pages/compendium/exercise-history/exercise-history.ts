@@ -15,7 +15,7 @@ import { PageLayout } from '../../../layout/page-layout';
     <ng-container *transloco="let t">
       <app-page-layout
         [header]="
-          (exerciseQuery.data()?.name ?? 'Exercise') +
+          (exerciseQuery.data()?.names?.[0]?.name ?? 'Exercise') +
           ' — ' +
           t('compendium.exercises.historyTitle')
         "

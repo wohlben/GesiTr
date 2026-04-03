@@ -21,11 +21,11 @@ test.describe('/compendium/exercises/:id', () => {
       test('light', async ({ request, page }) => {
         const name = variantNames[`${viewport.name}-light`];
         const exercise = await createExercise(request, {
-          name,
+          names: [name],
           description: 'An isolation exercise for the biceps',
           primaryMuscles: ['BICEPS'],
         });
-        await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.name)}`, {
+        await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.names[0].name)}`, {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText(name);
@@ -36,12 +36,12 @@ test.describe('/compendium/exercises/:id', () => {
       test('dark', async ({ request, page }) => {
         const name = variantNames[`${viewport.name}-dark`];
         const exercise = await createExercise(request, {
-          name,
+          names: [name],
           description: 'An isolation exercise for the biceps',
           primaryMuscles: ['BICEPS'],
         });
         await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.name)}`, {
+        await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.names[0].name)}`, {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText(name);
@@ -52,8 +52,8 @@ test.describe('/compendium/exercises/:id', () => {
   }
 
   test('delete dialog cancel closes the dialog', async ({ request, page }) => {
-    const exercise = await createExercise(request, { name: 'Cancel Delete Test Exercise' });
-    await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.name)}`, {
+    const exercise = await createExercise(request, { names: ['Cancel Delete Test Exercise'] });
+    await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.names[0].name)}`, {
       waitUntil: 'networkidle',
     });
 
@@ -68,8 +68,8 @@ test.describe('/compendium/exercises/:id', () => {
   });
 
   test('delete dialog confirm deletes and navigates to list', async ({ request, page }) => {
-    const exercise = await createExercise(request, { name: 'Confirm Delete Test Exercise' });
-    await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.name)}`, {
+    const exercise = await createExercise(request, { names: ['Confirm Delete Test Exercise'] });
+    await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.names[0].name)}`, {
       waitUntil: 'networkidle',
     });
     await expect(page.locator('h1')).toHaveText('Confirm Delete Test Exercise');

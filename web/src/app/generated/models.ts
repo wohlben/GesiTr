@@ -20,7 +20,7 @@ export interface ErrorResponse {
  * Exercise is the API DTO (tygo generates TypeScript from this)
  */
 export interface Exercise extends BaseModel {
-  name: string;
+  names: ExerciseNameDTO[];
   type: ExerciseType;
   force: Force[];
   primaryMuscles: Muscle[];
@@ -31,7 +31,6 @@ export interface Exercise extends BaseModel {
   description: string;
   instructions: string[];
   images: string[];
-  alternativeNames: string[];
   authorName?: string;
   authorUrl?: string;
   owner: string;
@@ -39,6 +38,10 @@ export interface Exercise extends BaseModel {
   version: number /* int */;
   parentExerciseId?: number /* uint */;
   equipmentIds: number /* uint */[];
+}
+export interface ExerciseNameDTO {
+  id: number /* uint */;
+  name: string;
 }
 export type ExerciseType = string;
 export const ExerciseTypeStrength: ExerciseType = 'STRENGTH';

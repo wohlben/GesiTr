@@ -17,7 +17,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	// -- Setup: create user exercises and schemes --
 
 	w := doJSONLog(t, r, "POST", "/api/exercises", map[string]any{
-		"name": "Barbell Squat", "type": "STRENGTH", "technicalDifficulty": "intermediate",
+		"names": []string{"Barbell Squat"}, "type": "STRENGTH", "technicalDifficulty": "intermediate",
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create user exercise 1: status = %d", w.Code)
@@ -40,7 +40,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &scheme1)
 
 	w = doJSONLog(t, r, "POST", "/api/exercises", map[string]any{
-		"name": "Bench Press", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Bench Press"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create user exercise 2: status = %d", w.Code)

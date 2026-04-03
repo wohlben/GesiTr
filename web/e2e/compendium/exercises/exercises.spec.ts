@@ -33,7 +33,7 @@ for (const viewport of viewports) {
       const names = variantExercises[`${viewport.name}-light`];
       const items = [];
       for (const name of names) {
-        items.push(await createExercise(request, { name }));
+        items.push(await createExercise(request, { names: [name] }));
       }
       await page.goto('/compendium/exercises', { waitUntil: 'networkidle' });
       await expect(page.locator('h1')).toHaveText('Exercises');
@@ -45,7 +45,7 @@ for (const viewport of viewports) {
       const names = variantExercises[`${viewport.name}-dark`];
       const items = [];
       for (const name of names) {
-        items.push(await createExercise(request, { name }));
+        items.push(await createExercise(request, { names: [name] }));
       }
       await page.emulateMedia({ colorScheme: 'dark' });
       await page.goto('/compendium/exercises', { waitUntil: 'networkidle' });

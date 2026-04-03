@@ -16,8 +16,12 @@ import (
 )
 
 func exerciseDTOFromBody(b ExerciseBody) models.Exercise {
+	nameDTOs := make([]models.ExerciseNameDTO, len(b.Names))
+	for i, n := range b.Names {
+		nameDTOs[i] = models.ExerciseNameDTO{Name: n}
+	}
 	return models.Exercise{
-		Name:                          b.Name,
+		Names:                         nameDTOs,
 		Type:                          b.Type,
 		Force:                         b.Force,
 		PrimaryMuscles:                b.PrimaryMuscles,
@@ -28,7 +32,6 @@ func exerciseDTOFromBody(b ExerciseBody) models.Exercise {
 		Description:                   b.Description,
 		Instructions:                  b.Instructions,
 		Images:                        b.Images,
-		AlternativeNames:              b.AlternativeNames,
 		AuthorName:                    b.AuthorName,
 		AuthorUrl:                     b.AuthorUrl,
 		Public:                        b.Public,
@@ -38,7 +41,7 @@ func exerciseDTOFromBody(b ExerciseBody) models.Exercise {
 }
 
 var exercisePreloads = []string{
-	"Forces", "Muscles", "Paradigms", "Instructions", "Images", "AlternativeNames", "Equipment",
+	"Forces", "Muscles", "Paradigms", "Instructions", "Images", "Names", "Equipment",
 }
 
 func preloadExercise(db *gorm.DB) *gorm.DB {
@@ -75,8 +78,8 @@ func ListExercises(ctx context.Context, input *ListExercisesInput) (*ListExercis
 	if input.Q != "" {
 		pattern := "%" + input.Q + "%"
 		db = db.Where(
-			"exercises.id IN (SELECT exercises.id FROM exercises LEFT JOIN exercise_alternative_names ON exercise_alternative_names.exercise_id = exercises.id WHERE exercises.name LIKE ? OR exercise_alternative_names.name LIKE ?)",
-			pattern, pattern,
+			"exercises.id IN (SELECT exercise_id FROM exercise_names WHERE name LIKE ?)",
+			pattern,
 		)
 	}
 	if input.Type != "" {
@@ -123,6 +126,10 @@ func ListExercises(ctx context.Context, input *ListExercisesInput) (*ListExercis
 //
 // OpenAPI: /api/docs#/operations/CreateExercise
 func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExerciseOutput, error) {
+	if len(input.Body.Names) == 0 {
+		return nil, huma.Error422UnprocessableEntity("at least one name is required")
+	}
+
 	dto := exerciseDTOFromBody(input.Body)
 
 	entity := models.ExerciseFromDTO(dto)
@@ -224,6 +231,10 @@ func GetExercise(ctx context.Context, input *GetExerciseInput) (*GetExerciseOutp
 //
 // OpenAPI: /api/docs#/operations/UpdateExercise
 func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExerciseOutput, error) {
+	if len(input.Body.Names) == 0 {
+		return nil, huma.Error422UnprocessableEntity("at least one name is required")
+	}
+
 	var existing models.ExerciseEntity
 	if err := preloadExercise(database.DB).First(&existing, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Exercise not found")
@@ -251,14 +262,14 @@ func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExe
 	paradigms := entity.Paradigms
 	instructions := entity.Instructions
 	images := entity.Images
-	altNames := entity.AlternativeNames
+	names := entity.Names
 	equipment := entity.Equipment
 	entity.Forces = nil
 	entity.Muscles = nil
 	entity.Paradigms = nil
 	entity.Instructions = nil
 	entity.Images = nil
-	entity.AlternativeNames = nil
+	entity.Names = nil
 	entity.Equipment = nil
 
 	err := database.DB.Transaction(func(tx *gorm.DB) error {
@@ -277,7 +288,7 @@ func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExe
 		if err := tx.Where("exercise_id = ?", entity.ID).Delete(&models.ExerciseImage{}).Error; err != nil {
 			return err
 		}
-		if err := tx.Where("exercise_id = ?", entity.ID).Delete(&models.ExerciseAlternativeName{}).Error; err != nil {
+		if err := tx.Where("exercise_id = ?", entity.ID).Delete(&models.ExerciseName{}).Error; err != nil {
 			return err
 		}
 		if err := tx.Where("exercise_id = ?", entity.ID).Delete(&models.ExerciseEquipment{}).Error; err != nil {
@@ -318,9 +329,9 @@ func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExe
 				return err
 			}
 		}
-		for i := range altNames {
-			altNames[i].ExerciseID = entity.ID
-			if err := tx.Create(&altNames[i]).Error; err != nil {
+		for i := range names {
+			names[i].ExerciseID = entity.ID
+			if err := tx.Create(&names[i]).Error; err != nil {
 				return err
 			}
 		}
@@ -336,7 +347,7 @@ func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExe
 		entity.Paradigms = paradigms
 		entity.Instructions = instructions
 		entity.Images = images
-		entity.AlternativeNames = altNames
+		entity.Names = names
 		entity.Equipment = equipment
 
 		resultDTO := entity.ToDTO()

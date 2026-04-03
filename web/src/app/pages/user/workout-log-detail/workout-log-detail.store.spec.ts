@@ -36,7 +36,7 @@ describe('WorkoutLogDetailStore', () => {
     });
     userApiMock.fetchUserExercise.mockResolvedValue({
       id: 5,
-      name: 'Bench Press',
+      names: [{ id: 10, name: 'Bench Press' }],
       version: 1,
     });
 
@@ -64,9 +64,9 @@ describe('WorkoutLogDetailStore', () => {
 
     userApiMock.fetchUserExercise.mockImplementation((id: number) => {
       if (id === 5) {
-        return Promise.resolve({ id: 5, name: 'Squat', version: 1 });
+        return Promise.resolve({ id: 5, names: [{ id: 11, name: 'Squat' }], version: 1 });
       }
-      return Promise.resolve({ id: 6, name: 'Plank', version: 2 });
+      return Promise.resolve({ id: 6, names: [{ id: 13, name: 'Plank' }], version: 2 });
     });
 
     const sections = [
@@ -125,7 +125,7 @@ describe('WorkoutLogDetailStore', () => {
     });
     userApiMock.fetchUserExercise.mockResolvedValue({
       id: 5,
-      name: 'Curl',
+      names: [{ id: 12, name: 'Curl' }],
       version: 1,
     });
 
@@ -147,7 +147,7 @@ describe('WorkoutLogDetailStore', () => {
     );
     userApiMock.fetchUserExercise.mockResolvedValue({
       id: 5,
-      name: 'Curl',
+      names: [{ id: 12, name: 'Curl' }],
       version: 1,
     });
 

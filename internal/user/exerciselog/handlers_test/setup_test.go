@@ -47,7 +47,7 @@ func setupTestDB(t *testing.T) {
 		&exercisemodels.ExerciseMeasurementParadigm{},
 		&exercisemodels.ExerciseInstruction{},
 		&exercisemodels.ExerciseImage{},
-		&exercisemodels.ExerciseAlternativeName{},
+		&exercisemodels.ExerciseName{},
 		&exercisemodels.ExerciseEquipment{},
 		&exercisemodels.ExerciseHistoryEntity{},
 		&exercisemodels.ExerciseSchemeEntity{},

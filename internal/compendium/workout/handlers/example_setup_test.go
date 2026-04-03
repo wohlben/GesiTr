@@ -30,7 +30,7 @@ func setupExampleDB() {
 		&exercisemodels.ExerciseMeasurementParadigm{},
 		&exercisemodels.ExerciseInstruction{},
 		&exercisemodels.ExerciseImage{},
-		&exercisemodels.ExerciseAlternativeName{},
+		&exercisemodels.ExerciseName{},
 		&exercisemodels.ExerciseEquipment{},
 		&exercisemodels.ExerciseHistoryEntity{},
 		&exercisemodels.ExerciseSchemeEntity{},

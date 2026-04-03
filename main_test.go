@@ -29,7 +29,7 @@ func TestAutoMigrate(t *testing.T) {
 	tables := []string{
 		"exercises", "exercise_forces", "exercise_muscles",
 		"exercise_measurement_paradigms", "exercise_instructions",
-		"exercise_images", "exercise_alternative_names",
+		"exercise_images", "exercise_names",
 		"equipment", "exercise_equipments", "fulfillments",
 		"exercise_relationships", "exercise_groups", "exercise_group_members",
 		"exercise_schemes", "equipment_relationships",

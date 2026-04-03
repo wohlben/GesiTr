@@ -15,7 +15,7 @@ import (
 func createExerciseLogViaWorkflow(t *testing.T, r *gin.Engine) uint {
 	t.Helper()
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
@@ -89,7 +89,7 @@ func TestCreateExerciseLogAdHoc(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 
 	t.Run("ad-hoc creation with record value", func(t *testing.T) {
@@ -217,10 +217,10 @@ func TestListExerciseLogsFilters(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Squat", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	doJSON(r, "POST", "/api/exercises", map[string]any{
-		"name": "Plank", "type": "STRENGTH", "technicalDifficulty": "beginner",
+		"names": []string{"Plank"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 
 	doJSON(r, "POST", "/api/user/exercise-logs", map[string]any{

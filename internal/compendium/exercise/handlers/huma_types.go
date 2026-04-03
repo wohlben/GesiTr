@@ -8,7 +8,7 @@ import (
 
 // ExerciseBody contains the client-provided fields for creating or updating an exercise.
 type ExerciseBody struct {
-	Name                          string                       `json:"name" required:"true"`
+	Names                         []string                     `json:"names" required:"true" minItems:"1"`
 	Type                          models.ExerciseType          `json:"type" required:"true"`
 	Force                         []models.Force               `json:"force,omitempty"`
 	PrimaryMuscles                []models.Muscle              `json:"primaryMuscles,omitempty"`
@@ -19,7 +19,6 @@ type ExerciseBody struct {
 	Description                   string                       `json:"description,omitempty"`
 	Instructions                  []string                     `json:"instructions,omitempty"`
 	Images                        []string                     `json:"images,omitempty"`
-	AlternativeNames              []string                     `json:"alternativeNames,omitempty"`
 	AuthorName                    *string                      `json:"authorName,omitempty"`
 	AuthorUrl                     *string                      `json:"authorUrl,omitempty"`
 	Public                        bool                         `json:"public,omitempty"`
@@ -50,7 +49,7 @@ type ListExercisesInput struct {
 	Owner         string `query:"owner" doc:"Filter by owner ('me' for current user)"`
 	Public        string `query:"public" doc:"'true' to show only public exercises"`
 	Mastery       string `query:"mastery" doc:"'me' to show exercises you own or have mastery in"`
-	Q             string `query:"q" doc:"Search by name or alternative name"`
+	Q             string `query:"q" doc:"Search by name"`
 	Type          string `query:"type" doc:"Filter by exercise type"`
 	Difficulty    string `query:"difficulty" doc:"Filter by technical difficulty"`
 	Force         string `query:"force" doc:"Filter by force type"`

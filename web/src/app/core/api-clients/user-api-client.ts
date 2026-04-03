@@ -412,4 +412,19 @@ export class UserApiClient {
       this.http.get<SchedulePeriod[]>(`/api/user/schedule-periods${qs ? '?' + qs : ''}`),
     );
   }
+
+  // Exercise Name Preferences
+  fetchExerciseNamePreferences(): Promise<{ exerciseId: number; exerciseNameId: number }[]> {
+    return firstValueFrom(
+      this.http.get<{ exerciseId: number; exerciseNameId: number }[]>(
+        '/api/user/exercise-name-preferences',
+      ),
+    );
+  }
+
+  setExerciseNamePreference(exerciseId: number, exerciseNameId: number): Promise<void> {
+    return firstValueFrom(
+      this.http.put<void>(`/api/user/exercise-name-preferences/${exerciseId}`, { exerciseNameId }),
+    );
+  }
 }

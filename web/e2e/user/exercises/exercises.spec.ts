@@ -22,7 +22,7 @@ test.describe('/compendium/exercises?mastery=me', () => {
         const names = variantExercises[`${viewport.name}-light`];
         const exercises: { id: number }[] = [];
         for (const name of names) {
-          const exercise = await createExercise(request, { name });
+          const exercise = await createExercise(request, { names: [name] });
           exercises.push(exercise);
         }
         await page.goto('/compendium/exercises?mastery=me', { waitUntil: 'networkidle' });
@@ -39,7 +39,7 @@ test.describe('/compendium/exercises?mastery=me', () => {
         const names = variantExercises[`${viewport.name}-dark`];
         const exercises: { id: number }[] = [];
         for (const name of names) {
-          const exercise = await createExercise(request, { name });
+          const exercise = await createExercise(request, { names: [name] });
           exercises.push(exercise);
         }
         await page.emulateMedia({ colorScheme: 'dark' });

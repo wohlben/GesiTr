@@ -20,8 +20,8 @@ test.describe('/compendium/exercises/:id/:slug/edit', () => {
 
       test('light', async ({ request, page }) => {
         const name = variantNames[`${viewport.name}-light`];
-        const exercise = await createExercise(request, { name });
-        await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.name)}/edit`, {
+        const exercise = await createExercise(request, { names: [name] });
+        await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.names[0].name)}/edit`, {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText('Edit Exercise');
@@ -31,9 +31,9 @@ test.describe('/compendium/exercises/:id/:slug/edit', () => {
 
       test('dark', async ({ request, page }) => {
         const name = variantNames[`${viewport.name}-dark`];
-        const exercise = await createExercise(request, { name });
+        const exercise = await createExercise(request, { names: [name] });
         await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.name)}/edit`, {
+        await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.names[0].name)}/edit`, {
           waitUntil: 'networkidle',
         });
         await expect(page.locator('h1')).toHaveText('Edit Exercise');
@@ -44,13 +44,13 @@ test.describe('/compendium/exercises/:id/:slug/edit', () => {
   }
 
   test('edits name and verifies detail and list views update', async ({ request, page }) => {
-    const exercise = await createExercise(request, { name: 'Edit Test Exercise' });
-    await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.name)}/edit`, {
+    const exercise = await createExercise(request, { names: ['Edit Test Exercise'] });
+    await page.goto(`/compendium/exercises/${exercise.id}/${toSlug(exercise.names[0].name)}/edit`, {
       waitUntil: 'networkidle',
     });
     await expect(page.locator('h1')).toHaveText('Edit Exercise');
 
-    const nameInput = page.locator('#name');
+    const nameInput = page.locator('fieldset').first().locator('input').first();
     const editedName = 'Edit Test Exercise (edited)';
     await nameInput.clear();
     await nameInput.fill(editedName);

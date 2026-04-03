@@ -10,7 +10,7 @@ const exercise: Exercise = {
   id: 1,
   createdAt: '2024-01-15T10:00:00Z',
   updatedAt: '2024-01-15T10:00:00Z',
-  name: 'Bench Press',
+  names: [{ id: 1, name: 'Bench Press' }],
   type: 'STRENGTH',
   force: ['PUSH'],
   primaryMuscles: ['CHEST', 'TRICEPS'],
@@ -21,7 +21,6 @@ const exercise: Exercise = {
   description: 'A compound upper body exercise',
   instructions: [],
   images: [],
-  alternativeNames: [],
   owner: 'admin',
   public: true,
   version: 1,
@@ -55,14 +54,14 @@ describe('ExerciseListItem screenshots', () => {
 
   const template = `
     <app-data-table [columns]="columns">
-      <tr app-exercise-list-item [exercise]="exercise"></tr>
+      <tr app-exercise-list-item [exercise]="exercise" [displayName]="displayName"></tr>
     </app-data-table>
   `;
 
   const opts = {
     imports: [DataTable, ExerciseListItem],
     providers: [provideTranslocoForTest(), provideRouter([])],
-    componentProperties: { exercise, columns },
+    componentProperties: { exercise, columns, displayName: exercise.names?.[0]?.name ?? '' },
   };
 
   it('light', async () => {

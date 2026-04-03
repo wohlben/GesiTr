@@ -96,3 +96,8 @@ export const scheduleCommitmentKeys = {
   all: () => ['schedule-commitments'] as const,
   list: (periodId?: number) => [...scheduleCommitmentKeys.all(), 'list', periodId] as const,
 };
+
+export const namePreferenceKeys = {
+  all: () => ['exercise-name-preferences'] as const,
+  list: () => [...namePreferenceKeys.all(), 'list'] as const,
+};
