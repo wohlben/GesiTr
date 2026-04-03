@@ -193,3 +193,22 @@ export interface EquipmentRelationship extends BaseModel {
 export type EquipmentRelationshipType = string;
 export const EquipmentRelationshipTypeEquivalent: EquipmentRelationshipType = 'equivalent';
 export const EquipmentRelationshipTypeForked: EquipmentRelationshipType = 'forked';
+
+//////////
+// source: availability.go
+
+export interface LocalityAvailability extends BaseModel {
+  localityId: number /* uint */;
+  equipmentId: number /* uint */;
+  available: boolean;
+  owner: string;
+}
+
+//////////
+// source: locality.go
+
+export interface Locality extends BaseModel {
+  name: string;
+  owner: string;
+  public: boolean;
+}

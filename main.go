@@ -18,6 +18,8 @@ import (
 	equipmentModels "gesitr/internal/compendium/equipment/models"
 	exerciseHandlers "gesitr/internal/compendium/exercise/handlers"
 	exerciseModels "gesitr/internal/compendium/exercise/models"
+	localityHandlers "gesitr/internal/compendium/locality/handlers"
+	localityModels "gesitr/internal/compendium/locality/models"
 	workoutHandlers "gesitr/internal/compendium/workout/handlers"
 	workoutModels "gesitr/internal/compendium/workout/models"
 	workoutGroupHandlers "gesitr/internal/compendium/workoutgroup/handlers"
@@ -309,6 +311,8 @@ func autoMigrate() {
 		&workoutModels.WorkoutHistoryEntity{},
 		&workoutModels.WorkoutRelationshipEntity{},
 		&namePreferenceModels.ExerciseNamePreference{},
+		&localityModels.LocalityEntity{},
+		&localityModels.LocalityAvailabilityEntity{},
 	)
 }
 
@@ -328,6 +332,7 @@ func setupRoutes(r *gin.Engine) {
 	workoutScheduleHandlers.RegisterRoutes(humaAPI)
 	masteryHandlers.RegisterRoutes(humaAPI)
 	namePreferenceHandlers.RegisterRoutes(humaAPI)
+	localityHandlers.RegisterRoutes(humaAPI)
 }
 
 func setupSPA(r *gin.Engine) {

@@ -101,6 +101,34 @@ func ListExercises(ctx context.Context, input *ListExercisesInput) (*ListExercis
 	if input.PrimaryMuscle != "" {
 		db = db.Where("exercises.id IN (SELECT exercise_id FROM exercise_muscles WHERE muscle = ? AND is_primary = true)", input.PrimaryMuscle)
 	}
+	if input.LocalityID != "" {
+		// Show exercises that either have no equipment requirements, or whose
+		// required equipment is fully covered by the locality's effective set.
+		// The effective set includes directly-available equipment plus equipment
+		// fulfilled by available equipment (via the fulfillments table).
+		db = db.Where(`
+			exercises.id NOT IN (
+				SELECT exercise_id FROM exercise_equipments
+			)
+			OR exercises.id NOT IN (
+				SELECT ee.exercise_id
+				FROM exercise_equipments ee
+				WHERE ee.equipment_id NOT IN (
+					SELECT la.equipment_id
+					FROM locality_availabilities la
+					WHERE la.locality_id = ? AND la.available = true AND la.deleted_at IS NULL
+					UNION
+					SELECT f.fulfills_equipment_id
+					FROM fulfillments f
+					WHERE f.deleted_at IS NULL AND f.equipment_id IN (
+						SELECT la2.equipment_id
+						FROM locality_availabilities la2
+						WHERE la2.locality_id = ? AND la2.available = true AND la2.deleted_at IS NULL
+					)
+				)
+			)
+		`, input.LocalityID, input.LocalityID)
+	}
 
 	var total int64
 	if err := db.Count(&total).Error; err != nil {

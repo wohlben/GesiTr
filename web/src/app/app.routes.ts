@@ -115,6 +115,31 @@ export const routes: Routes = [
           import('$pages/compendium/equipment-list/equipment-list').then((m) => m.EquipmentList),
       },
       {
+        path: 'localities/new',
+        loadComponent: () =>
+          import('$pages/compendium/locality-edit/locality-edit').then((m) => m.LocalityEdit),
+      },
+      {
+        path: 'localities/:id/:slug/edit',
+        loadComponent: () =>
+          import('$pages/compendium/locality-edit/locality-edit').then((m) => m.LocalityEdit),
+      },
+      {
+        path: 'localities/:id/:slug',
+        loadComponent: () =>
+          import('$pages/compendium/locality-detail/locality-detail').then((m) => m.LocalityDetail),
+      },
+      {
+        path: 'localities/:id',
+        loadComponent: () =>
+          import('$pages/compendium/locality-detail/locality-detail').then((m) => m.LocalityDetail),
+      },
+      {
+        path: 'localities',
+        loadComponent: () =>
+          import('$pages/compendium/locality-list/locality-list').then((m) => m.LocalityList),
+      },
+      {
         path: 'workouts/new',
         loadComponent: () =>
           import('$pages/user/workout-edit/workout-edit').then((m) => m.WorkoutEdit),

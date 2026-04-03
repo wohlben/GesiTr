@@ -34,6 +34,7 @@
     "exercises": "Exercises",
     "equipment": "Equipment",
     "exerciseGroups": "Exercise Groups",
+    "localities": "Localities",
     "myEquipment": "My Equipment",
     "myWorkouts": "My Workouts",
     "workouts": "Workouts",
@@ -288,6 +289,21 @@
       "deleteMessage": "Are you sure you want to delete '{{name}}'?",
       "newTitle": "New Exercise Group",
       "editTitle": "Edit Exercise Group"
+    },
+    "localities": {
+      "title": "Localities",
+      "noResults": "No localities found",
+      "deleteTitle": "Delete Locality",
+      "deleteMessage": "Are you sure you want to delete '{{name}}'?",
+      "newTitle": "New Locality",
+      "editTitle": "Edit Locality",
+      "equipmentAtLocality": "Equipment at this Locality",
+      "addEquipment": "Add Equipment",
+      "searchEquipment": "Search equipment",
+      "searchPlaceholder": "Type to search...",
+      "alreadyAdded": "already added",
+      "noEquipment": "No equipment added yet.",
+      "toggleAvailability": "Toggle availability"
     }
   },
   "user": {

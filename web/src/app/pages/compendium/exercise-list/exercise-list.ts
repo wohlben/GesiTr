@@ -1,5 +1,5 @@
 import { Component, inject, computed } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   injectQuery,
@@ -9,7 +9,7 @@ import {
 } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { exerciseKeys, masteryKeys, namePreferenceKeys } from '$core/query-keys';
+import { exerciseKeys, masteryKeys, namePreferenceKeys, localityKeys } from '$core/query-keys';
 import { Exercise } from '$generated/models';
 import { ExerciseMastery } from '$generated/user-mastery';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -69,6 +69,28 @@ import {
           class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
           >{{ t('common.new') }}</a
         >
+        @if (localitiesQuery.data(); as localities) {
+          @if (localities.items.length > 0) {
+            <div filters class="flex items-center gap-2">
+              <label
+                for="localityFilter"
+                class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                >{{ t('compendium.localities.title') }}</label
+              >
+              <select
+                id="localityFilter"
+                class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                [value]="filters()['localityId'] || ''"
+                (change)="onLocalityChange($event)"
+              >
+                <option value="">{{ t('common.all') }}</option>
+                @for (loc of localities.items; track loc.id) {
+                  <option [value]="loc.id">{{ loc.name }}</option>
+                }
+              </select>
+            </div>
+          }
+        }
         @if (exercisesQuery.data(); as page) {
           <app-data-table
             [columns]="exerciseColumns"
@@ -97,7 +119,9 @@ export class ExerciseList {
   private api = inject(CompendiumApiClient);
   private userApi = inject(UserApiClient);
   private queryClient = inject(QueryClient);
-  private queryParams = toSignal(inject(ActivatedRoute).queryParamMap);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private queryParams = toSignal(this.route.queryParamMap);
 
   filters = computed(() => {
     const params: Record<string, string> = {};
@@ -115,6 +139,11 @@ export class ExerciseList {
     queryKey: exerciseKeys.list(this.filters()),
     queryFn: () => this.api.fetchExercises(this.filters()),
     placeholderData: keepPreviousData,
+  }));
+
+  localitiesQuery = injectQuery(() => ({
+    queryKey: localityKeys.list({ owner: 'me' }),
+    queryFn: () => this.api.fetchLocalities({ owner: 'me', limit: 100 }),
   }));
 
   masteryQuery = injectQuery(() => ({
@@ -201,6 +230,15 @@ export class ExerciseList {
     if (nameEntry) {
       this.savePreferenceMutation.mutate({ exerciseId, exerciseNameId: nameEntry.id });
     }
+  }
+
+  onLocalityChange(event: Event) {
+    const value = (event.target as HTMLSelectElement).value;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { localityId: value || null, offset: null },
+      queryParamsHandling: 'merge',
+    });
   }
 
   exerciseColumns: DataTableColumn[] = [

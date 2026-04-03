@@ -55,6 +55,7 @@ type ListExercisesInput struct {
 	Force         string `query:"force" doc:"Filter by force type"`
 	Muscle        string `query:"muscle" doc:"Filter by any muscle"`
 	PrimaryMuscle string `query:"primaryMuscle" doc:"Filter by primary muscle"`
+	LocalityID    string `query:"localityId" doc:"Filter to exercises doable at this locality (respects fulfillments)"`
 }
 
 type ListExercisesOutput struct {

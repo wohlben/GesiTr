@@ -101,3 +101,15 @@ export const namePreferenceKeys = {
   all: () => ['exercise-name-preferences'] as const,
   list: () => [...namePreferenceKeys.all(), 'list'] as const,
 };
+
+export const localityKeys = {
+  all: () => ['localities'] as const,
+  list: (filters: Filters) => [...localityKeys.all(), 'list', filters] as const,
+  detail: (id: number) => [...localityKeys.all(), 'detail', id] as const,
+  permissions: (id: number) => [...localityKeys.all(), 'permissions', id] as const,
+};
+
+export const localityAvailabilityKeys = {
+  all: () => ['locality-availabilities'] as const,
+  list: (localityId: number) => [...localityAvailabilityKeys.all(), 'list', localityId] as const,
+};

@@ -6,6 +6,8 @@ import {
   Equipment,
   ExerciseRelationship,
   EquipmentRelationship,
+  Locality,
+  LocalityAvailability,
 } from '$generated/models';
 import { ExerciseGroup, ExerciseGroupMember } from '$generated/user-models';
 import { PaginatedResponse } from './paginated-response';
@@ -188,6 +190,73 @@ export class CompendiumApiClient {
         params: buildParams(filters),
       }),
     );
+  }
+
+  // Localities
+  fetchLocalities(
+    filters: Record<string, string | number | undefined>,
+  ): Promise<PaginatedResponse<Locality>> {
+    return firstValueFrom(
+      this.http.get<PaginatedResponse<Locality>>('/api/localities', {
+        params: buildParams(filters),
+      }),
+    );
+  }
+
+  fetchLocality(id: number): Promise<Locality> {
+    return firstValueFrom(this.http.get<Locality>(`/api/localities/${id}`));
+  }
+
+  createLocality(data: Partial<Locality>): Promise<Locality> {
+    return firstValueFrom(this.http.post<Locality>('/api/localities', data));
+  }
+
+  updateLocality(id: number, data: Partial<Locality>): Promise<Locality> {
+    return firstValueFrom(this.http.put<Locality>(`/api/localities/${id}`, data));
+  }
+
+  deleteLocality(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/localities/${id}`));
+  }
+
+  fetchLocalityPermissions(id: number): Promise<{ permissions: string[] }> {
+    return firstValueFrom(
+      this.http.get<{ permissions: string[] }>(`/api/localities/${id}/permissions`),
+    );
+  }
+
+  // Locality Availabilities
+  fetchLocalityAvailabilities(
+    filters: Record<string, string | number | undefined>,
+  ): Promise<LocalityAvailability[]> {
+    return firstValueFrom(
+      this.http.get<LocalityAvailability[]>('/api/locality-availabilities', {
+        params: buildParams(filters),
+      }),
+    );
+  }
+
+  createLocalityAvailability(data: {
+    localityId: number;
+    equipmentId: number;
+    available?: boolean;
+  }): Promise<LocalityAvailability> {
+    return firstValueFrom(
+      this.http.post<LocalityAvailability>('/api/locality-availabilities', data),
+    );
+  }
+
+  updateLocalityAvailability(
+    id: number,
+    data: { available: boolean },
+  ): Promise<LocalityAvailability> {
+    return firstValueFrom(
+      this.http.put<LocalityAvailability>(`/api/locality-availabilities/${id}`, data),
+    );
+  }
+
+  deleteLocalityAvailability(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/locality-availabilities/${id}`));
   }
 
   fetchDeployStatus(): Promise<{ status: string; title?: string; createdAt?: string }> {
