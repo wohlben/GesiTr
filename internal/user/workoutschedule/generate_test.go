@@ -6,7 +6,6 @@ import (
 
 	exercisemodels "gesitr/internal/compendium/exercise/models"
 	workoutmodels "gesitr/internal/compendium/workout/models"
-	profilemodels "gesitr/internal/profile/models"
 	workoutlogmodels "gesitr/internal/user/workoutlog/models"
 	"gesitr/internal/user/workoutschedule/models"
 
@@ -22,7 +21,6 @@ func setupTestDB(t *testing.T) *gorm.DB {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
-		&profilemodels.UserProfileEntity{},
 		&exercisemodels.ExerciseEntity{},
 		&exercisemodels.ExerciseSchemeEntity{},
 		&workoutmodels.WorkoutEntity{},
@@ -36,7 +34,6 @@ func setupTestDB(t *testing.T) *gorm.DB {
 		&models.SchedulePeriodEntity{},
 		&models.ScheduleCommitmentEntity{},
 	)
-	db.Create(&profilemodels.UserProfileEntity{ID: "alice", Name: "alice"})
 	return db
 }
 

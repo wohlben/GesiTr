@@ -27,7 +27,6 @@ func TestAutoMigrate(t *testing.T) {
 	autoMigrate()
 
 	tables := []string{
-		"user_profiles",
 		"exercises", "exercise_forces", "exercise_muscles",
 		"exercise_measurement_paradigms", "exercise_instructions",
 		"exercise_images", "exercise_alternative_names",
@@ -52,9 +51,6 @@ func TestSetupRoutes(t *testing.T) {
 
 	routes := r.Routes()
 	expected := map[string]bool{
-		"GET /api/profiles/:id":                       false,
-		"GET /api/user/profile":                       false,
-		"PATCH /api/user/profile":                     false,
 		"GET /api/exercises":                          false,
 		"POST /api/exercises":                         false,
 		"GET /api/exercises/:id":                      false,

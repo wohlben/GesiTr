@@ -52,7 +52,6 @@ make docker
   - **`workout/`** — workouts, workout sections, exercise groups, workout relationships
   - **`workoutgroup/`** — workout group sharing and memberships
 - **`internal/user/`** — user-scoped entities: workout logs, workout schedules, exercise logs, mastery
-- **`internal/profile/`** — user profile models and handlers
 - **`internal/auth/`** — middleware extracting UserID from header (`AUTH_HEADER` env var, default `X-User-Id`; falls back to `AUTH_FALLBACK_USER` in dev)
 - **`internal/database/`** — SQLite init via GORM
 - **`internal/shared/`** — shared types and utilities

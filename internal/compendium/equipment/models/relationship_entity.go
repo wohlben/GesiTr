@@ -1,18 +1,16 @@
 package models
 
 import (
-	profilemodels "gesitr/internal/profile/models"
 	"gesitr/internal/shared"
 )
 
 type EquipmentRelationshipEntity struct {
 	shared.BaseModel
-	RelationshipType EquipmentRelationshipType        `gorm:"not null;uniqueIndex:idx_equipment_relationship"`
-	Strength         float64                          `gorm:"not null"`
-	Owner            string                           `gorm:"not null;uniqueIndex:idx_equipment_relationship"`
-	OwnerProfile     *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
-	FromEquipmentID  uint                             `gorm:"not null;uniqueIndex:idx_equipment_relationship"`
-	ToEquipmentID    uint                             `gorm:"not null;uniqueIndex:idx_equipment_relationship"`
+	RelationshipType EquipmentRelationshipType `gorm:"not null;uniqueIndex:idx_equipment_relationship"`
+	Strength         float64                   `gorm:"not null"`
+	Owner            string                    `gorm:"not null;uniqueIndex:idx_equipment_relationship"`
+	FromEquipmentID  uint                      `gorm:"not null;uniqueIndex:idx_equipment_relationship"`
+	ToEquipmentID    uint                      `gorm:"not null;uniqueIndex:idx_equipment_relationship"`
 }
 
 func (EquipmentRelationshipEntity) TableName() string { return "equipment_relationships" }

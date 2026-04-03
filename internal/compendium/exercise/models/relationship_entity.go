@@ -1,7 +1,6 @@
 package models
 
 import (
-	profilemodels "gesitr/internal/profile/models"
 	"gesitr/internal/shared"
 )
 
@@ -10,10 +9,9 @@ type ExerciseRelationshipEntity struct {
 	RelationshipType ExerciseRelationshipType `gorm:"not null;uniqueIndex:idx_exercise_relationship"`
 	Strength         float64                  `gorm:"not null"`
 	Description      *string
-	Owner            string                           `gorm:"not null;uniqueIndex:idx_exercise_relationship"`
-	OwnerProfile     *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
-	FromExerciseID   uint                             `gorm:"not null;uniqueIndex:idx_exercise_relationship"`
-	ToExerciseID     uint                             `gorm:"not null;uniqueIndex:idx_exercise_relationship"`
+	Owner            string `gorm:"not null;uniqueIndex:idx_exercise_relationship"`
+	FromExerciseID   uint   `gorm:"not null;uniqueIndex:idx_exercise_relationship"`
+	ToExerciseID     uint   `gorm:"not null;uniqueIndex:idx_exercise_relationship"`
 }
 
 func (ExerciseRelationshipEntity) TableName() string { return "exercise_relationships" }

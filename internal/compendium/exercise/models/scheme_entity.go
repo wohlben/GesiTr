@@ -1,16 +1,14 @@
 package models
 
 import (
-	profilemodels "gesitr/internal/profile/models"
 	"gesitr/internal/shared"
 )
 
 type ExerciseSchemeEntity struct {
 	shared.BaseModel
-	Owner                string                           `gorm:"not null;index"`
-	OwnerProfile         *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
-	ExerciseID           uint                             `gorm:"not null;index"`
-	MeasurementType      string                           `gorm:"not null"`
+	Owner                string `gorm:"not null;index"`
+	ExerciseID           uint   `gorm:"not null;index"`
+	MeasurementType      string `gorm:"not null"`
 	Sets                 *int
 	Reps                 *int
 	Weight               *float64

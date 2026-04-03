@@ -3,16 +3,14 @@ package models
 import (
 	"time"
 
-	profilemodels "gesitr/internal/profile/models"
 	"gesitr/internal/shared"
 )
 
 type ExerciseLogEntity struct {
 	shared.BaseModel
-	Owner                   string                           `gorm:"not null;index;index:idx_owner_exercise_performed,priority:1"`
-	OwnerProfile            *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
-	ExerciseID              uint                             `gorm:"not null;index;index:idx_owner_exercise_performed,priority:2"`
-	MeasurementType         string                           `gorm:"not null"`
+	Owner                   string `gorm:"not null;index;index:idx_owner_exercise_performed,priority:1"`
+	ExerciseID              uint   `gorm:"not null;index;index:idx_owner_exercise_performed,priority:2"`
+	MeasurementType         string `gorm:"not null"`
 	Reps                    *int
 	Weight                  *float64
 	Duration                *int

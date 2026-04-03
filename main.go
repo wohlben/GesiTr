@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 	"sync"
 	"time"
 
@@ -24,9 +25,6 @@ import (
 	"gesitr/internal/database"
 	"gesitr/internal/docs"
 	"gesitr/internal/humaconfig"
-	"gesitr/internal/profile"
-	profileHandlers "gesitr/internal/profile/handlers"
-	profileModels "gesitr/internal/profile/models"
 	exerciseLogHandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciseLogModels "gesitr/internal/user/exerciselog/models"
 	masteryHandlers "gesitr/internal/user/mastery/handlers"
@@ -177,11 +175,64 @@ func runMigrations() {
 	// Drop unique index on workout_groups.workout_id to allow multiple groups per workout.
 	database.DB.Exec("DROP INDEX IF EXISTS idx_workout_groups_workout_id")
 	database.DB.Exec("DROP INDEX IF EXISTS uni_workout_groups_workout_id")
+
+	// Remove user_profiles table and FK constraints referencing it.
+	removeProfileForeignKeys()
+}
+
+// removeProfileForeignKeys drops FK constraints referencing the user_profiles table
+// and then drops the table itself. This uses the standard SQLite table-recreation
+// approach since SQLite doesn't support ALTER TABLE DROP CONSTRAINT.
+func removeProfileForeignKeys() {
+	var tableExists int64
+	database.DB.Raw("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='user_profiles'").Scan(&tableExists)
+	if tableExists == 0 {
+		return
+	}
+
+	database.DB.Exec("PRAGMA foreign_keys = OFF")
+	defer database.DB.Exec("PRAGMA foreign_keys = ON")
+
+	// Find all tables with FK constraints referencing user_profiles.
+	var tables []struct {
+		Name string
+		SQL  string
+	}
+	database.DB.Raw("SELECT name, sql FROM sqlite_master WHERE type='table' AND sql LIKE '%user_profiles%'").Scan(&tables)
+
+	re := regexp.MustCompile(",\\s*CONSTRAINT\\s+`[^`]+`\\s+FOREIGN KEY\\s*\\([^)]+\\)\\s*REFERENCES\\s*`user_profiles`\\s*\\([^)]+\\)(\\s+ON DELETE\\s+\\w+)?")
+
+	for _, t := range tables {
+		if t.Name == "user_profiles" {
+			continue
+		}
+		newDDL := re.ReplaceAllString(t.SQL, "")
+		if newDDL == t.SQL {
+			continue
+		}
+
+		// Collect indexes to recreate after table swap.
+		var indexes []struct{ SQL *string }
+		database.DB.Raw("SELECT sql FROM sqlite_master WHERE type='index' AND tbl_name=? AND sql IS NOT NULL", t.Name).Scan(&indexes)
+
+		tempName := "_old_" + t.Name
+		database.DB.Exec("ALTER TABLE `" + t.Name + "` RENAME TO `" + tempName + "`")
+		database.DB.Exec(newDDL)
+		database.DB.Exec("INSERT INTO `" + t.Name + "` SELECT * FROM `" + tempName + "`")
+		database.DB.Exec("DROP TABLE `" + tempName + "`")
+
+		for _, idx := range indexes {
+			if idx.SQL != nil {
+				database.DB.Exec(*idx.SQL)
+			}
+		}
+	}
+
+	database.DB.Exec("DROP TABLE IF EXISTS user_profiles")
 }
 
 func autoMigrate() {
 	database.DB.AutoMigrate(
-		&profileModels.UserProfileEntity{},
 		&exerciseModels.ExerciseEntity{},
 		&exerciseModels.ExerciseForce{},
 		&exerciseModels.ExerciseMuscle{},
@@ -225,13 +276,11 @@ func setupRoutes(r *gin.Engine) {
 	api := r.Group("/api")
 	api.Use(auth.RequestTrace())
 	api.Use(auth.UserID())
-	api.Use(profile.EnsureProfile())
 
-	// Huma API — shares the /api group so Gin auth/profile middleware applies.
+	// Huma API — shares the /api group so Gin auth middleware applies.
 	humaAPI := humaconfig.NewAPI(r, api)
 	exerciseHandlers.RegisterRoutes(humaAPI)
 	equipmentHandlers.RegisterRoutes(humaAPI)
-	profileHandlers.RegisterRoutes(humaAPI)
 	workoutHandlers.RegisterRoutes(humaAPI)
 	workoutloghandlers.RegisterRoutes(humaAPI)
 	exerciseLogHandlers.RegisterRoutes(humaAPI)
@@ -287,7 +336,6 @@ func buildApp() *gin.Engine {
 			}
 			database.DB.Exec("DELETE FROM sqlite_sequence")
 			database.DB.Exec("PRAGMA foreign_keys = ON")
-			profile.ResetProfileCache()
 			c.JSON(http.StatusOK, gin.H{"status": "reset"})
 		})
 	}

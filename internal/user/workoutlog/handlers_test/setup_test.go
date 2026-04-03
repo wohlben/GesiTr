@@ -20,7 +20,6 @@ import (
 	workoutgroupmodels "gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	profilemodels "gesitr/internal/profile/models"
 	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciselogmodels "gesitr/internal/user/exerciselog/models"
 	workoutloghandlers "gesitr/internal/user/workoutlog/handlers"
@@ -47,7 +46,6 @@ func setupTestDB(t *testing.T) {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
-		&profilemodels.UserProfileEntity{},
 		&exercisemodels.ExerciseEntity{},
 		&exercisemodels.ExerciseForce{},
 		&exercisemodels.ExerciseMuscle{},
@@ -74,8 +72,6 @@ func setupTestDB(t *testing.T) {
 		&workoutschedulemodels.SchedulePeriodEntity{},
 		&workoutschedulemodels.ScheduleCommitmentEntity{},
 	)
-	db.Create(&profilemodels.UserProfileEntity{ID: "alice", Name: "alice"})
-	db.Create(&profilemodels.UserProfileEntity{ID: "bob", Name: "bob"})
 	database.DB = db
 }
 

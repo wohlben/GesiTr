@@ -2,18 +2,16 @@ package models
 
 import (
 	workoutmodels "gesitr/internal/compendium/workout/models"
-	profilemodels "gesitr/internal/profile/models"
 	"gesitr/internal/shared"
 )
 
 type WorkoutGroupEntity struct {
 	shared.BaseModel
-	Name         string                           `gorm:"not null"`
-	WorkoutID    uint                             `gorm:"not null;index"`
-	Workout      *workoutmodels.WorkoutEntity     `gorm:"foreignKey:WorkoutID;constraint:OnDelete:CASCADE" json:"-"`
-	Owner        string                           `gorm:"not null;index"`
-	OwnerProfile *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
-	Memberships  []WorkoutGroupMembershipEntity   `gorm:"foreignKey:GroupID"`
+	Name        string                         `gorm:"not null"`
+	WorkoutID   uint                           `gorm:"not null;index"`
+	Workout     *workoutmodels.WorkoutEntity   `gorm:"foreignKey:WorkoutID;constraint:OnDelete:CASCADE" json:"-"`
+	Owner       string                         `gorm:"not null;index"`
+	Memberships []WorkoutGroupMembershipEntity `gorm:"foreignKey:GroupID"`
 }
 
 func (WorkoutGroupEntity) TableName() string { return "workout_groups" }
@@ -38,11 +36,10 @@ func WorkoutGroupFromDTO(dto WorkoutGroup) WorkoutGroupEntity {
 
 type WorkoutGroupMembershipEntity struct {
 	shared.BaseModel
-	GroupID     uint                             `gorm:"not null;uniqueIndex:idx_group_user"`
-	Group       *WorkoutGroupEntity              `gorm:"foreignKey:GroupID;constraint:OnDelete:CASCADE" json:"-"`
-	UserID      string                           `gorm:"not null;uniqueIndex:idx_group_user"`
-	UserProfile *profilemodels.UserProfileEntity `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
-	Role        WorkoutGroupRole                 `gorm:"not null;default:'member'"`
+	GroupID uint                `gorm:"not null;uniqueIndex:idx_group_user"`
+	Group   *WorkoutGroupEntity `gorm:"foreignKey:GroupID;constraint:OnDelete:CASCADE" json:"-"`
+	UserID  string              `gorm:"not null;uniqueIndex:idx_group_user"`
+	Role    WorkoutGroupRole    `gorm:"not null;default:'member'"`
 }
 
 func (WorkoutGroupMembershipEntity) TableName() string { return "workout_group_memberships" }

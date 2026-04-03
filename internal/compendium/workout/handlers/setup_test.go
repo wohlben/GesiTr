@@ -17,7 +17,6 @@ import (
 	workoutgroupmodels "gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	profilemodels "gesitr/internal/profile/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
@@ -38,7 +37,6 @@ func setupTestDB(t *testing.T) {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
-		&profilemodels.UserProfileEntity{},
 		&exercisemodels.ExerciseEntity{},
 		&exercisemodels.ExerciseForce{},
 		&exercisemodels.ExerciseMuscle{},
@@ -59,8 +57,6 @@ func setupTestDB(t *testing.T) {
 		&workoutgroupmodels.WorkoutGroupEntity{},
 		&workoutgroupmodels.WorkoutGroupMembershipEntity{},
 	)
-	db.Create(&profilemodels.UserProfileEntity{ID: "alice", Name: "alice"})
-	db.Create(&profilemodels.UserProfileEntity{ID: "bob", Name: "bob"})
 	database.DB = db
 }
 

@@ -11,7 +11,7 @@ func ExampleAcceptWorkoutGroupInvitation_denied() {
 	setupExampleDB()
 	r := newRouter()
 
-	// Bob interacts with the API to establish his profile (middleware creates it on first request)
+	// Bob interacts with the API so the test router recognises him
 	doRawAs(r, "GET", "/api/workouts", "", "bob")
 
 	// Alice creates an exercise and scheme

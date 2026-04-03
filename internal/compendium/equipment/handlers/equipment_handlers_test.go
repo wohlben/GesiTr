@@ -7,7 +7,6 @@ import (
 
 	"gesitr/internal/compendium/equipment/models"
 	"gesitr/internal/database"
-	profilemodels "gesitr/internal/profile/models"
 	"gesitr/internal/shared"
 )
 
@@ -92,7 +91,6 @@ func TestListEquipment(t *testing.T) {
 
 func TestListEquipmentVisibility(t *testing.T) {
 	setupTestDB(t)
-	database.DB.Create(&profilemodels.UserProfileEntity{ID: "otheruser", Name: "otheruser"})
 	r := newRouter()
 
 	// testuser creates private equipment
@@ -321,7 +319,6 @@ func TestUpdateEquipment(t *testing.T) {
 	})
 
 	t.Run("forbidden for non-owner", func(t *testing.T) {
-		database.DB.Create(&profilemodels.UserProfileEntity{ID: "otheruser", Name: "otheruser"})
 		w := doJSONAs(r, "PUT", "/api/equipment/1", "otheruser", map[string]any{
 			"name": "hijack", "displayName": "Hijack", "description": "",
 			"category": "accessories"})
@@ -498,7 +495,6 @@ func TestDeleteEquipment(t *testing.T) {
 
 	t.Run("forbidden for non-owner", func(t *testing.T) {
 		setupTestDB(t)
-		database.DB.Create(&profilemodels.UserProfileEntity{ID: "otheruser", Name: "otheruser"})
 		r := newRouter()
 		doJSON(r, "POST", "/api/equipment", map[string]any{
 			"name": "rope2", "displayName": "Rope2", "description": "",

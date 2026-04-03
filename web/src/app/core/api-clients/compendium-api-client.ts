@@ -4,11 +4,10 @@ import { firstValueFrom } from 'rxjs';
 import {
   Exercise,
   Equipment,
-  ExerciseGroup,
-  ExerciseGroupMember,
   ExerciseRelationship,
   EquipmentRelationship,
 } from '$generated/models';
+import { ExerciseGroup, ExerciseGroupMember } from '$generated/user-models';
 import { PaginatedResponse } from './paginated-response';
 import { VersionEntry } from './version-entry';
 

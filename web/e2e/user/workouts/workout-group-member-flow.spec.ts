@@ -39,9 +39,7 @@ test.describe('/compendium/workouts — group member full flow', () => {
       position: 0,
     });
 
-    // Bob needs to "exist" (profile created on first API hit) before being invited
     const bobApi = await createApiContextAs('bob');
-    await bobApi.get('/api/workouts');
 
     // Create workout group and invite bob
     const groupRes = await request.post('/api/user/workout-groups', {

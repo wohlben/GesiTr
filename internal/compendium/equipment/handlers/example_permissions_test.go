@@ -11,8 +11,6 @@ import (
 	"gesitr/internal/database"
 	"gesitr/internal/shared"
 
-	profilemodels "gesitr/internal/profile/models"
-
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -26,12 +24,9 @@ func setupExampleDB() {
 		panic(err)
 	}
 	db.AutoMigrate(
-		&profilemodels.UserProfileEntity{},
 		&models.EquipmentEntity{},
 		&models.EquipmentHistoryEntity{},
 	)
-	db.Create(&profilemodels.UserProfileEntity{ID: "testuser", Name: "testuser"})
-	db.Create(&profilemodels.UserProfileEntity{ID: "other", Name: "other"})
 	database.DB = db
 }
 

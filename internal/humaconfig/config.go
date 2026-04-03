@@ -7,7 +7,7 @@ import (
 )
 
 // NewAPI creates a huma API that shares the given Gin router group.
-// Routes registered on this API go through the group's middleware (auth, profile).
+// Routes registered on this API go through the group's middleware (auth).
 // Paths in huma operations should be relative to the group (e.g., "/exercises"
 // not "/api/exercises"). The OpenAPI spec uses a server URL of "/api".
 func NewAPI(r *gin.Engine, group *gin.RouterGroup) huma.API {

@@ -6,7 +6,6 @@ import (
 	"gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	profilemodels "gesitr/internal/profile/models"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -59,12 +58,6 @@ func CreateWorkoutGroupMembership(ctx context.Context, input *CreateWorkoutGroup
 	// Prevent owner from adding themselves
 	if input.Body.UserID == group.Owner {
 		return nil, huma.Error422UnprocessableEntity("the workout owner does not need a membership")
-	}
-
-	// Validate target user exists
-	var profile profilemodels.UserProfileEntity
-	if err := database.DB.First(&profile, "id = ?", input.Body.UserID).Error; err != nil {
-		return nil, huma.Error404NotFound("User not found")
 	}
 
 	// New memberships always start as "invited"

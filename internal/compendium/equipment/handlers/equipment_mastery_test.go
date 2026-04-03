@@ -7,7 +7,6 @@ import (
 	"gesitr/internal/compendium/equipment/models"
 	exerciseModels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
-	profilemodels "gesitr/internal/profile/models"
 	exerciseLogModels "gesitr/internal/user/exerciselog/models"
 	masteryModels "gesitr/internal/user/mastery/models"
 
@@ -25,7 +24,6 @@ func setupMasteryTestDB(t *testing.T) {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
-		&profilemodels.UserProfileEntity{},
 		&models.EquipmentEntity{},
 		&models.EquipmentHistoryEntity{},
 		&exerciseModels.ExerciseEntity{},
@@ -33,8 +31,6 @@ func setupMasteryTestDB(t *testing.T) {
 		&exerciseLogModels.ExerciseLogEntity{},
 		&masteryModels.EquipmentMasteryExperienceEntity{},
 	)
-	db.Create(&profilemodels.UserProfileEntity{ID: "testuser", Name: "testuser"})
-	db.Create(&profilemodels.UserProfileEntity{ID: "bob", Name: "bob"})
 	database.DB = db
 }
 

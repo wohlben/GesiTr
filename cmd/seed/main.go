@@ -11,7 +11,6 @@ import (
 	equipmentModels "gesitr/internal/compendium/equipment/models"
 	exerciseModels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
-	profileModels "gesitr/internal/profile/models"
 	"gesitr/internal/shared"
 )
 
@@ -21,7 +20,6 @@ var exerciseIDMap map[string]uint
 func main() {
 	database.Init()
 	database.DB.AutoMigrate(
-		&profileModels.UserProfileEntity{},
 		&exerciseModels.ExerciseEntity{},
 		&exerciseModels.ExerciseForce{},
 		&exerciseModels.ExerciseMuscle{},
@@ -41,7 +39,6 @@ func main() {
 		name string
 		fn   func() error
 	}{
-		{"Profile", seedProfile},
 		{"Equipment", seedEquipment},
 		{"Exercises", seedExercises},
 		{"Fulfillments", seedFulfillments},
@@ -78,20 +75,6 @@ func unixToTime(ts *int64) time.Time {
 		return time.Now()
 	}
 	return time.Unix(*ts, 0)
-}
-
-// --- Profile ---
-
-func seedProfile() error {
-	profile := profileModels.UserProfileEntity{
-		ID:   "sinon",
-		Name: "Sinon",
-	}
-	if err := database.DB.Create(&profile).Error; err != nil {
-		return fmt.Errorf("insert profile: %w", err)
-	}
-	log.Printf("Profile: sinon")
-	return nil
 }
 
 // --- Equipment ---

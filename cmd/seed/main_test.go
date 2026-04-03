@@ -10,7 +10,6 @@ import (
 	equipmentModels "gesitr/internal/compendium/equipment/models"
 	exerciseModels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
-	profileModels "gesitr/internal/profile/models"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -23,7 +22,6 @@ func setupSeedTestDB(t *testing.T) {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
-		&profileModels.UserProfileEntity{},
 		&exerciseModels.ExerciseEntity{},
 		&exerciseModels.ExerciseForce{},
 		&exerciseModels.ExerciseMuscle{},
@@ -39,11 +37,6 @@ func setupSeedTestDB(t *testing.T) {
 		&equipmentModels.EquipmentHistoryEntity{},
 	)
 	database.DB = db
-
-	// Create profiles for test owner values
-	for _, id := range []string{"sinon", "s"} {
-		db.Create(&profileModels.UserProfileEntity{ID: id, Name: id})
-	}
 }
 
 func writeTempJSON(t *testing.T, base, dir, filename string, data any) {

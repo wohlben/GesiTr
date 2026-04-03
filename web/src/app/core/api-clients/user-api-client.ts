@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom, map } from 'rxjs';
 import { PaginatedResponse } from './paginated-response';
-import { UserProfile, UpdateProfileRequest } from '$generated/profile';
 import { Exercise, Equipment, ExerciseScheme } from '$generated/models';
 import {
   Workout,
@@ -48,19 +47,6 @@ export class UserApiClient {
     return firstValueFrom(
       this.http.get<EquipmentMastery>(`/api/user/equipment-mastery/${equipmentId}`),
     );
-  }
-
-  // Profile
-  fetchProfile(): Promise<UserProfile> {
-    return firstValueFrom(this.http.get<UserProfile>('/api/user/profile'));
-  }
-
-  updateProfile(data: UpdateProfileRequest): Promise<UserProfile> {
-    return firstValueFrom(this.http.put<UserProfile>('/api/user/profile', data));
-  }
-
-  fetchPublicProfile(id: string): Promise<UserProfile> {
-    return firstValueFrom(this.http.get<UserProfile>(`/api/profiles/${id}`));
   }
 
   fetchUserExercise(id: number): Promise<Exercise> {

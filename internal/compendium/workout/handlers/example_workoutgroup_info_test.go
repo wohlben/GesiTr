@@ -13,7 +13,7 @@ func ExampleListWorkouts_groupMemberSeesWorkoutGroupInfo() {
 	setupExampleDB()
 	r := newRouter()
 
-	// Bob interacts with the API to establish his profile
+	// Bob interacts with the API so the test router recognises him
 	doRawAs(r, "GET", "/api/workouts", "", "bob")
 
 	// Alice creates a workout
@@ -82,7 +82,7 @@ func ExampleGetWorkout_groupMemberSeesWorkoutGroupInfo() {
 	setupExampleDB()
 	r := newRouter()
 
-	// Bob interacts with the API to establish his profile
+	// Bob interacts with the API so the test router recognises him
 	doRawAs(r, "GET", "/api/workouts", "", "bob")
 
 	// Alice creates a workout, group, and invites bob
@@ -115,7 +115,7 @@ func ExampleUpdateWorkout_groupAdminSeesWorkoutGroupInfo() {
 	setupExampleDB()
 	r := newRouter()
 
-	// Bob interacts with the API to establish his profile
+	// Bob interacts with the API so the test router recognises him
 	doRawAs(r, "GET", "/api/workouts", "", "bob")
 
 	// Alice creates a workout, group, and adds bob as admin

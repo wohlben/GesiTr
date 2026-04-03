@@ -1,11 +1,4 @@
 packages:
-  - path: "gesitr/internal/profile/models"
-    output_path: "web/src/app/generated/profile.ts"
-    type_mappings:
-      "time.Time": "string"
-      "gorm.DeletedAt": "string | null"
-    include_files:
-      - "profile.go"
   - path: "gesitr/internal/shared"
     output_path: "web/src/app/generated/shared.ts"
     type_mappings:

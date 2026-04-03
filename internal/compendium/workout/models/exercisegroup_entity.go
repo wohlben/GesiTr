@@ -1,15 +1,13 @@
 package models
 
 import (
-	profilemodels "gesitr/internal/profile/models"
 	"gesitr/internal/shared"
 )
 
 type ExerciseGroupEntity struct {
 	shared.BaseModel
-	Name         *string
-	Owner        string                           `gorm:"not null"`
-	OwnerProfile *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
+	Name  *string
+	Owner string `gorm:"not null"`
 }
 
 func (ExerciseGroupEntity) TableName() string { return "exercise_groups" }
@@ -32,10 +30,9 @@ func ExerciseGroupFromDTO(dto ExerciseGroup) ExerciseGroupEntity {
 
 type ExerciseGroupMemberEntity struct {
 	shared.BaseModel
-	GroupID      uint                             `gorm:"not null;uniqueIndex:idx_group_member"`
-	ExerciseID   uint                             `gorm:"not null;uniqueIndex:idx_group_member"`
-	Owner        string                           `gorm:"not null"`
-	OwnerProfile *profilemodels.UserProfileEntity `gorm:"foreignKey:Owner;references:ID;constraint:OnDelete:RESTRICT" json:"-"`
+	GroupID    uint   `gorm:"not null;uniqueIndex:idx_group_member"`
+	ExerciseID uint   `gorm:"not null;uniqueIndex:idx_group_member"`
+	Owner      string `gorm:"not null"`
 }
 
 func (ExerciseGroupMemberEntity) TableName() string { return "exercise_group_members" }

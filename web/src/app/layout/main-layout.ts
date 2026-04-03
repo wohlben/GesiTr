@@ -3,7 +3,7 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideSettings, lucideUser } from '@ng-icons/lucide';
+import { lucideUser } from '@ng-icons/lucide';
 import { HlmIconImports } from '@spartan-ng/helm/icon';
 import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 import { DevelopmentUserHeaderService } from '$core/dev/development-user-header.service';
@@ -26,7 +26,7 @@ interface NavLink {
     HlmIconImports,
     HlmPopoverImports,
   ],
-  providers: [provideIcons({ lucideSettings, lucideUser })],
+  providers: [provideIcons({ lucideUser })],
   host: { class: 'block' },
   template: `
     <div *transloco="let t" class="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -114,14 +114,6 @@ interface NavLink {
                 </ng-template>
               </div>
             }
-            <a
-              routerLink="/settings/profile"
-              routerLinkActive="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
-              class="rounded-md p-2 text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-200"
-              [attr.aria-label]="t('nav.settings')"
-            >
-              <ng-icon hlm name="lucideSettings" size="sm" />
-            </a>
 
             <!-- Mobile burger button -->
             <button

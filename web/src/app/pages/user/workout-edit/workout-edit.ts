@@ -935,7 +935,7 @@ export class WorkoutEdit {
           await this.userApi.createWorkoutSectionItem({
             workoutSectionId: section.id,
             type: 'exercise_group',
-            exerciseGroupId: groupId,
+            exerciseGroupId: groupId ?? undefined,
             position: ei,
           });
         }
