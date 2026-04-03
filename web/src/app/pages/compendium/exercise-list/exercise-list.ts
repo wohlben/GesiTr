@@ -9,11 +9,12 @@ import {
 } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { exerciseKeys, masteryKeys, namePreferenceKeys, localityKeys } from '$core/query-keys';
+import { exerciseKeys, masteryKeys, namePreferenceKeys } from '$core/query-keys';
 import { Exercise } from '$generated/models';
 import { ExerciseMastery } from '$generated/user-mastery';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ExerciseListItem } from '$ui/compendium/exercise-list-item/exercise-list-item';
+import { LocalityToggleGroup } from '$ui/compendium/locality-toggle-group/locality-toggle-group';
 import { DataTable, DataTableColumn } from '$ui/data-table/data-table';
 import { Pagination } from '$ui/pagination/pagination';
 import { PageLayout } from '../../../layout/page-layout';
@@ -55,7 +56,15 @@ import {
 
 @Component({
   selector: 'app-exercise-list',
-  imports: [ExerciseListItem, DataTable, Pagination, PageLayout, RouterLink, TranslocoDirective],
+  imports: [
+    ExerciseListItem,
+    LocalityToggleGroup,
+    DataTable,
+    Pagination,
+    PageLayout,
+    RouterLink,
+    TranslocoDirective,
+  ],
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
@@ -63,34 +72,15 @@ import {
         [isPending]="exercisesQuery.isPending()"
         [errorMessage]="exercisesQuery.isError() ? exercisesQuery.error().message : undefined"
       >
-        <a
-          actions
-          routerLink="./new"
-          class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-          >{{ t('common.new') }}</a
-        >
-        @if (localitiesQuery.data(); as localities) {
-          @if (localities.items.length > 0) {
-            <div filters class="flex items-center gap-2">
-              <label
-                for="localityFilter"
-                class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                >{{ t('compendium.localities.title') }}</label
-              >
-              <select
-                id="localityFilter"
-                class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
-                [value]="filters()['localityId'] || ''"
-                (change)="onLocalityChange($event)"
-              >
-                <option value="">{{ t('common.all') }}</option>
-                @for (loc of localities.items; track loc.id) {
-                  <option [value]="loc.id">{{ loc.name }}</option>
-                }
-              </select>
-            </div>
-          }
-        }
+        <div actions class="flex items-center gap-2">
+          <app-locality-toggle-group (selectedChange)="onLocalityChange($event)" />
+          <div class="flex-grow"></div>
+          <a
+            routerLink="./new"
+            class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            >{{ t('common.new') }}</a
+          >
+        </div>
         @if (exercisesQuery.data(); as page) {
           <app-data-table
             [columns]="exerciseColumns"
@@ -139,11 +129,6 @@ export class ExerciseList {
     queryKey: exerciseKeys.list(this.filters()),
     queryFn: () => this.api.fetchExercises(this.filters()),
     placeholderData: keepPreviousData,
-  }));
-
-  localitiesQuery = injectQuery(() => ({
-    queryKey: localityKeys.list({ owner: 'me' }),
-    queryFn: () => this.api.fetchLocalities({ owner: 'me', limit: 100 }),
   }));
 
   masteryQuery = injectQuery(() => ({
@@ -232,11 +217,10 @@ export class ExerciseList {
     }
   }
 
-  onLocalityChange(event: Event) {
-    const value = (event.target as HTMLSelectElement).value;
+  onLocalityChange(localityId: number | null) {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { localityId: value || null, offset: null },
+      queryParams: { localityId: localityId ?? null, offset: null },
       queryParamsHandling: 'merge',
     });
   }
