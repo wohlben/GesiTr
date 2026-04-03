@@ -16,10 +16,10 @@ func TestListWorkoutSectionItems(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Bench Press"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 5, "reps": 5,
 	})
 	doJSON(r, "POST", "/api/workouts", map[string]any{
@@ -96,7 +96,7 @@ func TestCreateWorkoutSectionItem(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 5, "reps": 5,
 	})
 	doJSON(r, "POST", "/api/workouts", map[string]any{
@@ -196,7 +196,7 @@ func TestDeleteWorkoutSectionItem(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Deadlift"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 8,
 	})
 	doJSON(r, "POST", "/api/workouts", map[string]any{

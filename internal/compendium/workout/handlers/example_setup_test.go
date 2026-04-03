@@ -10,6 +10,7 @@ import (
 	"gesitr/internal/compendium/workout/models"
 	workoutgroupmodels "gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
 
 	"github.com/gin-gonic/gin"
@@ -34,7 +35,7 @@ func setupExampleDB() {
 		&exercisemodels.ExerciseName{},
 		&exercisemodels.ExerciseEquipment{},
 		&exercisemodels.ExerciseHistoryEntity{},
-		&exercisemodels.ExerciseSchemeEntity{},
+		&exerciseschememodels.ExerciseSchemeEntity{},
 		&namePreferenceModels.ExerciseNamePreference{},
 		&equipmentmodels.EquipmentEntity{},
 		&models.ExerciseGroupEntity{},

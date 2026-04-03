@@ -58,7 +58,7 @@ test.describe('/compendium/workouts — group member full flow', () => {
     // ============================================================
 
     // Bob creates his own exercise scheme for the workout item
-    const bobSchemeRes = await bobApi.post('/api/exercise-schemes', {
+    const bobSchemeRes = await bobApi.post('/api/user/exercise-schemes', {
       data: {
         exerciseId: exercise.id,
         workoutSectionItemId: sectionItem.id,

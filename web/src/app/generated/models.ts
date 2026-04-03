@@ -130,27 +130,6 @@ export const ExerciseRelationshipTypeVariant: ExerciseRelationshipType = 'varian
 export const ExerciseRelationshipTypeVariation: ExerciseRelationshipType = 'variation';
 
 //////////
-// source: scheme.go
-
-/**
- * ExerciseScheme is the API DTO for exercise schemes
- */
-export interface ExerciseScheme extends BaseModel {
-  owner: string;
-  exerciseId: number /* uint */;
-  measurementType: string;
-  sets?: number /* int */;
-  reps?: number /* int */;
-  weight?: number /* float64 */;
-  restBetweenSets?: number /* int */;
-  timePerRep?: number /* int */;
-  duration?: number /* int */;
-  distance?: number /* float64 */;
-  targetTime?: number /* int */;
-  workoutSectionItemId?: number /* uint */;
-}
-
-//////////
 // source: equipment.go
 
 export interface Equipment extends BaseModel {

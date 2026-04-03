@@ -9,16 +9,11 @@ import (
 	"testing"
 
 	"gesitr/internal/auth"
-	equipmentmodels "gesitr/internal/compendium/equipment/models"
-	exercisehandlers "gesitr/internal/compendium/exercise/handlers"
-	exercisemodels "gesitr/internal/compendium/exercise/models"
-	"gesitr/internal/compendium/workout/models"
-	workoutgrouphandlers "gesitr/internal/compendium/workoutgroup/handlers"
-	workoutgroupmodels "gesitr/internal/compendium/workoutgroup/models"
+	exerciseHandlers "gesitr/internal/compendium/exercise/handlers"
+	exerciseModels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	exerciseschemehandlers "gesitr/internal/user/exercisescheme/handlers"
-	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
+	"gesitr/internal/user/exercisescheme/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
 
 	"github.com/gin-gonic/gin"
@@ -34,32 +29,23 @@ func TestMain(m *testing.M) {
 
 func setupTestDB(t *testing.T) {
 	t.Helper()
-	t.Setenv("AUTH_FALLBACK_USER", "alice")
+	t.Setenv("AUTH_FALLBACK_USER", "testuser")
 	db, err := gorm.Open(sqlite.Open("file::memory:?_foreign_keys=on"), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent)})
 	if err != nil {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
-		&exercisemodels.ExerciseEntity{},
-		&exercisemodels.ExerciseForce{},
-		&exercisemodels.ExerciseMuscle{},
-		&exercisemodels.ExerciseMeasurementParadigm{},
-		&exercisemodels.ExerciseInstruction{},
-		&exercisemodels.ExerciseImage{},
-		&exercisemodels.ExerciseName{},
-		&exercisemodels.ExerciseEquipment{},
-		&exercisemodels.ExerciseHistoryEntity{},
-		&exerciseschememodels.ExerciseSchemeEntity{},
+		&exerciseModels.ExerciseEntity{},
+		&exerciseModels.ExerciseForce{},
+		&exerciseModels.ExerciseMuscle{},
+		&exerciseModels.ExerciseMeasurementParadigm{},
+		&exerciseModels.ExerciseInstruction{},
+		&exerciseModels.ExerciseImage{},
+		&exerciseModels.ExerciseName{},
+		&exerciseModels.ExerciseEquipment{},
+		&exerciseModels.ExerciseHistoryEntity{},
+		&models.ExerciseSchemeEntity{},
 		&namePreferenceModels.ExerciseNamePreference{},
-		&equipmentmodels.EquipmentEntity{},
-		&models.ExerciseGroupEntity{},
-		&models.ExerciseGroupMemberEntity{},
-		&models.WorkoutEntity{},
-		&models.WorkoutHistoryEntity{},
-		&models.WorkoutSectionEntity{},
-		&models.WorkoutSectionItemEntity{},
-		&workoutgroupmodels.WorkoutGroupEntity{},
-		&workoutgroupmodels.WorkoutGroupMembershipEntity{},
 	)
 	database.DB = db
 }
@@ -70,12 +56,23 @@ func newRouter() *gin.Engine {
 	api.Use(auth.UserID())
 
 	humaAPI := humaconfig.NewAPI(r, api)
-	exercisehandlers.RegisterRoutes(humaAPI)
-	exerciseschemehandlers.RegisterRoutes(humaAPI)
+	exerciseHandlers.RegisterRoutes(humaAPI)
 	RegisterRoutes(humaAPI)
-	workoutgrouphandlers.RegisterRoutes(humaAPI)
 
 	return r
+}
+
+func newExercisePayload(name string) map[string]any {
+	return map[string]any{
+		"names": []string{name, "Alt Name"}, "type": "STRENGTH",
+		"technicalDifficulty": "beginner", "bodyWeightScaling": 0.5,
+		"description": "test",
+		"force":       []string{"PUSH"}, "primaryMuscles": []string{"CHEST"},
+		"secondaryMuscles":              []string{"TRICEPS"},
+		"suggestedMeasurementParadigms": []string{"REP_BASED"},
+		"instructions":                  []string{"Step 1", "Step 2"},
+		"images":                        []string{"/img/a.jpg"},
+	}
 }
 
 func doJSON(r *gin.Engine, method, path string, body any) *httptest.ResponseRecorder {

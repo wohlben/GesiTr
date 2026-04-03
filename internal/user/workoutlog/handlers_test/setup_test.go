@@ -22,6 +22,8 @@ import (
 	"gesitr/internal/humaconfig"
 	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciselogmodels "gesitr/internal/user/exerciselog/models"
+	exerciseschemehandlers "gesitr/internal/user/exercisescheme/handlers"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
 	workoutloghandlers "gesitr/internal/user/workoutlog/handlers"
 	"gesitr/internal/user/workoutlog/models"
@@ -56,7 +58,7 @@ func setupTestDB(t *testing.T) {
 		&exercisemodels.ExerciseName{},
 		&exercisemodels.ExerciseEquipment{},
 		&exercisemodels.ExerciseHistoryEntity{},
-		&exercisemodels.ExerciseSchemeEntity{},
+		&exerciseschememodels.ExerciseSchemeEntity{},
 		&namePreferenceModels.ExerciseNamePreference{},
 		&equipmentmodels.EquipmentEntity{},
 		&workoutmodels.WorkoutEntity{},
@@ -84,6 +86,7 @@ func newRouter() *gin.Engine {
 
 	humaAPI := humaconfig.NewAPI(r, api)
 	exercisehandlers.RegisterRoutes(humaAPI)
+	exerciseschemehandlers.RegisterRoutes(humaAPI)
 	equipmenthandlers.RegisterRoutes(humaAPI)
 	workouthandlers.RegisterRoutes(humaAPI)
 	workoutloghandlers.RegisterRoutes(humaAPI)

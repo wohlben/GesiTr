@@ -4,7 +4,7 @@ import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { exerciseKeys, exerciseSchemeKeys, masteryKeys } from '$core/query-keys';
-import { ExerciseScheme } from '$generated/models';
+import { ExerciseScheme } from '$generated/user-exercisescheme';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmComboboxImports } from '@spartan-ng/helm/combobox';

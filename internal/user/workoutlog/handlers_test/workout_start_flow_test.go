@@ -7,6 +7,7 @@ import (
 
 	exercisemodels "gesitr/internal/compendium/exercise/models"
 	workoutmodels "gesitr/internal/compendium/workout/models"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	"gesitr/internal/user/workoutlog/models"
 )
 
@@ -25,7 +26,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	var userExercise1 exercisemodels.Exercise
 	json.Unmarshal(w.Body.Bytes(), &userExercise1)
 
-	w = doJSONLog(t, r, "POST", "/api/exercise-schemes", map[string]any{
+	w = doJSONLog(t, r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId":      userExercise1.ID,
 		"measurementType": "REP_BASED",
 		"sets":            5,
@@ -36,7 +37,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create scheme 1: status = %d, body = %s", w.Code, w.Body.String())
 	}
-	var scheme1 exercisemodels.ExerciseScheme
+	var scheme1 exerciseschememodels.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme1)
 
 	w = doJSONLog(t, r, "POST", "/api/exercises", map[string]any{
@@ -48,7 +49,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	var userExercise2 exercisemodels.Exercise
 	json.Unmarshal(w.Body.Bytes(), &userExercise2)
 
-	w = doJSONLog(t, r, "POST", "/api/exercise-schemes", map[string]any{
+	w = doJSONLog(t, r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId":      userExercise2.ID,
 		"measurementType": "REP_BASED",
 		"sets":            4,
@@ -59,7 +60,7 @@ func TestWorkoutStartFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create scheme 2: status = %d, body = %s", w.Code, w.Body.String())
 	}
-	var scheme2 exercisemodels.ExerciseScheme
+	var scheme2 exerciseschememodels.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme2)
 
 	// -- Setup: create workout template with sections and exercises --

@@ -194,13 +194,13 @@ export async function createExerciseScheme(
     restBetweenSets: 90,
     ...overrides,
   };
-  const res = await request.post('/api/exercise-schemes', { data });
+  const res = await request.post('/api/user/exercise-schemes', { data });
   expect(res.ok(), `Failed to create exercise scheme: ${await res.text()}`).toBeTruthy();
   return res.json();
 }
 
 export async function deleteExerciseScheme(request: APIRequestContext, id: number) {
-  await request.delete(`/api/exercise-schemes/${id}`);
+  await request.delete(`/api/user/exercise-schemes/${id}`);
 }
 
 export async function createWorkoutSection(

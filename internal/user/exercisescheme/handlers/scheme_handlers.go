@@ -3,10 +3,11 @@ package handlers
 import (
 	"context"
 
-	"gesitr/internal/compendium/exercise/models"
+	exerciseModels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/shared"
+	"gesitr/internal/user/exercisescheme/models"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -29,9 +30,7 @@ func exerciseSchemeDTOFromBody(b ExerciseSchemeBody) models.ExerciseScheme {
 
 // ListExerciseSchemes returns schemes the current user has access to: their
 // own schemes plus schemes linked to public exercises. Filter by exerciseId
-// or measurementType query params. GET /api/exercise-schemes
-//
-// OpenAPI: /api/docs#/operations/ListExerciseSchemes
+// or measurementType query params. GET /api/user/exercise-schemes
 func ListExerciseSchemes(ctx context.Context, input *ListExerciseSchemesInput) (*ListExerciseSchemesOutput, error) {
 	userID := humaconfig.GetUserID(ctx)
 	// FIXME: subquery doesn't scale — replace with a join or denormalize visibility
@@ -62,16 +61,12 @@ func ListExerciseSchemes(ctx context.Context, input *ListExerciseSchemesInput) (
 
 // CreateExerciseScheme creates an exercise scheme — a user-specific
 // configuration of an exercise (sets, reps, measurement type). Requires
-// an exerciseId referencing an existing exercise (see [CreateExercise]).
-// Schemes are referenced when adding exercises to workouts via
-// [gesitr/internal/compendium/workout/handlers.CreateWorkoutSectionItem].
-// POST /api/exercise-schemes
-//
-// OpenAPI: /api/docs#/operations/CreateExerciseScheme
+// an exerciseId referencing an existing exercise.
+// POST /api/user/exercise-schemes
 func CreateExerciseScheme(ctx context.Context, input *CreateExerciseSchemeInput) (*CreateExerciseSchemeOutput, error) {
 	dto := exerciseSchemeDTOFromBody(input.Body)
 
-	var exercise models.ExerciseEntity
+	var exercise exerciseModels.ExerciseEntity
 	if err := database.DB.First(&exercise, dto.ExerciseID).Error; err != nil {
 		return nil, huma.Error404NotFound("Exercise not found")
 	}
@@ -86,15 +81,13 @@ func CreateExerciseScheme(ctx context.Context, input *CreateExerciseSchemeInput)
 
 // GetExerciseScheme returns a single exercise scheme. Access is determined by
 // the linked exercise's visibility — if the user can see the exercise, they
-// can see its schemes. GET /api/exercise-schemes/:id
-//
-// OpenAPI: /api/docs#/operations/GetExerciseScheme
+// can see its schemes. GET /api/user/exercise-schemes/:id
 func GetExerciseScheme(ctx context.Context, input *GetExerciseSchemeInput) (*GetExerciseSchemeOutput, error) {
 	var entity models.ExerciseSchemeEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Exercise scheme not found")
 	}
-	var exercise models.ExerciseEntity
+	var exercise exerciseModels.ExerciseEntity
 	if err := database.DB.First(&exercise, entity.ExerciseID).Error; err != nil {
 		return nil, huma.Error404NotFound("Exercise not found")
 	}
@@ -107,9 +100,7 @@ func GetExerciseScheme(ctx context.Context, input *GetExerciseSchemeInput) (*Get
 }
 
 // UpdateExerciseScheme updates a scheme's configuration. The exerciseId
-// cannot be changed. PUT /api/exercise-schemes/:id
-//
-// OpenAPI: /api/docs#/operations/UpdateExerciseScheme
+// cannot be changed. PUT /api/user/exercise-schemes/:id
 func UpdateExerciseScheme(ctx context.Context, input *UpdateExerciseSchemeInput) (*UpdateExerciseSchemeOutput, error) {
 	var existing models.ExerciseSchemeEntity
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {
@@ -132,9 +123,7 @@ func UpdateExerciseScheme(ctx context.Context, input *UpdateExerciseSchemeInput)
 }
 
 // DeleteExerciseScheme deletes an exercise scheme. Owner only.
-// DELETE /api/exercise-schemes/:id
-//
-// OpenAPI: /api/docs#/operations/DeleteExerciseScheme
+// DELETE /api/user/exercise-schemes/:id
 func DeleteExerciseScheme(ctx context.Context, input *DeleteExerciseSchemeInput) (*DeleteExerciseSchemeOutput, error) {
 	var entity models.ExerciseSchemeEntity
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {

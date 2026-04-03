@@ -13,6 +13,7 @@ import (
 	workoutModels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
 	"gesitr/internal/shared"
+	exerciseSchemeModels "gesitr/internal/user/exercisescheme/models"
 )
 
 var equipmentIDMap map[string]uint
@@ -37,7 +38,7 @@ func main() {
 		&workoutModels.WorkoutEntity{},
 		&workoutModels.WorkoutSectionEntity{},
 		&workoutModels.WorkoutSectionItemEntity{},
-		&exerciseModels.ExerciseSchemeEntity{},
+		&exerciseSchemeModels.ExerciseSchemeEntity{},
 		&workoutModels.WorkoutHistoryEntity{},
 	)
 
@@ -433,7 +434,7 @@ func seedWorkouts() error {
 					return fmt.Errorf("unknown exercise template ID %q in workout %q", ji.ExerciseTemplateID, j.Name)
 				}
 
-				scheme := exerciseModels.ExerciseSchemeEntity{
+				scheme := exerciseSchemeModels.ExerciseSchemeEntity{
 					Owner:           "sinon",
 					ExerciseID:      exerciseID,
 					MeasurementType: ji.Scheme.MeasurementType,

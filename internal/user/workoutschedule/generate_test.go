@@ -6,6 +6,7 @@ import (
 
 	exercisemodels "gesitr/internal/compendium/exercise/models"
 	workoutmodels "gesitr/internal/compendium/workout/models"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	workoutlogmodels "gesitr/internal/user/workoutlog/models"
 	"gesitr/internal/user/workoutschedule/models"
 
@@ -22,7 +23,7 @@ func setupTestDB(t *testing.T) *gorm.DB {
 	}
 	db.AutoMigrate(
 		&exercisemodels.ExerciseEntity{},
-		&exercisemodels.ExerciseSchemeEntity{},
+		&exerciseschememodels.ExerciseSchemeEntity{},
 		&workoutmodels.WorkoutEntity{},
 		&workoutmodels.WorkoutSectionEntity{},
 		&workoutmodels.WorkoutSectionItemEntity{},
@@ -460,7 +461,7 @@ func TestActivation_SnapshotsWorkoutStructure(t *testing.T) {
 	reps := intPtr(10)
 	weight := float64Ptr(60.0)
 	rest := intPtr(90)
-	scheme := exercisemodels.ExerciseSchemeEntity{
+	scheme := exerciseschememodels.ExerciseSchemeEntity{
 		Owner:           "alice",
 		ExerciseID:      exercise.ID,
 		MeasurementType: "REP_BASED",

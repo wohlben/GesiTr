@@ -19,7 +19,7 @@ import {
   WorkoutSectionItemTypeExercise,
   WorkoutSectionItemTypeExerciseGroup,
 } from '$generated/user-models';
-import { ExerciseScheme } from '$generated/models';
+import { ExerciseScheme } from '$generated/user-exercisescheme';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
 import { BrnSelectImports } from '@spartan-ng/brain/select';

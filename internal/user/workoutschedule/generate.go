@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	exercisemodels "gesitr/internal/compendium/exercise/models"
 	workoutmodels "gesitr/internal/compendium/workout/models"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	workoutlogmodels "gesitr/internal/user/workoutlog/models"
 	"gesitr/internal/user/workoutschedule/models"
 
@@ -228,14 +228,14 @@ func snapshotWorkoutIntoLog(tx *gorm.DB, workout *workoutmodels.WorkoutEntity, l
 
 			// Prefer user-specific scheme for this item, fall back to item's default
 			schemeID := *item.ExerciseSchemeID
-			var userScheme exercisemodels.ExerciseSchemeEntity
+			var userScheme exerciseschememodels.ExerciseSchemeEntity
 			err := tx.Where("owner = ? AND workout_section_item_id = ?", owner, item.ID).
 				First(&userScheme).Error
 			if err == nil {
 				schemeID = userScheme.ID
 			}
 
-			var scheme exercisemodels.ExerciseSchemeEntity
+			var scheme exerciseschememodels.ExerciseSchemeEntity
 			if err := tx.First(&scheme, schemeID).Error; err != nil {
 				return fmt.Errorf("scheme %d not found: %w", schemeID, err)
 			}

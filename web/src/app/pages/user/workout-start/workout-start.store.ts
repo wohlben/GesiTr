@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { WorkoutSection, WorkoutLogSection } from '$generated/user-models';
-import { ExerciseScheme } from '$generated/models';
+import { ExerciseScheme } from '$generated/user-exercisescheme';
 
 export interface SetPreview {
   setNumber: number;

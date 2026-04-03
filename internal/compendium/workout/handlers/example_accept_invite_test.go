@@ -20,7 +20,7 @@ func ExampleAcceptWorkoutGroupInvitation_denied() {
 		"technicalDifficulty": "beginner", "bodyWeightScaling": 0.5,
 		"description": "Barbell bench press", "public": true
 	}`)
-	doRaw(r, "POST", "/api/exercise-schemes", `{
+	doRaw(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 10, "weight": 60.0
 	}`)
@@ -65,7 +65,7 @@ func ExampleAcceptWorkoutGroupInvitation_success() {
 		"technicalDifficulty": "beginner", "bodyWeightScaling": 0.5,
 		"description": "Barbell bench press", "public": true
 	}`)
-	doRaw(r, "POST", "/api/exercise-schemes", `{
+	doRaw(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 10, "weight": 60.0
 	}`)
@@ -89,7 +89,7 @@ func ExampleAcceptWorkoutGroupInvitation_success() {
 	}`)
 
 	// Bob creates his own exercise scheme linked to the workout section item (id=1)
-	doRawAs(r, "POST", "/api/exercise-schemes", `{
+	doRawAs(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 5, "reps": 5, "weight": 80.0,
 		"workoutSectionItemId": 1

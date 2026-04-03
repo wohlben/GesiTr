@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"gesitr/internal/compendium/exercise/models"
+	"gesitr/internal/user/exercisescheme/models"
 )
 
 // Creating a rep-based exercise scheme for bicep curls. The exercise must
@@ -12,7 +12,7 @@ import (
 // the exercise: 3 sets of 12 reps at 15kg with 90s rest.
 func ExampleCreateExerciseScheme_repBased() {
 	setupExampleDB()
-	r := newRouter()
+	r := newExampleRouter()
 
 	// Create the exercise first.
 	doRaw(r, "POST", "/api/exercises", `{
@@ -24,7 +24,7 @@ func ExampleCreateExerciseScheme_repBased() {
 	}`)
 
 	// Create a rep-based scheme for this exercise.
-	w := doRaw(r, "POST", "/api/exercise-schemes", `{
+	w := doRaw(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1,
 		"measurementType": "REP_BASED",
 		"sets": 3,
@@ -48,7 +48,7 @@ func ExampleCreateExerciseScheme_repBased() {
 // defines a 30-minute cardio session with no sets or reps.
 func ExampleCreateExerciseScheme_timeBased() {
 	setupExampleDB()
-	r := newRouter()
+	r := newExampleRouter()
 
 	// Create the exercise first.
 	doRaw(r, "POST", "/api/exercises", `{
@@ -60,7 +60,7 @@ func ExampleCreateExerciseScheme_timeBased() {
 	}`)
 
 	// Create a time-based scheme for this exercise.
-	w := doRaw(r, "POST", "/api/exercise-schemes", `{
+	w := doRaw(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1,
 		"measurementType": "TIME_BASED",
 		"duration": 1800
@@ -82,7 +82,7 @@ func ExampleCreateExerciseScheme_timeBased() {
 // Owner can retrieve their own exercise scheme.
 func ExampleGetExerciseScheme_owner() {
 	setupExampleDB()
-	r := newRouter()
+	r := newExampleRouter()
 
 	// Create the exercise and a scheme.
 	doRaw(r, "POST", "/api/exercises", `{
@@ -92,7 +92,7 @@ func ExampleGetExerciseScheme_owner() {
 		"bodyWeightScaling": 0.5,
 		"description": "Barbell squat"
 	}`)
-	doRaw(r, "POST", "/api/exercise-schemes", `{
+	doRaw(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1,
 		"measurementType": "REP_BASED",
 		"sets": 5,
@@ -101,7 +101,7 @@ func ExampleGetExerciseScheme_owner() {
 		"restBetweenSets": 180
 	}`)
 
-	w := doJSON(r, "GET", "/api/exercise-schemes/1", nil)
+	w := doJSON(r, "GET", "/api/user/exercise-schemes/1", nil)
 
 	var scheme models.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme)
@@ -115,7 +115,7 @@ func ExampleGetExerciseScheme_owner() {
 // Non-owner can read a scheme if the linked exercise is public.
 func ExampleGetExerciseScheme_nonOwnerPublicExercise() {
 	setupExampleDB()
-	r := newRouter()
+	r := newExampleRouter()
 
 	// Create a public exercise and a scheme for it.
 	doRaw(r, "POST", "/api/exercises", `{
@@ -126,7 +126,7 @@ func ExampleGetExerciseScheme_nonOwnerPublicExercise() {
 		"description": "Bodyweight push-up",
 		"public": true
 	}`)
-	doRaw(r, "POST", "/api/exercise-schemes", `{
+	doRaw(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1,
 		"measurementType": "REP_BASED",
 		"sets": 3,
@@ -134,7 +134,7 @@ func ExampleGetExerciseScheme_nonOwnerPublicExercise() {
 	}`)
 
 	// Another user can read the scheme because the exercise is public.
-	w := doRawAs(r, "GET", "/api/exercise-schemes/1", "", "other")
+	w := doRawAs(r, "GET", "/api/user/exercise-schemes/1", "", "other")
 
 	var scheme models.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme)
@@ -148,7 +148,7 @@ func ExampleGetExerciseScheme_nonOwnerPublicExercise() {
 // Non-owner cannot read a scheme if the linked exercise is private.
 func ExampleGetExerciseScheme_nonOwnerPrivateExercise() {
 	setupExampleDB()
-	r := newRouter()
+	r := newExampleRouter()
 
 	// Create a private exercise and a scheme for it.
 	doRaw(r, "POST", "/api/exercises", `{
@@ -158,7 +158,7 @@ func ExampleGetExerciseScheme_nonOwnerPrivateExercise() {
 		"bodyWeightScaling": 0,
 		"description": "A private exercise"
 	}`)
-	doRaw(r, "POST", "/api/exercise-schemes", `{
+	doRaw(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1,
 		"measurementType": "REP_BASED",
 		"sets": 3,
@@ -166,7 +166,7 @@ func ExampleGetExerciseScheme_nonOwnerPrivateExercise() {
 	}`)
 
 	// Another user is denied because the exercise is private.
-	w := doRawAs(r, "GET", "/api/exercise-schemes/1", "", "other")
+	w := doRawAs(r, "GET", "/api/user/exercise-schemes/1", "", "other")
 	fmt.Println(w.Code)
 	// Output: 403
 }
@@ -174,7 +174,7 @@ func ExampleGetExerciseScheme_nonOwnerPrivateExercise() {
 // Owner can update their exercise scheme.
 func ExampleUpdateExerciseScheme_owner() {
 	setupExampleDB()
-	r := newRouter()
+	r := newExampleRouter()
 
 	doRaw(r, "POST", "/api/exercises", `{
 		"names": ["Bicep Curl"],
@@ -183,7 +183,7 @@ func ExampleUpdateExerciseScheme_owner() {
 		"bodyWeightScaling": 0,
 		"description": "Dumbbell bicep curl"
 	}`)
-	doRaw(r, "POST", "/api/exercise-schemes", `{
+	doRaw(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1,
 		"measurementType": "REP_BASED",
 		"sets": 3,
@@ -193,7 +193,7 @@ func ExampleUpdateExerciseScheme_owner() {
 	}`)
 
 	// Update the scheme — increase weight and reduce reps.
-	w := doRaw(r, "PUT", "/api/exercise-schemes/1", `{
+	w := doRaw(r, "PUT", "/api/user/exercise-schemes/1", `{
 		"exerciseId": 1,
 		"measurementType": "REP_BASED",
 		"sets": 3,
@@ -214,7 +214,7 @@ func ExampleUpdateExerciseScheme_owner() {
 // Non-owner cannot update a scheme even if the linked exercise is public.
 func ExampleUpdateExerciseScheme_nonOwnerPublicExercise() {
 	setupExampleDB()
-	r := newRouter()
+	r := newExampleRouter()
 
 	doRaw(r, "POST", "/api/exercises", `{
 		"names": ["Push-up"],
@@ -224,14 +224,14 @@ func ExampleUpdateExerciseScheme_nonOwnerPublicExercise() {
 		"description": "Bodyweight push-up",
 		"public": true
 	}`)
-	doRaw(r, "POST", "/api/exercise-schemes", `{
+	doRaw(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1,
 		"measurementType": "REP_BASED",
 		"sets": 3,
 		"reps": 20
 	}`)
 
-	w := doRawAs(r, "PUT", "/api/exercise-schemes/1", `{
+	w := doRawAs(r, "PUT", "/api/user/exercise-schemes/1", `{
 		"exerciseId": 1,
 		"measurementType": "REP_BASED",
 		"sets": 5,
@@ -244,7 +244,7 @@ func ExampleUpdateExerciseScheme_nonOwnerPublicExercise() {
 // Non-owner cannot update a scheme for a private exercise.
 func ExampleUpdateExerciseScheme_nonOwnerPrivateExercise() {
 	setupExampleDB()
-	r := newRouter()
+	r := newExampleRouter()
 
 	doRaw(r, "POST", "/api/exercises", `{
 		"names": ["Secret Move"],
@@ -253,14 +253,14 @@ func ExampleUpdateExerciseScheme_nonOwnerPrivateExercise() {
 		"bodyWeightScaling": 0,
 		"description": "A private exercise"
 	}`)
-	doRaw(r, "POST", "/api/exercise-schemes", `{
+	doRaw(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1,
 		"measurementType": "REP_BASED",
 		"sets": 3,
 		"reps": 8
 	}`)
 
-	w := doRawAs(r, "PUT", "/api/exercise-schemes/1", `{
+	w := doRawAs(r, "PUT", "/api/user/exercise-schemes/1", `{
 		"exerciseId": 1,
 		"measurementType": "REP_BASED",
 		"sets": 5,
@@ -273,7 +273,7 @@ func ExampleUpdateExerciseScheme_nonOwnerPrivateExercise() {
 // Owner sees their own schemes in the list.
 func ExampleListExerciseSchemes_owner() {
 	setupExampleDB()
-	r := newRouter()
+	r := newExampleRouter()
 
 	// Create a private exercise and a scheme.
 	doRaw(r, "POST", "/api/exercises", `{
@@ -283,14 +283,14 @@ func ExampleListExerciseSchemes_owner() {
 		"bodyWeightScaling": 0.5,
 		"description": "Barbell squat"
 	}`)
-	doRaw(r, "POST", "/api/exercise-schemes", `{
+	doRaw(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1,
 		"measurementType": "REP_BASED",
 		"sets": 5,
 		"reps": 5
 	}`)
 
-	w := doJSON(r, "GET", "/api/exercise-schemes", nil)
+	w := doJSON(r, "GET", "/api/user/exercise-schemes", nil)
 
 	var schemes []models.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &schemes)
@@ -306,7 +306,7 @@ func ExampleListExerciseSchemes_owner() {
 // Non-owner sees schemes for public exercises in the list.
 func ExampleListExerciseSchemes_nonOwnerPublicExercise() {
 	setupExampleDB()
-	r := newRouter()
+	r := newExampleRouter()
 
 	// Create a public exercise and a scheme.
 	doRaw(r, "POST", "/api/exercises", `{
@@ -317,7 +317,7 @@ func ExampleListExerciseSchemes_nonOwnerPublicExercise() {
 		"description": "Bodyweight push-up",
 		"public": true
 	}`)
-	doRaw(r, "POST", "/api/exercise-schemes", `{
+	doRaw(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1,
 		"measurementType": "REP_BASED",
 		"sets": 3,
@@ -325,7 +325,7 @@ func ExampleListExerciseSchemes_nonOwnerPublicExercise() {
 	}`)
 
 	// Another user sees schemes for public exercises.
-	w := doRawAs(r, "GET", "/api/exercise-schemes", "", "other")
+	w := doRawAs(r, "GET", "/api/user/exercise-schemes", "", "other")
 
 	var schemes []models.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &schemes)
@@ -339,7 +339,7 @@ func ExampleListExerciseSchemes_nonOwnerPublicExercise() {
 // Non-owner does not see schemes for private exercises.
 func ExampleListExerciseSchemes_nonOwnerPrivateExercise() {
 	setupExampleDB()
-	r := newRouter()
+	r := newExampleRouter()
 
 	// Create a private exercise and a scheme.
 	doRaw(r, "POST", "/api/exercises", `{
@@ -349,7 +349,7 @@ func ExampleListExerciseSchemes_nonOwnerPrivateExercise() {
 		"bodyWeightScaling": 0,
 		"description": "A private exercise"
 	}`)
-	doRaw(r, "POST", "/api/exercise-schemes", `{
+	doRaw(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1,
 		"measurementType": "REP_BASED",
 		"sets": 3,
@@ -357,7 +357,7 @@ func ExampleListExerciseSchemes_nonOwnerPrivateExercise() {
 	}`)
 
 	// Another user sees an empty list.
-	w := doRawAs(r, "GET", "/api/exercise-schemes", "", "other")
+	w := doRawAs(r, "GET", "/api/user/exercise-schemes", "", "other")
 
 	var schemes []models.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &schemes)

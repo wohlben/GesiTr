@@ -5,11 +5,11 @@ import (
 	"reflect"
 	"time"
 
-	exercisemodels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciselogmodels "gesitr/internal/user/exerciselog/models"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	masteryHandlers "gesitr/internal/user/mastery/handlers"
 	"gesitr/internal/user/workoutlog/models"
 
@@ -178,7 +178,7 @@ func createOrUpdateExerciseLog(db *gorm.DB, set *models.WorkoutLogExerciseSetEnt
 		return err
 	}
 
-	var scheme exercisemodels.ExerciseSchemeEntity
+	var scheme exerciseschememodels.ExerciseSchemeEntity
 	if err := db.First(&scheme, logExercise.SourceExerciseSchemeID).Error; err != nil {
 		return err
 	}

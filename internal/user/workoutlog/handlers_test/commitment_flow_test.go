@@ -9,6 +9,7 @@ import (
 	exercisemodels "gesitr/internal/compendium/exercise/models"
 	workoutmodels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	"gesitr/internal/user/workoutlog/models"
 )
 
@@ -29,14 +30,14 @@ func TestCommitmentHappyPath(t *testing.T) {
 	var exercise exercisemodels.Exercise
 	json.Unmarshal(w.Body.Bytes(), &exercise)
 
-	w = doJSONLog(t, r, "POST", "/api/exercise-schemes", map[string]any{
+	w = doJSONLog(t, r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": exercise.ID, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 5, "weight": 180.0, "restBetweenSets": 180,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create scheme: %d", w.Code)
 	}
-	var scheme exercisemodels.ExerciseScheme
+	var scheme exerciseschememodels.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme)
 
 	// 2. Create a workout template

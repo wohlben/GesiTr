@@ -19,7 +19,7 @@ func createExerciseSchemeForExample(r *gin.Engine) {
 		"bodyWeightScaling": 0.5,
 		"description": "Barbell bench press"
 	}`)
-	doRaw(r, "POST", "/api/exercise-schemes", `{
+	doRaw(r, "POST", "/api/user/exercise-schemes", `{
 		"exerciseId": 1,
 		"measurementType": "REP_BASED",
 		"sets": 3,

@@ -141,7 +141,7 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
     // ============================================================
     const schemeResponse = page.waitForResponse(
       (resp) =>
-        resp.url().includes('/api/exercise-schemes') &&
+        resp.url().includes('/api/user/exercise-schemes') &&
         resp.request().method() === 'POST',
     );
     const exerciseResponse = page.waitForResponse(
@@ -222,7 +222,7 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
     const addBtn2 = page.getByRole('button', { name: 'Add', exact: true });
     const schemeResponse2 = page.waitForResponse(
       (resp) =>
-        resp.url().includes('/api/exercise-schemes') &&
+        resp.url().includes('/api/user/exercise-schemes') &&
         resp.request().method() === 'POST',
     );
     const exerciseResponse2 = page.waitForResponse(

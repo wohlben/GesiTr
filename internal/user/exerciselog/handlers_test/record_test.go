@@ -16,7 +16,7 @@ func TestRecordCreatedOnSetCompletion(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 5, "weight": 100.0,
 	})
@@ -70,7 +70,7 @@ func TestRecordUpdatedOnBetterPerformance(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 5, "weight": 100.0,
 	})
@@ -122,7 +122,7 @@ func TestRecordNotUpdatedOnWorsePerformance(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 5, "weight": 100.0,
 	})
@@ -168,7 +168,7 @@ func TestDifferentMeasurementTypes(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Plank"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "TIME_BASED",
 		"sets": 1, "duration": 60,
 	})
@@ -208,7 +208,7 @@ func TestDistanceBasedMeasurement(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Run"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "DISTANCE_BASED",
 		"sets": 1, "distance": 5.0,
 	})
@@ -248,7 +248,7 @@ func TestUpdateExerciseLogShiftsRecord(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
@@ -319,7 +319,7 @@ func TestDeleteExerciseLogShiftsRecord(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 2, "reps": 5, "weight": 100.0,
 	})
@@ -405,7 +405,7 @@ func TestNoRecordWhenNotFinished(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})
@@ -441,11 +441,11 @@ func TestPerExerciseNotPerScheme(t *testing.T) {
 		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
 	// Two schemes for the same exercise
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 1, "reps": 10, "weight": 80.0,
 	})

@@ -3,10 +3,10 @@ package handlers
 import (
 	"context"
 
-	exercisemodels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -78,7 +78,7 @@ func CreateWorkoutSectionItem(ctx context.Context, input *CreateWorkoutSectionIt
 		if input.Body.ExerciseSchemeID == nil {
 			return nil, huma.Error422UnprocessableEntity("exerciseSchemeId is required for exercise type")
 		}
-		var scheme exercisemodels.ExerciseSchemeEntity
+		var scheme exerciseschememodels.ExerciseSchemeEntity
 		if err := database.DB.First(&scheme, *input.Body.ExerciseSchemeID).Error; err != nil {
 			return nil, huma.Error404NotFound("Exercise scheme not found")
 		}

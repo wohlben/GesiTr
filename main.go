@@ -29,6 +29,8 @@ import (
 	"gesitr/internal/humaconfig"
 	exerciseLogHandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciseLogModels "gesitr/internal/user/exerciselog/models"
+	exerciseSchemeHandlers "gesitr/internal/user/exercisescheme/handlers"
+	exerciseSchemeModels "gesitr/internal/user/exercisescheme/models"
 	masteryHandlers "gesitr/internal/user/mastery/handlers"
 	masteryModels "gesitr/internal/user/mastery/models"
 	namePreferenceHandlers "gesitr/internal/user/namepreference/handlers"
@@ -289,7 +291,7 @@ func autoMigrate() {
 		&workoutModels.ExerciseGroupMemberEntity{},
 		&exerciseModels.ExerciseHistoryEntity{},
 		&equipmentModels.EquipmentHistoryEntity{},
-		&exerciseModels.ExerciseSchemeEntity{},
+		&exerciseSchemeModels.ExerciseSchemeEntity{},
 		&equipmentModels.EquipmentRelationshipEntity{},
 		&workoutModels.WorkoutEntity{},
 		&workoutModels.WorkoutSectionEntity{},
@@ -332,6 +334,7 @@ func setupRoutes(r *gin.Engine) {
 	workoutScheduleHandlers.RegisterRoutes(humaAPI)
 	masteryHandlers.RegisterRoutes(humaAPI)
 	namePreferenceHandlers.RegisterRoutes(humaAPI)
+	exerciseSchemeHandlers.RegisterRoutes(humaAPI)
 	localityHandlers.RegisterRoutes(humaAPI)
 }
 

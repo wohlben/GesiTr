@@ -10,7 +10,7 @@ import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { formatBreak } from '$core/format-utils';
 import { workoutKeys, workoutLogKeys } from '$core/query-keys';
 import { Workout, WorkoutSectionTypeMain, WorkoutLog } from '$generated/user-models';
-import { ExerciseScheme } from '$generated/models';
+import { ExerciseScheme } from '$generated/user-exercisescheme';
 import { PageLayout } from '../../../layout/page-layout';
 import { HlmInput } from '@spartan-ng/helm/input';
 import { HlmTextarea } from '@spartan-ng/helm/textarea';

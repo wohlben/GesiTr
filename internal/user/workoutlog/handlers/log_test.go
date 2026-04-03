@@ -273,7 +273,7 @@ func TestFinishWorkoutLog(t *testing.T) {
 	if ueW.Code != http.StatusCreated {
 		t.Fatalf("create exercise: status = %d, body = %s", ueW.Code, ueW.Body.String())
 	}
-	schemeW := doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	schemeW := doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 2, "reps": 10,
 	})
 	if schemeW.Code != http.StatusCreated {

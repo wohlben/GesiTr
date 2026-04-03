@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"gesitr/internal/compendium/exercise/models"
+	"gesitr/internal/user/exercisescheme/models"
 )
 
 func TestListExerciseSchemes(t *testing.T) {
@@ -16,7 +16,7 @@ func TestListExerciseSchemes(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", newExercisePayload("Bench Press"))
 
 	t.Run("empty list", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/exercise-schemes", nil)
+		w := doJSON(r, "GET", "/api/user/exercise-schemes", nil)
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d", w.Code)
 		}
@@ -33,11 +33,11 @@ func TestListExerciseSchemes(t *testing.T) {
 	rest90 := 90
 	duration30 := 30
 
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": sets3, "reps": reps10, "weight": weight60, "restBetweenSets": rest90,
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "TIME_BASED",
 		"duration": duration30,
 	})
@@ -49,7 +49,7 @@ func TestListExerciseSchemes(t *testing.T) {
 	_ = duration30
 
 	t.Run("list all", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/exercise-schemes", nil)
+		w := doJSON(r, "GET", "/api/user/exercise-schemes", nil)
 		var result []models.ExerciseScheme
 		json.Unmarshal(w.Body.Bytes(), &result)
 		if len(result) != 2 {
@@ -58,7 +58,7 @@ func TestListExerciseSchemes(t *testing.T) {
 	})
 
 	t.Run("filter by exerciseId", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/exercise-schemes?exerciseId=1", nil)
+		w := doJSON(r, "GET", "/api/user/exercise-schemes?exerciseId=1", nil)
 		var result []models.ExerciseScheme
 		json.Unmarshal(w.Body.Bytes(), &result)
 		if len(result) != 2 {
@@ -67,7 +67,7 @@ func TestListExerciseSchemes(t *testing.T) {
 	})
 
 	t.Run("filter by measurementType", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/exercise-schemes?measurementType=REP_BASED", nil)
+		w := doJSON(r, "GET", "/api/user/exercise-schemes?measurementType=REP_BASED", nil)
 		var result []models.ExerciseScheme
 		json.Unmarshal(w.Body.Bytes(), &result)
 		if len(result) != 1 || result[0].MeasurementType != "REP_BASED" {
@@ -77,7 +77,7 @@ func TestListExerciseSchemes(t *testing.T) {
 
 	t.Run("scoped to owner", func(t *testing.T) {
 		// Bob should see no schemes (they belong to testuser)
-		w := doJSONAs(r, "GET", "/api/exercise-schemes", nil, "bob")
+		w := doJSONAs(r, "GET", "/api/user/exercise-schemes", nil, "bob")
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d", w.Code)
 		}
@@ -90,7 +90,7 @@ func TestListExerciseSchemes(t *testing.T) {
 
 	t.Run("db error", func(t *testing.T) {
 		closeDB(t)
-		w := doJSON(r, "GET", "/api/exercise-schemes", nil)
+		w := doJSON(r, "GET", "/api/user/exercise-schemes", nil)
 		if w.Code != http.StatusInternalServerError {
 			t.Errorf("expected 500, got %d", w.Code)
 		}
@@ -105,7 +105,7 @@ func TestCreateExerciseScheme(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", newExercisePayload("Squat"))
 
 	t.Run("success with rep-based fields", func(t *testing.T) {
-		w := doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		w := doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 			"exerciseId": 1, "measurementType": "REP_BASED",
 			"sets": 5, "reps": 5, "weight": 100.0, "restBetweenSets": 180,
 		})
@@ -123,7 +123,7 @@ func TestCreateExerciseScheme(t *testing.T) {
 	})
 
 	t.Run("success with time-based fields", func(t *testing.T) {
-		w := doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		w := doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 			"exerciseId": 1, "measurementType": "TIME_BASED",
 			"duration": 60, "sets": 3, "restBetweenSets": 30,
 		})
@@ -138,7 +138,7 @@ func TestCreateExerciseScheme(t *testing.T) {
 	})
 
 	t.Run("success with distance-based fields", func(t *testing.T) {
-		w := doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		w := doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 			"exerciseId": 1, "measurementType": "DISTANCE_BASED",
 			"distance": 5000.0, "targetTime": 1200,
 		})
@@ -153,7 +153,7 @@ func TestCreateExerciseScheme(t *testing.T) {
 	})
 
 	t.Run("exercise not found", func(t *testing.T) {
-		w := doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		w := doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 			"exerciseId": 999, "measurementType": "REP_BASED",
 		})
 		if w.Code != http.StatusNotFound {
@@ -162,7 +162,7 @@ func TestCreateExerciseScheme(t *testing.T) {
 	})
 
 	t.Run("bad json", func(t *testing.T) {
-		w := doRaw(r, "POST", "/api/exercise-schemes", "{invalid")
+		w := doRaw(r, "POST", "/api/user/exercise-schemes", "{invalid")
 		if w.Code != http.StatusBadRequest {
 			t.Errorf("expected 400, got %d", w.Code)
 		}
@@ -170,7 +170,7 @@ func TestCreateExerciseScheme(t *testing.T) {
 
 	t.Run("db error", func(t *testing.T) {
 		closeDB(t)
-		w := doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		w := doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 			"exerciseId": 1, "measurementType": "REP_BASED",
 		})
 		if w.Code != http.StatusNotFound {
@@ -184,13 +184,13 @@ func TestGetExerciseScheme(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", newExercisePayload("Deadlift"))
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 8,
 	})
 
 	t.Run("found", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/exercise-schemes/1", nil)
+		w := doJSON(r, "GET", "/api/user/exercise-schemes/1", nil)
 		if w.Code != http.StatusOK {
 			t.Fatalf("status = %d", w.Code)
 		}
@@ -202,14 +202,14 @@ func TestGetExerciseScheme(t *testing.T) {
 	})
 
 	t.Run("forbidden for non-owner", func(t *testing.T) {
-		w := doJSONAs(r, "GET", "/api/exercise-schemes/1", nil, "bob")
+		w := doJSONAs(r, "GET", "/api/user/exercise-schemes/1", nil, "bob")
 		if w.Code != http.StatusForbidden {
 			t.Errorf("expected 403, got %d", w.Code)
 		}
 	})
 
 	t.Run("not found", func(t *testing.T) {
-		w := doJSON(r, "GET", "/api/exercise-schemes/999", nil)
+		w := doJSON(r, "GET", "/api/user/exercise-schemes/999", nil)
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
 		}
@@ -221,13 +221,13 @@ func TestUpdateExerciseScheme(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", newExercisePayload("Bench Press"))
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 10, "weight": 60.0,
 	})
 
 	t.Run("success", func(t *testing.T) {
-		w := doJSON(r, "PUT", "/api/exercise-schemes/1", map[string]any{
+		w := doJSON(r, "PUT", "/api/user/exercise-schemes/1", map[string]any{
 			"exerciseId":      1,
 			"measurementType": "REP_BASED",
 			"sets":            5, "reps": 5, "weight": 80.0, "restBetweenSets": 180,
@@ -247,7 +247,7 @@ func TestUpdateExerciseScheme(t *testing.T) {
 	})
 
 	t.Run("forbidden for non-owner", func(t *testing.T) {
-		w := doJSONAs(r, "PUT", "/api/exercise-schemes/1", map[string]any{
+		w := doJSONAs(r, "PUT", "/api/user/exercise-schemes/1", map[string]any{
 			"exerciseId":      1,
 			"measurementType": "REP_BASED",
 		}, "bob")
@@ -257,7 +257,7 @@ func TestUpdateExerciseScheme(t *testing.T) {
 	})
 
 	t.Run("not found", func(t *testing.T) {
-		w := doJSON(r, "PUT", "/api/exercise-schemes/999", map[string]any{
+		w := doJSON(r, "PUT", "/api/user/exercise-schemes/999", map[string]any{
 			"exerciseId":      1,
 			"measurementType": "REP_BASED",
 		})
@@ -267,7 +267,7 @@ func TestUpdateExerciseScheme(t *testing.T) {
 	})
 
 	t.Run("bad json", func(t *testing.T) {
-		w := doRaw(r, "PUT", "/api/exercise-schemes/1", "{bad")
+		w := doRaw(r, "PUT", "/api/user/exercise-schemes/1", "{bad")
 		if w.Code != http.StatusBadRequest {
 			t.Errorf("expected 400, got %d", w.Code)
 		}
@@ -279,12 +279,12 @@ func TestDeleteExerciseScheme(t *testing.T) {
 	r := newRouter()
 
 	doJSON(r, "POST", "/api/exercises", newExercisePayload("Row"))
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 4, "reps": 12,
 	})
 
 	t.Run("success", func(t *testing.T) {
-		w := doJSON(r, "DELETE", "/api/exercise-schemes/1", nil)
+		w := doJSON(r, "DELETE", "/api/user/exercise-schemes/1", nil)
 		if w.Code != http.StatusNoContent {
 			t.Errorf("expected 204, got %d", w.Code)
 		}
@@ -292,17 +292,17 @@ func TestDeleteExerciseScheme(t *testing.T) {
 
 	t.Run("forbidden for non-owner", func(t *testing.T) {
 		// Create a new scheme for this test
-		doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+		doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 			"exerciseId": 1, "measurementType": "REP_BASED", "sets": 4, "reps": 12,
 		})
-		w := doJSONAs(r, "DELETE", "/api/exercise-schemes/2", nil, "bob")
+		w := doJSONAs(r, "DELETE", "/api/user/exercise-schemes/2", nil, "bob")
 		if w.Code != http.StatusForbidden {
 			t.Errorf("expected 403, got %d", w.Code)
 		}
 	})
 
 	t.Run("not found", func(t *testing.T) {
-		w := doJSON(r, "DELETE", "/api/exercise-schemes/999", nil)
+		w := doJSON(r, "DELETE", "/api/user/exercise-schemes/999", nil)
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404, got %d", w.Code)
 		}
@@ -310,7 +310,7 @@ func TestDeleteExerciseScheme(t *testing.T) {
 
 	t.Run("db error", func(t *testing.T) {
 		closeDB(t)
-		w := doJSON(r, "DELETE", "/api/exercise-schemes/1", nil)
+		w := doJSON(r, "DELETE", "/api/user/exercise-schemes/1", nil)
 		if w.Code != http.StatusNotFound {
 			t.Errorf("expected 404 (db closed), got %d", w.Code)
 		}

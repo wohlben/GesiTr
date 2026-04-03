@@ -6,11 +6,11 @@ import (
 	"os"
 
 	"gesitr/internal/auth"
-	equipmenthandlers "gesitr/internal/compendium/equipment/handlers"
-	equipmentmodels "gesitr/internal/compendium/equipment/models"
-	"gesitr/internal/compendium/exercise/models"
+	exerciseHandlers "gesitr/internal/compendium/exercise/handlers"
+	exerciseModels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	"gesitr/internal/user/exercisescheme/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
 
 	"github.com/gin-gonic/gin"
@@ -26,32 +26,29 @@ func setupExampleDB() {
 		panic(err)
 	}
 	db.AutoMigrate(
-		&models.ExerciseEntity{},
-		&models.ExerciseForce{},
-		&models.ExerciseMuscle{},
-		&models.ExerciseMeasurementParadigm{},
-		&models.ExerciseInstruction{},
-		&models.ExerciseImage{},
-		&models.ExerciseName{},
-		&models.ExerciseEquipment{},
-		&models.ExerciseHistoryEntity{},
+		&exerciseModels.ExerciseEntity{},
+		&exerciseModels.ExerciseForce{},
+		&exerciseModels.ExerciseMuscle{},
+		&exerciseModels.ExerciseMeasurementParadigm{},
+		&exerciseModels.ExerciseInstruction{},
+		&exerciseModels.ExerciseImage{},
+		&exerciseModels.ExerciseName{},
+		&exerciseModels.ExerciseEquipment{},
+		&exerciseModels.ExerciseHistoryEntity{},
+		&models.ExerciseSchemeEntity{},
 		&namePreferenceModels.ExerciseNamePreference{},
-		&equipmentmodels.EquipmentEntity{},
-		&equipmentmodels.EquipmentHistoryEntity{},
 	)
 	database.DB = db
 }
 
-// newExampleRouter registers both exercise and equipment routes, so examples
-// can demonstrate cross-API flows.
 func newExampleRouter() *gin.Engine {
 	r := gin.New()
 	api := r.Group("/api")
 	api.Use(auth.UserID())
 
 	humaAPI := humaconfig.NewAPI(r, api)
+	exerciseHandlers.RegisterRoutes(humaAPI)
 	RegisterRoutes(humaAPI)
-	equipmenthandlers.RegisterRoutes(humaAPI)
 
 	return r
 }
