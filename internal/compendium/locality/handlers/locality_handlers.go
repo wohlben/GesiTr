@@ -30,6 +30,12 @@ func ListLocalities(ctx context.Context, input *ListLocalitiesInput) (*ListLocal
 		db = db.Where("owner = ? OR public = ?", userID, true)
 	}
 
+	if input.Public == "true" {
+		db = db.Where("public = ?", true)
+	} else if input.Public == "false" {
+		db = db.Where("public = ?", false)
+	}
+
 	if input.Q != "" {
 		pattern := "%" + input.Q + "%"
 		db = db.Where("name LIKE ?", pattern)

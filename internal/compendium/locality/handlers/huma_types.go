@@ -13,8 +13,9 @@ type LocalityBody struct {
 
 type ListLocalitiesInput struct {
 	humaconfig.PaginationInput
-	Owner string `query:"owner" doc:"Filter by owner ('me' for current user)"`
-	Q     string `query:"q" doc:"Search by name"`
+	Owner  string `query:"owner" doc:"Filter by owner ('me' for current user)"`
+	Public string `query:"public" doc:"'true' for public only, 'false' for private only"`
+	Q      string `query:"q" doc:"Search by name"`
 }
 
 type ListLocalitiesOutput struct {

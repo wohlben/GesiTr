@@ -303,7 +303,8 @@
       "searchPlaceholder": "Type to search...",
       "alreadyAdded": "already added",
       "noEquipment": "No equipment added yet.",
-      "toggleAvailability": "Toggle availability"
+      "toggleAvailability": "Toggle availability",
+      "home": "Home"
     }
   },
   "user": {

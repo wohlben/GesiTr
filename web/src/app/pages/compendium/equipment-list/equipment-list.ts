@@ -1,10 +1,16 @@
 import { Component, inject, computed } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
+import {
+  injectQuery,
+  injectMutation,
+  keepPreviousData,
+  QueryClient,
+} from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { equipmentKeys, equipmentMasteryKeys } from '$core/query-keys';
+import { equipmentKeys, equipmentMasteryKeys, localityKeys } from '$core/query-keys';
+import { SlugifyPipe } from '$ui/pipes/slugify';
 import { EquipmentMastery } from '$generated/user-mastery';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { EquipmentListItem } from '$ui/compendium/equipment-list-item/equipment-list-item';
@@ -31,6 +37,14 @@ import {
         [errorMessage]="equipmentQuery.isError() ? equipmentQuery.error().message : undefined"
       >
         <div actions class="flex gap-2">
+          <button
+            type="button"
+            (click)="goHome()"
+            [disabled]="homeMutation.isPending()"
+            class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+          >
+            {{ t('compendium.localities.home') }}
+          </button>
           <a
             routerLink="/compendium/localities"
             class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
@@ -66,6 +80,9 @@ import {
 export class EquipmentList {
   private api = inject(CompendiumApiClient);
   private userApi = inject(UserApiClient);
+  private router = inject(Router);
+  private queryClient = inject(QueryClient);
+  private slugify = new SlugifyPipe();
   private queryParams = toSignal(inject(ActivatedRoute).queryParamMap);
 
   filters = computed(() => {
@@ -114,6 +131,32 @@ export class EquipmentList {
     } catch {
       return undefined;
     }
+  }
+
+  private homeLocalityQuery = injectQuery(() => ({
+    queryKey: localityKeys.list({ owner: 'me', public: 'false', limit: 1 }),
+    queryFn: () => this.api.fetchLocalities({ owner: 'me', public: 'false', limit: 1 }),
+  }));
+
+  homeMutation = injectMutation(() => ({
+    mutationFn: () => this.api.createLocality({ name: 'Home', public: false }),
+    onSuccess: (result) => {
+      this.queryClient.invalidateQueries({ queryKey: localityKeys.all() });
+      this.navigateToLocality(result.id, result.name);
+    },
+  }));
+
+  goHome() {
+    const home = this.homeLocalityQuery.data()?.items?.[0];
+    if (home) {
+      this.navigateToLocality(home.id, home.name);
+    } else {
+      this.homeMutation.mutate();
+    }
+  }
+
+  private navigateToLocality(id: number, name: string) {
+    this.router.navigate(['/compendium/localities', id, this.slugify.transform(name)]);
   }
 
   equipmentColumns: DataTableColumn[] = [
