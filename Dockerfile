@@ -40,12 +40,15 @@ RUN --mount=type=cache,target=/home/tester/.cache/go-build,uid=1000 \
 RUN --mount=type=cache,target=/home/tester/.cache/go-build,uid=1000 \
     CGO_ENABLED=1 go build -o seed ./cmd/seed
 
-# Stage 3: E2E tests — Playwright against the production binary
-FROM node AS e2e-tester
+# Stage 3a: E2E runner — reusable base with Playwright + binary, no test execution.
+# Use `docker run gesitr-e2e` to run tests interactively or update screenshots.
+FROM node AS e2e-runner
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 \
     libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libpango-1.0-0 \
-    libcairo2 libasound2 libxshmfence1 && rm -rf /var/lib/apt/lists/*
+    libcairo2 libasound2 libxshmfence1 \
+    fonts-liberation fonts-dejavu-core fonts-freefont-ttf fonts-noto-color-emoji fontconfig \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /app/web
 RUN chown node:node /app /app/web
 COPY --chown=node:node web/package*.json ./
@@ -55,11 +58,14 @@ RUN npx playwright install chromium
 COPY --chown=node:node web/playwright.config.ts ./
 COPY --chown=node:node web/e2e/ ./e2e/
 COPY --from=go-builder --chown=node:node /app/gesitr /app/gesitr
-ARG CACHEBUST
 ENV PLAYWRIGHT_TEST_BASE_URL=http://localhost:8080
 ENV AUTH_FALLBACK_USER=e2e-tester
 ENV DEV=true
 WORKDIR /app
+
+# Stage 3b: E2E tests — runs the full suite (used by `docker build`).
+FROM e2e-runner AS e2e-tester
+ARG CACHEBUST
 RUN ./gesitr & SERVER_PID=$! && \
     sleep 2 && \
     cd web && npx playwright test ; \
