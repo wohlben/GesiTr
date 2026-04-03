@@ -304,7 +304,8 @@
       "alreadyAdded": "already added",
       "noEquipment": "No equipment added yet.",
       "toggleAvailability": "Toggle availability",
-      "home": "Home"
+      "home": "Home",
+      "homeDescription": "Go to your home locality, or create one if it doesn't exist yet"
     }
   },
   "user": {
