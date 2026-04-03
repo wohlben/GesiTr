@@ -9,6 +9,7 @@ import (
 
 	equipmentModels "gesitr/internal/compendium/equipment/models"
 	exerciseModels "gesitr/internal/compendium/exercise/models"
+	workoutModels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
 
 	"gorm.io/driver/sqlite"
@@ -92,26 +93,42 @@ func TestMainFunction(t *testing.T) {
 		"id": "x-y", "relationshipType": "similar", "strength": 0.5, "description": nil,
 		"createdBy": "sinon", "createdAt": ts, "fromExerciseTemplateId": "x", "toExerciseTemplateId": "x",
 	})
+	writeTempJSON(t, tmpDir, "compendium_workouts", "w.json", map[string]any{
+		"name": "Test Workout", "notes": nil, "createdBy": "sinon", "createdAt": ts, "version": 0,
+		"sections": []map[string]any{
+			{
+				"type": "main", "label": nil, "position": 0, "restBetweenExercises": 60,
+				"items": []map[string]any{
+					{
+						"type": "exercise", "position": 0, "exerciseTemplateId": "x",
+						"scheme": map[string]any{"measurementType": "REP_BASED", "sets": 3, "restBetweenSets": 90},
+					},
+				},
+			},
+		},
+	})
 	// main() calls database.Init() which creates gesitr.db in cwd (tmpDir)
 	main()
 
 	// Verify all entities were seeded
-	var eqCount, fCount, exCount, relCount int64
+	var eqCount, fCount, exCount, relCount, wCount int64
 	database.DB.Model(&equipmentModels.EquipmentEntity{}).Count(&eqCount)
 	database.DB.Model(&equipmentModels.FulfillmentEntity{}).Count(&fCount)
 	database.DB.Model(&exerciseModels.ExerciseEntity{}).Count(&exCount)
 	database.DB.Model(&exerciseModels.ExerciseRelationshipEntity{}).Count(&relCount)
+	database.DB.Model(&workoutModels.WorkoutEntity{}).Count(&wCount)
 
-	if eqCount != 1 || fCount != 1 || exCount != 1 || relCount != 1 {
-		t.Errorf("counts: eq=%d f=%d ex=%d rel=%d", eqCount, fCount, exCount, relCount)
+	if eqCount != 1 || fCount != 1 || exCount != 1 || relCount != 1 || wCount != 1 {
+		t.Errorf("counts: eq=%d f=%d ex=%d rel=%d w=%d", eqCount, fCount, exCount, relCount, wCount)
 	}
 
 	// Verify history entries were created
-	var eqHistCount, exHistCount int64
+	var eqHistCount, exHistCount, wHistCount int64
 	database.DB.Model(&exerciseModels.ExerciseHistoryEntity{}).Count(&exHistCount)
 	database.DB.Model(&equipmentModels.EquipmentHistoryEntity{}).Count(&eqHistCount)
-	if exHistCount != 1 || eqHistCount != 1 {
-		t.Errorf("history counts: exerciseHistory=%d equipmentHistory=%d", exHistCount, eqHistCount)
+	database.DB.Model(&workoutModels.WorkoutHistoryEntity{}).Count(&wHistCount)
+	if exHistCount != 1 || eqHistCount != 1 || wHistCount != 1 {
+		t.Errorf("history counts: exercise=%d equipment=%d workout=%d", exHistCount, eqHistCount, wHistCount)
 	}
 }
 
