@@ -29,6 +29,7 @@ import { DecimalPipe } from '@angular/common';
         [errorMessage]="equipmentQuery.isError() ? equipmentQuery.error().message : undefined"
       >
         <div actions class="flex gap-2">
+          <app-equipment-add-to-locality-menu [equipmentId]="id()" />
           @if (alreadyAdded(); as existing) {
             <a
               [routerLink]="['/compendium/equipment', existing.id]"
@@ -48,7 +49,6 @@ import { DecimalPipe } from '@angular/common';
               }}
             </button>
           }
-          <app-equipment-add-to-locality-menu [equipmentId]="id()" />
           @if (hasHistory()) {
             <a
               routerLink="./history"
