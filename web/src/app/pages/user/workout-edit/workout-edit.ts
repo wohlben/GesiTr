@@ -26,6 +26,7 @@ import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmComboboxImports } from '@spartan-ng/helm/combobox';
 import { HlmInput } from '@spartan-ng/helm/input';
 import { Exercise } from '$generated/models';
+import { ExerciseStore } from '$core/exercise.store';
 import { HlmTextarea } from '@spartan-ng/helm/textarea';
 import {
   ExerciseGroupConfig,
@@ -505,6 +506,7 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
 export class WorkoutEdit {
   private userApi = inject(UserApiClient);
   private compendiumApi = inject(CompendiumApiClient);
+  private exerciseStore = inject(ExerciseStore);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private queryClient = inject(QueryClient);
@@ -532,17 +534,24 @@ export class WorkoutEdit {
     enabled: !!this.id() && !this.isCreateMode(),
   }));
 
-  // All exercises for the picker dropdown, sorted with mastery exercises first
+  // All exercises for the picker dropdown
   private allExercisesQuery = injectQuery(() => ({
     queryKey: exerciseKeys.list({ limit: 200 }),
     queryFn: () => this.compendiumApi.fetchExercises({ limit: 200 }),
   }));
+
+  // Sync fetched exercises into the global store
+  private syncToStore = effect(() => {
+    const items = this.allExercisesQuery.data()?.items;
+    if (items) this.exerciseStore.setAllFromQuery(items);
+  });
 
   private masteryQuery = injectQuery(() => ({
     queryKey: masteryKeys.list(),
     queryFn: () => this.userApi.fetchMasteryList(),
   }));
 
+  // Sorted with mastery exercises first
   enrichedUserExercises = computed(() => {
     const all = this.allExercisesQuery.data()?.items ?? [];
     const masteryIds = new Set((this.masteryQuery.data() ?? []).map((m) => m.exerciseId));
