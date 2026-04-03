@@ -9,6 +9,7 @@ import {
   exerciseRelationshipKeys,
   equipmentKeys,
   masteryKeys,
+  namePreferenceKeys,
 } from '$core/query-keys';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PageLayout } from '../../../layout/page-layout';
@@ -21,7 +22,7 @@ import { DecimalPipe } from '@angular/common';
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
-        [header]="exerciseQuery.data()?.names?.[0]?.name ?? 'Exercise'"
+        [header]="preferredName()"
         [isPending]="exerciseQuery.isPending()"
         [errorMessage]="exerciseQuery.isError() ? exerciseQuery.error().message : undefined"
       >
@@ -78,11 +79,7 @@ import { DecimalPipe } from '@angular/common';
         <app-confirm-dialog
           [open]="showDeleteDialog()"
           [title]="t('compendium.exercises.deleteTitle')"
-          [message]="
-            t('compendium.exercises.deleteMessage', {
-              name: exerciseQuery.data()?.names?.[0]?.name ?? '',
-            })
-          "
+          [message]="t('compendium.exercises.deleteMessage', { name: preferredName() })"
           [isPending]="deleteMutation.isPending()"
           (confirmed)="deleteMutation.mutate()"
           (cancelled)="showDeleteDialog.set(false)"
@@ -200,8 +197,21 @@ import { DecimalPipe } from '@angular/common';
                 <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
                   {{ t('fields.names') }}
                 </dt>
-                <dd class="text-sm text-gray-900 dark:text-gray-100">
-                  {{ exercise.names.map(n => n.name).join(', ') }}
+                <dd class="mt-1 flex flex-wrap gap-2">
+                  @for (n of exercise.names; track n.id) {
+                    <button
+                      type="button"
+                      (click)="setPreferredName(n.id)"
+                      class="inline-flex items-center rounded-full px-3 py-1 text-sm transition-colors"
+                      [class]="
+                        n.id === preferredNameId()
+                          ? 'bg-blue-100 text-blue-800 ring-1 ring-blue-300 dark:bg-blue-900/40 dark:text-blue-200 dark:ring-blue-700'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
+                      "
+                    >
+                      {{ n.name }}
+                    </button>
+                  }
                 </dd>
               </div>
             }
@@ -434,6 +444,38 @@ export class ExerciseDetail {
     if (!rels || rels.length === 0) return undefined;
     return { id: rels[0].fromExerciseId };
   });
+
+  namePreferenceQuery = injectQuery(() => ({
+    queryKey: namePreferenceKeys.list(),
+    queryFn: () => this.userApi.fetchExerciseNamePreferences(),
+  }));
+
+  preferredNameId = computed(() => {
+    const prefs = this.namePreferenceQuery.data() ?? [];
+    const pref = prefs.find((p) => p.exerciseId === this.id());
+    return pref?.exerciseNameId ?? null;
+  });
+
+  preferredName = computed(() => {
+    const exercise = this.exerciseQuery.data();
+    if (!exercise) return 'Exercise';
+    const prefId = this.preferredNameId();
+    if (prefId) {
+      const match = exercise.names?.find((n) => n.id === prefId);
+      if (match) return match.name;
+    }
+    return exercise.names?.[0]?.name ?? 'Exercise';
+  });
+
+  savePreferenceMutation = injectMutation(() => ({
+    mutationFn: (vars: { exerciseId: number; exerciseNameId: number }) =>
+      this.userApi.setExerciseNamePreference(vars.exerciseId, vars.exerciseNameId),
+    onSuccess: () => this.queryClient.invalidateQueries({ queryKey: namePreferenceKeys.all() }),
+  }));
+
+  setPreferredName(exerciseNameId: number) {
+    this.savePreferenceMutation.mutate({ exerciseId: this.id(), exerciseNameId });
+  }
 
   deleteMutation = injectMutation(() => ({
     mutationFn: () => this.api.deleteExercise(this.id()),

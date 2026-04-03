@@ -57,7 +57,7 @@ test.describe('/compendium/exercises/:id', () => {
       waitUntil: 'networkidle',
     });
 
-    await page.locator('button:has-text("Delete")').click();
+    await page.getByRole('button', { name: 'Delete', exact: true }).click();
     await expect(page.locator('[role="dialog"]')).toBeVisible();
 
     await page.locator('[role="dialog"] button:has-text("Cancel")').click();
@@ -74,7 +74,7 @@ test.describe('/compendium/exercises/:id', () => {
     });
     await expect(page.locator('h1')).toHaveText('Confirm Delete Test Exercise');
 
-    await page.locator('button:has-text("Delete")').click();
+    await page.getByRole('button', { name: 'Delete', exact: true }).click();
     await expect(page.locator('[role="dialog"]')).toBeVisible();
     await expect(page.locator('[role="dialog"]')).toContainText('Confirm Delete Test Exercise');
 
