@@ -202,6 +202,7 @@ export interface LocalityAvailability extends BaseModel {
   equipmentId: number /* uint */;
   available: boolean;
   owner: string;
+  equipmentName: string;
 }
 
 //////////

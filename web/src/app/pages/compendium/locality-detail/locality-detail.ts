@@ -111,7 +111,7 @@ import { FormsModule } from '@angular/forms';
               </div>
             }
 
-            @if (enrichedAvailabilities(); as items) {
+            @if (availabilityQuery.data(); as items) {
               @if (items.length === 0) {
                 <p class="text-sm text-gray-500 dark:text-gray-400">
                   {{ t('compendium.localities.noEquipment') }}
@@ -120,32 +120,26 @@ import { FormsModule } from '@angular/forms';
                 <ul
                   class="divide-y divide-gray-200 rounded-md border border-gray-200 dark:divide-gray-700 dark:border-gray-700"
                 >
-                  @for (item of items; track item.availability.id) {
+                  @for (item of items; track item.id) {
                     <li class="flex items-center justify-between px-4 py-3">
                       <div class="flex items-center gap-3">
                         <button
                           type="button"
-                          (click)="toggleAvailability(item.availability)"
+                          (click)="toggleAvailability(item)"
                           [title]="t('compendium.localities.toggleAvailability')"
                           class="flex h-5 w-9 shrink-0 items-center rounded-full transition-colors"
-                          [class]="
-                            item.availability.available
-                              ? 'bg-green-500'
-                              : 'bg-gray-300 dark:bg-gray-600'
-                          "
+                          [class]="item.available ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'"
                           [disabled]="!canModify()"
                         >
                           <span
                             class="inline-block h-4 w-4 rounded-full bg-white shadow transition-transform"
-                            [class]="
-                              item.availability.available ? 'translate-x-4' : 'translate-x-0.5'
-                            "
+                            [class]="item.available ? 'translate-x-4' : 'translate-x-0.5'"
                           ></span>
                         </button>
                         <span
                           class="text-sm"
                           [class]="
-                            item.availability.available
+                            item.available
                               ? 'text-gray-900 dark:text-gray-100'
                               : 'text-gray-400 line-through dark:text-gray-500'
                           "
@@ -156,7 +150,7 @@ import { FormsModule } from '@angular/forms';
                       @if (canModify()) {
                         <button
                           type="button"
-                          (click)="removeAvailability(item.availability.id)"
+                          (click)="removeAvailability(item.id)"
                           class="text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
                         >
                           {{ t('common.remove') }}
@@ -204,12 +198,6 @@ export class LocalityDetail {
     enabled: !!this.id(),
   }));
 
-  equipmentQuery = injectQuery(() => ({
-    queryKey: equipmentKeys.list({ limit: 1000 }),
-    queryFn: () => this.api.fetchEquipment({ limit: 1000 }),
-    enabled: !!this.id(),
-  }));
-
   equipmentSearchQuery = injectQuery(() => ({
     queryKey: equipmentKeys.list({ q: this.equipmentSearch(), limit: 20 }),
     queryFn: () => this.api.fetchEquipment({ q: this.equipmentSearch(), limit: 20 }),
@@ -227,30 +215,12 @@ export class LocalityDetail {
       (this.permissionsQuery.data()?.permissions?.includes('DELETE') ?? false),
   );
 
-  private equipmentMap = computed(() => {
-    const map = new Map<number, Equipment>();
-    for (const e of this.equipmentQuery.data()?.items ?? []) {
-      map.set(e.id, e);
-    }
-    return map;
-  });
-
   private addedEquipmentIds = computed(() => {
     const set = new Set<number>();
     for (const a of this.availabilityQuery.data() ?? []) {
       set.add(a.equipmentId);
     }
     return set;
-  });
-
-  enrichedAvailabilities = computed(() => {
-    const avails = this.availabilityQuery.data();
-    if (!avails) return undefined;
-    const eqMap = this.equipmentMap();
-    return avails.map((a) => ({
-      availability: a,
-      equipmentName: eqMap.get(a.equipmentId)?.displayName ?? `Equipment #${a.equipmentId}`,
-    }));
   });
 
   isAlreadyAdded(equipmentId: number): boolean {

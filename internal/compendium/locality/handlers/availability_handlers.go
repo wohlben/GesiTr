@@ -15,7 +15,9 @@ import (
 //
 // OpenAPI: /api/docs#/operations/ListLocalityAvailabilities
 func ListLocalityAvailabilities(ctx context.Context, input *ListLocalityAvailabilitiesInput) (*ListLocalityAvailabilitiesOutput, error) {
-	db := database.DB.Model(&models.LocalityAvailabilityEntity{})
+	db := database.DB.Model(&models.LocalityAvailabilityEntity{}).
+		Select("locality_availabilities.*, equipment.display_name as equipment_name").
+		Joins("LEFT JOIN equipment ON equipment.id = locality_availabilities.equipment_id")
 
 	if input.LocalityID != "" {
 		db = db.Where("locality_id = ?", input.LocalityID)

@@ -37,6 +37,7 @@ const mockAvailabilities: LocalityAvailability[] = [
     equipmentId: EQUIPMENT_ID,
     available: true,
     owner: 'user',
+    equipmentName: 'Adjustable Bench',
     createdAt: '2024-01-15T00:00:00Z',
     updatedAt: '2024-01-15T00:00:00Z',
   },

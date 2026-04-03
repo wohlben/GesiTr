@@ -8,4 +8,5 @@ type LocalityAvailability struct {
 	EquipmentID      uint   `json:"equipmentId"`
 	Available        bool   `json:"available"`
 	Owner            string `json:"owner"`
+	EquipmentName    string `json:"equipmentName"`
 }
