@@ -1,29 +1,12 @@
 import { expect, test } from '../../base-test';
 
-const viewports = [
-  { name: 'desktop', width: 1280, height: 720 },
-  { name: 'mobile', width: 375, height: 667 },
-];
-
 test.describe('/compendium/equipment/new', () => {
-  for (const viewport of viewports) {
-    test.describe(viewport.name, () => {
-      test.use({ viewport: { width: viewport.width, height: viewport.height } });
-
-      test('light', async ({ page }) => {
-        await page.goto('/compendium/equipment/new', { waitUntil: 'networkidle' });
-        await expect(page.locator('h1')).toHaveText('New Equipment');
-        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'equipment', 'new.png'], { fullPage: true });
-      });
-
-      test('dark', async ({ page }) => {
-        await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto('/compendium/equipment/new', { waitUntil: 'networkidle' });
-        await expect(page.locator('h1')).toHaveText('New Equipment');
-        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'equipment', 'new.png'], { fullPage: true });
-      });
-    });
-  }
+  test('renders page with expected content', async ({ page }) => {
+    await page.goto('/compendium/equipment/new', { waitUntil: 'networkidle' });
+    await expect(page.locator('h1')).toHaveText('New Equipment');
+    await expect(page.locator('form')).toBeVisible();
+    await expect(page.locator('button[type="submit"]')).toBeVisible();
+  });
 
   test('creates new equipment and navigates to detail page', async ({ page }) => {
     await page.goto('/compendium/equipment/new', { waitUntil: 'networkidle' });

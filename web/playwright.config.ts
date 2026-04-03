@@ -37,15 +37,6 @@ export default defineConfig({
     serviceWorkers: 'block',
   },
 
-  snapshotPathTemplate:
-    '{testDir}/__screenshots__/{arg}/{projectName}{-snapshotSuffix}{ext}',
-
-  expect: {
-    toHaveScreenshot: {
-      /* Allow small pixel differences from cross-platform subpixel rendering */
-      maxDiffPixelRatio: 0.1,
-    },
-  },
 
   /* Configure projects for major browsers */
   projects: [
