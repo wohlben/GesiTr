@@ -61,7 +61,7 @@ describe('AdhocAddExerciseDialog screenshots', () => {
       defaultOptions: { queries: { retry: false } },
     });
 
-    queryClient.setQueryData(exerciseKeys.list({ limit: 200 }), {
+    queryClient.setQueryData(exerciseKeys.list({ limit: 1000 }), {
       items: mockUserExercises,
       total: mockUserExercises.length,
     });

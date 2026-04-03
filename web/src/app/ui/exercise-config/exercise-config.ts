@@ -171,8 +171,8 @@ export class ExerciseConfig {
 
   // All exercises
   private allExercisesQuery = injectQuery(() => ({
-    queryKey: exerciseKeys.list({ limit: 200 }),
-    queryFn: () => this.compendiumApi.fetchExercises({ limit: 200 }),
+    queryKey: exerciseKeys.list({ limit: 1000 }),
+    queryFn: () => this.compendiumApi.fetchExercises({ limit: 1000 }),
   }));
 
   // Mastery list (used for sorting mastered exercises first)
