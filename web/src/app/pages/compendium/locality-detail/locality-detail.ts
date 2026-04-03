@@ -205,8 +205,8 @@ export class LocalityDetail {
   }));
 
   equipmentQuery = injectQuery(() => ({
-    queryKey: equipmentKeys.list({ owner: 'me' }),
-    queryFn: () => this.api.fetchEquipment({ owner: 'me', limit: 1000 }),
+    queryKey: equipmentKeys.list({ limit: 1000 }),
+    queryFn: () => this.api.fetchEquipment({ limit: 1000 }),
     enabled: !!this.id(),
   }));
 
