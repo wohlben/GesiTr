@@ -195,6 +195,10 @@ export class UserApiClient {
     return firstValueFrom(this.http.patch<WorkoutLog>(`/api/user/workout-logs/${id}`, data));
   }
 
+  deleteWorkoutLog(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/user/workout-logs/${id}`));
+  }
+
   createWorkoutLogSection(data: Partial<WorkoutLogSection>): Promise<WorkoutLogSection> {
     return firstValueFrom(
       this.http.post<WorkoutLogSection>('/api/user/workout-log-sections', data),

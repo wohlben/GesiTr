@@ -253,7 +253,8 @@ export class WorkoutStart {
   }));
 
   constructor() {
-    // Fetch-or-create effect
+    // Fetch-or-create effect: if a planning log exists but doesn't match the
+    // current workout structure, discard it and create a fresh one.
     effect(() => {
       const workout = this.workoutQuery.data();
       const planningLogs = this.planningLogQuery.data();
@@ -261,11 +262,43 @@ export class WorkoutStart {
       this.initialized = true;
 
       if (planningLogs.length > 0) {
-        this.populateFromLog(planningLogs[0]);
+        const log = planningLogs[0];
+        if (this.isLogStale(workout, log)) {
+          this.discardAndRecreate(workout, log);
+        } else {
+          this.populateFromLog(log);
+        }
       } else {
         this.createPlanningLog(workout);
       }
     });
+  }
+
+  /**
+   * Check whether a planning log's structure matches the current workout.
+   * Compares section count and exercise items per section.
+   */
+  private isLogStale(workout: Workout, log: WorkoutLog): boolean {
+    const workoutSections = workout.sections ?? [];
+    const logSections = log.sections ?? [];
+
+    if (workoutSections.length !== logSections.length) return true;
+
+    for (let i = 0; i < workoutSections.length; i++) {
+      const wItems = (workoutSections[i].items ?? []).filter((it) => it.type === 'exercise');
+      const lExercises = logSections[i].exercises ?? [];
+      if (wItems.length !== lExercises.length) return true;
+    }
+
+    return false;
+  }
+
+  private async discardAndRecreate(workout: Workout, staleLog: WorkoutLog) {
+    await this.userApi.deleteWorkoutLog(staleLog.id);
+    this.queryClient.invalidateQueries({
+      queryKey: workoutLogKeys.list({ workoutId: workout.id, status: 'planning' }),
+    });
+    await this.createPlanningLog(workout);
   }
 
   // CDK Drag & Drop

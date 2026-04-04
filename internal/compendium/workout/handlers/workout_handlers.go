@@ -10,7 +10,6 @@ import (
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/shared"
-	logmodels "gesitr/internal/user/workoutlog/models"
 
 	"github.com/danielgtaylor/huma/v2"
 	"gorm.io/gorm"
@@ -241,18 +240,13 @@ func UpdateWorkout(ctx context.Context, input *UpdateWorkoutInput) (*UpdateWorko
 		}
 
 		updatedDTO := existing.ToDTO()
-		if err := tx.Create(&models.WorkoutHistoryEntity{
+		return tx.Create(&models.WorkoutHistoryEntity{
 			WorkoutID: existing.ID,
 			Version:   updatedDTO.Version,
 			Snapshot:  shared.SnapshotJSON(updatedDTO),
 			ChangedAt: time.Now(),
 			ChangedBy: userID,
-		}).Error; err != nil {
-			return err
-		}
-		// Invalidate stale planning logs so /start creates fresh ones.
-		return tx.Where("workout_id = ? AND status = ?", existing.ID, logmodels.WorkoutLogStatusPlanning).
-			Delete(&logmodels.WorkoutLogEntity{}).Error
+		}).Error
 	})
 	if err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
