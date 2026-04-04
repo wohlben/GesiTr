@@ -16,7 +16,7 @@ describe('AdhocAddExerciseDialog screenshots', () => {
   const mockUserExercises: Exercise[] = [
     {
       id: 1,
-      owner: 'user',
+      ownershipGroupId: 0,
       names: [{ id: 1, name: 'Bench Press' }],
       type: 'STRENGTH',
       force: [],
@@ -36,7 +36,7 @@ describe('AdhocAddExerciseDialog screenshots', () => {
     },
     {
       id: 2,
-      owner: 'user',
+      ownershipGroupId: 0,
       names: [{ id: 2, name: 'Bicep Curl' }],
       type: 'STRENGTH',
       force: [],

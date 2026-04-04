@@ -2,18 +2,19 @@ package handlers
 
 import (
 	exercisemodels "gesitr/internal/compendium/exercise/models"
+	"gesitr/internal/ownershipgroup"
 	"gesitr/internal/user/mastery/models"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
 
-// RecalculateContributions recomputes mastery_contributions rows for the given owner
+// RecalculateContributions recomputes mastery_contributions rows for the given user
 // and affected exercise IDs. Called after relationship create/delete.
-func RecalculateContributions(db *gorm.DB, owner string, exerciseIDs ...uint) error {
-	// Fetch all relationships for this owner that involve any of the affected exercises.
+func RecalculateContributions(db *gorm.DB, userID string, exerciseIDs ...uint) error {
+	// Fetch all relationships visible to this user that involve any of the affected exercises.
 	var relationships []exercisemodels.ExerciseRelationshipEntity
-	err := db.Where("owner = ? AND (from_exercise_id IN ? OR to_exercise_id IN ?)", owner, exerciseIDs, exerciseIDs).
+	err := db.Where("ownership_group_id IN (?) AND (from_exercise_id IN ? OR to_exercise_id IN ?)", ownershipgroup.VisibleGroupIDs(db, userID), exerciseIDs, exerciseIDs).
 		Find(&relationships).Error
 	if err != nil {
 		return err
@@ -42,7 +43,7 @@ func RecalculateContributions(db *gorm.DB, owner string, exerciseIDs ...uint) er
 			key := contribKey{pair[0], pair[1]}
 			if existing, exists := best[key]; !exists || mult > existing.Multiplier {
 				best[key] = models.MasteryContributionEntity{
-					Owner:             owner,
+					Owner:             userID,
 					ExerciseID:        pair[0],
 					ContributesFromID: pair[1],
 					Multiplier:        mult,
@@ -54,7 +55,7 @@ func RecalculateContributions(db *gorm.DB, owner string, exerciseIDs ...uint) er
 
 	return db.Transaction(func(tx *gorm.DB) error {
 		// Delete existing contributions for affected exercises.
-		if err := tx.Where("owner = ? AND (exercise_id IN ? OR contributes_from_id IN ?)", owner, exerciseIDs, exerciseIDs).
+		if err := tx.Where("owner = ? AND (exercise_id IN ? OR contributes_from_id IN ?)", userID, exerciseIDs, exerciseIDs).
 			Delete(&models.MasteryContributionEntity{}).Error; err != nil {
 			return err
 		}
@@ -74,21 +75,23 @@ func RecalculateContributions(db *gorm.DB, owner string, exerciseIDs ...uint) er
 // BackfillContributions computes mastery_contributions for all existing relationships.
 // Intended to be called once during migration.
 func BackfillContributions(db *gorm.DB) error {
-	// Find all distinct owners with relationships.
-	var owners []string
-	if err := db.Model(&exercisemodels.ExerciseRelationshipEntity{}).
-		Distinct("owner").Pluck("owner", &owners).Error; err != nil {
+	// Find all distinct users from ownership group memberships.
+	var userIDs []string
+	if err := db.Table("ownership_group_memberships").
+		Where("deleted_at IS NULL").
+		Distinct("user_id").Pluck("user_id", &userIDs).Error; err != nil {
 		return err
 	}
 
-	for _, owner := range owners {
-		// Get all exercise IDs involved in relationships for this owner.
+	for _, userID := range userIDs {
+		// Get all exercise IDs involved in relationships visible to this user.
 		var exerciseIDs []uint
 		var fromIDs, toIDs []uint
+		visibleGroups := ownershipgroup.VisibleGroupIDs(db, userID)
 		db.Model(&exercisemodels.ExerciseRelationshipEntity{}).
-			Where("owner = ?", owner).Pluck("from_exercise_id", &fromIDs)
+			Where("ownership_group_id IN (?)", visibleGroups).Pluck("from_exercise_id", &fromIDs)
 		db.Model(&exercisemodels.ExerciseRelationshipEntity{}).
-			Where("owner = ?", owner).Pluck("to_exercise_id", &toIDs)
+			Where("ownership_group_id IN (?)", visibleGroups).Pluck("to_exercise_id", &toIDs)
 		seen := make(map[uint]bool)
 		for _, id := range append(fromIDs, toIDs...) {
 			if !seen[id] {
@@ -97,7 +100,7 @@ func BackfillContributions(db *gorm.DB) error {
 			}
 		}
 
-		if err := RecalculateContributions(db, owner, exerciseIDs...); err != nil {
+		if err := RecalculateContributions(db, userID, exerciseIDs...); err != nil {
 			return err
 		}
 	}

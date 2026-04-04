@@ -228,7 +228,7 @@ func TestSeedEquipment(t *testing.T) {
 
 		var eq equipmentModels.EquipmentEntity
 		database.DB.Where("name = ?", "barbell").First(&eq)
-		if eq.Name != "barbell" || eq.Category != "free_weights" || eq.Owner != "sinon" || !eq.Public {
+		if eq.Name != "barbell" || eq.Category != "free_weights" || !eq.Public {
 			t.Errorf("field mismatch: %+v", eq)
 		}
 
@@ -615,8 +615,8 @@ func TestSeedWorkouts(t *testing.T) {
 		if err := database.DB.Preload("Sections.Items").First(&workout).Error; err != nil {
 			t.Fatal(err)
 		}
-		if workout.Name != "Test Workout" || workout.Owner != "sinon" || !workout.Public {
-			t.Errorf("workout fields: name=%q owner=%q public=%v", workout.Name, workout.Owner, workout.Public)
+		if workout.Name != "Test Workout" || !workout.Public {
+			t.Errorf("workout fields: name=%q public=%v", workout.Name, workout.Public)
 		}
 
 		// Verify section

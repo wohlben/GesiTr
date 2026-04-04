@@ -14,11 +14,19 @@ import {
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
+import { OwnershipGroupPanel } from '$ui/compendium/ownership-group-panel/ownership-group-panel';
 import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-exercise-detail',
-  imports: [PageLayout, RouterLink, ConfirmDialog, TranslocoDirective, DecimalPipe],
+  imports: [
+    PageLayout,
+    RouterLink,
+    ConfirmDialog,
+    TranslocoDirective,
+    DecimalPipe,
+    OwnershipGroupPanel,
+  ],
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
@@ -290,6 +298,9 @@ import { DecimalPipe } from '@angular/common';
               </ul>
             </div>
           }
+        }
+        @if (canModify() && exerciseQuery.data(); as exercise) {
+          <app-ownership-group-panel [ownershipGroupId]="exercise.ownershipGroupId" />
         }
       </app-page-layout>
     </ng-container>

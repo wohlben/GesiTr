@@ -21,7 +21,7 @@ const exercise: Exercise = {
   description: 'A compound upper body exercise',
   instructions: [],
   images: [],
-  owner: 'admin',
+  ownershipGroupId: 0,
   public: true,
   version: 1,
   equipmentIds: [],

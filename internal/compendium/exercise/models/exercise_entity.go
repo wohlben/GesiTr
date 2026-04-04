@@ -13,9 +13,9 @@ type ExerciseEntity struct {
 	Description         string
 	AuthorName          *string
 	AuthorUrl           *string
-	Owner               string `gorm:"not null;index"`
-	Public              bool   `gorm:"not null;default:false;index"`
-	Version             int    `gorm:"not null;default:0"`
+	OwnershipGroupID    uint `gorm:"index"`
+	Public              bool `gorm:"not null;default:false;index"`
+	Version             int  `gorm:"not null;default:0"`
 	ParentExerciseID    *uint
 
 	Forces       []ExerciseForce               `gorm:"foreignKey:ExerciseID"`
@@ -82,7 +82,7 @@ func (e *ExerciseEntity) ToDTO() Exercise {
 		Description:         e.Description,
 		AuthorName:          e.AuthorName,
 		AuthorUrl:           e.AuthorUrl,
-		Owner:               e.Owner,
+		OwnershipGroupID:    e.OwnershipGroupID,
 		Public:              e.Public,
 		Version:             e.Version,
 		ParentExerciseID:    e.ParentExerciseID,
@@ -126,7 +126,7 @@ func ExerciseFromDTO(dto Exercise) ExerciseEntity {
 		Description:         dto.Description,
 		AuthorName:          dto.AuthorName,
 		AuthorUrl:           dto.AuthorUrl,
-		Owner:               dto.Owner,
+		OwnershipGroupID:    dto.OwnershipGroupID,
 		Public:              dto.Public,
 		Version:             dto.Version,
 		ParentExerciseID:    dto.ParentExerciseID,

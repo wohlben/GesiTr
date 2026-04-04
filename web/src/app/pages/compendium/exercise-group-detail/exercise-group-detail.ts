@@ -7,10 +7,11 @@ import { exerciseGroupKeys } from '$core/query-keys';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
+import { OwnershipGroupPanel } from '$ui/compendium/ownership-group-panel/ownership-group-panel';
 
 @Component({
   selector: 'app-exercise-group-detail',
-  imports: [PageLayout, RouterLink, ConfirmDialog, TranslocoDirective],
+  imports: [PageLayout, RouterLink, ConfirmDialog, TranslocoDirective, OwnershipGroupPanel],
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
@@ -46,15 +47,8 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
           (confirmed)="deleteMutation.mutate()"
           (cancelled)="showDeleteDialog.set(false)"
         />
-        @if (groupQuery.data(); as group) {
-          <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                {{ t('fields.owner') }}
-              </dt>
-              <dd class="text-sm text-gray-900 dark:text-gray-100">{{ group.owner }}</dd>
-            </div>
-          </dl>
+        @if (canModify() && groupQuery.data(); as group) {
+          <app-ownership-group-panel [ownershipGroupId]="group.ownershipGroupId" />
         }
       </app-page-layout>
     </ng-container>

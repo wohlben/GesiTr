@@ -8,7 +8,7 @@ type EquipmentRelationshipEntity struct {
 	shared.BaseModel
 	RelationshipType EquipmentRelationshipType `gorm:"not null;uniqueIndex:idx_equipment_relationship"`
 	Strength         float64                   `gorm:"not null"`
-	Owner            string                    `gorm:"not null;uniqueIndex:idx_equipment_relationship"`
+	OwnershipGroupID uint                      `gorm:"uniqueIndex:idx_equipment_relationship"`
 	FromEquipmentID  uint                      `gorm:"not null;uniqueIndex:idx_equipment_relationship"`
 	ToEquipmentID    uint                      `gorm:"not null;uniqueIndex:idx_equipment_relationship"`
 }
@@ -20,7 +20,7 @@ func (e *EquipmentRelationshipEntity) ToDTO() EquipmentRelationship {
 		BaseModel:        e.BaseModel,
 		RelationshipType: e.RelationshipType,
 		Strength:         e.Strength,
-		Owner:            e.Owner,
+		OwnershipGroupID: e.OwnershipGroupID,
 		FromEquipmentID:  e.FromEquipmentID,
 		ToEquipmentID:    e.ToEquipmentID,
 	}
@@ -31,7 +31,7 @@ func EquipmentRelationshipFromDTO(dto EquipmentRelationship) EquipmentRelationsh
 		BaseModel:        dto.BaseModel,
 		RelationshipType: dto.RelationshipType,
 		Strength:         dto.Strength,
-		Owner:            dto.Owner,
+		OwnershipGroupID: dto.OwnershipGroupID,
 		FromEquipmentID:  dto.FromEquipmentID,
 		ToEquipmentID:    dto.ToEquipmentID,
 	}

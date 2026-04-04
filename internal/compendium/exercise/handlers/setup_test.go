@@ -12,6 +12,7 @@ import (
 	"gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	ownershipgroupmodels "gesitr/internal/ownershipgroup/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
 
 	"github.com/gin-gonic/gin"
@@ -33,6 +34,8 @@ func setupTestDB(t *testing.T) {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
+		&ownershipgroupmodels.OwnershipGroupEntity{},
+		&ownershipgroupmodels.OwnershipGroupMembershipEntity{},
 		&models.ExerciseEntity{},
 		&models.ExerciseForce{},
 		&models.ExerciseMuscle{},

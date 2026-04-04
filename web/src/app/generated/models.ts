@@ -33,7 +33,7 @@ export interface Exercise extends BaseModel {
   images: string[];
   authorName?: string;
   authorUrl?: string;
-  owner: string;
+  ownershipGroupId: number /* uint */;
   public: boolean;
   version: number /* int */;
   parentExerciseId?: number /* uint */;
@@ -97,7 +97,7 @@ export interface ExerciseRelationship extends BaseModel {
   relationshipType: ExerciseRelationshipType;
   strength: number /* float64 */;
   description?: string;
-  owner: string;
+  ownershipGroupId: number /* uint */;
   fromExerciseId: number /* uint */;
   toExerciseId: number /* uint */;
 }
@@ -138,7 +138,7 @@ export interface Equipment extends BaseModel {
   description: string;
   category: EquipmentCategory;
   imageUrl?: string;
-  owner: string;
+  ownershipGroupId: number /* uint */;
   public: boolean;
   version: number /* int */;
 }
@@ -156,7 +156,7 @@ export const EquipmentCategoryOther: EquipmentCategory = 'other';
 export interface Fulfillment extends BaseModel {
   equipmentId: number /* uint */;
   fulfillsEquipmentId: number /* uint */;
-  owner: string;
+  ownershipGroupId: number /* uint */;
 }
 
 //////////
@@ -165,7 +165,7 @@ export interface Fulfillment extends BaseModel {
 export interface EquipmentRelationship extends BaseModel {
   relationshipType: EquipmentRelationshipType;
   strength: number /* float64 */;
-  owner: string;
+  ownershipGroupId: number /* uint */;
   fromEquipmentId: number /* uint */;
   toEquipmentId: number /* uint */;
 }
@@ -180,7 +180,7 @@ export interface LocalityAvailability extends BaseModel {
   localityId: number /* uint */;
   equipmentId: number /* uint */;
   available: boolean;
-  owner: string;
+  ownershipGroupId: number /* uint */;
   equipmentName: string;
 }
 
@@ -189,6 +189,6 @@ export interface LocalityAvailability extends BaseModel {
 
 export interface Locality extends BaseModel {
   name: string;
-  owner: string;
+  ownershipGroupId: number /* uint */;
   public: boolean;
 }

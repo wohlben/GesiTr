@@ -76,6 +76,17 @@ packages:
       "shared.BaseModel": "BaseModel"
     include_files:
       - "workoutgroup.go"
+  - path: "gesitr/internal/ownershipgroup/models"
+    output_path: "web/src/app/generated/ownershipgroup.ts"
+    frontmatter: |
+      /* eslint-disable @typescript-eslint/no-empty-object-type */
+      import { BaseModel } from './user-models';
+    type_mappings:
+      "time.Time": "string"
+      "gorm.DeletedAt": "string | null"
+      "shared.BaseModel": "BaseModel"
+    include_files:
+      - "ownershipgroup.go"
   - path: "gesitr/internal/user/exercisescheme/models"
     output_path: "web/src/app/generated/user-exercisescheme.ts"
     frontmatter: |

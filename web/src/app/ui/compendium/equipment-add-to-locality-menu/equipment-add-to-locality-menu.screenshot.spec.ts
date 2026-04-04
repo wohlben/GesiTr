@@ -14,7 +14,7 @@ const mockLocalities: Locality[] = [
   {
     id: 1,
     name: 'Home Gym',
-    owner: 'user',
+    ownershipGroupId: 0,
     public: false,
     createdAt: '2024-01-01T00:00:00Z',
     updatedAt: '2024-01-01T00:00:00Z',
@@ -22,7 +22,7 @@ const mockLocalities: Locality[] = [
   {
     id: 2,
     name: 'Commercial Gym',
-    owner: 'user',
+    ownershipGroupId: 0,
     public: false,
     createdAt: '2024-02-01T00:00:00Z',
     updatedAt: '2024-02-01T00:00:00Z',
@@ -36,7 +36,7 @@ const mockAvailabilities: LocalityAvailability[] = [
     localityId: 1,
     equipmentId: EQUIPMENT_ID,
     available: true,
-    owner: 'user',
+    ownershipGroupId: 0,
     equipmentName: 'Adjustable Bench',
     createdAt: '2024-01-15T00:00:00Z',
     updatedAt: '2024-01-15T00:00:00Z',

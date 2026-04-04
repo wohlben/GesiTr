@@ -6,6 +6,7 @@ import (
 	exerciseModels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	"gesitr/internal/ownershipgroup"
 	"gesitr/internal/shared"
 	"gesitr/internal/user/exercisescheme/models"
 
@@ -87,7 +88,8 @@ func GetExerciseScheme(ctx context.Context, input *GetExerciseSchemeInput) (*Get
 		return nil, huma.Error404NotFound("Exercise not found")
 	}
 	userID := humaconfig.GetUserID(ctx)
-	perms, _ := shared.ResolvePermissions(userID, exercise.Owner, exercise.Public)
+	access := ownershipgroup.CheckAccess(database.DB, userID, exercise.OwnershipGroupID)
+	perms, _ := shared.ResolvePermissionsFromAccess(access, exercise.Public)
 	if len(perms) == 0 {
 		return nil, huma.Error403Forbidden("access denied")
 	}

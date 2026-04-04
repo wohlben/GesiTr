@@ -26,7 +26,7 @@ const WORKOUT: Workout = {
   id: 1,
   createdAt: '',
   updatedAt: '',
-  owner: 'alice',
+  ownershipGroupId: 0,
   name: 'Push Day',
   public: false,
   version: 0,

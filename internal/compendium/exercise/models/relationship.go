@@ -7,7 +7,7 @@ type ExerciseRelationship struct {
 	RelationshipType ExerciseRelationshipType `json:"relationshipType"`
 	Strength         float64                  `json:"strength"`
 	Description      *string                  `json:"description"`
-	Owner            string                   `json:"owner"`
+	OwnershipGroupID uint                     `json:"ownershipGroupId"`
 	FromExerciseID   uint                     `json:"fromExerciseId"`
 	ToExerciseID     uint                     `json:"toExerciseId"`
 }

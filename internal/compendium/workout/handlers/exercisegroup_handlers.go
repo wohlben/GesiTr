@@ -6,9 +6,11 @@ import (
 	"gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	"gesitr/internal/ownershipgroup"
 	"gesitr/internal/shared"
 
 	"github.com/danielgtaylor/huma/v2"
+	"gorm.io/gorm"
 )
 
 // ListExerciseGroups returns exercise groups, optionally filtered by name search.
@@ -53,8 +55,20 @@ func CreateExerciseGroup(ctx context.Context, input *CreateExerciseGroupInput) (
 	}
 
 	entity := models.ExerciseGroupFromDTO(dto)
-	entity.Owner = humaconfig.GetUserID(ctx)
-	if err := database.DB.Create(&entity).Error; err != nil {
+	userID := humaconfig.GetUserID(ctx)
+
+	err := database.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&entity).Error; err != nil {
+			return err
+		}
+		groupID, err := ownershipgroup.CreateGroupForEntity(tx, userID)
+		if err != nil {
+			return err
+		}
+		entity.OwnershipGroupID = groupID
+		return tx.Model(&entity).Update("ownership_group_id", groupID).Error
+	})
+	if err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 	return &CreateExerciseGroupOutput{Body: entity.ToDTO()}, nil
@@ -70,7 +84,8 @@ func GetExerciseGroupPermissions(ctx context.Context, input *GetExerciseGroupPer
 		return nil, huma.Error404NotFound("ExerciseGroup not found")
 	}
 	userID := humaconfig.GetUserID(ctx)
-	perms, _ := shared.ResolvePermissions(userID, entity.Owner, false)
+	access := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	perms, _ := shared.ResolvePermissionsFromAccess(access, false)
 	if perms == nil {
 		perms = []shared.Permission{}
 	}
@@ -99,7 +114,8 @@ func UpdateExerciseGroup(ctx context.Context, input *UpdateExerciseGroupInput) (
 		return nil, huma.Error404NotFound("ExerciseGroup not found")
 	}
 
-	if existing.Owner != humaconfig.GetUserID(ctx) {
+	access := ownershipgroup.CheckAccess(database.DB, humaconfig.GetUserID(ctx), existing.OwnershipGroupID)
+	if !access.CanModify() {
 		return nil, huma.Error403Forbidden("not the owner of this exercise group")
 	}
 
@@ -109,7 +125,7 @@ func UpdateExerciseGroup(ctx context.Context, input *UpdateExerciseGroupInput) (
 
 	entity := models.ExerciseGroupFromDTO(dto)
 	entity.ID = existing.ID
-	entity.Owner = existing.Owner
+	entity.OwnershipGroupID = existing.OwnershipGroupID
 
 	if err := database.DB.Save(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
@@ -127,7 +143,8 @@ func DeleteExerciseGroup(ctx context.Context, input *DeleteExerciseGroupInput) (
 		return nil, huma.Error404NotFound("ExerciseGroup not found")
 	}
 
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	access := ownershipgroup.CheckAccess(database.DB, humaconfig.GetUserID(ctx), entity.OwnershipGroupID)
+	if !access.CanDelete() {
 		return nil, huma.Error403Forbidden("not the owner of this exercise group")
 	}
 

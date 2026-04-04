@@ -12,6 +12,7 @@ import (
 	"gesitr/internal/compendium/equipment/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	ownershipgroupmodels "gesitr/internal/ownershipgroup/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
@@ -34,6 +35,8 @@ func setupTestDB(t *testing.T) {
 	db.AutoMigrate(
 		&models.EquipmentEntity{},
 		&models.EquipmentHistoryEntity{},
+		&ownershipgroupmodels.OwnershipGroupEntity{},
+		&ownershipgroupmodels.OwnershipGroupMembershipEntity{},
 	)
 	database.DB = db
 }

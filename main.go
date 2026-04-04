@@ -27,6 +27,9 @@ import (
 	"gesitr/internal/database"
 	"gesitr/internal/docs"
 	"gesitr/internal/humaconfig"
+	"gesitr/internal/ownershipgroup"
+	ownershipGroupHandlers "gesitr/internal/ownershipgroup/handlers"
+	ownershipGroupModels "gesitr/internal/ownershipgroup/models"
 	exerciseLogHandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciseLogModels "gesitr/internal/user/exerciselog/models"
 	exerciseSchemeHandlers "gesitr/internal/user/exercisescheme/handlers"
@@ -316,6 +319,8 @@ func autoMigrate() {
 		&namePreferenceModels.ExerciseNamePreference{},
 		&localityModels.LocalityEntity{},
 		&localityModels.LocalityAvailabilityEntity{},
+		&ownershipGroupModels.OwnershipGroupEntity{},
+		&ownershipGroupModels.OwnershipGroupMembershipEntity{},
 	)
 }
 
@@ -337,6 +342,7 @@ func setupRoutes(r *gin.Engine) {
 	namePreferenceHandlers.RegisterRoutes(humaAPI)
 	exerciseSchemeHandlers.RegisterRoutes(humaAPI)
 	localityHandlers.RegisterRoutes(humaAPI)
+	ownershipGroupHandlers.RegisterRoutes(humaAPI)
 }
 
 func setupSPA(r *gin.Engine) {
@@ -362,6 +368,7 @@ func setupSPA(r *gin.Engine) {
 func buildApp() *gin.Engine {
 	database.Init()
 	autoMigrate()
+	ownershipgroup.MigrateExistingOwners(database.DB)
 	runMigrations()
 	workoutlog.StartCommitmentTicker(database.DB, 15*time.Minute)
 

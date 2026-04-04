@@ -1,8 +1,8 @@
 import { APIRequestContext, expect, request } from '@playwright/test';
 
-/** Strip server-set fields (BaseModel + owner/version) before sending an update payload. */
+/** Strip server-set fields (BaseModel + ownershipGroupId/version) before sending an update payload. */
 function stripServerFields(obj: Record<string, unknown>): Record<string, unknown> {
-  const { id, createdAt, updatedAt, deletedAt, owner, version, ...rest } = obj;
+  const { id, createdAt, updatedAt, deletedAt, owner, ownershipGroupId, version, ...rest } = obj;
   return rest;
 }
 

@@ -12,8 +12,12 @@ import (
 	exerciseModels "gesitr/internal/compendium/exercise/models"
 	workoutModels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
+	"gesitr/internal/ownershipgroup"
+	ownershipGroupModels "gesitr/internal/ownershipgroup/models"
 	"gesitr/internal/shared"
 	exerciseSchemeModels "gesitr/internal/user/exercisescheme/models"
+
+	"gorm.io/gorm"
 )
 
 var equipmentIDMap map[string]uint
@@ -41,6 +45,8 @@ func main() {
 		&exerciseSchemeModels.ExerciseSchemeEntity{},
 		&exerciseSchemeModels.ExerciseSchemeSectionItemEntity{},
 		&workoutModels.WorkoutHistoryEntity{},
+		&ownershipGroupModels.OwnershipGroupEntity{},
+		&ownershipGroupModels.OwnershipGroupMembershipEntity{},
 	)
 
 	steps := []struct {
@@ -57,6 +63,11 @@ func main() {
 		if err := s.fn(); err != nil {
 			log.Fatalf("Failed to seed %s: %v", s.name, err)
 		}
+	}
+
+	// Create ownership groups for all seeded entities.
+	if err := assignOwnershipGroups(); err != nil {
+		log.Fatalf("Failed to assign ownership groups: %v", err)
 	}
 }
 
@@ -116,7 +127,6 @@ func seedEquipment() error {
 			Description: j.Description,
 			Category:    equipmentModels.EquipmentCategory(j.Category),
 			ImageUrl:    j.ImageUrl,
-			Owner:       "sinon",
 			Public:      true,
 		})
 	}
@@ -132,7 +142,7 @@ func seedEquipment() error {
 			Version:     0,
 			Snapshot:    shared.SnapshotJSON(dto),
 			ChangedAt:   entities[i].CreatedAt,
-			ChangedBy:   entities[i].Owner,
+			ChangedBy:   "sinon",
 		})
 	}
 	if err := database.DB.CreateInBatches(history, 100).Error; err != nil {
@@ -201,7 +211,6 @@ func seedExercises() error {
 			Description:         j.Description,
 			AuthorName:          j.AuthorName,
 			AuthorUrl:           j.AuthorUrl,
-			Owner:               "sinon",
 			Public:              true,
 			Version:             j.Version,
 			ParentExerciseID:    j.ParentExerciseID,
@@ -265,7 +274,7 @@ func seedExercises() error {
 			Version:    0,
 			Snapshot:   shared.SnapshotJSON(dto),
 			ChangedAt:  entities[i].CreatedAt,
-			ChangedBy:  entities[i].Owner,
+			ChangedBy:  "sinon",
 		})
 	}
 	if err := database.DB.CreateInBatches(history, 100).Error; err != nil {
@@ -307,7 +316,6 @@ func seedFulfillments() error {
 		e := equipmentModels.FulfillmentEntity{
 			EquipmentID:         equipmentIDMap[j.EquipmentTemplateID],
 			FulfillsEquipmentID: equipmentIDMap[j.FulfillsEquipmentTemplateID],
-			Owner:               "sinon",
 		}
 		e.CreatedAt = unixToTime(j.CreatedAt)
 		entities = append(entities, e)
@@ -346,7 +354,6 @@ func seedExerciseRelationships() error {
 			RelationshipType: exerciseModels.ExerciseRelationshipType(j.RelationshipType),
 			Strength:         j.Strength,
 			Description:      j.Description,
-			Owner:            "sinon",
 			FromExerciseID:   exerciseIDMap[j.FromExerciseTemplateID],
 			ToExerciseID:     exerciseIDMap[j.ToExerciseTemplateID],
 		}
@@ -406,7 +413,6 @@ func seedWorkouts() error {
 		}
 
 		workout := workoutModels.WorkoutEntity{
-			Owner:   "sinon",
 			Name:    j.Name,
 			Notes:   j.Notes,
 			Public:  true,
@@ -479,7 +485,7 @@ func seedWorkouts() error {
 			Version:   0,
 			Snapshot:  shared.SnapshotJSON(dto),
 			ChangedAt: workout.CreatedAt,
-			ChangedBy: workout.Owner,
+			ChangedBy: "sinon",
 		}
 		if err := database.DB.Create(&history).Error; err != nil {
 			return fmt.Errorf("insert workout history for %q: %w", j.Name, err)
@@ -489,4 +495,57 @@ func seedWorkouts() error {
 	}
 	log.Printf("Workouts: %d", count)
 	return nil
+}
+
+// assignOwnershipGroups creates an ownership group (owned by "sinon") for each
+// top-level seeded entity and propagates the group to sub-entities.
+func assignOwnershipGroups() error {
+	topLevelTables := []string{"equipment", "exercises", "workouts"}
+	subEntityTables := []struct {
+		table    string
+		parentFK string
+		parent   string
+	}{
+		{"fulfillments", "equipment_id", "equipment"},
+		{"exercise_relationships", "from_exercise_id", "exercises"},
+	}
+
+	return database.DB.Transaction(func(tx *gorm.DB) error {
+		for _, table := range topLevelTables {
+			var ids []uint
+			if err := tx.Table(table).
+				Where("ownership_group_id = 0 OR ownership_group_id IS NULL").
+				Where("deleted_at IS NULL").
+				Pluck("id", &ids).Error; err != nil {
+				return fmt.Errorf("query %s: %w", table, err)
+			}
+			for _, id := range ids {
+				groupID, err := ownershipgroup.CreateGroupForEntity(tx, "sinon")
+				if err != nil {
+					return fmt.Errorf("create group for %s id=%d: %w", table, id, err)
+				}
+				if err := tx.Table(table).Where("id = ?", id).Update("ownership_group_id", groupID).Error; err != nil {
+					return fmt.Errorf("update %s id=%d: %w", table, id, err)
+				}
+			}
+			log.Printf("OwnershipGroups: assigned %d groups in %s", len(ids), table)
+		}
+
+		for _, se := range subEntityTables {
+			result := tx.Exec(fmt.Sprintf(`
+				UPDATE %s SET ownership_group_id = (
+					SELECT %s.ownership_group_id FROM %s
+					WHERE %s.id = %s.%s
+				)
+				WHERE (ownership_group_id IS NULL OR ownership_group_id = 0)
+				AND deleted_at IS NULL
+			`, se.table, se.parent, se.parent, se.parent, se.table, se.parentFK))
+			if result.Error != nil {
+				return fmt.Errorf("propagate to %s: %w", se.table, result.Error)
+			}
+			log.Printf("OwnershipGroups: propagated %d rows in %s", result.RowsAffected, se.table)
+		}
+
+		return nil
+	})
 }

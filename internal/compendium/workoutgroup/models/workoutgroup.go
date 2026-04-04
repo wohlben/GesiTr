@@ -14,7 +14,7 @@ type WorkoutGroup struct {
 	shared.BaseModel `tstype:",extends"`
 	Name             string `json:"name"`
 	WorkoutID        uint   `json:"workoutId"`
-	Owner            string `json:"owner"`
+	OwnershipGroupID uint   `json:"ownershipGroupId"`
 }
 
 type WorkoutGroupMembership struct {

@@ -9,6 +9,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
 import { EquipmentAddToLocalityMenu } from '$ui/compendium/equipment-add-to-locality-menu/equipment-add-to-locality-menu';
+import { OwnershipGroupPanel } from '$ui/compendium/ownership-group-panel/ownership-group-panel';
 import { DecimalPipe } from '@angular/common';
 
 @Component({
@@ -20,6 +21,7 @@ import { DecimalPipe } from '@angular/common';
     TranslocoDirective,
     DecimalPipe,
     EquipmentAddToLocalityMenu,
+    OwnershipGroupPanel,
   ],
   template: `
     <ng-container *transloco="let t">
@@ -144,6 +146,9 @@ import { DecimalPipe } from '@angular/common';
               <dd class="text-sm text-gray-900 dark:text-gray-100">{{ equipment.description }}</dd>
             </div>
           </dl>
+        }
+        @if (canModify() && equipmentQuery.data(); as equipment) {
+          <app-ownership-group-panel [ownershipGroupId]="equipment.ownershipGroupId" />
         }
       </app-page-layout>
     </ng-container>

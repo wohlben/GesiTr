@@ -6,6 +6,7 @@ import (
 	"gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	"gesitr/internal/ownershipgroup"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -15,11 +16,13 @@ func ListWorkoutRelationships(ctx context.Context, input *ListWorkoutRelationshi
 	db := database.DB.Model(&models.WorkoutRelationshipEntity{})
 
 	if input.Owner != "" {
-		owner := input.Owner
-		if owner == "me" {
-			owner = humaconfig.GetUserID(ctx)
+		if input.Owner == "me" {
+			userID := humaconfig.GetUserID(ctx)
+			visibleGroups := ownershipgroup.VisibleGroupIDs(database.DB, userID)
+			db = db.Where("ownership_group_id IN (?)", visibleGroups)
+		} else {
+			db = db.Where("ownership_group_id IN (SELECT group_id FROM ownership_group_memberships WHERE user_id = ? AND role = 'owner' AND deleted_at IS NULL)", input.Owner)
 		}
-		db = db.Where("owner = ?", owner)
 	}
 	if input.FromWorkoutID != "" {
 		db = db.Where("from_workout_id = ?", input.FromWorkoutID)
@@ -45,6 +48,18 @@ func ListWorkoutRelationships(ctx context.Context, input *ListWorkoutRelationshi
 
 // CreateWorkoutRelationship creates a workout relationship owned by the current user.
 func CreateWorkoutRelationship(ctx context.Context, input *CreateWorkoutRelationshipInput) (*CreateWorkoutRelationshipOutput, error) {
+	// Look up the from-workout to inherit its ownership_group_id.
+	var fromWorkout models.WorkoutEntity
+	if err := database.DB.First(&fromWorkout, input.Body.FromWorkoutID).Error; err != nil {
+		return nil, huma.Error404NotFound("From workout not found")
+	}
+
+	userID := humaconfig.GetUserID(ctx)
+	access := ownershipgroup.CheckAccess(database.DB, userID, fromWorkout.OwnershipGroupID)
+	if !access.CanModify() {
+		return nil, huma.Error403Forbidden("access denied")
+	}
+
 	dto := models.WorkoutRelationship{
 		RelationshipType: input.Body.RelationshipType,
 		Strength:         input.Body.Strength,
@@ -53,7 +68,7 @@ func CreateWorkoutRelationship(ctx context.Context, input *CreateWorkoutRelation
 	}
 
 	entity := models.WorkoutRelationshipFromDTO(dto)
-	entity.Owner = humaconfig.GetUserID(ctx)
+	entity.OwnershipGroupID = fromWorkout.OwnershipGroupID
 	if err := database.DB.Create(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
@@ -67,7 +82,8 @@ func DeleteWorkoutRelationship(ctx context.Context, input *DeleteWorkoutRelation
 		return nil, huma.Error404NotFound("WorkoutRelationship not found")
 	}
 
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	access := ownershipgroup.CheckAccess(database.DB, humaconfig.GetUserID(ctx), entity.OwnershipGroupID)
+	if !access.CanDelete() {
 		return nil, huma.Error403Forbidden("not the owner of this relationship")
 	}
 

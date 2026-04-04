@@ -172,7 +172,6 @@ export class EquipmentList {
     { label: 'Description', labelKey: 'fields.description' },
     { label: 'Internal name', labelKey: 'fields.internalName', defaultHidden: true },
     { label: 'Version', labelKey: 'fields.version', defaultHidden: true },
-    { label: 'Owner', labelKey: 'fields.owner', defaultHidden: true },
     { label: 'Created at', labelKey: 'fields.createdAt', defaultHidden: true },
     { label: 'Updated at', labelKey: 'fields.updatedAt', defaultHidden: true },
   ];

@@ -7,13 +7,22 @@ import { localityKeys, localityAvailabilityKeys, equipmentKeys } from '$core/que
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
+import { OwnershipGroupPanel } from '$ui/compendium/ownership-group-panel/ownership-group-panel';
 import { Equipment, LocalityAvailability } from '$generated/models';
 import { HlmInput } from '@spartan-ng/helm/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-locality-detail',
-  imports: [PageLayout, RouterLink, ConfirmDialog, TranslocoDirective, HlmInput, FormsModule],
+  imports: [
+    PageLayout,
+    RouterLink,
+    ConfirmDialog,
+    TranslocoDirective,
+    HlmInput,
+    FormsModule,
+    OwnershipGroupPanel,
+  ],
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
@@ -162,6 +171,9 @@ import { FormsModule } from '@angular/forms';
               }
             }
           </section>
+        }
+        @if (canModify() && localityQuery.data(); as locality) {
+          <app-ownership-group-panel [ownershipGroupId]="locality.ownershipGroupId" />
         }
       </app-page-layout>
     </ng-container>

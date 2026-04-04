@@ -13,7 +13,7 @@ const GROUP: ExerciseGroup = {
   createdAt: '',
   updatedAt: '',
   name: 'Push Exercises',
-  owner: 'seed',
+  ownershipGroupId: 0,
 };
 
 function setup(permissions: string[]) {

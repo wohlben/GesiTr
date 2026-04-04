@@ -4,48 +4,76 @@ import (
 	"testing"
 )
 
-func TestResolvePermissions_Owner(t *testing.T) {
-	perms, visible := ResolvePermissions("user1", "user1", false)
+// mockAccess implements AccessChecker for testing.
+type mockAccess struct {
+	read, modify, delete bool
+}
+
+func (m mockAccess) CanRead() bool   { return m.read }
+func (m mockAccess) CanModify() bool { return m.modify }
+func (m mockAccess) CanDelete() bool { return m.delete }
+
+func TestResolvePermissionsFromAccess_FullAccess(t *testing.T) {
+	perms, visible := ResolvePermissionsFromAccess(mockAccess{read: true, modify: true, delete: true}, false)
 	if !visible {
-		t.Fatal("owner should be visible")
+		t.Fatal("should be visible")
 	}
 	if len(perms) != 3 {
-		t.Fatalf("owner should have 3 permissions, got %d", len(perms))
+		t.Fatalf("full access should have 3 permissions, got %d", len(perms))
 	}
-	expected := map[Permission]bool{PermissionRead: true, PermissionModify: true, PermissionDelete: true}
+}
+
+func TestResolvePermissionsFromAccess_ModifyOnly(t *testing.T) {
+	perms, visible := ResolvePermissionsFromAccess(mockAccess{read: true, modify: true, delete: false}, false)
+	if !visible {
+		t.Fatal("should be visible")
+	}
+	if len(perms) != 2 {
+		t.Fatalf("modify access should have 2 permissions, got %d", len(perms))
+	}
 	for _, p := range perms {
-		if !expected[p] {
-			t.Errorf("unexpected permission: %s", p)
+		if p == PermissionDelete {
+			t.Error("should not have DELETE permission")
 		}
 	}
 }
 
-func TestResolvePermissions_OwnerPublic(t *testing.T) {
-	perms, visible := ResolvePermissions("user1", "user1", true)
+func TestResolvePermissionsFromAccess_ReadOnly(t *testing.T) {
+	perms, visible := ResolvePermissionsFromAccess(mockAccess{read: true, modify: false, delete: false}, false)
 	if !visible {
-		t.Fatal("owner should be visible")
-	}
-	if len(perms) != 3 {
-		t.Fatalf("owner of public entity should still have 3 permissions, got %d", len(perms))
-	}
-}
-
-func TestResolvePermissions_NonOwnerPublic(t *testing.T) {
-	perms, visible := ResolvePermissions("user2", "user1", true)
-	if !visible {
-		t.Fatal("public entity should be visible to non-owner")
+		t.Fatal("should be visible")
 	}
 	if len(perms) != 1 || perms[0] != PermissionRead {
-		t.Fatalf("non-owner on public entity should get [READ], got %v", perms)
+		t.Fatalf("read-only access should get [READ], got %v", perms)
 	}
 }
 
-func TestResolvePermissions_NonOwnerPrivate(t *testing.T) {
-	perms, visible := ResolvePermissions("user2", "user1", false)
+func TestResolvePermissionsFromAccess_NoAccessPublic(t *testing.T) {
+	perms, visible := ResolvePermissionsFromAccess(mockAccess{}, true)
+	if !visible {
+		t.Fatal("public entity should be visible")
+	}
+	if len(perms) != 1 || perms[0] != PermissionRead {
+		t.Fatalf("no access on public entity should get [READ], got %v", perms)
+	}
+}
+
+func TestResolvePermissionsFromAccess_NoAccessPrivate(t *testing.T) {
+	perms, visible := ResolvePermissionsFromAccess(mockAccess{}, false)
 	if visible {
-		t.Fatal("private entity should not be visible to non-owner")
+		t.Fatal("private entity with no access should not be visible")
 	}
 	if perms != nil {
-		t.Fatalf("non-owner on private entity should get nil, got %v", perms)
+		t.Fatalf("should get nil permissions, got %v", perms)
+	}
+}
+
+func TestResolvePermissionsFromAccess_FullAccessPublic(t *testing.T) {
+	perms, visible := ResolvePermissionsFromAccess(mockAccess{read: true, modify: true, delete: true}, true)
+	if !visible {
+		t.Fatal("should be visible")
+	}
+	if len(perms) != 3 {
+		t.Fatalf("full access on public entity should still have 3 permissions, got %d", len(perms))
 	}
 }

@@ -7,6 +7,7 @@ import (
 	"gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	"gesitr/internal/ownershipgroup"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -41,12 +42,13 @@ func ListWorkoutSectionItems(ctx context.Context, input *ListWorkoutSectionItems
 		db = db.Where("workout_section_id = ?", input.WorkoutSectionID)
 	}
 
-	// Include items for workouts the user owns, public workouts, or group membership workouts
+	// Include items for workouts the user can access via ownership group, public workouts, or workout group membership
 	userID := humaconfig.GetUserID(ctx)
+	visibleGroups := ownershipgroup.VisibleGroupIDs(database.DB, userID)
 	db = db.Where(`workout_section_id IN (SELECT id FROM workout_sections WHERE
-		workout_id IN (SELECT id FROM workouts WHERE (owner = ? OR public = ?) AND deleted_at IS NULL)
+		workout_id IN (SELECT id FROM workouts WHERE (ownership_group_id IN (?) OR public = ?) AND deleted_at IS NULL)
 		OR workout_id IN (SELECT wg.workout_id FROM workout_groups wg JOIN workout_group_memberships wgm ON wgm.group_id = wg.id WHERE wgm.user_id = ? AND wgm.deleted_at IS NULL AND wg.deleted_at IS NULL))`,
-		userID, true, userID)
+		visibleGroups, true, userID)
 
 	var entities []models.WorkoutSectionItemEntity
 	if err := db.Order("position").Find(&entities).Error; err != nil {

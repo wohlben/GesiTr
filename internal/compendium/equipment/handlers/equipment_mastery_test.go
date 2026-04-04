@@ -7,6 +7,7 @@ import (
 	"gesitr/internal/compendium/equipment/models"
 	exerciseModels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
+	ownershipgroupmodels "gesitr/internal/ownershipgroup/models"
 	exerciseLogModels "gesitr/internal/user/exerciselog/models"
 	masteryModels "gesitr/internal/user/mastery/models"
 
@@ -24,6 +25,8 @@ func setupMasteryTestDB(t *testing.T) {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
+		&ownershipgroupmodels.OwnershipGroupEntity{},
+		&ownershipgroupmodels.OwnershipGroupMembershipEntity{},
 		&models.EquipmentEntity{},
 		&models.EquipmentHistoryEntity{},
 		&exerciseModels.ExerciseEntity{},
@@ -72,7 +75,7 @@ func TestListEquipmentMasteryVisibility(t *testing.T) {
 		if len(result) != 2 {
 			t.Errorf("expected 2 visible (own + public), got %d", len(result))
 			for _, eq := range result {
-				t.Logf("  - %s (owner=%s, public=%v)", eq.Name, eq.Owner, eq.Public)
+				t.Logf("  - %s (id=%d, public=%v)", eq.Name, eq.ID, eq.Public)
 			}
 		}
 	})
@@ -109,7 +112,7 @@ func TestListEquipmentMasteryVisibility(t *testing.T) {
 		if len(result) != 2 {
 			t.Errorf("expected 2 (own + mastery), got %d", len(result))
 			for _, eq := range result {
-				t.Logf("  - %s (owner=%s, public=%v)", eq.Name, eq.Owner, eq.Public)
+				t.Logf("  - %s (id=%d, public=%v)", eq.Name, eq.ID, eq.Public)
 			}
 		}
 	})

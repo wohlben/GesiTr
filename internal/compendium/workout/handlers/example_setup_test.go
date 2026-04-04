@@ -10,6 +10,7 @@ import (
 	"gesitr/internal/compendium/workout/models"
 	workoutgroupmodels "gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
+	ownershipgroupmodels "gesitr/internal/ownershipgroup/models"
 	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
 
@@ -26,6 +27,8 @@ func setupExampleDB() {
 		panic(err)
 	}
 	db.AutoMigrate(
+		&ownershipgroupmodels.OwnershipGroupEntity{},
+		&ownershipgroupmodels.OwnershipGroupMembershipEntity{},
 		&exercisemodels.ExerciseEntity{},
 		&exercisemodels.ExerciseForce{},
 		&exercisemodels.ExerciseMuscle{},
@@ -45,6 +48,7 @@ func setupExampleDB() {
 		&models.WorkoutHistoryEntity{},
 		&models.WorkoutSectionEntity{},
 		&models.WorkoutSectionItemEntity{},
+		&models.WorkoutRelationshipEntity{},
 		&workoutgroupmodels.WorkoutGroupEntity{},
 		&workoutgroupmodels.WorkoutGroupMembershipEntity{},
 	)

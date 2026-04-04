@@ -41,7 +41,7 @@ func setupTestDB(t *testing.T) *gorm.DB {
 
 func createWorkout(t *testing.T, db *gorm.DB) workoutmodels.WorkoutEntity {
 	t.Helper()
-	w := workoutmodels.WorkoutEntity{Owner: "alice", Name: "Test Workout"}
+	w := workoutmodels.WorkoutEntity{Name: "Test Workout"}
 	if err := db.Create(&w).Error; err != nil {
 		t.Fatal(err)
 	}
@@ -455,7 +455,7 @@ func TestActivation_SnapshotsWorkoutStructure(t *testing.T) {
 	db := setupTestDB(t)
 
 	// Create exercise + scheme with 3 sets of 10 reps at 60kg
-	exercise := exercisemodels.ExerciseEntity{Owner: "alice", Names: []exercisemodels.ExerciseName{{Position: 0, Name: "Bench Press"}}}
+	exercise := exercisemodels.ExerciseEntity{Names: []exercisemodels.ExerciseName{{Position: 0, Name: "Bench Press"}}}
 	db.Create(&exercise)
 
 	sets := intPtr(3)
@@ -474,7 +474,7 @@ func TestActivation_SnapshotsWorkoutStructure(t *testing.T) {
 	db.Create(&scheme)
 
 	// Create workout with one section and one exercise item
-	workout := workoutmodels.WorkoutEntity{Owner: "alice", Name: "Push Day"}
+	workout := workoutmodels.WorkoutEntity{Name: "Push Day"}
 	db.Create(&workout)
 
 	section := workoutmodels.WorkoutSectionEntity{

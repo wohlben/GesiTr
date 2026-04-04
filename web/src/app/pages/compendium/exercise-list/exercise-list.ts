@@ -293,7 +293,6 @@ export class ExerciseList {
     { label: 'Names', labelKey: 'fields.names', defaultHidden: true },
     { label: 'Author', labelKey: 'fields.author', defaultHidden: true },
     { label: 'Version', labelKey: 'fields.version', defaultHidden: true },
-    { label: 'Owner', labelKey: 'fields.owner', defaultHidden: true },
     { label: 'Created at', labelKey: 'fields.createdAt', defaultHidden: true },
     { label: 'Updated at', labelKey: 'fields.updatedAt', defaultHidden: true },
   ];

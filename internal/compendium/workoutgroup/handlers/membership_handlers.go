@@ -6,17 +6,21 @@ import (
 	"gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	"gesitr/internal/ownershipgroup"
 
 	"github.com/danielgtaylor/huma/v2"
 )
 
-// requireGroupOwner fetches the group and checks that the caller is the owner.
+// requireGroupOwner fetches the group and checks that the caller is the owner
+// via ownership group access.
 func requireGroupOwner(ctx context.Context, groupID uint) (*models.WorkoutGroupEntity, error) {
 	var group models.WorkoutGroupEntity
 	if err := database.DB.First(&group, groupID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout group not found")
 	}
-	if group.Owner != humaconfig.GetUserID(ctx) {
+	userID := humaconfig.GetUserID(ctx)
+	access := ownershipgroup.CheckAccess(database.DB, userID, group.OwnershipGroupID)
+	if !access.CanModify() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 	return &group, nil
@@ -26,14 +30,15 @@ func requireGroupOwner(ctx context.Context, groupID uint) (*models.WorkoutGroupE
 // GET /api/user/workout-group-memberships
 func ListWorkoutGroupMemberships(ctx context.Context, input *ListWorkoutGroupMembershipsInput) (*ListWorkoutGroupMembershipsOutput, error) {
 	userID := humaconfig.GetUserID(ctx)
+	visibleGroups := ownershipgroup.VisibleGroupIDs(database.DB, userID)
 	db := database.DB.Model(&models.WorkoutGroupMembershipEntity{})
 
 	if input.GroupID != "" {
 		db = db.Where("group_id = ?", input.GroupID)
 	}
 
-	// Only show memberships for groups the caller owns
-	db = db.Where("group_id IN (SELECT id FROM workout_groups WHERE owner = ? AND deleted_at IS NULL)", userID)
+	// Only show memberships for groups the caller can access via ownership groups
+	db = db.Where("group_id IN (SELECT id FROM workout_groups WHERE ownership_group_id IN (?) AND deleted_at IS NULL)", visibleGroups)
 
 	var entities []models.WorkoutGroupMembershipEntity
 	if err := db.Find(&entities).Error; err != nil {
@@ -50,13 +55,14 @@ func ListWorkoutGroupMemberships(ctx context.Context, input *ListWorkoutGroupMem
 // CreateWorkoutGroupMembership adds a user to a workout group. Owner only.
 // POST /api/user/workout-group-memberships
 func CreateWorkoutGroupMembership(ctx context.Context, input *CreateWorkoutGroupMembershipInput) (*CreateWorkoutGroupMembershipOutput, error) {
-	group, err := requireGroupOwner(ctx, input.Body.GroupID)
+	_, err := requireGroupOwner(ctx, input.Body.GroupID)
 	if err != nil {
 		return nil, err
 	}
 
 	// Prevent owner from adding themselves
-	if input.Body.UserID == group.Owner {
+	callerID := humaconfig.GetUserID(ctx)
+	if input.Body.UserID == callerID {
 		return nil, huma.Error422UnprocessableEntity("the workout owner does not need a membership")
 	}
 

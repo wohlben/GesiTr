@@ -80,9 +80,6 @@ import { DatePipe } from '@angular/common';
                   {{ locality.name }}
                 </td>
                 <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
-                  {{ locality.owner }}
-                </td>
-                <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
                   {{ locality.createdAt | date: 'mediumDate' }}
                 </td>
               </tr>
@@ -147,7 +144,6 @@ export class LocalityList {
 
   localityColumns: DataTableColumn[] = [
     { label: 'Name', labelKey: 'fields.name', searchParam: 'q' },
-    { label: 'Owner', labelKey: 'fields.owner', defaultHidden: true },
     { label: 'Created at', labelKey: 'fields.createdAt', defaultHidden: true },
   ];
 }

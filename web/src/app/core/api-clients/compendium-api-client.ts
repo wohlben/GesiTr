@@ -9,6 +9,7 @@ import {
   Locality,
   LocalityAvailability,
 } from '$generated/models';
+import { OwnershipGroupMembership } from '$generated/ownershipgroup';
 import { ExerciseGroup, ExerciseGroupMember } from '$generated/user-models';
 import { PaginatedResponse } from './paginated-response';
 import { VersionEntry } from './version-entry';
@@ -257,6 +258,38 @@ export class CompendiumApiClient {
 
   deleteLocalityAvailability(id: number): Promise<void> {
     return firstValueFrom(this.http.delete<void>(`/api/locality-availabilities/${id}`));
+  }
+
+  // Ownership Group Memberships
+  fetchOwnershipGroupMemberships(groupId: number): Promise<OwnershipGroupMembership[]> {
+    return firstValueFrom(
+      this.http.get<OwnershipGroupMembership[]>(`/api/ownership-groups/${groupId}/memberships`),
+    );
+  }
+
+  createOwnershipGroupMembership(
+    groupId: number,
+    data: { userId: string },
+  ): Promise<OwnershipGroupMembership> {
+    return firstValueFrom(
+      this.http.post<OwnershipGroupMembership>(
+        `/api/ownership-groups/${groupId}/memberships`,
+        data,
+      ),
+    );
+  }
+
+  updateOwnershipGroupMembership(
+    id: number,
+    data: { role: string },
+  ): Promise<OwnershipGroupMembership> {
+    return firstValueFrom(
+      this.http.put<OwnershipGroupMembership>(`/api/ownership-group-memberships/${id}`, data),
+    );
+  }
+
+  deleteOwnershipGroupMembership(id: number): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`/api/ownership-group-memberships/${id}`));
   }
 
   fetchDeployStatus(): Promise<{ status: string; title?: string; createdAt?: string }> {

@@ -13,6 +13,7 @@ import (
 	exerciseModels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	ownershipgroupmodels "gesitr/internal/ownershipgroup/models"
 	"gesitr/internal/user/exercisescheme/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
 
@@ -35,6 +36,8 @@ func setupTestDB(t *testing.T) {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
+		&ownershipgroupmodels.OwnershipGroupEntity{},
+		&ownershipgroupmodels.OwnershipGroupMembershipEntity{},
 		&exerciseModels.ExerciseEntity{},
 		&exerciseModels.ExerciseForce{},
 		&exerciseModels.ExerciseMuscle{},

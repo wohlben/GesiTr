@@ -18,12 +18,12 @@ export interface ErrorResponse {
 
 export interface ExerciseGroup extends BaseModel {
   name?: string;
-  owner: string;
+  ownershipGroupId: number /* uint */;
 }
 export interface ExerciseGroupMember extends BaseModel {
   groupId: number /* uint */;
   exerciseId: number /* uint */;
-  owner: string;
+  ownershipGroupId: number /* uint */;
 }
 
 //////////
@@ -32,7 +32,7 @@ export interface ExerciseGroupMember extends BaseModel {
 export interface WorkoutRelationship extends BaseModel {
   relationshipType: WorkoutRelationshipType;
   strength: number /* float64 */;
-  owner: string;
+  ownershipGroupId: number /* uint */;
   fromWorkoutId: number /* uint */;
   toWorkoutId: number /* uint */;
 }
@@ -48,7 +48,7 @@ export interface WorkoutGroupInfo {
   membership: string;
 }
 export interface Workout extends BaseModel {
-  owner: string;
+  ownershipGroupId: number /* uint */;
   name: string;
   notes?: string;
   public: boolean;

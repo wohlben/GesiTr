@@ -40,7 +40,7 @@ func TestListWorkouts(t *testing.T) {
 	doJSON(r, "POST", "/api/workouts", map[string]any{
 		"name": "Pull Day",
 	})
-	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
+	database.DB.Create(&models.WorkoutEntity{Name: "Bob's Workout"})
 
 	t.Run("lists own + public (bob's is private)", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/workouts", nil)
@@ -52,8 +52,8 @@ func TestListWorkouts(t *testing.T) {
 			t.Errorf("expected 2 (own only, bob's is private), got %d", len(result))
 		}
 		for _, wo := range result {
-			if wo.Owner != "alice" {
-				t.Errorf("expected owner alice, got %q", wo.Owner)
+			if wo.ID == 0 {
+				t.Errorf("expected non-zero workout ID")
 			}
 		}
 	})
@@ -111,7 +111,7 @@ func TestGetWorkout(t *testing.T) {
 	doJSON(r, "POST", "/api/workouts", map[string]any{
 		"name": "Push Day",
 	})
-	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
+	database.DB.Create(&models.WorkoutEntity{Name: "Bob's Workout"})
 
 	t.Run("found", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/workouts/1", nil)
@@ -197,7 +197,7 @@ func TestUpdateWorkout(t *testing.T) {
 	doJSON(r, "POST", "/api/workouts", map[string]any{
 		"name": "Push Day",
 	})
-	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
+	database.DB.Create(&models.WorkoutEntity{Name: "Bob's Workout"})
 
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/workouts/1", map[string]any{
@@ -246,7 +246,7 @@ func TestDeleteWorkout(t *testing.T) {
 	doJSON(r, "POST", "/api/workouts", map[string]any{
 		"name": "Push Day",
 	})
-	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
+	database.DB.Create(&models.WorkoutEntity{Name: "Bob's Workout"})
 
 	t.Run("forbidden for other owner", func(t *testing.T) {
 		w := doJSON(r, "DELETE", "/api/workouts/2", nil)

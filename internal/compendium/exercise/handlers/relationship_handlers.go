@@ -6,6 +6,7 @@ import (
 	"gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	"gesitr/internal/ownershipgroup"
 	masteryHandlers "gesitr/internal/user/mastery/handlers"
 
 	"github.com/danielgtaylor/huma/v2"
@@ -20,11 +21,13 @@ func ListExerciseRelationships(ctx context.Context, input *ListExerciseRelations
 	db := database.DB.Model(&models.ExerciseRelationshipEntity{})
 
 	if input.Owner != "" {
-		owner := input.Owner
-		if owner == "me" {
-			owner = humaconfig.GetUserID(ctx)
+		userID := humaconfig.GetUserID(ctx)
+		if input.Owner == "me" || input.Owner == userID {
+			visibleGroups := ownershipgroup.VisibleGroupIDs(database.DB, userID)
+			db = db.Where("ownership_group_id IN (?)", visibleGroups)
+		} else {
+			db = db.Where("ownership_group_id IN (SELECT group_id FROM ownership_group_memberships WHERE user_id = ? AND role = 'owner' AND deleted_at IS NULL)", input.Owner)
 		}
-		db = db.Where("owner = ?", owner)
 	}
 	if input.FromExerciseID != "" {
 		db = db.Where("from_exercise_id = ?", input.FromExerciseID)
@@ -62,11 +65,19 @@ func CreateExerciseRelationship(ctx context.Context, input *CreateExerciseRelati
 	}
 
 	entity := models.ExerciseRelationshipFromDTO(dto)
-	entity.Owner = humaconfig.GetUserID(ctx)
+	userID := humaconfig.GetUserID(ctx)
+
+	// Inherit ownership group from the "from" exercise.
+	var fromExercise models.ExerciseEntity
+	if err := database.DB.Select("ownership_group_id").First(&fromExercise, input.Body.FromExerciseID).Error; err != nil {
+		return nil, huma.Error404NotFound("From exercise not found")
+	}
+	entity.OwnershipGroupID = fromExercise.OwnershipGroupID
+
 	if err := database.DB.Create(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	_ = masteryHandlers.RecalculateContributions(database.DB, entity.Owner, entity.FromExerciseID, entity.ToExerciseID)
+	_ = masteryHandlers.RecalculateContributions(database.DB, userID, entity.FromExerciseID, entity.ToExerciseID)
 	return &CreateExerciseRelationshipOutput{Body: entity.ToDTO()}, nil
 }
 
@@ -80,13 +91,15 @@ func DeleteExerciseRelationship(ctx context.Context, input *DeleteExerciseRelati
 		return nil, huma.Error404NotFound("ExerciseRelationship not found")
 	}
 
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	userID := humaconfig.GetUserID(ctx)
+	access := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	if !access.CanModify() {
 		return nil, huma.Error403Forbidden("not the owner of this relationship")
 	}
 
 	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	_ = masteryHandlers.RecalculateContributions(database.DB, entity.Owner, entity.FromExerciseID, entity.ToExerciseID)
+	_ = masteryHandlers.RecalculateContributions(database.DB, userID, entity.FromExerciseID, entity.ToExerciseID)
 	return nil, nil
 }

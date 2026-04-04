@@ -9,9 +9,9 @@ type ExerciseRelationshipEntity struct {
 	RelationshipType ExerciseRelationshipType `gorm:"not null;uniqueIndex:idx_exercise_relationship"`
 	Strength         float64                  `gorm:"not null"`
 	Description      *string
-	Owner            string `gorm:"not null;uniqueIndex:idx_exercise_relationship"`
-	FromExerciseID   uint   `gorm:"not null;uniqueIndex:idx_exercise_relationship"`
-	ToExerciseID     uint   `gorm:"not null;uniqueIndex:idx_exercise_relationship"`
+	OwnershipGroupID uint `gorm:"uniqueIndex:idx_exercise_relationship"`
+	FromExerciseID   uint `gorm:"not null;uniqueIndex:idx_exercise_relationship"`
+	ToExerciseID     uint `gorm:"not null;uniqueIndex:idx_exercise_relationship"`
 }
 
 func (ExerciseRelationshipEntity) TableName() string { return "exercise_relationships" }
@@ -22,7 +22,7 @@ func (e *ExerciseRelationshipEntity) ToDTO() ExerciseRelationship {
 		RelationshipType: e.RelationshipType,
 		Strength:         e.Strength,
 		Description:      e.Description,
-		Owner:            e.Owner,
+		OwnershipGroupID: e.OwnershipGroupID,
 		FromExerciseID:   e.FromExerciseID,
 		ToExerciseID:     e.ToExerciseID,
 	}
@@ -34,7 +34,7 @@ func ExerciseRelationshipFromDTO(dto ExerciseRelationship) ExerciseRelationshipE
 		RelationshipType: dto.RelationshipType,
 		Strength:         dto.Strength,
 		Description:      dto.Description,
-		Owner:            dto.Owner,
+		OwnershipGroupID: dto.OwnershipGroupID,
 		FromExerciseID:   dto.FromExerciseID,
 		ToExerciseID:     dto.ToExerciseID,
 	}

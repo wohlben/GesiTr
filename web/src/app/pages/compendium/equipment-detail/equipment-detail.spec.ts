@@ -18,7 +18,7 @@ const EQUIPMENT: Equipment = {
   displayName: 'Barbell',
   description: 'A standard barbell',
   category: 'free_weights',
-  owner: 'seed',
+  ownershipGroupId: 0,
   public: true,
   version: 1,
 };
@@ -31,7 +31,7 @@ const USER_EQUIPMENT: Equipment = {
   displayName: 'Barbell',
   description: 'A standard barbell',
   category: 'free_weights',
-  owner: 'anon',
+  ownershipGroupId: 0,
   public: false,
   version: 1,
 };
@@ -123,7 +123,7 @@ describe('EquipmentDetail', () => {
       updatedAt: '',
       relationshipType: 'forked',
       strength: 1,
-      owner: 'anon',
+      ownershipGroupId: 0,
       fromEquipmentId: 10,
       toEquipmentId: 1,
     };

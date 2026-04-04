@@ -14,11 +14,24 @@ type PermissionsResponse struct {
 	Permissions []Permission `json:"permissions"`
 }
 
-// ResolvePermissions determines the permissions for a user on a resource.
+// AccessChecker is implemented by ownershipgroup.EntityAccess to avoid an import cycle.
+type AccessChecker interface {
+	CanRead() bool
+	CanModify() bool
+	CanDelete() bool
+}
+
+// ResolvePermissionsFromAccess determines permissions using an ownership group access check.
 // Returns (permissions, visible). If visible is false, the caller should return 404.
-func ResolvePermissions(userID, entityOwner string, isPublic bool) ([]Permission, bool) {
-	if userID == entityOwner {
+func ResolvePermissionsFromAccess(access AccessChecker, isPublic bool) ([]Permission, bool) {
+	if access.CanDelete() {
 		return []Permission{PermissionRead, PermissionModify, PermissionDelete}, true
+	}
+	if access.CanModify() {
+		return []Permission{PermissionRead, PermissionModify}, true
+	}
+	if access.CanRead() {
+		return []Permission{PermissionRead}, true
 	}
 	if isPublic {
 		return []Permission{PermissionRead}, true

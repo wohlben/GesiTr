@@ -67,12 +67,10 @@ func ExampleCreateWorkout() {
 	json.Unmarshal(w.Body.Bytes(), &workout)
 	fmt.Println(w.Code)
 	fmt.Println(workout.Name)
-	fmt.Println(workout.Owner)
 	fmt.Println(*workout.Notes)
 	// Output:
 	// 201
 	// Push Day
-	// alice
 	// Chest, shoulders, triceps
 }
 
@@ -89,11 +87,9 @@ func ExampleGetWorkout_ownerAccess() {
 	json.Unmarshal(w.Body.Bytes(), &workout)
 	fmt.Println(w.Code)
 	fmt.Println(workout.Name)
-	fmt.Println(workout.Owner)
 	// Output:
 	// 200
 	// Push Day
-	// alice
 }
 
 // Non-owner is denied access to another user's workout with 403 Forbidden.

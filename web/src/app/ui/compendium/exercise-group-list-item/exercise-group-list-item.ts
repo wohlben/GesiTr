@@ -27,9 +27,6 @@ import { SlugifyPipe } from '$ui/pipes/slugify';
       </span>
     </td>
     <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
-      {{ group().owner }}
-    </td>
-    <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
       {{ group().createdAt }}
     </td>
     <td class="whitespace-nowrap px-4 py-2 text-sm text-gray-600 dark:text-gray-400">

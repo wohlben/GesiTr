@@ -17,6 +17,7 @@ import (
 	workoutmodels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	ownershipgroupmodels "gesitr/internal/ownershipgroup/models"
 	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciselogmodels "gesitr/internal/user/exerciselog/models"
 	exerciseschemehandlers "gesitr/internal/user/exercisescheme/handlers"
@@ -43,6 +44,8 @@ func setupTestDB(t *testing.T) {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
+		&ownershipgroupmodels.OwnershipGroupEntity{},
+		&ownershipgroupmodels.OwnershipGroupMembershipEntity{},
 		&exercisemodels.ExerciseEntity{},
 		&exercisemodels.ExerciseForce{},
 		&exercisemodels.ExerciseMuscle{},

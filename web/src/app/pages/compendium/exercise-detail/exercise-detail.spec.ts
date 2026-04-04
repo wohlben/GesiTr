@@ -25,7 +25,7 @@ const EXERCISE: Exercise = {
   description: 'A compound exercise',
   instructions: [],
   images: [],
-  owner: 'seed',
+  ownershipGroupId: 0,
   public: true,
   version: 1,
   equipmentIds: [],
@@ -39,7 +39,7 @@ const FORKED_RELATIONSHIP: ExerciseRelationship = {
   toExerciseId: 1,
   relationshipType: 'forked',
   strength: 0,
-  owner: 'anon',
+  ownershipGroupId: 0,
 };
 
 function setup(forkedRelationships: ExerciseRelationship[] = []) {

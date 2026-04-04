@@ -11,7 +11,7 @@ const group: ExerciseGroup = {
   createdAt: '2024-01-15T10:00:00Z',
   updatedAt: '2024-01-15T10:00:00Z',
   name: 'Push Exercises',
-  owner: 'admin',
+  ownershipGroupId: 0,
 };
 
 const columns: DataTableColumn[] = [
