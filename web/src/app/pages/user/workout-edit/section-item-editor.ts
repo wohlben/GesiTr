@@ -1,4 +1,5 @@
-import { Component, input, model, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
+import { FormField, type FieldTree } from '@angular/forms/signals';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Exercise } from '$generated/models';
 import { ExerciseGroup } from '$generated/user-models';
@@ -7,14 +8,12 @@ import {
   WorkoutSectionItemTypeExerciseGroup,
 } from '$generated/user-models';
 import { ExerciseGroupConfig } from '$ui/exercise-group-config/exercise-group-config';
-import type { GroupConfigValue } from '$ui/exercise-group-config/exercise-group-config';
-import type { FormValueControl } from '@angular/forms/signals';
 import type { WorkoutItemModel } from './workout-item-model';
 import { ExerciseItemEditor } from './exercise-item-editor';
 
 @Component({
   selector: 'app-section-item-editor',
-  imports: [ExerciseItemEditor, ExerciseGroupConfig, TranslocoDirective],
+  imports: [FormField, ExerciseItemEditor, ExerciseGroupConfig, TranslocoDirective],
   template: `
     <div
       *transloco="let t"
@@ -43,10 +42,10 @@ import { ExerciseItemEditor } from './exercise-item-editor';
         >
           <button
             type="button"
-            (click)="setItemType(ITEM_TYPE_EXERCISE)"
+            (click)="itemField().itemType().value.set(ITEM_TYPE_EXERCISE)"
             class="flex-1 px-3 py-1.5 text-sm font-medium transition-colors"
             [class]="
-              value().itemType === ITEM_TYPE_EXERCISE
+              itemField().itemType().value() === ITEM_TYPE_EXERCISE
                 ? 'bg-blue-600 text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
             "
@@ -55,10 +54,10 @@ import { ExerciseItemEditor } from './exercise-item-editor';
           </button>
           <button
             type="button"
-            (click)="setItemType(ITEM_TYPE_GROUP)"
+            (click)="itemField().itemType().value.set(ITEM_TYPE_GROUP)"
             class="flex-1 border-l border-gray-300 px-3 py-1.5 text-sm font-medium transition-colors dark:border-gray-600"
             [class]="
-              value().itemType === ITEM_TYPE_GROUP
+              itemField().itemType().value() === ITEM_TYPE_GROUP
                 ? 'bg-blue-600 text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
             "
@@ -68,14 +67,13 @@ import { ExerciseItemEditor } from './exercise-item-editor';
         </div>
       </div>
 
-      @if (value().itemType === ITEM_TYPE_EXERCISE) {
-        <app-exercise-item-editor [(value)]="value" [exercises]="exercises()" />
+      @if (itemField().itemType().value() === ITEM_TYPE_EXERCISE) {
+        <app-exercise-item-editor [itemField]="itemField()" [exercises]="exercises()" />
       }
 
-      @if (value().itemType === ITEM_TYPE_GROUP) {
+      @if (itemField().itemType().value() === ITEM_TYPE_GROUP) {
         <app-exercise-group-config
-          [value]="value().groupConfig"
-          (valueChange)="onGroupConfigChange($event)"
+          [formField]="itemField().groupConfig"
           [existingGroups]="exerciseGroups()"
           [exercises]="exercises()"
         />
@@ -83,8 +81,8 @@ import { ExerciseItemEditor } from './exercise-item-editor';
     </div>
   `,
 })
-export class SectionItemEditor implements FormValueControl<WorkoutItemModel> {
-  readonly value = model.required<WorkoutItemModel>();
+export class SectionItemEditor {
+  itemField = input.required<FieldTree<WorkoutItemModel>>();
 
   exercises = input.required<Exercise[]>();
   exerciseGroups = input.required<ExerciseGroup[]>();
@@ -94,12 +92,4 @@ export class SectionItemEditor implements FormValueControl<WorkoutItemModel> {
 
   readonly ITEM_TYPE_EXERCISE = WorkoutSectionItemTypeExercise;
   readonly ITEM_TYPE_GROUP = WorkoutSectionItemTypeExerciseGroup;
-
-  setItemType(itemType: string) {
-    this.value.update((v) => ({ ...v, itemType }));
-  }
-
-  onGroupConfigChange(groupConfig: GroupConfigValue) {
-    this.value.update((v) => ({ ...v, groupConfig }));
-  }
 }

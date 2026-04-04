@@ -1,5 +1,7 @@
+import { Component, signal } from '@angular/core';
 import { render } from '@testing-library/angular';
 import { page } from 'vitest/browser';
+import { form } from '@angular/forms/signals';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
@@ -7,6 +9,7 @@ import { SectionItemEditor } from './section-item-editor';
 import { EMPTY_GROUP_CONFIG } from '$ui/exercise-group-config/exercise-group-config';
 import type { WorkoutItemModel } from './workout-item-model';
 import type { Exercise } from '$generated/models';
+import type { ExerciseGroup } from '$generated/user-models';
 
 // brn-select uses ResizeObserver
 beforeAll(() => {
@@ -43,23 +46,15 @@ const exercises: Exercise[] = [
   },
 ];
 
-const exerciseItem: WorkoutItemModel = {
-  itemType: 'exercise',
-  exerciseId: 1,
-  selectedSchemeId: null,
-  groupConfig: { ...EMPTY_GROUP_CONFIG },
-};
-
-const groupItem: WorkoutItemModel = {
-  itemType: 'exercise_group',
-  exerciseId: null,
-  selectedSchemeId: null,
-  groupConfig: {
-    exerciseGroupId: 5,
+const exerciseGroups: ExerciseGroup[] = [
+  {
+    id: 5,
     name: 'Push Variants',
-    members: [1],
+    ownershipGroupId: 0,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z',
   },
-};
+];
 
 const providers = [
   provideTranslocoForTest(),
@@ -67,76 +62,83 @@ const providers = [
   provideTanStackQuery(new QueryClient({ defaultOptions: { queries: { retry: false } } })),
 ];
 
+@Component({
+  selector: 'app-exercise-host',
+  template: `
+    <app-section-item-editor
+      [itemField]="itemForm"
+      [exercises]="exercises"
+      [exerciseGroups]="[]"
+      [itemLabel]="'Exercise 1'"
+    />
+  `,
+  imports: [SectionItemEditor],
+})
+class ExerciseHost {
+  model = signal<WorkoutItemModel>({
+    itemType: 'exercise',
+    exerciseId: 1,
+    selectedSchemeId: null,
+    groupConfig: { ...EMPTY_GROUP_CONFIG },
+  });
+  itemForm = form(this.model);
+  exercises = exercises;
+}
+
+@Component({
+  selector: 'app-group-host',
+  template: `
+    <app-section-item-editor
+      [itemField]="itemForm"
+      [exercises]="exercises"
+      [exerciseGroups]="exerciseGroups"
+      [itemLabel]="'Exercise 2'"
+    />
+  `,
+  imports: [SectionItemEditor],
+})
+class GroupHost {
+  model = signal<WorkoutItemModel>({
+    itemType: 'exercise_group',
+    exerciseId: null,
+    selectedSchemeId: null,
+    groupConfig: { exerciseGroupId: 5, name: 'Push Variants', members: [1] },
+  });
+  itemForm = form(this.model);
+  exercises = exercises;
+  exerciseGroups = exerciseGroups;
+}
+
 describe('SectionItemEditor screenshots', () => {
   afterEach(() => {
     document.documentElement.classList.remove('dark');
   });
 
   describe('exercise type', () => {
-    const template = `
-      <app-section-item-editor
-        [(value)]="value"
-        [exercises]="exercises"
-        [exerciseGroups]="[]"
-        [itemLabel]="'Exercise 1'"
-      />
-    `;
-    const opts = {
-      imports: [SectionItemEditor],
-      providers,
-      componentProperties: { value: exerciseItem, exercises },
-    };
-
     it('light', async () => {
-      const { fixture } = await render(template, opts);
+      const { fixture } = await render(ExerciseHost, { providers });
       const locator = page.elementLocator(fixture.nativeElement);
       await expect(locator).toMatchScreenshot('exercise-light');
     });
 
     it('dark', async () => {
       document.documentElement.classList.add('dark');
-      const { fixture } = await render(template, opts);
+      const { fixture } = await render(ExerciseHost, { providers });
       const locator = page.elementLocator(fixture.nativeElement);
       await expect(locator).toMatchScreenshot('exercise-dark');
     });
   });
 
   describe('exercise group type', () => {
-    const template = `
-      <app-section-item-editor
-        [(value)]="value"
-        [exercises]="exercises"
-        [exerciseGroups]="exerciseGroups"
-        [itemLabel]="'Exercise 2'"
-      />
-    `;
-    const opts = {
-      imports: [SectionItemEditor],
-      providers,
-      componentProperties: {
-        value: groupItem,
-        exercises,
-        exerciseGroups: [
-          {
-            id: 5,
-            name: 'Push Variants',
-            ownershipGroupId: 0,
-            createdAt: '2024-01-01T00:00:00Z',
-            updatedAt: '2024-01-01T00:00:00Z',
-          },
-        ],
-      },
-    };
-
     it('light', async () => {
-      const { fixture } = await render(template, opts);
+      const { fixture } = await render(GroupHost, { providers });
       const locator = page.elementLocator(fixture.nativeElement);
       await expect(locator).toMatchScreenshot('group-light');
     });
 
     it('dark', async () => {
       document.documentElement.classList.add('dark');
-      const { fixture } = await render(template, opts);
+      const { fixture } = await render(GroupHost, { providers });
       const locator = page.elementLocator(fixture.nativeElement);
       await expect(locator).toMatchScreenshot('group-dark');
     });

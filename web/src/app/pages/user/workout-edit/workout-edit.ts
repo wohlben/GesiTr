@@ -172,7 +172,7 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
                   <div class="space-y-3">
                     @for (item of section.items; track $index; let ei = $index) {
                       <app-section-item-editor
-                        [formField]="item"
+                        [itemField]="item"
                         [exercises]="enrichedUserExercises()"
                         [exerciseGroups]="exerciseGroups()"
                         [itemLabel]="t('user.workouts.exerciseLabel', { n: ei + 1 })"

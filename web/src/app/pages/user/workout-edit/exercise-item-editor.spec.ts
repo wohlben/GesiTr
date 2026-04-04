@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { form } from '@angular/forms/signals';
 import { provideHttpClient } from '@angular/common/http';
 import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
@@ -8,18 +9,6 @@ import { EMPTY_GROUP_CONFIG } from '$ui/exercise-group-config/exercise-group-con
 import type { WorkoutItemModel } from './workout-item-model';
 import type { Exercise } from '$generated/models';
 import type { ExerciseScheme } from '$generated/user-exercisescheme';
-
-function makeScheme(overrides: Partial<ExerciseScheme> = {}): ExerciseScheme {
-  return {
-    id: 10,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z',
-    owner: 'u1',
-    exerciseId: 1,
-    measurementType: 'REP_BASED',
-    ...overrides,
-  };
-}
 
 // brn-select / combobox use ResizeObserver
 beforeAll(() => {
@@ -54,26 +43,6 @@ const exercises: Exercise[] = [
     version: 1,
     equipmentIds: [],
   },
-  {
-    id: 2,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z',
-    names: [{ id: 2, name: 'Squat' }],
-    type: 'STRENGTH',
-    force: ['PUSH'],
-    primaryMuscles: ['QUADS'],
-    secondaryMuscles: ['GLUTES'],
-    technicalDifficulty: 'intermediate',
-    bodyWeightScaling: 0,
-    suggestedMeasurementParadigms: ['REP_BASED'],
-    description: '',
-    instructions: [],
-    images: [],
-    ownershipGroupId: 0,
-    public: true,
-    version: 1,
-    equipmentIds: [],
-  },
 ];
 
 function makeItem(overrides: Partial<WorkoutItemModel> = {}): WorkoutItemModel {
@@ -86,15 +55,32 @@ function makeItem(overrides: Partial<WorkoutItemModel> = {}): WorkoutItemModel {
   };
 }
 
+function makeScheme(overrides: Partial<ExerciseScheme> = {}): ExerciseScheme {
+  return {
+    id: 10,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z',
+    owner: 'u1',
+    exerciseId: 1,
+    measurementType: 'REP_BASED',
+    ...overrides,
+  };
+}
+
 describe('ExerciseItemEditor', () => {
   @Component({
     selector: 'app-test-host-editor',
-    template: ` <app-exercise-item-editor [(value)]="item" [exercises]="exercises" /> `,
+    template: ` <app-exercise-item-editor [itemField]="itemForm" [exercises]="exercises" /> `,
     imports: [ExerciseItemEditor],
   })
   class Host {
-    item = signal(makeItem());
+    model = signal(makeItem());
+    itemForm = form(this.model);
     exercises = exercises;
+
+    resetModel(overrides: Partial<WorkoutItemModel> = {}) {
+      this.model.set(makeItem(overrides));
+    }
   }
 
   beforeEach(() => {
@@ -111,46 +97,35 @@ describe('ExerciseItemEditor', () => {
   function setup(overrides: Partial<WorkoutItemModel> = {}) {
     const fixture = TestBed.createComponent(Host);
     if (Object.keys(overrides).length > 0) {
-      fixture.componentInstance.item.set(makeItem(overrides));
+      fixture.componentInstance.resetModel(overrides);
     }
     fixture.detectChanges();
     return fixture;
   }
 
-  it('renders exercise combobox', () => {
+  function getEditor(fixture: ReturnType<typeof setup>): ExerciseItemEditor {
+    return fixture.debugElement.children[0].componentInstance as ExerciseItemEditor;
+  }
+
+  it('renders exercise combobox with formField binding', () => {
     const fixture = setup();
     expect(fixture.nativeElement.querySelector('hlm-combobox')).toBeTruthy();
   });
 
-  it('renders scheme selector', () => {
+  it('renders scheme selector when exerciseId is set', () => {
     const fixture = setup({ exerciseId: 1 });
     expect(fixture.nativeElement.querySelector('app-scheme-selector')).toBeTruthy();
   });
 
-  it('updates exerciseId via onExerciseSelected', () => {
-    const fixture = setup();
-    const editor = fixture.debugElement.children[0].componentInstance as ExerciseItemEditor;
-    editor.onExerciseSelected(exercises[0]);
-    expect(fixture.componentInstance.item().exerciseId).toBe(1);
-  });
-
-  it('updates selectedSchemeId via onSchemeSelected', () => {
+  it('updates selectedSchemeId in form via onSchemeSelected', () => {
     const fixture = setup({ exerciseId: 1 });
-    const editor = fixture.debugElement.children[0].componentInstance as ExerciseItemEditor;
-    editor.onSchemeSelected(42);
-    expect(fixture.componentInstance.item().selectedSchemeId).toBe(42);
-  });
-
-  it('clears exerciseId when exercise deselected', () => {
-    const fixture = setup({ exerciseId: 1 });
-    const editor = fixture.debugElement.children[0].componentInstance as ExerciseItemEditor;
-    editor.onExerciseSelected(null);
-    expect(fixture.componentInstance.item().exerciseId).toBeNull();
+    getEditor(fixture).onSchemeSelected(42);
+    expect(fixture.componentInstance.model().selectedSchemeId).toBe(42);
   });
 
   it('opens dialog in create mode', () => {
     const fixture = setup({ exerciseId: 1 });
-    const editor = fixture.debugElement.children[0].componentInstance as ExerciseItemEditor;
+    const editor = getEditor(fixture);
     expect(editor.dialogOpen()).toBe(false);
     editor.openDialog(null);
     expect(editor.dialogOpen()).toBe(true);
@@ -159,7 +134,7 @@ describe('ExerciseItemEditor', () => {
 
   it('opens dialog in edit mode with scheme', () => {
     const fixture = setup({ exerciseId: 1 });
-    const editor = fixture.debugElement.children[0].componentInstance as ExerciseItemEditor;
+    const editor = getEditor(fixture);
     const scheme = makeScheme();
     editor.openDialog(scheme);
     expect(editor.dialogOpen()).toBe(true);
@@ -168,32 +143,38 @@ describe('ExerciseItemEditor', () => {
 
   it('closes dialog and clears editing scheme', () => {
     const fixture = setup({ exerciseId: 1 });
-    const editor = fixture.debugElement.children[0].componentInstance as ExerciseItemEditor;
+    const editor = getEditor(fixture);
     editor.openDialog(makeScheme());
     editor.closeDialog();
     expect(editor.dialogOpen()).toBe(false);
     expect(editor.editingScheme()).toBeNull();
   });
 
-  it('selects scheme and closes dialog on save', () => {
+  it('sets selectedSchemeId in form and closes dialog on save', () => {
     const fixture = setup({ exerciseId: 1 });
-    const editor = fixture.debugElement.children[0].componentInstance as ExerciseItemEditor;
+    const editor = getEditor(fixture);
     editor.openDialog(null);
     editor.onSchemeSaved(makeScheme({ id: 99 }));
-    expect(fixture.componentInstance.item().selectedSchemeId).toBe(99);
+    expect(fixture.componentInstance.model().selectedSchemeId).toBe(99);
     expect(editor.dialogOpen()).toBe(false);
   });
 
-  it('resolves selectedExercise from exercises list', () => {
+  it('resolves exercise name from ID via exerciseIdToString', () => {
     const fixture = setup({ exerciseId: 1 });
-    const editor = fixture.debugElement.children[0].componentInstance as ExerciseItemEditor;
-    expect(editor.selectedExercise()?.id).toBe(1);
-    expect(editor.selectedExercise()?.names?.[0]?.name).toBe('Bench Press');
+    const editor = getEditor(fixture);
+    expect(editor.exerciseIdToString(1)).toBe('Bench Press');
   });
 
-  it('returns null selectedExercise when no exerciseId', () => {
-    const fixture = setup({ exerciseId: null });
-    const editor = fixture.debugElement.children[0].componentInstance as ExerciseItemEditor;
-    expect(editor.selectedExercise()).toBeNull();
+  it('returns empty string for unknown exercise ID', () => {
+    const fixture = setup();
+    const editor = getEditor(fixture);
+    expect(editor.exerciseIdToString(999)).toBe('');
+  });
+
+  it('filters exercise by name via exerciseIdFilter', () => {
+    const fixture = setup();
+    const editor = getEditor(fixture);
+    expect(editor.exerciseIdFilter(1, 'bench')).toBe(true);
+    expect(editor.exerciseIdFilter(1, 'squat')).toBe(false);
   });
 });

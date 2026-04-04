@@ -1,16 +1,16 @@
-import { Component, computed, input, model, signal } from '@angular/core';
+import { Component, computed, input, signal } from '@angular/core';
+import { FormField, type FieldTree } from '@angular/forms/signals';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { HlmComboboxImports } from '@spartan-ng/helm/combobox';
 import { Exercise } from '$generated/models';
 import { ExerciseScheme } from '$generated/user-exercisescheme';
 import { SchemeSelector } from '$ui/scheme-selector/scheme-selector';
 import { CreateSchemeDialog } from './create-scheme-dialog';
-import type { FormValueControl } from '@angular/forms/signals';
 import type { WorkoutItemModel } from './workout-item-model';
 
 @Component({
   selector: 'app-exercise-item-editor',
-  imports: [HlmComboboxImports, SchemeSelector, CreateSchemeDialog, TranslocoDirective],
+  imports: [FormField, HlmComboboxImports, SchemeSelector, CreateSchemeDialog, TranslocoDirective],
   template: `
     <ng-container *transloco="let t">
       <div>
@@ -19,21 +19,20 @@ import type { WorkoutItemModel } from './workout-item-model';
         }}</span>
         <hlm-combobox
           class="mt-1 block"
-          [value]="selectedExercise()"
-          (valueChange)="onExerciseSelected($event)"
-          [filter]="exerciseFilter"
-          [itemToString]="exerciseToString"
+          [formField]="itemField().exerciseId"
+          [filter]="exerciseIdFilter"
+          [itemToString]="exerciseIdToString"
         >
           <hlm-combobox-input
             [placeholder]="t('common.search')"
-            [showClear]="!!value().exerciseId"
+            [showClear]="!!itemField().exerciseId().value()"
           />
           <ng-template hlmComboboxPortal>
             <hlm-combobox-content>
               <hlm-combobox-input [placeholder]="t('common.search')" [showClear]="false" />
               <div hlmComboboxList>
                 @for (ex of exercises(); track ex.id) {
-                  <hlm-combobox-item [value]="ex">{{ ex.names?.[0]?.name }}</hlm-combobox-item>
+                  <hlm-combobox-item [value]="ex.id">{{ ex.names?.[0]?.name }}</hlm-combobox-item>
                 }
                 <hlm-combobox-empty>{{ t('common.noResults') }}</hlm-combobox-empty>
               </div>
@@ -43,8 +42,8 @@ import type { WorkoutItemModel } from './workout-item-model';
       </div>
 
       <app-scheme-selector
-        [exerciseId]="value().exerciseId"
-        [selectedSchemeId]="value().selectedSchemeId"
+        [exerciseId]="itemField().exerciseId().value()"
+        [selectedSchemeId]="itemField().selectedSchemeId().value()"
         (schemeSelected)="onSchemeSelected($event)"
         (createRequested)="openDialog(null)"
         (editRequested)="openDialog($event)"
@@ -52,7 +51,7 @@ import type { WorkoutItemModel } from './workout-item-model';
 
       <app-create-scheme-dialog
         [open]="dialogOpen()"
-        [preselectedExerciseId]="value().exerciseId"
+        [preselectedExerciseId]="itemField().exerciseId().value()"
         [editingScheme]="editingScheme()"
         (schemeSaved)="onSchemeSaved($event)"
         (cancelled)="closeDialog()"
@@ -60,30 +59,24 @@ import type { WorkoutItemModel } from './workout-item-model';
     </ng-container>
   `,
 })
-export class ExerciseItemEditor implements FormValueControl<WorkoutItemModel> {
-  readonly value = model.required<WorkoutItemModel>();
+export class ExerciseItemEditor {
+  itemField = input.required<FieldTree<WorkoutItemModel>>();
   exercises = input.required<Exercise[]>();
 
   dialogOpen = signal(false);
   editingScheme = signal<ExerciseScheme | null>(null);
 
-  selectedExercise = computed(() => {
-    const id = this.value().exerciseId;
-    if (!id) return null;
-    return this.exercises().find((e) => e.id === id) ?? null;
-  });
+  private exerciseMap = computed(() => new Map(this.exercises().map((e) => [e.id, e])));
 
-  exerciseFilter = (exercise: Exercise, search: string) =>
-    exercise.names?.some((n) => n.name.toLowerCase().includes(search.toLowerCase())) ?? false;
+  exerciseIdFilter = (id: number, search: string) =>
+    this.exerciseMap()
+      .get(id)
+      ?.names?.some((n) => n.name.toLowerCase().includes(search.toLowerCase())) ?? false;
 
-  exerciseToString = (exercise: Exercise) => exercise.names?.[0]?.name ?? '';
-
-  onExerciseSelected(exercise: Exercise | null) {
-    this.value.update((v) => ({ ...v, exerciseId: exercise?.id ?? null }));
-  }
+  exerciseIdToString = (id: number) => this.exerciseMap().get(id)?.names?.[0]?.name ?? '';
 
   onSchemeSelected(schemeId: number | null) {
-    this.value.update((v) => ({ ...v, selectedSchemeId: schemeId }));
+    this.itemField().selectedSchemeId().value.set(schemeId);
   }
 
   openDialog(scheme: ExerciseScheme | null) {
@@ -97,7 +90,7 @@ export class ExerciseItemEditor implements FormValueControl<WorkoutItemModel> {
   }
 
   onSchemeSaved(scheme: ExerciseScheme) {
-    this.value.update((v) => ({ ...v, selectedSchemeId: scheme.id }));
+    this.itemField().selectedSchemeId().value.set(scheme.id);
     this.closeDialog();
   }
 }

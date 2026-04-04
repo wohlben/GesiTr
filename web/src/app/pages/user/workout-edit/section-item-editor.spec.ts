@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { form } from '@angular/forms/signals';
 import { provideHttpClient } from '@angular/common/http';
 import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { provideTranslocoForTest } from '$core/testing/transloco-testing';
@@ -58,7 +59,7 @@ function makeItem(overrides: Partial<WorkoutItemModel> = {}): WorkoutItemModel {
   selector: 'app-test-host',
   template: `
     <app-section-item-editor
-      [(value)]="item"
+      [itemField]="itemForm"
       [exercises]="exercises"
       [exerciseGroups]="exerciseGroups"
       [itemLabel]="'Exercise 1'"
@@ -68,10 +69,15 @@ function makeItem(overrides: Partial<WorkoutItemModel> = {}): WorkoutItemModel {
   imports: [SectionItemEditor],
 })
 class TestHost {
-  item = signal(makeItem());
+  model = signal(makeItem());
+  itemForm = form(this.model);
   exercises = exercises;
   exerciseGroups: ExerciseGroup[] = [];
   removedCalled = false;
+
+  resetModel(overrides: Partial<WorkoutItemModel> = {}) {
+    this.model.set(makeItem(overrides));
+  }
 }
 
 describe('SectionItemEditor', () => {
@@ -89,7 +95,7 @@ describe('SectionItemEditor', () => {
   function setup(overrides: Partial<WorkoutItemModel> = {}) {
     const fixture = TestBed.createComponent(TestHost);
     if (Object.keys(overrides).length > 0) {
-      fixture.componentInstance.item.set(makeItem(overrides));
+      fixture.componentInstance.resetModel(overrides);
     }
     fixture.detectChanges();
     return fixture;
@@ -137,32 +143,28 @@ describe('SectionItemEditor', () => {
     expect(fixture.nativeElement.querySelector('app-exercise-item-editor')).toBeNull();
   });
 
-  it('switches itemType when type button clicked', () => {
+  it('switches itemType via form field when type button clicked', () => {
     const fixture = setup({ itemType: 'exercise' });
-    const editor = fixture.debugElement.children[0].componentInstance as SectionItemEditor;
-
-    editor.setItemType('exercise_group');
-    expect(fixture.componentInstance.item().itemType).toBe('exercise_group');
-
-    editor.setItemType('exercise');
-    expect(fixture.componentInstance.item().itemType).toBe('exercise');
-  });
-
-  it('updates groupConfig via onGroupConfigChange', () => {
-    const fixture = setup({ itemType: 'exercise_group' });
-    const editor = fixture.debugElement.children[0].componentInstance as SectionItemEditor;
-
-    const newConfig = { exerciseGroupId: 10, name: 'Legs', members: [1, 2] };
-    editor.onGroupConfigChange(newConfig);
-    expect(fixture.componentInstance.item().groupConfig).toEqual(newConfig);
+    const buttons = Array.from(
+      fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>,
+    );
+    const groupBtn = buttons.find((b) =>
+      b.textContent?.includes('enums.workoutSectionItemType.exercise_group'),
+    );
+    groupBtn?.click();
+    expect(fixture.componentInstance.model().itemType).toBe('exercise_group');
   });
 
   it('preserves other fields when switching type', () => {
     const fixture = setup({ itemType: 'exercise', exerciseId: 1, selectedSchemeId: 5 });
-    const editor = fixture.debugElement.children[0].componentInstance as SectionItemEditor;
-
-    editor.setItemType('exercise_group');
-    const item = fixture.componentInstance.item();
+    const buttons = Array.from(
+      fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>,
+    );
+    const groupBtn = buttons.find((b) =>
+      b.textContent?.includes('enums.workoutSectionItemType.exercise_group'),
+    );
+    groupBtn?.click();
+    const item = fixture.componentInstance.model();
     expect(item.itemType).toBe('exercise_group');
     expect(item.exerciseId).toBe(1);
     expect(item.selectedSchemeId).toBe(5);
