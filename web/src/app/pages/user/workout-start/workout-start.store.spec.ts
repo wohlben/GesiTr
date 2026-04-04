@@ -112,7 +112,7 @@ describe('WorkoutStartStore', () => {
             targetDuration: undefined,
             targetDistance: undefined,
             targetTime: undefined,
-            restAfterSeconds: null,
+            restAfterSeconds: 0,
           },
           {
             setNumber: 2,
@@ -121,7 +121,7 @@ describe('WorkoutStartStore', () => {
             targetDuration: undefined,
             targetDistance: undefined,
             targetTime: undefined,
-            restAfterSeconds: null,
+            restAfterSeconds: 0,
           },
           {
             setNumber: 3,
@@ -196,7 +196,7 @@ describe('WorkoutStartStore', () => {
             targetDuration: undefined,
             targetDistance: undefined,
             targetTime: undefined,
-            restAfterSeconds: null,
+            restAfterSeconds: 0,
           },
           {
             setNumber: 2,
@@ -205,7 +205,7 @@ describe('WorkoutStartStore', () => {
             targetDuration: undefined,
             targetDistance: undefined,
             targetTime: undefined,
-            restAfterSeconds: null,
+            restAfterSeconds: 0,
           },
           {
             setNumber: 3,
@@ -214,7 +214,7 @@ describe('WorkoutStartStore', () => {
             targetDuration: undefined,
             targetDistance: undefined,
             targetTime: undefined,
-            restAfterSeconds: null,
+            restAfterSeconds: 0,
           },
           {
             setNumber: 4,
@@ -223,7 +223,7 @@ describe('WorkoutStartStore', () => {
             targetDuration: undefined,
             targetDistance: undefined,
             targetTime: undefined,
-            restAfterSeconds: null,
+            restAfterSeconds: 0,
           },
           {
             setNumber: 5,

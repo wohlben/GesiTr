@@ -457,14 +457,14 @@ export class WorkoutStart {
       id: event.exercise.id,
       sourceExerciseSchemeId: event.exercise.sourceExerciseSchemeId,
       breakAfterSeconds: null,
-      sets: (event.exercise.sets ?? []).map((set) => ({
+      sets: (event.exercise.sets ?? []).map((set, setIdx, arr) => ({
         id: set.id,
         targetReps: set.targetReps ?? null,
         targetWeight: set.targetWeight ?? null,
         targetDuration: set.targetDuration ?? null,
         targetDistance: set.targetDistance ?? null,
         targetTime: set.targetTime ?? null,
-        restAfterSeconds: set.breakAfterSeconds ?? null,
+        restAfterSeconds: setIdx < arr.length - 1 ? (set.breakAfterSeconds ?? 0) : null,
       })),
     };
 
@@ -496,7 +496,7 @@ export class WorkoutStart {
         targetDuration: event.scheme.duration,
         targetDistance: event.scheme.distance,
         targetTime: event.scheme.targetTime,
-        restAfterSeconds: i < numSets ? (event.scheme.restBetweenSets ?? null) : null,
+        restAfterSeconds: i < numSets ? (event.scheme.restBetweenSets ?? 0) : null,
       });
     }
     this.store.addExerciseDisplay(event.exercise.id, event.exerciseName, event.scheme, sets);
@@ -620,14 +620,14 @@ export class WorkoutStart {
           id: ex.id,
           sourceExerciseSchemeId: ex.sourceExerciseSchemeId,
           breakAfterSeconds: ex.breakAfterSeconds ?? null,
-          sets: (ex.sets ?? []).map((set) => ({
+          sets: (ex.sets ?? []).map((set, setIdx, arr) => ({
             id: set.id,
             targetReps: set.targetReps ?? null,
             targetWeight: set.targetWeight ?? null,
             targetDuration: set.targetDuration ?? null,
             targetDistance: set.targetDistance ?? null,
             targetTime: set.targetTime ?? null,
-            restAfterSeconds: set.breakAfterSeconds ?? null,
+            restAfterSeconds: setIdx < arr.length - 1 ? (set.breakAfterSeconds ?? 0) : null,
           })),
         })),
         pendingGroups: [],

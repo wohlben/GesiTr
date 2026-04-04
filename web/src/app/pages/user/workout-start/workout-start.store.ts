@@ -96,7 +96,7 @@ export const WorkoutStartStore = signalStore(
               targetDuration: scheme.duration,
               targetDistance: scheme.distance,
               targetTime: scheme.targetTime,
-              restAfterSeconds: i < numSets ? (scheme.restBetweenSets ?? null) : null,
+              restAfterSeconds: i < numSets ? (scheme.restBetweenSets ?? 0) : null,
             });
           }
           display[assignment.exerciseSchemeId] = {

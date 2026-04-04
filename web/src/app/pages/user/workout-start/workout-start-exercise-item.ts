@@ -140,7 +140,7 @@ import { ExerciseDisplayInfo } from './workout-start.store';
               </div>
 
               <!-- Rest between sets: line with centered badge -->
-              @if (!lastSet && set.restAfterSeconds().value() !== null) {
+              @if (!lastSet) {
                 <div class="relative flex items-center justify-center py-0.5">
                   <div
                     class="absolute inset-x-0 top-1/2 border-t border-dashed border-gray-200 dark:border-gray-700"
