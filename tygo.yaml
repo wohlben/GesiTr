@@ -76,7 +76,7 @@ packages:
       "shared.BaseModel": "BaseModel"
     include_files:
       - "workoutgroup.go"
-  - path: "gesitr/internal/ownershipgroup/models"
+  - path: "gesitr/internal/compendium/ownershipgroup/models"
     output_path: "web/src/app/generated/ownershipgroup.ts"
     frontmatter: |
       /* eslint-disable @typescript-eslint/no-empty-object-type */

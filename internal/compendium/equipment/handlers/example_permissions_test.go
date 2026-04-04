@@ -9,7 +9,7 @@ import (
 
 	"gesitr/internal/compendium/equipment/models"
 	"gesitr/internal/database"
-	ownershipgroupmodels "gesitr/internal/ownershipgroup/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	"gesitr/internal/shared"
 
 	"github.com/gin-gonic/gin"

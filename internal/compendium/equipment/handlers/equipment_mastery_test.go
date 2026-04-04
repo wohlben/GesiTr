@@ -7,7 +7,7 @@ import (
 	"gesitr/internal/compendium/equipment/models"
 	exerciseModels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
-	ownershipgroupmodels "gesitr/internal/ownershipgroup/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	exerciseLogModels "gesitr/internal/user/exerciselog/models"
 	masteryModels "gesitr/internal/user/mastery/models"
 

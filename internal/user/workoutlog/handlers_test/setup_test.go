@@ -20,7 +20,7 @@ import (
 	workoutgroupmodels "gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	ownershipgroupmodels "gesitr/internal/ownershipgroup/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	exerciseloghandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciselogmodels "gesitr/internal/user/exerciselog/models"
 	exerciseschemehandlers "gesitr/internal/user/exercisescheme/handlers"

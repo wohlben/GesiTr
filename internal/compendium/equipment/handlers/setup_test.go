@@ -12,7 +12,7 @@ import (
 	"gesitr/internal/compendium/equipment/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	ownershipgroupmodels "gesitr/internal/ownershipgroup/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"

@@ -6,7 +6,7 @@ import (
 	"gesitr/internal/compendium/equipment/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	"gesitr/internal/ownershipgroup"
+	"gesitr/internal/compendium/ownershipgroup"
 	masteryHandlers "gesitr/internal/user/mastery/handlers"
 
 	"github.com/danielgtaylor/huma/v2"

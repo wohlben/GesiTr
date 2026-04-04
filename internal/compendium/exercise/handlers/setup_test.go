@@ -12,7 +12,7 @@ import (
 	"gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	ownershipgroupmodels "gesitr/internal/ownershipgroup/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
 
 	"github.com/gin-gonic/gin"

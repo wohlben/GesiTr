@@ -3,7 +3,7 @@ package ownershipgroup
 import (
 	"log"
 
-	"gesitr/internal/ownershipgroup/models"
+	"gesitr/internal/compendium/ownershipgroup/models"
 
 	"gorm.io/gorm"
 )

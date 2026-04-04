@@ -12,8 +12,8 @@ import (
 	exerciseModels "gesitr/internal/compendium/exercise/models"
 	workoutModels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
-	"gesitr/internal/ownershipgroup"
-	ownershipGroupModels "gesitr/internal/ownershipgroup/models"
+	"gesitr/internal/compendium/ownershipgroup"
+	ownershipGroupModels "gesitr/internal/compendium/ownershipgroup/models"
 	"gesitr/internal/shared"
 	exerciseSchemeModels "gesitr/internal/user/exercisescheme/models"
 

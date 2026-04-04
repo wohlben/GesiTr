@@ -1,6 +1,6 @@
 package handlers
 
-import "gesitr/internal/ownershipgroup/models"
+import "gesitr/internal/compendium/ownershipgroup/models"
 
 // --- Ownership group membership types ---
 

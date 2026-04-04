@@ -6,7 +6,7 @@ import (
 	"gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	"gesitr/internal/ownershipgroup"
+	"gesitr/internal/compendium/ownershipgroup"
 
 	"github.com/danielgtaylor/huma/v2"
 )

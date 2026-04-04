@@ -1,7 +1,7 @@
 package ownershipgroup
 
 import (
-	"gesitr/internal/ownershipgroup/models"
+	"gesitr/internal/compendium/ownershipgroup/models"
 
 	"gorm.io/gorm"
 )
