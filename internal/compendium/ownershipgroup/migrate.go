@@ -91,12 +91,20 @@ func MigrateExistingOwners(db *gorm.DB) error {
 	// Use raw SQL because GORM's SQLite DropColumn requires a registered model
 	// (struct with the column), but the Owner field has already been removed.
 	for _, table := range allAffectedTables {
-		if db.Migrator().HasColumn(table, "owner") {
-			if err := db.Exec("ALTER TABLE " + table + " DROP COLUMN owner").Error; err != nil {
-				log.Printf("warning: could not drop owner column from %s: %v", table, err)
-			} else {
-				log.Printf("migrate: dropped owner column from %s", table)
+		if !db.Migrator().HasColumn(table, "owner") {
+			continue
+		}
+		// Drop any index referencing owner before dropping the column.
+		idx := "idx_" + table + "_owner"
+		if db.Migrator().HasIndex(table, idx) {
+			if err := db.Exec("DROP INDEX IF EXISTS " + idx).Error; err != nil {
+				log.Printf("warning: could not drop index %s: %v", idx, err)
 			}
+		}
+		if err := db.Exec("ALTER TABLE " + table + " DROP COLUMN owner").Error; err != nil {
+			log.Printf("warning: could not drop owner column from %s: %v", table, err)
+		} else {
+			log.Printf("migrate: dropped owner column from %s", table)
 		}
 	}
 
