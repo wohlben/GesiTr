@@ -50,6 +50,7 @@ function makeItem(overrides: Partial<WorkoutItemModel> = {}): WorkoutItemModel {
     itemType: 'exercise',
     exerciseId: null,
     selectedSchemeId: null,
+    sectionItemId: null,
     groupConfig: { ...EMPTY_GROUP_CONFIG },
     ...overrides,
   };

@@ -1,7 +1,8 @@
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { FormField, type FieldTree } from '@angular/forms/signals';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { HlmComboboxImports } from '@spartan-ng/helm/combobox';
+import { UserApiClient } from '$core/api-clients/user-api-client';
 import { Exercise } from '$generated/models';
 import { ExerciseScheme } from '$generated/user-exercisescheme';
 import { SchemeSelector } from '$ui/scheme-selector/scheme-selector';
@@ -60,6 +61,8 @@ import type { WorkoutItemModel } from './workout-item-model';
   `,
 })
 export class ExerciseItemEditor {
+  private userApi = inject(UserApiClient);
+
   itemField = input.required<FieldTree<WorkoutItemModel>>();
   exercises = input.required<Exercise[]>();
 
@@ -77,6 +80,7 @@ export class ExerciseItemEditor {
 
   onSchemeSelected(schemeId: number | null) {
     this.itemField().selectedSchemeId().value.set(schemeId);
+    this.persistSchemeLink(schemeId);
   }
 
   openDialog(scheme: ExerciseScheme | null) {
@@ -91,6 +95,16 @@ export class ExerciseItemEditor {
 
   onSchemeSaved(scheme: ExerciseScheme) {
     this.itemField().selectedSchemeId().value.set(scheme.id);
+    this.persistSchemeLink(scheme.id);
     this.closeDialog();
+  }
+
+  private persistSchemeLink(schemeId: number | null) {
+    const sectionItemId = this.itemField().sectionItemId().value();
+    if (sectionItemId == null || schemeId == null) return;
+    this.userApi.upsertSchemeSectionItem({
+      exerciseSchemeId: schemeId,
+      workoutSectionItemId: sectionItemId,
+    });
   }
 }

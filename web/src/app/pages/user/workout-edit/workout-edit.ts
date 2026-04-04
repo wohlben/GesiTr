@@ -42,6 +42,7 @@ const EMPTY_EXERCISE_ITEM: WorkoutItemModel = {
   itemType: 'exercise',
   exerciseId: null,
   selectedSchemeId: null,
+  sectionItemId: null,
   groupConfig: { ...EMPTY_GROUP_CONFIG },
 };
 
@@ -49,6 +50,7 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
   itemType: 'exercise_group',
   exerciseId: null,
   selectedSchemeId: null,
+  sectionItemId: null,
   groupConfig: { ...EMPTY_GROUP_CONFIG },
 };
 
@@ -350,6 +352,7 @@ export class WorkoutEdit {
             itemType: item.type ?? 'exercise',
             exerciseId: item.exerciseId ?? null,
             selectedSchemeId: null,
+            sectionItemId: item.id ?? null,
             groupConfig: {
               exerciseGroupId: item.exerciseGroupId ?? null,
               name: '',

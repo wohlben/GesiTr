@@ -79,6 +79,7 @@ class ExerciseHost {
     itemType: 'exercise',
     exerciseId: 1,
     selectedSchemeId: null,
+    sectionItemId: null,
     groupConfig: { ...EMPTY_GROUP_CONFIG },
   });
   itemForm = form(this.model);
@@ -102,6 +103,7 @@ class GroupHost {
     itemType: 'exercise_group',
     exerciseId: null,
     selectedSchemeId: null,
+    sectionItemId: null,
     groupConfig: { exerciseGroupId: 5, name: 'Push Variants', members: [1] },
   });
   itemForm = form(this.model);
