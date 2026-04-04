@@ -211,8 +211,23 @@ export class ExerciseConfig {
 
   canConfirm = computed(() => this.model().exerciseId != null);
 
-  /** Creates a scheme from the field values and returns it. */
-  async confirm(): Promise<ExerciseScheme> {
+  /** Prefill the form with values from an existing scheme. */
+  prefill(scheme: ExerciseScheme) {
+    this.model.set({
+      exerciseId: scheme.exerciseId,
+      measurementType: scheme.measurementType || 'REP_BASED',
+      sets: scheme.sets ?? null,
+      reps: scheme.reps ?? null,
+      weight: scheme.weight ?? null,
+      restBetweenSets: scheme.restBetweenSets ?? null,
+      timePerRep: scheme.timePerRep ?? null,
+      duration: scheme.duration ?? null,
+      distance: scheme.distance ?? null,
+      targetTime: scheme.targetTime ?? null,
+    });
+  }
+
+  private buildData(): Record<string, unknown> {
     const m = this.model();
     const data: Record<string, unknown> = {
       exerciseId: m.exerciseId,
@@ -233,7 +248,19 @@ export class ExerciseConfig {
       if (m.distance != null) data['distance'] = m.distance;
       if (m.targetTime != null) data['targetTime'] = m.targetTime;
     }
-    const scheme = await this.userApi.createExerciseScheme(data);
+    return data;
+  }
+
+  /** Creates a scheme from the field values and returns it. */
+  async confirm(): Promise<ExerciseScheme> {
+    const scheme = await this.userApi.createExerciseScheme(this.buildData());
+    this.queryClient.invalidateQueries({ queryKey: exerciseSchemeKeys.all() });
+    return scheme;
+  }
+
+  /** Updates an existing scheme with the current field values and returns it. */
+  async update(id: number): Promise<ExerciseScheme> {
+    const scheme = await this.userApi.updateExerciseScheme(id, this.buildData());
     this.queryClient.invalidateQueries({ queryKey: exerciseSchemeKeys.all() });
     return scheme;
   }

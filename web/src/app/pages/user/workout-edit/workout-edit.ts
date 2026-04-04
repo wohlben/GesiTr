@@ -13,38 +13,17 @@ import {
   exerciseGroupKeys,
   masteryKeys,
 } from '$core/query-keys';
-import {
-  WorkoutSectionTypeMain,
-  WorkoutSectionTypeSupplementary,
-  WorkoutSectionItemTypeExercise,
-  WorkoutSectionItemTypeExerciseGroup,
-} from '$generated/user-models';
-import { ExerciseScheme } from '$generated/user-exercisescheme';
+import { WorkoutSectionTypeMain, WorkoutSectionTypeSupplementary } from '$generated/user-models';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
-import { SchemeSelector } from '$ui/scheme-selector/scheme-selector';
-import { CreateSchemeDialog } from './create-scheme-dialog';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
-import { HlmComboboxImports } from '@spartan-ng/helm/combobox';
 import { HlmInput } from '@spartan-ng/helm/input';
-import { Exercise } from '$generated/models';
 import { ExerciseStore } from '$core/exercise.store';
 import { HlmTextarea } from '@spartan-ng/helm/textarea';
-import {
-  ExerciseGroupConfig,
-  EMPTY_GROUP_CONFIG,
-} from '$ui/exercise-group-config/exercise-group-config';
-import type { GroupConfigValue } from '$ui/exercise-group-config/exercise-group-config';
-
-interface WorkoutItemModel {
-  itemType: string;
-  // exercise fields (used when itemType === 'exercise')
-  exerciseId: number | null;
-  selectedSchemeId: number | null;
-  // exercise_group fields (used when itemType === 'exercise_group')
-  groupConfig: GroupConfigValue;
-}
+import { EMPTY_GROUP_CONFIG } from '$ui/exercise-group-config/exercise-group-config';
+import { SectionItemEditor } from './section-item-editor';
+import type { WorkoutItemModel } from './workout-item-model';
 
 interface WorkoutSectionModel {
   type: string;
@@ -82,13 +61,10 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
     ConfirmDialog,
     BrnSelectImports,
     HlmSelectImports,
-    HlmComboboxImports,
     HlmInput,
     HlmTextarea,
     TranslocoDirective,
-    ExerciseGroupConfig,
-    SchemeSelector,
-    CreateSchemeDialog,
+    SectionItemEditor,
   ],
   template: `
     <ng-container *transloco="let t">
@@ -195,100 +171,13 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
                   <!-- Items in section -->
                   <div class="space-y-3">
                     @for (item of section.items; track $index; let ei = $index) {
-                      <div
-                        class="rounded-md border border-gray-100 bg-gray-50 p-3 dark:border-gray-600 dark:bg-gray-800/50"
-                      >
-                        <div class="mb-2 flex items-center justify-between">
-                          <span class="text-xs font-medium text-gray-600 dark:text-gray-400">
-                            {{ t('user.workouts.exerciseLabel', { n: ei + 1 }) }}
-                          </span>
-                          <button
-                            type="button"
-                            (click)="removeItem(si, ei)"
-                            class="text-xs text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
-                          >
-                            {{ t('common.remove') }}
-                          </button>
-                        </div>
-
-                        <!-- Item type selector -->
-                        <div class="mb-2">
-                          <span
-                            class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                            >{{ t('fields.itemType') }}</span
-                          >
-                          <brn-select [formField]="item.itemType" class="mt-1" hlm>
-                            <hlm-select-trigger class="w-full">
-                              <hlm-select-value />
-                            </hlm-select-trigger>
-                            <hlm-select-content>
-                              <hlm-option [value]="ITEM_TYPE_EXERCISE">{{
-                                t('enums.workoutSectionItemType.exercise')
-                              }}</hlm-option>
-                              <hlm-option [value]="ITEM_TYPE_GROUP">{{
-                                t('enums.workoutSectionItemType.exercise_group')
-                              }}</hlm-option>
-                            </hlm-select-content>
-                          </brn-select>
-                        </div>
-
-                        @if (item.itemType().value() === 'exercise') {
-                          <!-- Exercise type: exercise picker + scheme selector -->
-                          <div>
-                            <span
-                              class="block text-xs font-medium text-gray-700 dark:text-gray-300"
-                              >{{ t('ui.exerciseConfig.exerciseLabel') }}</span
-                            >
-                            <hlm-combobox
-                              class="mt-1 block"
-                              [value]="findExerciseById(item.exerciseId().value())"
-                              (valueChange)="onItemExerciseSelected(si, ei, $event)"
-                              [filter]="exerciseFilter"
-                              [itemToString]="exerciseToString"
-                            >
-                              <hlm-combobox-input
-                                [placeholder]="t('common.search')"
-                                [showClear]="!!item.exerciseId().value()"
-                              />
-                              <ng-template hlmComboboxPortal>
-                                <hlm-combobox-content>
-                                  <hlm-combobox-input
-                                    [placeholder]="t('common.search')"
-                                    [showClear]="false"
-                                  />
-                                  <div hlmComboboxList>
-                                    @for (ue of enrichedUserExercises(); track ue.id) {
-                                      <hlm-combobox-item [value]="ue">{{
-                                        ue.names?.[0]?.name
-                                      }}</hlm-combobox-item>
-                                    }
-                                    <hlm-combobox-empty>{{
-                                      t('common.noResults')
-                                    }}</hlm-combobox-empty>
-                                  </div>
-                                </hlm-combobox-content>
-                              </ng-template>
-                            </hlm-combobox>
-                          </div>
-
-                          <app-scheme-selector
-                            [exerciseId]="item.exerciseId().value()"
-                            [selectedSchemeId]="item.selectedSchemeId().value()"
-                            (schemeSelected)="onSchemeSelected($event, si, ei)"
-                            (createRequested)="
-                              openCreateSchemeDialog(si, ei, item.exerciseId().value())
-                            "
-                          />
-                        }
-
-                        @if (item.itemType().value() === 'exercise_group') {
-                          <app-exercise-group-config
-                            [formField]="item.groupConfig"
-                            [existingGroups]="exerciseGroups()"
-                            [exercises]="enrichedUserExercises()"
-                          />
-                        }
-                      </div>
+                      <app-section-item-editor
+                        [formField]="item"
+                        [exercises]="enrichedUserExercises()"
+                        [exerciseGroups]="exerciseGroups()"
+                        [itemLabel]="t('user.workouts.exerciseLabel', { n: ei + 1 })"
+                        (removed)="removeItem(si, ei)"
+                      />
                     }
                   </div>
 
@@ -356,13 +245,6 @@ const EMPTY_GROUP_ITEM: WorkoutItemModel = {
           (confirmed)="onDelete()"
           (cancelled)="showDeleteDialog = false"
         />
-
-        <app-create-scheme-dialog
-          [open]="createSchemeDialogState().open"
-          [preselectedExerciseId]="createSchemeDialogState().exerciseId"
-          (schemeCreated)="onSchemeCreated($event)"
-          (cancelled)="closeCreateSchemeDialog()"
-        />
       </app-page-layout>
     </ng-container>
   `,
@@ -378,8 +260,6 @@ export class WorkoutEdit {
 
   readonly SECTION_TYPE_MAIN = WorkoutSectionTypeMain;
   readonly SECTION_TYPE_SUPPLEMENTARY = WorkoutSectionTypeSupplementary;
-  readonly ITEM_TYPE_EXERCISE = WorkoutSectionItemTypeExercise;
-  readonly ITEM_TYPE_GROUP = WorkoutSectionItemTypeExerciseGroup;
 
   private id = computed(() => Number(this.params()?.get('id')));
   isCreateMode = computed(() => !this.params()?.get('id'));
@@ -427,26 +307,6 @@ export class WorkoutEdit {
     });
   });
 
-  exerciseFilter = (exercise: Exercise, search: string) =>
-    exercise.names?.some((n) => n.name.toLowerCase().includes(search.toLowerCase())) ?? false;
-
-  exerciseToString = (exercise: Exercise) => exercise.names?.[0]?.name ?? '';
-
-  findExerciseById(id: number | null): Exercise | null {
-    if (!id) return null;
-    return this.enrichedUserExercises().find((e) => e.id === id) ?? null;
-  }
-
-  onItemExerciseSelected(si: number, ei: number, exercise: Exercise | null) {
-    this.model.update((m) => {
-      const sections = [...m.sections];
-      const items = [...sections[si].items];
-      items[ei] = { ...items[ei], exerciseId: exercise?.id ?? null };
-      sections[si] = { ...sections[si], items };
-      return { ...m, sections };
-    });
-  }
-
   // Exercise groups for the group picker
   private exerciseGroupsQuery = injectQuery(() => ({
     queryKey: exerciseGroupKeys.list({}),
@@ -454,13 +314,6 @@ export class WorkoutEdit {
   }));
 
   exerciseGroups = computed(() => this.exerciseGroupsQuery.data()?.items ?? []);
-
-  createSchemeDialogState = signal<{
-    open: boolean;
-    sectionIndex: number;
-    itemIndex: number;
-    exerciseId: number | null;
-  }>({ open: false, sectionIndex: 0, itemIndex: 0, exerciseId: null });
 
   saveMutation = injectMutation(() => ({
     mutationFn: () => this.saveWorkout(),
@@ -635,36 +488,6 @@ export class WorkoutEdit {
             },
       ),
     }));
-  }
-
-  onSchemeSelected(schemeId: number | null, si: number, ei: number) {
-    this.model.update((m) => ({
-      ...m,
-      sections: m.sections.map((s, sIdx) =>
-        sIdx !== si
-          ? s
-          : {
-              ...s,
-              items: s.items.map((e, eIdx) =>
-                eIdx !== ei ? e : { ...e, selectedSchemeId: schemeId },
-              ),
-            },
-      ),
-    }));
-  }
-
-  openCreateSchemeDialog(si: number, ei: number, exerciseId: number | null) {
-    this.createSchemeDialogState.set({ open: true, sectionIndex: si, itemIndex: ei, exerciseId });
-  }
-
-  closeCreateSchemeDialog() {
-    this.createSchemeDialogState.update((s) => ({ ...s, open: false }));
-  }
-
-  onSchemeCreated(scheme: ExerciseScheme) {
-    const { sectionIndex, itemIndex } = this.createSchemeDialogState();
-    this.onSchemeSelected(scheme.id, sectionIndex, itemIndex);
-    this.closeCreateSchemeDialog();
   }
 
   onSubmit() {

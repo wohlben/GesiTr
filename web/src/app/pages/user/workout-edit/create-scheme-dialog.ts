@@ -1,4 +1,4 @@
-import { Component, input, output, signal, viewChild } from '@angular/core';
+import { Component, effect, input, output, signal, viewChild } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ExerciseScheme } from '$generated/user-exercisescheme';
 import { HlmDialogImports } from '@spartan-ng/helm/dialog';
@@ -14,7 +14,13 @@ import { ExerciseConfig } from '$ui/exercise-config/exercise-config';
         <ng-template hlmDialogPortal>
           <hlm-dialog-content [showCloseButton]="false">
             <hlm-dialog-header>
-              <h3 hlmDialogTitle>{{ t('user.workouts.createSchemeTitle') }}</h3>
+              <h3 hlmDialogTitle>
+                {{
+                  editingScheme()
+                    ? t('user.workouts.editSchemeTitle')
+                    : t('user.workouts.createSchemeTitle')
+                }}
+              </h3>
             </hlm-dialog-header>
 
             <app-exercise-config
@@ -23,18 +29,18 @@ import { ExerciseConfig } from '$ui/exercise-config/exercise-config';
             />
 
             <hlm-dialog-footer>
-              <button hlmBtn variant="outline" hlmDialogClose [disabled]="isCreating()">
+              <button hlmBtn variant="outline" hlmDialogClose [disabled]="isSaving()">
                 {{ t('common.cancel') }}
               </button>
               <button
                 hlmBtn
                 (click)="onConfirm()"
-                [disabled]="!exerciseConfig.canConfirm() || isCreating()"
+                [disabled]="!exerciseConfig.canConfirm() || isSaving()"
               >
-                @if (isCreating()) {
-                  {{ t('common.creating') }}
+                @if (isSaving()) {
+                  {{ t('common.saving') }}
                 } @else {
-                  {{ t('common.create') }}
+                  {{ t('common.save') }}
                 }
               </button>
             </hlm-dialog-footer>
@@ -47,24 +53,39 @@ import { ExerciseConfig } from '$ui/exercise-config/exercise-config';
 export class CreateSchemeDialog {
   open = input(false);
   preselectedExerciseId = input<number | null>(null);
+  editingScheme = input<ExerciseScheme | null>(null);
 
-  schemeCreated = output<ExerciseScheme>();
+  schemeSaved = output<ExerciseScheme>();
   cancelled = output();
 
   exerciseConfig = viewChild.required<ExerciseConfig>('exerciseConfig');
 
-  isCreating = signal(false);
+  isSaving = signal(false);
+
+  constructor() {
+    // Prefill form when editing an existing scheme
+    effect(() => {
+      const scheme = this.editingScheme();
+      if (scheme && this.open()) {
+        // Defer to next tick so the viewChild is available
+        queueMicrotask(() => this.exerciseConfig().prefill(scheme));
+      }
+    });
+  }
 
   async onConfirm() {
-    this.isCreating.set(true);
+    this.isSaving.set(true);
     try {
-      const scheme = await this.exerciseConfig().confirm();
-      this.schemeCreated.emit(scheme);
+      const editing = this.editingScheme();
+      const scheme = editing
+        ? await this.exerciseConfig().update(editing.id)
+        : await this.exerciseConfig().confirm();
+      this.schemeSaved.emit(scheme);
       this.exerciseConfig().reset();
     } catch (err) {
-      console.error('Failed to create scheme:', err);
+      console.error('Failed to save scheme:', err);
     } finally {
-      this.isCreating.set(false);
+      this.isSaving.set(false);
     }
   }
 

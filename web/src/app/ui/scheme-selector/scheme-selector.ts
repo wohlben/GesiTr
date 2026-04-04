@@ -1,13 +1,18 @@
 import { Component, inject, input, output, computed } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucidePencil } from '@ng-icons/lucide';
+import { HlmIcon } from '@spartan-ng/helm/icon';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import { exerciseSchemeKeys } from '$core/query-keys';
 import { formatSchemeSummary } from '$core/scheme-utils';
+import { ExerciseScheme } from '$generated/user-exercisescheme';
 import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-scheme-selector',
-  imports: [TranslocoDirective],
+  imports: [NgIcon, HlmIcon, TranslocoDirective],
+  providers: [provideIcons({ lucidePencil })],
   template: `
     <div *transloco="let t" class="mt-3">
       <span class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">{{
@@ -25,8 +30,8 @@ import { TranslocoDirective } from '@jsverse/transloco';
           @for (scheme of schemes(); track scheme.id) {
             <button
               type="button"
-              (click)="schemeSelected.emit(scheme.id)"
-              class="rounded-md border px-2.5 py-1 text-xs font-medium transition-colors"
+              (click)="onSchemeClick(scheme)"
+              class="inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-xs font-medium transition-colors"
               [class]="
                 scheme.id === selectedSchemeId()
                   ? 'border-blue-600 bg-blue-600 text-white'
@@ -34,6 +39,9 @@ import { TranslocoDirective } from '@jsverse/transloco';
               "
             >
               {{ summary(scheme) }}
+              @if (scheme.id === selectedSchemeId()) {
+                <ng-icon hlm name="lucidePencil" size="xs" />
+              }
             </button>
           }
         </div>
@@ -54,6 +62,7 @@ export class SchemeSelector {
 
   schemeSelected = output<number | null>();
   createRequested = output<void>();
+  editRequested = output<ExerciseScheme>();
 
   schemesQuery = injectQuery(() => ({
     queryKey: exerciseSchemeKeys.list({ exerciseId: this.exerciseId() ?? undefined }),
@@ -64,4 +73,12 @@ export class SchemeSelector {
   schemes = computed(() => this.schemesQuery.data() ?? []);
 
   summary = formatSchemeSummary;
+
+  onSchemeClick(scheme: ExerciseScheme) {
+    if (scheme.id === this.selectedSchemeId()) {
+      this.editRequested.emit(scheme);
+    } else {
+      this.schemeSelected.emit(scheme.id);
+    }
+  }
 }

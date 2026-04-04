@@ -29,6 +29,7 @@
     "to": "To",
     "create": "Create",
     "creating": "Creating...",
+    "saving": "Saving...",
     "unitSeconds": "s",
     "unnamedGroup": "Group #{{id}}"
   },
@@ -360,7 +361,8 @@
       "membership": "Membership",
       "schemeLabel": "Exercise Scheme",
       "noSchemeWarning": "No scheme configured for this exercise. Create one to enable tracking.",
-      "createSchemeTitle": "Create Exercise Scheme"
+      "createSchemeTitle": "Create Exercise Scheme",
+      "editSchemeTitle": "Edit Exercise Scheme"
     },
     "schedules": {
       "title": "Schedules",
