@@ -453,17 +453,18 @@ export class WorkoutStart {
   }) {
     const si = this.addDialogSectionIndex();
 
+    const mt = event.scheme.measurementType;
     const newExercise: StartExerciseModel = {
       id: event.exercise.id,
       sourceExerciseSchemeId: event.exercise.sourceExerciseSchemeId,
       breakAfterSeconds: null,
       sets: (event.exercise.sets ?? []).map((set, setIdx, arr) => ({
         id: set.id,
-        targetReps: set.targetReps ?? null,
-        targetWeight: set.targetWeight ?? null,
-        targetDuration: set.targetDuration ?? null,
-        targetDistance: set.targetDistance ?? null,
-        targetTime: set.targetTime ?? null,
+        targetReps: set.targetReps ?? (mt === 'REP_BASED' ? 0 : null),
+        targetWeight: set.targetWeight ?? (mt === 'REP_BASED' ? 0 : null),
+        targetDuration: set.targetDuration ?? (mt === 'TIME_BASED' ? 0 : null),
+        targetDistance: set.targetDistance ?? (mt === 'DISTANCE_BASED' ? 0 : null),
+        targetTime: set.targetTime ?? (mt === 'DISTANCE_BASED' ? 0 : null),
         restAfterSeconds: setIdx < arr.length - 1 ? (set.breakAfterSeconds ?? 0) : null,
       })),
     };
@@ -622,11 +623,14 @@ export class WorkoutStart {
           breakAfterSeconds: ex.breakAfterSeconds ?? null,
           sets: (ex.sets ?? []).map((set, setIdx, arr) => ({
             id: set.id,
-            targetReps: set.targetReps ?? null,
-            targetWeight: set.targetWeight ?? null,
-            targetDuration: set.targetDuration ?? null,
-            targetDistance: set.targetDistance ?? null,
-            targetTime: set.targetTime ?? null,
+            targetReps: set.targetReps ?? (ex.targetMeasurementType === 'REP_BASED' ? 0 : null),
+            targetWeight: set.targetWeight ?? (ex.targetMeasurementType === 'REP_BASED' ? 0 : null),
+            targetDuration:
+              set.targetDuration ?? (ex.targetMeasurementType === 'TIME_BASED' ? 0 : null),
+            targetDistance:
+              set.targetDistance ?? (ex.targetMeasurementType === 'DISTANCE_BASED' ? 0 : null),
+            targetTime:
+              set.targetTime ?? (ex.targetMeasurementType === 'DISTANCE_BASED' ? 0 : null),
             restAfterSeconds: setIdx < arr.length - 1 ? (set.breakAfterSeconds ?? 0) : null,
           })),
         })),
