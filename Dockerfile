@@ -69,7 +69,13 @@ ARG CACHEBUST
 RUN ./gesitr & SERVER_PID=$! && \
     sleep 2 && \
     cd web && npx playwright test ; \
-    TEST_EXIT=$? ; kill $SERVER_PID 2>/dev/null ; exit $TEST_EXIT
+    TEST_EXIT=$? ; kill $SERVER_PID 2>/dev/null ; \
+    if [ $TEST_EXIT -ne 0 ] && [ -f test-results/results.json ]; then \
+      node -e " \
+        const d=require('./test-results/results.json'); \
+        function walk(ss){for(const s of ss||[]){for(const sp of s.specs||[]){for(const t of sp.tests||[]){for(const r of t.results||[]){if(r.status!=='passed'){console.log('FAIL:',sp.file+':'+sp.line,sp.title);for(const e of r.errors||[])console.log(e.message?.slice(0,500));console.log('---')}}}}walk(s.suites)}}walk(d.suites)"; \
+    fi ; \
+    exit $TEST_EXIT
 RUN date -u '+%Y-%m-%dT%H:%M:%SZ' > /tmp/.e2e-passed
 
 # Stage 4: Runtime
