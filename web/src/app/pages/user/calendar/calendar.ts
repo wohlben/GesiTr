@@ -1,6 +1,7 @@
 import { Component, inject, computed, signal } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { format, parseISO } from 'date-fns';
 import { UserApiClient } from '$core/api-clients/user-api-client';
 import {
   workoutLogKeys,
@@ -238,7 +239,7 @@ export class Calendar {
     const nameMap = this.workoutNameByScheduleId();
     if (!commitments) return new Map<string, PlannedCommitment[]>();
 
-    const todayKey = new Date().toISOString().substring(0, 10);
+    const todayKey = format(new Date(), 'yyyy-MM-dd');
     const map = new Map<string, PlannedCommitment[]>();
     // Track periods that already have a frequency representative on today
     const frequencyPeriodsShown = new Set<number>();
@@ -265,7 +266,7 @@ export class Calendar {
         continue;
       }
 
-      const key = c.date.substring(0, 10);
+      const key = this.toLocalDateKey(c.date);
       const entry: PlannedCommitment = {
         workoutName: period ? (nameMap.get(period.scheduleId) ?? 'Schedule') : 'Schedule',
         periodStatus: period?.status ?? 'planned',
@@ -284,7 +285,7 @@ export class Calendar {
     const logs = this.logsQuery.data();
     if (!logs) return new Map<string, WorkoutLog[]>();
 
-    const todayKey = new Date().toISOString().substring(0, 10);
+    const todayKey = format(new Date(), 'yyyy-MM-dd');
 
     const map = new Map<string, WorkoutLog[]>();
     // Track which periods already have a frequency representative on today
@@ -304,7 +305,7 @@ export class Calendar {
         // if the period is still active. Skip terminal states.
         if (log.status === WorkoutLogStatusSkipped || log.status === WorkoutLogStatusBroken)
           continue;
-        const dueEnd = log.dueEnd?.substring(0, 10);
+        const dueEnd = log.dueEnd ? this.toLocalDateKey(log.dueEnd) : undefined;
         if (!dueEnd || todayKey >= dueEnd) continue; // period ended
         const periodKey = log.periodId ?? 0;
         if (frequencyPeriodsShown.has(periodKey)) continue; // already showing one
@@ -321,7 +322,7 @@ export class Calendar {
       const dateStr = isCommitment ? (log.date ?? log.dueStart) : log.date;
       if (!dateStr) continue;
 
-      const key = dateStr.substring(0, 10);
+      const key = this.toLocalDateKey(dateStr);
       const existing = map.get(key);
       if (existing) {
         existing.push(log);
@@ -417,9 +418,9 @@ export class Calendar {
       // Build bars for this day
       const bars: PeriodBar[] = [];
       for (const { period, lane } of lanes) {
-        const pStart = period.periodStart.substring(0, 10);
-        const pEnd = period.periodEnd.substring(0, 10);
-        if (key >= pStart && key < pEnd) {
+        const pStart = this.toLocalDateKey(period.periodStart);
+        const pEnd = this.toLocalDateKey(period.periodEnd);
+        if (key >= pStart && key <= pEnd) {
           bars.push({
             periodId: period.id,
             scheduleId: period.scheduleId,
@@ -427,7 +428,7 @@ export class Calendar {
             status: period.status,
             lane,
             isStart: key === pStart,
-            isEnd: this.nextDay(key) >= pEnd,
+            isEnd: key === pEnd,
           });
         }
       }
@@ -487,9 +488,8 @@ export class Calendar {
     }
   }
 
-  private nextDay(dateKey: string): string {
-    const d = new Date(dateKey + 'T00:00:00');
-    d.setDate(d.getDate() + 1);
-    return d.toISOString().substring(0, 10);
+  /** Convert an ISO datetime string to a local YYYY-MM-DD key */
+  private toLocalDateKey(isoString: string): string {
+    return format(parseISO(isoString), 'yyyy-MM-dd');
   }
 }
