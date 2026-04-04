@@ -13,6 +13,7 @@ import (
 	"gesitr/internal/database"
 	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
+	logmodels "gesitr/internal/user/workoutlog/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
@@ -51,6 +52,7 @@ func setupExampleDB() {
 		&models.WorkoutRelationshipEntity{},
 		&workoutgroupmodels.WorkoutGroupEntity{},
 		&workoutgroupmodels.WorkoutGroupMembershipEntity{},
+		&logmodels.WorkoutLogEntity{},
 	)
 	database.DB = db
 }

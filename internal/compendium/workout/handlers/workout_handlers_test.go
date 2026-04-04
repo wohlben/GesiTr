@@ -7,6 +7,9 @@ import (
 
 	"gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
+	logmodels "gesitr/internal/user/workoutlog/models"
+
+	"gorm.io/gorm"
 )
 
 type paginatedJSON struct {
@@ -268,4 +271,47 @@ func TestDeleteWorkout(t *testing.T) {
 			t.Errorf("expected 404, got %d", w.Code)
 		}
 	})
+}
+
+func TestUpdateWorkout_InvalidatesPlanningLogs(t *testing.T) {
+	setupTestDB(t)
+	r := newRouter()
+
+	// Create a workout with a section so we can trigger a structural change.
+	doJSON(r, "POST", "/api/workouts", map[string]any{"name": "Push Day"})
+	doJSON(r, "POST", "/api/workout-sections", map[string]any{
+		"workoutId": 1, "type": "main", "position": 0,
+	})
+
+	// Insert workout logs directly: one planning, one in_progress.
+	workoutID := uint(1)
+	planningLog := logmodels.WorkoutLogEntity{
+		Owner: "alice", WorkoutID: &workoutID, Name: "Push Day",
+		Status: logmodels.WorkoutLogStatusPlanning,
+	}
+	inProgressLog := logmodels.WorkoutLogEntity{
+		Owner: "alice", WorkoutID: &workoutID, Name: "Push Day",
+		Status: logmodels.WorkoutLogStatusInProgress,
+	}
+	database.DB.Create(&planningLog)
+	database.DB.Create(&inProgressLog)
+
+	// Update the workout name — this is a structural change (name is compared).
+	w := doJSON(r, "PUT", "/api/workouts/1", map[string]any{"name": "Heavy Push Day"})
+	if w.Code != http.StatusOK {
+		t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+	}
+
+	// Planning log should be soft-deleted.
+	var found logmodels.WorkoutLogEntity
+	err := database.DB.First(&found, planningLog.ID).Error
+	if err != gorm.ErrRecordNotFound {
+		t.Errorf("expected planning log to be soft-deleted, got err=%v", err)
+	}
+
+	// In-progress log should still exist.
+	err = database.DB.First(&found, inProgressLog.ID).Error
+	if err != nil {
+		t.Errorf("expected in_progress log to still exist, got err=%v", err)
+	}
 }
