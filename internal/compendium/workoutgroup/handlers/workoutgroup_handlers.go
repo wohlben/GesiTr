@@ -3,11 +3,11 @@ package handlers
 import (
 	"context"
 
+	"gesitr/internal/compendium/ownershipgroup"
 	workoutmodels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	"gesitr/internal/compendium/ownershipgroup"
 
 	"github.com/danielgtaylor/huma/v2"
 	"gorm.io/gorm"

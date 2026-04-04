@@ -8,8 +8,8 @@ import (
 	"os"
 
 	"gesitr/internal/compendium/equipment/models"
-	"gesitr/internal/database"
 	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
+	"gesitr/internal/database"
 	"gesitr/internal/shared"
 
 	"github.com/gin-gonic/gin"

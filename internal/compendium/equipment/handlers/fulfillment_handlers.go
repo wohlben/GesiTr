@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"gesitr/internal/compendium/equipment/models"
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	"gesitr/internal/compendium/ownershipgroup"
 	masteryHandlers "gesitr/internal/user/mastery/handlers"
 
 	"github.com/danielgtaylor/huma/v2"

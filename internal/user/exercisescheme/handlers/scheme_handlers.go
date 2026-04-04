@@ -4,9 +4,9 @@ import (
 	"context"
 
 	exerciseModels "gesitr/internal/compendium/exercise/models"
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/shared"
 	"gesitr/internal/user/exercisescheme/models"
 

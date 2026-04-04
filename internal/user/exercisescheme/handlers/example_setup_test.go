@@ -8,9 +8,9 @@ import (
 	"gesitr/internal/auth"
 	exerciseHandlers "gesitr/internal/compendium/exercise/handlers"
 	exerciseModels "gesitr/internal/compendium/exercise/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	"gesitr/internal/user/exercisescheme/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
 

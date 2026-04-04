@@ -10,10 +10,10 @@ import (
 
 	equipmentModels "gesitr/internal/compendium/equipment/models"
 	exerciseModels "gesitr/internal/compendium/exercise/models"
-	workoutModels "gesitr/internal/compendium/workout/models"
-	"gesitr/internal/database"
 	"gesitr/internal/compendium/ownershipgroup"
 	ownershipGroupModels "gesitr/internal/compendium/ownershipgroup/models"
+	workoutModels "gesitr/internal/compendium/workout/models"
+	"gesitr/internal/database"
 	"gesitr/internal/shared"
 	exerciseSchemeModels "gesitr/internal/user/exercisescheme/models"
 

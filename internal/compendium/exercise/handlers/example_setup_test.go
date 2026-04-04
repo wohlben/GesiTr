@@ -9,9 +9,9 @@ import (
 	equipmenthandlers "gesitr/internal/compendium/equipment/handlers"
 	equipmentmodels "gesitr/internal/compendium/equipment/models"
 	"gesitr/internal/compendium/exercise/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
 
 	"github.com/gin-gonic/gin"

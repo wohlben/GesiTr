@@ -10,9 +10,9 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/compendium/exercise/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
 
 	"github.com/gin-gonic/gin"

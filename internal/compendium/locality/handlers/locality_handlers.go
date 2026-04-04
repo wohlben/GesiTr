@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"gesitr/internal/compendium/locality/models"
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/shared"
 
 	"github.com/danielgtaylor/huma/v2"

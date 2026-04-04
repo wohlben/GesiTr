@@ -10,9 +10,9 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/compendium/equipment/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"

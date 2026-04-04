@@ -7,10 +7,10 @@ import (
 
 	equipmentmodels "gesitr/internal/compendium/equipment/models"
 	exercisemodels "gesitr/internal/compendium/exercise/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	"gesitr/internal/compendium/workout/models"
 	workoutgroupmodels "gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
-	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
 

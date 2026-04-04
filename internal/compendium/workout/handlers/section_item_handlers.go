@@ -4,10 +4,10 @@ import (
 	"context"
 
 	exercisemodels "gesitr/internal/compendium/exercise/models"
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	"gesitr/internal/compendium/ownershipgroup"
 
 	"github.com/danielgtaylor/huma/v2"
 )

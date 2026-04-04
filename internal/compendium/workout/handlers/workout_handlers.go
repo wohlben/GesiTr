@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/compendium/workout/models"
 	"gesitr/internal/compendium/workoutgroup"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/shared"
 
 	"github.com/danielgtaylor/huma/v2"

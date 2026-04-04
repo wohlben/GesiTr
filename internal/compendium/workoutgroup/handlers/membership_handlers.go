@@ -3,10 +3,10 @@ package handlers
 import (
 	"context"
 
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
-	"gesitr/internal/compendium/ownershipgroup"
 
 	"github.com/danielgtaylor/huma/v2"
 )
