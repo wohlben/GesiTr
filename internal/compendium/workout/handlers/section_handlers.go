@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/compendium/workout/models"
 	"gesitr/internal/compendium/workoutgroup"
 	"gesitr/internal/database"
@@ -25,17 +26,22 @@ func requireWorkoutRead(ctx context.Context, workoutID uint) error {
 }
 
 // requireWorkoutModify fetches the workout and checks that the caller has modify access
-// (owner or group admin).
+// (ownership group owner or workout group admin).
 func requireWorkoutModify(ctx context.Context, workoutID uint) error {
 	var workout models.WorkoutEntity
 	if err := database.DB.First(&workout, workoutID).Error; err != nil {
 		return huma.Error404NotFound("Workout not found")
 	}
-	access := workoutgroup.CheckWorkoutAccess(humaconfig.GetUserID(ctx), workout.Owner, workoutID)
-	if !access.CanModify() {
-		return huma.Error403Forbidden("access denied")
+	userID := humaconfig.GetUserID(ctx)
+	ogAccess := ownershipgroup.CheckAccess(database.DB, userID, workout.OwnershipGroupID)
+	if ogAccess.CanModify() {
+		return nil
 	}
-	return nil
+	wgAccess := workoutgroup.CheckWorkoutAccess(userID, workoutID)
+	if wgAccess.CanModify() {
+		return nil
+	}
+	return huma.Error403Forbidden("access denied")
 }
 
 // ListWorkoutSections returns sections owned by the current user. Filter by
@@ -50,11 +56,12 @@ func ListWorkoutSections(ctx context.Context, input *ListWorkoutSectionsInput) (
 		db = db.Where("workout_id = ?", input.WorkoutID)
 	}
 
-	// Include workouts the user owns, public workouts, or group membership workouts
+	// Include workouts the user can access via ownership group, public workouts, or workout group membership
 	userID := humaconfig.GetUserID(ctx)
-	db = db.Where(`workout_id IN (SELECT id FROM workouts WHERE (owner = ? OR public = ?) AND deleted_at IS NULL)
+	visibleGroups := ownershipgroup.VisibleGroupIDs(database.DB, userID)
+	db = db.Where(`workout_id IN (SELECT id FROM workouts WHERE (ownership_group_id IN (?) OR public = ?) AND deleted_at IS NULL)
 		OR workout_id IN (SELECT wg.workout_id FROM workout_groups wg JOIN workout_group_memberships wgm ON wgm.group_id = wg.id WHERE wgm.user_id = ? AND wgm.deleted_at IS NULL AND wg.deleted_at IS NULL)`,
-		userID, true, userID)
+		visibleGroups, true, userID)
 
 	var entities []models.WorkoutSectionEntity
 	if err := db.Preload("Items").Order("position").Find(&entities).Error; err != nil {

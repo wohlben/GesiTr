@@ -7,6 +7,7 @@ import (
 
 	exercisemodels "gesitr/internal/compendium/exercise/models"
 	workoutmodels "gesitr/internal/compendium/workout/models"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	"gesitr/internal/user/workoutlog/models"
 )
 
@@ -25,7 +26,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &userExercise)
 
 	// 2. Create an exercise scheme for that user exercise
-	w = doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	w = doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId":      userExercise.ID,
 		"measurementType": "REP_BASED",
 		"sets":            5,
@@ -36,7 +37,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create scheme: status = %d, body = %s", w.Code, w.Body.String())
 	}
-	var scheme exercisemodels.ExerciseScheme
+	var scheme exerciseschememodels.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme)
 
 	// 3. Create a second exercise + scheme for variety
@@ -49,7 +50,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	var userExercise2 exercisemodels.Exercise
 	json.Unmarshal(w.Body.Bytes(), &userExercise2)
 
-	w = doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	w = doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId":      userExercise2.ID,
 		"measurementType": "REP_BASED",
 		"sets":            4,
@@ -59,7 +60,7 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create second scheme: status = %d", w.Code)
 	}
-	var scheme2 exercisemodels.ExerciseScheme
+	var scheme2 exerciseschememodels.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme2)
 
 	// 4. Create a workout template
@@ -91,18 +92,30 @@ func TestFullWorkoutToLogFlow(t *testing.T) {
 
 	// 6. Add exercises to the workout template sections
 	w = doJSON(r, "POST", "/api/workout-section-items", map[string]any{
-		"workoutSectionId": mainSection.ID, "type": "exercise", "exerciseSchemeId": scheme.ID, "position": 0,
+		"workoutSectionId": mainSection.ID, "type": "exercise", "exerciseId": userExercise.ID, "position": 0,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section exercise 1: status = %d", w.Code)
 	}
+	var sItem1 workoutmodels.WorkoutSectionItem
+	json.Unmarshal(w.Body.Bytes(), &sItem1)
 
 	w = doJSON(r, "POST", "/api/workout-section-items", map[string]any{
-		"workoutSectionId": mainSection.ID, "type": "exercise", "exerciseSchemeId": scheme2.ID, "position": 1,
+		"workoutSectionId": mainSection.ID, "type": "exercise", "exerciseId": userExercise2.ID, "position": 1,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section exercise 2: status = %d", w.Code)
 	}
+	var sItem2 workoutmodels.WorkoutSectionItem
+	json.Unmarshal(w.Body.Bytes(), &sItem2)
+
+	// Link schemes to section items
+	doJSON(r, "PUT", "/api/user/exercise-scheme-section-items", map[string]any{
+		"exerciseSchemeId": scheme.ID, "workoutSectionItemId": sItem1.ID,
+	})
+	doJSON(r, "PUT", "/api/user/exercise-scheme-section-items", map[string]any{
+		"exerciseSchemeId": scheme2.ID, "workoutSectionItemId": sItem2.ID,
+	})
 
 	// 7. Verify the workout template is fully loaded
 	w = doJSON(r, "GET", "/api/workouts/"+itoa(wkt.ID), nil)
@@ -348,7 +361,7 @@ func TestGetWorkoutLogWithSectionsAndExercises(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Bench Press"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
 	})
 	doJSON(r, "POST", "/api/user/workout-logs", map[string]any{

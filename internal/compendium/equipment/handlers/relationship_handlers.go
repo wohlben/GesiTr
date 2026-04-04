@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"gesitr/internal/compendium/equipment/models"
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 	masteryHandlers "gesitr/internal/user/mastery/handlers"
@@ -20,11 +21,13 @@ func ListEquipmentRelationships(ctx context.Context, input *ListEquipmentRelatio
 	db := database.DB.Model(&models.EquipmentRelationshipEntity{})
 
 	if input.Owner != "" {
-		owner := input.Owner
-		if owner == "me" {
-			owner = humaconfig.GetUserID(ctx)
+		userID := humaconfig.GetUserID(ctx)
+		if input.Owner == "me" || input.Owner == userID {
+			visibleGroups := ownershipgroup.VisibleGroupIDs(database.DB, userID)
+			db = db.Where("ownership_group_id IN (?)", visibleGroups)
+		} else {
+			db = db.Where("ownership_group_id IN (SELECT group_id FROM ownership_group_memberships WHERE user_id = ? AND role = 'owner' AND deleted_at IS NULL)", input.Owner)
 		}
-		db = db.Where("owner = ?", owner)
 	}
 	if input.FromEquipmentID != "" {
 		db = db.Where("from_equipment_id = ?", input.FromEquipmentID)
@@ -61,11 +64,19 @@ func CreateEquipmentRelationship(ctx context.Context, input *CreateEquipmentRela
 	}
 
 	entity := models.EquipmentRelationshipFromDTO(dto)
-	entity.Owner = humaconfig.GetUserID(ctx)
+	userID := humaconfig.GetUserID(ctx)
+
+	// Inherit ownership group from the "from" equipment.
+	var fromEquipment models.EquipmentEntity
+	if err := database.DB.Select("ownership_group_id").First(&fromEquipment, input.Body.FromEquipmentID).Error; err != nil {
+		return nil, huma.Error404NotFound("From equipment not found")
+	}
+	entity.OwnershipGroupID = fromEquipment.OwnershipGroupID
+
 	if err := database.DB.Create(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	_ = masteryHandlers.RecalculateEquipmentContributions(database.DB, entity.Owner, entity.FromEquipmentID, entity.ToEquipmentID)
+	_ = masteryHandlers.RecalculateEquipmentContributions(database.DB, userID, entity.FromEquipmentID, entity.ToEquipmentID)
 	return &CreateEquipmentRelationshipOutput{Body: entity.ToDTO()}, nil
 }
 
@@ -79,13 +90,15 @@ func DeleteEquipmentRelationship(ctx context.Context, input *DeleteEquipmentRela
 		return nil, huma.Error404NotFound("EquipmentRelationship not found")
 	}
 
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	userID := humaconfig.GetUserID(ctx)
+	access := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	if !access.CanModify() {
 		return nil, huma.Error403Forbidden("not the owner of this relationship")
 	}
 
 	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	_ = masteryHandlers.RecalculateEquipmentContributions(database.DB, entity.Owner, entity.FromEquipmentID, entity.ToEquipmentID)
+	_ = masteryHandlers.RecalculateEquipmentContributions(database.DB, userID, entity.FromEquipmentID, entity.ToEquipmentID)
 	return nil, nil
 }

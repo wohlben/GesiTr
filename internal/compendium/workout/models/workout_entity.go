@@ -6,24 +6,24 @@ import (
 
 type WorkoutEntity struct {
 	shared.BaseModel
-	Owner    string `gorm:"not null;index"`
-	Name     string `gorm:"not null"`
-	Notes    *string
-	Public   bool                   `gorm:"not null;default:false;index"`
-	Version  int                    `gorm:"not null;default:0"`
-	Sections []WorkoutSectionEntity `gorm:"foreignKey:WorkoutID"`
+	OwnershipGroupID uint   `gorm:"index"`
+	Name             string `gorm:"not null"`
+	Notes            *string
+	Public           bool                   `gorm:"not null;default:false;index"`
+	Version          int                    `gorm:"not null;default:0"`
+	Sections         []WorkoutSectionEntity `gorm:"foreignKey:WorkoutID"`
 }
 
 func (WorkoutEntity) TableName() string { return "workouts" }
 
 func (e *WorkoutEntity) ToDTO() Workout {
 	dto := Workout{
-		BaseModel: e.BaseModel,
-		Owner:     e.Owner,
-		Name:      e.Name,
-		Notes:     e.Notes,
-		Public:    e.Public,
-		Version:   e.Version,
+		BaseModel:        e.BaseModel,
+		OwnershipGroupID: e.OwnershipGroupID,
+		Name:             e.Name,
+		Notes:            e.Notes,
+		Public:           e.Public,
+		Version:          e.Version,
 	}
 	for _, s := range e.Sections {
 		dto.Sections = append(dto.Sections, s.ToDTO())
@@ -33,12 +33,12 @@ func (e *WorkoutEntity) ToDTO() Workout {
 
 func WorkoutFromDTO(dto Workout) WorkoutEntity {
 	return WorkoutEntity{
-		BaseModel: dto.BaseModel,
-		Owner:     dto.Owner,
-		Name:      dto.Name,
-		Notes:     dto.Notes,
-		Public:    dto.Public,
-		Version:   dto.Version,
+		BaseModel:        dto.BaseModel,
+		OwnershipGroupID: dto.OwnershipGroupID,
+		Name:             dto.Name,
+		Notes:            dto.Notes,
+		Public:           dto.Public,
+		Version:          dto.Version,
 	}
 }
 
@@ -84,7 +84,7 @@ type WorkoutSectionItemEntity struct {
 	shared.BaseModel
 	WorkoutSectionID uint                   `gorm:"not null;index"`
 	Type             WorkoutSectionItemType `gorm:"not null;default:'exercise'"`
-	ExerciseSchemeID *uint
+	ExerciseID       *uint
 	ExerciseGroupID  *uint
 	Data             *string
 	Position         int `gorm:"not null"`
@@ -97,7 +97,7 @@ func (e *WorkoutSectionItemEntity) ToDTO() WorkoutSectionItem {
 		BaseModel:        e.BaseModel,
 		WorkoutSectionID: e.WorkoutSectionID,
 		Type:             e.Type,
-		ExerciseSchemeID: e.ExerciseSchemeID,
+		ExerciseID:       e.ExerciseID,
 		ExerciseGroupID:  e.ExerciseGroupID,
 		Data:             e.Data,
 		Position:         e.Position,
@@ -109,7 +109,7 @@ func WorkoutSectionItemFromDTO(dto WorkoutSectionItem) WorkoutSectionItemEntity 
 		BaseModel:        dto.BaseModel,
 		WorkoutSectionID: dto.WorkoutSectionID,
 		Type:             dto.Type,
-		ExerciseSchemeID: dto.ExerciseSchemeID,
+		ExerciseID:       dto.ExerciseID,
 		ExerciseGroupID:  dto.ExerciseGroupID,
 		Data:             dto.Data,
 		Position:         dto.Position,

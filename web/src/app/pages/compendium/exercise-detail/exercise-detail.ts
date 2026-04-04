@@ -14,11 +14,19 @@ import {
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
+import { OwnershipGroupPanel } from '$ui/compendium/ownership-group-panel/ownership-group-panel';
 import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-exercise-detail',
-  imports: [PageLayout, RouterLink, ConfirmDialog, TranslocoDirective, DecimalPipe],
+  imports: [
+    PageLayout,
+    RouterLink,
+    ConfirmDialog,
+    TranslocoDirective,
+    DecimalPipe,
+    OwnershipGroupPanel,
+  ],
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
@@ -60,6 +68,13 @@ import { DecimalPipe } from '@angular/common';
             >
           }
           @if (canModify()) {
+            <button
+              type="button"
+              (click)="showShareDialog.set(true)"
+              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+            >
+              {{ t('common.share') }}
+            </button>
             <a
               routerLink="./edit"
               class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
@@ -291,6 +306,13 @@ import { DecimalPipe } from '@angular/common';
             </div>
           }
         }
+        @if (canModify() && exerciseQuery.data(); as exercise) {
+          <app-ownership-group-panel
+            [ownershipGroupId]="exercise.ownershipGroupId"
+            [open]="showShareDialog()"
+            (closed)="showShareDialog.set(false)"
+          />
+        }
       </app-page-layout>
     </ng-container>
   `,
@@ -305,6 +327,7 @@ export class ExerciseDetail {
   private id = computed(() => Number(this.params()?.get('id')));
 
   showDeleteDialog = signal(false);
+  showShareDialog = signal(false);
 
   exerciseQuery = injectQuery(() => ({
     queryKey: exerciseKeys.detail(this.id()),

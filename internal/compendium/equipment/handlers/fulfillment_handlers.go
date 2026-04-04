@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"gesitr/internal/compendium/equipment/models"
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 	masteryHandlers "gesitr/internal/user/mastery/handlers"
@@ -49,11 +50,19 @@ func CreateFulfillment(ctx context.Context, input *CreateFulfillmentInput) (*Cre
 	}
 
 	entity := models.FulfillmentFromDTO(dto)
-	entity.Owner = humaconfig.GetUserID(ctx)
+	userID := humaconfig.GetUserID(ctx)
+
+	// Inherit ownership group from the equipment.
+	var parent models.EquipmentEntity
+	if err := database.DB.Select("ownership_group_id").First(&parent, input.Body.EquipmentID).Error; err != nil {
+		return nil, huma.Error404NotFound("Equipment not found")
+	}
+	entity.OwnershipGroupID = parent.OwnershipGroupID
+
 	if err := database.DB.Create(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	_ = masteryHandlers.RecalculateEquipmentContributions(database.DB, entity.Owner, entity.EquipmentID, entity.FulfillsEquipmentID)
+	_ = masteryHandlers.RecalculateEquipmentContributions(database.DB, userID, entity.EquipmentID, entity.FulfillsEquipmentID)
 	return &CreateFulfillmentOutput{Body: entity.ToDTO()}, nil
 }
 
@@ -67,13 +76,15 @@ func DeleteFulfillment(ctx context.Context, input *DeleteFulfillmentInput) (*Del
 		return nil, huma.Error404NotFound("Fulfillment not found")
 	}
 
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	userID := humaconfig.GetUserID(ctx)
+	access := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	if !access.CanModify() {
 		return nil, huma.Error403Forbidden("not the owner of this fulfillment")
 	}
 
 	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
-	_ = masteryHandlers.RecalculateEquipmentContributions(database.DB, entity.Owner, entity.EquipmentID, entity.FulfillsEquipmentID)
+	_ = masteryHandlers.RecalculateEquipmentContributions(database.DB, userID, entity.EquipmentID, entity.FulfillsEquipmentID)
 	return nil, nil
 }

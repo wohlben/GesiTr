@@ -9,7 +9,9 @@ import (
 
 	equipmentModels "gesitr/internal/compendium/equipment/models"
 	exerciseModels "gesitr/internal/compendium/exercise/models"
+	workoutModels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
+	exerciseSchemeModels "gesitr/internal/user/exercisescheme/models"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -35,6 +37,12 @@ func setupSeedTestDB(t *testing.T) {
 		&exerciseModels.ExerciseRelationshipEntity{},
 		&exerciseModels.ExerciseHistoryEntity{},
 		&equipmentModels.EquipmentHistoryEntity{},
+		&workoutModels.WorkoutEntity{},
+		&workoutModels.WorkoutSectionEntity{},
+		&workoutModels.WorkoutSectionItemEntity{},
+		&exerciseSchemeModels.ExerciseSchemeEntity{},
+		&exerciseSchemeModels.ExerciseSchemeSectionItemEntity{},
+		&workoutModels.WorkoutHistoryEntity{},
 	)
 	database.DB = db
 }
@@ -92,26 +100,42 @@ func TestMainFunction(t *testing.T) {
 		"id": "x-y", "relationshipType": "similar", "strength": 0.5, "description": nil,
 		"createdBy": "sinon", "createdAt": ts, "fromExerciseTemplateId": "x", "toExerciseTemplateId": "x",
 	})
+	writeTempJSON(t, tmpDir, "compendium_workouts", "w.json", map[string]any{
+		"name": "Test Workout", "notes": nil, "createdBy": "sinon", "createdAt": ts, "version": 0,
+		"sections": []map[string]any{
+			{
+				"type": "main", "label": nil, "position": 0, "restBetweenExercises": 60,
+				"items": []map[string]any{
+					{
+						"type": "exercise", "position": 0, "exerciseTemplateId": "x",
+						"scheme": map[string]any{"measurementType": "REP_BASED", "sets": 3, "restBetweenSets": 90},
+					},
+				},
+			},
+		},
+	})
 	// main() calls database.Init() which creates gesitr.db in cwd (tmpDir)
 	main()
 
 	// Verify all entities were seeded
-	var eqCount, fCount, exCount, relCount int64
+	var eqCount, fCount, exCount, relCount, wCount int64
 	database.DB.Model(&equipmentModels.EquipmentEntity{}).Count(&eqCount)
 	database.DB.Model(&equipmentModels.FulfillmentEntity{}).Count(&fCount)
 	database.DB.Model(&exerciseModels.ExerciseEntity{}).Count(&exCount)
 	database.DB.Model(&exerciseModels.ExerciseRelationshipEntity{}).Count(&relCount)
+	database.DB.Model(&workoutModels.WorkoutEntity{}).Count(&wCount)
 
-	if eqCount != 1 || fCount != 1 || exCount != 1 || relCount != 1 {
-		t.Errorf("counts: eq=%d f=%d ex=%d rel=%d", eqCount, fCount, exCount, relCount)
+	if eqCount != 1 || fCount != 1 || exCount != 1 || relCount != 1 || wCount != 1 {
+		t.Errorf("counts: eq=%d f=%d ex=%d rel=%d w=%d", eqCount, fCount, exCount, relCount, wCount)
 	}
 
 	// Verify history entries were created
-	var eqHistCount, exHistCount int64
+	var eqHistCount, exHistCount, wHistCount int64
 	database.DB.Model(&exerciseModels.ExerciseHistoryEntity{}).Count(&exHistCount)
 	database.DB.Model(&equipmentModels.EquipmentHistoryEntity{}).Count(&eqHistCount)
-	if exHistCount != 1 || eqHistCount != 1 {
-		t.Errorf("history counts: exerciseHistory=%d equipmentHistory=%d", exHistCount, eqHistCount)
+	database.DB.Model(&workoutModels.WorkoutHistoryEntity{}).Count(&wHistCount)
+	if exHistCount != 1 || eqHistCount != 1 || wHistCount != 1 {
+		t.Errorf("history counts: exercise=%d equipment=%d workout=%d", exHistCount, eqHistCount, wHistCount)
 	}
 }
 
@@ -204,7 +228,7 @@ func TestSeedEquipment(t *testing.T) {
 
 		var eq equipmentModels.EquipmentEntity
 		database.DB.Where("name = ?", "barbell").First(&eq)
-		if eq.Name != "barbell" || eq.Category != "free_weights" || eq.Owner != "sinon" || !eq.Public {
+		if eq.Name != "barbell" || eq.Category != "free_weights" || !eq.Public {
 			t.Errorf("field mismatch: %+v", eq)
 		}
 
@@ -531,6 +555,171 @@ func TestSeedExerciseRelationships(t *testing.T) {
 		sqlDB, _ := database.DB.DB()
 		sqlDB.Close()
 		if err := seedExerciseRelationships(); err == nil {
+			t.Error("expected error")
+		}
+	})
+}
+
+// --- seedWorkouts ---
+
+func TestSeedWorkouts(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		setupSeedTestDB(t)
+		tmpDir := chdirTemp(t)
+
+		// Seed exercises first so exerciseIDMap is populated
+		equipmentIDMap = make(map[string]uint)
+		ts := int64(1700000000)
+		for _, name := range []string{"ex_a", "ex_b", "ex_c"} {
+			writeTempJSON(t, tmpDir, "compendium_exercises", name+".json", map[string]any{
+				"name": name, "type": "STRENGTH",
+				"force": []string{}, "primaryMuscles": []string{}, "secondaryMuscles": []string{},
+				"technicalDifficulty": "beginner", "bodyWeightScaling": 0.0,
+				"suggestedMeasurementParadigms": []string{}, "description": "",
+				"instructions": []string{}, "images": []string{},
+				"alternativeNames": []string{}, "authorName": nil, "authorUrl": nil,
+				"createdBy": "sinon", "createdAt": ts, "updatedAt": nil,
+				"version": 0, "parentExerciseId": nil, "templateId": name,
+				"equipmentIds": []string{},
+			})
+		}
+		if err := seedExercises(); err != nil {
+			t.Fatal(err)
+		}
+
+		sets := 3
+		rest := 90
+		writeTempJSON(t, tmpDir, "compendium_workouts", "w.json", map[string]any{
+			"name": "Test Workout", "notes": "A test", "createdBy": "sinon", "createdAt": ts, "version": 0,
+			"sections": []map[string]any{
+				{
+					"type": "main", "label": nil, "position": 0, "restBetweenExercises": 60,
+					"items": []map[string]any{
+						{"type": "exercise", "position": 0, "exerciseTemplateId": "ex_a",
+							"scheme": map[string]any{"measurementType": "REP_BASED", "sets": sets, "restBetweenSets": rest}},
+						{"type": "exercise", "position": 1, "exerciseTemplateId": "ex_b",
+							"scheme": map[string]any{"measurementType": "REP_BASED", "sets": sets, "restBetweenSets": rest}},
+						{"type": "exercise", "position": 2, "exerciseTemplateId": "ex_c",
+							"scheme": map[string]any{"measurementType": "REP_BASED", "sets": sets, "restBetweenSets": rest}},
+					},
+				},
+			},
+		})
+
+		if err := seedWorkouts(); err != nil {
+			t.Fatal(err)
+		}
+
+		// Verify workout
+		var workout workoutModels.WorkoutEntity
+		if err := database.DB.Preload("Sections.Items").First(&workout).Error; err != nil {
+			t.Fatal(err)
+		}
+		if workout.Name != "Test Workout" || !workout.Public {
+			t.Errorf("workout fields: name=%q public=%v", workout.Name, workout.Public)
+		}
+
+		// Verify section
+		if len(workout.Sections) != 1 {
+			t.Fatalf("expected 1 section, got %d", len(workout.Sections))
+		}
+		section := workout.Sections[0]
+		if section.Type != "main" || *section.RestBetweenExercises != 60 {
+			t.Errorf("section: type=%q rest=%v", section.Type, section.RestBetweenExercises)
+		}
+
+		// Verify items and schemes
+		if len(section.Items) != 3 {
+			t.Fatalf("expected 3 items, got %d", len(section.Items))
+		}
+		expectedExercises := []string{"ex_a", "ex_b", "ex_c"}
+		for i, item := range section.Items {
+			if item.Position != i {
+				t.Errorf("item %d: position=%d", i, item.Position)
+			}
+			if item.ExerciseID == nil {
+				t.Fatalf("item %d: nil ExerciseID", i)
+			}
+
+			// Look up the scheme via the join table
+			var link exerciseSchemeModels.ExerciseSchemeSectionItemEntity
+			if err := database.DB.Where("workout_section_item_id = ?", item.ID).First(&link).Error; err != nil {
+				t.Fatalf("item %d: scheme link not found: %v", i, err)
+			}
+
+			var scheme exerciseSchemeModels.ExerciseSchemeEntity
+			if err := database.DB.First(&scheme, link.ExerciseSchemeID).Error; err != nil {
+				t.Fatalf("item %d: scheme not found: %v", i, err)
+			}
+			if scheme.MeasurementType != "REP_BASED" {
+				t.Errorf("item %d: measurement=%q", i, scheme.MeasurementType)
+			}
+			if scheme.Sets == nil || *scheme.Sets != 3 {
+				t.Errorf("item %d: sets=%v", i, scheme.Sets)
+			}
+			if scheme.RestBetweenSets == nil || *scheme.RestBetweenSets != 90 {
+				t.Errorf("item %d: restBetweenSets=%v", i, scheme.RestBetweenSets)
+			}
+
+			// Verify item points to correct exercise via exerciseIDMap
+			expectedID := exerciseIDMap[expectedExercises[i]]
+			if *item.ExerciseID != expectedID {
+				t.Errorf("item %d: exerciseID=%d, expected=%d", i, *item.ExerciseID, expectedID)
+			}
+
+			// Verify scheme also references the correct exercise
+			if scheme.ExerciseID != expectedID {
+				t.Errorf("item %d: scheme exerciseID=%d, expected=%d", i, scheme.ExerciseID, expectedID)
+			}
+		}
+
+		// Verify history
+		var histCount int64
+		database.DB.Model(&workoutModels.WorkoutHistoryEntity{}).Where("workout_id = ?", workout.ID).Count(&histCount)
+		if histCount != 1 {
+			t.Errorf("expected 1 history entry, got %d", histCount)
+		}
+	})
+
+	t.Run("unknown exercise template", func(t *testing.T) {
+		setupSeedTestDB(t)
+		tmpDir := chdirTemp(t)
+		exerciseIDMap = make(map[string]uint)
+
+		writeTempJSON(t, tmpDir, "compendium_workouts", "w.json", map[string]any{
+			"name": "Bad", "notes": nil, "createdBy": "sinon", "createdAt": 0, "version": 0,
+			"sections": []map[string]any{
+				{
+					"type": "main", "label": nil, "position": 0, "restBetweenExercises": nil,
+					"items": []map[string]any{
+						{"type": "exercise", "position": 0, "exerciseTemplateId": "nonexistent",
+							"scheme": map[string]any{"measurementType": "REP_BASED", "sets": 1, "restBetweenSets": 60}},
+					},
+				},
+			},
+		})
+
+		err := seedWorkouts()
+		if err == nil {
+			t.Error("expected error for unknown exercise template ID")
+		}
+	})
+
+	t.Run("bad json", func(t *testing.T) {
+		setupSeedTestDB(t)
+		tmpDir := chdirTemp(t)
+		dirPath := filepath.Join(tmpDir, "data", "compendium_workouts")
+		os.MkdirAll(dirPath, 0755)
+		os.WriteFile(filepath.Join(dirPath, "bad.json"), []byte("{bad"), 0644)
+		if err := seedWorkouts(); err == nil {
+			t.Error("expected error")
+		}
+	})
+
+	t.Run("dir not found", func(t *testing.T) {
+		setupSeedTestDB(t)
+		chdirTemp(t)
+		if err := seedWorkouts(); err == nil {
 			t.Error("expected error")
 		}
 	})

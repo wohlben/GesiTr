@@ -21,6 +21,8 @@ func UserID() gin.HandlerFunc {
 
 	header := humaconfig.AuthHeader
 
+	usernameHeader := humaconfig.AuthUsernameHeader
+
 	return func(c *gin.Context) {
 		id := c.GetHeader(header)
 		if id == "" {
@@ -31,7 +33,14 @@ func UserID() gin.HandlerFunc {
 			return
 		}
 		c.Set(userIDKey, id)
-		c.Request = c.Request.WithContext(context.WithValue(c.Request.Context(), humaconfig.UserIDContextKey, id))
+		ctx := context.WithValue(c.Request.Context(), humaconfig.UserIDContextKey, id)
+
+		if username := c.GetHeader(usernameHeader); username != "" {
+			c.Set("username", username)
+			ctx = context.WithValue(ctx, humaconfig.UsernameContextKey, username)
+		}
+
+		c.Request = c.Request.WithContext(ctx)
 		c.Next()
 	}
 }

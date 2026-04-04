@@ -35,6 +35,7 @@ func WorkoutChanged(old, new Workout) bool {
 func normalizeWorkoutJSON(dto Workout) string {
 	dto.BaseModel = shared.BaseModel{}
 	dto.Version = 0
+	dto.OwnershipGroupID = 0
 	dto.WorkoutGroup = nil
 
 	if dto.Sections == nil {

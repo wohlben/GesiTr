@@ -5,7 +5,7 @@ import "gesitr/internal/shared"
 // PaginationInput can be embedded in huma input structs to add
 // limit/offset query parameters with validation.
 type PaginationInput struct {
-	Limit  int `query:"limit" default:"50" minimum:"1" maximum:"200" doc:"Max items to return"`
+	Limit  int `query:"limit" default:"50" minimum:"1" maximum:"1000" doc:"Max items to return"`
 	Offset int `query:"offset" default:"0" minimum:"0" doc:"Number of items to skip"`
 }
 

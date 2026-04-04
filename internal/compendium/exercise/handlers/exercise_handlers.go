@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"gesitr/internal/compendium/exercise/models"
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/shared"
@@ -64,16 +65,17 @@ func ListExercises(ctx context.Context, input *ListExercisesInput) (*ListExercis
 	db := database.DB.Model(&models.ExerciseEntity{})
 
 	userID := humaconfig.GetUserID(ctx)
+	visibleGroups := ownershipgroup.VisibleGroupIDs(database.DB, userID)
 	if input.Mastery == "me" {
-		db = db.Where("owner = ? OR exercises.id IN (SELECT exercise_id FROM mastery_experience WHERE owner = ?)", userID, userID)
+		db = db.Where("ownership_group_id IN (?) OR exercises.id IN (SELECT exercise_id FROM mastery_experience WHERE owner = ?)", visibleGroups, userID)
 	} else if input.Owner != "" {
 		if input.Owner == "me" || input.Owner == userID {
-			db = db.Where("owner = ?", userID)
+			db = db.Where("ownership_group_id IN (?)", visibleGroups)
 		} else {
-			db = db.Where("owner = ? AND public = ?", input.Owner, true)
+			db = db.Where("ownership_group_id IN (SELECT group_id FROM ownership_group_memberships WHERE user_id = ? AND role = 'owner' AND deleted_at IS NULL) AND public = ?", input.Owner, true)
 		}
 	} else {
-		db = db.Where("owner = ? OR public = ?", userID, true)
+		db = db.Where("ownership_group_id IN (?) OR public = ?", visibleGroups, true)
 	}
 	if input.Public == "true" {
 		db = db.Where("public = ?", true)
@@ -165,11 +167,20 @@ func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExe
 	dto := exerciseDTOFromBody(input.Body)
 
 	entity := models.ExerciseFromDTO(dto)
-	entity.Owner = humaconfig.GetUserID(ctx)
+	userID := humaconfig.GetUserID(ctx)
 	entity.Public = dto.Public
 
 	err := database.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(&entity).Error; err != nil {
+			return err
+		}
+
+		groupID, err := ownershipgroup.CreateGroupForEntity(tx, userID)
+		if err != nil {
+			return err
+		}
+		entity.OwnershipGroupID = groupID
+		if err := tx.Model(&entity).Update("ownership_group_id", groupID).Error; err != nil {
 			return err
 		}
 
@@ -183,7 +194,7 @@ func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExe
 			Version:    resultDTO.Version,
 			Snapshot:   shared.SnapshotJSON(resultDTO),
 			ChangedAt:  time.Now(),
-			ChangedBy:  resultDTO.Owner,
+			ChangedBy:  userID,
 		}).Error; err != nil {
 			return err
 		}
@@ -193,7 +204,7 @@ func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExe
 			forked := models.ExerciseRelationshipEntity{
 				RelationshipType: models.ExerciseRelationshipTypeForked,
 				Strength:         1.0,
-				Owner:            entity.Owner,
+				OwnershipGroupID: groupID,
 				FromExerciseID:   entity.ID,
 				ToExerciseID:     sourceID,
 			}
@@ -203,7 +214,7 @@ func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExe
 			equivalent := models.ExerciseRelationshipEntity{
 				RelationshipType: models.ExerciseRelationshipTypeEquivalent,
 				Strength:         1.0,
-				Owner:            entity.Owner,
+				OwnershipGroupID: groupID,
 				FromExerciseID:   entity.ID,
 				ToExerciseID:     sourceID,
 			}
@@ -233,7 +244,8 @@ func GetExercisePermissions(ctx context.Context, input *GetExercisePermissionsIn
 		return nil, huma.Error404NotFound("Exercise not found")
 	}
 	userID := humaconfig.GetUserID(ctx)
-	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
+	access := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	perms, _ := shared.ResolvePermissionsFromAccess(access, entity.Public)
 	if perms == nil {
 		perms = []shared.Permission{}
 	}
@@ -251,7 +263,8 @@ func GetExercise(ctx context.Context, input *GetExerciseInput) (*GetExerciseOutp
 		return nil, huma.Error404NotFound("Exercise not found")
 	}
 	userID := humaconfig.GetUserID(ctx)
-	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
+	access := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	perms, _ := shared.ResolvePermissionsFromAccess(access, entity.Public)
 	if len(perms) == 0 {
 		return nil, huma.Error403Forbidden("access denied")
 	}
@@ -272,12 +285,13 @@ func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExe
 		return nil, huma.Error404NotFound("Exercise not found")
 	}
 
-	if existing.Owner != humaconfig.GetUserID(ctx) {
+	userID := humaconfig.GetUserID(ctx)
+	access := ownershipgroup.CheckAccess(database.DB, userID, existing.OwnershipGroupID)
+	if !access.CanModify() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 
 	dto := exerciseDTOFromBody(input.Body)
-	dto.Owner = existing.Owner
 	oldDTO := existing.ToDTO()
 
 	if !models.ExerciseChanged(oldDTO, dto) {
@@ -286,7 +300,7 @@ func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExe
 
 	entity := models.ExerciseFromDTO(dto)
 	entity.ID = existing.ID
-	entity.Owner = existing.Owner
+	entity.OwnershipGroupID = existing.OwnershipGroupID
 	entity.Version = existing.Version + 1
 
 	forces := entity.Forces
@@ -388,7 +402,7 @@ func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExe
 			Version:    resultDTO.Version,
 			Snapshot:   shared.SnapshotJSON(resultDTO),
 			ChangedAt:  time.Now(),
-			ChangedBy:  resultDTO.Owner,
+			ChangedBy:  userID,
 		}).Error; err != nil {
 			return err
 		}
@@ -443,7 +457,8 @@ func GetExerciseVersion(ctx context.Context, input *GetExerciseVersionInput) (*G
 	var snap models.Exercise
 	json.Unmarshal([]byte(history.Snapshot), &snap)
 	userID := humaconfig.GetUserID(ctx)
-	perms, _ := shared.ResolvePermissions(userID, snap.Owner, snap.Public)
+	access := ownershipgroup.CheckAccess(database.DB, userID, snap.OwnershipGroupID)
+	perms, _ := shared.ResolvePermissionsFromAccess(access, snap.Public)
 	if len(perms) == 0 {
 		return nil, huma.Error403Forbidden("access denied")
 	}
@@ -460,7 +475,8 @@ func DeleteExercise(ctx context.Context, input *DeleteExerciseInput) (*DeleteExe
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Exercise not found")
 	}
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	access := ownershipgroup.CheckAccess(database.DB, humaconfig.GetUserID(ctx), entity.OwnershipGroupID)
+	if !access.CanDelete() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 	if err := database.DB.Unscoped().Select(clause.Associations).Delete(&entity).Error; err != nil {
@@ -478,7 +494,8 @@ func DeleteExerciseVersion(ctx context.Context, input *DeleteExerciseVersionInpu
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Exercise not found")
 	}
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	access := ownershipgroup.CheckAccess(database.DB, humaconfig.GetUserID(ctx), entity.OwnershipGroupID)
+	if !access.CanDelete() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 	result := database.DB.Where("exercise_id = ? AND version = ?", input.ID, input.Version).Delete(&models.ExerciseHistoryEntity{})
@@ -500,7 +517,8 @@ func DeleteAllExerciseVersions(ctx context.Context, input *DeleteAllExerciseVers
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Exercise not found")
 	}
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	access := ownershipgroup.CheckAccess(database.DB, humaconfig.GetUserID(ctx), entity.OwnershipGroupID)
+	if !access.CanDelete() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 	if err := database.DB.Where("exercise_id = ?", input.ID).Delete(&models.ExerciseHistoryEntity{}).Error; err != nil {

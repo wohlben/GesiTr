@@ -111,5 +111,10 @@ export const localityKeys = {
 
 export const localityAvailabilityKeys = {
   all: () => ['locality-availabilities'] as const,
-  list: (localityId: number) => [...localityAvailabilityKeys.all(), 'list', localityId] as const,
+  list: (filters: Filters) => [...localityAvailabilityKeys.all(), 'list', filters] as const,
+};
+
+export const ownershipGroupKeys = {
+  all: () => ['ownership-groups'] as const,
+  memberships: (groupId: number) => [...ownershipGroupKeys.all(), 'memberships', groupId] as const,
 };

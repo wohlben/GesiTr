@@ -1,13 +1,14 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { injectQuery, keepPreviousData } from '@tanstack/angular-query-experimental';
 import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { equipmentKeys, equipmentMasteryKeys } from '$core/query-keys';
+import { equipmentKeys, equipmentMasteryKeys, localityAvailabilityKeys } from '$core/query-keys';
 import { EquipmentMastery } from '$generated/user-mastery';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { EquipmentListItem } from '$ui/compendium/equipment-list-item/equipment-list-item';
+import { LocalityToggleGroup } from '$ui/compendium/locality-toggle-group/locality-toggle-group';
 import { DataTable, DataTableColumn } from '$ui/data-table/data-table';
 import { Pagination } from '$ui/pagination/pagination';
 import { PageLayout } from '../../../layout/page-layout';
@@ -22,7 +23,15 @@ import {
 
 @Component({
   selector: 'app-equipment-list',
-  imports: [EquipmentListItem, DataTable, Pagination, PageLayout, RouterLink, TranslocoDirective],
+  imports: [
+    EquipmentListItem,
+    LocalityToggleGroup,
+    DataTable,
+    Pagination,
+    PageLayout,
+    RouterLink,
+    TranslocoDirective,
+  ],
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
@@ -30,7 +39,9 @@ import {
         [isPending]="equipmentQuery.isPending()"
         [errorMessage]="equipmentQuery.isError() ? equipmentQuery.error().message : undefined"
       >
-        <div actions class="flex gap-2">
+        <div actions class="flex items-center gap-2">
+          <app-locality-toggle-group (selectedChange)="selectedLocalityId.set($event)" />
+          <div class="flex-grow"></div>
           <a
             routerLink="/compendium/localities"
             class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
@@ -42,7 +53,7 @@ import {
             >{{ t('common.new') }}</a
           >
         </div>
-        @if (equipmentQuery.data(); as page) {
+        @if (filteredPage(); as page) {
           <app-data-table
             [columns]="equipmentColumns"
             [stale]="equipmentQuery.isPlaceholderData()"
@@ -68,6 +79,8 @@ export class EquipmentList {
   private userApi = inject(UserApiClient);
   private queryParams = toSignal(inject(ActivatedRoute).queryParamMap);
 
+  selectedLocalityId = signal<number | null>(null);
+
   filters = computed(() => {
     const params: Record<string, string> = {};
     const qp = this.queryParams();
@@ -90,6 +103,29 @@ export class EquipmentList {
     queryKey: equipmentMasteryKeys.list(),
     queryFn: () => this.userApi.fetchEquipmentMasteryList(),
   }));
+
+  availabilitiesQuery = injectQuery(() => ({
+    queryKey: localityAvailabilityKeys.list({ localityId: this.selectedLocalityId()! }),
+    queryFn: () => this.api.fetchLocalityAvailabilities({ localityId: this.selectedLocalityId()! }),
+    enabled: this.selectedLocalityId() !== null,
+  }));
+
+  private availableEquipmentIds = computed(() => {
+    const ids = new Set<number>();
+    for (const a of this.availabilitiesQuery.data() ?? []) {
+      ids.add(a.equipmentId);
+    }
+    return ids;
+  });
+
+  filteredPage = computed(() => {
+    const page = this.equipmentQuery.data();
+    if (!page) return undefined;
+    if (this.selectedLocalityId() === null) return page;
+    const ids = this.availableEquipmentIds();
+    const items = page.items.filter((e) => ids.has(e.id));
+    return { ...page, items, total: items.length };
+  });
 
   masteryMap = computed(() => {
     const map = new Map<number, EquipmentMastery>();
@@ -136,7 +172,6 @@ export class EquipmentList {
     { label: 'Description', labelKey: 'fields.description' },
     { label: 'Internal name', labelKey: 'fields.internalName', defaultHidden: true },
     { label: 'Version', labelKey: 'fields.version', defaultHidden: true },
-    { label: 'Owner', labelKey: 'fields.owner', defaultHidden: true },
     { label: 'Created at', labelKey: 'fields.createdAt', defaultHidden: true },
     { label: 'Updated at', labelKey: 'fields.updatedAt', defaultHidden: true },
   ];

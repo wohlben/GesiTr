@@ -14,13 +14,10 @@ type WorkoutAccess struct {
 	MembershipRole string
 }
 
-// CheckWorkoutAccess determines a user's access level for a given workout.
-// It checks ownership first, then group membership.
-func CheckWorkoutAccess(userID, workoutOwner string, workoutID uint) WorkoutAccess {
-	if userID == workoutOwner {
-		return WorkoutAccess{IsOwner: true}
-	}
-
+// CheckWorkoutAccess determines a user's access level for a given workout
+// via workout group membership. Ownership is checked separately via
+// ownership groups before calling this function.
+func CheckWorkoutAccess(userID string, workoutID uint) WorkoutAccess {
 	var result struct {
 		Role      models.WorkoutGroupRole
 		GroupName string

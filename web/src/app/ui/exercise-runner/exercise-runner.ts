@@ -87,7 +87,7 @@ export interface ExerciseRunnerSet {
             </div>
 
             <!-- Rest between sets -->
-            @if (!last && set.restAfterSeconds().value() !== null) {
+            @if (!last) {
               <div class="relative flex items-center justify-center py-0.5">
                 <div
                   class="absolute inset-x-0 top-1/2 border-t border-dashed border-gray-200 dark:border-gray-700"
@@ -146,7 +146,7 @@ export class ExerciseRunner {
             targetDuration: mt === 'TIME_BASED' ? this.defaultDuration() : null,
             targetDistance: mt === 'DISTANCE_BASED' ? this.defaultDistance() : null,
             targetTime: null,
-            restAfterSeconds: i < count - 1 ? (this.defaultRest() ?? null) : null,
+            restAfterSeconds: i < count - 1 ? (this.defaultRest() ?? 0) : null,
           });
         }
         this.setsModel.set(sets);
@@ -170,7 +170,7 @@ export class ExerciseRunner {
         targetDuration: defaults.targetDuration ?? null,
         targetDistance: defaults.targetDistance ?? null,
         targetTime: defaults.targetTime ?? null,
-        restAfterSeconds: i < count - 1 ? (defaults.restAfterSeconds ?? null) : null,
+        restAfterSeconds: i < count - 1 ? (defaults.restAfterSeconds ?? 0) : null,
       });
     }
     this.setsModel.set(sets);

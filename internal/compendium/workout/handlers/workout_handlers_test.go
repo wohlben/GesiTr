@@ -7,6 +7,7 @@ import (
 
 	"gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
+	logmodels "gesitr/internal/user/workoutlog/models"
 )
 
 type paginatedJSON struct {
@@ -40,7 +41,7 @@ func TestListWorkouts(t *testing.T) {
 	doJSON(r, "POST", "/api/workouts", map[string]any{
 		"name": "Pull Day",
 	})
-	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
+	database.DB.Create(&models.WorkoutEntity{Name: "Bob's Workout"})
 
 	t.Run("lists own + public (bob's is private)", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/workouts", nil)
@@ -52,8 +53,8 @@ func TestListWorkouts(t *testing.T) {
 			t.Errorf("expected 2 (own only, bob's is private), got %d", len(result))
 		}
 		for _, wo := range result {
-			if wo.Owner != "alice" {
-				t.Errorf("expected owner alice, got %q", wo.Owner)
+			if wo.ID == 0 {
+				t.Errorf("expected non-zero workout ID")
 			}
 		}
 	})
@@ -111,7 +112,7 @@ func TestGetWorkout(t *testing.T) {
 	doJSON(r, "POST", "/api/workouts", map[string]any{
 		"name": "Push Day",
 	})
-	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
+	database.DB.Create(&models.WorkoutEntity{Name: "Bob's Workout"})
 
 	t.Run("found", func(t *testing.T) {
 		w := doJSON(r, "GET", "/api/workouts/1", nil)
@@ -148,7 +149,7 @@ func TestGetWorkoutWithSectionsAndExercises(t *testing.T) {
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Bench Press"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED", "sets": 3, "reps": 10,
 	})
 	doJSON(r, "POST", "/api/workouts", map[string]any{
@@ -161,7 +162,7 @@ func TestGetWorkoutWithSectionsAndExercises(t *testing.T) {
 		"workoutId": 1, "type": "main", "position": 1,
 	})
 	doJSON(r, "POST", "/api/workout-section-items", map[string]any{
-		"workoutSectionId": 2, "type": "exercise", "exerciseSchemeId": 1, "position": 0,
+		"workoutSectionId": 2, "type": "exercise", "exerciseId": 1, "position": 0,
 	})
 
 	w := doJSON(r, "GET", "/api/workouts/1", nil)
@@ -185,8 +186,8 @@ func TestGetWorkoutWithSectionsAndExercises(t *testing.T) {
 	if len(result.Sections[1].Items) != 1 {
 		t.Fatalf("expected 1 item in main section, got %d", len(result.Sections[1].Items))
 	}
-	if *result.Sections[1].Items[0].ExerciseSchemeID != 1 {
-		t.Error("exercise scheme ID mismatch")
+	if *result.Sections[1].Items[0].ExerciseID != 1 {
+		t.Error("exercise ID mismatch")
 	}
 }
 
@@ -197,7 +198,7 @@ func TestUpdateWorkout(t *testing.T) {
 	doJSON(r, "POST", "/api/workouts", map[string]any{
 		"name": "Push Day",
 	})
-	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
+	database.DB.Create(&models.WorkoutEntity{Name: "Bob's Workout"})
 
 	t.Run("success", func(t *testing.T) {
 		w := doJSON(r, "PUT", "/api/workouts/1", map[string]any{
@@ -246,7 +247,7 @@ func TestDeleteWorkout(t *testing.T) {
 	doJSON(r, "POST", "/api/workouts", map[string]any{
 		"name": "Push Day",
 	})
-	database.DB.Create(&models.WorkoutEntity{Owner: "bob", Name: "Bob's Workout"})
+	database.DB.Create(&models.WorkoutEntity{Name: "Bob's Workout"})
 
 	t.Run("forbidden for other owner", func(t *testing.T) {
 		w := doJSON(r, "DELETE", "/api/workouts/2", nil)
@@ -268,4 +269,36 @@ func TestDeleteWorkout(t *testing.T) {
 			t.Errorf("expected 404, got %d", w.Code)
 		}
 	})
+}
+
+func TestUpdateWorkout_PreservesPlanningLogs(t *testing.T) {
+	setupTestDB(t)
+	r := newRouter()
+
+	// Create a workout with a section so we can trigger a structural change.
+	doJSON(r, "POST", "/api/workouts", map[string]any{"name": "Push Day"})
+	doJSON(r, "POST", "/api/workout-sections", map[string]any{
+		"workoutId": 1, "type": "main", "position": 0,
+	})
+
+	// Insert a planning workout log directly.
+	workoutID := uint(1)
+	planningLog := logmodels.WorkoutLogEntity{
+		Owner: "alice", WorkoutID: &workoutID, Name: "Push Day",
+		Status: logmodels.WorkoutLogStatusPlanning,
+	}
+	database.DB.Create(&planningLog)
+
+	// Update the workout name — planning logs should NOT be deleted on mutation.
+	w := doJSON(r, "PUT", "/api/workouts/1", map[string]any{"name": "Heavy Push Day"})
+	if w.Code != http.StatusOK {
+		t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+	}
+
+	// Planning log should still exist (invalidation moved to frontend on fetch).
+	var found logmodels.WorkoutLogEntity
+	err := database.DB.First(&found, planningLog.ID).Error
+	if err != nil {
+		t.Errorf("expected planning log to still exist, got err=%v", err)
+	}
 }

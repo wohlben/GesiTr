@@ -10,8 +10,14 @@ import (
 
 	equipmentModels "gesitr/internal/compendium/equipment/models"
 	exerciseModels "gesitr/internal/compendium/exercise/models"
+	"gesitr/internal/compendium/ownershipgroup"
+	ownershipGroupModels "gesitr/internal/compendium/ownershipgroup/models"
+	workoutModels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
 	"gesitr/internal/shared"
+	exerciseSchemeModels "gesitr/internal/user/exercisescheme/models"
+
+	"gorm.io/gorm"
 )
 
 var equipmentIDMap map[string]uint
@@ -33,6 +39,14 @@ func main() {
 		&exerciseModels.ExerciseRelationshipEntity{},
 		&exerciseModels.ExerciseHistoryEntity{},
 		&equipmentModels.EquipmentHistoryEntity{},
+		&workoutModels.WorkoutEntity{},
+		&workoutModels.WorkoutSectionEntity{},
+		&workoutModels.WorkoutSectionItemEntity{},
+		&exerciseSchemeModels.ExerciseSchemeEntity{},
+		&exerciseSchemeModels.ExerciseSchemeSectionItemEntity{},
+		&workoutModels.WorkoutHistoryEntity{},
+		&ownershipGroupModels.OwnershipGroupEntity{},
+		&ownershipGroupModels.OwnershipGroupMembershipEntity{},
 	)
 
 	steps := []struct {
@@ -43,11 +57,17 @@ func main() {
 		{"Exercises", seedExercises},
 		{"Fulfillments", seedFulfillments},
 		{"ExerciseRelationships", seedExerciseRelationships},
+		{"Workouts", seedWorkouts},
 	}
 	for _, s := range steps {
 		if err := s.fn(); err != nil {
 			log.Fatalf("Failed to seed %s: %v", s.name, err)
 		}
+	}
+
+	// Create ownership groups for all seeded entities.
+	if err := assignOwnershipGroups(); err != nil {
+		log.Fatalf("Failed to assign ownership groups: %v", err)
 	}
 }
 
@@ -107,7 +127,6 @@ func seedEquipment() error {
 			Description: j.Description,
 			Category:    equipmentModels.EquipmentCategory(j.Category),
 			ImageUrl:    j.ImageUrl,
-			Owner:       "sinon",
 			Public:      true,
 		})
 	}
@@ -123,7 +142,7 @@ func seedEquipment() error {
 			Version:     0,
 			Snapshot:    shared.SnapshotJSON(dto),
 			ChangedAt:   entities[i].CreatedAt,
-			ChangedBy:   entities[i].Owner,
+			ChangedBy:   "sinon",
 		})
 	}
 	if err := database.DB.CreateInBatches(history, 100).Error; err != nil {
@@ -192,7 +211,6 @@ func seedExercises() error {
 			Description:         j.Description,
 			AuthorName:          j.AuthorName,
 			AuthorUrl:           j.AuthorUrl,
-			Owner:               "sinon",
 			Public:              true,
 			Version:             j.Version,
 			ParentExerciseID:    j.ParentExerciseID,
@@ -256,7 +274,7 @@ func seedExercises() error {
 			Version:    0,
 			Snapshot:   shared.SnapshotJSON(dto),
 			ChangedAt:  entities[i].CreatedAt,
-			ChangedBy:  entities[i].Owner,
+			ChangedBy:  "sinon",
 		})
 	}
 	if err := database.DB.CreateInBatches(history, 100).Error; err != nil {
@@ -298,7 +316,6 @@ func seedFulfillments() error {
 		e := equipmentModels.FulfillmentEntity{
 			EquipmentID:         equipmentIDMap[j.EquipmentTemplateID],
 			FulfillsEquipmentID: equipmentIDMap[j.FulfillsEquipmentTemplateID],
-			Owner:               "sinon",
 		}
 		e.CreatedAt = unixToTime(j.CreatedAt)
 		entities = append(entities, e)
@@ -337,7 +354,6 @@ func seedExerciseRelationships() error {
 			RelationshipType: exerciseModels.ExerciseRelationshipType(j.RelationshipType),
 			Strength:         j.Strength,
 			Description:      j.Description,
-			Owner:            "sinon",
 			FromExerciseID:   exerciseIDMap[j.FromExerciseTemplateID],
 			ToExerciseID:     exerciseIDMap[j.ToExerciseTemplateID],
 		}
@@ -349,4 +365,187 @@ func seedExerciseRelationships() error {
 	}
 	log.Printf("ExerciseRelationships: %d", len(entities))
 	return nil
+}
+
+// --- Workouts ---
+
+type jsonWorkoutScheme struct {
+	MeasurementType string `json:"measurementType"`
+	Sets            *int   `json:"sets"`
+	Reps            *int   `json:"reps"`
+	RestBetweenSets *int   `json:"restBetweenSets"`
+}
+
+type jsonWorkoutItem struct {
+	Type               string            `json:"type"`
+	Position           int               `json:"position"`
+	ExerciseTemplateID string            `json:"exerciseTemplateId"`
+	Scheme             jsonWorkoutScheme `json:"scheme"`
+}
+
+type jsonWorkoutSection struct {
+	Type                 string            `json:"type"`
+	Label                *string           `json:"label"`
+	Position             int               `json:"position"`
+	RestBetweenExercises *int              `json:"restBetweenExercises"`
+	Items                []jsonWorkoutItem `json:"items"`
+}
+
+type jsonWorkout struct {
+	Name      string               `json:"name"`
+	Notes     *string              `json:"notes"`
+	CreatedBy string               `json:"createdBy"`
+	CreatedAt *int64               `json:"createdAt"`
+	Version   int                  `json:"version"`
+	Sections  []jsonWorkoutSection `json:"sections"`
+}
+
+func seedWorkouts() error {
+	files, err := readDir("data/compendium_workouts")
+	if err != nil {
+		return err
+	}
+	count := 0
+	for _, data := range files {
+		var j jsonWorkout
+		if err := json.Unmarshal(data, &j); err != nil {
+			return fmt.Errorf("parse workout JSON: %w", err)
+		}
+
+		workout := workoutModels.WorkoutEntity{
+			Name:    j.Name,
+			Notes:   j.Notes,
+			Public:  true,
+			Version: j.Version,
+		}
+		workout.CreatedAt = unixToTime(j.CreatedAt)
+		if err := database.DB.Create(&workout).Error; err != nil {
+			return fmt.Errorf("insert workout %q: %w", j.Name, err)
+		}
+
+		for _, js := range j.Sections {
+			section := workoutModels.WorkoutSectionEntity{
+				WorkoutID:            workout.ID,
+				Type:                 workoutModels.WorkoutSectionType(js.Type),
+				Label:                js.Label,
+				Position:             js.Position,
+				RestBetweenExercises: js.RestBetweenExercises,
+			}
+			if err := database.DB.Create(&section).Error; err != nil {
+				return fmt.Errorf("insert section for workout %q: %w", j.Name, err)
+			}
+
+			for _, ji := range js.Items {
+				exerciseID, ok := exerciseIDMap[ji.ExerciseTemplateID]
+				if !ok {
+					return fmt.Errorf("unknown exercise template ID %q in workout %q", ji.ExerciseTemplateID, j.Name)
+				}
+
+				item := workoutModels.WorkoutSectionItemEntity{
+					WorkoutSectionID: section.ID,
+					Type:             workoutModels.WorkoutSectionItemType(ji.Type),
+					ExerciseID:       &exerciseID,
+					Position:         ji.Position,
+				}
+				if err := database.DB.Create(&item).Error; err != nil {
+					return fmt.Errorf("insert section item for exercise %q: %w", ji.ExerciseTemplateID, err)
+				}
+
+				scheme := exerciseSchemeModels.ExerciseSchemeEntity{
+					Owner:           "sinon",
+					ExerciseID:      exerciseID,
+					MeasurementType: ji.Scheme.MeasurementType,
+					Sets:            ji.Scheme.Sets,
+					Reps:            ji.Scheme.Reps,
+					RestBetweenSets: ji.Scheme.RestBetweenSets,
+				}
+				if err := database.DB.Create(&scheme).Error; err != nil {
+					return fmt.Errorf("insert scheme for exercise %q: %w", ji.ExerciseTemplateID, err)
+				}
+
+				// Link the scheme to the section item via join table
+				link := exerciseSchemeModels.ExerciseSchemeSectionItemEntity{
+					ExerciseSchemeID:     scheme.ID,
+					WorkoutSectionItemID: item.ID,
+					Owner:                "sinon",
+				}
+				if err := database.DB.Create(&link).Error; err != nil {
+					return fmt.Errorf("insert scheme-section-item link for exercise %q: %w", ji.ExerciseTemplateID, err)
+				}
+			}
+		}
+
+		// Create version 0 history snapshot.
+		if err := database.DB.Preload("Sections.Items").First(&workout, workout.ID).Error; err != nil {
+			return fmt.Errorf("reload workout %q: %w", j.Name, err)
+		}
+		dto := workout.ToDTO()
+		history := workoutModels.WorkoutHistoryEntity{
+			WorkoutID: workout.ID,
+			Version:   0,
+			Snapshot:  shared.SnapshotJSON(dto),
+			ChangedAt: workout.CreatedAt,
+			ChangedBy: "sinon",
+		}
+		if err := database.DB.Create(&history).Error; err != nil {
+			return fmt.Errorf("insert workout history for %q: %w", j.Name, err)
+		}
+
+		count++
+	}
+	log.Printf("Workouts: %d", count)
+	return nil
+}
+
+// assignOwnershipGroups creates an ownership group (owned by "sinon") for each
+// top-level seeded entity and propagates the group to sub-entities.
+func assignOwnershipGroups() error {
+	topLevelTables := []string{"equipment", "exercises", "workouts"}
+	subEntityTables := []struct {
+		table    string
+		parentFK string
+		parent   string
+	}{
+		{"fulfillments", "equipment_id", "equipment"},
+		{"exercise_relationships", "from_exercise_id", "exercises"},
+	}
+
+	return database.DB.Transaction(func(tx *gorm.DB) error {
+		for _, table := range topLevelTables {
+			var ids []uint
+			if err := tx.Table(table).
+				Where("ownership_group_id = 0 OR ownership_group_id IS NULL").
+				Where("deleted_at IS NULL").
+				Pluck("id", &ids).Error; err != nil {
+				return fmt.Errorf("query %s: %w", table, err)
+			}
+			for _, id := range ids {
+				groupID, err := ownershipgroup.CreateGroupForEntity(tx, "sinon")
+				if err != nil {
+					return fmt.Errorf("create group for %s id=%d: %w", table, id, err)
+				}
+				if err := tx.Table(table).Where("id = ?", id).Update("ownership_group_id", groupID).Error; err != nil {
+					return fmt.Errorf("update %s id=%d: %w", table, id, err)
+				}
+			}
+			log.Printf("OwnershipGroups: assigned %d groups in %s", len(ids), table)
+		}
+
+		for _, se := range subEntityTables {
+			result := tx.Exec(fmt.Sprintf(`
+				UPDATE %s SET ownership_group_id = (
+					SELECT %s.ownership_group_id FROM %s
+					WHERE %s.id = %s.%s
+				)
+				WHERE (ownership_group_id IS NULL OR ownership_group_id = 0)
+				AND deleted_at IS NULL
+			`, se.table, se.parent, se.parent, se.parent, se.table, se.parentFK))
+			if result.Error != nil {
+				return fmt.Errorf("propagate to %s: %w", se.table, result.Error)
+			}
+			log.Printf("OwnershipGroups: propagated %d rows in %s", result.RowsAffected, se.table)
+		}
+
+		return nil
+	})
 }

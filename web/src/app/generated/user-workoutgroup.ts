@@ -11,7 +11,7 @@ export const WorkoutGroupRoleAdmin: WorkoutGroupRole = 'admin';
 export interface WorkoutGroup extends BaseModel {
   name: string;
   workoutId: number /* uint */;
-  owner: string;
+  ownershipGroupId: number /* uint */;
 }
 export interface WorkoutGroupMembership extends BaseModel {
   groupId: number /* uint */;

@@ -10,6 +10,7 @@ import (
 
 	"gesitr/internal/auth"
 	"gesitr/internal/compendium/exercise/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
@@ -33,6 +34,8 @@ func setupTestDB(t *testing.T) {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
+		&ownershipgroupmodels.OwnershipGroupEntity{},
+		&ownershipgroupmodels.OwnershipGroupMembershipEntity{},
 		&models.ExerciseEntity{},
 		&models.ExerciseForce{},
 		&models.ExerciseMuscle{},
@@ -42,7 +45,6 @@ func setupTestDB(t *testing.T) {
 		&models.ExerciseName{},
 		&models.ExerciseEquipment{},
 		&models.ExerciseHistoryEntity{},
-		&models.ExerciseSchemeEntity{},
 		&namePreferenceModels.ExerciseNamePreference{},
 	)
 	database.DB = db

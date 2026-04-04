@@ -1,0 +1,77 @@
+{
+  "name": "Dumbbell Upper Body",
+  "notes": null,
+  "createdBy": "sinon",
+  "createdAt": 1760873666,
+  "version": 0,
+  "sections": [
+    {
+      "type": "main",
+      "label": null,
+      "position": 0,
+      "restBetweenExercises": 90,
+      "items": [
+        {
+          "type": "exercise",
+          "position": 0,
+          "exerciseTemplateId": "Dumbbell_Bench_Press",
+          "scheme": {
+            "measurementType": "REP_BASED",
+            "sets": 3,
+            "restBetweenSets": 90
+          }
+        },
+        {
+          "type": "exercise",
+          "position": 1,
+          "exerciseTemplateId": "Bent_Over_Two-Dumbbell_Row",
+          "scheme": {
+            "measurementType": "REP_BASED",
+            "sets": 3,
+            "restBetweenSets": 90
+          }
+        },
+        {
+          "type": "exercise",
+          "position": 2,
+          "exerciseTemplateId": "Dumbbell_Shoulder_Press",
+          "scheme": {
+            "measurementType": "REP_BASED",
+            "sets": 3,
+            "restBetweenSets": 90
+          }
+        },
+        {
+          "type": "exercise",
+          "position": 3,
+          "exerciseTemplateId": "Dumbbell_Bicep_Curl",
+          "scheme": {
+            "measurementType": "REP_BASED",
+            "sets": 3,
+            "restBetweenSets": 90
+          }
+        },
+        {
+          "type": "exercise",
+          "position": 4,
+          "exerciseTemplateId": "Standing_Dumbbell_Triceps_Extension",
+          "scheme": {
+            "measurementType": "REP_BASED",
+            "sets": 3,
+            "restBetweenSets": 90
+          }
+        },
+        {
+          "type": "exercise",
+          "position": 5,
+          "exerciseTemplateId": "Side_Lateral_Raise",
+          "scheme": {
+            "measurementType": "REP_BASED",
+            "sets": 3,
+            "restBetweenSets": 90
+          }
+        }
+      ]
+    }
+  ]
+}

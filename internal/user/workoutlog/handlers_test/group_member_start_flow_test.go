@@ -8,6 +8,7 @@ import (
 	exercisemodels "gesitr/internal/compendium/exercise/models"
 	workoutmodels "gesitr/internal/compendium/workout/models"
 	workoutgroupmodels "gesitr/internal/compendium/workoutgroup/models"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	"gesitr/internal/user/workoutlog/models"
 )
 
@@ -31,14 +32,14 @@ func TestGroupMemberStartFlow(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &exercise)
 
 	// Alice creates her own scheme
-	w = doJSONLog(t, r, "POST", "/api/exercise-schemes", map[string]any{
+	w = doJSONLog(t, r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": exercise.ID, "measurementType": "REP_BASED",
 		"sets": 5, "reps": 5, "weight": 100.0, "restBetweenSets": 180,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create alice scheme: status = %d, body = %s", w.Code, w.Body.String())
 	}
-	var aliceScheme exercisemodels.ExerciseScheme
+	var aliceScheme exerciseschememodels.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &aliceScheme)
 
 	// -- Setup: alice creates workout with 1 exercise item --
@@ -61,13 +62,18 @@ func TestGroupMemberStartFlow(t *testing.T) {
 
 	w = doJSONLog(t, r, "POST", "/api/workout-section-items", map[string]any{
 		"workoutSectionId": section.ID, "type": "exercise",
-		"exerciseSchemeId": aliceScheme.ID, "position": 0,
+		"exerciseId": exercise.ID, "position": 0,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section item: status = %d", w.Code)
 	}
 	var sectionItem workoutmodels.WorkoutSectionItem
 	json.Unmarshal(w.Body.Bytes(), &sectionItem)
+
+	// Link alice's scheme to section item
+	doJSONLog(t, r, "PUT", "/api/user/exercise-scheme-section-items", map[string]any{
+		"exerciseSchemeId": aliceScheme.ID, "workoutSectionItemId": sectionItem.ID,
+	})
 
 	// -- Setup: alice creates workout group and invites bob --
 
@@ -90,19 +96,26 @@ func TestGroupMemberStartFlow(t *testing.T) {
 		t.Errorf("expected role 'invited', got %q", membership.Role)
 	}
 
-	// -- Bob creates his own scheme for the workout section item --
+	// -- Bob creates his own scheme and links it to the workout section item --
 
 	t.Log("=== Bob creates his own exercise scheme ===")
-	w = doJSONLogAs(t, r, "POST", "/api/exercise-schemes", map[string]any{
+	w = doJSONLogAs(t, r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": exercise.ID, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 8, "weight": 70.0, "restBetweenSets": 120,
-		"workoutSectionItemId": sectionItem.ID,
 	}, "bob")
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create bob scheme: status = %d, body = %s", w.Code, w.Body.String())
 	}
-	var bobScheme exercisemodels.ExerciseScheme
+	var bobScheme exerciseschememodels.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &bobScheme)
+
+	// Link bob's scheme to the section item via join table
+	w = doJSONLogAs(t, r, "PUT", "/api/user/exercise-scheme-section-items", map[string]any{
+		"exerciseSchemeId": bobScheme.ID, "workoutSectionItemId": sectionItem.ID,
+	}, "bob")
+	if w.Code != http.StatusOK {
+		t.Fatalf("link bob scheme: status = %d, body = %s", w.Code, w.Body.String())
+	}
 
 	// -- Bob accepts the invitation --
 

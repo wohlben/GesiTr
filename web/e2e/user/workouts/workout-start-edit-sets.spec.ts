@@ -10,6 +10,7 @@ import {
   deleteWorkoutSection,
   createWorkoutSectionItem,
   deleteWorkoutSectionItem,
+  upsertSchemeSectionItem,
   fetchWorkoutLogs,
   deleteWorkoutLog,
 } from '../../helpers';
@@ -36,8 +37,12 @@ test.describe('/compendium/workouts/[id]/start — set editing', () => {
     });
     const sectionEx = await createWorkoutSectionItem(request, {
       workoutSectionId: section.id,
-      exerciseSchemeId: scheme.id,
+      exerciseId: exercise.id,
       position: 0,
+    });
+    await upsertSchemeSectionItem(request, {
+      exerciseSchemeId: scheme.id,
+      workoutSectionItemId: sectionEx.id,
     });
 
     // Navigate to workout start page, wait for exercise to load
@@ -114,8 +119,12 @@ test.describe('/compendium/workouts/[id]/start — set editing', () => {
     });
     const sectionEx = await createWorkoutSectionItem(request, {
       workoutSectionId: section.id,
-      exerciseSchemeId: scheme.id,
+      exerciseId: exercise.id,
       position: 0,
+    });
+    await upsertSchemeSectionItem(request, {
+      exerciseSchemeId: scheme.id,
+      workoutSectionItemId: sectionEx.id,
     });
 
     // Navigate to workout start page, wait for exercise to load

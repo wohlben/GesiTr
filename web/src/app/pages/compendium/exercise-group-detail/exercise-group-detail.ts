@@ -7,10 +7,11 @@ import { exerciseGroupKeys } from '$core/query-keys';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
+import { OwnershipGroupPanel } from '$ui/compendium/ownership-group-panel/ownership-group-panel';
 
 @Component({
   selector: 'app-exercise-group-detail',
-  imports: [PageLayout, RouterLink, ConfirmDialog, TranslocoDirective],
+  imports: [PageLayout, RouterLink, ConfirmDialog, TranslocoDirective, OwnershipGroupPanel],
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
@@ -20,6 +21,13 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
       >
         <div actions class="flex gap-2">
           @if (canModify()) {
+            <button
+              type="button"
+              (click)="showShareDialog.set(true)"
+              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+            >
+              {{ t('common.share') }}
+            </button>
             <a
               routerLink="./edit"
               class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
@@ -46,15 +54,12 @@ import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
           (confirmed)="deleteMutation.mutate()"
           (cancelled)="showDeleteDialog.set(false)"
         />
-        @if (groupQuery.data(); as group) {
-          <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                {{ t('fields.owner') }}
-              </dt>
-              <dd class="text-sm text-gray-900 dark:text-gray-100">{{ group.owner }}</dd>
-            </div>
-          </dl>
+        @if (canModify() && groupQuery.data(); as group) {
+          <app-ownership-group-panel
+            [ownershipGroupId]="group.ownershipGroupId"
+            [open]="showShareDialog()"
+            (closed)="showShareDialog.set(false)"
+          />
         }
       </app-page-layout>
     </ng-container>
@@ -69,6 +74,7 @@ export class ExerciseGroupDetail {
   private id = computed(() => Number(this.params()?.get('id')));
 
   showDeleteDialog = signal(false);
+  showShareDialog = signal(false);
 
   permissionsQuery = injectQuery(() => ({
     queryKey: exerciseGroupKeys.permissions(this.id()),

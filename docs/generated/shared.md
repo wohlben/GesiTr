@@ -10,7 +10,7 @@ Package shared provides cross\-cutting types and utilities used by all domain pa
 
 ### Permissions
 
-The [ResolvePermissions](<#ResolvePermissions>) function implements the core authorization logic. Every resource in GesiTr has an owner and a public/private visibility flag. Permissions are resolved as follows:
+The \[ResolvePermissions\] function implements the core authorization logic. Every resource in GesiTr has an owner and a public/private visibility flag. Permissions are resolved as follows:
 
 - Owner: receives [PermissionRead](<#PermissionRead>), [PermissionModify](<#PermissionRead>), and [PermissionDelete](<#PermissionRead>)
 - Non\-owner viewing a public resource: receives [PermissionRead](<#PermissionRead>) only
@@ -35,12 +35,13 @@ Handler packages call ResolvePermissions to populate [PermissionsResponse](<#Per
 - [Constants](<#constants>)
 - [func ApplyPagination\(db \*gorm.DB, p PaginationParams\) \*gorm.DB](<#ApplyPagination>)
 - [func SnapshotJSON\(dto any\) string](<#SnapshotJSON>)
+- [type AccessChecker](<#AccessChecker>)
 - [type BaseModel](<#BaseModel>)
 - [type ErrorResponse](<#ErrorResponse>)
 - [type PaginationParams](<#PaginationParams>)
   - [func ParsePagination\(c \*gin.Context\) PaginationParams](<#ParsePagination>)
 - [type Permission](<#Permission>)
-  - [func ResolvePermissions\(userID, entityOwner string, isPublic bool\) \(\[\]Permission, bool\)](<#ResolvePermissions>)
+  - [func ResolvePermissionsFromAccess\(access AccessChecker, isPublic bool\) \(\[\]Permission, bool\)](<#ResolvePermissionsFromAccess>)
 - [type PermissionsResponse](<#PermissionsResponse>)
 - [type VersionEntry](<#VersionEntry>)
 
@@ -52,7 +53,7 @@ Handler packages call ResolvePermissions to populate [PermissionsResponse](<#Per
 ```go
 const (
     DefaultLimit = 50
-    MaxLimit     = 200
+    MaxLimit     = 1000
 )
 ```
 
@@ -73,6 +74,19 @@ func SnapshotJSON(dto any) string
 ```
 
 SnapshotJSON marshals a DTO to JSON for history storage.
+
+<a name="AccessChecker"></a>
+## type [AccessChecker](<https://github.com/wohlben/GesiTr/blob/main/internal/shared/permissions.go#L18-L22>)
+
+AccessChecker is implemented by ownershipgroup.EntityAccess to avoid an import cycle.
+
+```go
+type AccessChecker interface {
+    CanRead() bool
+    CanModify() bool
+    CanDelete() bool
+}
+```
 
 <a name="BaseModel"></a>
 ## type [BaseModel](<https://github.com/wohlben/GesiTr/blob/main/internal/shared/base.go#L9-L14>)
@@ -139,74 +153,14 @@ const (
 )
 ```
 
-<a name="ResolvePermissions"></a>
-### func [ResolvePermissions](<https://github.com/wohlben/GesiTr/blob/main/internal/shared/permissions.go#L19>)
+<a name="ResolvePermissionsFromAccess"></a>
+### func [ResolvePermissionsFromAccess](<https://github.com/wohlben/GesiTr/blob/main/internal/shared/permissions.go#L26>)
 
 ```go
-func ResolvePermissions(userID, entityOwner string, isPublic bool) ([]Permission, bool)
+func ResolvePermissionsFromAccess(access AccessChecker, isPublic bool) ([]Permission, bool)
 ```
 
-ResolvePermissions determines the permissions for a user on a resource. Returns \(permissions, visible\). If visible is false, the caller should return 404.
-
-<details><summary>Example (Non Owner Private)</summary>
-<p>
-
-
-
-```go
-perms, visible := ResolvePermissions("bob", "alice", false)
-fmt.Println(perms, visible)
-// Output: [] false
-```
-
-#### Output
-
-```
-[] false
-```
-
-</p>
-</details>
-
-<details><summary>Example (Non Owner Public)</summary>
-<p>
-
-
-
-```go
-perms, visible := ResolvePermissions("bob", "alice", true)
-fmt.Println(perms, visible)
-// Output: [READ] true
-```
-
-#### Output
-
-```
-[READ] true
-```
-
-</p>
-</details>
-
-<details><summary>Example (Owner)</summary>
-<p>
-
-
-
-```go
-perms, visible := ResolvePermissions("alice", "alice", false)
-fmt.Println(perms, visible)
-// Output: [READ MODIFY DELETE] true
-```
-
-#### Output
-
-```
-[READ MODIFY DELETE] true
-```
-
-</p>
-</details>
+ResolvePermissionsFromAccess determines permissions using an ownership group access check. Returns \(permissions, visible\). If visible is false, the caller should return 404.
 
 <a name="PermissionsResponse"></a>
 ## type [PermissionsResponse](<https://github.com/wohlben/GesiTr/blob/main/internal/shared/permissions.go#L13-L15>)

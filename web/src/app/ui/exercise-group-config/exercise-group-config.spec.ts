@@ -25,7 +25,7 @@ const GROUP: ExerciseGroup = {
   createdAt: '',
   updatedAt: '',
   name: 'Push Group',
-  owner: 'anon',
+  ownershipGroupId: 0,
 };
 
 describe('ExerciseGroupConfig', () => {

@@ -25,8 +25,7 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
 
     const adhocResponse = page.waitForResponse(
       (resp) =>
-        resp.url().includes('/api/user/workout-logs/adhoc') &&
-        resp.request().method() === 'POST',
+        resp.url().includes('/api/user/workout-logs/adhoc') && resp.request().method() === 'POST',
     );
     await adhocButton.click();
     const response = await adhocResponse;
@@ -84,9 +83,9 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
     await expect(addBtn).toBeEnabled();
 
     // Runner auto-rebuilds sets via internal effect on inputs.
-    // Verify default 3 sets: REP_BASED = 2 inputs (reps + weight) per set = 6
+    // Verify default 3 sets: REP_BASED = 2 inputs (reps + weight) per set + 2 rest bubbles = 8
     const runnerInputs = runner.locator('input[type="number"]');
-    await expect(runnerInputs).toHaveCount(6, { timeout: 5000 });
+    await expect(runnerInputs).toHaveCount(8, { timeout: 5000 });
 
     // ============================================================
     // Step 5: Change set count to 5
@@ -96,15 +95,15 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
       .filter({ hasText: 'Sets' })
       .locator('input');
     await setsInput.fill('5');
-    // 5 sets × 2 inputs = 10
-    await expect(runnerInputs).toHaveCount(10, { timeout: 5000 });
+    // 5 sets × 2 inputs + 4 rest bubbles = 14
+    await expect(runnerInputs).toHaveCount(14, { timeout: 5000 });
 
     // ============================================================
     // Step 6: Change set count to 2
     // ============================================================
     await setsInput.fill('2');
-    // 2 sets × 2 inputs = 4
-    await expect(runnerInputs).toHaveCount(4, { timeout: 5000 });
+    // 2 sets × 2 inputs + 1 rest bubble = 5
+    await expect(runnerInputs).toHaveCount(5, { timeout: 5000 });
 
     // ============================================================
     // Step 7: Fill in reps, weight, rest — verify rest pill
@@ -141,8 +140,7 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
     // ============================================================
     const schemeResponse = page.waitForResponse(
       (resp) =>
-        resp.url().includes('/api/exercise-schemes') &&
-        resp.request().method() === 'POST',
+        resp.url().includes('/api/user/exercise-schemes') && resp.request().method() === 'POST',
     );
     const exerciseResponse = page.waitForResponse(
       (resp) =>
@@ -222,8 +220,7 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
     const addBtn2 = page.getByRole('button', { name: 'Add', exact: true });
     const schemeResponse2 = page.waitForResponse(
       (resp) =>
-        resp.url().includes('/api/exercise-schemes') &&
-        resp.request().method() === 'POST',
+        resp.url().includes('/api/user/exercise-schemes') && resp.request().method() === 'POST',
     );
     const exerciseResponse2 = page.waitForResponse(
       (resp) =>
@@ -253,8 +250,7 @@ test.describe('/user/workout-logs — adhoc workflow', () => {
     // Step 13: Finish workout
     // ============================================================
     const finishResponse = page.waitForResponse(
-      (resp) =>
-        resp.url().includes('/finish') && resp.request().method() === 'POST',
+      (resp) => resp.url().includes('/finish') && resp.request().method() === 'POST',
     );
     await finishBtn.click();
     await finishResponse;

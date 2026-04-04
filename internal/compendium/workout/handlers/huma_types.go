@@ -136,7 +136,7 @@ type ListWorkoutSectionItemsOutput struct {
 type WorkoutSectionItemBody struct {
 	WorkoutSectionID uint                          `json:"workoutSectionId" required:"true"`
 	Type             models.WorkoutSectionItemType `json:"type" required:"true"`
-	ExerciseSchemeID *uint                         `json:"exerciseSchemeId,omitempty"`
+	ExerciseID       *uint                         `json:"exerciseId,omitempty"`
 	ExerciseGroupID  *uint                         `json:"exerciseGroupId,omitempty"`
 	Data             *string                       `json:"data,omitempty"`
 	Position         int                           `json:"position"`

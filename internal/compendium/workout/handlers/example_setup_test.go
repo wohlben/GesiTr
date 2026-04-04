@@ -7,10 +7,13 @@ import (
 
 	equipmentmodels "gesitr/internal/compendium/equipment/models"
 	exercisemodels "gesitr/internal/compendium/exercise/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	"gesitr/internal/compendium/workout/models"
 	workoutgroupmodels "gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
+	logmodels "gesitr/internal/user/workoutlog/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
@@ -25,6 +28,8 @@ func setupExampleDB() {
 		panic(err)
 	}
 	db.AutoMigrate(
+		&ownershipgroupmodels.OwnershipGroupEntity{},
+		&ownershipgroupmodels.OwnershipGroupMembershipEntity{},
 		&exercisemodels.ExerciseEntity{},
 		&exercisemodels.ExerciseForce{},
 		&exercisemodels.ExerciseMuscle{},
@@ -34,7 +39,8 @@ func setupExampleDB() {
 		&exercisemodels.ExerciseName{},
 		&exercisemodels.ExerciseEquipment{},
 		&exercisemodels.ExerciseHistoryEntity{},
-		&exercisemodels.ExerciseSchemeEntity{},
+		&exerciseschememodels.ExerciseSchemeEntity{},
+		&exerciseschememodels.ExerciseSchemeSectionItemEntity{},
 		&namePreferenceModels.ExerciseNamePreference{},
 		&equipmentmodels.EquipmentEntity{},
 		&models.ExerciseGroupEntity{},
@@ -43,8 +49,10 @@ func setupExampleDB() {
 		&models.WorkoutHistoryEntity{},
 		&models.WorkoutSectionEntity{},
 		&models.WorkoutSectionItemEntity{},
+		&models.WorkoutRelationshipEntity{},
 		&workoutgroupmodels.WorkoutGroupEntity{},
 		&workoutgroupmodels.WorkoutGroupMembershipEntity{},
+		&logmodels.WorkoutLogEntity{},
 	)
 	database.DB = db
 }

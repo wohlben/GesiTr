@@ -20,6 +20,9 @@ import (
 	exerciseModels "gesitr/internal/compendium/exercise/models"
 	localityHandlers "gesitr/internal/compendium/locality/handlers"
 	localityModels "gesitr/internal/compendium/locality/models"
+	"gesitr/internal/compendium/ownershipgroup"
+	ownershipGroupHandlers "gesitr/internal/compendium/ownershipgroup/handlers"
+	ownershipGroupModels "gesitr/internal/compendium/ownershipgroup/models"
 	workoutHandlers "gesitr/internal/compendium/workout/handlers"
 	workoutModels "gesitr/internal/compendium/workout/models"
 	workoutGroupHandlers "gesitr/internal/compendium/workoutgroup/handlers"
@@ -27,8 +30,13 @@ import (
 	"gesitr/internal/database"
 	"gesitr/internal/docs"
 	"gesitr/internal/humaconfig"
+	"gesitr/internal/profile"
+	profileHandlers "gesitr/internal/profile/handlers"
+	profileModels "gesitr/internal/profile/models"
 	exerciseLogHandlers "gesitr/internal/user/exerciselog/handlers"
 	exerciseLogModels "gesitr/internal/user/exerciselog/models"
+	exerciseSchemeHandlers "gesitr/internal/user/exercisescheme/handlers"
+	exerciseSchemeModels "gesitr/internal/user/exercisescheme/models"
 	masteryHandlers "gesitr/internal/user/mastery/handlers"
 	masteryModels "gesitr/internal/user/mastery/models"
 	namePreferenceHandlers "gesitr/internal/user/namepreference/handlers"
@@ -289,7 +297,8 @@ func autoMigrate() {
 		&workoutModels.ExerciseGroupMemberEntity{},
 		&exerciseModels.ExerciseHistoryEntity{},
 		&equipmentModels.EquipmentHistoryEntity{},
-		&exerciseModels.ExerciseSchemeEntity{},
+		&exerciseSchemeModels.ExerciseSchemeEntity{},
+		&exerciseSchemeModels.ExerciseSchemeSectionItemEntity{},
 		&equipmentModels.EquipmentRelationshipEntity{},
 		&workoutModels.WorkoutEntity{},
 		&workoutModels.WorkoutSectionEntity{},
@@ -313,6 +322,9 @@ func autoMigrate() {
 		&namePreferenceModels.ExerciseNamePreference{},
 		&localityModels.LocalityEntity{},
 		&localityModels.LocalityAvailabilityEntity{},
+		&ownershipGroupModels.OwnershipGroupEntity{},
+		&ownershipGroupModels.OwnershipGroupMembershipEntity{},
+		&profileModels.ProfileEntity{},
 	)
 }
 
@@ -332,7 +344,10 @@ func setupRoutes(r *gin.Engine) {
 	workoutScheduleHandlers.RegisterRoutes(humaAPI)
 	masteryHandlers.RegisterRoutes(humaAPI)
 	namePreferenceHandlers.RegisterRoutes(humaAPI)
+	exerciseSchemeHandlers.RegisterRoutes(humaAPI)
 	localityHandlers.RegisterRoutes(humaAPI)
+	ownershipGroupHandlers.RegisterRoutes(humaAPI)
+	profileHandlers.RegisterRoutes(humaAPI)
 }
 
 func setupSPA(r *gin.Engine) {
@@ -344,7 +359,7 @@ func setupSPA(r *gin.Engine) {
 	if err != nil {
 		log.Fatal("Failed to read index.html:", err)
 	}
-	r.NoRoute(func(c *gin.Context) {
+	spaHandler := func(c *gin.Context) {
 		f, err := http.FS(distFS).Open(c.Request.URL.Path)
 		if err == nil {
 			f.Close()
@@ -352,12 +367,14 @@ func setupSPA(r *gin.Engine) {
 			return
 		}
 		c.Data(http.StatusOK, "text/html; charset=utf-8", indexHTML)
-	})
+	}
+	r.NoRoute(profile.RequireProfile(database.DB, spaHandler))
 }
 
 func buildApp() *gin.Engine {
 	database.Init()
 	autoMigrate()
+	ownershipgroup.MigrateExistingOwners(database.DB)
 	runMigrations()
 	workoutlog.StartCommitmentTicker(database.DB, 15*time.Minute)
 
@@ -382,6 +399,15 @@ func buildApp() *gin.Engine {
 			}
 			database.DB.Exec("DELETE FROM sqlite_sequence")
 			database.DB.Exec("PRAGMA foreign_keys = ON")
+
+			// Re-create profile for the fallback user so e2e tests can load the SPA.
+			if fallback := os.Getenv("AUTH_FALLBACK_USER"); fallback != "" {
+				database.DB.Create(&profileModels.ProfileEntity{
+					UserID:   fallback,
+					Username: fallback,
+				})
+			}
+
 			c.JSON(http.StatusOK, gin.H{"status": "reset"})
 		})
 	}

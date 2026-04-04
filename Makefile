@@ -1,4 +1,4 @@
-.PHONY: build build-web build-go dev dev-api dev-web docker clean dolt generate seed test test-go test-web test-e2e lint lint-go lint-web update-screenshots update-screenshots-web update-screenshots-e2e docs
+.PHONY: build build-web build-go dev dev-api dev-web docker clean dolt generate seed test test-go test-web test-e2e lint lint-go lint-web update-screenshots update-screenshots-web docs
 
 # Generate TypeScript types from Go structs
 # Tygo generates per-domain files, then we assemble them into the two barrel files
@@ -99,27 +99,13 @@ test-e2e:
 		rm -f ../.gesitr-e2e; \
 		exit $$TEST_EXIT
 
-# Update screenshot baselines — same server setup as test-e2e.
-update-screenshots: update-screenshots-web update-screenshots-e2e
+# Update screenshot baselines for web unit tests.
+update-screenshots: update-screenshots-web
 
 update-screenshots-web:
 	find web/src/app -path '*__screenshots__*' -name '*.png' -delete
 	cd web && npx ng run web:test-screenshot || true
 	cd web && npx ng run web:test-screenshot
-
-# Update e2e screenshots using the Docker e2e-runner image to ensure screenshots
-# match the Docker CI environment exactly (same fonts, same Chromium).
-# Usage:
-#   make update-screenshots-e2e               — update all screenshots
-#   make update-screenshots-e2e E2E_ARGS="e2e/compendium/exercises/exercise-edit.spec.ts"  — single spec
-update-screenshots-e2e:
-	@echo "Building e2e-runner Docker image..."
-	@docker build --target e2e-runner -t gesitr-e2e-runner .
-	@echo "Recording screenshots inside Docker..."
-	@docker run --rm \
-		-v $(CURDIR)/web/e2e/__screenshots__:/app/web/e2e/__screenshots__ \
-		gesitr-e2e-runner \
-		sh -c './gesitr & sleep 2 && cd web && npx playwright test --update-snapshots $(E2E_ARGS)'
 
 docker:
 	docker build --build-arg CACHEBUST=$$(date +%s) -t gesitr .

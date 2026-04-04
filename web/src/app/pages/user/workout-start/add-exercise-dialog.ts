@@ -2,7 +2,7 @@ import { Component, inject, input, output, signal, viewChild } from '@angular/co
 import { QueryClient } from '@tanstack/angular-query-experimental';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { UserApiClient } from '$core/api-clients/user-api-client';
-import { ExerciseScheme } from '$generated/models';
+import { ExerciseScheme } from '$generated/user-exercisescheme';
 import { HlmDialogImports } from '@spartan-ng/helm/dialog';
 import { HlmButton } from '@spartan-ng/helm/button';
 import { ExerciseConfig } from '$ui/exercise-config/exercise-config';

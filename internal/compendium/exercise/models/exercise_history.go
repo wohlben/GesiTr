@@ -36,6 +36,7 @@ func ExerciseChanged(old, new Exercise) bool {
 func normalizeExerciseJSON(dto Exercise) string {
 	dto.BaseModel = shared.BaseModel{}
 	dto.Version = 0
+	dto.OwnershipGroupID = 0
 
 	// Sort unordered slices for consistent comparison
 	slices.Sort(dto.Force)

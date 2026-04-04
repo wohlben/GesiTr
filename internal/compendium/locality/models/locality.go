@@ -5,6 +5,6 @@ import "gesitr/internal/shared"
 type Locality struct {
 	shared.BaseModel `tstype:",extends"`
 	Name             string `json:"name"`
-	Owner            string `json:"owner"`
+	OwnershipGroupID uint   `json:"ownershipGroupId"`
 	Public           bool   `json:"public"`
 }

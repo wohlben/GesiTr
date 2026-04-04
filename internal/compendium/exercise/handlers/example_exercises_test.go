@@ -118,12 +118,10 @@ func ExampleCreateExercise_simple() {
 	json.Unmarshal(w.Body.Bytes(), &exercise)
 	fmt.Println(w.Code)
 	fmt.Println(exercise.Names[0].Name)
-	fmt.Println(exercise.Owner)
 	fmt.Println(exercise.EquipmentIDs)
 	// Output:
 	// 201
 	// Push-up
-	// testuser
 	// []
 }
 
@@ -182,11 +180,9 @@ func ExampleGetExercise_owner() {
 	json.Unmarshal(w.Body.Bytes(), &exercise)
 	fmt.Println(w.Code)
 	fmt.Println(exercise.Names[0].Name)
-	fmt.Println(exercise.Owner)
 	// Output:
 	// 200
 	// Bench Press
-	// testuser
 }
 
 // Non-owner can retrieve a public exercise.
@@ -259,11 +255,9 @@ func ExampleUpdateExercise_owner() {
 	json.Unmarshal(w.Body.Bytes(), &exercise)
 	fmt.Println(w.Code)
 	fmt.Println(exercise.Names[0].Name)
-	fmt.Println(exercise.Owner)
 	// Output:
 	// 200
 	// Back Squat
-	// testuser
 }
 
 // Each update bumps the version and creates a history snapshot. Version 0

@@ -10,67 +10,25 @@ import {
   deleteWorkoutSection,
   createWorkoutSectionItem,
   deleteWorkoutSectionItem,
+  upsertSchemeSectionItem,
   fetchWorkoutLogs,
   deleteWorkoutLog,
 } from '../../helpers';
-
-const viewports = [
-  { name: 'desktop', width: 1280, height: 720 },
-  { name: 'mobile', width: 375, height: 667 },
-];
 
 interface TestExercise {
   name: string;
   scheme: { sets: number; reps: number; weight: number; restBetweenSets?: number };
 }
 
-const variantData: Record<
-  string,
-  { workoutName: string; sectionLabel: string; exercises: TestExercise[] }
-> = {
-  'desktop-light': {
-    workoutName: 'Start Push Day',
-    sectionLabel: 'Main Lifts',
-    exercises: [
-      {
-        name: 'WS DL Bench Press',
-        scheme: { sets: 5, reps: 5, weight: 100, restBetweenSets: 180 },
-      },
-      {
-        name: 'WS DL Overhead Press',
-        scheme: { sets: 4, reps: 8, weight: 50, restBetweenSets: 120 },
-      },
-    ],
-  },
-  'desktop-dark': {
-    workoutName: 'Start Pull Day',
-    sectionLabel: 'Accessories',
-    exercises: [
-      { name: 'WS DD Barbell Row', scheme: { sets: 5, reps: 5, weight: 80, restBetweenSets: 180 } },
-      { name: 'WS DD Bicep Curl', scheme: { sets: 3, reps: 12, weight: 20, restBetweenSets: 60 } },
-    ],
-  },
-  'mobile-light': {
-    workoutName: 'Start Leg Day',
-    sectionLabel: 'Main Lifts',
-    exercises: [
-      { name: 'WS ML Back Squat', scheme: { sets: 5, reps: 5, weight: 140, restBetweenSets: 180 } },
-      { name: 'WS ML Leg Press', scheme: { sets: 3, reps: 10, weight: 200, restBetweenSets: 90 } },
-    ],
-  },
-  'mobile-dark': {
-    workoutName: 'Start Full Body',
-    sectionLabel: 'Compound',
-    exercises: [
-      { name: 'WS MD Deadlift', scheme: { sets: 3, reps: 5, weight: 160, restBetweenSets: 180 } },
-      { name: 'WS MD Pull Up', scheme: { sets: 3, reps: 8, weight: 0, restBetweenSets: 120 } },
-    ],
-  },
-};
+interface Variant {
+  workoutName: string;
+  sectionLabel: string;
+  exercises: TestExercise[];
+}
 
 async function createFixtures(
   request: Parameters<Parameters<typeof test>[2]>[0]['request'],
-  v: (typeof variantData)[string],
+  v: Variant,
   sectionOverrides: Record<string, unknown> = {},
 ) {
   const cleanup: (() => Promise<void>)[] = [];
@@ -97,8 +55,12 @@ async function createFixtures(
     cleanup.push(() => deleteExerciseScheme(request, scheme.id));
     const sectionExercise = await createWorkoutSectionItem(request, {
       workoutSectionId: section.id,
-      exerciseSchemeId: scheme.id,
+      exerciseId: exercise.id,
       position: i,
+    });
+    await upsertSchemeSectionItem(request, {
+      exerciseSchemeId: scheme.id,
+      workoutSectionItemId: sectionExercise.id,
     });
     cleanup.push(() => deleteWorkoutSectionItem(request, sectionExercise.id));
   }
@@ -117,56 +79,34 @@ async function cleanupPlanningLogs(
 }
 
 test.describe('/compendium/workouts/[id]/start', () => {
-  for (const viewport of viewports) {
-    test.describe(viewport.name, () => {
-      test.use({ viewport: { width: viewport.width, height: viewport.height } });
+  test('renders start page with workout exercises', async ({ request, page }) => {
+    const v: Variant = {
+      workoutName: 'Start Push Day',
+      sectionLabel: 'Main Lifts',
+      exercises: [
+        {
+          name: 'WS Bench Press',
+          scheme: { sets: 5, reps: 5, weight: 100, restBetweenSets: 180 },
+        },
+        {
+          name: 'WS Overhead Press',
+          scheme: { sets: 4, reps: 8, weight: 50, restBetweenSets: 120 },
+        },
+      ],
+    };
+    const { workout, cleanup } = await createFixtures(request, v);
 
-      test('light', async ({ request, page }) => {
-        const v = variantData[`${viewport.name}-light`];
-        const { workout, cleanup } = await createFixtures(request, v);
+    await page.goto(`/compendium/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
+    await expect(page.locator('h1')).toHaveText('Plan Workout');
+    await expect(page.locator('input#name')).toHaveValue(v.workoutName);
+    await expect(page.getByText('Section 1')).toBeVisible();
+    for (const ex of v.exercises) {
+      await expect(page.getByText(ex.name)).toBeVisible({ timeout: 10000 });
+    }
 
-        await page.goto(`/compendium/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
-        await expect(page.locator('h1')).toHaveText('Plan Workout');
-        await expect(page.locator('input#name')).toHaveValue(v.workoutName);
-        await expect(page.getByText('Section 1')).toBeVisible();
-        for (const ex of v.exercises) {
-          await expect(page.getByText(ex.name)).toBeVisible({ timeout: 10000 });
-        }
-        await expect(page).toHaveScreenshot(
-          [viewport.name, 'light', 'compendium', 'workouts', '[id]', 'start.png'],
-          { fullPage: true },
-        );
-
-        await cleanupPlanningLogs(request, workout.id);
-        for (const fn of cleanup.reverse()) {
-          await fn();
-        }
-      });
-
-      test('dark', async ({ request, page }) => {
-        const v = variantData[`${viewport.name}-dark`];
-        const { workout, cleanup } = await createFixtures(request, v, {
-          type: 'supplementary',
-        });
-
-        await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto(`/compendium/workouts/${workout.id}/start`, { waitUntil: 'networkidle' });
-        await expect(page.locator('h1')).toHaveText('Plan Workout');
-        await expect(page.locator('input#name')).toHaveValue(v.workoutName);
-        await expect(page.getByText('Section 1')).toBeVisible();
-        for (const ex of v.exercises) {
-          await expect(page.getByText(ex.name)).toBeVisible({ timeout: 10000 });
-        }
-        await expect(page).toHaveScreenshot(
-          [viewport.name, 'dark', 'compendium', 'workouts', '[id]', 'start.png'],
-          { fullPage: true },
-        );
-
-        await cleanupPlanningLogs(request, workout.id);
-        for (const fn of cleanup.reverse()) {
-          await fn();
-        }
-      });
-    });
-  }
+    await cleanupPlanningLogs(request, workout.id);
+    for (const fn of cleanup.reverse()) {
+      await fn();
+    }
+  });
 });

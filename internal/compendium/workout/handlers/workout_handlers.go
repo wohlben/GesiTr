@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/compendium/workout/models"
 	"gesitr/internal/compendium/workoutgroup"
 	"gesitr/internal/database"
@@ -22,13 +23,17 @@ func preloadWorkout(db *gorm.DB) *gorm.DB {
 	})
 }
 
-// canReadWorkout checks if the user can read the workout via ownership, public visibility, or group membership.
+// canReadWorkout checks if the user can read the workout via ownership group, public visibility, or workout group membership.
 func canReadWorkout(userID string, entity *models.WorkoutEntity) bool {
-	if entity.Owner == userID || entity.Public {
+	access := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	if access.CanRead() {
 		return true
 	}
-	access := workoutgroup.CheckWorkoutAccess(userID, entity.Owner, entity.ID)
-	return access.CanRead()
+	if entity.Public {
+		return true
+	}
+	wgAccess := workoutgroup.CheckWorkoutAccess(userID, entity.ID)
+	return wgAccess.CanRead()
 }
 
 // ListWorkouts returns workouts visible to the current user.
@@ -39,24 +44,25 @@ func ListWorkouts(ctx context.Context, input *ListWorkoutsInput) (*ListWorkoutsO
 	db := database.DB.Model(&models.WorkoutEntity{})
 	userID := humaconfig.GetUserID(ctx)
 
+	visibleGroups := ownershipgroup.VisibleGroupIDs(database.DB, userID)
 	groupSubquery := `workouts.id IN (
 		SELECT wg.workout_id FROM workout_groups wg
 		JOIN workout_group_memberships wgm ON wgm.group_id = wg.id
 		WHERE wgm.user_id = ? AND wgm.deleted_at IS NULL AND wg.deleted_at IS NULL)`
 
 	if input.Logged == "me" {
-		db = db.Where(`owner = ? OR workouts.id IN (
+		db = db.Where(`ownership_group_id IN (?) OR workouts.id IN (
 			SELECT DISTINCT workout_id FROM workout_logs
 			WHERE owner = ? AND workout_id IS NOT NULL AND deleted_at IS NULL)
-			OR `+groupSubquery, userID, userID, userID)
+			OR `+groupSubquery, visibleGroups, userID, userID)
 	} else if input.Owner != "" {
 		if input.Owner == "me" || input.Owner == userID {
-			db = db.Where("owner = ?", userID)
+			db = db.Where("ownership_group_id IN (?)", visibleGroups)
 		} else {
-			db = db.Where("owner = ? AND public = ?", input.Owner, true)
+			db = db.Where("ownership_group_id IN (SELECT group_id FROM ownership_group_memberships WHERE user_id = ? AND role = 'owner' AND deleted_at IS NULL) AND public = ?", input.Owner, true)
 		}
 	} else {
-		db = db.Where("owner = ? OR public = ? OR "+groupSubquery, userID, true, userID)
+		db = db.Where("ownership_group_id IN (?) OR public = ? OR "+groupSubquery, visibleGroups, true, userID)
 	}
 
 	if input.Public == "true" {
@@ -81,7 +87,8 @@ func ListWorkouts(ctx context.Context, input *ListWorkoutsInput) (*ListWorkoutsO
 
 	var nonOwnedIDs []uint
 	for _, e := range entities {
-		if e.Owner != userID {
+		access := ownershipgroup.CheckAccess(database.DB, userID, e.OwnershipGroupID)
+		if !access.IsOwner {
 			nonOwnedIDs = append(nonOwnedIDs, e.ID)
 		}
 	}
@@ -111,10 +118,19 @@ func CreateWorkout(ctx context.Context, input *CreateWorkoutInput) (*CreateWorko
 		Notes:  input.Body.Notes,
 		Public: input.Body.Public,
 	}
-	entity.Owner = humaconfig.GetUserID(ctx)
+	userID := humaconfig.GetUserID(ctx)
 
 	err := database.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(&entity).Error; err != nil {
+			return err
+		}
+
+		groupID, err := ownershipgroup.CreateGroupForEntity(tx, userID)
+		if err != nil {
+			return err
+		}
+		entity.OwnershipGroupID = groupID
+		if err := tx.Model(&entity).Update("ownership_group_id", groupID).Error; err != nil {
 			return err
 		}
 
@@ -124,7 +140,7 @@ func CreateWorkout(ctx context.Context, input *CreateWorkoutInput) (*CreateWorko
 			Version:   dto.Version,
 			Snapshot:  shared.SnapshotJSON(dto),
 			ChangedAt: time.Now(),
-			ChangedBy: dto.Owner,
+			ChangedBy: userID,
 		}).Error; err != nil {
 			return err
 		}
@@ -134,7 +150,7 @@ func CreateWorkout(ctx context.Context, input *CreateWorkoutInput) (*CreateWorko
 			forked := models.WorkoutRelationshipEntity{
 				RelationshipType: models.WorkoutRelationshipTypeForked,
 				Strength:         1.0,
-				Owner:            entity.Owner,
+				OwnershipGroupID: groupID,
 				FromWorkoutID:    entity.ID,
 				ToWorkoutID:      sourceID,
 			}
@@ -144,7 +160,7 @@ func CreateWorkout(ctx context.Context, input *CreateWorkoutInput) (*CreateWorko
 			equivalent := models.WorkoutRelationshipEntity{
 				RelationshipType: models.WorkoutRelationshipTypeEquivalent,
 				Strength:         1.0,
-				Owner:            entity.Owner,
+				OwnershipGroupID: groupID,
 				FromWorkoutID:    entity.ID,
 				ToWorkoutID:      sourceID,
 			}
@@ -176,12 +192,13 @@ func GetWorkout(ctx context.Context, input *GetWorkoutInput) (*GetWorkoutOutput,
 		return nil, huma.Error403Forbidden("access denied")
 	}
 	dto := entity.ToDTO()
-	if entity.Owner != userID {
-		access := workoutgroup.CheckWorkoutAccess(userID, entity.Owner, entity.ID)
-		if access.GroupName != "" {
+	ogAccess := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	if !ogAccess.IsOwner {
+		wgAccess := workoutgroup.CheckWorkoutAccess(userID, entity.ID)
+		if wgAccess.GroupName != "" {
 			dto.WorkoutGroup = &models.WorkoutGroupInfo{
-				GroupName:  access.GroupName,
-				Membership: access.MembershipRole,
+				GroupName:  wgAccess.GroupName,
+				Membership: wgAccess.MembershipRole,
 			}
 		}
 	}
@@ -196,8 +213,9 @@ func UpdateWorkout(ctx context.Context, input *UpdateWorkoutInput) (*UpdateWorko
 		return nil, huma.Error404NotFound("Workout not found")
 	}
 	userID := humaconfig.GetUserID(ctx)
-	access := workoutgroup.CheckWorkoutAccess(userID, existing.Owner, existing.ID)
-	if existing.Owner != userID && !access.CanModify() {
+	ogAccess := ownershipgroup.CheckAccess(database.DB, userID, existing.OwnershipGroupID)
+	wgAccess := workoutgroup.CheckWorkoutAccess(userID, existing.ID)
+	if !ogAccess.CanModify() && !wgAccess.CanModify() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 
@@ -205,7 +223,7 @@ func UpdateWorkout(ctx context.Context, input *UpdateWorkoutInput) (*UpdateWorko
 
 	existing.Name = input.Body.Name
 	existing.Notes = input.Body.Notes
-	if existing.Owner == userID {
+	if ogAccess.CanModify() {
 		existing.Public = input.Body.Public
 	}
 
@@ -238,10 +256,10 @@ func UpdateWorkout(ctx context.Context, input *UpdateWorkoutInput) (*UpdateWorko
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 	dto := existing.ToDTO()
-	if existing.Owner != userID && access.GroupName != "" {
+	if !ogAccess.IsOwner && wgAccess.GroupName != "" {
 		dto.WorkoutGroup = &models.WorkoutGroupInfo{
-			GroupName:  access.GroupName,
-			Membership: access.MembershipRole,
+			GroupName:  wgAccess.GroupName,
+			Membership: wgAccess.MembershipRole,
 		}
 	}
 	return &UpdateWorkoutOutput{Body: dto}, nil
@@ -254,7 +272,8 @@ func DeleteWorkout(ctx context.Context, input *DeleteWorkoutInput) (*DeleteWorko
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout not found")
 	}
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	access := ownershipgroup.CheckAccess(database.DB, humaconfig.GetUserID(ctx), entity.OwnershipGroupID)
+	if !access.CanDelete() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 	if err := database.DB.Delete(&entity).Error; err != nil {
@@ -272,17 +291,18 @@ func GetWorkoutPermissions(ctx context.Context, input *GetWorkoutPermissionsInpu
 	}
 	userID := humaconfig.GetUserID(ctx)
 
-	// Check compendium permissions first (owner/public).
-	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
+	// Check ownership group permissions first.
+	access := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	perms, _ := shared.ResolvePermissionsFromAccess(access, entity.Public)
 
-	// Fall back to group-based access.
+	// Fall back to workout-group-based access.
 	if len(perms) == 0 {
-		access := workoutgroup.CheckWorkoutAccess(userID, entity.Owner, entity.ID)
-		if access.CanDelete() {
+		wgAccess := workoutgroup.CheckWorkoutAccess(userID, entity.ID)
+		if wgAccess.CanDelete() {
 			perms = []shared.Permission{shared.PermissionRead, shared.PermissionModify, shared.PermissionDelete}
-		} else if access.CanModify() {
+		} else if wgAccess.CanModify() {
 			perms = []shared.Permission{shared.PermissionRead, shared.PermissionModify}
-		} else if access.CanRead() {
+		} else if wgAccess.CanRead() {
 			perms = []shared.Permission{shared.PermissionRead}
 		}
 	}

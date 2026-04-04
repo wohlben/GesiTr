@@ -17,7 +17,7 @@ func createExerciseLogViaWorkflow(t *testing.T, r *gin.Engine) uint {
 	doJSON(r, "POST", "/api/exercises", map[string]any{
 		"names": []string{"Squat"}, "type": "STRENGTH", "technicalDifficulty": "beginner",
 	})
-	doJSON(r, "POST", "/api/exercise-schemes", map[string]any{
+	doJSON(r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": 1, "measurementType": "REP_BASED",
 		"sets": 1, "reps": 5, "weight": 100.0,
 	})

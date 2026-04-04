@@ -93,14 +93,8 @@ Output files:
 - Config: `web/playwright.config.ts`
 - Workers: 1 (sequential — tests share database state)
 - Two projects: `chromium` (compendium), `chromium-user` (user routes, depends on chromium)
-- **Screenshot conventions**: see `web/e2e/CLAUDE.md` for full details
-  - 4 variants per route: desktop-light, desktop-dark, mobile-light, mobile-dark
-  - Desktop: 1280x720, Mobile: 375x667
-  - **Must use array syntax**: `[viewport.name, 'light', 'compendium', 'exercises.png']`
-  - **Must pass `{ fullPage: true }`** to every `toHaveScreenshot()` call
-  - Screenshots centralized in `e2e/__screenshots__/`
-- **Update workflow**: `make update-screenshots-e2e` (starts API automatically) → verify visually → `docker build -t gesitr .`
-- Never update screenshots from Docker — Docker is verification only
+- **Conventions**: see `web/e2e/CLAUDE.md` for data value conventions
+- Tests use non-screenshot assertions (heading text, table visibility, form presence, etc.)
 
 ### Unit Tests (Vitest + Browser Mode)
 

@@ -35,6 +35,7 @@ func EquipmentChanged(old, new Equipment) bool {
 func normalizeEquipmentJSON(dto Equipment) string {
 	dto.BaseModel = shared.BaseModel{}
 	dto.Version = 0
+	dto.OwnershipGroupID = 0
 
 	data, _ := json.Marshal(dto)
 	return string(data)

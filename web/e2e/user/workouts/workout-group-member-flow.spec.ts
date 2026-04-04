@@ -5,6 +5,7 @@ import {
   createWorkout,
   createWorkoutSection,
   createWorkoutSectionItem,
+  upsertSchemeSectionItem,
   createApiContextAs,
 } from '../../helpers';
 
@@ -35,11 +36,16 @@ test.describe('/compendium/workouts — group member full flow', () => {
     });
     const sectionItem = await createWorkoutSectionItem(request, {
       workoutSectionId: section.id,
-      exerciseSchemeId: scheme.id,
+      exerciseId: exercise.id,
       position: 0,
+    });
+    await upsertSchemeSectionItem(request, {
+      exerciseSchemeId: scheme.id,
+      workoutSectionItemId: sectionItem.id,
     });
 
     const bobApi = await createApiContextAs('bob');
+    await bobApi.post('/api/profile');
 
     // Create workout group and invite bob
     const groupRes = await request.post('/api/user/workout-groups', {
@@ -58,10 +64,9 @@ test.describe('/compendium/workouts — group member full flow', () => {
     // ============================================================
 
     // Bob creates his own exercise scheme for the workout item
-    const bobSchemeRes = await bobApi.post('/api/exercise-schemes', {
+    const bobSchemeRes = await bobApi.post('/api/user/exercise-schemes', {
       data: {
         exerciseId: exercise.id,
-        workoutSectionItemId: sectionItem.id,
         measurementType: 'REP_BASED',
         sets: 2,
         reps: 8,
@@ -72,6 +77,19 @@ test.describe('/compendium/workouts — group member full flow', () => {
     expect(
       bobSchemeRes.ok(),
       `Failed to create bob's scheme: ${await bobSchemeRes.text()}`,
+    ).toBeTruthy();
+    const bobScheme = await bobSchemeRes.json();
+
+    // Link bob's scheme to the workout section item
+    const bobLinkRes = await bobApi.put('/api/user/exercise-scheme-section-items', {
+      data: {
+        exerciseSchemeId: bobScheme.id,
+        workoutSectionItemId: sectionItem.id,
+      },
+    });
+    expect(
+      bobLinkRes.ok(),
+      `Failed to link bob's scheme to section item: ${await bobLinkRes.text()}`,
     ).toBeTruthy();
 
     // Bob accepts the invite

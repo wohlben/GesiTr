@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"gesitr/internal/compendium/equipment/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/shared"
 
@@ -26,6 +27,8 @@ func setupExampleDB() {
 	db.AutoMigrate(
 		&models.EquipmentEntity{},
 		&models.EquipmentHistoryEntity{},
+		&ownershipgroupmodels.OwnershipGroupEntity{},
+		&ownershipgroupmodels.OwnershipGroupMembershipEntity{},
 	)
 	database.DB = db
 }

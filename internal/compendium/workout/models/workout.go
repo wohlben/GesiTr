@@ -9,7 +9,7 @@ type WorkoutGroupInfo struct {
 
 type Workout struct {
 	shared.BaseModel `tstype:",extends"`
-	Owner            string            `json:"owner"`
+	OwnershipGroupID uint              `json:"ownershipGroupId"`
 	Name             string            `json:"name"`
 	Notes            *string           `json:"notes"`
 	Public           bool              `json:"public"`
@@ -46,7 +46,7 @@ type WorkoutSectionItem struct {
 	shared.BaseModel `tstype:",extends"`
 	WorkoutSectionID uint                   `json:"workoutSectionId"`
 	Type             WorkoutSectionItemType `json:"type"`
-	ExerciseSchemeID *uint                  `json:"exerciseSchemeId"`
+	ExerciseID       *uint                  `json:"exerciseId"`
 	ExerciseGroupID  *uint                  `json:"exerciseGroupId"`
 	Data             *string                `json:"data"`
 	Position         int                    `json:"position"`

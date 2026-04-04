@@ -26,11 +26,31 @@ const WORKOUT: Workout = {
   id: 1,
   createdAt: '',
   updatedAt: '',
-  owner: 'alice',
+  ownershipGroupId: 0,
   name: 'Push Day',
   public: false,
   version: 0,
-  sections: [],
+  sections: [
+    {
+      id: 1,
+      createdAt: '',
+      updatedAt: '',
+      workoutId: 1,
+      type: 'main',
+      position: 0,
+      items: [
+        {
+          id: 1,
+          createdAt: '',
+          updatedAt: '',
+          workoutSectionId: 1,
+          type: 'exercise',
+          exerciseId: 5,
+          position: 0,
+        },
+      ],
+    },
+  ],
 };
 
 const PLANNING_LOG: WorkoutLog = {

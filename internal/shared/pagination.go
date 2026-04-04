@@ -9,7 +9,7 @@ import (
 
 const (
 	DefaultLimit = 50
-	MaxLimit     = 200
+	MaxLimit     = 1000
 )
 
 type PaginationParams struct {

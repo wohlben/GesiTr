@@ -12,12 +12,16 @@ import (
 	equipmentmodels "gesitr/internal/compendium/equipment/models"
 	exercisehandlers "gesitr/internal/compendium/exercise/handlers"
 	exercisemodels "gesitr/internal/compendium/exercise/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	"gesitr/internal/compendium/workout/models"
 	workoutgrouphandlers "gesitr/internal/compendium/workoutgroup/handlers"
 	workoutgroupmodels "gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	exerciseschemehandlers "gesitr/internal/user/exercisescheme/handlers"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
+	logmodels "gesitr/internal/user/workoutlog/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
@@ -38,6 +42,8 @@ func setupTestDB(t *testing.T) {
 		t.Fatal(err)
 	}
 	db.AutoMigrate(
+		&ownershipgroupmodels.OwnershipGroupEntity{},
+		&ownershipgroupmodels.OwnershipGroupMembershipEntity{},
 		&exercisemodels.ExerciseEntity{},
 		&exercisemodels.ExerciseForce{},
 		&exercisemodels.ExerciseMuscle{},
@@ -47,7 +53,8 @@ func setupTestDB(t *testing.T) {
 		&exercisemodels.ExerciseName{},
 		&exercisemodels.ExerciseEquipment{},
 		&exercisemodels.ExerciseHistoryEntity{},
-		&exercisemodels.ExerciseSchemeEntity{},
+		&exerciseschememodels.ExerciseSchemeEntity{},
+		&exerciseschememodels.ExerciseSchemeSectionItemEntity{},
 		&namePreferenceModels.ExerciseNamePreference{},
 		&equipmentmodels.EquipmentEntity{},
 		&models.ExerciseGroupEntity{},
@@ -56,8 +63,10 @@ func setupTestDB(t *testing.T) {
 		&models.WorkoutHistoryEntity{},
 		&models.WorkoutSectionEntity{},
 		&models.WorkoutSectionItemEntity{},
+		&models.WorkoutRelationshipEntity{},
 		&workoutgroupmodels.WorkoutGroupEntity{},
 		&workoutgroupmodels.WorkoutGroupMembershipEntity{},
+		&logmodels.WorkoutLogEntity{},
 	)
 	database.DB = db
 }
@@ -69,6 +78,7 @@ func newRouter() *gin.Engine {
 
 	humaAPI := humaconfig.NewAPI(r, api)
 	exercisehandlers.RegisterRoutes(humaAPI)
+	exerciseschemehandlers.RegisterRoutes(humaAPI)
 	RegisterRoutes(humaAPI)
 	workoutgrouphandlers.RegisterRoutes(humaAPI)
 

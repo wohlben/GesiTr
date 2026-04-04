@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"gesitr/internal/compendium/equipment/models"
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/shared"
@@ -34,16 +35,17 @@ func ListEquipment(ctx context.Context, input *ListEquipmentInput) (*ListEquipme
 	db := database.DB.Model(&models.EquipmentEntity{})
 
 	userID := humaconfig.GetUserID(ctx)
+	visibleGroups := ownershipgroup.VisibleGroupIDs(database.DB, userID)
 	if input.Mastery == "me" {
-		db = db.Where("owner = ? OR equipment.id IN (SELECT equipment_id FROM equipment_mastery_experience WHERE owner = ?)", userID, userID)
+		db = db.Where("ownership_group_id IN (?) OR equipment.id IN (SELECT equipment_id FROM equipment_mastery_experience WHERE owner = ?)", visibleGroups, userID)
 	} else if input.Owner != "" {
 		if input.Owner == "me" || input.Owner == userID {
-			db = db.Where("owner = ?", userID)
+			db = db.Where("ownership_group_id IN (?)", visibleGroups)
 		} else {
-			db = db.Where("owner = ? AND public = ?", input.Owner, true)
+			db = db.Where("ownership_group_id IN (SELECT group_id FROM ownership_group_memberships WHERE user_id = ? AND role = 'owner' AND deleted_at IS NULL) AND public = ?", input.Owner, true)
 		}
 	} else {
-		db = db.Where("owner = ? OR public = ?", userID, true)
+		db = db.Where("ownership_group_id IN (?) OR public = ?", visibleGroups, true)
 	}
 	if input.Public == "true" {
 		db = db.Where("public = ?", true)
@@ -86,10 +88,19 @@ func CreateEquipment(ctx context.Context, input *CreateEquipmentInput) (*CreateE
 	dto := equipmentDTOFromBody(input.Body)
 
 	entity := models.EquipmentFromDTO(dto)
-	entity.Owner = humaconfig.GetUserID(ctx)
+	userID := humaconfig.GetUserID(ctx)
 
 	err := database.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(&entity).Error; err != nil {
+			return err
+		}
+
+		groupID, err := ownershipgroup.CreateGroupForEntity(tx, userID)
+		if err != nil {
+			return err
+		}
+		entity.OwnershipGroupID = groupID
+		if err := tx.Model(&entity).Update("ownership_group_id", groupID).Error; err != nil {
 			return err
 		}
 
@@ -99,7 +110,7 @@ func CreateEquipment(ctx context.Context, input *CreateEquipmentInput) (*CreateE
 			Version:     resultDTO.Version,
 			Snapshot:    shared.SnapshotJSON(resultDTO),
 			ChangedAt:   time.Now(),
-			ChangedBy:   resultDTO.Owner,
+			ChangedBy:   userID,
 		}).Error; err != nil {
 			return err
 		}
@@ -109,7 +120,7 @@ func CreateEquipment(ctx context.Context, input *CreateEquipmentInput) (*CreateE
 			if err := tx.Create(&models.EquipmentRelationshipEntity{
 				RelationshipType: models.EquipmentRelationshipTypeForked,
 				Strength:         1.0,
-				Owner:            entity.Owner,
+				OwnershipGroupID: groupID,
 				FromEquipmentID:  entity.ID,
 				ToEquipmentID:    sourceID,
 			}).Error; err != nil {
@@ -118,7 +129,7 @@ func CreateEquipment(ctx context.Context, input *CreateEquipmentInput) (*CreateE
 			if err := tx.Create(&models.EquipmentRelationshipEntity{
 				RelationshipType: models.EquipmentRelationshipTypeEquivalent,
 				Strength:         1.0,
-				Owner:            entity.Owner,
+				OwnershipGroupID: groupID,
 				FromEquipmentID:  entity.ID,
 				ToEquipmentID:    sourceID,
 			}).Error; err != nil {
@@ -147,7 +158,8 @@ func GetEquipmentPermissions(ctx context.Context, input *GetEquipmentPermissions
 		return nil, huma.Error404NotFound("Equipment not found")
 	}
 	userID := humaconfig.GetUserID(ctx)
-	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
+	access := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	perms, _ := shared.ResolvePermissionsFromAccess(access, entity.Public)
 	if perms == nil {
 		perms = []shared.Permission{}
 	}
@@ -165,7 +177,8 @@ func GetEquipment(ctx context.Context, input *GetEquipmentInput) (*GetEquipmentO
 		return nil, huma.Error404NotFound("Equipment not found")
 	}
 	userID := humaconfig.GetUserID(ctx)
-	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
+	access := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	perms, _ := shared.ResolvePermissionsFromAccess(access, entity.Public)
 	if len(perms) == 0 {
 		return nil, huma.Error403Forbidden("access denied")
 	}
@@ -182,12 +195,13 @@ func UpdateEquipment(ctx context.Context, input *UpdateEquipmentInput) (*UpdateE
 		return nil, huma.Error404NotFound("Equipment not found")
 	}
 
-	if existing.Owner != humaconfig.GetUserID(ctx) {
+	userID := humaconfig.GetUserID(ctx)
+	access := ownershipgroup.CheckAccess(database.DB, userID, existing.OwnershipGroupID)
+	if !access.CanModify() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 
 	dto := equipmentDTOFromBody(input.Body)
-	dto.Owner = existing.Owner
 
 	oldDTO := existing.ToDTO()
 
@@ -197,7 +211,7 @@ func UpdateEquipment(ctx context.Context, input *UpdateEquipmentInput) (*UpdateE
 
 	entity := models.EquipmentFromDTO(dto)
 	entity.ID = existing.ID
-	entity.Owner = existing.Owner
+	entity.OwnershipGroupID = existing.OwnershipGroupID
 	entity.Version = existing.Version + 1
 
 	err := database.DB.Transaction(func(tx *gorm.DB) error {
@@ -210,7 +224,7 @@ func UpdateEquipment(ctx context.Context, input *UpdateEquipmentInput) (*UpdateE
 			Version:     resultDTO.Version,
 			Snapshot:    shared.SnapshotJSON(resultDTO),
 			ChangedAt:   time.Now(),
-			ChangedBy:   resultDTO.Owner,
+			ChangedBy:   userID,
 		}).Error
 	})
 
@@ -257,7 +271,8 @@ func GetEquipmentVersion(ctx context.Context, input *GetEquipmentVersionInput) (
 	var snap models.Equipment
 	json.Unmarshal([]byte(history.Snapshot), &snap)
 	userID := humaconfig.GetUserID(ctx)
-	perms, _ := shared.ResolvePermissions(userID, snap.Owner, snap.Public)
+	access := ownershipgroup.CheckAccess(database.DB, userID, snap.OwnershipGroupID)
+	perms, _ := shared.ResolvePermissionsFromAccess(access, snap.Public)
 	if len(perms) == 0 {
 		return nil, huma.Error403Forbidden("access denied")
 	}
@@ -274,7 +289,8 @@ func DeleteEquipment(ctx context.Context, input *DeleteEquipmentInput) (*DeleteE
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Equipment not found")
 	}
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	access := ownershipgroup.CheckAccess(database.DB, humaconfig.GetUserID(ctx), entity.OwnershipGroupID)
+	if !access.CanDelete() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 	if err := database.DB.Unscoped().Delete(&entity).Error; err != nil {

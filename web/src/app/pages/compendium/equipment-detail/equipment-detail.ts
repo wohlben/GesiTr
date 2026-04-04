@@ -8,11 +8,21 @@ import { equipmentKeys, equipmentRelationshipKeys, equipmentMasteryKeys } from '
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PageLayout } from '../../../layout/page-layout';
 import { ConfirmDialog } from '$ui/confirm-dialog/confirm-dialog';
+import { EquipmentAddToLocalityMenu } from '$ui/compendium/equipment-add-to-locality-menu/equipment-add-to-locality-menu';
+import { OwnershipGroupPanel } from '$ui/compendium/ownership-group-panel/ownership-group-panel';
 import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-equipment-detail',
-  imports: [PageLayout, RouterLink, ConfirmDialog, TranslocoDirective, DecimalPipe],
+  imports: [
+    PageLayout,
+    RouterLink,
+    ConfirmDialog,
+    TranslocoDirective,
+    DecimalPipe,
+    EquipmentAddToLocalityMenu,
+    OwnershipGroupPanel,
+  ],
   template: `
     <ng-container *transloco="let t">
       <app-page-layout
@@ -21,6 +31,7 @@ import { DecimalPipe } from '@angular/common';
         [errorMessage]="equipmentQuery.isError() ? equipmentQuery.error().message : undefined"
       >
         <div actions class="flex gap-2">
+          <app-equipment-add-to-locality-menu [equipmentId]="id()" />
           @if (alreadyAdded(); as existing) {
             <a
               [routerLink]="['/compendium/equipment', existing.id]"
@@ -48,6 +59,13 @@ import { DecimalPipe } from '@angular/common';
             >
           }
           @if (canModify()) {
+            <button
+              type="button"
+              (click)="showShareDialog.set(true)"
+              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+            >
+              {{ t('common.share') }}
+            </button>
             <a
               routerLink="./edit"
               class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
@@ -136,6 +154,13 @@ import { DecimalPipe } from '@angular/common';
             </div>
           </dl>
         }
+        @if (canModify() && equipmentQuery.data(); as equipment) {
+          <app-ownership-group-panel
+            [ownershipGroupId]="equipment.ownershipGroupId"
+            [open]="showShareDialog()"
+            (closed)="showShareDialog.set(false)"
+          />
+        }
       </app-page-layout>
     </ng-container>
   `,
@@ -147,9 +172,10 @@ export class EquipmentDetail {
   private queryClient = inject(QueryClient);
   private params = toSignal(inject(ActivatedRoute).paramMap);
 
-  private id = computed(() => Number(this.params()?.get('id')));
+  id = computed(() => Number(this.params()?.get('id')));
 
   showDeleteDialog = signal(false);
+  showShareDialog = signal(false);
 
   equipmentQuery = injectQuery(() => ({
     queryKey: equipmentKeys.detail(this.id()),

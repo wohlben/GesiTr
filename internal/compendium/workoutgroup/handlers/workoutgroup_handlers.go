@@ -3,20 +3,23 @@ package handlers
 import (
 	"context"
 
+	"gesitr/internal/compendium/ownershipgroup"
 	workoutmodels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 
 	"github.com/danielgtaylor/huma/v2"
+	"gorm.io/gorm"
 )
 
 // ListWorkoutGroups returns workout groups owned by the current user.
 // GET /api/user/workout-groups
 func ListWorkoutGroups(ctx context.Context, input *ListWorkoutGroupsInput) (*ListWorkoutGroupsOutput, error) {
 	userID := humaconfig.GetUserID(ctx)
+	visibleGroups := ownershipgroup.VisibleGroupIDs(database.DB, userID)
 	var entities []models.WorkoutGroupEntity
-	if err := database.DB.Where("owner = ?", userID).Find(&entities).Error; err != nil {
+	if err := database.DB.Where("ownership_group_id IN (?)", visibleGroups).Find(&entities).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
@@ -36,16 +39,30 @@ func CreateWorkoutGroup(ctx context.Context, input *CreateWorkoutGroupInput) (*C
 	if err := database.DB.First(&workout, input.Body.WorkoutID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout not found")
 	}
-	if workout.Owner != userID {
+	workoutAccess := ownershipgroup.CheckAccess(database.DB, userID, workout.OwnershipGroupID)
+	if !workoutAccess.CanModify() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 
 	entity := models.WorkoutGroupEntity{
 		Name:      input.Body.Name,
 		WorkoutID: input.Body.WorkoutID,
-		Owner:     userID,
 	}
-	if err := database.DB.Create(&entity).Error; err != nil {
+
+	err := database.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&entity).Error; err != nil {
+			return err
+		}
+
+		groupID, err := ownershipgroup.CreateGroupForEntity(tx, userID)
+		if err != nil {
+			return err
+		}
+		entity.OwnershipGroupID = groupID
+		return tx.Model(&entity).Update("ownership_group_id", groupID).Error
+	})
+
+	if err != nil {
 		return nil, huma.Error422UnprocessableEntity("a group already exists for this workout")
 	}
 	return &CreateWorkoutGroupOutput{Body: entity.ToDTO()}, nil
@@ -61,7 +78,9 @@ func GetWorkoutGroup(ctx context.Context, input *GetWorkoutGroupInput) (*GetWork
 		return nil, huma.Error404NotFound("Workout group not found")
 	}
 
-	if entity.Owner != userID {
+	access := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	if !access.CanRead() {
+		// Fall back to workout group membership check
 		var membership models.WorkoutGroupMembershipEntity
 		if err := database.DB.Where("group_id = ? AND user_id = ?", entity.ID, userID).First(&membership).Error; err != nil {
 			return nil, huma.Error403Forbidden("access denied")
@@ -80,7 +99,8 @@ func UpdateWorkoutGroup(ctx context.Context, input *UpdateWorkoutGroupInput) (*U
 	if err := database.DB.First(&existing, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout group not found")
 	}
-	if existing.Owner != userID {
+	access := ownershipgroup.CheckAccess(database.DB, userID, existing.OwnershipGroupID)
+	if !access.CanModify() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 
@@ -100,7 +120,8 @@ func DeleteWorkoutGroup(ctx context.Context, input *DeleteWorkoutGroupInput) (*D
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Workout group not found")
 	}
-	if entity.Owner != userID {
+	access := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	if !access.CanDelete() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 

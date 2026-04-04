@@ -6,7 +6,7 @@ type WorkoutRelationship struct {
 	shared.BaseModel `tstype:",extends"`
 	RelationshipType WorkoutRelationshipType `json:"relationshipType"`
 	Strength         float64                 `json:"strength"`
-	Owner            string                  `json:"owner"`
+	OwnershipGroupID uint                    `json:"ownershipGroupId"`
 	FromWorkoutID    uint                    `json:"fromWorkoutId"`
 	ToWorkoutID      uint                    `json:"toWorkoutId"`
 }

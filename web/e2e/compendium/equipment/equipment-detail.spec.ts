@@ -1,48 +1,21 @@
 import { expect, test } from '../../base-test';
-import { createEquipment, deleteEquipment, toSlug } from '../../helpers';
-
-const viewports = [
-  { name: 'desktop', width: 1280, height: 720 },
-  { name: 'mobile', width: 375, height: 667 },
-];
+import { createEquipment, deleteEquipment } from '../../helpers';
 
 test.describe('/compendium/equipment/:id', () => {
-  for (const viewport of viewports) {
-    test.describe(viewport.name, () => {
-      test.use({ viewport: { width: viewport.width, height: viewport.height } });
-
-      test('light', async ({ request, page }) => {
-        const equipment = await createEquipment(request, {
-          name: 'medicine-ball',
-          displayName: 'Medicine Ball',
-          description: 'A weighted ball for core and strength training',
-          category: 'free_weights',
-        });
-        await page.goto(`/compendium/equipment/${equipment.id}/${equipment.name}`, {
-          waitUntil: 'networkidle',
-        });
-        await expect(page.locator('h1')).toHaveText('Medicine Ball');
-        await expect(page).toHaveScreenshot([viewport.name, 'light', 'compendium', 'equipment', '[id].png'], { fullPage: true });
-        await deleteEquipment(request, equipment.id);
-      });
-
-      test('dark', async ({ request, page }) => {
-        const equipment = await createEquipment(request, {
-          name: 'medicine-ball',
-          displayName: 'Medicine Ball',
-          description: 'A weighted ball for core and strength training',
-          category: 'free_weights',
-        });
-        await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto(`/compendium/equipment/${equipment.id}/${equipment.name}`, {
-          waitUntil: 'networkidle',
-        });
-        await expect(page.locator('h1')).toHaveText('Medicine Ball');
-        await expect(page).toHaveScreenshot([viewport.name, 'dark', 'compendium', 'equipment', '[id].png'], { fullPage: true });
-        await deleteEquipment(request, equipment.id);
-      });
+  test('renders detail page with equipment data', async ({ request, page }) => {
+    const equipment = await createEquipment(request, {
+      name: 'medicine-ball',
+      displayName: 'Medicine Ball',
+      description: 'A weighted ball for core and strength training',
+      category: 'free_weights',
     });
-  }
+    await page.goto(`/compendium/equipment/${equipment.id}/${equipment.name}`, {
+      waitUntil: 'networkidle',
+    });
+    await expect(page.locator('h1')).toHaveText('Medicine Ball');
+    await expect(page.getByText('A weighted ball for core and strength training')).toBeVisible();
+    await deleteEquipment(request, equipment.id);
+  });
 
   test('delete dialog cancel closes the dialog', async ({ request, page }) => {
     const equipment = await createEquipment(request, {

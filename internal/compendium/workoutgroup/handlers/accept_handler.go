@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 
-	exercisemodels "gesitr/internal/compendium/exercise/models"
 	workoutmodels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/compendium/workoutgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -53,11 +53,11 @@ func AcceptWorkoutGroupInvitation(ctx context.Context, input *AcceptWorkoutGroup
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
-	// For each item, check that the user has a scheme
+	// For each item, check that the user has a scheme via the join table
 	var missingItemIDs []uint
 	for _, item := range items {
 		var count int64
-		database.DB.Model(&exercisemodels.ExerciseSchemeEntity{}).
+		database.DB.Model(&exerciseschememodels.ExerciseSchemeSectionItemEntity{}).
 			Where("workout_section_item_id = ? AND owner = ?", item.ID, userID).
 			Count(&count)
 		if count == 0 {

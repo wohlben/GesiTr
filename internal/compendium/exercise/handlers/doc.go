@@ -1,4 +1,4 @@
-// Package handlers implements the HTTP handlers for exercises and exercise schemes.
+// Package handlers implements the HTTP handlers for exercises.
 //
 // # Overview
 //
@@ -7,13 +7,8 @@
 // to their owner). Exercises can reference equipment via equipmentIds — see
 // [gesitr/internal/compendium/equipment/handlers].
 //
-// # Exercise Schemes
-//
-// An exercise scheme is a user-specific configuration of an exercise that
-// defines how it should be performed (measurement type, sets, reps, rest).
-// Schemes bridge exercises and workouts: to add an exercise to a workout
-// section, first create a scheme via [CreateExerciseScheme], then reference
-// it via [gesitr/internal/compendium/workout/handlers.CreateWorkoutSectionItem].
+// Exercise schemes (user-specific configurations of exercises) are in
+// [gesitr/internal/user/exercisescheme/handlers].
 //
 // # Version History
 //

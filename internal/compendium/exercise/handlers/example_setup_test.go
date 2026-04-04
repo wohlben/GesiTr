@@ -9,6 +9,7 @@ import (
 	equipmenthandlers "gesitr/internal/compendium/equipment/handlers"
 	equipmentmodels "gesitr/internal/compendium/equipment/models"
 	"gesitr/internal/compendium/exercise/models"
+	ownershipgroupmodels "gesitr/internal/compendium/ownershipgroup/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 	namePreferenceModels "gesitr/internal/user/namepreference/models"
@@ -26,6 +27,8 @@ func setupExampleDB() {
 		panic(err)
 	}
 	db.AutoMigrate(
+		&ownershipgroupmodels.OwnershipGroupEntity{},
+		&ownershipgroupmodels.OwnershipGroupMembershipEntity{},
 		&models.ExerciseEntity{},
 		&models.ExerciseForce{},
 		&models.ExerciseMuscle{},
@@ -35,7 +38,6 @@ func setupExampleDB() {
 		&models.ExerciseName{},
 		&models.ExerciseEquipment{},
 		&models.ExerciseHistoryEntity{},
-		&models.ExerciseSchemeEntity{},
 		&namePreferenceModels.ExerciseNamePreference{},
 		&equipmentmodels.EquipmentEntity{},
 		&equipmentmodels.EquipmentHistoryEntity{},

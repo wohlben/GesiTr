@@ -50,12 +50,14 @@ describe('WorkoutStartStore', () => {
   let userApiMock: {
     fetchExerciseScheme: ReturnType<typeof vi.fn>;
     fetchUserExercise: ReturnType<typeof vi.fn>;
+    fetchSchemeSectionItems: ReturnType<typeof vi.fn>;
   };
 
   beforeEach(() => {
     userApiMock = {
-      fetchExerciseScheme: vi.fn(),
-      fetchUserExercise: vi.fn(),
+      fetchExerciseScheme: vi.fn().mockResolvedValue({}),
+      fetchUserExercise: vi.fn().mockResolvedValue(null),
+      fetchSchemeSectionItems: vi.fn().mockResolvedValue([]),
     };
 
     TestBed.configureTestingModule({
@@ -71,6 +73,9 @@ describe('WorkoutStartStore', () => {
   });
 
   it('loads exercise display data from sections', async () => {
+    userApiMock.fetchSchemeSectionItems.mockResolvedValue([
+      { exerciseSchemeId: 10, workoutSectionItemId: 1, owner: 'alice' },
+    ]);
     userApiMock.fetchExerciseScheme.mockResolvedValue({
       id: 10,
       exerciseId: 5,
@@ -87,7 +92,7 @@ describe('WorkoutStartStore', () => {
 
     const sections = [
       {
-        items: [{ type: 'exercise', exerciseSchemeId: 10 }],
+        items: [{ id: 1, type: 'exercise', exerciseId: 5 }],
       },
     ] as WorkoutSection[];
 
@@ -107,7 +112,7 @@ describe('WorkoutStartStore', () => {
             targetDuration: undefined,
             targetDistance: undefined,
             targetTime: undefined,
-            restAfterSeconds: null,
+            restAfterSeconds: 0,
           },
           {
             setNumber: 2,
@@ -116,7 +121,7 @@ describe('WorkoutStartStore', () => {
             targetDuration: undefined,
             targetDistance: undefined,
             targetTime: undefined,
-            restAfterSeconds: null,
+            restAfterSeconds: 0,
           },
           {
             setNumber: 3,
@@ -133,6 +138,10 @@ describe('WorkoutStartStore', () => {
   });
 
   it('handles multiple exercises across sections', async () => {
+    userApiMock.fetchSchemeSectionItems.mockResolvedValue([
+      { exerciseSchemeId: 10, workoutSectionItemId: 1, owner: 'alice' },
+      { exerciseSchemeId: 20, workoutSectionItemId: 2, owner: 'alice' },
+    ]);
     userApiMock.fetchExerciseScheme.mockImplementation((id: number) => {
       if (id === 10) {
         return Promise.resolve({
@@ -168,8 +177,8 @@ describe('WorkoutStartStore', () => {
     });
 
     const sections = [
-      { items: [{ type: 'exercise', exerciseSchemeId: 10 }] },
-      { items: [{ type: 'exercise', exerciseSchemeId: 20 }] },
+      { items: [{ id: 1, type: 'exercise', exerciseId: 5 }] },
+      { items: [{ id: 2, type: 'exercise', exerciseId: 6 }] },
     ] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
@@ -187,7 +196,7 @@ describe('WorkoutStartStore', () => {
             targetDuration: undefined,
             targetDistance: undefined,
             targetTime: undefined,
-            restAfterSeconds: null,
+            restAfterSeconds: 0,
           },
           {
             setNumber: 2,
@@ -196,7 +205,7 @@ describe('WorkoutStartStore', () => {
             targetDuration: undefined,
             targetDistance: undefined,
             targetTime: undefined,
-            restAfterSeconds: null,
+            restAfterSeconds: 0,
           },
           {
             setNumber: 3,
@@ -205,7 +214,7 @@ describe('WorkoutStartStore', () => {
             targetDuration: undefined,
             targetDistance: undefined,
             targetTime: undefined,
-            restAfterSeconds: null,
+            restAfterSeconds: 0,
           },
           {
             setNumber: 4,
@@ -214,7 +223,7 @@ describe('WorkoutStartStore', () => {
             targetDuration: undefined,
             targetDistance: undefined,
             targetTime: undefined,
-            restAfterSeconds: null,
+            restAfterSeconds: 0,
           },
           {
             setNumber: 5,
@@ -237,9 +246,12 @@ describe('WorkoutStartStore', () => {
   });
 
   it('handles scheme fetch failure gracefully', async () => {
+    userApiMock.fetchSchemeSectionItems.mockResolvedValue([
+      { exerciseSchemeId: 99, workoutSectionItemId: 1, owner: 'alice' },
+    ]);
     userApiMock.fetchExerciseScheme.mockRejectedValue(new Error('not found'));
 
-    const sections = [{ items: [{ type: 'exercise', exerciseSchemeId: 99 }] }] as WorkoutSection[];
+    const sections = [{ items: [{ id: 1, type: 'exercise', exerciseId: 5 }] }] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
 
@@ -247,27 +259,15 @@ describe('WorkoutStartStore', () => {
     expect(store.exerciseDisplay()).toEqual({});
   });
 
-  it('handles exercise name fetch failure with fallback', async () => {
-    userApiMock.fetchExerciseScheme.mockResolvedValue({
-      id: 10,
-      exerciseId: 5,
-      measurementType: 'REP_BASED',
-      reps: 8,
-    });
-    userApiMock.fetchUserExercise.mockRejectedValue(new Error('not found'));
+  it('handles no scheme assignment gracefully', async () => {
+    userApiMock.fetchSchemeSectionItems.mockResolvedValue([]);
 
-    const sections = [{ items: [{ type: 'exercise', exerciseSchemeId: 10 }] }] as WorkoutSection[];
+    const sections = [{ items: [{ id: 1, type: 'exercise', exerciseId: 5 }] }] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
 
-    expect(store.exerciseDisplay()).toEqual({
-      10: {
-        name: 'Exercise #5',
-        summary: '8',
-        measurementType: 'REP_BASED',
-        sets: [],
-      },
-    });
+    expect(store.isLoadingDisplay()).toBe(false);
+    expect(store.exerciseDisplay()).toEqual({});
   });
 
   it('handles empty sections', async () => {
@@ -278,7 +278,11 @@ describe('WorkoutStartStore', () => {
   });
 
   it('deduplicates user exercise fetches', async () => {
-    // Two schemes pointing to the same exerciseId
+    // Two items pointing to the same exerciseId
+    userApiMock.fetchSchemeSectionItems.mockResolvedValue([
+      { exerciseSchemeId: 10, workoutSectionItemId: 1, owner: 'alice' },
+      { exerciseSchemeId: 11, workoutSectionItemId: 2, owner: 'alice' },
+    ]);
     userApiMock.fetchExerciseScheme.mockImplementation((id: number) =>
       Promise.resolve({
         id,
@@ -297,15 +301,15 @@ describe('WorkoutStartStore', () => {
     const sections = [
       {
         items: [
-          { type: 'exercise', exerciseSchemeId: 10 },
-          { type: 'exercise', exerciseSchemeId: 11 },
+          { id: 1, type: 'exercise', exerciseId: 5 },
+          { id: 2, type: 'exercise', exerciseId: 5 },
         ],
       },
     ] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
 
-    // Should only fetch user exercise once despite two schemes referencing it
+    // Should only fetch user exercise once despite two items referencing it
     expect(userApiMock.fetchUserExercise).toHaveBeenCalledTimes(1);
     expect(userApiMock.fetchUserExercise).toHaveBeenCalledWith(5);
 
@@ -314,6 +318,9 @@ describe('WorkoutStartStore', () => {
   });
 
   it('generates set previews with restBetweenSets', async () => {
+    userApiMock.fetchSchemeSectionItems.mockResolvedValue([
+      { exerciseSchemeId: 10, workoutSectionItemId: 1, owner: 'alice' },
+    ]);
     userApiMock.fetchExerciseScheme.mockResolvedValue({
       id: 10,
       exerciseId: 5,
@@ -329,7 +336,7 @@ describe('WorkoutStartStore', () => {
       version: 1,
     });
 
-    const sections = [{ items: [{ type: 'exercise', exerciseSchemeId: 10 }] }] as WorkoutSection[];
+    const sections = [{ items: [{ id: 1, type: 'exercise', exerciseId: 5 }] }] as WorkoutSection[];
 
     await store.loadExerciseDisplay(sections);
 

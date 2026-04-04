@@ -4,9 +4,9 @@ import (
 	"context"
 	"reflect"
 
-	exercisemodels "gesitr/internal/compendium/exercise/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	"gesitr/internal/user/workoutlog/models"
 
 	"github.com/danielgtaylor/huma/v2"
@@ -64,7 +64,7 @@ func CreateWorkoutLogExercise(ctx context.Context, input *CreateWorkoutLogExerci
 		return nil, err
 	}
 
-	var scheme exercisemodels.ExerciseSchemeEntity
+	var scheme exerciseschememodels.ExerciseSchemeEntity
 	if err := database.DB.First(&scheme, input.Body.SourceExerciseSchemeID).Error; err != nil {
 		return nil, huma.Error404NotFound("Exercise scheme not found")
 	}

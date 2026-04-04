@@ -9,6 +9,7 @@ import (
 	exercisemodels "gesitr/internal/compendium/exercise/models"
 	workoutmodels "gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	"gesitr/internal/user/workoutlog/models"
 )
 
@@ -29,14 +30,14 @@ func TestCommitmentHappyPath(t *testing.T) {
 	var exercise exercisemodels.Exercise
 	json.Unmarshal(w.Body.Bytes(), &exercise)
 
-	w = doJSONLog(t, r, "POST", "/api/exercise-schemes", map[string]any{
+	w = doJSONLog(t, r, "POST", "/api/user/exercise-schemes", map[string]any{
 		"exerciseId": exercise.ID, "measurementType": "REP_BASED",
 		"sets": 3, "reps": 5, "weight": 180.0, "restBetweenSets": 180,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create scheme: %d", w.Code)
 	}
-	var scheme exercisemodels.ExerciseScheme
+	var scheme exerciseschememodels.ExerciseScheme
 	json.Unmarshal(w.Body.Bytes(), &scheme)
 
 	// 2. Create a workout template
@@ -57,11 +58,18 @@ func TestCommitmentHappyPath(t *testing.T) {
 	json.Unmarshal(w.Body.Bytes(), &section)
 
 	w = doJSONLog(t, r, "POST", "/api/workout-section-items", map[string]any{
-		"workoutSectionId": section.ID, "type": "exercise", "exerciseSchemeId": scheme.ID, "position": 0,
+		"workoutSectionId": section.ID, "type": "exercise", "exerciseId": exercise.ID, "position": 0,
 	})
 	if w.Code != http.StatusCreated {
 		t.Fatalf("create section item: %d", w.Code)
 	}
+	var sItem workoutmodels.WorkoutSectionItem
+	json.Unmarshal(w.Body.Bytes(), &sItem)
+
+	// Link scheme to section item
+	doJSONLog(t, r, "PUT", "/api/user/exercise-scheme-section-items", map[string]any{
+		"exerciseSchemeId": scheme.ID, "workoutSectionItemId": sItem.ID,
+	})
 
 	// 3. Create a proposed commitment for next week
 	dueStart := time.Now().Add(7 * 24 * time.Hour).Truncate(time.Second)

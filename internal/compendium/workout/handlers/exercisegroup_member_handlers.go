@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/compendium/workout/models"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
@@ -42,13 +43,25 @@ func ListExerciseGroupMembers(ctx context.Context, input *ListExerciseGroupMembe
 //
 // OpenAPI: /api/docs#/operations/CreateExerciseGroupMember
 func CreateExerciseGroupMember(ctx context.Context, input *CreateExerciseGroupMemberInput) (*CreateExerciseGroupMemberOutput, error) {
+	// Look up the parent exercise group to inherit its ownership_group_id.
+	var group models.ExerciseGroupEntity
+	if err := database.DB.First(&group, input.Body.GroupID).Error; err != nil {
+		return nil, huma.Error404NotFound("ExerciseGroup not found")
+	}
+
+	userID := humaconfig.GetUserID(ctx)
+	access := ownershipgroup.CheckAccess(database.DB, userID, group.OwnershipGroupID)
+	if !access.CanModify() {
+		return nil, huma.Error403Forbidden("not the owner of this exercise group")
+	}
+
 	dto := models.ExerciseGroupMember{
 		GroupID:    input.Body.GroupID,
 		ExerciseID: input.Body.ExerciseID,
 	}
 
 	entity := models.ExerciseGroupMemberFromDTO(dto)
-	entity.Owner = humaconfig.GetUserID(ctx)
+	entity.OwnershipGroupID = group.OwnershipGroupID
 	if err := database.DB.Create(&entity).Error; err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
@@ -65,7 +78,8 @@ func DeleteExerciseGroupMember(ctx context.Context, input *DeleteExerciseGroupMe
 		return nil, huma.Error404NotFound("ExerciseGroupMember not found")
 	}
 
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	access := ownershipgroup.CheckAccess(database.DB, humaconfig.GetUserID(ctx), entity.OwnershipGroupID)
+	if !access.CanDelete() {
 		return nil, huma.Error403Forbidden("not the owner of this group member")
 	}
 

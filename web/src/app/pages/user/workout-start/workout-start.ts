@@ -10,7 +10,7 @@ import { CompendiumApiClient } from '$core/api-clients/compendium-api-client';
 import { formatBreak } from '$core/format-utils';
 import { workoutKeys, workoutLogKeys } from '$core/query-keys';
 import { Workout, WorkoutSectionTypeMain, WorkoutLog } from '$generated/user-models';
-import { ExerciseScheme } from '$generated/models';
+import { ExerciseScheme } from '$generated/user-exercisescheme';
 import { PageLayout } from '../../../layout/page-layout';
 import { HlmInput } from '@spartan-ng/helm/input';
 import { HlmTextarea } from '@spartan-ng/helm/textarea';
@@ -253,7 +253,8 @@ export class WorkoutStart {
   }));
 
   constructor() {
-    // Fetch-or-create effect
+    // Fetch-or-create effect: if a planning log exists but doesn't match the
+    // current workout structure, discard it and create a fresh one.
     effect(() => {
       const workout = this.workoutQuery.data();
       const planningLogs = this.planningLogQuery.data();
@@ -261,11 +262,43 @@ export class WorkoutStart {
       this.initialized = true;
 
       if (planningLogs.length > 0) {
-        this.populateFromLog(planningLogs[0]);
+        const log = planningLogs[0];
+        if (this.isLogStale(workout, log)) {
+          this.discardAndRecreate(workout, log);
+        } else {
+          this.populateFromLog(log);
+        }
       } else {
         this.createPlanningLog(workout);
       }
     });
+  }
+
+  /**
+   * Check whether a planning log's structure matches the current workout.
+   * Compares section count and exercise items per section.
+   */
+  private isLogStale(workout: Workout, log: WorkoutLog): boolean {
+    const workoutSections = workout.sections ?? [];
+    const logSections = log.sections ?? [];
+
+    if (workoutSections.length !== logSections.length) return true;
+
+    for (let i = 0; i < workoutSections.length; i++) {
+      const wItems = (workoutSections[i].items ?? []).filter((it) => it.type === 'exercise');
+      const lExercises = logSections[i].exercises ?? [];
+      if (wItems.length !== lExercises.length) return true;
+    }
+
+    return false;
+  }
+
+  private async discardAndRecreate(workout: Workout, staleLog: WorkoutLog) {
+    await this.userApi.deleteWorkoutLog(staleLog.id);
+    this.queryClient.invalidateQueries({
+      queryKey: workoutLogKeys.list({ workoutId: workout.id, status: 'planning' }),
+    });
+    await this.createPlanningLog(workout);
   }
 
   // CDK Drag & Drop
@@ -420,18 +453,19 @@ export class WorkoutStart {
   }) {
     const si = this.addDialogSectionIndex();
 
+    const mt = event.scheme.measurementType;
     const newExercise: StartExerciseModel = {
       id: event.exercise.id,
       sourceExerciseSchemeId: event.exercise.sourceExerciseSchemeId,
       breakAfterSeconds: null,
-      sets: (event.exercise.sets ?? []).map((set) => ({
+      sets: (event.exercise.sets ?? []).map((set, setIdx, arr) => ({
         id: set.id,
-        targetReps: set.targetReps ?? null,
-        targetWeight: set.targetWeight ?? null,
-        targetDuration: set.targetDuration ?? null,
-        targetDistance: set.targetDistance ?? null,
-        targetTime: set.targetTime ?? null,
-        restAfterSeconds: set.breakAfterSeconds ?? null,
+        targetReps: set.targetReps ?? (mt === 'REP_BASED' ? 0 : null),
+        targetWeight: set.targetWeight ?? (mt === 'REP_BASED' ? 0 : null),
+        targetDuration: set.targetDuration ?? (mt === 'TIME_BASED' ? 0 : null),
+        targetDistance: set.targetDistance ?? (mt === 'DISTANCE_BASED' ? 0 : null),
+        targetTime: set.targetTime ?? (mt === 'DISTANCE_BASED' ? 0 : null),
+        restAfterSeconds: setIdx < arr.length - 1 ? (set.breakAfterSeconds ?? 0) : null,
       })),
     };
 
@@ -463,7 +497,7 @@ export class WorkoutStart {
         targetDuration: event.scheme.duration,
         targetDistance: event.scheme.distance,
         targetTime: event.scheme.targetTime,
-        restAfterSeconds: i < numSets ? (event.scheme.restBetweenSets ?? null) : null,
+        restAfterSeconds: i < numSets ? (event.scheme.restBetweenSets ?? 0) : null,
       });
     }
     this.store.addExerciseDisplay(event.exercise.id, event.exerciseName, event.scheme, sets);
@@ -587,14 +621,17 @@ export class WorkoutStart {
           id: ex.id,
           sourceExerciseSchemeId: ex.sourceExerciseSchemeId,
           breakAfterSeconds: ex.breakAfterSeconds ?? null,
-          sets: (ex.sets ?? []).map((set) => ({
+          sets: (ex.sets ?? []).map((set, setIdx, arr) => ({
             id: set.id,
-            targetReps: set.targetReps ?? null,
-            targetWeight: set.targetWeight ?? null,
-            targetDuration: set.targetDuration ?? null,
-            targetDistance: set.targetDistance ?? null,
-            targetTime: set.targetTime ?? null,
-            restAfterSeconds: set.breakAfterSeconds ?? null,
+            targetReps: set.targetReps ?? (ex.targetMeasurementType === 'REP_BASED' ? 0 : null),
+            targetWeight: set.targetWeight ?? (ex.targetMeasurementType === 'REP_BASED' ? 0 : null),
+            targetDuration:
+              set.targetDuration ?? (ex.targetMeasurementType === 'TIME_BASED' ? 0 : null),
+            targetDistance:
+              set.targetDistance ?? (ex.targetMeasurementType === 'DISTANCE_BASED' ? 0 : null),
+            targetTime:
+              set.targetTime ?? (ex.targetMeasurementType === 'DISTANCE_BASED' ? 0 : null),
+            restAfterSeconds: setIdx < arr.length - 1 ? (set.breakAfterSeconds ?? 0) : null,
           })),
         })),
         pendingGroups: [],
@@ -607,21 +644,14 @@ export class WorkoutStart {
   private async createPlanningLog(workout: Workout) {
     this.creating.set(true);
 
-    // Pre-fetch user-specific schemes for all exercise items
+    // Pre-fetch user-specific scheme assignments for all exercise items
     const exerciseItems = (workout.sections ?? []).flatMap((s) =>
       (s.items ?? []).filter((i) => i.type === 'exercise'),
     );
-    const schemeResults = await Promise.all(
-      exerciseItems.map((item) =>
-        this.userApi.fetchExerciseSchemes({ workoutSectionItemId: item.id }),
-      ),
-    );
-    const userSchemeByItemId = new Map(
-      schemeResults
-        .flat()
-        .filter((s) => s.workoutSectionItemId != null)
-        .map((s) => [s.workoutSectionItemId!, s]),
-    );
+    const itemIds = exerciseItems.map((i) => i.id);
+    const assignments =
+      itemIds.length > 0 ? await this.userApi.fetchSchemeSectionItems(itemIds) : [];
+    const assignmentByItemId = new Map(assignments.map((a) => [a.workoutSectionItemId, a]));
 
     const log = await this.userApi.createWorkoutLog({
       name: workout.name,
@@ -645,13 +675,12 @@ export class WorkoutStart {
         // Only create log exercises for exercise-type items;
         // exercise_group items are resolved on the start page
         if (templateItem.type === 'exercise') {
-          // Use user-specific scheme (looked up by item ID), falling back to item's embedded scheme
-          const myScheme = userSchemeByItemId.get(templateItem.id);
-          const schemeId = myScheme?.id ?? templateItem.exerciseSchemeId;
-          if (schemeId) {
+          // Use user-specific scheme assignment from the join table
+          const assignment = assignmentByItemId.get(templateItem.id);
+          if (assignment) {
             await this.userApi.createWorkoutLogExercise({
               workoutLogSectionId: section.id,
-              sourceExerciseSchemeId: schemeId,
+              sourceExerciseSchemeId: assignment.exerciseSchemeId,
               position: ei,
             });
           }
@@ -661,7 +690,7 @@ export class WorkoutStart {
 
     // Collect pending exercise groups and resolve their members
     const pendingGroupsBySection = new Map<number, PendingGroupModel[]>();
-    const allExercises = await this.compendiumApi.fetchExercises({ limit: 200 });
+    const allExercises = await this.compendiumApi.fetchExercises({ limit: 1000 });
     const exerciseNameMap = new Map(
       allExercises.items.map((e) => [e.id, e.names?.[0]?.name ?? '']),
     );

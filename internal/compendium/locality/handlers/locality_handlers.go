@@ -4,11 +4,13 @@ import (
 	"context"
 
 	"gesitr/internal/compendium/locality/models"
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 	"gesitr/internal/shared"
 
 	"github.com/danielgtaylor/huma/v2"
+	"gorm.io/gorm"
 )
 
 // ListLocalities returns localities visible to the current user: their own
@@ -20,14 +22,21 @@ func ListLocalities(ctx context.Context, input *ListLocalitiesInput) (*ListLocal
 	db := database.DB.Model(&models.LocalityEntity{})
 
 	userID := humaconfig.GetUserID(ctx)
+	visibleGroups := ownershipgroup.VisibleGroupIDs(database.DB, userID)
 	if input.Owner != "" {
 		if input.Owner == "me" || input.Owner == userID {
-			db = db.Where("owner = ?", userID)
+			db = db.Where("ownership_group_id IN (?)", visibleGroups)
 		} else {
-			db = db.Where("owner = ? AND public = ?", input.Owner, true)
+			db = db.Where("ownership_group_id IN (SELECT group_id FROM ownership_group_memberships WHERE user_id = ? AND role = 'owner' AND deleted_at IS NULL) AND public = ?", input.Owner, true)
 		}
 	} else {
-		db = db.Where("owner = ? OR public = ?", userID, true)
+		db = db.Where("ownership_group_id IN (?) OR public = ?", visibleGroups, true)
+	}
+
+	if input.Public == "true" {
+		db = db.Where("public = ?", true)
+	} else if input.Public == "false" {
+		db = db.Where("public = ?", false)
 	}
 
 	if input.Q != "" {
@@ -60,13 +69,26 @@ func ListLocalities(ctx context.Context, input *ListLocalitiesInput) (*ListLocal
 //
 // OpenAPI: /api/docs#/operations/CreateLocality
 func CreateLocality(ctx context.Context, input *CreateLocalityInput) (*CreateLocalityOutput, error) {
+	userID := humaconfig.GetUserID(ctx)
 	entity := models.LocalityEntity{
 		Name:   input.Body.Name,
-		Owner:  humaconfig.GetUserID(ctx),
 		Public: input.Body.Public,
 	}
 
-	if err := database.DB.Create(&entity).Error; err != nil {
+	err := database.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&entity).Error; err != nil {
+			return err
+		}
+
+		groupID, err := ownershipgroup.CreateGroupForEntity(tx, userID)
+		if err != nil {
+			return err
+		}
+		entity.OwnershipGroupID = groupID
+		return tx.Model(&entity).Update("ownership_group_id", groupID).Error
+	})
+
+	if err != nil {
 		return nil, huma.Error500InternalServerError(err.Error())
 	}
 
@@ -83,7 +105,8 @@ func GetLocalityPermissions(ctx context.Context, input *GetLocalityPermissionsIn
 		return nil, huma.Error404NotFound("Locality not found")
 	}
 	userID := humaconfig.GetUserID(ctx)
-	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
+	access := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	perms, _ := shared.ResolvePermissionsFromAccess(access, entity.Public)
 	if perms == nil {
 		perms = []shared.Permission{}
 	}
@@ -101,7 +124,8 @@ func GetLocality(ctx context.Context, input *GetLocalityInput) (*GetLocalityOutp
 		return nil, huma.Error404NotFound("Locality not found")
 	}
 	userID := humaconfig.GetUserID(ctx)
-	perms, _ := shared.ResolvePermissions(userID, entity.Owner, entity.Public)
+	access := ownershipgroup.CheckAccess(database.DB, userID, entity.OwnershipGroupID)
+	perms, _ := shared.ResolvePermissionsFromAccess(access, entity.Public)
 	if len(perms) == 0 {
 		return nil, huma.Error403Forbidden("access denied")
 	}
@@ -118,7 +142,9 @@ func UpdateLocality(ctx context.Context, input *UpdateLocalityInput) (*UpdateLoc
 		return nil, huma.Error404NotFound("Locality not found")
 	}
 
-	if existing.Owner != humaconfig.GetUserID(ctx) {
+	userID := humaconfig.GetUserID(ctx)
+	access := ownershipgroup.CheckAccess(database.DB, userID, existing.OwnershipGroupID)
+	if !access.CanModify() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 
@@ -140,7 +166,8 @@ func DeleteLocality(ctx context.Context, input *DeleteLocalityInput) (*DeleteLoc
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Locality not found")
 	}
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	access := ownershipgroup.CheckAccess(database.DB, humaconfig.GetUserID(ctx), entity.OwnershipGroupID)
+	if !access.CanDelete() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 

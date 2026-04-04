@@ -18,7 +18,7 @@ type Exercise struct {
 	Images                        []string              `json:"images" gorm:"-"`
 	AuthorName                    *string               `json:"authorName"`
 	AuthorUrl                     *string               `json:"authorUrl"`
-	Owner                         string                `json:"owner"`
+	OwnershipGroupID              uint                  `json:"ownershipGroupId"`
 	Public                        bool                  `json:"public"`
 	Version                       int                   `json:"version"`
 	ParentExerciseID              *uint                 `json:"parentExerciseId"`

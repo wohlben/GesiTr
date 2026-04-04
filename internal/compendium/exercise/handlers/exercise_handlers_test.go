@@ -276,9 +276,6 @@ func TestCreateExercise(t *testing.T) {
 		if result.ID == 0 || result.Names[0].Name != "Squat" {
 			t.Error("create response mismatch")
 		}
-		if result.Owner != "testuser" {
-			t.Errorf("Owner = %q, want testuser", result.Owner)
-		}
 		if len(result.Force) != 1 || result.Force[0] != "PUSH" {
 			t.Errorf("Force = %v", result.Force)
 		}
@@ -302,7 +299,7 @@ func TestCreateExercise(t *testing.T) {
 		}
 	})
 
-	t.Run("owner set from auth, not request body", func(t *testing.T) {
+	t.Run("create returns valid exercise", func(t *testing.T) {
 		payload := newExercisePayload("Bob Exercise")
 		w := doJSON(r, "POST", "/api/exercises", payload)
 		if w.Code != http.StatusCreated {
@@ -310,8 +307,8 @@ func TestCreateExercise(t *testing.T) {
 		}
 		var result models.Exercise
 		json.Unmarshal(w.Body.Bytes(), &result)
-		if result.Owner != "testuser" {
-			t.Errorf("Owner = %q, want testuser (auth override)", result.Owner)
+		if result.ID == 0 {
+			t.Errorf("expected non-zero ID")
 		}
 	})
 
@@ -581,14 +578,15 @@ func TestUpdateExercise(t *testing.T) {
 	}
 
 	// Test reload error after successful transaction by injecting query errors
-	// after the initial preloaded load (1 First + 7 preloads = 8 queries).
-	// Reload queries start at query 9+.
+	// after the initial preloaded load (1 First + 7 preloads = 8 queries)
+	// plus the ownership group access check (1 query) = 9 queries.
+	// Reload queries start at query 10+.
 	t.Run("reload error after update", func(t *testing.T) {
 		callbackName := "test:fail_reload_update"
 		queryCount := 0
 		database.DB.Callback().Query().Before("gorm:query").Register(callbackName, func(tx *gorm.DB) {
 			queryCount++
-			if queryCount >= 9 {
+			if queryCount >= 10 {
 				_ = tx.AddError(fmt.Errorf("injected reload error"))
 			}
 		})

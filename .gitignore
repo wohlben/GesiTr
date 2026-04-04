@@ -10,8 +10,7 @@ gesitr
 *.db
 
 # Angular build output (embedded at compile time)
-web/dist/*
-!web/dist/.gitkeep
+web/dist/
 
 # IDE
 .idea/

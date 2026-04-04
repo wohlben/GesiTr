@@ -7,30 +7,30 @@ import (
 
 type WorkoutGroupEntity struct {
 	shared.BaseModel
-	Name        string                         `gorm:"not null"`
-	WorkoutID   uint                           `gorm:"not null;index"`
-	Workout     *workoutmodels.WorkoutEntity   `gorm:"foreignKey:WorkoutID;constraint:OnDelete:CASCADE" json:"-"`
-	Owner       string                         `gorm:"not null;index"`
-	Memberships []WorkoutGroupMembershipEntity `gorm:"foreignKey:GroupID"`
+	Name             string                         `gorm:"not null"`
+	WorkoutID        uint                           `gorm:"not null;index"`
+	Workout          *workoutmodels.WorkoutEntity   `gorm:"foreignKey:WorkoutID;constraint:OnDelete:CASCADE" json:"-"`
+	OwnershipGroupID uint                           `gorm:"index"`
+	Memberships      []WorkoutGroupMembershipEntity `gorm:"foreignKey:GroupID"`
 }
 
 func (WorkoutGroupEntity) TableName() string { return "workout_groups" }
 
 func (e *WorkoutGroupEntity) ToDTO() WorkoutGroup {
 	return WorkoutGroup{
-		BaseModel: e.BaseModel,
-		Name:      e.Name,
-		WorkoutID: e.WorkoutID,
-		Owner:     e.Owner,
+		BaseModel:        e.BaseModel,
+		Name:             e.Name,
+		WorkoutID:        e.WorkoutID,
+		OwnershipGroupID: e.OwnershipGroupID,
 	}
 }
 
 func WorkoutGroupFromDTO(dto WorkoutGroup) WorkoutGroupEntity {
 	return WorkoutGroupEntity{
-		BaseModel: dto.BaseModel,
-		Name:      dto.Name,
-		WorkoutID: dto.WorkoutID,
-		Owner:     dto.Owner,
+		BaseModel:        dto.BaseModel,
+		Name:             dto.Name,
+		WorkoutID:        dto.WorkoutID,
+		OwnershipGroupID: dto.OwnershipGroupID,
 	}
 }
 

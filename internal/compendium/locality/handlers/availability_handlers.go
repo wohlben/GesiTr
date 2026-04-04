@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"gesitr/internal/compendium/locality/models"
+	"gesitr/internal/compendium/ownershipgroup"
 	"gesitr/internal/database"
 	"gesitr/internal/humaconfig"
 
@@ -15,10 +16,19 @@ import (
 //
 // OpenAPI: /api/docs#/operations/ListLocalityAvailabilities
 func ListLocalityAvailabilities(ctx context.Context, input *ListLocalityAvailabilitiesInput) (*ListLocalityAvailabilitiesOutput, error) {
-	db := database.DB.Model(&models.LocalityAvailabilityEntity{})
+	userID := humaconfig.GetUserID(ctx)
+	visibleGroups := ownershipgroup.VisibleGroupIDs(database.DB, userID)
+
+	db := database.DB.Model(&models.LocalityAvailabilityEntity{}).
+		Select("locality_availabilities.*, equipment.display_name as equipment_name").
+		Joins("LEFT JOIN equipment ON equipment.id = locality_availabilities.equipment_id").
+		Where("locality_availabilities.ownership_group_id IN (?)", visibleGroups)
 
 	if input.LocalityID != "" {
 		db = db.Where("locality_id = ?", input.LocalityID)
+	}
+	if input.EquipmentID != "" {
+		db = db.Where("equipment_id = ?", input.EquipmentID)
 	}
 	if input.Available == "true" {
 		db = db.Where("available = ?", true)
@@ -47,7 +57,9 @@ func CreateLocalityAvailability(ctx context.Context, input *CreateLocalityAvaila
 	if err := database.DB.First(&locality, input.Body.LocalityID).Error; err != nil {
 		return nil, huma.Error404NotFound("Locality not found")
 	}
-	if locality.Owner != humaconfig.GetUserID(ctx) {
+	userID := humaconfig.GetUserID(ctx)
+	access := ownershipgroup.CheckAccess(database.DB, userID, locality.OwnershipGroupID)
+	if !access.CanModify() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 
@@ -57,10 +69,10 @@ func CreateLocalityAvailability(ctx context.Context, input *CreateLocalityAvaila
 	}
 
 	entity := models.LocalityAvailabilityEntity{
-		LocalityID:  input.Body.LocalityID,
-		EquipmentID: input.Body.EquipmentID,
-		Available:   available,
-		Owner:       locality.Owner,
+		LocalityID:       input.Body.LocalityID,
+		EquipmentID:      input.Body.EquipmentID,
+		Available:        available,
+		OwnershipGroupID: locality.OwnershipGroupID,
 	}
 
 	if err := database.DB.Create(&entity).Error; err != nil {
@@ -78,7 +90,8 @@ func UpdateLocalityAvailability(ctx context.Context, input *UpdateLocalityAvaila
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Locality availability not found")
 	}
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	access := ownershipgroup.CheckAccess(database.DB, humaconfig.GetUserID(ctx), entity.OwnershipGroupID)
+	if !access.CanModify() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 
@@ -98,7 +111,8 @@ func DeleteLocalityAvailability(ctx context.Context, input *DeleteLocalityAvaila
 	if err := database.DB.First(&entity, input.ID).Error; err != nil {
 		return nil, huma.Error404NotFound("Locality availability not found")
 	}
-	if entity.Owner != humaconfig.GetUserID(ctx) {
+	access := ownershipgroup.CheckAccess(database.DB, humaconfig.GetUserID(ctx), entity.OwnershipGroupID)
+	if !access.CanDelete() {
 		return nil, huma.Error403Forbidden("access denied")
 	}
 

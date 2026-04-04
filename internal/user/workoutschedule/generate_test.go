@@ -6,6 +6,7 @@ import (
 
 	exercisemodels "gesitr/internal/compendium/exercise/models"
 	workoutmodels "gesitr/internal/compendium/workout/models"
+	exerciseschememodels "gesitr/internal/user/exercisescheme/models"
 	workoutlogmodels "gesitr/internal/user/workoutlog/models"
 	"gesitr/internal/user/workoutschedule/models"
 
@@ -22,7 +23,8 @@ func setupTestDB(t *testing.T) *gorm.DB {
 	}
 	db.AutoMigrate(
 		&exercisemodels.ExerciseEntity{},
-		&exercisemodels.ExerciseSchemeEntity{},
+		&exerciseschememodels.ExerciseSchemeEntity{},
+		&exerciseschememodels.ExerciseSchemeSectionItemEntity{},
 		&workoutmodels.WorkoutEntity{},
 		&workoutmodels.WorkoutSectionEntity{},
 		&workoutmodels.WorkoutSectionItemEntity{},
@@ -39,7 +41,7 @@ func setupTestDB(t *testing.T) *gorm.DB {
 
 func createWorkout(t *testing.T, db *gorm.DB) workoutmodels.WorkoutEntity {
 	t.Helper()
-	w := workoutmodels.WorkoutEntity{Owner: "alice", Name: "Test Workout"}
+	w := workoutmodels.WorkoutEntity{Name: "Test Workout"}
 	if err := db.Create(&w).Error; err != nil {
 		t.Fatal(err)
 	}
@@ -453,14 +455,14 @@ func TestActivation_SnapshotsWorkoutStructure(t *testing.T) {
 	db := setupTestDB(t)
 
 	// Create exercise + scheme with 3 sets of 10 reps at 60kg
-	exercise := exercisemodels.ExerciseEntity{Owner: "alice", Names: []exercisemodels.ExerciseName{{Position: 0, Name: "Bench Press"}}}
+	exercise := exercisemodels.ExerciseEntity{Names: []exercisemodels.ExerciseName{{Position: 0, Name: "Bench Press"}}}
 	db.Create(&exercise)
 
 	sets := intPtr(3)
 	reps := intPtr(10)
 	weight := float64Ptr(60.0)
 	rest := intPtr(90)
-	scheme := exercisemodels.ExerciseSchemeEntity{
+	scheme := exerciseschememodels.ExerciseSchemeEntity{
 		Owner:           "alice",
 		ExerciseID:      exercise.ID,
 		MeasurementType: "REP_BASED",
@@ -472,7 +474,7 @@ func TestActivation_SnapshotsWorkoutStructure(t *testing.T) {
 	db.Create(&scheme)
 
 	// Create workout with one section and one exercise item
-	workout := workoutmodels.WorkoutEntity{Owner: "alice", Name: "Push Day"}
+	workout := workoutmodels.WorkoutEntity{Name: "Push Day"}
 	db.Create(&workout)
 
 	section := workoutmodels.WorkoutSectionEntity{
@@ -485,10 +487,18 @@ func TestActivation_SnapshotsWorkoutStructure(t *testing.T) {
 	item := workoutmodels.WorkoutSectionItemEntity{
 		WorkoutSectionID: section.ID,
 		Type:             workoutmodels.WorkoutSectionItemTypeExercise,
-		ExerciseSchemeID: &scheme.ID,
+		ExerciseID:       &exercise.ID,
 		Position:         0,
 	}
 	db.Create(&item)
+
+	// Link scheme to section item via join table
+	link := exerciseschememodels.ExerciseSchemeSectionItemEntity{
+		ExerciseSchemeID:     scheme.ID,
+		WorkoutSectionItemID: item.ID,
+		Owner:                "alice",
+	}
+	db.Create(&link)
 
 	// Create schedule + active period + commitment
 	yesterday := startOfDay(time.Now().AddDate(0, 0, -1))
