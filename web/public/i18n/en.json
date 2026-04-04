@@ -28,6 +28,7 @@
     "from": "From",
     "to": "To",
     "create": "Create",
+    "creating": "Creating...",
     "unitSeconds": "s",
     "unnamedGroup": "Group #{{id}}"
   },
@@ -356,7 +357,10 @@
       "noMembers": "No members yet.",
       "acceptInvitation": "Accept Invitation",
       "invited": "Invited",
-      "membership": "Membership"
+      "membership": "Membership",
+      "schemeLabel": "Exercise Scheme",
+      "noSchemeWarning": "No scheme configured for this exercise. Create one to enable tracking.",
+      "createSchemeTitle": "Create Exercise Scheme"
     },
     "schedules": {
       "title": "Schedules",
