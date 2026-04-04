@@ -29,7 +29,7 @@ import { ExerciseConfig } from '$ui/exercise-config/exercise-config';
             />
 
             <hlm-dialog-footer>
-              <button hlmBtn variant="outline" hlmDialogClose [disabled]="isSaving()">
+              <button hlmBtn variant="outline" (click)="onCancel()" [disabled]="isSaving()">
                 {{ t('common.cancel') }}
               </button>
               <button
