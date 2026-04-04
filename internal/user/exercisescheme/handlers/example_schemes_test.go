@@ -303,7 +303,8 @@ func ExampleListExerciseSchemes_owner() {
 	// REP_BASED
 }
 
-// Non-owner sees schemes for public exercises in the list.
+// Non-owner does not see schemes for public exercises unless they share
+// an ownership group with the scheme owner.
 func ExampleListExerciseSchemes_nonOwnerPublicExercise() {
 	setupExampleDB()
 	r := newExampleRouter()
@@ -324,7 +325,7 @@ func ExampleListExerciseSchemes_nonOwnerPublicExercise() {
 		"reps": 20
 	}`)
 
-	// Another user sees schemes for public exercises.
+	// Another user does not see the scheme — not in the same ownership group.
 	w := doRawAs(r, "GET", "/api/user/exercise-schemes", "", "other")
 
 	var schemes []models.ExerciseScheme
@@ -333,7 +334,7 @@ func ExampleListExerciseSchemes_nonOwnerPublicExercise() {
 	fmt.Println(len(schemes))
 	// Output:
 	// 200
-	// 1
+	// 0
 }
 
 // Non-owner does not see schemes for private exercises.

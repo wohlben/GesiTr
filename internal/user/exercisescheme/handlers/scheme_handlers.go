@@ -28,14 +28,13 @@ func exerciseSchemeDTOFromBody(b ExerciseSchemeBody) models.ExerciseScheme {
 	}
 }
 
-// ListExerciseSchemes returns schemes the current user has access to: their
-// own schemes plus schemes linked to public exercises. Filter by exerciseId
+// ListExerciseSchemes returns the current user's exercise schemes, plus
+// schemes owned by members of the same ownership groups. Filter by exerciseId
 // or measurementType query params. GET /api/user/exercise-schemes
 func ListExerciseSchemes(ctx context.Context, input *ListExerciseSchemesInput) (*ListExerciseSchemesOutput, error) {
 	userID := humaconfig.GetUserID(ctx)
-	// FIXME: subquery doesn't scale — replace with a join or denormalize visibility
 	db := database.DB.Model(&models.ExerciseSchemeEntity{}).
-		Where("owner = ? OR exercise_id IN (SELECT id FROM exercises WHERE public = ? AND deleted_at IS NULL)", userID, true)
+		Where("owner = ? OR owner IN (SELECT ogm2.user_id FROM ownership_group_memberships ogm1 JOIN ownership_group_memberships ogm2 ON ogm1.group_id = ogm2.group_id WHERE ogm1.user_id = ? AND ogm1.deleted_at IS NULL AND ogm2.deleted_at IS NULL)", userID, userID)
 
 	if input.ExerciseID != "" {
 		db = db.Where("exercise_id = ?", input.ExerciseID)
