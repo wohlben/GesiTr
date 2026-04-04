@@ -104,7 +104,7 @@ type CreateEquipmentOutput struct {
 ```
 
 <a name="CreateEquipment"></a>
-### func [CreateEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L85>)
+### func [CreateEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L87>)
 
 ```go
 func CreateEquipment(ctx context.Context, input *CreateEquipmentInput) (*CreateEquipmentOutput, error)
@@ -137,7 +137,7 @@ type CreateEquipmentRelationshipOutput struct {
 ```
 
 <a name="CreateEquipmentRelationship"></a>
-### func [CreateEquipmentRelationship](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/relationship_handlers.go#L55>)
+### func [CreateEquipmentRelationship](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/relationship_handlers.go#L58>)
 
 ```go
 func CreateEquipmentRelationship(ctx context.Context, input *CreateEquipmentRelationshipInput) (*CreateEquipmentRelationshipOutput, error)
@@ -170,7 +170,7 @@ type CreateFulfillmentOutput struct {
 ```
 
 <a name="CreateFulfillment"></a>
-### func [CreateFulfillment](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/fulfillment_handlers.go#L45>)
+### func [CreateFulfillment](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/fulfillment_handlers.go#L46>)
 
 ```go
 func CreateFulfillment(ctx context.Context, input *CreateFulfillmentInput) (*CreateFulfillmentOutput, error)
@@ -201,7 +201,7 @@ type DeleteEquipmentOutput struct{}
 ```
 
 <a name="DeleteEquipment"></a>
-### func [DeleteEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L272>)
+### func [DeleteEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L287>)
 
 ```go
 func DeleteEquipment(ctx context.Context, input *DeleteEquipmentInput) (*DeleteEquipmentOutput, error)
@@ -232,7 +232,7 @@ type DeleteEquipmentRelationshipOutput struct{}
 ```
 
 <a name="DeleteEquipmentRelationship"></a>
-### func [DeleteEquipmentRelationship](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/relationship_handlers.go#L76>)
+### func [DeleteEquipmentRelationship](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/relationship_handlers.go#L87>)
 
 ```go
 func DeleteEquipmentRelationship(ctx context.Context, input *DeleteEquipmentRelationshipInput) (*DeleteEquipmentRelationshipOutput, error)
@@ -263,7 +263,7 @@ type DeleteFulfillmentOutput struct{}
 ```
 
 <a name="DeleteFulfillment"></a>
-### func [DeleteFulfillment](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/fulfillment_handlers.go#L64>)
+### func [DeleteFulfillment](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/fulfillment_handlers.go#L73>)
 
 ```go
 func DeleteFulfillment(ctx context.Context, input *DeleteFulfillmentInput) (*DeleteFulfillmentOutput, error)
@@ -339,7 +339,7 @@ type GetEquipmentOutput struct {
 ```
 
 <a name="GetEquipment"></a>
-### func [GetEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L162>)
+### func [GetEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L174>)
 
 ```go
 func GetEquipment(ctx context.Context, input *GetEquipmentInput) (*GetEquipmentOutput, error)
@@ -372,7 +372,7 @@ type GetEquipmentPermissionsOutput struct {
 ```
 
 <a name="GetEquipmentPermissions"></a>
-### func [GetEquipmentPermissions](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L144>)
+### func [GetEquipmentPermissions](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L155>)
 
 ```go
 func GetEquipmentPermissions(ctx context.Context, input *GetEquipmentPermissionsInput) (*GetEquipmentPermissionsOutput, error)
@@ -512,7 +512,7 @@ type GetEquipmentVersionOutput struct {
 ```
 
 <a name="GetEquipmentVersion"></a>
-### func [GetEquipmentVersion](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L251>)
+### func [GetEquipmentVersion](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L265>)
 
 ```go
 func GetEquipmentVersion(ctx context.Context, input *GetEquipmentVersionInput) (*GetEquipmentVersionOutput, error)
@@ -550,7 +550,7 @@ type ListEquipmentOutput struct {
 ```
 
 <a name="ListEquipment"></a>
-### func [ListEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L33>)
+### func [ListEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L34>)
 
 ```go
 func ListEquipment(ctx context.Context, input *ListEquipmentInput) (*ListEquipmentOutput, error)
@@ -586,7 +586,7 @@ type ListEquipmentRelationshipsOutput struct {
 ```
 
 <a name="ListEquipmentRelationships"></a>
-### func [ListEquipmentRelationships](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/relationship_handlers.go#L19>)
+### func [ListEquipmentRelationships](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/relationship_handlers.go#L20>)
 
 ```go
 func ListEquipmentRelationships(ctx context.Context, input *ListEquipmentRelationshipsInput) (*ListEquipmentRelationshipsOutput, error)
@@ -619,7 +619,7 @@ type ListEquipmentVersionsOutput struct {
 ```
 
 <a name="ListEquipmentVersions"></a>
-### func [ListEquipmentVersions](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L228>)
+### func [ListEquipmentVersions](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L242>)
 
 ```go
 func ListEquipmentVersions(ctx context.Context, input *ListEquipmentVersionsInput) (*ListEquipmentVersionsOutput, error)
@@ -653,7 +653,7 @@ type ListFulfillmentsOutput struct {
 ```
 
 <a name="ListFulfillments"></a>
-### func [ListFulfillments](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/fulfillment_handlers.go#L19>)
+### func [ListFulfillments](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/fulfillment_handlers.go#L20>)
 
 ```go
 func ListFulfillments(ctx context.Context, input *ListFulfillmentsInput) (*ListFulfillmentsOutput, error)
@@ -687,7 +687,7 @@ type UpdateEquipmentOutput struct {
 ```
 
 <a name="UpdateEquipment"></a>
-### func [UpdateEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L179>)
+### func [UpdateEquipment](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/equipment/handlers/equipment_handlers.go#L192>)
 
 ```go
 func UpdateEquipment(ctx context.Context, input *UpdateEquipmentInput) (*UpdateEquipmentOutput, error)

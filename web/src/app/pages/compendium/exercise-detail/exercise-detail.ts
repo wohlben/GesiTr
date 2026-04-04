@@ -68,6 +68,13 @@ import { DecimalPipe } from '@angular/common';
             >
           }
           @if (canModify()) {
+            <button
+              type="button"
+              (click)="showShareDialog.set(true)"
+              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+            >
+              {{ t('common.share') }}
+            </button>
             <a
               routerLink="./edit"
               class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
@@ -300,7 +307,11 @@ import { DecimalPipe } from '@angular/common';
           }
         }
         @if (canModify() && exerciseQuery.data(); as exercise) {
-          <app-ownership-group-panel [ownershipGroupId]="exercise.ownershipGroupId" />
+          <app-ownership-group-panel
+            [ownershipGroupId]="exercise.ownershipGroupId"
+            [open]="showShareDialog()"
+            (closed)="showShareDialog.set(false)"
+          />
         }
       </app-page-layout>
     </ng-container>
@@ -316,6 +327,7 @@ export class ExerciseDetail {
   private id = computed(() => Number(this.params()?.get('id')));
 
   showDeleteDialog = signal(false);
+  showShareDialog = signal(false);
 
   exerciseQuery = injectQuery(() => ({
     queryKey: exerciseKeys.detail(this.id()),

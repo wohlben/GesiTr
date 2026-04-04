@@ -21,6 +21,13 @@ import { OwnershipGroupPanel } from '$ui/compendium/ownership-group-panel/owners
       >
         <div actions class="flex gap-2">
           @if (canModify()) {
+            <button
+              type="button"
+              (click)="showShareDialog.set(true)"
+              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+            >
+              {{ t('common.share') }}
+            </button>
             <a
               routerLink="./edit"
               class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
@@ -48,7 +55,11 @@ import { OwnershipGroupPanel } from '$ui/compendium/ownership-group-panel/owners
           (cancelled)="showDeleteDialog.set(false)"
         />
         @if (canModify() && groupQuery.data(); as group) {
-          <app-ownership-group-panel [ownershipGroupId]="group.ownershipGroupId" />
+          <app-ownership-group-panel
+            [ownershipGroupId]="group.ownershipGroupId"
+            [open]="showShareDialog()"
+            (closed)="showShareDialog.set(false)"
+          />
         }
       </app-page-layout>
     </ng-container>
@@ -63,6 +74,7 @@ export class ExerciseGroupDetail {
   private id = computed(() => Number(this.params()?.get('id')));
 
   showDeleteDialog = signal(false);
+  showShareDialog = signal(false);
 
   permissionsQuery = injectQuery(() => ({
     queryKey: exerciseGroupKeys.permissions(this.id()),

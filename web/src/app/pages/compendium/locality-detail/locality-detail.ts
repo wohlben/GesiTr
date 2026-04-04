@@ -32,6 +32,13 @@ import { FormsModule } from '@angular/forms';
       >
         <div actions class="flex gap-2">
           @if (canModify()) {
+            <button
+              type="button"
+              (click)="showShareDialog.set(true)"
+              class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+            >
+              {{ t('common.share') }}
+            </button>
             <a
               routerLink="./edit"
               class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
@@ -173,7 +180,11 @@ import { FormsModule } from '@angular/forms';
           </section>
         }
         @if (canModify() && localityQuery.data(); as locality) {
-          <app-ownership-group-panel [ownershipGroupId]="locality.ownershipGroupId" />
+          <app-ownership-group-panel
+            [ownershipGroupId]="locality.ownershipGroupId"
+            [open]="showShareDialog()"
+            (closed)="showShareDialog.set(false)"
+          />
         }
       </app-page-layout>
     </ng-container>
@@ -188,6 +199,7 @@ export class LocalityDetail {
   private id = computed(() => Number(this.params()?.get('id')));
 
   showDeleteDialog = signal(false);
+  showShareDialog = signal(false);
   showAddSection = signal(false);
   equipmentSearchTerm = '';
   equipmentSearch = signal('');

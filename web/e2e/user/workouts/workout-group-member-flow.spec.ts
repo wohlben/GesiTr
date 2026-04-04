@@ -45,6 +45,7 @@ test.describe('/compendium/workouts — group member full flow', () => {
     });
 
     const bobApi = await createApiContextAs('bob');
+    await bobApi.post('/api/profile');
 
     // Create workout group and invite bob
     const groupRes = await request.post('/api/user/workout-groups', {

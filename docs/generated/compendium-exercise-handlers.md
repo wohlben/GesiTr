@@ -100,7 +100,7 @@ type CreateExerciseOutput struct {
 ```
 
 <a name="CreateExercise"></a>
-### func [CreateExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L160>)
+### func [CreateExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L162>)
 
 ```go
 func CreateExercise(ctx context.Context, input *CreateExerciseInput) (*CreateExerciseOutput, error)
@@ -131,12 +131,10 @@ var exercise models.Exercise
 json.Unmarshal(w.Body.Bytes(), &exercise)
 fmt.Println(w.Code)
 fmt.Println(exercise.Names[0].Name)
-fmt.Println(exercise.Owner)
 fmt.Println(exercise.EquipmentIDs)
 // Output:
 // 201
 // Push-up
-// testuser
 // []
 ```
 
@@ -145,7 +143,6 @@ fmt.Println(exercise.EquipmentIDs)
 ```
 201
 Push-up
-testuser
 []
 ```
 
@@ -225,7 +222,7 @@ type CreateExerciseRelationshipOutput struct {
 ```
 
 <a name="CreateExerciseRelationship"></a>
-### func [CreateExerciseRelationship](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/relationship_handlers.go#L55>)
+### func [CreateExerciseRelationship](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/relationship_handlers.go#L58>)
 
 ```go
 func CreateExerciseRelationship(ctx context.Context, input *CreateExerciseRelationshipInput) (*CreateExerciseRelationshipOutput, error)
@@ -256,7 +253,7 @@ type DeleteAllExerciseVersionsOutput struct{}
 ```
 
 <a name="DeleteAllExerciseVersions"></a>
-### func [DeleteAllExerciseVersions](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L498>)
+### func [DeleteAllExerciseVersions](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L515>)
 
 ```go
 func DeleteAllExerciseVersions(ctx context.Context, input *DeleteAllExerciseVersionsInput) (*DeleteAllExerciseVersionsOutput, error)
@@ -287,7 +284,7 @@ type DeleteExerciseOutput struct{}
 ```
 
 <a name="DeleteExercise"></a>
-### func [DeleteExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L458>)
+### func [DeleteExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L473>)
 
 ```go
 func DeleteExercise(ctx context.Context, input *DeleteExerciseInput) (*DeleteExerciseOutput, error)
@@ -318,7 +315,7 @@ type DeleteExerciseRelationshipOutput struct{}
 ```
 
 <a name="DeleteExerciseRelationship"></a>
-### func [DeleteExerciseRelationship](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/relationship_handlers.go#L77>)
+### func [DeleteExerciseRelationship](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/relationship_handlers.go#L88>)
 
 ```go
 func DeleteExerciseRelationship(ctx context.Context, input *DeleteExerciseRelationshipInput) (*DeleteExerciseRelationshipOutput, error)
@@ -350,7 +347,7 @@ type DeleteExerciseVersionOutput struct{}
 ```
 
 <a name="DeleteExerciseVersion"></a>
-### func [DeleteExerciseVersion](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L476>)
+### func [DeleteExerciseVersion](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L492>)
 
 ```go
 func DeleteExerciseVersion(ctx context.Context, input *DeleteExerciseVersionInput) (*DeleteExerciseVersionOutput, error)
@@ -425,7 +422,7 @@ type GetExerciseOutput struct {
 ```
 
 <a name="GetExercise"></a>
-### func [GetExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L248>)
+### func [GetExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L260>)
 
 ```go
 func GetExercise(ctx context.Context, input *GetExerciseInput) (*GetExerciseOutput, error)
@@ -528,11 +525,9 @@ var exercise models.Exercise
 json.Unmarshal(w.Body.Bytes(), &exercise)
 fmt.Println(w.Code)
 fmt.Println(exercise.Names[0].Name)
-fmt.Println(exercise.Owner)
 // Output:
 // 200
 // Bench Press
-// testuser
 ```
 
 #### Output
@@ -540,7 +535,6 @@ fmt.Println(exercise.Owner)
 ```
 200
 Bench Press
-testuser
 ```
 
 </p>
@@ -569,7 +563,7 @@ type GetExercisePermissionsOutput struct {
 ```
 
 <a name="GetExercisePermissions"></a>
-### func [GetExercisePermissions](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L230>)
+### func [GetExercisePermissions](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L241>)
 
 ```go
 func GetExercisePermissions(ctx context.Context, input *GetExercisePermissionsInput) (*GetExercisePermissionsOutput, error)
@@ -712,7 +706,7 @@ type GetExerciseVersionOutput struct {
 ```
 
 <a name="GetExerciseVersion"></a>
-### func [GetExerciseVersion](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L437>)
+### func [GetExerciseVersion](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L451>)
 
 ```go
 func GetExerciseVersion(ctx context.Context, input *GetExerciseVersionInput) (*GetExerciseVersionOutput, error)
@@ -973,7 +967,7 @@ type ListExerciseRelationshipsOutput struct {
 ```
 
 <a name="ListExerciseRelationships"></a>
-### func [ListExerciseRelationships](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/relationship_handlers.go#L19>)
+### func [ListExerciseRelationships](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/relationship_handlers.go#L20>)
 
 ```go
 func ListExerciseRelationships(ctx context.Context, input *ListExerciseRelationshipsInput) (*ListExerciseRelationshipsOutput, error)
@@ -1006,7 +1000,7 @@ type ListExerciseVersionsOutput struct {
 ```
 
 <a name="ListExerciseVersions"></a>
-### func [ListExerciseVersions](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L414>)
+### func [ListExerciseVersions](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L428>)
 
 ```go
 func ListExerciseVersions(ctx context.Context, input *ListExerciseVersionsInput) (*ListExerciseVersionsOutput, error)
@@ -1049,7 +1043,7 @@ type ListExercisesOutput struct {
 ```
 
 <a name="ListExercises"></a>
-### func [ListExercises](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L63>)
+### func [ListExercises](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L64>)
 
 ```go
 func ListExercises(ctx context.Context, input *ListExercisesInput) (*ListExercisesOutput, error)
@@ -1218,7 +1212,7 @@ type UpdateExerciseOutput struct {
 ```
 
 <a name="UpdateExercise"></a>
-### func [UpdateExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L265>)
+### func [UpdateExercise](<https://github.com/wohlben/GesiTr/blob/main/internal/compendium/exercise/handlers/exercise_handlers.go#L278>)
 
 ```go
 func UpdateExercise(ctx context.Context, input *UpdateExerciseInput) (*UpdateExerciseOutput, error)
@@ -1334,11 +1328,9 @@ var exercise models.Exercise
 json.Unmarshal(w.Body.Bytes(), &exercise)
 fmt.Println(w.Code)
 fmt.Println(exercise.Names[0].Name)
-fmt.Println(exercise.Owner)
 // Output:
 // 200
 // Back Squat
-// testuser
 ```
 
 #### Output
@@ -1346,7 +1338,6 @@ fmt.Println(exercise.Owner)
 ```
 200
 Back Squat
-testuser
 ```
 
 </p>
