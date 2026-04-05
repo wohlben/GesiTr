@@ -466,6 +466,7 @@ export class WorkoutScheduleEdit {
       const schedule: Record<string, unknown> = {
         workoutId: this.workoutId(),
         initialStatus: val.initialStatus,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       };
       if (val.startDate) {
         schedule['startDate'] = new Date(val.startDate).toISOString();

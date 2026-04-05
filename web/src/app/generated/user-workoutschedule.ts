@@ -86,5 +86,6 @@ export interface WorkoutSchedule extends BaseModel {
   startDate: string;
   endDate?: string;
   initialStatus: string;
+  timezone: string;
   active: boolean; // derived, not stored
 }

@@ -22,6 +22,7 @@ type WorkoutScheduleBody struct {
 	StartDate     *time.Time `json:"startDate,omitempty" doc:"Default: tomorrow"`
 	EndDate       *time.Time `json:"endDate,omitempty"`
 	InitialStatus *string    `json:"initialStatus,omitempty" doc:"'committed' (default) or 'proposed'"`
+	Timezone      *string    `json:"timezone,omitempty" doc:"IANA timezone (e.g., 'Europe/Berlin'). Default: UTC"`
 }
 
 type CreateWorkoutScheduleInput struct {

@@ -64,6 +64,14 @@ func CreateWorkoutSchedule(ctx context.Context, input *CreateWorkoutScheduleInpu
 		}
 	}
 
+	timezone := "UTC"
+	if input.Body.Timezone != nil {
+		if _, err := time.LoadLocation(*input.Body.Timezone); err != nil {
+			return nil, huma.Error400BadRequest("invalid timezone: " + *input.Body.Timezone)
+		}
+		timezone = *input.Body.Timezone
+	}
+
 	// Default start date: tomorrow
 	startDate := startOfDay(time.Now().AddDate(0, 0, 1))
 	if input.Body.StartDate != nil {
@@ -76,6 +84,7 @@ func CreateWorkoutSchedule(ctx context.Context, input *CreateWorkoutScheduleInpu
 		StartDate:     startDate,
 		EndDate:       input.Body.EndDate,
 		InitialStatus: initialStatus,
+		Timezone:      timezone,
 	}
 
 	if err := database.DB.Create(&entity).Error; err != nil {

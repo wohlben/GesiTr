@@ -56,6 +56,7 @@ func createScheduleWithPeriodAndCommitments(t *testing.T, db *gorm.DB, workout w
 		WorkoutID:     workout.ID,
 		StartDate:     periodStart,
 		InitialStatus: "committed",
+		Timezone:      "UTC",
 	}
 	db.Create(&schedule)
 
@@ -176,8 +177,9 @@ func TestClone_ClonesLastPeriod(t *testing.T) {
 
 	// Create a period that ended yesterday — chain-cloning will produce
 	// an active clone (starts today) and then a planned clone (future).
-	lastWeek := startOfDay(time.Now().AddDate(0, 0, -8))
-	yesterday := startOfDay(time.Now().AddDate(0, 0, -1))
+	now := time.Now().UTC()
+	lastWeek := startOfDayIn(now.AddDate(0, 0, -8), time.UTC)
+	yesterday := startOfDayIn(now.AddDate(0, 0, -1), time.UTC)
 	day1 := lastWeek
 	day4 := lastWeek.AddDate(0, 0, 3)
 
@@ -185,7 +187,7 @@ func TestClone_ClonesLastPeriod(t *testing.T) {
 		lastWeek, yesterday, []*time.Time{&day1, &day4})
 
 	// Run generation — should clone the period forward (possibly multiple times)
-	if err := GenerateForUser(db, "alice", time.Now()); err != nil {
+	if err := GenerateForUser(db, "alice", now); err != nil {
 		t.Fatal(err)
 	}
 
@@ -197,17 +199,17 @@ func TestClone_ClonesLastPeriod(t *testing.T) {
 	}
 
 	// First clone should start the day after the original ended
-	expectedStart := startOfDay(yesterday.AddDate(0, 0, 1))
+	expectedStart := startOfDayIn(yesterday.AddDate(0, 0, 1), time.UTC)
 	if !periods[1].PeriodStart.Equal(expectedStart) {
 		t.Errorf("expected first clone to start at %v, got %v", expectedStart, periods[1].PeriodStart)
 	}
 
-	// All cloned periods should have same duration
-	origDuration := yesterday.Sub(lastWeek)
+	// All cloned periods should have same duration in calendar days
+	origDays := int(yesterday.Sub(lastWeek).Hours()/24 + 0.5)
 	for i := 1; i < len(periods); i++ {
-		dur := periods[i].PeriodEnd.Sub(periods[i].PeriodStart)
-		if dur != origDuration {
-			t.Errorf("period %d duration mismatch: %v vs %v", i, dur, origDuration)
+		dur := int(periods[i].PeriodEnd.Sub(periods[i].PeriodStart).Hours()/24 + 0.5)
+		if dur != origDays {
+			t.Errorf("period %d duration mismatch: %d days vs %d days", i, dur, origDays)
 		}
 	}
 
@@ -399,15 +401,16 @@ func TestClone_TriggeredWhenPeriodBecomesActive(t *testing.T) {
 	workout := createWorkout(t, db)
 
 	// Create a period that started yesterday but ends next week (currently active)
-	yesterday := startOfDay(time.Now().AddDate(0, 0, -1))
-	nextWeek := startOfDay(time.Now().AddDate(0, 0, 6))
+	now := time.Now().UTC()
+	yesterday := startOfDayIn(now.AddDate(0, 0, -1), time.UTC)
+	nextWeek := startOfDayIn(now.AddDate(0, 0, 6), time.UTC)
 	day1 := yesterday
 
 	schedule, _ := createScheduleWithPeriodAndCommitments(t, db, workout,
 		yesterday, nextWeek, []*time.Time{&day1})
 
 	// Run generation — should clone forward because the period is now active
-	if err := GenerateForUser(db, "alice", time.Now()); err != nil {
+	if err := GenerateForUser(db, "alice", now); err != nil {
 		t.Fatal(err)
 	}
 
@@ -419,13 +422,13 @@ func TestClone_TriggeredWhenPeriodBecomesActive(t *testing.T) {
 	}
 
 	// The cloned period should start after the current one ends
-	expectedStart := startOfDay(nextWeek.AddDate(0, 0, 1))
+	expectedStart := startOfDayIn(nextWeek.AddDate(0, 0, 1), time.UTC)
 	if !periods[1].PeriodStart.Equal(expectedStart) {
 		t.Errorf("expected clone start %v, got %v", expectedStart, periods[1].PeriodStart)
 	}
 
 	// The cloned period should be in the future (planned)
-	if !time.Now().Before(periods[1].PeriodStart) {
+	if !now.Before(periods[1].PeriodStart) {
 		t.Error("cloned period should be in the future (planned)")
 	}
 }
@@ -614,6 +617,168 @@ func TestActivation_LogDateMatchesCommitmentDate(t *testing.T) {
 	// DueStart should be the period start
 	if log.DueStart == nil || !startOfDay(*log.DueStart).Equal(period.PeriodStart) {
 		t.Errorf("due_start should be period start %v", period.PeriodStart)
+	}
+}
+
+func TestClone_RespectsTimezoneEastOfUTC(t *testing.T) {
+	db := setupTestDB(t)
+	workout := createWorkout(t, db)
+
+	// Simulate a user in Europe/Berlin (UTC+2 during CEST).
+	// Period "April 6 – April 13" in Berlin = stored as April 5 22:00 – April 12 22:00 UTC.
+	berlin, _ := time.LoadLocation("Europe/Berlin")
+	periodStart := time.Date(2026, 4, 6, 0, 0, 0, 0, berlin)
+	periodEnd := time.Date(2026, 4, 13, 0, 0, 0, 0, berlin)
+
+	schedule := models.WorkoutScheduleEntity{
+		Owner:         "alice",
+		WorkoutID:     workout.ID,
+		StartDate:     periodStart,
+		InitialStatus: "committed",
+		Timezone:      "Europe/Berlin",
+	}
+	db.Create(&schedule)
+
+	period := models.SchedulePeriodEntity{
+		ScheduleID:  schedule.ID,
+		PeriodStart: periodStart,
+		PeriodEnd:   periodEnd,
+		Type:        models.ScheduleTypeFrequency,
+	}
+	db.Create(&period)
+	db.Create(&models.ScheduleCommitmentEntity{PeriodID: period.ID})
+
+	// Run at a time when the period is active (April 13 10:00 Berlin = April 13 08:00 UTC)
+	now := time.Date(2026, 4, 13, 8, 0, 0, 0, time.UTC)
+	if err := GenerateForUser(db, "alice", now); err != nil {
+		t.Fatal(err)
+	}
+
+	var periods []models.SchedulePeriodEntity
+	db.Where("schedule_id = ?", schedule.ID).Order("period_start").Find(&periods)
+	if len(periods) < 2 {
+		t.Fatalf("expected at least 2 periods, got %d", len(periods))
+	}
+
+	clone := periods[1]
+	// Next period should start April 14 00:00 Berlin (April 13 22:00 UTC)
+	expectedStart := time.Date(2026, 4, 14, 0, 0, 0, 0, berlin)
+	if !clone.PeriodStart.Equal(expectedStart) {
+		t.Errorf("clone start: want %v, got %v", expectedStart, clone.PeriodStart)
+	}
+
+	// Should end April 21 00:00 Berlin (same 7-day duration)
+	expectedEnd := time.Date(2026, 4, 21, 0, 0, 0, 0, berlin)
+	if !clone.PeriodEnd.Equal(expectedEnd) {
+		t.Errorf("clone end: want %v, got %v", expectedEnd, clone.PeriodEnd)
+	}
+
+	// No overlap: clone starts strictly after original ends
+	if !clone.PeriodStart.After(periodEnd) || clone.PeriodStart.Sub(periodEnd) > 25*time.Hour {
+		t.Errorf("clone should start exactly 1 day after original end, gap = %v", clone.PeriodStart.Sub(periodEnd))
+	}
+}
+
+func TestClone_RespectsTimezoneWestOfUTC(t *testing.T) {
+	db := setupTestDB(t)
+	workout := createWorkout(t, db)
+
+	// Simulate a user in America/New_York (UTC-4 during EDT).
+	// Period "April 6 – April 13" in NY = stored as April 6 04:00 – April 13 04:00 UTC.
+	ny, _ := time.LoadLocation("America/New_York")
+	periodStart := time.Date(2026, 4, 6, 0, 0, 0, 0, ny)
+	periodEnd := time.Date(2026, 4, 13, 0, 0, 0, 0, ny)
+
+	schedule := models.WorkoutScheduleEntity{
+		Owner:         "alice",
+		WorkoutID:     workout.ID,
+		StartDate:     periodStart,
+		InitialStatus: "committed",
+		Timezone:      "America/New_York",
+	}
+	db.Create(&schedule)
+
+	period := models.SchedulePeriodEntity{
+		ScheduleID:  schedule.ID,
+		PeriodStart: periodStart,
+		PeriodEnd:   periodEnd,
+		Type:        models.ScheduleTypeFrequency,
+	}
+	db.Create(&period)
+	db.Create(&models.ScheduleCommitmentEntity{PeriodID: period.ID})
+
+	// Run at a time when the period is active (April 13 10:00 NY = April 13 14:00 UTC)
+	now := time.Date(2026, 4, 13, 14, 0, 0, 0, time.UTC)
+	if err := GenerateForUser(db, "alice", now); err != nil {
+		t.Fatal(err)
+	}
+
+	var periods []models.SchedulePeriodEntity
+	db.Where("schedule_id = ?", schedule.ID).Order("period_start").Find(&periods)
+	if len(periods) < 2 {
+		t.Fatalf("expected at least 2 periods, got %d", len(periods))
+	}
+
+	clone := periods[1]
+	// Next period should start April 14 00:00 NY (April 14 04:00 UTC)
+	expectedStart := time.Date(2026, 4, 14, 0, 0, 0, 0, ny)
+	if !clone.PeriodStart.Equal(expectedStart) {
+		t.Errorf("clone start: want %v, got %v", expectedStart, clone.PeriodStart)
+	}
+
+	// Should end April 21 00:00 NY (same 7-day duration)
+	expectedEnd := time.Date(2026, 4, 21, 0, 0, 0, 0, ny)
+	if !clone.PeriodEnd.Equal(expectedEnd) {
+		t.Errorf("clone end: want %v, got %v", expectedEnd, clone.PeriodEnd)
+	}
+}
+
+func TestClone_UTCBackwardCompatible(t *testing.T) {
+	db := setupTestDB(t)
+	workout := createWorkout(t, db)
+
+	// Default timezone (empty/UTC) should behave identically to old code
+	periodStart := time.Date(2026, 4, 6, 0, 0, 0, 0, time.UTC)
+	periodEnd := time.Date(2026, 4, 13, 0, 0, 0, 0, time.UTC)
+
+	schedule := models.WorkoutScheduleEntity{
+		Owner:         "alice",
+		WorkoutID:     workout.ID,
+		StartDate:     periodStart,
+		InitialStatus: "committed",
+		// Timezone left empty — Location() falls back to UTC
+	}
+	db.Create(&schedule)
+
+	period := models.SchedulePeriodEntity{
+		ScheduleID:  schedule.ID,
+		PeriodStart: periodStart,
+		PeriodEnd:   periodEnd,
+		Type:        models.ScheduleTypeFrequency,
+	}
+	db.Create(&period)
+	db.Create(&models.ScheduleCommitmentEntity{PeriodID: period.ID})
+
+	now := time.Date(2026, 4, 13, 12, 0, 0, 0, time.UTC)
+	if err := GenerateForUser(db, "alice", now); err != nil {
+		t.Fatal(err)
+	}
+
+	var periods []models.SchedulePeriodEntity
+	db.Where("schedule_id = ?", schedule.ID).Order("period_start").Find(&periods)
+	if len(periods) < 2 {
+		t.Fatalf("expected at least 2 periods, got %d", len(periods))
+	}
+
+	clone := periods[1]
+	expectedStart := time.Date(2026, 4, 14, 0, 0, 0, 0, time.UTC)
+	if !clone.PeriodStart.Equal(expectedStart) {
+		t.Errorf("clone start: want %v, got %v", expectedStart, clone.PeriodStart)
+	}
+
+	expectedEnd := time.Date(2026, 4, 21, 0, 0, 0, 0, time.UTC)
+	if !clone.PeriodEnd.Equal(expectedEnd) {
+		t.Errorf("clone end: want %v, got %v", expectedEnd, clone.PeriodEnd)
 	}
 }
 
