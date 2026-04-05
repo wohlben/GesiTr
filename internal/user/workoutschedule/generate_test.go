@@ -673,9 +673,10 @@ func TestClone_RespectsTimezoneEastOfUTC(t *testing.T) {
 		t.Errorf("clone end: want %v, got %v", expectedEnd, clone.PeriodEnd)
 	}
 
-	// No overlap: clone starts strictly after original ends
-	if !clone.PeriodStart.After(periodEnd) || clone.PeriodStart.Sub(periodEnd) > 25*time.Hour {
-		t.Errorf("clone should start exactly 1 day after original end, gap = %v", clone.PeriodStart.Sub(periodEnd))
+	// Contiguous: clone starts exactly 1 day after original end (end date is inclusive)
+	gapHours := clone.PeriodStart.Sub(periodEnd).Hours()
+	if gapHours < 23 || gapHours > 25 {
+		t.Errorf("clone should start ~24h after original end, got %.1fh", gapHours)
 	}
 }
 
@@ -779,6 +780,125 @@ func TestClone_UTCBackwardCompatible(t *testing.T) {
 	expectedEnd := time.Date(2026, 4, 21, 0, 0, 0, 0, time.UTC)
 	if !clone.PeriodEnd.Equal(expectedEnd) {
 		t.Errorf("clone end: want %v, got %v", expectedEnd, clone.PeriodEnd)
+	}
+}
+
+func TestClone_LifecycleProgression_Berlin(t *testing.T) {
+	db := setupTestDB(t)
+	workout := createWorkout(t, db)
+
+	berlin, _ := time.LoadLocation("Europe/Berlin")
+
+	// Week 1: April 6–13 Berlin (7 days)
+	p1Start := time.Date(2026, 4, 6, 0, 0, 0, 0, berlin)
+	p1End := time.Date(2026, 4, 13, 0, 0, 0, 0, berlin)
+
+	schedule := models.WorkoutScheduleEntity{
+		Owner:         "alice",
+		WorkoutID:     workout.ID,
+		StartDate:     p1Start,
+		InitialStatus: "committed",
+		Timezone:      "Europe/Berlin",
+	}
+	db.Create(&schedule)
+
+	period := models.SchedulePeriodEntity{
+		ScheduleID:  schedule.ID,
+		PeriodStart: p1Start,
+		PeriodEnd:   p1End,
+		Type:        models.ScheduleTypeFrequency,
+	}
+	db.Create(&period)
+	db.Create(&models.ScheduleCommitmentEntity{PeriodID: period.ID})
+
+	getPeriods := func() []models.SchedulePeriodEntity {
+		var periods []models.SchedulePeriodEntity
+		db.Where("schedule_id = ?", schedule.ID).Order("period_start").Find(&periods)
+		return periods
+	}
+
+	// --- Day 1 (April 4): schedule hasn't started yet, nothing happens ---
+	now := time.Date(2026, 4, 4, 12, 0, 0, 0, berlin)
+	GenerateForUser(db, "alice", now)
+	periods := getPeriods()
+	if len(periods) != 1 {
+		t.Fatalf("day 1: expected 1 period, got %d", len(periods))
+	}
+
+	// --- Day 2 (April 6 noon): period 1 is now active → clone fires ---
+	now = time.Date(2026, 4, 6, 12, 0, 0, 0, berlin)
+	GenerateForUser(db, "alice", now)
+	periods = getPeriods()
+	if len(periods) != 2 {
+		t.Fatalf("day 2: expected 2 periods (active + planned), got %d", len(periods))
+	}
+
+	// Period 1 should be active, period 2 should be planned
+	if !now.Before(periods[0].PeriodEnd) || now.Before(periods[0].PeriodStart) {
+		t.Error("day 2: period 1 should be active")
+	}
+	if !now.Before(periods[1].PeriodStart) {
+		t.Error("day 2: period 2 should be planned (in the future)")
+	}
+
+	// Verify period 2 = April 14–21 Berlin
+	p2ExpStart := time.Date(2026, 4, 14, 0, 0, 0, 0, berlin)
+	p2ExpEnd := time.Date(2026, 4, 21, 0, 0, 0, 0, berlin)
+	if !periods[1].PeriodStart.Equal(p2ExpStart) {
+		t.Errorf("day 2: period 2 start: want %v, got %v", p2ExpStart, periods[1].PeriodStart)
+	}
+	if !periods[1].PeriodEnd.Equal(p2ExpEnd) {
+		t.Errorf("day 2: period 2 end: want %v, got %v", p2ExpEnd, periods[1].PeriodEnd)
+	}
+
+	// Idempotent: running again on the same day shouldn't create more periods
+	GenerateForUser(db, "alice", now)
+	if len(getPeriods()) != 2 {
+		t.Fatal("day 2 idempotent: period count changed")
+	}
+
+	// --- Day 3 (April 14 noon): period 2 is now active → clone fires ---
+	now = time.Date(2026, 4, 14, 12, 0, 0, 0, berlin)
+	GenerateForUser(db, "alice", now)
+	periods = getPeriods()
+	if len(periods) != 3 {
+		t.Fatalf("day 3: expected 3 periods, got %d", len(periods))
+	}
+
+	// Verify period 3 = April 22–29 Berlin
+	p3ExpStart := time.Date(2026, 4, 22, 0, 0, 0, 0, berlin)
+	p3ExpEnd := time.Date(2026, 4, 29, 0, 0, 0, 0, berlin)
+	if !periods[2].PeriodStart.Equal(p3ExpStart) {
+		t.Errorf("day 3: period 3 start: want %v, got %v", p3ExpStart, periods[2].PeriodStart)
+	}
+	if !periods[2].PeriodEnd.Equal(p3ExpEnd) {
+		t.Errorf("day 3: period 3 end: want %v, got %v", p3ExpEnd, periods[2].PeriodEnd)
+	}
+
+	// --- Verify all periods are contiguous and non-overlapping ---
+	// PeriodEnd is inclusive, so a period ending April 13 covers through April 13 23:59.
+	// The next period starting April 14 00:00 is contiguous — no gap, no overlap.
+	for i := 1; i < len(periods); i++ {
+		prev := periods[i-1]
+		curr := periods[i]
+
+		// Next period starts exactly 1 day after previous end (inclusive → exclusive boundary)
+		gapHours := curr.PeriodStart.Sub(prev.PeriodEnd).Hours()
+		if gapHours < 23 || gapHours > 25 {
+			t.Errorf("period %d to %d: expected ~24h between end and next start, got %.1fh (%v → %v)",
+				i-1, i, gapHours, prev.PeriodEnd.In(berlin), curr.PeriodStart.In(berlin))
+		}
+	}
+
+	// --- Verify each period has exactly 7 calendar days ---
+	for i, p := range periods {
+		pStart := p.PeriodStart.In(berlin)
+		pEnd := p.PeriodEnd.In(berlin)
+		days := int(pEnd.Sub(pStart).Hours()/24 + 0.5)
+		if days != 7 {
+			t.Errorf("period %d: expected 7 days, got %d (%v to %v)",
+				i, days, pStart.Format("Jan 2"), pEnd.Format("Jan 2"))
+		}
 	}
 }
 
