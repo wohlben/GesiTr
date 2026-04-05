@@ -39,13 +39,13 @@ type SchedulePeriodEntity struct {
 func (SchedulePeriodEntity) TableName() string { return "schedule_periods" }
 
 func (e *SchedulePeriodEntity) ToDTO(now time.Time) SchedulePeriod {
-	// PeriodEnd is inclusive: a period ending April 13 is active through
-	// April 13 23:59:59. Adding 24h gives the exclusive upper bound.
+	// PeriodEnd is stored as 23:59:59 of the last inclusive day,
+	// so now.Before(PeriodEnd) naturally covers the full end date.
 	var status PeriodStatus
 	switch {
 	case now.Before(e.PeriodStart):
 		status = PeriodStatusPlanned
-	case now.Before(e.PeriodEnd.Add(24 * time.Hour)):
+	case now.Before(e.PeriodEnd):
 		status = PeriodStatusActive
 	default:
 		status = PeriodStatusArchived

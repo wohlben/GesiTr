@@ -84,18 +84,20 @@ func cloneIfNeeded(db *gorm.DB, schedule *models.WorkoutScheduleEntity, now time
 
 	// Compute next period in the schedule's timezone so that date arithmetic
 	// respects the user's local calendar (avoids off-by-one from UTC truncation).
+	// PeriodEnd is stored as 23:59:59 of the last inclusive day, so the next
+	// period starts at midnight of the following calendar day.
 	loc := schedule.Location()
-	nextStart := startOfDayIn(lastPeriod.PeriodEnd.Add(24*time.Hour), loc)
+	nextStart := startOfDayIn(lastPeriod.PeriodEnd, loc).AddDate(0, 0, 1)
 	var nextEnd time.Time
 	if lastPeriod.Mode == models.PeriodModeMonthly {
 		// Monthly: advance one calendar month from the original start's day offset
-		nextEnd = startOfDayIn(nextStart.AddDate(0, 1, -1), loc)
+		nextEnd = endOfDayIn(nextStart.AddDate(0, 1, -1), loc)
 	} else {
 		// Normal: same number of calendar days (immune to DST shifts)
-		startLocal := lastPeriod.PeriodStart.In(loc)
-		endLocal := lastPeriod.PeriodEnd.In(loc)
-		days := int(endLocal.Sub(startLocal).Hours()/24 + 0.5)
-		nextEnd = nextStart.AddDate(0, 0, days)
+		startDay := startOfDayIn(lastPeriod.PeriodStart, loc)
+		endDay := startOfDayIn(lastPeriod.PeriodEnd, loc)
+		days := int(endDay.Sub(startDay).Hours()/24 + 0.5)
+		nextEnd = endOfDayIn(nextStart.AddDate(0, 0, days), loc)
 	}
 
 	// Check schedule end date
@@ -294,4 +296,10 @@ func startOfDay(t time.Time) time.Time {
 func startOfDayIn(t time.Time, loc *time.Location) time.Time {
 	t = t.In(loc)
 	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, loc)
+}
+
+// endOfDayIn returns 23:59:59 of t's date in the given location.
+func endOfDayIn(t time.Time, loc *time.Location) time.Time {
+	t = t.In(loc)
+	return time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 0, loc)
 }

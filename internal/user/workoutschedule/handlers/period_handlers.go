@@ -88,10 +88,15 @@ func CreateSchedulePeriod(ctx context.Context, input *CreateSchedulePeriodInput)
 		}
 	}
 
+	// Normalize PeriodEnd to 23:59:59 of the end date in the schedule's timezone
+	// so that the end date is inclusive (the period covers the full last day).
+	loc := schedule.Location()
+	periodEnd := endOfDayIn(input.Body.PeriodEnd, loc)
+
 	entity := models.SchedulePeriodEntity{
 		ScheduleID:  input.Body.ScheduleID,
 		PeriodStart: input.Body.PeriodStart,
-		PeriodEnd:   input.Body.PeriodEnd,
+		PeriodEnd:   periodEnd,
 		Type:        scheduleType,
 		Mode:        mode,
 	}
